@@ -1,0 +1,55 @@
+{% import 'macros_google.html' as google %} {% import "macros_less.html"
+as less %}
+<!doctype html>
+<html>
+<head>
+<title>{{ site.title }}{% if page.title is not empty %} &mdash;
+	{{ page.title }}{% endif %}</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="description" content="{{ site.description }}" />
+<meta name="author" content="{{ site.author }}" />
+<meta name="generator" content="PieCrust {{ piecrust.version }}" />
+<meta name="template-engine" content="Twig" />
+<link rel="shortcut icon" type="image/x-icon"
+	href="{{site.root}}/favicon.ico">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<!--[if lt IE 9]>
+   		<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+  	<![endif]-->
+<link rel="alternate" type="application/rss+xml" title="RSS2"
+	href="http://{{site.base_url}}/feed/rss.xml">
+<link rel="stylesheet" href="{{site.base_url}}css/bootstrap.css"
+	type="text/css" media="screen, projection" />
+<link rel="stylesheet"
+	href="{{site.base_url}}css/bootstrap-responsive.css" type="text/css"
+	media="screen, projection" />
+<!--[if lt IE 8]>
+	    <link rel="stylesheet" href="{{site.root}}css/blueprint/ie.css" type="text/css" media="screen, projection" />
+	<![endif]-->
+{{ google.webfonts('Droid+Serif:700italic') }} {{ less.stylesheet(baker,
+server, site.root ~ 'css/default') }} {{ less.less_js(baker, server,
+site.root) }}
+</head>
+<body>
+	{% block header %}
+    <h1>header</h1>
+	{% endblock %}
+	<section id="sec_content">
+		<div id="content" class="container content-fluid">
+			<div class="row-fluid">
+				<div id="main" class="span12" role="main">
+				{% if page.title %}
+				<h1>{{ page.title }}</h1>
+				{% endif %}
+					{{ content|raw }}
+				</div>
+				<!-- /#main -->
+			</div>
+		</div>
+		<!-- /#content -->
+	</section>
+	{% block footer %} {% include 'footer.html' %} {% endblock %} {{
+	piecrust.debug_info|raw }}
+</body>
+</html>

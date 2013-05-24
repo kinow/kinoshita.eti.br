@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- ====================================================================== 
+     May 15, 2013 21:20:00 PM                                                        
+
+     kinoshita.eti.br
+     ====================================================================== -->
+<project name="kinoshita.eti.br" default="usage">
+
+    <description>
+        kinoshita.eti.br
+    </description>
+
+    <!-- ================================= 
+          target: usage              
+         ================================= -->
+    <target name="usage" depends="clean" description="Prints build usage">
+        <echo message="clean: removes dist directory and its contents" />
+        <echo message="blog: creates static html blog" />
+        <echo message="blog-dist: creates static html blog for production environment" />
+        <echo message="blog-run: runs the blog with piecrust built-in web server" />
+        <echo message="dist: prepares dist directory with a production ready web site" />
+        <echo message="deploy: deploys the site to production" />
+        <echo message="usage: prints this help menu" />
+    </target>
+
+    <!-- ================================= 
+          target: clean              
+         ================================= -->
+    <target name="clean" description="Cleans dist directory">
+        <echo message="Cleaninig dist directory..." />
+        <delete dir="${basedir}/dist" failonerror="false" />
+        <echo message="Cleaninig blog directory..." />
+        <delete dir="${basedir}/blog" failonerror="false" />
+    </target>
+
+    <!-- ================================= 
+          target: blog              
+         ================================= -->
+    <target name="blog" depends="clean" description="Create static blog">
+        <!-- executes piecrust/bin/chef reading from the site directory 
+             and writing to blog. The blog directory is not versioned.  -->
+        <exec append="true" executable="${basedir}/tools/PieCrust/bin/chef">
+            <arg value="--root=${basedir}/site" />
+            <arg value="bake" />
+            <arg value="--output=${basedir}/blog" />
+            <arg value="--portable" />
+            <arg value="--force" />
+        </exec>
+    </target>
+
+    <!-- ================================= 
+          target: blog-dist              
+         ================================= -->
+    <target name="blog-dist" depends="clean" description="Create static blog for distribution">
+        <!-- executes piecrust/bin/chef reading from the site directory 
+             and writing to blog. The blog directory is not versioned.  -->
+        <exec append="true" executable="${basedir}/tools/PieCrust/bin/chef">
+            <arg value="--root=${basedir}/site" />
+            <arg value="bake" />
+            <arg value="--output=${basedir}/blog" />
+            <arg value="--portable" />
+            <arg value="--force" />
+            <!-- flag to use a different configuration for production -->
+            <arg value="--config=production" />
+        </exec>
+    </target>
+
+    <!-- ================================= 
+          target: blog-run              
+         ================================= -->
+    <target name="blog-run" description="Runs static blog and watch for modifications">
+        <!-- 8080 is the default port -->
+        <exec append="true" executable="${basedir}/tools/PieCrust/bin/chef">
+            <arg value="--root=${basedir}/site" />
+            <arg value="serve" />
+            <!-- flag to use a different configuration for production -->
+            <arg value="--config=live" />
+        </exec>
+    </target>
+
+    <!-- ================================= 
+          target: dist              
+         ================================= -->
+    <target name="dist" depends="clean, blog-dist" description="Creates production ready site">
+        <mkdir dir="${basedir}/dist"/>
+        <copy todir="${basedir}/dist">
+            <fileset dir="${basedir}/blog">
+                <include name="**" />
+                <include name=".htaccess" />
+            </fileset>
+        </copy>
+    </target>
+
+    <!-- ================================= 
+          target: deploy              
+         ================================= -->
+    <target name="deploy" depends="dist" description="Deploys via SSH to the server">
+        <input message="Please enter SSH user:" addproperty="ssh.username" />
+        <input message="Please enter SSH host:" addproperty="ssh.host" />
+        <input message="Please enter SSH port:" addproperty="ssh.port" />
+        <input message="Please enter SSH dir:" addproperty="ssh.dir" />
+        <exec executable="rsync" dir="${basedir}/dist" failonerror="true">
+            <arg value="--exclude-from=${basedir}/tools/deploy/rsync.excludes"/>
+            <arg value="--rsh=/usr/bin/ssh -p${ssh.port}" />
+            <arg value="-v"/>
+            <arg value="-r"/>
+            <arg value="."/>
+            <arg value="${ssh.username}@${ssh.host}:${ssh.dir}"/>
+        </exec>
+    </target>
+
+    <!-- ================================= 
+          target: deploy              
+         ================================= -->
+    <target name="deploy-local" depends="dist" description="Deploys using rsync to local server">
+        <exec executable="rsync" dir="${basedir}/dist" failonerror="true">
+            <arg value="--exclude-from=${basedir}/tools/deploy/rsync.excludes"/>
+            <arg value="-v"/>
+            <arg value="-r"/>
+            <arg value="."/>
+            <arg value="/var/www/kinoshita.eti.br"/>
+        </exec>
+    </target>
+
+</project>
