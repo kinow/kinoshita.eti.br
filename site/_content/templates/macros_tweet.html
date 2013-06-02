@@ -1,4 +1,10 @@
 {% macro button(base_url,counturl,url,text) %}
+{% set length = base_url|length %}
+{% set last_char = base_url[length-1:] %}
+{% if (last_char == '/') %}
+{% set base_url = base_url[0:length-1] %}
+{% endif %}
+<h1>{{base_url}}</h1>
 <div class="tw_button" style="">
     <iframe
         allowtransparency="true"
