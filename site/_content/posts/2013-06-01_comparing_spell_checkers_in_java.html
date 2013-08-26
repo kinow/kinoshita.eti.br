@@ -39,9 +39,8 @@ The following spell checkers were used in this comparison:
 
 <!--more-->
 
-- JOrtho
 - Jazzy
-- JSpell
+- JOrtho
 - HunspellJNA
 - HunspellBridJ
 - Norvig's spell checker
@@ -54,5 +53,126 @@ The following spell checkers were used in this comparison:
 
 ## Comparison table
 
-## What I'm using? 
+The examples in this table provide a simple API in Java.
+
+<table class='table table-bordered table-striped table-hover'>
+    <thead>
+        <tr>
+            <td>Name</td>
+            <td>License</td>
+            <td>Latest release</td>
+            <td>Suggestions</td>
+            <td>User dictionary</td>
+            <th>Uses JNA/Bridj/etc</th>
+            <th>POS tags</th>
+            <th>Phonetics</th>
+            <th>Dictionary type</th>
+            <th>Dictionary mime type</th>
+            <th>Build tool</th>
+            <th>Thread-safe</th>
+            <th>Source code</th>
+        </tr>
+    </thead>
+    <tbody>
+        <!-- jazzy -->
+        <tr>
+            <td><a href='http://jazzy.sourceforge.net/'>Jazzy</a></td>
+            <td>LGPLv2</td>
+            <td>0.5.2 &mdash; 2005-11-23</td>
+            <td>Yes</td>
+            <td>Yes</td>
+            <td>No</td>
+            <td>No</td>
+            <td>Yes</td>
+            <td>Word per line</td>
+            <td>Plain text</td>
+            <td>Ant</td>
+            <td>No</td>
+            <td>http://sourceforge.net/p/jazzy/code/?source=navbar</td>
+        </tr>
+        <!-- JOrtho -->
+        <tr>
+            <td><a href='http://jortho.sourceforge.net/'>JOrtho</a></td>
+            <td>GPLv2</td>
+            <td>1.0 &mdash; 2013-03-11</td>
+            <td>Yes</td>
+            <td>Yes</td>
+            <td>No</td>
+            <td>No</td>
+            <td>No</td>
+            <td>Wikitionary based</td>
+            <td>Binary</td>
+            <td>Ant</td>
+            <td>No</td>
+            <td>http://sourceforge.net/p/jazzy/code/?source=navbar</td>
+        </tr>
+        <!-- HunspellJNA -->
+        <tr>
+            <td><a href='http://dren.dk/hunspell.html'>HunspellJNA</a></td><!-- Name -->
+            <td>GPLv3</td><!-- License -->
+            <td>No official releases. Latest commit from 2013-May</td><!-- Latest release -->
+            <td>Yes</td><!-- Suggestions -->
+            <td>Yes</td><!-- User dictionaries -->
+            <td>Yes, JNA</td><!-- -->
+            <td>[JNA](https://en.wikipedia.org/wiki/Java_Native_Access)</td><!-- JNA/Bridj -->
+            <td>Yes</td><!-- POS -->
+            <td>Yes</td><!-- Phonetics -->
+            <td>MySpell and Hunspell dicts</td><!-- Type -->
+            <td></td><!-- Mime Type -->
+            <td>Ant</td><!-- Build tool -->
+            <td></td><!-- Thread safety -->
+            <td>https://github.com/dren-dk/HunspellJNA</td><!-- Source -->
+        </tr>
+        <!-- HunspellBridJ -->
+        <tr>
+            <td><a href='https://github.com/thomas-joiner/HunspellBridJ'>HunspellBridJ</a></td><!-- Name -->
+            <td>Mixed, GPLv3, LGPLv2 and MPLv1.1</td><!-- License -->
+            <td>1.0.0 &mdash; 2013-12</td><!-- Latest release -->
+            <td>Yes</td><!-- Suggestions -->
+            <td>Yes</td><!-- User dictionaries -->
+            <td>Yes, JNA</td><!-- -->
+            <td>[BridJ](https://code.google.com/p/bridj/)</td><!-- JNA/Bridj -->
+            <td>Yes</td><!-- POS -->
+            <td>Yes</td><!-- Phonetics -->
+            <td>MySpell and Hunspell dicts</td><!-- Type -->
+            <td></td><!-- Mime Type -->
+            <td>Maven</td><!-- Build tool -->
+            <td></td><!-- Thread safety -->
+            <td>https://github.com/thomas-joiner/HunspellBridJ</td><!-- Source -->
+        </tr>
+    </tbody>
+</table>
+
+## Jazzy
+
+Jazzy is not maintained anymore. I contacted the authors and they told me that 
+at the moment they weren't working on a new version. However, someone released 
+jazzy to Maven central repository. We have also forked jazzy at GitHub and 
+released it under com.tupilabs repository.
+
+Its dictionaries contain one word per line, and additional words can be included 
+to this file, via the dictionary API. Since we have a new Portuguese ortography, 
+updating the existing dictionaries will require a lot of time and regex's.
+
+The code base is not so large, but has no use of generics, and could do with 
+more tests. Parts of the spell checker and other classes have dependencies (imports) 
+to Java Swing API.
+
+## JOrtho
+
+Its latest release was in March this year, but I couldn't find it in [Maven central 
+repository](http://search.maven.org). 
+
+What I liked the most in JOrtho, is that its dictionaries can be generated from 
+Wikitionaries dumps. 
+
+As in jazzy, parts of the spell checker API are mixed with Java Swing API. But the 
+code has generics, few warnings and a consistent formatting. The SpellChecker 
+class has several static properties, that are updated via static methods. This 
+isn't thread-safe, and using the dictionary in a web container with multiple 
+threads accessing its methods could cause lots of trouble.
+
+There are few tests, but it doesn't look so hard to add new tests. 
+
+# What I'm using? 
 
