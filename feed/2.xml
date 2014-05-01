@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0"
+    xmlns:content="http://purl.org/rss/1.0/modules/content/"
+    xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+    xmlns:dc="http://purl.org/dc/elements/1.1/"
+    xmlns:atom="http://www.w3.org/2005/Atom"
+    xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+    xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+>
+ 
+<channel>
+    <title>Bruno P. Kinoshita</title>
+    <atom:link href="http://www.kinoshita.eti.br/blog/feed.xml" rel="self" type="application/rss+xml" />
+    <link>http://www.kinoshita.eti.br/</link>
+    <description></description>
+    <lastBuildDate>Wed, 30 Apr 2014 23:27:35 -0300</lastBuildDate>
+    <language>en-US</language>
+    <generator>PieCrust 1.2.0</generator>
+ 
+<item>
+    <title>A quick view on Wordpress, Mantis and Jenkins plug-in API</title>
+    <pubDate>Thu, 25 Oct 2012 00:00:00 -0200</pubDate>
+    <link>/2012/10/25/a-quick-view-on-wordpress-mantis-and-jenkins-plug-in-api.html</link>
+    <dc:creator>Bruno P. Kinoshita</dc:creator>
+    <description>&lt;p&gt;I&amp;#8217;m preparing a &lt;em&gt;plug-in API proposal for &lt;a href=&quot;http://www.teamst.org&quot; title=&quot;TestLink&quot;&gt;TestLink&lt;/a&gt;&lt;/em&gt;, and thought that the best way to learn how to write a good plug-in API would be by looking at other application&amp;#8217;s plug-in API&amp;#8217;s.&lt;/p&gt;
+
+&lt;p style=&quot;text-align: center&quot;&gt;&lt;img src=&quot;/2012/10/25/a-quick-view-on-wordpress-mantis-and-jenkins-plug-in-api/testlink_logo_2.jpg &quot; alt=&quot;&quot; title=&quot;TestLink&quot; width=&quot;283&quot; height=&quot;170&quot; class=&quot;aligncenter size-full wp-image-1153&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;This post contains information that I gathered for creating this new API, but that may also be useful for other programmers. I used &lt;a href=&quot;#wp&quot;&gt;Wordpress&lt;/a&gt;, &lt;a href=&quot;#mantis&quot;&gt;Mantis&lt;/a&gt; and &lt;a href=&quot;#jenkins&quot;&gt;Jenkins&lt;/a&gt; in this study. Let me know if you find any mistakes or if you have any other suggestions.&lt;/p&gt;
+
+</description>
+</item>
+<item>
+    <title>Replacing a HashSet with a BitSet</title>
+    <pubDate>Sat, 20 Oct 2012 00:00:00 -0300</pubDate>
+    <link>/2012/10/20/replacing-a-hashset-with-a-bitset.html</link>
+    <dc:creator>Bruno P. Kinoshita</dc:creator>
+    <description>&lt;p&gt;I always read the messages in the &lt;a href=&quot;http://www.apache.org/foundation/mailinglists.html&quot; title=&quot;Apache mailing lists&quot;&gt;Apache dev mailing lists&lt;/a&gt;, including Apache Commons &lt;a href=&quot;http://commons.apache.org/mail-lists.html&quot; title=&quot;Apache Commons mailing lists&quot;&gt;dev mailing list&lt;/a&gt;. And you should too. There are always interesting discussions. Sometimes you participate, other times you only watch what&amp;#8217;s happening, but in the end &lt;strong&gt;you always learn something new&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;p&gt;A few days ago, I found &lt;a href=&quot;https://issues.apache.org/jira/browse/LANG-839&quot; title=&quot;LANG-839&quot;&gt;an issue&lt;/a&gt; where it was being proposed to replace an unnecessary &lt;a href=&quot;http://docs.oracle.com/javase/6/docs/api/java/util/HashSet.html&quot; title=&quot;HashSet&quot;&gt;HashSet&lt;/a&gt; in &lt;a href=&quot;http://commons.apache.org/lang/api-release/org/apache/commons/lang3/ArrayUtils.html&quot; title=&quot;ArrayUtils&quot;&gt;ArrayUtils&lt;/a&gt;#removeElements() by a &lt;a href=&quot;http://docs.oracle.com/javase/6/docs/api/java/util/BitSet.html&quot; title=&quot;BitSet&quot;&gt;BitSet&lt;/a&gt;. Here&amp;#8217;s how the code looked like: &lt;/p&gt;
+
+&lt;pre class=&quot;java&quot; style=&quot;font-family:monospace;&quot;&gt;HashSet&lt;span style=&quot;color: #339933;&quot;&gt;&amp;lt;&lt;/span&gt;Integer&lt;span style=&quot;color: #339933;&quot;&gt;&amp;gt;&lt;/span&gt; toRemove &lt;span style=&quot;color: #339933;&quot;&gt;=&lt;/span&gt; &lt;span style=&quot;color: #000000; font-weight: bold;&quot;&gt;new&lt;/span&gt; HashSet&lt;span style=&quot;color: #339933;&quot;&gt;&amp;lt;&lt;/span&gt;Integer&lt;span style=&quot;color: #339933;&quot;&gt;&amp;gt;&lt;/span&gt;&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#40;&lt;/span&gt;&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#41;&lt;/span&gt;&lt;span style=&quot;color: #339933;&quot;&gt;;&lt;/span&gt;
+&lt;span style=&quot;color: #000000; font-weight: bold;&quot;&gt;for&lt;/span&gt; &lt;span style=&quot;color: #009900;&quot;&gt;&amp;#40;&lt;/span&gt;&lt;a href=&quot;http://www.google.com/search?hl=en&amp;amp;q=allinurl%3Adocs.oracle.com+javase+docs+api+map&quot;&gt;&lt;span style=&quot;color: #003399;&quot;&gt;Map&lt;/span&gt;&lt;/a&gt;.&lt;span style=&quot;color: #006633;&quot;&gt;Entry&lt;/span&gt;&lt;span style=&quot;color: #339933;&quot;&gt;&amp;lt;&lt;/span&gt;&lt;a href=&quot;http://www.google.com/search?hl=en&amp;amp;q=allinurl%3Adocs.oracle.com+javase+docs+api+character&quot;&gt;&lt;span style=&quot;color: #003399;&quot;&gt;Character&lt;/span&gt;&lt;/a&gt;, MutableInt&lt;span style=&quot;color: #339933;&quot;&gt;&amp;gt;&lt;/span&gt; e &lt;span style=&quot;color: #339933;&quot;&gt;:&lt;/span&gt; occurrences.&lt;span style=&quot;color: #006633;&quot;&gt;entrySet&lt;/span&gt;&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#40;&lt;/span&gt;&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#41;&lt;/span&gt;&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#41;&lt;/span&gt; &lt;span style=&quot;color: #009900;&quot;&gt;&amp;#123;&lt;/span&gt;
+    &lt;a href=&quot;http://www.google.com/search?hl=en&amp;amp;q=allinurl%3Adocs.oracle.com+javase+docs+api+character&quot;&gt;&lt;span style=&quot;color: #003399;&quot;&gt;Character&lt;/span&gt;&lt;/a&gt; v &lt;span style=&quot;color: #339933;&quot;&gt;=&lt;/span&gt; e.&lt;span style=&quot;color: #006633;&quot;&gt;getKey&lt;/span&gt;&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#40;&lt;/span&gt;&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#41;&lt;/span&gt;&lt;span style=&quot;color: #339933;&quot;&gt;;&lt;/span&gt;
+    &lt;span style=&quot;color: #000066; font-weight: bold;&quot;&gt;int&lt;/span&gt; found &lt;span style=&quot;color: #339933;&quot;&gt;=&lt;/span&gt; &lt;span style=&quot;color: #cc66cc;&quot;&gt;0&lt;/span&gt;&lt;span style=&quot;color: #339933;&quot;&gt;;&lt;/span&gt;
+    &lt;span style=&quot;color: #000000; font-weight: bold;&quot;&gt;for&lt;/span&gt; &lt;span style=&quot;color: #009900;&quot;&gt;&amp;#40;&lt;/span&gt;&lt;span style=&quot;color: #000066; font-weight: bold;&quot;&gt;int&lt;/span&gt; i &lt;span style=&quot;color: #339933;&quot;&gt;=&lt;/span&gt; &lt;span style=&quot;color: #cc66cc;&quot;&gt;0&lt;/span&gt;, ct &lt;span style=&quot;color: #339933;&quot;&gt;=&lt;/span&gt; e.&lt;span style=&quot;color: #006633;&quot;&gt;getValue&lt;/span&gt;&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#40;&lt;/span&gt;&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#41;&lt;/span&gt;.&lt;span style=&quot;color: #006633;&quot;&gt;intValue&lt;/span&gt;&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#40;&lt;/span&gt;&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#41;&lt;/span&gt;&lt;span style=&quot;color: #339933;&quot;&gt;;&lt;/span&gt; i &lt;span style=&quot;color: #339933;&quot;&gt;&amp;lt;&lt;/span&gt; ct&lt;span style=&quot;color: #339933;&quot;&gt;;&lt;/span&gt; i&lt;span style=&quot;color: #339933;&quot;&gt;++&lt;/span&gt;&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#41;&lt;/span&gt; &lt;span style=&quot;color: #009900;&quot;&gt;&amp;#123;&lt;/span&gt;
+        found &lt;span style=&quot;color: #339933;&quot;&gt;=&lt;/span&gt; indexOf&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#40;&lt;/span&gt;array, v.&lt;span style=&quot;color: #006633;&quot;&gt;charValue&lt;/span&gt;&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#40;&lt;/span&gt;&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#41;&lt;/span&gt;, found&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#41;&lt;/span&gt;&lt;span style=&quot;color: #339933;&quot;&gt;;&lt;/span&gt;
+        &lt;span style=&quot;color: #000000; font-weight: bold;&quot;&gt;if&lt;/span&gt; &lt;span style=&quot;color: #009900;&quot;&gt;&amp;#40;&lt;/span&gt;found &lt;span style=&quot;color: #339933;&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span style=&quot;color: #cc66cc;&quot;&gt;0&lt;/span&gt;&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#41;&lt;/span&gt; &lt;span style=&quot;color: #009900;&quot;&gt;&amp;#123;&lt;/span&gt;
+            &lt;span style=&quot;color: #000000; font-weight: bold;&quot;&gt;break&lt;/span&gt;&lt;span style=&quot;color: #339933;&quot;&gt;;&lt;/span&gt;
+        &lt;span style=&quot;color: #009900;&quot;&gt;&amp;#125;&lt;/span&gt;
+        toRemove.&lt;span style=&quot;color: #006633;&quot;&gt;add&lt;/span&gt;&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#40;&lt;/span&gt;found&lt;span style=&quot;color: #339933;&quot;&gt;++&lt;/span&gt;&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#41;&lt;/span&gt;&lt;span style=&quot;color: #339933;&quot;&gt;;&lt;/span&gt;
+    &lt;span style=&quot;color: #009900;&quot;&gt;&amp;#125;&lt;/span&gt;
+&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#125;&lt;/span&gt;
+&lt;span style=&quot;color: #000000; font-weight: bold;&quot;&gt;return&lt;/span&gt; &lt;span style=&quot;color: #009900;&quot;&gt;&amp;#40;&lt;/span&gt;&lt;span style=&quot;color: #000066; font-weight: bold;&quot;&gt;char&lt;/span&gt;&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#91;&lt;/span&gt;&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#93;&lt;/span&gt;&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#41;&lt;/span&gt; removeAll&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#40;&lt;/span&gt;&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#40;&lt;/span&gt;&lt;a href=&quot;http://www.google.com/search?hl=en&amp;amp;q=allinurl%3Adocs.oracle.com+javase+docs+api+object&quot;&gt;&lt;span style=&quot;color: #003399;&quot;&gt;Object&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#41;&lt;/span&gt;array, extractIndices&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#40;&lt;/span&gt;toRemove&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#41;&lt;/span&gt;&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#41;&lt;/span&gt;&lt;span style=&quot;color: #339933;&quot;&gt;;&lt;/span&gt;&lt;/pre&gt;
+
+&lt;p style=&quot;text-align: center&quot;&gt;&lt;a href=&quot;/2012/10/20/replacing-a-hashset-with-a-bitset/feather_small.gif&quot;&gt;&lt;img src=&quot;/2012/10/20/replacing-a-hashset-with-a-bitset/feather_small.gif&quot; alt=&quot;&quot; title=&quot;Apache Software Foundation&quot; width=&quot;203&quot; height=&quot;61&quot; class=&quot;aligncenter size-full wp-image-1125&quot; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;The HashSet created at line 1, in the code above, was used to store the array index of the elements that should be removed. And at line 13 there is a call to removeAll method, passing the indexes to be removed. And here&amp;#8217;s how the new code looks like: &lt;/p&gt;
+
+&lt;pre class=&quot;java&quot; style=&quot;font-family:monospace;&quot;&gt;&lt;a href=&quot;http://www.google.com/search?hl=en&amp;amp;q=allinurl%3Adocs.oracle.com+javase+docs+api+bitset&quot;&gt;&lt;span style=&quot;color: #003399;&quot;&gt;BitSet&lt;/span&gt;&lt;/a&gt; toRemove &lt;span style=&quot;color: #339933;&quot;&gt;=&lt;/span&gt; &lt;span style=&quot;color: #000000; font-weight: bold;&quot;&gt;new&lt;/span&gt; &lt;a href=&quot;http://www.google.com/search?hl=en&amp;amp;q=allinurl%3Adocs.oracle.com+javase+docs+api+bitset&quot;&gt;&lt;span style=&quot;color: #003399;&quot;&gt;BitSet&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#40;&lt;/span&gt;&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#41;&lt;/span&gt;&lt;span style=&quot;color: #339933;&quot;&gt;;&lt;/span&gt;
+&lt;span style=&quot;color: #000000; font-weight: bold;&quot;&gt;for&lt;/span&gt; &lt;span style=&quot;color: #009900;&quot;&gt;&amp;#40;&lt;/span&gt;&lt;a href=&quot;http://www.google.com/search?hl=en&amp;amp;q=allinurl%3Adocs.oracle.com+javase+docs+api+map&quot;&gt;&lt;span style=&quot;color: #003399;&quot;&gt;Map&lt;/span&gt;&lt;/a&gt;.&lt;span style=&quot;color: #006633;&quot;&gt;Entry&lt;/span&gt;&lt;span style=&quot;color: #339933;&quot;&gt;&amp;lt;&lt;/span&gt;&lt;a href=&quot;http://www.google.com/search?hl=en&amp;amp;q=allinurl%3Adocs.oracle.com+javase+docs+api+character&quot;&gt;&lt;span style=&quot;color: #003399;&quot;&gt;Character&lt;/span&gt;&lt;/a&gt;, MutableInt&lt;span style=&quot;color: #339933;&quot;&gt;&amp;gt;&lt;/span&gt; e &lt;span style=&quot;color: #339933;&quot;&gt;:&lt;/span&gt; occurrences.&lt;span style=&quot;color: #006633;&quot;&gt;entrySet&lt;/span&gt;&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#40;&lt;/span&gt;&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#41;&lt;/span&gt;&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#41;&lt;/span&gt; &lt;span style=&quot;color: #009900;&quot;&gt;&amp;#123;&lt;/span&gt;
+    &lt;a href=&quot;http://www.google.com/search?hl=en&amp;amp;q=allinurl%3Adocs.oracle.com+javase+docs+api+character&quot;&gt;&lt;span style=&quot;color: #003399;&quot;&gt;Character&lt;/span&gt;&lt;/a&gt; v &lt;span style=&quot;color: #339933;&quot;&gt;=&lt;/span&gt; e.&lt;span style=&quot;color: #006633;&quot;&gt;getKey&lt;/span&gt;&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#40;&lt;/span&gt;&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#41;&lt;/span&gt;&lt;span style=&quot;color: #339933;&quot;&gt;;&lt;/span&gt;
+    &lt;span style=&quot;color: #000066; font-weight: bold;&quot;&gt;int&lt;/span&gt; found &lt;span style=&quot;color: #339933;&quot;&gt;=&lt;/span&gt; &lt;span style=&quot;color: #cc66cc;&quot;&gt;0&lt;/span&gt;&lt;span style=&quot;color: #339933;&quot;&gt;;&lt;/span&gt;
+    &lt;span style=&quot;color: #000000; font-weight: bold;&quot;&gt;for&lt;/span&gt; &lt;span style=&quot;color: #009900;&quot;&gt;&amp;#40;&lt;/span&gt;&lt;span style=&quot;color: #000066; font-weight: bold;&quot;&gt;int&lt;/span&gt; i &lt;span style=&quot;color: #339933;&quot;&gt;=&lt;/span&gt; &lt;span style=&quot;color: #cc66cc;&quot;&gt;0&lt;/span&gt;, ct &lt;span style=&quot;color: #339933;&quot;&gt;=&lt;/span&gt; e.&lt;span style=&quot;color: #006633;&quot;&gt;getValue&lt;/span&gt;&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#40;&lt;/span&gt;&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#41;&lt;/span&gt;.&lt;span style=&quot;color: #006633;&quot;&gt;intValue&lt;/span&gt;&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#40;&lt;/span&gt;&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#41;&lt;/span&gt;&lt;span style=&quot;color: #339933;&quot;&gt;;&lt;/span&gt; i &lt;span style=&quot;color: #339933;&quot;&gt;&amp;lt;&lt;/span&gt; ct&lt;span style=&quot;color: #339933;&quot;&gt;;&lt;/span&gt; i&lt;span style=&quot;color: #339933;&quot;&gt;++&lt;/span&gt;&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#41;&lt;/span&gt; &lt;span style=&quot;color: #009900;&quot;&gt;&amp;#123;&lt;/span&gt;
+        found &lt;span style=&quot;color: #339933;&quot;&gt;=&lt;/span&gt; indexOf&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#40;&lt;/span&gt;array, v.&lt;span style=&quot;color: #006633;&quot;&gt;charValue&lt;/span&gt;&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#40;&lt;/span&gt;&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#41;&lt;/span&gt;, found&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#41;&lt;/span&gt;&lt;span style=&quot;color: #339933;&quot;&gt;;&lt;/span&gt;
+        &lt;span style=&quot;color: #000000; font-weight: bold;&quot;&gt;if&lt;/span&gt; &lt;span style=&quot;color: #009900;&quot;&gt;&amp;#40;&lt;/span&gt;found &lt;span style=&quot;color: #339933;&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span style=&quot;color: #cc66cc;&quot;&gt;0&lt;/span&gt;&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#41;&lt;/span&gt; &lt;span style=&quot;color: #009900;&quot;&gt;&amp;#123;&lt;/span&gt;
+            &lt;span style=&quot;color: #000000; font-weight: bold;&quot;&gt;break&lt;/span&gt;&lt;span style=&quot;color: #339933;&quot;&gt;;&lt;/span&gt;
+        &lt;span style=&quot;color: #009900;&quot;&gt;&amp;#125;&lt;/span&gt;
+        toRemove.&lt;span style=&quot;color: #006633;&quot;&gt;set&lt;/span&gt;&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#40;&lt;/span&gt;found&lt;span style=&quot;color: #339933;&quot;&gt;++&lt;/span&gt;&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#41;&lt;/span&gt;&lt;span style=&quot;color: #339933;&quot;&gt;;&lt;/span&gt;
+    &lt;span style=&quot;color: #009900;&quot;&gt;&amp;#125;&lt;/span&gt;
+&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#125;&lt;/span&gt;
+&lt;span style=&quot;color: #000000; font-weight: bold;&quot;&gt;return&lt;/span&gt; &lt;span style=&quot;color: #009900;&quot;&gt;&amp;#40;&lt;/span&gt;&lt;span style=&quot;color: #000066; font-weight: bold;&quot;&gt;char&lt;/span&gt;&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#91;&lt;/span&gt;&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#93;&lt;/span&gt;&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#41;&lt;/span&gt; removeAll&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#40;&lt;/span&gt;array, toRemove&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#41;&lt;/span&gt;&lt;span style=&quot;color: #339933;&quot;&gt;;&lt;/span&gt;&lt;/pre&gt;
+
+&lt;p&gt;The first difference is at line 1. Instead of a HashSet, it is now using a BitSet. And at line 10, instead of adding a new element to the HashSet, now it &amp;#8220;sets&amp;#8221; a bit in the set (the bit at the specified position is now true). But there are important changes at line 13. The method removeAll was changed, and now the array doesn&amp;#8217;t require a cast anymore. And the it is not necessary to cast the elements from HashSet anymore, as now the bit in the index position of the set is set to true. So the extractIndices method could be removed.&lt;/p&gt;
+
+&lt;p&gt;&lt;p&gt;The code got simpler. But that&amp;#8217;s not all. At &lt;a href=&quot;http://www.apache.org&quot; title=&quot;Apache Software Foundation&quot;&gt;Apache Software Foundation&lt;/a&gt; you can find a lot of talented developers - that&amp;#8217;s why I got so excited after joining them. Besides simplifying the code, the developer responsible for these changes (&lt;strong&gt;sebb&lt;/strong&gt;) also pointed out that the new code &lt;strong&gt;consumes less memory and is faster&lt;/strong&gt;. Ah! And he also wrote &lt;strong&gt;unit tests&lt;/strong&gt;&lt;/p&gt;
+</description>
+</item>
+<item>
+    <title>Adding coverage reports in Jenkins to GoogleTest with gcovr</title>
+    <pubDate>Tue, 16 Oct 2012 00:00:00 -0300</pubDate>
+    <link>/2012/10/16/adding-coverage-reports-in-jenkins-to-googletest-with-gcovr.html</link>
+    <dc:creator>Bruno P. Kinoshita</dc:creator>
+    <description>&lt;p&gt;After the &lt;a href=&quot;/2012/10/11/jenkins-testlink-and-gtest-in-5-minutes-or-so&quot; title=&quot;Jenkins, TestLink and GTest in 5 minutes (or so)&quot;&gt;last post&lt;/a&gt; about &lt;a href=&quot;http://code.google.com/p/googletest/&quot; title=&quot;GoogleTest&quot;&gt;GoogleTest&lt;/a&gt; and &lt;a href=&quot;http://www.teamst.org&quot; title=&quot;TestLink&quot;&gt;TestLink&lt;/a&gt; using &lt;a href=&quot;https://wiki.jenkins-ci.org/display/JENKINS/TestLink+Plugin&quot; title=&quot;Jenkins TestLink Plug-in&quot;&gt;Jenkins TestLink Plug-in&lt;/a&gt;, I received an e-mail asking about &lt;a href=&quot;http://en.wikipedia.org/wiki/Code_coverage&quot; title=&quot;Code Coverage&quot;&gt;coverage&lt;/a&gt; with GoogleTest and &lt;a href=&quot;http://www.jenkins-ci.org&quot; title=&quot;Jenkins CI&quot;&gt;Jenkins&lt;/a&gt;. I&amp;#8217;ve just updated the &lt;a href=&quot;https://github.com/kinow/gtest-tap-listener/blob/master/samples/Makefile&quot;&gt;Makefile&lt;/a&gt; in the samples directory, of the &lt;a href=&quot;https://github.com/kinow/gtest-tap-listener&quot; title=&quot;GTest TAP Listener&quot;&gt;GoogleTest TAP listener project&lt;/a&gt;, to output coverage data.&lt;/p&gt;
+
+&lt;p&gt;Basically, you have to add the compiler flags &lt;em&gt;-fprofile-arcs -ftest-coverage&lt;/em&gt; and link the executable with -lgcov. Take a look at the project&amp;#8217;s Makefile and you&amp;#8217;ll notice how simple it is. In order to have Jenkins interpreting your coverage report, you&amp;#8217;ll have to convert it to &lt;a href=&quot;http://cobertura.sourceforge.net&quot; title=&quot;Cobertura&quot;&gt;cobertura&lt;/a&gt; XML. There is a Python utility that can be used for this: &lt;a href=&quot;https://software.sandia.gov/trac/fast/wiki/gcovr&quot; title=&quot;gcovr&quot;&gt;gcovr&lt;/a&gt;. Download it and copy it to somewhere where Jenkins can execute it (e.g.: &lt;em&gt;/usr/local/bin&lt;/em&gt;).&lt;/p&gt;
+
+&lt;p&gt;Now, if you&amp;#8217;ve followed the instructions from the previous post, you should have a job that reports your GoogleTest tests from Jenkins to TestLink using the plug-in, and is downloading the source code from GitHub. Add an extra build step  (Shell) to execute &lt;em&gt;gcovr&lt;/em&gt;.&lt;/p&gt;
+
+</description>
+</item>
+<item>
+    <title>Jenkins, TestLink and GTest in 5 minutes (or so)</title>
+    <pubDate>Thu, 11 Oct 2012 00:00:00 -0300</pubDate>
+    <link>/2012/10/11/jenkins-testlink-and-gtest-in-5-minutes-or-so.html</link>
+    <dc:creator>Bruno P. Kinoshita</dc:creator>
+    <description>&lt;p&gt;This is a 5 minutes guide on creating a job for a C++ project in &lt;a href=&quot;http://www.jenkins-ci.org&quot; title=&quot;Jenkins CI&quot;&gt;Jenkins&lt;/a&gt; with &lt;a href=&quot;http://code.google.com/p/googletest&quot; title=&quot;GoogleTest&quot;&gt;GoogleTest&lt;/a&gt; and reporting the test results back to &lt;a href=&quot;http://www.teamst.org&quot; title=&quot;TestLink&quot;&gt;TestLink&lt;/a&gt;, with &lt;a href=&quot;https://wiki.jenkins-ci.org/display/JENKINS/TestLink+Plugin&quot; title=&quot;Jenkins TestLink Plug-in&quot;&gt;testlink-plugin&lt;/a&gt;. &lt;/p&gt;
+
+&lt;h2&gt;The test project with GoogleTest&lt;/h2&gt;
+
+&lt;p&gt;For this simple guide we will use the samples that come with &lt;a href=&quot;https://github.com/kinow/gtest-tap-listener&quot; title=&quot;GTest TAP Listener&quot;&gt;GTest TAP Listener&lt;/a&gt;. You can get the code from GitHub with &lt;code&gt;git clone git://github.com/kinow/gtest-tap-listener.git&lt;/code&gt;. Take a look at &lt;em&gt;gtest-tap-listener/samples/src/&lt;/em&gt;, there you will find two C++ files: &lt;em&gt;gtest_main.cc&lt;/em&gt; and &lt;em&gt;gtest_testHelloWorld.cc&lt;/em&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;gtest_main.cc&lt;/em&gt; has the &lt;a href=&quot;http://code.google.com/p/googletest/wiki/Primer#Writing_the_main()_Function&quot; title=&quot;GTest main function&quot;&gt;main function&lt;/a&gt;, and executes the test suite. And &lt;em&gt;gtest_testHelloWorld.cc&lt;/em&gt; has the test cases and tests. Take note of the test case and tests names.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;/2012/10/11/jenkins-testlink-and-gtest-in-5-minutes-or-so/screenshot_001.png&quot;&gt;&lt;img src=&quot;/2012/10/11/jenkins-testlink-and-gtest-in-5-minutes-or-so/screenshot_001.png&quot; alt=&quot;&quot; title=&quot;gtest_testHelloWorld.cc&quot; width=&quot;546&quot; height=&quot;482&quot; class=&quot;aligncenter size-full wp-image-1083&quot; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+</description>
+</item>
+<item>
+    <title>Paper: Patterns for Introducing a Superclass for Test Classes</title>
+    <pubDate>Tue, 25 Sep 2012 00:00:00 -0300</pubDate>
+    <link>/2012/09/25/paper-patterns-for-introducing-a-superclass-for-test-classes.html</link>
+    <dc:creator>Bruno P. Kinoshita</dc:creator>
+    <description>&lt;p&gt;Few days ago we had &lt;a href=&quot;http://www.dimap.ufrn.br/sugarloafplop2012/&quot; title=&quot;SugarLoafPlop 2012&quot;&gt;SugarLoafPlop 2012&lt;/a&gt; in &lt;a href=&quot;http://maps.google.com.br/maps?q=natal+-+rn&amp;hl=en&amp;sll=-23.682803,-46.595546&amp;sspn=0.653971,1.352692&amp;hnear=Natal+-+Rio+Grande+do+Norte&amp;t=m&amp;z=11&quot; title=&quot;Natal - RN&quot;&gt;Natal - RN&lt;/a&gt;. It is a conference on &lt;a href=&quot;http://en.wikipedia.org/wiki/Pattern_language&quot; title=&quot;Pattern Language&quot;&gt;pattern languages&lt;/a&gt; of programming. About six months ago I saw a tweet by &lt;a href=&quot;https://twitter.com/emguerra&quot; title=&quot;Eduardo Guerra&quot;&gt;Eduardo Guerra&lt;/a&gt; asking if anyone had some cases where certain patterns were applied. It was a big coincidence, since I was working on &lt;a href=&quot;http://commons.apache.org/sandbox/functor/&quot; title=&quot;Apache Commons Functor&quot;&gt;Apache Commons Functor&lt;/a&gt; and some &lt;a href=&quot;http://www.jenkins-ci.org&quot; title=&quot;Jenkins-CI&quot;&gt;Jenkins plugins&lt;/a&gt;, both projects with cases that could be used in his paper.&lt;/p&gt;
+
+&lt;p style=&quot;text-align: center&quot;&gt;&lt;a href=&quot;http://www.dimap.ufrn.br/sugarloafplop2012/&quot;&gt;&lt;img src=&quot;/2012/09/25/paper-patterns-for-introducing-a-superclass-for-test-classes/sugarloaf2012_300_146.jpg&quot; alt=&quot;&quot; title=&quot;SugarLoaf Plop 2012&quot; width=&quot;300&quot; height=&quot;146&quot; class=&quot;aligncenter size-medium wp-image-1071&quot; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;So I joined Guerra and gave my small contribution to the paper that &lt;a href=&quot;http://www.dimap.ufrn.br/sugarloafplop2012/pages/acceptedpapers.html&quot; title=&quot;accepted papers&quot;&gt;has been accepted&lt;/a&gt; for this edition of SugarLoafPlop. Guerra also went there to give a talk and participate in an open discussion about several papers, including ours.&lt;/p&gt;
+
+&lt;p&gt;I simply love when these things happen, it was great work with Guerra, and even better for being able to use Open Source examples in our paper.&lt;/p&gt;
+</description>
+</item>
+<item>
+    <title>Bioinformatics tools: Stacks</title>
+    <pubDate>Tue, 25 Sep 2012 00:00:00 -0300</pubDate>
+    <link>/2012/09/25/bioinformatic-tools-series-stacks.html</link>
+    <dc:creator>Bruno P. Kinoshita</dc:creator>
+    <description>&lt;p&gt;&lt;em&gt;It is the first post about &lt;strong&gt;bioinformatics tools&lt;/strong&gt;, but I will try to post more about other tools such as MrBayes, Structure, maybe some next generation sequencing tools too, and Bioperl, Biojava, and so on.&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;As I am more a computer geek, rather than a bioinformatics one, I will focus on requirements for running these tools on clusters and the requirements to install them on your machine. The instructions require that you have an intermediary knowledge on *nix OS and sometimes a bit of programming experience.&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;I will be using tutorials available on the Internet and hosting my code in &lt;a href=&quot;http://www.github.com/kinow&quot; alt=&quot;GitHub kinow&quot; title=&quot;GitHub kinow&quot;&gt;GitHub/kinow&lt;/a&gt;. Hammer time!&lt;/em&gt;&lt;/p&gt;
+
+</description>
+</item>
+<item>
+    <title>Running word-count example on a Hadoop commodity-hardware cluster and on a Hadoop local installation</title>
+    <pubDate>Thu, 20 Sep 2012 00:00:00 -0300</pubDate>
+    <link>/2012/09/20/running-word-count-example-on-a-hadoop-commodity-hardware-cluster-and-on-a-hadoop-local-installation.html</link>
+    <dc:creator>Bruno P. Kinoshita</dc:creator>
+    <description>&lt;p&gt;Last weekend I spent some hours assembling old computer parts to create my commodity hardware cluster for running Hadoop. I already had a local installation in my notebook, so I thought it would be cool to run the word-count example in both scenarios to see what would be the results.&lt;/p&gt;
+
+&lt;p&gt;But first, let&amp;#8217;s review the hardware configurations:&lt;/p&gt;
+
+</description>
+</item>
+<item>
+    <title>Integrating Nutch 2.x, MySQL and Solr</title>
+    <pubDate>Fri, 14 Sep 2012 00:00:00 -0300</pubDate>
+    <link>/2012/09/14/integrating-nutch-2-x-mysql-and-solr.html</link>
+    <dc:creator>Bruno P. Kinoshita</dc:creator>
+    <description>&lt;p&gt;Right now we are working on a new project using &lt;a href=&quot;http://nutch.apache.org&quot; title=&quot;Apache Nutch&quot;&gt;Apache Nutch&lt;/a&gt; 2.x, &lt;a href=&quot;http://hadoop.apache.org&quot; title=&quot;Apache Hadoop&quot;&gt;Apache Hadoop&lt;/a&gt;, &lt;a href=&quot;http://solr.apache.org&quot; title=&quot;Apache Solr&quot;&gt;Apache Solr&lt;/a&gt; 4 and a lot of other cool tools/modules/API&amp;#8217;s/etc. After following the instructions found on &lt;a href=&quot;http://nlp.solutions.asia/?p=180&quot; title=&quot;http://nlp.solutions.asia/?p=180&quot;&gt;http://nlp.solutions.asia/?p=180&lt;/a&gt;, I&amp;#8217;ve successfully connected Apache Nutch, MySQL and Apache Solr.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/2012/09/14/integrating-nutch-2-x-mysql-and-solr/mysql_hadoop_solr_nutch.png&quot; alt=&quot;mysql_hadoop_solr_nutch&quot; title=&quot;mysql_hadoop_solr_nutch&quot; width=&quot;800&quot; class=&quot;aligncenter size-medium wp-image-994&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;In summary:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Create a database to hold your data&lt;/li&gt;
+&lt;li&gt;Use SQLDataStore and add configuration for your MySQL server&lt;/li&gt;
+&lt;li&gt;Update Apache Nutch configuration&lt;/li&gt;
+&lt;li&gt;Update Solr schema&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Now our Apache Nutch uses MySQL as data store (the place where it keeps the result of the crawling process, such as URL,  text content, metadata, and so on). That&amp;#8217;s grand, but there is one part missing in the Solr Schema provided in the blog post.&lt;/p&gt; 
+
+&lt;p&gt;Due to &lt;a href=&quot;https://issues.apache.org/jira/browse/SOLR-3432&quot; title=&quot;SOLR-3432&quot;&gt;SOLR-3432&lt;/a&gt;, after following the tutorial and replacing the schema, we couldn&amp;#8217;t delete the whole index anymore. After following the instructions in the bug comments, and adding the following entry in schema.xml it worked again.&lt;/p&gt;
+
+</description>
+</item>
+<item>
+    <title>Invoking Testopia XML-RPC or JSON methods using Java</title>
+    <pubDate>Sun, 09 Sep 2012 00:00:00 -0300</pubDate>
+    <link>/2012/09/09/invoking-testopia-xml-rpc-or-json-methods-using-java.html</link>
+    <dc:creator>Bruno P. Kinoshita</dc:creator>
+    <description>&lt;p&gt;Most &lt;a href=&quot;http://www.teamst.org&quot; title=&quot;TestLink&quot;&gt;TestLink&lt;/a&gt; [1] users are aware that there is an external API, maybe for the external API token being displayed in the user profile section. Today after a meeting with &lt;a href=&quot;http://twitter.com/peterflorijn&quot; title=&quot;Peter Florijn&quot;&gt;Peter Florijn&lt;/a&gt; [2], I realized that the same may not be true for &lt;a href=&quot;http://www.mozilla.org/projects/testopia/&quot; title=&quot;Testopia&quot;&gt;Testopia&lt;/a&gt;  [3] users.&lt;/p&gt;
+
+&lt;p&gt;I am quite new to Testopia, and there are many features that I haven&amp;#8217;t used yet. But if I understand it correctly, the database is interfaced by several Perl scripts that are, by its turns, exposed as Web Service (most of them). The web services are available via a JSON and a XML-RPC API (what is very useful, TestLink supports supports only XML-RPC).&lt;/p&gt;
+
+&lt;p&gt;The communication between different programming languages and the external API&amp;#8217;s is accomplished by a client API. In TestLink you have &lt;a href=&quot;http://testlinkjavaapi.sourceforge.net/&quot; title=&quot;TestLink Java API&quot;&gt;testlink-java-api&lt;/a&gt; [4] and &lt;a href=&quot;http://code.google.com/p/testlink-api-java-client/&quot; title=&quot;TestLink API Java Client&quot;&gt;testlink-api-java-client&lt;/a&gt; [5].&lt;/p&gt;
+
+&lt;p&gt;Testopia has a Java client too, available in &lt;a href=&quot;http://bzr.mozilla.org/bugzilla/extensions/testopia/2.2-bugzilla-3.2/files/head:/testopia/contrib/drivers/java/&quot; title=&quot;Testopia source repository&quot;&gt;Testopia source repository&lt;/a&gt; [6] and can be used to integrate your existing Java code with Testopia.&lt;/p&gt;
+
+</description>
+</item>
+<item>
+    <title>How I started in Open Source</title>
+    <pubDate>Wed, 08 Aug 2012 00:00:00 -0300</pubDate>
+    <link>/2012/08/08/how-i-started-in-open-source.html</link>
+    <dc:creator>Bruno P. Kinoshita</dc:creator>
+    <description>&lt;p&gt;I was studying at &lt;a href=&quot;http://www.mackenzie.br&quot; title=&quot;Mackenzie Presbyterian University&quot;&gt;Mackenzie Presbyterian University&lt;/a&gt; when I met &lt;a href=&quot;http://www.ime.usp.br/~rbrito&quot; title=&quot;Rogerio Brito&quot;&gt;Professor Rogerio Brito&lt;/a&gt;. Most of my friends were terrified of him. Maybe because of the class name &amp;#8220;&lt;em&gt;Structured Programming I&lt;/em&gt;&amp;#8221;. Or maybe because of what Brito taught us at class.&lt;/p&gt;
+
+&lt;p&gt;My degree was in computing, &lt;em&gt;Bachelor in System Information&lt;/em&gt;. Although it is related to &lt;em&gt;Computer Science&lt;/em&gt;, we don&amp;#8217;t have the same classes. In Computer Science you have more math, statistics and even physics, while in System Information you have administration, strategic planning, law and others related to business.&lt;/p&gt;
+
+&lt;p&gt;Although Structured Programming had a list of topics, Brito didn&amp;#8217;t limit himself to those. Eventually he would try to teach us about &lt;em&gt;algorithms&lt;/em&gt;, &lt;em&gt;software complexity&lt;/em&gt;, the importance of writing academic papers and explain about Open Source software.&lt;/p&gt;
+
+&lt;p&gt;I remember one day we were dismissed before 10PM. I used to run for the bus stop for not being too late at home and cause it could be dangerous lingering on the streets of Consolacao neighborhood by myself, waiting for the bus. But that day I stumbled with Brito near the Professor&amp;#8217;s Room.&lt;/p&gt;
+
+&lt;p style=&quot;text-align: center&quot;&gt;&lt;img src=&quot;/2012/08/08/how-i-started-in-open-source/sensei_09.jpg&quot; alt=&quot;&quot; title=&quot;Itsuki Sensei - Moyashimon&quot; width=&quot;250&quot; height=&quot;141&quot; class=&quot;aligncenter size-full wp-image-970&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;He invited me in. It was my first time in there. There were books and papers lying on the main table and in another part of the room there was a desktop computer. We started talking about programming and I can&amp;#8217;t recall how but we ended up talking about Open Source. He showed me some websites and explained about a lot of nerd stuff.&lt;/p&gt;
+
+&lt;p&gt;I left the room after 11PM. Late for my bus and with a paper sheet. &lt;em&gt;A very important paper sheet&lt;/em&gt;. It had a list of items to study, software to learn about and names that I had never heard before. One of the items of that list that I can still remember was &amp;#8220;Reading about &lt;a href=&quot;http://openjdk.java.net/&quot; title=&quot;Open JDK&quot;&gt;Open JDK&lt;/a&gt;&amp;#8221; (now being adopted over Oracle/Sun JDK). There was &amp;#8220;Create a program for finding software bugs&amp;#8221; too (like the famous &lt;a href=&quot;http://findbugs.sourceforge.net/&quot; title=&quot;FindBugs&quot;&gt;FindBugs&lt;/a&gt;).&lt;/p&gt;
+
+&lt;p&gt;He taught me about the basics of Open Source, gave me a list of interesting projects, explained how to join the project, where to look for information and how to assess the maturity and quality of a project. And also taught me more about &lt;a href=&quot;http://www.usp.br&quot; title=&quot;USP&quot;&gt;USP&lt;/a&gt; - University of Sao Paulo - and how to submit academic papers and what was a call for paper (when he said that word I translated it to Portuguese, you can imagine the confusion in my head) :-)&lt;/p&gt;
+
+&lt;h2&gt;He made me curious.&lt;/h2&gt;
+
+&lt;p&gt;This weekend I sent him an e-mail about analyzing the parallel execution of a software, using &lt;a href=&quot;http://www.debian.org/&quot; title=&quot;Debian&quot;&gt;Debian&lt;/a&gt;. He sent me a reply with some interesting links and a brief introduction about the topic. It&amp;#8217;s starred at my inbox, while I look for some spare time to read his links and, certainly, learn something useful and interesting for any nerd.&lt;/p&gt;
+
+&lt;p&gt;Since that class, back in 2005, 2006, I&amp;#8217;ve been involved in several Open Source projects, became an &lt;a href=&quot;http://www.apache.org&quot; title=&quot;Apache Software Foundation&quot;&gt;Apache&lt;/a&gt; Committer few days ago (I will write about this later) and I have created a company (&lt;a href=&quot;http://www.tupilabs.com&quot; title=&quot;TupiLabs&quot;&gt;TupiLabs&lt;/a&gt;) specialized in Open Source.&lt;/p&gt;
+
+&lt;p&gt;Thank you for lecturing me Brito, and thank you for not limiting your classes to the class planning. I believe that&amp;#8217;s the best quality of a professor.&lt;/p&gt;
+
+&lt;p&gt;I wish all the success to you in your projects, and health to you and your family.&lt;/p&gt;
+</description>
+</item>
+</channel>
+</rss>
