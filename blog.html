@@ -115,6 +115,63 @@
                                         <p>Posts in category &#8216;blog&#8217;</p>
 
 <p><div class="post type-post status-publish format-standard hentry">
+    <h2>Strings transliteration in Java with Apache Commons Lang</h2>
+    <small>Bruno P. Kinoshita</small> @
+    <small>August 9, 2014&nbsp;12:49:33</small>
+    <div class="entry">
+       <a href="https://twitter.com/share" class="twitter-share-button" data-url="http://www.kinoshita.eti.br/2014/08/09/strings-transliteration-in-java-with-apache-commons-lang.html" data-text="Strings transliteration in Java with Apache Commons Lang" data-via="kinow" data-hashtags="opensource">Tweet</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script></p>
+
+<pre><code>   &lt;p&gt;&lt;a href="http://rosalind.info"&gt;Rosalind&lt;/a&gt; is a website with a curated set of exercices for bioinformatics, organized hierarchily. 
+</code></pre>
+
+<p>In some of these examples you are required to replace characters (nucleotides) by other characters. It is a rather common 
+task for developers, like when you need to replace special characters in user&#8217;s names.</p></p>
+
+<p>There are different ways of describing it, such as translate, replace, or <strong><a href="http://en.wikipedia.org/wiki/Transliteration">transliterate</a></strong>. The latter being my favorite definition. </p>
+
+<p>In Python I know that there are several different ways of transliterating strings 
+&#91;<a href="https://pypi.python.org/pypi/transliterate">1</a>&#93;&#91;<a href="http://blog.lebowtech.com/blog/programming/python/transliterate-with-python.html">2</a>&#93;. But in Java I always ended up using a Map or a Enum and writing my own method in some <em>Util</em> class for that.</p>
+
+<p>Turns out that <a href="http://commons.apache.org">Apache Commons Lang</a>, which I use in most of my projects, 
+provided this feature. What means that I will be able to reduce the length of my code, what also means 
+less code to be tested (and one less place to look for bugs).</p>
+
+<pre class="java" style="font-family:monospace;"><a href="http://www.google.com/search?hl=en&amp;q=allinurl%3Adocs.oracle.com+javase+docs+api+string"><span style="color: #003399;">String</span></a> s <span style="color: #339933;">=</span> StringUtils.<span style="color: #006633;">replaceChars</span><span style="color: #009900;">&#40;</span><span style="color: #0000ff;">&quot;ATGCATGC&quot;</span>, <span style="color: #0000ff;">&quot;GTCA&quot;</span>, <span style="color: #0000ff;">&quot;CAGT&quot;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span> <span style="color: #666666; font-style: italic;">// &quot;TACGTACG&quot;</span>
+<a href="http://www.google.com/search?hl=en&amp;q=allinurl%3Adocs.oracle.com+javase+docs+api+system"><span style="color: #003399;">System</span></a>.<span style="color: #006633;">out</span>.<span style="color: #006633;">println</span><span style="color: #009900;">&#40;</span>s<span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span></pre>
+
+<p>What the code above does, is replace G by C, T by A, C by G and A by T. This process is part of finding the 
+<a href="http://www.bioinformatics.org/sms/rev_comp.html">DNA reverse complement</a>. But you can also use this for replacing 
+special characters, spaces by _, and so it goes.</p>
+
+<p>Happy hacking!</p>
+
+<pre><code>       &lt;/div&gt;
+&lt;p class="postmetadata"&gt;
+            &lt;small&gt;tags          [&amp;nbsp;&lt;a
+        href="/tag/java.html"
+        rel="tag"&gt;java&lt;/a&gt;&amp;nbsp;]&amp;nbsp;
+             [&amp;nbsp;&lt;a
+        href="/tag/apache-commons-lang.html"
+        rel="tag"&gt;apache-commons-lang&lt;/a&gt;&amp;nbsp;]&amp;nbsp;
+             [&amp;nbsp;&lt;a
+        href="/tag/bioinformatics.html"
+        rel="tag"&gt;bioinformatics&lt;/a&gt;&amp;nbsp;]&amp;nbsp;
+             [&amp;nbsp;&lt;a
+        href="/tag/rosalind.html"
+        rel="tag"&gt;rosalind&lt;/a&gt;&amp;nbsp;]&amp;nbsp;
+            &lt;/small&gt;
+                    &lt;br/&gt;
+    &lt;small&gt;posted in 
+    [&amp;nbsp;&lt;a
+        href="/blog.html"
+        title="View all posts in blog"
+        rel="category tag"&gt;blog&lt;/a&gt;&amp;nbsp;]&amp;nbsp;
+    category &lt;/small&gt;
+        &lt;/p&gt;
+</code></pre>
+
+<p></div><div class="post type-post status-publish format-standard hentry">
     <h2>Treemapping Jenkins Extension Points with R</h2>
     <small>Bruno P. Kinoshita</small> @
     <small>May 19, 2014&nbsp;00:51:33</small>
@@ -434,89 +491,6 @@ http://www.itworld.com/it-managementstrategy/227477/has-open-source-outgrown-apa
              [&amp;nbsp;&lt;a
         href="/tag/opensource.html"
         rel="tag"&gt;opensource&lt;/a&gt;&amp;nbsp;]&amp;nbsp;
-            &lt;/small&gt;
-                    &lt;br/&gt;
-    &lt;small&gt;posted in 
-    [&amp;nbsp;&lt;a
-        href="/blog.html"
-        title="View all posts in blog"
-        rel="category tag"&gt;blog&lt;/a&gt;&amp;nbsp;]&amp;nbsp;
-    category &lt;/small&gt;
-        &lt;/p&gt;
-</code></pre>
-
-<p></div><div class="post type-post status-publish format-standard hentry">
-    <h2>Too many SQL variables exception in Graphite with SQLite3</h2>
-    <small>Bruno P. Kinoshita</small> @
-    <small>July 4, 2013&nbsp;13:54:53</small>
-    <div class="entry">
-       <a href="https://twitter.com/share" class="twitter-share-button" data-url="http://www.kinoshita.eti.br/2013/07/04/too_many_sql_variables_in_graphite_with_sqlite3.html" data-text="Too many SQL variables exception in Graphite with SQLite3" data-via="kinow" data-hashtags="opensource">Tweet</a>
-<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script></p>
-
-<pre><code>   &lt;p&gt;Having run &lt;a href="http://graphite.wikidot.com/"&gt;Graphite&lt;/a&gt; for a while, today I found a rather annoying issue. We were using 
-</code></pre>
-
-<p><a href="https://code.launchpad.net/~lucio.torre/graphite/add-events/+merge/69142">events</a>, and everything was working perfectly fine so far. But for the 24 last hours, 
-the graph was blank. </p></p>
-
-<p>Actually, in the dashboard, the graph was <em>missing</em>, being displayed as a gray box. 
-Enabling the web inspector in Google Chrome I got the graph URL. Opening the link in 
-a new tab gave me the exception message: <strong>too many SQL variables</strong> (<sup>1</sup>).</p>
-
-<p>After some research, I found out this was a bug in SQLite. After trying to hack the code, 
-and being concerned about using a patched version of Graphite and having to update it 
-later, I decided to switch database. </p>
-
-<p>But to avoid losing the graphs, users and other settings, including the events, I 
-migrated the SQLite database to a MySQL server. This MySQL server was already installed in 
-the server machine, since this machine hosted a <a href="http://www.zabbix.com/">Zabbix</a> server too.</p>
-
-<p>Here are the steps required to migrate your database from SQLite to MySQL (<sup>2</sup>).</p>
-
-<ul>
-<li>Download <strong>sqlite3_mysql</strong> python script from <a href="http://www.redmine.org/boards/2/topics/12793">http://www.redmine.org/boards/2/topics/12793</a></li>
-<li>Stop Apache/Nginx</li>
-<li>mysql -u user -p -e &#8220;create database redmine graphite set utf8;&#8221; </li>
-<li>sqlite3 graphite.db .dump | sqlite3-to-mysql.py | mysql -uroot -pyourpass graphite</li>
-<li>Start Apache again</li>
-</ul>
-
-<p>After tail&#8217;ing the Graphite webapp log file, </p>
-
-<pre class="shell" style="font-family:monospace;">tail f- storage/log/webapp/error.log</pre>
-
-<p>I noticed the Python MySQLdb wasn&#8217;t installed.</p>
-
-<pre class="python" style="font-family:monospace;">ImproperlyConfigured: Error loading MySQLdb module: No module named MySQLdb</pre>
-
-<p>My server was an Ubuntu 13.04, so I installed the module simply with the following 
-command.</p>
-
-<pre class="shell" style="font-family:monospace;">apt-get install python-mysqldb</pre>
-
-<p>Hope that helps!</p>
-
-<p><small><sup>1</sup> You may have to enable *DEBUG* in your Django settings for seeing the exception in your browser</small></p>
-
-<p><p><small><sup>2</sup> Zabbix needed some minor tweaks in order to use <a href="https://mariadb.org/">MariaDB</a>, but probably you can give it a try too</small></p></p>
-
-<pre><code>       &lt;/div&gt;
-&lt;p class="postmetadata"&gt;
-            &lt;small&gt;tags          [&amp;nbsp;&lt;a
-        href="/tag/graphite.html"
-        rel="tag"&gt;graphite&lt;/a&gt;&amp;nbsp;]&amp;nbsp;
-             [&amp;nbsp;&lt;a
-        href="/tag/monitoring.html"
-        rel="tag"&gt;monitoring&lt;/a&gt;&amp;nbsp;]&amp;nbsp;
-             [&amp;nbsp;&lt;a
-        href="/tag/python.html"
-        rel="tag"&gt;python&lt;/a&gt;&amp;nbsp;]&amp;nbsp;
-             [&amp;nbsp;&lt;a
-        href="/tag/mysql.html"
-        rel="tag"&gt;mysql&lt;/a&gt;&amp;nbsp;]&amp;nbsp;
-             [&amp;nbsp;&lt;a
-        href="/tag/troubleshooting.html"
-        rel="tag"&gt;troubleshooting&lt;/a&gt;&amp;nbsp;]&amp;nbsp;
             &lt;/small&gt;
                     &lt;br/&gt;
     &lt;small&gt;posted in 
