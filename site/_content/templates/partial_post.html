@@ -1,16 +1,13 @@
 {% import "macros_tweet.html" as tweet %}
+{% block content %}
 <div class="post type-post status-publish format-standard hentry">
     <h2>{{ post.title }}</h2>
-    <small>{{ site.author }}</small> @
-    <small>{{ post.date }}&nbsp;{{ post.time }}</small>
-    <div class="entry">
-       {{ tweet.button(site.base_url, post.url, post.url, post.title) }}
-       {{ post.content|raw }}
-       
-       {% if post.has_more %}
-       <p>( <a href="{{post.url}}" >Read more ...</a> )</p>
-       {% endif %}
-    </div>
+    <p><small>{{ post.author }}</small> @ <small>{{ post.date }}&nbsp;{{ post.time }}</small></p>
+    <div>{{ tweet.button(site.base_url, post.url, post.url, post.title) }}</div>
+    {{ post.content|raw }}<!-- html -->
+    {% if post.has_more %}
+    <p>( <a href="{{post.url}}" >Read more ...</a> )</p>
+    {% endif %}
     <p class="postmetadata">
         {% if post.tags %}
         <small>tags {% for tag in post.tags %}
@@ -31,3 +28,4 @@
         {% endif %}
     </p>
 </div>
+{% endblock %}
