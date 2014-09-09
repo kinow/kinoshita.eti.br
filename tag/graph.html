@@ -200,118 +200,44 @@ gremlin></code></p>
 
 <h2>SPARQL</h2>
 
-<p>In order to use SPARQL we have to create the ontology for our example. I used 
-<a href="http://protege.stanford.edu/">Stanford Protégé</a>, but I still don&#8217;t know how to add 
-a property to a relationship, so I didn&#8217;t fill the role property for the actors.</p>
+<p>Let&#8217;s load our example (thanks to <a href="https://twitter.com/kendall">Kendall G. Clark</a>). I used 
+<a href="http://jena.apache.org/documentation/serving_data/">Fuseki</a> to run these queries.</p>
 
-<pre class="xml" style="font-family:monospace;"><span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;?xml</span> <span style="color: #000066;">version</span>=<span style="color: #ff0000;">&quot;1.0&quot;</span><span style="color: #000000; font-weight: bold;">?&gt;</span></span>
+<pre class="xml" style="font-family:monospace;">@prefix :          <span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;http:</span>//example.org/matrix<span style="color: #000000; font-weight: bold;">/&gt;</span></span> .
 &nbsp;
-<span style="color: #00bbdd;">&lt;!DOCTYPE rdf:RDF [</span>
-<span style="color: #00bbdd;">    &lt;!ENTITY test1 &quot;http://example.org/test1#&quot; &gt;</span>
-    <span style="color: #009900;">&lt;!ENTITY owl <span style="color: #ff0000;">&quot;http://www.w3.org/2002/07/owl#&quot;</span> <span style="color: #000000; font-weight: bold;">&gt;</span></span>
-    <span style="color: #009900;">&lt;!ENTITY xsd <span style="color: #ff0000;">&quot;http://www.w3.org/2001/XMLSchema#&quot;</span> <span style="color: #000000; font-weight: bold;">&gt;</span></span>
-    <span style="color: #009900;">&lt;!ENTITY rdfs <span style="color: #ff0000;">&quot;http://www.w3.org/2000/01/rdf-schema#&quot;</span> <span style="color: #000000; font-weight: bold;">&gt;</span></span>
-    <span style="color: #009900;">&lt;!ENTITY rdf <span style="color: #ff0000;">&quot;http://www.w3.org/1999/02/22-rdf-syntax-ns#&quot;</span> <span style="color: #000000; font-weight: bold;">&gt;</span></span>
-]&gt;
+ :m1 a :Movie; :title &quot;The Matrix&quot;; :year &quot;1999-03-31&quot;.
+ :m2 a :Movie; :title &quot;The Matrix Reloaded&quot;; :year &quot;2003-05-07&quot;.
+ :m3 a :Movie; :title &quot;The Matrix Revolutions&quot;; :year &quot;2003-10-27&quot;.
 &nbsp;
-<span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;rdf:RDF</span> <span style="color: #000066;">xmlns</span>=<span style="color: #ff0000;">&quot;http://example.org/test1#&quot;</span></span>
-<span style="color: #009900;">     <span style="color: #000066;">xml:base</span>=<span style="color: #ff0000;">&quot;http://example.org/test1&quot;</span></span>
-<span style="color: #009900;">     <span style="color: #000066;">xmlns:rdf</span>=<span style="color: #ff0000;">&quot;http://www.w3.org/1999/02/22-rdf-syntax-ns#&quot;</span></span>
-<span style="color: #009900;">     <span style="color: #000066;">xmlns:owl</span>=<span style="color: #ff0000;">&quot;http://www.w3.org/2002/07/owl#&quot;</span></span>
-<span style="color: #009900;">     <span style="color: #000066;">xmlns:xsd</span>=<span style="color: #ff0000;">&quot;http://www.w3.org/2001/XMLSchema#&quot;</span></span>
-<span style="color: #009900;">     <span style="color: #000066;">xmlns:rdfs</span>=<span style="color: #ff0000;">&quot;http://www.w3.org/2000/01/rdf-schema#&quot;</span></span>
-<span style="color: #009900;">     <span style="color: #000066;">xmlns:test1</span>=<span style="color: #ff0000;">&quot;http://example.org/test1#&quot;</span><span style="color: #000000; font-weight: bold;">&gt;</span></span>
-    <span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;owl:Ontology</span> <span style="color: #000066;">rdf:about</span>=<span style="color: #ff0000;">&quot;http://example.org/test1&quot;</span><span style="color: #000000; font-weight: bold;">/&gt;</span></span>
+ :neo a :Actor; :name &quot;Keanu Reeves&quot;.
+ :morpheus a :Actor; :name &quot;Laurence Fishburne&quot;.
+ :trinity a :Actor; :name &quot;Carrie-Anne Moss&quot;.
 &nbsp;
-    <span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;owl:ObjectProperty</span> <span style="color: #000066;">rdf:about</span>=<span style="color: #ff0000;">&quot;&amp;test1;acts&quot;</span><span style="color: #000000; font-weight: bold;">&gt;</span></span>
-        <span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;rdfs:domain</span> <span style="color: #000066;">rdf:resource</span>=<span style="color: #ff0000;">&quot;&amp;test1;Actor&quot;</span><span style="color: #000000; font-weight: bold;">/&gt;</span></span>
-        <span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;rdfs:range</span> <span style="color: #000066;">rdf:resource</span>=<span style="color: #ff0000;">&quot;&amp;test1;Movie&quot;</span><span style="color: #000000; font-weight: bold;">/&gt;</span></span>
-    <span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;/owl:ObjectProperty<span style="color: #000000; font-weight: bold;">&gt;</span></span></span>
-&nbsp;
-    <span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;owl:DatatypeProperty</span> <span style="color: #000066;">rdf:about</span>=<span style="color: #ff0000;">&quot;&amp;test1;id&quot;</span><span style="color: #000000; font-weight: bold;">&gt;</span></span>
-        <span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;rdfs:domain</span> <span style="color: #000066;">rdf:resource</span>=<span style="color: #ff0000;">&quot;&amp;test1;Movie&quot;</span><span style="color: #000000; font-weight: bold;">/&gt;</span></span>
-        <span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;rdfs:range</span> <span style="color: #000066;">rdf:resource</span>=<span style="color: #ff0000;">&quot;&amp;xsd;nonNegativeInteger&quot;</span><span style="color: #000000; font-weight: bold;">/&gt;</span></span>
-    <span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;/owl:DatatypeProperty<span style="color: #000000; font-weight: bold;">&gt;</span></span></span>
-&nbsp;
-    <span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;owl:DatatypeProperty</span> <span style="color: #000066;">rdf:about</span>=<span style="color: #ff0000;">&quot;&amp;test1;name&quot;</span><span style="color: #000000; font-weight: bold;">&gt;</span></span>
-        <span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;rdfs:domain</span> <span style="color: #000066;">rdf:resource</span>=<span style="color: #ff0000;">&quot;&amp;test1;Actor&quot;</span><span style="color: #000000; font-weight: bold;">/&gt;</span></span>
-        <span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;rdfs:range</span> <span style="color: #000066;">rdf:resource</span>=<span style="color: #ff0000;">&quot;&amp;xsd;string&quot;</span><span style="color: #000000; font-weight: bold;">/&gt;</span></span>
-    <span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;/owl:DatatypeProperty<span style="color: #000000; font-weight: bold;">&gt;</span></span></span>
-&nbsp;
-    <span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;owl:DatatypeProperty</span> <span style="color: #000066;">rdf:about</span>=<span style="color: #ff0000;">&quot;&amp;test1;role&quot;</span><span style="color: #000000; font-weight: bold;">&gt;</span></span>
-        <span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;rdfs:domain<span style="color: #000000; font-weight: bold;">&gt;</span></span></span>
-            <span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;owl:Restriction<span style="color: #000000; font-weight: bold;">&gt;</span></span></span>
-                <span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;owl:onProperty</span> <span style="color: #000066;">rdf:resource</span>=<span style="color: #ff0000;">&quot;&amp;test1;acts&quot;</span><span style="color: #000000; font-weight: bold;">/&gt;</span></span>
-                <span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;owl:someValuesFrom</span> <span style="color: #000066;">rdf:resource</span>=<span style="color: #ff0000;">&quot;&amp;test1;Movie&quot;</span><span style="color: #000000; font-weight: bold;">/&gt;</span></span>
-            <span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;/owl:Restriction<span style="color: #000000; font-weight: bold;">&gt;</span></span></span>
-        <span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;/rdfs:domain<span style="color: #000000; font-weight: bold;">&gt;</span></span></span>
-    <span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;/owl:DatatypeProperty<span style="color: #000000; font-weight: bold;">&gt;</span></span></span>
-&nbsp;
-    <span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;owl:DatatypeProperty</span> <span style="color: #000066;">rdf:about</span>=<span style="color: #ff0000;">&quot;&amp;test1;title&quot;</span><span style="color: #000000; font-weight: bold;">&gt;</span></span>
-        <span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;rdfs:domain</span> <span style="color: #000066;">rdf:resource</span>=<span style="color: #ff0000;">&quot;&amp;test1;Movie&quot;</span><span style="color: #000000; font-weight: bold;">/&gt;</span></span>
-        <span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;rdfs:range</span> <span style="color: #000066;">rdf:resource</span>=<span style="color: #ff0000;">&quot;&amp;xsd;string&quot;</span><span style="color: #000000; font-weight: bold;">/&gt;</span></span>
-    <span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;/owl:DatatypeProperty<span style="color: #000000; font-weight: bold;">&gt;</span></span></span>
-&nbsp;
-    <span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;owl:DatatypeProperty</span> <span style="color: #000066;">rdf:about</span>=<span style="color: #ff0000;">&quot;&amp;test1;year&quot;</span><span style="color: #000000; font-weight: bold;">&gt;</span></span>
-        <span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;rdfs:domain</span> <span style="color: #000066;">rdf:resource</span>=<span style="color: #ff0000;">&quot;&amp;test1;Movie&quot;</span><span style="color: #000000; font-weight: bold;">/&gt;</span></span>
-        <span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;rdfs:range</span> <span style="color: #000066;">rdf:resource</span>=<span style="color: #ff0000;">&quot;&amp;xsd;dateTime&quot;</span><span style="color: #000000; font-weight: bold;">/&gt;</span></span>
-    <span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;/owl:DatatypeProperty<span style="color: #000000; font-weight: bold;">&gt;</span></span></span>
-&nbsp;
-    <span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;owl:Class</span> <span style="color: #000066;">rdf:about</span>=<span style="color: #ff0000;">&quot;&amp;test1;Actor&quot;</span><span style="color: #000000; font-weight: bold;">&gt;</span></span>
-        <span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;owl:disjointWith</span> <span style="color: #000066;">rdf:resource</span>=<span style="color: #ff0000;">&quot;&amp;test1;Movie&quot;</span><span style="color: #000000; font-weight: bold;">/&gt;</span></span>
-    <span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;/owl:Class<span style="color: #000000; font-weight: bold;">&gt;</span></span></span>
-&nbsp;
-    <span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;owl:Class</span> <span style="color: #000066;">rdf:about</span>=<span style="color: #ff0000;">&quot;&amp;test1;Movie&quot;</span><span style="color: #000000; font-weight: bold;">/&gt;</span></span>
-&nbsp;
-    <span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;owl:NamedIndividual</span> <span style="color: #000066;">rdf:about</span>=<span style="color: #ff0000;">&quot;&amp;test1;matrix1&quot;</span><span style="color: #000000; font-weight: bold;">&gt;</span></span>
-        <span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;rdf:type</span> <span style="color: #000066;">rdf:resource</span>=<span style="color: #ff0000;">&quot;&amp;test1;Movie&quot;</span><span style="color: #000000; font-weight: bold;">/&gt;</span></span>
-        <span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;year</span> <span style="color: #000066;">rdf:datatype</span>=<span style="color: #ff0000;">&quot;&amp;xsd;dateTime&quot;</span><span style="color: #000000; font-weight: bold;">&gt;</span></span>1999-03-31<span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;/year<span style="color: #000000; font-weight: bold;">&gt;</span></span></span>
-        <span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;id</span> <span style="color: #000066;">rdf:datatype</span>=<span style="color: #ff0000;">&quot;&amp;xsd;nonNegativeInteger&quot;</span><span style="color: #000000; font-weight: bold;">&gt;</span></span>603<span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;/id<span style="color: #000000; font-weight: bold;">&gt;</span></span></span>
-        <span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;title</span> <span style="color: #000066;">rdf:datatype</span>=<span style="color: #ff0000;">&quot;&amp;xsd;string&quot;</span><span style="color: #000000; font-weight: bold;">&gt;</span></span>The Matrix<span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;/title<span style="color: #000000; font-weight: bold;">&gt;</span></span></span>
-    <span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;/owl:NamedIndividual<span style="color: #000000; font-weight: bold;">&gt;</span></span></span>
-&nbsp;
-    <span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;owl:NamedIndividual</span> <span style="color: #000066;">rdf:about</span>=<span style="color: #ff0000;">&quot;&amp;test1;matrix2&quot;</span><span style="color: #000000; font-weight: bold;">&gt;</span></span>
-        <span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;rdf:type</span> <span style="color: #000066;">rdf:resource</span>=<span style="color: #ff0000;">&quot;&amp;test1;Movie&quot;</span><span style="color: #000000; font-weight: bold;">/&gt;</span></span>
-        <span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;year</span> <span style="color: #000066;">rdf:datatype</span>=<span style="color: #ff0000;">&quot;&amp;xsd;dateTime&quot;</span><span style="color: #000000; font-weight: bold;">&gt;</span></span>2003-05-07<span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;/year<span style="color: #000000; font-weight: bold;">&gt;</span></span></span>
-        <span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;id</span> <span style="color: #000066;">rdf:datatype</span>=<span style="color: #ff0000;">&quot;&amp;xsd;nonNegativeInteger&quot;</span><span style="color: #000000; font-weight: bold;">&gt;</span></span>604<span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;/id<span style="color: #000000; font-weight: bold;">&gt;</span></span></span>
-        <span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;title</span> <span style="color: #000066;">rdf:datatype</span>=<span style="color: #ff0000;">&quot;&amp;xsd;string&quot;</span><span style="color: #000000; font-weight: bold;">&gt;</span></span>The Matrix Reloaded<span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;/title<span style="color: #000000; font-weight: bold;">&gt;</span></span></span>
-    <span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;/owl:NamedIndividual<span style="color: #000000; font-weight: bold;">&gt;</span></span></span>
-&nbsp;
-    <span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;owl:NamedIndividual</span> <span style="color: #000066;">rdf:about</span>=<span style="color: #ff0000;">&quot;&amp;test1;matrix3&quot;</span><span style="color: #000000; font-weight: bold;">&gt;</span></span>
-        <span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;rdf:type</span> <span style="color: #000066;">rdf:resource</span>=<span style="color: #ff0000;">&quot;&amp;test1;Movie&quot;</span><span style="color: #000000; font-weight: bold;">/&gt;</span></span>
-        <span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;year</span> <span style="color: #000066;">rdf:datatype</span>=<span style="color: #ff0000;">&quot;&amp;xsd;dateTime&quot;</span><span style="color: #000000; font-weight: bold;">&gt;</span></span>2003-10-27<span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;/year<span style="color: #000000; font-weight: bold;">&gt;</span></span></span>
-        <span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;id</span> <span style="color: #000066;">rdf:datatype</span>=<span style="color: #ff0000;">&quot;&amp;xsd;nonNegativeInteger&quot;</span><span style="color: #000000; font-weight: bold;">&gt;</span></span>605<span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;/id<span style="color: #000000; font-weight: bold;">&gt;</span></span></span>
-        <span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;title</span> <span style="color: #000066;">rdf:datatype</span>=<span style="color: #ff0000;">&quot;&amp;xsd;string&quot;</span><span style="color: #000000; font-weight: bold;">&gt;</span></span>The Matrix Revolutions<span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;/title<span style="color: #000000; font-weight: bold;">&gt;</span></span></span>
-    <span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;/owl:NamedIndividual<span style="color: #000000; font-weight: bold;">&gt;</span></span></span>
-&nbsp;
-    <span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;owl:NamedIndividual</span> <span style="color: #000066;">rdf:about</span>=<span style="color: #ff0000;">&quot;&amp;test1;morpheus&quot;</span><span style="color: #000000; font-weight: bold;">&gt;</span></span>
-        <span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;rdf:type</span> <span style="color: #000066;">rdf:resource</span>=<span style="color: #ff0000;">&quot;&amp;test1;Actor&quot;</span><span style="color: #000000; font-weight: bold;">/&gt;</span></span>
-        <span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;name</span> <span style="color: #000066;">rdf:datatype</span>=<span style="color: #ff0000;">&quot;&amp;xsd;string&quot;</span><span style="color: #000000; font-weight: bold;">&gt;</span></span>Laurence Fishburne<span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;/name<span style="color: #000000; font-weight: bold;">&gt;</span></span></span>
-    <span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;/owl:NamedIndividual<span style="color: #000000; font-weight: bold;">&gt;</span></span></span>
-&nbsp;
-    <span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;owl:NamedIndividual</span> <span style="color: #000066;">rdf:about</span>=<span style="color: #ff0000;">&quot;&amp;test1;neo&quot;</span><span style="color: #000000; font-weight: bold;">&gt;</span></span>
-        <span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;rdf:type</span> <span style="color: #000066;">rdf:resource</span>=<span style="color: #ff0000;">&quot;&amp;test1;Actor&quot;</span><span style="color: #000000; font-weight: bold;">/&gt;</span></span>
-        <span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;name</span> <span style="color: #000066;">rdf:datatype</span>=<span style="color: #ff0000;">&quot;&amp;xsd;string&quot;</span><span style="color: #000000; font-weight: bold;">&gt;</span></span>Keanu Reeves<span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;/name<span style="color: #000000; font-weight: bold;">&gt;</span></span></span>
-    <span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;/owl:NamedIndividual<span style="color: #000000; font-weight: bold;">&gt;</span></span></span>
-&nbsp;
-    <span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;owl:NamedIndividual</span> <span style="color: #000066;">rdf:about</span>=<span style="color: #ff0000;">&quot;&amp;test1;trinity&quot;</span><span style="color: #000000; font-weight: bold;">&gt;</span></span>
-        <span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;rdf:type</span> <span style="color: #000066;">rdf:resource</span>=<span style="color: #ff0000;">&quot;&amp;test1;Actor&quot;</span><span style="color: #000000; font-weight: bold;">/&gt;</span></span>
-    <span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;/owl:NamedIndividual<span style="color: #000000; font-weight: bold;">&gt;</span></span></span>
-<span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;/rdf:RDF<span style="color: #000000; font-weight: bold;">&gt;</span></span></span></pre>
+ :neo :hasRole [:as &quot;Neo&quot;; :in :m1].
+ :neo :hasRole [:as &quot;Neo&quot;; :in :m2].
+ :neo :hasRole [:as &quot;Neo&quot;; :in :m2].
+ :morpheus :hasRole [:as &quot;Morpheus&quot;; :in :m1].
+ :morpheus :hasRole [:as &quot;Morpheus&quot;; :in :m2].
+ :morpheus :hasRole [:as &quot;Morpheus&quot;; :in :m2].
+ :trinity :hasRole [:as &quot;Trinity&quot;; :in :m1].
+ :trinity :hasRole [:as &quot;Trinity&quot;; :in :m2].
+ :trinity :hasRole [:as &quot;Trinity&quot;; :in :m2].</pre>
 
 <p>And finally the SPARQL query.</p>
 
-<pre class="sql" style="font-family:monospace;">PREFIX rdf: <span style="color: #66cc66;">&lt;</span>http:<span style="color: #66cc66;">//</span>www<span style="color: #66cc66;">.</span>w3<span style="color: #66cc66;">.</span>org<span style="color: #66cc66;">/</span><span style="color: #cc66cc;">1999</span><span style="color: #66cc66;">/</span>02<span style="color: #66cc66;">/</span><span style="color: #cc66cc;">22</span><span style="color: #66cc66;">-</span>rdf<span style="color: #66cc66;">-</span>syntax<span style="color: #66cc66;">-</span>ns#<span style="color: #66cc66;">&gt;</span>
-PREFIX xsd: <span style="color: #66cc66;">&lt;</span>http:<span style="color: #66cc66;">//</span>www<span style="color: #66cc66;">.</span>w3<span style="color: #66cc66;">.</span>org<span style="color: #66cc66;">/</span><span style="color: #cc66cc;">2001</span><span style="color: #66cc66;">/</span>XMLSchema#<span style="color: #66cc66;">&gt;</span>
-PREFIX test: <span style="color: #66cc66;">&lt;</span>http:<span style="color: #66cc66;">//</span>example<span style="color: #66cc66;">.</span>org<span style="color: #66cc66;">/</span>test1#<span style="color: #66cc66;">&gt;</span>
-<span style="color: #993333; font-weight: bold;">SELECT</span> ?name
-    <span style="color: #993333; font-weight: bold;">WHERE</span> <span style="color: #66cc66;">&#123;</span> ?a rdf:<span style="color: #993333; font-weight: bold;">TYPE</span> test:Actor <span style="color: #66cc66;">.</span>
-            ?a test:name ?name<span style="color: #66cc66;">.</span>
-            <span style="color: #993333; font-weight: bold;">FILTER</span><span style="color: #66cc66;">&#40;</span>?name  <span style="color: #66cc66;">=</span> <span style="color: #ff0000;">&quot;Keanu Reeves&quot;</span><span style="color: #66cc66;">&#41;</span> <span style="color: #66cc66;">&#125;</span></pre>
+<pre class="sql" style="font-family:monospace;"><span style="color: #993333; font-weight: bold;">SELECT</span> ?a <span style="color: #993333; font-weight: bold;">WHERE</span> <span style="color: #66cc66;">&#123;</span>
+   ?a a <span style="color: #66cc66;">&lt;</span>http:<span style="color: #66cc66;">//</span>example<span style="color: #66cc66;">.</span>org<span style="color: #66cc66;">/</span>matrix<span style="color: #66cc66;">/</span>Actor<span style="color: #66cc66;">&gt;</span> <span style="color: #66cc66;">.</span>
+   ?a <span style="color: #66cc66;">&lt;</span>http:<span style="color: #66cc66;">//</span>example<span style="color: #66cc66;">.</span>org<span style="color: #66cc66;">/</span>matrix<span style="color: #66cc66;">/</span>name<span style="color: #66cc66;">&gt;</span> ?name <span style="color: #66cc66;">.</span>
+   <span style="color: #993333; font-weight: bold;">FILTER</span><span style="color: #66cc66;">&#40;</span>?name  <span style="color: #66cc66;">=</span> <span style="color: #ff0000;">&quot;Keanu Reeves&quot;</span><span style="color: #66cc66;">&#41;</span>
+<span style="color: #66cc66;">&#125;</span></pre>
 
 <p>Returning the Keanu Reeves actor instance.</p>
 
-<p><code>"Keanu Reeves"^^<a href="http://www.w3.org/2001/XMLSchema#string">http://www.w3.org/2001/XMLSchema#string</a></code></p>
+<pre>-----------------------------------
+| a                               |
+===================================
+| &lt;http://example.org/matrix/neo&gt; |
+-----------------------------------</pre>
 
 <p>SPARQL supports inference (or I must say that OWL, RDFS and the reasoners do), 
 but it is easier to define the depth of a search in the graph using neo4j. As for 
@@ -323,6 +249,11 @@ graph languages. Make sure you ponder the pros and cons of each server/language,
 make the best decision for your project. Take a look at <a href="http://en.wikipedia.org/wiki/Graph_database#APIs_and_Graph_Query.2FProgramming_Languages">other graph query languages</a> too.</p>
 
 <p>Happy hacking!</p>
+
+<hr />
+
+<p>This post has been updated as suggested by <a href="https://twitter.com/kendall">@kendall</a> (Thank you!).
+You can check the diff at <a href="https://github.com/kinow/kinoshita.eti.br/commits/master/site/_content/posts/2014-09-09_cypher-gremlin-and-sparql-graph-dialects.html">GitHub</a></p>
 <!-- html -->
         <p class="postmetadata">
                 <small>tags          [&nbsp;<a
