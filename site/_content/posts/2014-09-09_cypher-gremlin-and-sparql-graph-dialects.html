@@ -100,122 +100,48 @@ Quite similar to neo4j.
 
 ## SPARQL
 
-In order to use SPARQL we have to create the ontology for our example. I used 
-[Stanford Protégé](http://protege.stanford.edu/), but I still don't know how to add 
-a property to a relationship, so I didn't fill the role property for the actors.
+Let's load our example (thanks to [Kendall G. Clark](https://twitter.com/kendall)). I used 
+[Fuseki](http://jena.apache.org/documentation/serving_data/) to run these queries.
 
 {% geshi 'xml' %}
-<?xml version="1.0"?>
+@prefix :          <http://example.org/matrix/> .
 
-<!DOCTYPE rdf:RDF [
-    <!ENTITY test1 "http://example.org/test1#" >
-    <!ENTITY owl "http://www.w3.org/2002/07/owl#" >
-    <!ENTITY xsd "http://www.w3.org/2001/XMLSchema#" >
-    <!ENTITY rdfs "http://www.w3.org/2000/01/rdf-schema#" >
-    <!ENTITY rdf "http://www.w3.org/1999/02/22-rdf-syntax-ns#" >
-]>
-
-<rdf:RDF xmlns="http://example.org/test1#"
-     xml:base="http://example.org/test1"
-     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-     xmlns:owl="http://www.w3.org/2002/07/owl#"
-     xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
-     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
-     xmlns:test1="http://example.org/test1#">
-    <owl:Ontology rdf:about="http://example.org/test1"/>
-    
-    <owl:ObjectProperty rdf:about="&test1;acts">
-        <rdfs:domain rdf:resource="&test1;Actor"/>
-        <rdfs:range rdf:resource="&test1;Movie"/>
-    </owl:ObjectProperty>
-
-    <owl:DatatypeProperty rdf:about="&test1;id">
-        <rdfs:domain rdf:resource="&test1;Movie"/>
-        <rdfs:range rdf:resource="&xsd;nonNegativeInteger"/>
-    </owl:DatatypeProperty>
-
-    <owl:DatatypeProperty rdf:about="&test1;name">
-        <rdfs:domain rdf:resource="&test1;Actor"/>
-        <rdfs:range rdf:resource="&xsd;string"/>
-    </owl:DatatypeProperty>
-    
-    <owl:DatatypeProperty rdf:about="&test1;role">
-        <rdfs:domain>
-            <owl:Restriction>
-                <owl:onProperty rdf:resource="&test1;acts"/>
-                <owl:someValuesFrom rdf:resource="&test1;Movie"/>
-            </owl:Restriction>
-        </rdfs:domain>
-    </owl:DatatypeProperty>
-    
-    <owl:DatatypeProperty rdf:about="&test1;title">
-        <rdfs:domain rdf:resource="&test1;Movie"/>
-        <rdfs:range rdf:resource="&xsd;string"/>
-    </owl:DatatypeProperty>
-    
-    <owl:DatatypeProperty rdf:about="&test1;year">
-        <rdfs:domain rdf:resource="&test1;Movie"/>
-        <rdfs:range rdf:resource="&xsd;dateTime"/>
-    </owl:DatatypeProperty>
-    
-    <owl:Class rdf:about="&test1;Actor">
-        <owl:disjointWith rdf:resource="&test1;Movie"/>
-    </owl:Class>
-    
-    <owl:Class rdf:about="&test1;Movie"/>
-    
-    <owl:NamedIndividual rdf:about="&test1;matrix1">
-        <rdf:type rdf:resource="&test1;Movie"/>
-        <year rdf:datatype="&xsd;dateTime">1999-03-31</year>
-        <id rdf:datatype="&xsd;nonNegativeInteger">603</id>
-        <title rdf:datatype="&xsd;string">The Matrix</title>
-    </owl:NamedIndividual>
-    
-    <owl:NamedIndividual rdf:about="&test1;matrix2">
-        <rdf:type rdf:resource="&test1;Movie"/>
-        <year rdf:datatype="&xsd;dateTime">2003-05-07</year>
-        <id rdf:datatype="&xsd;nonNegativeInteger">604</id>
-        <title rdf:datatype="&xsd;string">The Matrix Reloaded</title>
-    </owl:NamedIndividual>
-
-    <owl:NamedIndividual rdf:about="&test1;matrix3">
-        <rdf:type rdf:resource="&test1;Movie"/>
-        <year rdf:datatype="&xsd;dateTime">2003-10-27</year>
-        <id rdf:datatype="&xsd;nonNegativeInteger">605</id>
-        <title rdf:datatype="&xsd;string">The Matrix Revolutions</title>
-    </owl:NamedIndividual>
-
-    <owl:NamedIndividual rdf:about="&test1;morpheus">
-        <rdf:type rdf:resource="&test1;Actor"/>
-        <name rdf:datatype="&xsd;string">Laurence Fishburne</name>
-    </owl:NamedIndividual>
-    
-    <owl:NamedIndividual rdf:about="&test1;neo">
-        <rdf:type rdf:resource="&test1;Actor"/>
-        <name rdf:datatype="&xsd;string">Keanu Reeves</name>
-    </owl:NamedIndividual>
-
-    <owl:NamedIndividual rdf:about="&test1;trinity">
-        <rdf:type rdf:resource="&test1;Actor"/>
-    </owl:NamedIndividual>
-</rdf:RDF>
+ :m1 a :Movie; :title "The Matrix"; :year "1999-03-31".
+ :m2 a :Movie; :title "The Matrix Reloaded"; :year "2003-05-07".
+ :m3 a :Movie; :title "The Matrix Revolutions"; :year "2003-10-27".
+ 
+ :neo a :Actor; :name "Keanu Reeves".
+ :morpheus a :Actor; :name "Laurence Fishburne".
+ :trinity a :Actor; :name "Carrie-Anne Moss".
+ 
+ :neo :hasRole [:as "Neo"; :in :m1].
+ :neo :hasRole [:as "Neo"; :in :m2].
+ :neo :hasRole [:as "Neo"; :in :m2].
+ :morpheus :hasRole [:as "Morpheus"; :in :m1].
+ :morpheus :hasRole [:as "Morpheus"; :in :m2].
+ :morpheus :hasRole [:as "Morpheus"; :in :m2].
+ :trinity :hasRole [:as "Trinity"; :in :m1].
+ :trinity :hasRole [:as "Trinity"; :in :m2].
+ :trinity :hasRole [:as "Trinity"; :in :m2].
 {% endgeshi %}
 
 And finally the SPARQL query.
 
 {% geshi 'sql' %}
-PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
-PREFIX test: <http://example.org/test1#>
-SELECT ?name
-	WHERE { ?a rdf:type test:Actor .
-            ?a test:name ?name.
-            FILTER(?name  = "Keanu Reeves") }
+SELECT ?a WHERE {
+   ?a a <http://example.org/matrix/Actor> .
+   ?a <http://example.org/matrix/name> ?name .
+   FILTER(?name  = "Keanu Reeves")
+}
 {% endgeshi %}
 
 Returning the Keanu Reeves actor instance.
 
-<code>"Keanu Reeves"^^<http://www.w3.org/2001/XMLSchema#string></code>
+<pre>-----------------------------------
+| a                               |
+===================================
+| &lt;http://example.org/matrix/neo&gt; |
+-----------------------------------</pre>
 
 SPARQL supports inference (or I must say that OWL, RDFS and the reasoners do), 
 but it is easier to define the depth of a search in the graph using neo4j. As for 
