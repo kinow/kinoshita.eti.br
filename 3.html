@@ -111,6 +111,35 @@
                                                         <div
                         class="post type-post status-publish format-standard hentry">
                         <h2>
+                            <a href="/2013/01/17/git-clone-fails-with-fatal-unable-to-find-remote-helper-for-https.html" title="Permanent link">git clone fails with fatal: Unable to find remote helper for &#039;https&#039;</a>
+                        </h2>
+                        <small>Bruno P. Kinoshita</small> @ <small>January 17, 2013&nbsp;14:49:50</small>
+                        <div class="entry">
+                            <a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2013/01/17/git-clone-fails-with-fatal-unable-to-find-remote-helper-for-https.html" data-text="git clone fails with fatal: Unable to find remote helper for &#039;https&#039;" data-via="kinow" data-hashtags="opensource">Tweet</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+                            
+                            <p>I&#8217;ve been working in a client site without Internet connection, and behind a troll proxy. There is an internal yum repository, but many dependencies are missing.</p>
+
+<p>There weren&#8217;t git-all, git or git-core packages there, so I had to download and install from sources. I didn&#8217;t pay attention to the <code>./configure</code> output and proceeded with <code>make</code> and <code>make install</code>.</p>
+
+<p>Git was installed and ready to rock, but in my first <code>git clone https://</code> (SSH ports are blocked) I received: <strong>fatal: Unable to find remote helper for &#8216;https&#8217;</strong>.</p>
+
+<p>Turns out that I was missing libcurl-devel, though I did have curl. After installing libcurl-devel and installing from sources again all worked fine.</p>
+
+                            
+                                                        
+                        </div>
+                        <p class="postmetadata">
+                                                        <small>tags                              [&nbsp;<a
+                                href="/tag/git.html"
+                                rel="tag">git</a>&nbsp;]&nbsp;
+                                                        </small>
+                                                                                </p>
+                    </div>
+                    <hr class='space' />
+                                        <div
+                        class="post type-post status-publish format-standard hentry">
+                        <h2>
                             <a href="/2012/12/21/using-apache-commons-functor-functional-interfaces-with-java-8-lambdas.html" title="Permanent link">Using Apache Commons Functor functional interfaces with Java 8 lambdas</a>
                         </h2>
                         <small>Bruno P. Kinoshita</small> @ <small>December 21, 2012&nbsp;15:08:14</small>
@@ -325,58 +354,6 @@
                                 rel="tag">java</a>&nbsp;]&nbsp;
                                                         </small>
                                                                                 </p>
-                    </div>
-                    <hr class='space' />
-                                        <div
-                        class="post type-post status-publish format-standard hentry">
-                        <h2>
-                            <a href="/2012/10/16/adding-coverage-reports-in-jenkins-to-googletest-with-gcovr.html" title="Permanent link">Adding coverage reports in Jenkins to GoogleTest with gcovr</a>
-                        </h2>
-                        <small>Bruno P. Kinoshita</small> @ <small>October 16, 2012&nbsp;16:09:33</small>
-                        <div class="entry">
-                            <a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2012/10/16/adding-coverage-reports-in-jenkins-to-googletest-with-gcovr.html" data-text="Adding coverage reports in Jenkins to GoogleTest with gcovr" data-via="kinow" data-hashtags="opensource">Tweet</a>
-<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-                            
-                            <p>After the <a href="/2012/10/11/jenkins-testlink-and-gtest-in-5-minutes-or-so" title="Jenkins, TestLink and GTest in 5 minutes (or so)">last post</a> about <a href="http://code.google.com/p/googletest/" title="GoogleTest">GoogleTest</a> and <a href="http://www.teamst.org" title="TestLink">TestLink</a> using <a href="https://wiki.jenkins-ci.org/display/JENKINS/TestLink+Plugin" title="Jenkins TestLink Plug-in">Jenkins TestLink Plug-in</a>, I received an e-mail asking about <a href="http://en.wikipedia.org/wiki/Code_coverage" title="Code Coverage">coverage</a> with GoogleTest and <a href="http://www.jenkins-ci.org" title="Jenkins CI">Jenkins</a>. I&#8217;ve just updated the <a href="https://github.com/kinow/gtest-tap-listener/blob/master/samples/Makefile">Makefile</a> in the samples directory, of the <a href="https://github.com/kinow/gtest-tap-listener" title="GTest TAP Listener">GoogleTest TAP listener project</a>, to output coverage data.</p>
-
-<p>Basically, you have to add the compiler flags <em>-fprofile-arcs -ftest-coverage</em> and link the executable with -lgcov. Take a look at the project&#8217;s Makefile and you&#8217;ll notice how simple it is. In order to have Jenkins interpreting your coverage report, you&#8217;ll have to convert it to <a href="http://cobertura.sourceforge.net" title="Cobertura">cobertura</a> XML. There is a Python utility that can be used for this: <a href="https://software.sandia.gov/trac/fast/wiki/gcovr" title="gcovr">gcovr</a>. Download it and copy it to somewhere where Jenkins can execute it (e.g.: <em>/usr/local/bin</em>).</p>
-
-<p>Now, if you&#8217;ve followed the instructions from the previous post, you should have a job that reports your GoogleTest tests from Jenkins to TestLink using the plug-in, and is downloading the source code from GitHub. Add an extra build step  (Shell) to execute <em>gcovr</em>.</p>
-
-
-                            
-                                                        <p>( <a href="/2012/10/16/adding-coverage-reports-in-jenkins-to-googletest-with-gcovr.html" >Read more ...</a> )</p>
-                                                        
-                        </div>
-                        <p class="postmetadata">
-                                                        <small>tags                              [&nbsp;<a
-                                href="/tag/jenkins.html"
-                                rel="tag">jenkins</a>&nbsp;]&nbsp;
-                                                         [&nbsp;<a
-                                href="/tag/c.html"
-                                rel="tag">c</a>&nbsp;]&nbsp;
-                                                         [&nbsp;<a
-                                href="/tag/googletest.html"
-                                rel="tag">googletest</a>&nbsp;]&nbsp;
-                                                         [&nbsp;<a
-                                href="/tag/testing.html"
-                                rel="tag">testing</a>&nbsp;]&nbsp;
-                                                         [&nbsp;<a
-                                href="/tag/coverage.html"
-                                rel="tag">coverage</a>&nbsp;]&nbsp;
-                                                         [&nbsp;<a
-                                href="/tag/gcovr.html"
-                                rel="tag">gcovr</a>&nbsp;]&nbsp;
-                                                        </small>
-                                                                                    <br/>
-                            <small>posted in 
-                            [&nbsp;<a
-                                href="/jenkins.html"
-                                title="View all posts in jenkins"
-                                rel="category tag">jenkins</a>&nbsp;]
-                                &nbsp;category
-                            </small>
-                                                    </p>
                     </div>
                     <hr class='space' />
                                         <div id="navigation">
