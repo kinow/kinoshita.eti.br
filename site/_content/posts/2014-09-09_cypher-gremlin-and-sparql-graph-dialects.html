@@ -1,0 +1,229 @@
+---
+title: 'Cypher, Gremlin and SPARQL: Graph dialects'
+author: kinow
+tags:
+    - graph
+    - neo4j
+    - gremlin
+    - sparql
+category: 'blog'
+time: '10:14:33'
+---
+
+When I was younger and my older brother was living in Germany, I asked him if he 
+had learned German. He said that he did, and explained that there are several 
+dialects, and he was quite proud for some people told him that he was using the 
+Bavarian dialect correctly.
+
+Even though [Cypher](http://www.neo4j.org/learn/cypher), 
+[Gremlin](http://gremlindocs.com/) and [SPARQL](http://en.wikipedia.org/wiki/SPARQL) 
+are all query languages, I think we can consider them dialects of a common graph language. 
+Cypher is the query language used in [neo4j](http://www.neo4j.org/), a graph database. 
+Gremlin is part of the [Tinkerpop](http://www.tinkerpop.com/), an open source project 
+that contains graph server, graph algorithms, graph language, among other sub-projects. 
+And last but not least, SPARQL is used to query [RDF documents](http://en.wikipedia.org/wiki/Resource_Description_Framework).
+
+Let's use the example of the Matrix movie provided by neo4j to take a look at the 
+three languages.
+
+## Cypher
+
+First we create the graph.
+
+{% geshi 'SQL' %}
+create (matrix1:Movie {id : '603', title : 'The Matrix', year : '1999-03-31'}),
+ (matrix2:Movie {id : '604', title : 'The Matrix Reloaded', year : '2003-05-07'}),
+ (matrix3:Movie {id : '605', title : 'The Matrix Revolutions', year : '2003-10-27'}),
+
+ (neo:Actor {name:'Keanu Reeves'}),
+ (morpheus:Actor {name:'Laurence Fishburne'}),
+ (trinity:Actor {name:'Carrie-Anne Moss'}),
+
+ (matrix1)<-[:ACTS_IN {role : 'Neo'}]-(neo),
+ (matrix2)<-[:ACTS_IN {role : 'Neo'}]-(neo),
+ (matrix3)<-[:ACTS_IN {role : 'Neo'}]-(neo),
+ (matrix1)<-[:ACTS_IN {role : 'Morpheus'}]-(morpheus),
+ (matrix2)<-[:ACTS_IN {role : 'Morpheus'}]-(morpheus),
+ (matrix3)<-[:ACTS_IN {role : 'Morpheus'}]-(morpheus),
+ (matrix1)<-[:ACTS_IN {role : 'Trinity'}]-(trinity),
+ (matrix2)<-[:ACTS_IN {role : 'Trinity'}]-(trinity),
+ (matrix3)<-[:ACTS_IN {role : 'Trinity'}]-(trinity)
+{% endgeshi %}
+
+<code>Added 6 labels, created 6 nodes, set 21 properties, created 9 relationships, returned 0 rows in 2791 ms</code>
+
+And execute a simple query.
+
+{% geshi 'SQL' %}
+MATCH (a:Actor { name:"Keanu Reeves" })
+RETURN a
+{% endgeshi %}
+
+<code>(9:Actor {name:"Keanu Reeves"})</code>
+
+## Gremlin
+
+Again, let's start by creating our graph.
+
+{% geshi 'sql' %}
+g = new TinkerGraph();
+matrix1 = g.addVertex(["_id":603,"title":"The Matrix", "year": "1999-03-31"]);
+matrix2 = g.addVertex(["_id":604,"title":"The Matrix Reloaded", "year": "2003-05-07"]);
+matrix3 = g.addVertex(["_id":605,"title":"The Matrix Revolutions", "year": "2003-10-27"]);
+
+neo = g.addVertex(["name": "Keanu Reeves"]);
+morpheus = g.addVertex(["name": "Laurence Fishburne"]);
+trinity = g.addVertex(["name": "Carrie-Anne Moss"]);
+
+neo.addEdge("actsIn", matrix1); 
+neo.addEdge("actsIn", matrix2); 
+neo.addEdge("actsIn", matrix3); 
+morpheus.addEdge("actsIn", matrix1); 
+morpheus.addEdge("actsIn", matrix2); 
+morpheus.addEdge("actsIn", matrix3); 
+trinity.addEdge("actsIn", matrix1); 
+trinity.addEdge("actsIn", matrix2); 
+trinity.addEdge("actsIn", matrix3); 
+{% endgeshi %}
+
+And execute a simple query.
+
+{% geshi 'sql' %}
+g.V.has('name', 'Keanu Reeves').map
+{% endgeshi %}
+
+<code>gremlin> g.V.has('name', 'Keanu Reeves').map
+==>{name=Keanu Reeves}
+gremlin></code>
+
+Quite similar to neo4j.
+
+## SPARQL
+
+In order to use SPARQL we have to create the ontology for our example. I used 
+[Stanford Protégé](http://protege.stanford.edu/), but I still don't know how to add 
+a property to a relationship, so I didn't fill the role property for the actors.
+
+{% geshi 'xml' %}
+<?xml version="1.0"?>
+
+<!DOCTYPE rdf:RDF [
+    <!ENTITY test1 "http://example.org/test1#" >
+    <!ENTITY owl "http://www.w3.org/2002/07/owl#" >
+    <!ENTITY xsd "http://www.w3.org/2001/XMLSchema#" >
+    <!ENTITY rdfs "http://www.w3.org/2000/01/rdf-schema#" >
+    <!ENTITY rdf "http://www.w3.org/1999/02/22-rdf-syntax-ns#" >
+]>
+
+<rdf:RDF xmlns="http://example.org/test1#"
+     xml:base="http://example.org/test1"
+     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+     xmlns:owl="http://www.w3.org/2002/07/owl#"
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+     xmlns:test1="http://example.org/test1#">
+    <owl:Ontology rdf:about="http://example.org/test1"/>
+    
+    <owl:ObjectProperty rdf:about="&test1;acts">
+        <rdfs:domain rdf:resource="&test1;Actor"/>
+        <rdfs:range rdf:resource="&test1;Movie"/>
+    </owl:ObjectProperty>
+
+    <owl:DatatypeProperty rdf:about="&test1;id">
+        <rdfs:domain rdf:resource="&test1;Movie"/>
+        <rdfs:range rdf:resource="&xsd;nonNegativeInteger"/>
+    </owl:DatatypeProperty>
+
+    <owl:DatatypeProperty rdf:about="&test1;name">
+        <rdfs:domain rdf:resource="&test1;Actor"/>
+        <rdfs:range rdf:resource="&xsd;string"/>
+    </owl:DatatypeProperty>
+    
+    <owl:DatatypeProperty rdf:about="&test1;role">
+        <rdfs:domain>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="&test1;acts"/>
+                <owl:someValuesFrom rdf:resource="&test1;Movie"/>
+            </owl:Restriction>
+        </rdfs:domain>
+    </owl:DatatypeProperty>
+    
+    <owl:DatatypeProperty rdf:about="&test1;title">
+        <rdfs:domain rdf:resource="&test1;Movie"/>
+        <rdfs:range rdf:resource="&xsd;string"/>
+    </owl:DatatypeProperty>
+    
+    <owl:DatatypeProperty rdf:about="&test1;year">
+        <rdfs:domain rdf:resource="&test1;Movie"/>
+        <rdfs:range rdf:resource="&xsd;dateTime"/>
+    </owl:DatatypeProperty>
+    
+    <owl:Class rdf:about="&test1;Actor">
+        <owl:disjointWith rdf:resource="&test1;Movie"/>
+    </owl:Class>
+    
+    <owl:Class rdf:about="&test1;Movie"/>
+    
+    <owl:NamedIndividual rdf:about="&test1;matrix1">
+        <rdf:type rdf:resource="&test1;Movie"/>
+        <year rdf:datatype="&xsd;dateTime">1999-03-31</year>
+        <id rdf:datatype="&xsd;nonNegativeInteger">603</id>
+        <title rdf:datatype="&xsd;string">The Matrix</title>
+    </owl:NamedIndividual>
+    
+    <owl:NamedIndividual rdf:about="&test1;matrix2">
+        <rdf:type rdf:resource="&test1;Movie"/>
+        <year rdf:datatype="&xsd;dateTime">2003-05-07</year>
+        <id rdf:datatype="&xsd;nonNegativeInteger">604</id>
+        <title rdf:datatype="&xsd;string">The Matrix Reloaded</title>
+    </owl:NamedIndividual>
+
+    <owl:NamedIndividual rdf:about="&test1;matrix3">
+        <rdf:type rdf:resource="&test1;Movie"/>
+        <year rdf:datatype="&xsd;dateTime">2003-10-27</year>
+        <id rdf:datatype="&xsd;nonNegativeInteger">605</id>
+        <title rdf:datatype="&xsd;string">The Matrix Revolutions</title>
+    </owl:NamedIndividual>
+
+    <owl:NamedIndividual rdf:about="&test1;morpheus">
+        <rdf:type rdf:resource="&test1;Actor"/>
+        <name rdf:datatype="&xsd;string">Laurence Fishburne</name>
+    </owl:NamedIndividual>
+    
+    <owl:NamedIndividual rdf:about="&test1;neo">
+        <rdf:type rdf:resource="&test1;Actor"/>
+        <name rdf:datatype="&xsd;string">Keanu Reeves</name>
+    </owl:NamedIndividual>
+
+    <owl:NamedIndividual rdf:about="&test1;trinity">
+        <rdf:type rdf:resource="&test1;Actor"/>
+    </owl:NamedIndividual>
+</rdf:RDF>
+{% endgeshi %}
+
+And finally the SPARQL query.
+
+{% geshi 'sql' %}
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+PREFIX test: <http://example.org/test1#>
+SELECT ?name
+	WHERE { ?a rdf:type test:Actor .
+            ?a test:name ?name.
+            FILTER(?name  = "Keanu Reeves") }
+{% endgeshi %}
+
+Returning the Keanu Reeves actor instance.
+
+<code>"Keanu Reeves"^^<http://www.w3.org/2001/XMLSchema#string></code>
+
+SPARQL supports inference (or I must say that OWL, RDFS and the reasoners do), 
+but it is easier to define the depth of a search in the graph using neo4j. As for 
+Gremlin, it has native support to Groovy and Java. There is a common denominator 
+for these three languages, but what makes them really powerful are their unique features. 
+
+I hope you enjoyed, and that this post gave you a quick overview of some of the existing 
+graph languages. Make sure you ponder the pros and cons of each server/language, and 
+make the best decision for your project. Take a look at [other graph query languages](http://en.wikipedia.org/wiki/Graph_database#APIs_and_Graph_Query.2FProgramming_Languages) too.
+
+Happy hacking!
