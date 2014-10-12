@@ -13,10 +13,51 @@
     <atom:link href="http://kinoshita.eti.br/blog/feed.xml" rel="self" type="application/rss+xml" />
     <link>http://kinoshita.eti.br/</link>
     <description></description>
-    <lastBuildDate>Tue, 09 Sep 2014 13:07:16 -0300</lastBuildDate>
+    <lastBuildDate>Sat, 11 Oct 2014 21:07:38 -0300</lastBuildDate>
     <language>en-US</language>
     <generator>PieCrust 1.2.0</generator>
  
+<item>
+    <title>Basic workflow of a SPARQL query in Fuseki</title>
+    <pubDate>Sat, 11 Oct 2014 00:00:00 -0300</pubDate>
+    <link>/2014/10/11/basic-workflow-of-a-sparql-query-in-fuseki.html</link>
+    <dc:creator>Bruno P. Kinoshita</dc:creator>
+    <description>&lt;p&gt;Before using any library or tool in a customer project, specially when it is an Open Source, 
+there are many things that I like to look at before deploying it. Basically, I look at the 
+features, documentation, community, open issues (in special blockers or criticals), the time 
+to deploy fixes and new features and, obviously, the license.&lt;/p&gt;
+
+&lt;p&gt;At the moment I&amp;#8217;m using &lt;a href=&quot;http://jena.apache.org&quot;&gt;Apache Jena&lt;/a&gt; to work with ontologies, SPARQL 
+and data matching and enrichment for a customer. &lt;/p&gt;
+
+&lt;p&gt;Jena is fantastic, and similar tools include &lt;a href=&quot;http://www.w3.org/wiki/VirtuosoUniversalServer&quot;&gt;Virtuoso&lt;/a&gt;, 
+&lt;a href=&quot;http://stardog.com/&quot;&gt;StarDog&lt;/a&gt;, &lt;a href=&quot;http://www.ontotext.com/products/ontotext-graphdb-owlim/&quot;&gt;GraphDB&lt;/a&gt;, 
+&lt;a href=&quot;http://4store.org/&quot;&gt;4Store&lt;/a&gt; and others. From looking at the code and its community and documentation, 
+Jena seems like a great choice. &lt;/p&gt;
+
+&lt;p&gt;I&amp;#8217;m still investigating if/how we gonna need to use inference and reasoners, looking 
+at the issues, and learning my way through its code base. The following is my initial mapping 
+of what happens when you submit a SPARQL query to Fuseki.&lt;/p&gt;
+
+&lt;div class=&#039;row&#039;&gt;
+&lt;div class=&quot;span6 offset3&quot; style=&#039;text-align: center;&#039;&gt;
+&lt;figure&gt;
+&lt;a href=&quot;/2014/10/11/basic-workflow-of-a-sparql-query-in-fuseki/drawing1.png&quot; rel=&quot;prettyPhoto&quot; class=&quot;thumbnail&quot; title=&quot;Fuseki SPARQL query work flow&quot;&gt;
+&lt;img src=&quot;/2014/10/11/basic-workflow-of-a-sparql-query-in-fuseki/drawing1.png&quot; alt=&quot;Fuseki SPARQL query work flow&quot; /&gt;
+&lt;/a&gt;
+&lt;figcaption&gt;Jena JDBC&lt;/i&gt;&lt;/figcaption&gt;
+&lt;/figure&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;p&gt;My understanding is that Fuseki is just a web layer, handling a bunch of validations, logging, 
+error handling, and relying on the ARQ module, that is who actually handles the requests. 
+I also think a new Fuseki server is baking in the project git repo, so stay tuned for an 
+updated version of this graph soon.&lt;/p&gt;
+
+&lt;p&gt;Happy hacking!&lt;/p&gt;
+</description>
+</item>
 <item>
     <title>Cypher, Gremlin and SPARQL: Graph dialects</title>
     <pubDate>Tue, 09 Sep 2014 00:00:00 -0300</pubDate>
@@ -495,23 +536,6 @@ command.&lt;/p&gt;
 &lt;p&gt;And now I&amp;#8217;m happily writing this blog and code, listening to Salonika - Dublin City Ramblers.&lt;/p&gt;
 
 &lt;p&gt;Cheers&lt;/p&gt;
-</description>
-</item>
-<item>
-    <title>Learning with Open Source: Reviewing SVN commits log</title>
-    <pubDate>Sun, 10 Feb 2013 00:00:00 -0200</pubDate>
-    <link>/2013/02/10/learning-with-open-source-reviewing-svn-commits-log.html</link>
-    <dc:creator>Bruno P. Kinoshita</dc:creator>
-    <description>&lt;p&gt;Last year I became an &lt;a href=&quot;http://www.apache.org&quot; title=&quot;Apache&quot;&gt;Apache&lt;/a&gt; committer, and dedicated most of my time learning the &lt;a href=&quot;http://incubator.apache.org/learn/theapacheway.html&quot; title=&quot;The Apache Way&quot;&gt;Apache way&lt;/a&gt;, reading different mailing lists and getting used to the things a committer is supposed to know (voting process, keeping everything in the mailing list, and so it goes) and getting used to &lt;a href=&quot;http://commons.apache.org/functor&quot; title=&quot;Apache Commons Functor&quot;&gt;[functor]&lt;/a&gt; API.&lt;/p&gt;
-
-&lt;p&gt;In 2013 I hope I can help in the release of [functor], since Java and &lt;a href=&quot;http://reddit.com/r/functionalprogramming&quot;&gt;functional programming&lt;/a&gt; are getting a lot more of attention recently, probably due to the &lt;a href=&quot;http://openjdk.java.net/projects/lambda/&quot; title=&quot;Project Lambda&quot;&gt;project lambda&lt;/a&gt;. But I also want to start contributing with the other components from commons (like &lt;a href=&quot;http://commons.apache.org/math/&quot; title=&quot;Apache Commons Math&quot;&gt;math&lt;/a&gt;, &lt;a href=&quot;http://commons.apache.org/io/&quot; title=&quot;Apache Commons IO&quot;&gt;io&lt;/a&gt;, &lt;a href=&quot;http://commons.apache.org/jcs/&quot; title=&quot;Apache Commons JCS&quot;&gt;jcs&lt;/a&gt;) and other top level projects (&lt;a href=&quot;http://hadoop.apache.org/&quot; title=&quot;Apache Hadoop&quot;&gt;hadoop&lt;/a&gt;, &lt;a href=&quot;http://nutch.apache.org/&quot; title=&quot;Apache Nutch&quot;&gt;nutch&lt;/a&gt;, &lt;a href=&quot;http://lucene.apache.org/&quot; title=&quot;Apache Lucene&quot;&gt;lucene&lt;/a&gt;).&lt;/p&gt;
-
-&lt;h4&gt;Reviewing SVN commits log&lt;/h4&gt;
-
-&lt;p&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/FUNCTOR-14&quot; title=&quot;Apache Commons Functor - Issue 14&quot;&gt;FUNCTOR-14&lt;/a&gt; was created to enhance the &lt;a href=&quot;http://commons.apache.org/functor/apidocs/org/apache/commons/functor/generator/package-summary.html&quot;&gt;generators API&lt;/a&gt; in [functor]. I&amp;#8217;d worked on &lt;a href=&quot;http://svn.apache.org/viewvc/commons/proper/functor/branches/generators-FUNCTOR-14/&quot;&gt;a branch&lt;/a&gt; for this issue, but needed some review in order to be able to merge it with the trunk. That&amp;#8217;s where you can see why Open Source is so awesome. Another Apache member, Matt Benson, created &lt;a href=&quot;http://svn.apache.org/viewvc/commons/proper/functor/branches/FUNCTOR-14-mm/&quot;&gt;another branch&lt;/a&gt; to work on the project structure, but also to review the generator API.&lt;/p&gt;
-
-&lt;p style=&#039;text-align: center&#039;&gt;&lt;a href=&quot;/2013/02/10/learning-with-open-source-reviewing-svn-commits-log/feather_small.gif&quot;&gt;&lt;img src=&quot;/2013/02/10/learning-with-open-source-reviewing-svn-commits-log/feather_small.gif&quot; alt=&quot;Apache Software Foundation&quot; width=&quot;203&quot; height=&quot;61&quot; class=&quot;alignnone size-full wp-image-1125&quot; /&gt;&lt;/a&gt;&lt;/p&gt;
-
 </description>
 </item>
 </channel>
