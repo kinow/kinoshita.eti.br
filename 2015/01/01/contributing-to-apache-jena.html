@@ -1,7 +1,7 @@
   <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en">
 <head profile="http://gmpg.org/xfn/11">
-<title>Bruno P. Kinoshita &mdash; Basic workflow of a SPARQL query in Fuseki</title>
+<title>Bruno P. Kinoshita &mdash; Contributing to Apache Jena</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="description" content="Bruno de Paula Kinoshita personal web site" />
 <meta name="keywords"
@@ -111,59 +111,95 @@
                         <div id="right" class="span8">
                 <div id="main">
                 <div class="post type-post status-publish format-standard hentry">
-    <h1 class='post-topic'>Basic workflow of a SPARQL query in Fuseki</h1>
+    <h1 class='post-topic'>Contributing to Apache Jena</h1>
     <small>Bruno P. Kinoshita</small> @
-	<small>October 11, 2014&nbsp;20:36:33</small>
+	<small>January 1, 2015&nbsp;18:49:03</small>
     <div class="entry">
-       <a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2014/10/11/basic-workflow-of-a-sparql-query-in-fuseki.html" data-text="Basic workflow of a SPARQL query in Fuseki" data-via="kinow" data-hashtags="opensource">Tweet</a>
+       <a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2015/01/01/contributing-to-apache-jena.html" data-text="Contributing to Apache Jena" data-via="kinow" data-hashtags="opensource">Tweet</a>
 <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
 
-	   <p>Before using any library or tool in a customer project, specially when it is an Open Source one, 
-there are many things that I like to look at before deploying it. Basically, I look at the 
-features, documentation, community, open issues (in special blockers or criticals), the time 
-to release fixes and new features and, obviously, the license.</p>
+	   <p>As I mentioned in my <a href="2014/10/11/basic-workflow-of-a-sparql-query-in-fuseki.html">previous post</a>, 
+I am using <a href="http://jena.apache.org">Apache Jena</a> for a project of a customer. I had never used 
+any triple store, nor a SPARQL Endpoint server before. But for being involved with the Apache 
+Software Foundation, and since the company itself is using several Apache components, it was only 
+natural Jena to be our first choice.</p>
 
-<p>At the moment I&#8217;m using <a href="http://jena.apache.org">Apache Jena</a> to work with ontologies, SPARQL 
-and data matching and enrichment for a customer. </p>
+<p>It has served us very well so far. At the moment we have less than 100 queries per day, but the 
+project is still under development and we expect 1000 queries per day by the first quarter of 
+2015 and 1000000 near the end of 2015. We also have few entries in TDB, but expect to grow this 
+number to a few million before 2016.</p>
 
-<p>Jena is fantastic, and similar tools include <a href="http://www.w3.org/wiki/VirtuosoUniversalServer">Virtuoso</a>, 
-<a href="http://stardog.com/">StarDog</a>, <a href="http://www.ontotext.com/products/ontotext-graphdb-owlim/">GraphDB</a>, 
-<a href="http://4store.org/">4Store</a> and others. From looking at the code and its community and documentation, 
-Jena seems like a great choice. </p>
+<p>When I work for companies and we use Open Source Software (OSS) in a project, I always 
+prepare assessment reports to include in the deliveries. In this report I justify the choice 
+of Open Source Software (as well as commercial software). Sometimes I 
+am lucky to work for a company that asks me to include hours to work on OSS :-)</p>
 
-<p>I&#8217;m still investigating if/how we gonna need to use inference and reasoners, looking 
-at the issues, and learning my way through its code base. The following is my initial mapping 
-of what happens when you submit a SPARQL query to Fuseki.</p>
+<p>I use <a href="http://trello.com">Trello</a> to triage issues in OSS projects (and for several other 
+things). I have a board with several cards for Open Source. About a month ago I set up one 
+for Jena and listed the issues that I thought I could contribute to. </p>
 
 <div class='row'>
 <div class="span6 offset3" style='text-align: center;'>
 <figure>
-<a href="/2014/10/11/basic-workflow-of-a-sparql-query-in-fuseki/drawing1.png" rel="prettyPhoto" class="thumbnail" title="Fuseki SPARQL query work flow">
-<img src="/2014/10/11/basic-workflow-of-a-sparql-query-in-fuseki/drawing1.png" alt="Fuseki SPARQL query work flow" />
+<a href="/2015/01/01/contributing-to-apache-jena/jena_trello.png" rel="prettyPhoto" class="thumbnail" title="Jena Trello card">
+<img src="/2015/01/01/contributing-to-apache-jena/jena_trello.png" alt="Jena Trello card" />
 </a>
-<figcaption>Jena JDBC</i></figcaption>
+<figcaption>Jena Trello card</i></figcaption>
 </figure>
 </div>
 </div>
 
-<p>My understanding is that Fuseki is just a web layer, handling a bunch of validations, logging, 
-error handling, and relying on the ARQ module, that is who actually handles the requests. 
-I also think a new Fuseki server is baking in the project git repo, so stay tuned for an 
-updated version of this graph soon.</p>
+<p>I annotate easy issues with a &#8220;lhf&#8221; suffix for Low Hanging Fruit issues, and delete issues from 
+the card once I submit a patch or update it (and include it in another card for the 
+<a href="http://tupilabs.com/tag/tupilabs-report.html">TupiLabs reports</a>).</p>
 
-<p>Happy hacking!</p>
+<p>Most of the issues I included in the card for Jena had been created over two years ago, and hadn&#8217;t 
+been updated in a while. When you test these issues against the current code, usually you find that 
+some of them have already been fixed. Other issues included documentation problems, and minor features. I didn&#8217;t find any blocker issue that would impede us to use Jena in production.</p>
+
+<div class='row'>
+<div class="span6 offset3" style='text-align: center;'>
+<figure>
+<a href="/2015/01/01/contributing-to-apache-jena/jena_jira.png" rel="prettyPhoto" class="thumbnail" title="Jena JIRA activity summary">
+<img src="/2015/01/01/contributing-to-apache-jena/jena_jira.png" alt="Jena JIRA activity summary" />
+</a>
+<figcaption>Jena JIRA activity summary</i></figcaption>
+</figure>
+</div>
+</div>
+
+<p>The picture above shows the past 30 days activity summary in JIRA for Jena. The red line shows 
+issues created, and the green line issues resolved. <a href="https://github.com/afs">Andy Seaborne</a> 
+was very active in the past days and fixed several issues that were too old and had already been fixed in the trunk, and kindly merged patches and pull requests.</p>
+
+<p>Some issues like <a href="https://issues.apache.org/jira/browse/JENA-632">JENA-632</a> will take a 
+longer time to fix, but I&#8217;m getting used to Jena&#8217;s source code, and at the same getting more 
+confident to use it in production - especially with a supportive OSS community. We are using 
+Jena for RDF with Hadoop, and I learned that I can replace some custom Writables by others 
+in the Jena Hadoop submodule.</p>
+
+<p>By the way, even though this project ends in April, I intend to continue contributing to Jena. 
+There is a lot of parts of the code that I would love to be able to understand and contribute, 
+in special the Graph database, optimization techniques for SPARQL queries, the grammars used 
+in the project, Fuseki v2 and enhance its testing harness (as well as the test coverage).</p>
+
+<p><strong>If you are looking for a interesting project to get you started with semantics, linked data, 
+RDF, and even graphs and database querying, try contributing to Jena. I bet you&#8217;ll have a lot 
+of fun!</strong></p>
+
+<p>Happy hacking and happy 2015!</p>
 
     </div>
     <p class="postmetadata">
                 <small>tags          [&nbsp;<a
-            href="/tag/sparql.html"
-            rel="tag">sparql</a>&nbsp;]&nbsp;
-                 [&nbsp;<a
             href="/tag/jena.html"
             rel="tag">jena</a>&nbsp;]&nbsp;
                  [&nbsp;<a
-            href="/tag/development.html"
-            rel="tag">development</a>&nbsp;]&nbsp;
+            href="/tag/open-source.html"
+            rel="tag">open source</a>&nbsp;]&nbsp;
+                 [&nbsp;<a
+            href="/tag/apache-software-foundation.html"
+            rel="tag">apache software foundation</a>&nbsp;]&nbsp;
                 </small>
                         <br/>
         <small>posted in 
@@ -174,8 +210,7 @@ updated version of this graph soon.</p>
         category </small>
             </p>
     <div id="navigation">
-                    &larr;&nbsp;<a href="/2015/01/01/contributing-to-apache-jena.html" id="navigation-next">Previous post</a>
-                            &mdash; <a href="/2014/09/09/cypher-gremlin-and-sparql-graph-dialects.html" id="navigation-next">Next Entries</a>&nbsp;&rarr;
+                            &mdash; <a href="/2014/10/11/basic-workflow-of-a-sparql-query-in-fuseki.html" id="navigation-next">Next Entries</a>&nbsp;&rarr;
             </div>
 </div>
                     <br/>
