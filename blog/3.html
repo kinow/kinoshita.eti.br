@@ -115,12 +115,49 @@
                                         <p>Posts in category &#8216;blog&#8217;</p>
 
 <div class="post type-post status-publish format-standard hentry">
+    <h2>Graphite: Broken images</h2>
+    <p><small>kinow</small> @ <small>April 17, 2013&nbsp;11:36:38</small></p>
+    <div><a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2013/04/17/graphite-broken-images.html" data-text="Graphite: Broken images" data-via="kinow" data-hashtags="opensource">Tweet</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+</div>
+    <p>This morning I was setting up a <a href="http://graphite.wikidot.com/" title="Graphite">Graphite </a>server to collect metrics with <a href="https://github.com/etsy/statsd/" title="statsd">statsd</a>, <a href="http://logstash.net/" title="LogStash">LogStash </a>and <a href="https://github.com/jmxtrans/jmxtrans" title="jmxtrans">jmxtrans</a>. After following the instructions from @jgeurst, I&#8217;ve successfully installed Graphite.</p>
+
+<p>I had previously installed another test box, so I decided to take a deeper look at the settings, write a <a href="https://puppetlabs.com/" title="Puppet">puppet</a> manifest and prepare this new box to become a production server. However, after browsing the webapp, all graphs were broken.</p>
+
+<p>After googling a while, reading forums and bugs, I decided to open the <em>$GRAPHITE_HOME/webapp/graphite/render/views.py</em>, adding <em>log.rendering(&#8230;)</em> statements (not the most elegant solution, I know).</p>
+
+<p>By following the program workflow I found out it was entering a block after checking if it should remotely render the image. This feature is turned on/off by <strong>REMOTE_RENDERING</strong> = True/False, in local_settings.py.</p>
+
+<p>After setting this to <em>False</em> the problem was solved.</p>
+<!-- html -->
+        <p class="postmetadata">
+                <small>tags          [&nbsp;<a
+            href="/tag/graphite.html"
+            rel="tag">graphite</a>&nbsp;]&nbsp;
+                 [&nbsp;<a
+            href="/tag/monitoring.html"
+            rel="tag">monitoring</a>&nbsp;]&nbsp;
+                 [&nbsp;<a
+            href="/tag/python.html"
+            rel="tag">python</a>&nbsp;]&nbsp;
+                </small>
+                        <br/>
+        <small>posted in 
+        [&nbsp;<a
+            href="/blog.html"
+            title="View all posts in blog"
+            rel="category tag">blog</a>&nbsp;]&nbsp;
+        category </small>
+            </p>
+</div>
+
+<p><div class="post type-post status-publish format-standard hentry">
     <h2>Fix laggy Flash (Pepper) in Chrome</h2>
     <p><small>kinow</small> @ <small>March 31, 2013&nbsp;11:32:10</small></p>
     <div><a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2013/03/31/fix-laggy-flash-pepper-in-chrome.html" data-text="Fix laggy Flash (Pepper) in Chrome" data-via="kinow" data-hashtags="opensource">Tweet</a>
 <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
 </div>
-    <p>My chrome died twice this morning. Checking the system logs I found some segmentation errors. Since it was not so recent version, I updated to the latest version of Chrome. But after that my Flash player was laggy/slowly, and I couldn&#8217;t listen to <a href="http://tunein.com/radio/Live-Ireland-Channel-1-s17895/#" title="Live Ireland Channel 1">Live Ireland Channel 1</a> no more :-( (I listen to either this radio or r/electrohouse on reddit.tv while I&#8217;m programming&#8230; I know, I&#8217;m a bit weird).</p>
+    <p>My chrome died twice this morning. Checking the system logs I found some segmentation errors. Since it was not so recent version, I updated to the latest version of Chrome. But after that my Flash player was laggy/slowly, and I couldn&#8217;t listen to <a href="http://tunein.com/radio/Live-Ireland-Channel-1-s17895/#" title="Live Ireland Channel 1">Live Ireland Channel 1</a> no more :-( (I listen to either this radio or r/electrohouse on reddit.tv while I&#8217;m programming&#8230; I know, I&#8217;m a bit weird).</p></p>
 
 <p>If you are having the same problem, here&#8217;s the list of actions that I did to fix it.</p>
 
@@ -137,7 +174,8 @@
 <p>And now I&#8217;m happily writing this blog and code, listening to Salonika - Dublin City Ramblers.</p>
 
 <p>Cheers</p>
-<!-- html -->
+
+<p><!-- html -->
         <p class="postmetadata">
                 <small>tags          [&nbsp;<a
             href="/tag/chrome.html"
@@ -173,8 +211,7 @@
         category </small>
             </p>
 </div>
-
-<p><div class="post type-post status-publish format-standard hentry">
+<div class="post type-post status-publish format-standard hentry">
     <h2>A quick view on Wordpress, Mantis and Jenkins plug-in API</h2>
     <p><small>kinow</small> @ <small>October 25, 2012&nbsp;08:49:36</small></p>
     <div><a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2012/10/25/a-quick-view-on-wordpress-mantis-and-jenkins-plug-in-api.html" data-text="A quick view on Wordpress, Mantis and Jenkins plug-in API" data-via="kinow" data-hashtags="opensource">Tweet</a>
@@ -286,34 +323,6 @@
                  [&nbsp;<a
             href="/tag/java.html"
             rel="tag">java</a>&nbsp;]&nbsp;
-                </small>
-                        <br/>
-        <small>posted in 
-        [&nbsp;<a
-            href="/blog.html"
-            title="View all posts in blog"
-            rel="category tag">blog</a>&nbsp;]&nbsp;
-        category </small>
-            </p>
-</div>
-<div class="post type-post status-publish format-standard hentry">
-    <h2>Listing of current projects, achievements and my New Year&#039;s resolutions</h2>
-    <p><small>kinow</small> @ <small>December 24, 2011&nbsp;14:08:56</small></p>
-    <div><a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2011/12/24/listing-of-current-projects-achievements-and-my-new-years-resolutions.html" data-text="Listing of current projects, achievements and my New Year&#039;s resolutions" data-via="kinow" data-hashtags="opensource">Tweet</a>
-<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-</div>
-    <p>Tis&#8217; the end of 2011! Yay! Throughout this year I&#8217;ve heard people repeatedly saying that I had too much on my plate, and that I should quit some projects, stop giving talks, start surfing again amongst other things. Now, looking back, although I&#8217;m quite happy with my achievements in 2011, I can see their point.</p></p>
-
-<p>In 2010 I started working as Software Quality Engineer with <a title="Anderson Santos" href="http://andersonxp.tumblr.com/">Anderson Santos</a>. He was the greatest supporter of many of my ideas, so although we stopped working together in 2011, I&#8217;m still grateful to him for all he taught, for his advices and for spending some time guiding me.</p>
-
-<p>He motivated me to start giving talks, going to more conferences and contributing more actively to Open Source projects. Since then, I&#8217;ve given almost 10 talks, including one in <a title="Belgium Testing Days" href="http://www.belgiumtestingdays.com">Belgium Testing Days</a>, another one in<a title="Oracle JavaOne" href="http://www.oracle.com/javaone/lad-pt/"> Oracle JavaOne</a> and in March next year I will be in America for a talk in <a title="STP Con" href="http://www.stpcon.com/">STPCON</a>. I also missed <a title="JCertif" href="http://www.jcertif.com">JCertif</a> conference in Congo due to visa problems and learned some lessons from it (so sorry Max :)</p>
-
-<p><!-- html -->
-        <p>( <a href="/2011/12/24/listing-of-current-projects-achievements-and-my-new-years-resolutions.html" >Read more &#8230;</a> )</p>
-        <p class="postmetadata">
-                <small>tags          [&nbsp;<a
-            href="/tag/geek.html"
-            rel="tag">geek</a>&nbsp;]&nbsp;
                 </small>
                         <br/>
         <small>posted in 

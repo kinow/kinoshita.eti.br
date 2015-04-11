@@ -1,7 +1,7 @@
   <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en">
 <head profile="http://gmpg.org/xfn/11">
-<title>Bruno P. Kinoshita &mdash; Contributing to Apache Jena</title>
+<title>Bruno P. Kinoshita &mdash; Groovy Hooks in Jenkins for increasing logging level</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="description" content="Bruno de Paula Kinoshita personal web site" />
 <meta name="keywords"
@@ -111,95 +111,45 @@
                         <div id="right" class="span8">
                 <div id="main">
                 <div class="post type-post status-publish format-standard hentry">
-    <h1 class='post-topic'>Contributing to Apache Jena</h1>
+    <h1 class='post-topic'>Groovy Hooks in Jenkins for increasing logging level</h1>
     <small>Bruno P. Kinoshita</small> @
-	<small>January 1, 2015&nbsp;18:49:03</small>
+	<small>April 12, 2015&nbsp;11:30:03</small>
     <div class="entry">
-       <a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2015/01/01/contributing-to-apache-jena.html" data-text="Contributing to Apache Jena" data-via="kinow" data-hashtags="opensource">Tweet</a>
+       <a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2015/04/12/groovy-hooks-in-jenkins-for-increasing-logging-level.html" data-text="Groovy Hooks in Jenkins for increasing logging level" data-via="kinow" data-hashtags="opensource">Tweet</a>
 <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
 
-	   <p>As I mentioned in my <a href="2014/10/11/basic-workflow-of-a-sparql-query-in-fuseki.html">previous post</a>, 
-I am using <a href="http://jena.apache.org">Apache Jena</a> for a project of a customer. I had never used 
-any triple store, nor a SPARQL Endpoint server before. But for being involved with the Apache 
-Software Foundation, and since the company itself is using several Apache components, it was only 
-natural Jena to be our first choice.</p>
+	   <p>Yesterday, while debugging a problem we had in the <a href="http://biouno.org">BioUno</a> update center, 
+I realized that after <a href="https://wiki.jenkins-ci.org/display/JENKINS/Logging">increasing the logging level in the WEB interface</a>, 
+the messages that I needed weren&#8217;t being displayed in the logs.</p>
 
-<p>It has served us very well so far. At the moment we have less than 100 queries per day, but the 
-project is still under development and we expect 1000 queries per day by the first quarter of 
-2015 and 1000000 near the end of 2015. We also have few entries in TDB, but expect to grow this 
-number to a few million before 2016.</p>
+<p>It happened because some of the logging happened during Jenkins initialization, and before I could adjust the log level.</p>
 
-<p>When I work for companies and we use Open Source Software (OSS) in a project, I always 
-prepare assessment reports to include in the deliveries. In this report I justify the choice 
-of Open Source Software (as well as commercial software). Sometimes I 
-am lucky to work for a company that asks me to include hours to work on OSS :-)</p>
+<p>The solution was to use a <a href="https://wiki.jenkins-ci.org/display/JENKINS/Groovy+Hook+Script">Groovy Hook Script</a>. 
+If you are familiar with Linux init scripts, the idea is quite similar. </p>
 
-<p>I use <a href="http://trello.com">Trello</a> to triage issues in OSS projects (and for several other 
-things). I have a board with several cards for Open Source. About a month ago I set up one 
-for Jena and listed the issues that I thought I could contribute to. </p>
+<p>A Groovy script in the <code>$JENKINS_ROOT_DIR/init.groovy.d/</code> directory is executed during
+Jenkins initialization. This way you can increase the global logger level with a script
+as the following below.</p>
 
-<div class='row'>
-<div class="span6 offset3" style='text-align: center;'>
-<figure>
-<a href="/2015/01/01/contributing-to-apache-jena/jena_trello.png" rel="prettyPhoto" class="thumbnail" title="Jena Trello card">
-<img src="/2015/01/01/contributing-to-apache-jena/jena_trello.png" alt="Jena Trello card" />
-</a>
-<figcaption>Jena Trello card</i></figcaption>
-</figure>
-</div>
-</div>
+<pre class="java" style="font-family:monospace;"><span style="color: #000000; font-weight: bold;">import</span> <span style="color: #006699;">java.util.logging.ConsoleHandler</span>
+<span style="color: #000000; font-weight: bold;">import</span> <span style="color: #006699;">java.util.logging.LogManager</span>
+<span style="color: #000000; font-weight: bold;">import</span> <span style="color: #006699;">java.util.logging.Logger</span>
+<span style="color: #000000; font-weight: bold;">import</span> <span style="color: #006699;">java.util.logging.Level</span>
+&nbsp;
+def logger <span style="color: #339933;">=</span> Logger.<span style="color: #006633;">getLogger</span><span style="color: #009900;">&#40;</span><span style="color: #0000ff;">&quot;&quot;</span><span style="color: #009900;">&#41;</span>
+logger.<span style="color: #006633;">setLevel</span><span style="color: #009900;">&#40;</span>Level.<span style="color: #006633;">FINEST</span><span style="color: #009900;">&#41;</span>
+logger.<span style="color: #006633;">addHandler</span> <span style="color: #009900;">&#40;</span><span style="color: #000000; font-weight: bold;">new</span> ConsoleHandler<span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #009900;">&#41;</span></pre>
 
-<p>I annotate easy issues with a &#8220;lhf&#8221; suffix for Low Hanging Fruit issues, and delete issues from 
-the card once I submit a patch or update it (and include it in another card for the 
-<a href="http://tupilabs.com/tag/tupilabs-report.html">TupiLabs reports</a>).</p>
-
-<p>Most of the issues I included in the card for Jena had been created over two years ago, and hadn&#8217;t 
-been updated in a while. When you test these issues against the current code, usually you find that 
-some of them have already been fixed. Other issues included documentation problems, and minor features. I didn&#8217;t find any blocker issue that would impede us to use Jena in production.</p>
-
-<div class='row'>
-<div class="span6 offset3" style='text-align: center;'>
-<figure>
-<a href="/2015/01/01/contributing-to-apache-jena/jena_jira.png" rel="prettyPhoto" class="thumbnail" title="Jena JIRA activity summary">
-<img src="/2015/01/01/contributing-to-apache-jena/jena_jira.png" alt="Jena JIRA activity summary" />
-</a>
-<figcaption>Jena JIRA activity summary</i></figcaption>
-</figure>
-</div>
-</div>
-
-<p>The picture above shows the past 30 days activity summary in JIRA for Jena. The red line shows 
-issues created, and the green line issues resolved. <a href="https://github.com/afs">Andy Seaborne</a> 
-was very active in the past days and fixed several issues that were too old and had already been fixed in the trunk, and kindly merged patches and pull requests.</p>
-
-<p>Some issues like <a href="https://issues.apache.org/jira/browse/JENA-632">JENA-632</a> will take a 
-longer time to fix, but I&#8217;m getting used to Jena&#8217;s source code, and at the same getting more 
-confident to use it in production - especially with a supportive OSS community. We are using 
-Jena for RDF with Hadoop, and I learned that I can replace some custom Writables by others 
-in the Jena Hadoop submodule.</p>
-
-<p>By the way, even though this project ends in April, I intend to continue contributing to Jena. 
-There is a lot of parts of the code that I would love to be able to understand and contribute, 
-in special the Graph database, optimization techniques for SPARQL queries, the grammars used 
-in the project, Fuseki v2 and enhance its testing harness (as well as the test coverage).</p>
-
-<p><strong>If you are looking for a interesting project to get you started with semantics, linked data, 
-RDF, and even graphs and database querying, try contributing to Jena. I bet you&#8217;ll have a lot 
-of fun!</strong></p>
-
-<p>Happy hacking and happy 2015!</p>
+<p>Happy logging!</p>
 
     </div>
     <p class="postmetadata">
                 <small>tags          [&nbsp;<a
-            href="/tag/jena.html"
-            rel="tag">jena</a>&nbsp;]&nbsp;
+            href="/tag/jenkins.html"
+            rel="tag">jenkins</a>&nbsp;]&nbsp;
                  [&nbsp;<a
-            href="/tag/open-source.html"
-            rel="tag">open source</a>&nbsp;]&nbsp;
-                 [&nbsp;<a
-            href="/tag/apache-software-foundation.html"
-            rel="tag">apache software foundation</a>&nbsp;]&nbsp;
+            href="/tag/groovy.html"
+            rel="tag">groovy</a>&nbsp;]&nbsp;
                 </small>
                         <br/>
         <small>posted in 
@@ -210,8 +160,7 @@ of fun!</strong></p>
         category </small>
             </p>
     <div id="navigation">
-                    &larr;&nbsp;<a href="/2015/04/12/groovy-hooks-in-jenkins-for-increasing-logging-level.html" id="navigation-next">Previous post</a>
-                            &mdash; <a href="/2014/10/11/basic-workflow-of-a-sparql-query-in-fuseki.html" id="navigation-next">Next Entries</a>&nbsp;&rarr;
+                            &mdash; <a href="/2015/01/01/contributing-to-apache-jena.html" id="navigation-next">Next Entries</a>&nbsp;&rarr;
             </div>
 </div>
                     <br/>

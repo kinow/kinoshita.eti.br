@@ -13,13 +13,43 @@
     <atom:link href="http://kinoshita.eti.br/blog/feed.xml" rel="self" type="application/rss+xml" />
     <link>http://kinoshita.eti.br/</link>
     <description></description>
-    <lastBuildDate>Thu, 01 Jan 2015 19:52:58 -0200</lastBuildDate>
+    <lastBuildDate>Sun, 12 Apr 2015 11:55:58 +1200</lastBuildDate>
     <language>en-US</language>
     <generator>PieCrust 1.2.0</generator>
  
 <item>
+    <title>Groovy Hooks in Jenkins for increasing logging level</title>
+    <pubDate>Sun, 12 Apr 2015 00:00:00 +1200</pubDate>
+    <link>/2015/04/12/groovy-hooks-in-jenkins-for-increasing-logging-level.html</link>
+    <dc:creator>Bruno P. Kinoshita</dc:creator>
+    <description>&lt;p&gt;Yesterday, while debugging a problem we had in the &lt;a href=&quot;http://biouno.org&quot;&gt;BioUno&lt;/a&gt; update center, 
+I realized that after &lt;a href=&quot;https://wiki.jenkins-ci.org/display/JENKINS/Logging&quot;&gt;increasing the logging level in the WEB interface&lt;/a&gt;, 
+the messages that I needed weren&amp;#8217;t being displayed in the logs.&lt;/p&gt;
+
+&lt;p&gt;It happened because some of the logging happened during Jenkins initialization, and before I could adjust the log level.&lt;/p&gt;
+
+&lt;p&gt;The solution was to use a &lt;a href=&quot;https://wiki.jenkins-ci.org/display/JENKINS/Groovy+Hook+Script&quot;&gt;Groovy Hook Script&lt;/a&gt;. 
+If you are familiar with Linux init scripts, the idea is quite similar. &lt;/p&gt;
+
+&lt;p&gt;A Groovy script in the &lt;code&gt;$JENKINS_ROOT_DIR/init.groovy.d/&lt;/code&gt; directory is executed during
+Jenkins initialization. This way you can increase the global logger level with a script
+as the following below.&lt;/p&gt;
+
+&lt;pre class=&quot;java&quot; style=&quot;font-family:monospace;&quot;&gt;&lt;span style=&quot;color: #000000; font-weight: bold;&quot;&gt;import&lt;/span&gt; &lt;span style=&quot;color: #006699;&quot;&gt;java.util.logging.ConsoleHandler&lt;/span&gt;
+&lt;span style=&quot;color: #000000; font-weight: bold;&quot;&gt;import&lt;/span&gt; &lt;span style=&quot;color: #006699;&quot;&gt;java.util.logging.LogManager&lt;/span&gt;
+&lt;span style=&quot;color: #000000; font-weight: bold;&quot;&gt;import&lt;/span&gt; &lt;span style=&quot;color: #006699;&quot;&gt;java.util.logging.Logger&lt;/span&gt;
+&lt;span style=&quot;color: #000000; font-weight: bold;&quot;&gt;import&lt;/span&gt; &lt;span style=&quot;color: #006699;&quot;&gt;java.util.logging.Level&lt;/span&gt;
+&amp;nbsp;
+def logger &lt;span style=&quot;color: #339933;&quot;&gt;=&lt;/span&gt; Logger.&lt;span style=&quot;color: #006633;&quot;&gt;getLogger&lt;/span&gt;&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#40;&lt;/span&gt;&lt;span style=&quot;color: #0000ff;&quot;&gt;&amp;quot;&amp;quot;&lt;/span&gt;&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#41;&lt;/span&gt;
+logger.&lt;span style=&quot;color: #006633;&quot;&gt;setLevel&lt;/span&gt;&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#40;&lt;/span&gt;Level.&lt;span style=&quot;color: #006633;&quot;&gt;FINEST&lt;/span&gt;&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#41;&lt;/span&gt;
+logger.&lt;span style=&quot;color: #006633;&quot;&gt;addHandler&lt;/span&gt; &lt;span style=&quot;color: #009900;&quot;&gt;&amp;#40;&lt;/span&gt;&lt;span style=&quot;color: #000000; font-weight: bold;&quot;&gt;new&lt;/span&gt; ConsoleHandler&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#40;&lt;/span&gt;&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#41;&lt;/span&gt;&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#41;&lt;/span&gt;&lt;/pre&gt;
+
+&lt;p&gt;Happy logging!&lt;/p&gt;
+</description>
+</item>
+<item>
     <title>Contributing to Apache Jena</title>
-    <pubDate>Thu, 01 Jan 2015 00:00:00 -0200</pubDate>
+    <pubDate>Thu, 01 Jan 2015 00:00:00 +1300</pubDate>
     <link>/2015/01/01/contributing-to-apache-jena.html</link>
     <dc:creator>Bruno P. Kinoshita</dc:creator>
     <description>&lt;p&gt;As I mentioned in my &lt;a href=&quot;2014/10/11/basic-workflow-of-a-sparql-query-in-fuseki.html&quot;&gt;previous post&lt;/a&gt;, 
@@ -96,7 +126,7 @@ of fun!&lt;/strong&gt;&lt;/p&gt;
 </item>
 <item>
     <title>Basic workflow of a SPARQL query in Fuseki</title>
-    <pubDate>Sat, 11 Oct 2014 00:00:00 -0300</pubDate>
+    <pubDate>Sat, 11 Oct 2014 00:00:00 +1300</pubDate>
     <link>/2014/10/11/basic-workflow-of-a-sparql-query-in-fuseki.html</link>
     <dc:creator>Bruno P. Kinoshita</dc:creator>
     <description>&lt;p&gt;Before using any library or tool in a customer project, specially when it is an Open Source one, 
@@ -137,7 +167,7 @@ updated version of this graph soon.&lt;/p&gt;
 </item>
 <item>
     <title>Cypher, Gremlin and SPARQL: Graph dialects</title>
-    <pubDate>Tue, 09 Sep 2014 00:00:00 -0300</pubDate>
+    <pubDate>Tue, 09 Sep 2014 00:00:00 +1200</pubDate>
     <link>/2014/09/09/cypher-gremlin-and-sparql-graph-dialects.html</link>
     <dc:creator>Bruno P. Kinoshita</dc:creator>
     <description>&lt;p&gt;When I was younger and my older brother was living in Germany, I asked him if he 
@@ -280,7 +310,7 @@ You can check the diff at &lt;a href=&quot;https://github.com/kinow/kinoshita.et
 </item>
 <item>
     <title>Strings transliteration in Java with Apache Commons Lang</title>
-    <pubDate>Sat, 09 Aug 2014 00:00:00 -0300</pubDate>
+    <pubDate>Sat, 09 Aug 2014 00:00:00 +1200</pubDate>
     <link>/2014/08/09/strings-transliteration-in-java-with-apache-commons-lang.html</link>
     <dc:creator>Bruno P. Kinoshita</dc:creator>
     <description>&lt;p&gt;&lt;a href=&quot;http://rosalind.info&quot;&gt;Rosalind&lt;/a&gt; is a website with a curated set of exercices for bioinformatics, organized hierarchily. 
@@ -308,7 +338,7 @@ special characters, spaces by _, and so it goes.&lt;/p&gt;
 </item>
 <item>
     <title>Treemapping Jenkins Extension Points with R</title>
-    <pubDate>Mon, 19 May 2014 00:00:00 -0300</pubDate>
+    <pubDate>Mon, 19 May 2014 00:00:00 +1200</pubDate>
     <link>/2014/05/19/treemapping-jenkins-extension-points-with-r.html</link>
     <dc:creator>Bruno P. Kinoshita</dc:creator>
     <description>&lt;p&gt;I have been playing with R and its packages for some time, and decided to study it a 
@@ -373,7 +403,7 @@ dev.off()&lt;/pre&gt;
 </item>
 <item>
     <title>Writing a custom SchemaSpy command for Laravel 4</title>
-    <pubDate>Tue, 11 Feb 2014 00:00:00 -0200</pubDate>
+    <pubDate>Tue, 11 Feb 2014 00:00:00 +1300</pubDate>
     <link>/2014/02/11/writing-a-custom-schemaspy-command-for-laravel-4.html</link>
     <dc:creator>Bruno P. Kinoshita</dc:creator>
     <description>&lt;p&gt;This week I had to write my first custom command for &lt;a href=&quot;http://laravel.com/&quot;&gt;Laravel 4&lt;/a&gt;. 
@@ -420,7 +450,7 @@ creates the database schema docs in the &lt;code&gt;database-schema&lt;/code&gt;
 </item>
 <item>
     <title>Missing menus in new installation of TestLink 1.9.8</title>
-    <pubDate>Sun, 27 Oct 2013 00:00:00 -0200</pubDate>
+    <pubDate>Sun, 27 Oct 2013 00:00:00 +1300</pubDate>
     <link>/2013/10/27/missing-menus-in-new-installation-of-testlink.html</link>
     <dc:creator>Bruno P. Kinoshita</dc:creator>
     <description>&lt;p&gt;I recently installed TestLink 1.9.8 and noticed that the menus and some other parts 
@@ -446,7 +476,7 @@ Happy testing!&lt;/p&gt;
 </item>
 <item>
     <title>The Apache Way and on writing software reviews</title>
-    <pubDate>Sun, 29 Sep 2013 00:00:00 -0300</pubDate>
+    <pubDate>Sun, 29 Sep 2013 00:00:00 +1200</pubDate>
     <link>/2013/09/29/the-apache-way-and-on-writing-software-reviews.html</link>
     <dc:creator>Bruno P. Kinoshita</dc:creator>
     <description>&lt;p&gt;The &lt;a href=&quot;http://www.apache.org/foundation/how-it-works.html&quot;&gt;Apache Way&lt;/a&gt; is the philosophy behind 
@@ -526,7 +556,7 @@ http://www.itworld.com/it-managementstrategy/227477/has-open-source-outgrown-apa
 </item>
 <item>
     <title>Too many SQL variables exception in Graphite with SQLite3</title>
-    <pubDate>Thu, 04 Jul 2013 00:00:00 -0300</pubDate>
+    <pubDate>Thu, 04 Jul 2013 00:00:00 +1200</pubDate>
     <link>/2013/07/04/too_many_sql_variables_in_graphite_with_sqlite3.html</link>
     <dc:creator>Bruno P. Kinoshita</dc:creator>
     <description>&lt;p&gt;Having run &lt;a href=&quot;http://graphite.wikidot.com/&quot;&gt;Graphite&lt;/a&gt; for a while, today I found a rather annoying issue. We were using 
@@ -573,22 +603,6 @@ command.&lt;/p&gt;
 &lt;p&gt;&lt;small&gt;&lt;sup&gt;1&lt;/sup&gt; You may have to enable *DEBUG* in your Django settings for seeing the exception in your browser&lt;/small&gt;&lt;/p&gt;
 
 &lt;p&gt;&lt;p&gt;&lt;small&gt;&lt;sup&gt;2&lt;/sup&gt; Zabbix needed some minor tweaks in order to use &lt;a href=&quot;https://mariadb.org/&quot;&gt;MariaDB&lt;/a&gt;, but probably you can give it a try too&lt;/small&gt;&lt;/p&gt;&lt;/p&gt;
-</description>
-</item>
-<item>
-    <title>Graphite: Broken images</title>
-    <pubDate>Wed, 17 Apr 2013 00:00:00 -0300</pubDate>
-    <link>/2013/04/17/graphite-broken-images.html</link>
-    <dc:creator>Bruno P. Kinoshita</dc:creator>
-    <description>&lt;p&gt;This morning I was setting up a &lt;a href=&quot;http://graphite.wikidot.com/&quot; title=&quot;Graphite&quot;&gt;Graphite &lt;/a&gt;server to collect metrics with &lt;a href=&quot;https://github.com/etsy/statsd/&quot; title=&quot;statsd&quot;&gt;statsd&lt;/a&gt;, &lt;a href=&quot;http://logstash.net/&quot; title=&quot;LogStash&quot;&gt;LogStash &lt;/a&gt;and &lt;a href=&quot;https://github.com/jmxtrans/jmxtrans&quot; title=&quot;jmxtrans&quot;&gt;jmxtrans&lt;/a&gt;. After following the instructions from @jgeurst, I&amp;#8217;ve successfully installed Graphite.&lt;/p&gt;
-
-&lt;p&gt;I had previously installed another test box, so I decided to take a deeper look at the settings, write a &lt;a href=&quot;https://puppetlabs.com/&quot; title=&quot;Puppet&quot;&gt;puppet&lt;/a&gt; manifest and prepare this new box to become a production server. However, after browsing the webapp, all graphs were broken.&lt;/p&gt;
-
-&lt;p&gt;After googling a while, reading forums and bugs, I decided to open the &lt;em&gt;$GRAPHITE_HOME/webapp/graphite/render/views.py&lt;/em&gt;, adding &lt;em&gt;log.rendering(&amp;#8230;)&lt;/em&gt; statements (not the most elegant solution, I know).&lt;/p&gt;
-
-&lt;p&gt;By following the program workflow I found out it was entering a block after checking if it should remotely render the image. This feature is turned on/off by &lt;strong&gt;REMOTE_RENDERING&lt;/strong&gt; = True/False, in local_settings.py.&lt;/p&gt;
-
-&lt;p&gt;After setting this to &lt;em&gt;False&lt;/em&gt; the problem was solved.&lt;/p&gt;
 </description>
 </item>
 </channel>

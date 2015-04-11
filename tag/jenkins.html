@@ -113,6 +113,53 @@
                                                         Posts tagged with 'jenkins'
 
 <div class="post type-post status-publish format-standard hentry">
+    <h2>Groovy Hooks in Jenkins for increasing logging level</h2>
+    <p><small>kinow</small> @ <small>April 12, 2015&nbsp;11:30:03</small></p>
+    <div><a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2015/04/12/groovy-hooks-in-jenkins-for-increasing-logging-level.html" data-text="Groovy Hooks in Jenkins for increasing logging level" data-via="kinow" data-hashtags="opensource">Tweet</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+</div>
+    <p>Yesterday, while debugging a problem we had in the <a href="http://biouno.org">BioUno</a> update center, 
+I realized that after <a href="https://wiki.jenkins-ci.org/display/JENKINS/Logging">increasing the logging level in the WEB interface</a>, 
+the messages that I needed weren&#8217;t being displayed in the logs.</p>
+
+<p>It happened because some of the logging happened during Jenkins initialization, and before I could adjust the log level.</p>
+
+<p>The solution was to use a <a href="https://wiki.jenkins-ci.org/display/JENKINS/Groovy+Hook+Script">Groovy Hook Script</a>. 
+If you are familiar with Linux init scripts, the idea is quite similar. </p>
+
+<p>A Groovy script in the <code>$JENKINS_ROOT_DIR/init.groovy.d/</code> directory is executed during
+Jenkins initialization. This way you can increase the global logger level with a script
+as the following below.</p>
+
+<pre class="java" style="font-family:monospace;"><span style="color: #000000; font-weight: bold;">import</span> <span style="color: #006699;">java.util.logging.ConsoleHandler</span>
+<span style="color: #000000; font-weight: bold;">import</span> <span style="color: #006699;">java.util.logging.LogManager</span>
+<span style="color: #000000; font-weight: bold;">import</span> <span style="color: #006699;">java.util.logging.Logger</span>
+<span style="color: #000000; font-weight: bold;">import</span> <span style="color: #006699;">java.util.logging.Level</span>
+&nbsp;
+def logger <span style="color: #339933;">=</span> Logger.<span style="color: #006633;">getLogger</span><span style="color: #009900;">&#40;</span><span style="color: #0000ff;">&quot;&quot;</span><span style="color: #009900;">&#41;</span>
+logger.<span style="color: #006633;">setLevel</span><span style="color: #009900;">&#40;</span>Level.<span style="color: #006633;">FINEST</span><span style="color: #009900;">&#41;</span>
+logger.<span style="color: #006633;">addHandler</span> <span style="color: #009900;">&#40;</span><span style="color: #000000; font-weight: bold;">new</span> ConsoleHandler<span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #009900;">&#41;</span></pre>
+
+<p>Happy logging!</p>
+<!-- html -->
+        <p class="postmetadata">
+                <small>tags          [&nbsp;<a
+            href="/tag/jenkins.html"
+            rel="tag">jenkins</a>&nbsp;]&nbsp;
+                 [&nbsp;<a
+            href="/tag/groovy.html"
+            rel="tag">groovy</a>&nbsp;]&nbsp;
+                </small>
+                        <br/>
+        <small>posted in 
+        [&nbsp;<a
+            href="/blog.html"
+            title="View all posts in blog"
+            rel="category tag">blog</a>&nbsp;]&nbsp;
+        category </small>
+            </p>
+</div>
+<div class="post type-post status-publish format-standard hentry">
     <h2>Treemapping Jenkins Extension Points with R</h2>
     <p><small>kinow</small> @ <small>May 19, 2014&nbsp;00:51:33</small></p>
     <div><a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2014/05/19/treemapping-jenkins-extension-points-with-r.html" data-text="Treemapping Jenkins Extension Points with R" data-via="kinow" data-hashtags="opensource">Tweet</a>
@@ -315,56 +362,6 @@ dev.off()</pre>
                  [&nbsp;<a
             href="/tag/gcovr.html"
             rel="tag">gcovr</a>&nbsp;]&nbsp;
-                </small>
-                        <br/>
-        <small>posted in 
-        [&nbsp;<a
-            href="/jenkins.html"
-            title="View all posts in jenkins"
-            rel="category tag">jenkins</a>&nbsp;]&nbsp;
-        category </small>
-            </p>
-</div>
-<div class="post type-post status-publish format-standard hentry">
-    <h2>Jenkins, TestLink and GTest in 5 minutes (or so)</h2>
-    <p><small>kinow</small> @ <small>October 11, 2012&nbsp;23:44:59</small></p>
-    <div><a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2012/10/11/jenkins-testlink-and-gtest-in-5-minutes-or-so.html" data-text="Jenkins, TestLink and GTest in 5 minutes (or so)" data-via="kinow" data-hashtags="opensource">Tweet</a>
-<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-</div>
-    <p>This is a 5 minutes guide on creating a job for a C++ project in <a href="http://www.jenkins-ci.org" title="Jenkins CI">Jenkins</a> with <a href="http://code.google.com/p/googletest" title="GoogleTest">GoogleTest</a> and reporting the test results back to <a href="http://www.teamst.org" title="TestLink">TestLink</a>, with <a href="https://wiki.jenkins-ci.org/display/JENKINS/TestLink+Plugin" title="Jenkins TestLink Plug-in">testlink-plugin</a>. </p>
-
-<h2>The test project with GoogleTest</h2>
-
-<p>For this simple guide we will use the samples that come with <a href="https://github.com/kinow/gtest-tap-listener" title="GTest TAP Listener">GTest TAP Listener</a>. You can get the code from GitHub with <code>git clone git://github.com/kinow/gtest-tap-listener.git</code>. Take a look at <em>gtest-tap-listener/samples/src/</em>, there you will find two C++ files: <em>gtest_main.cc</em> and <em>gtest_testHelloWorld.cc</em>.</p>
-
-<p><em>gtest_main.cc</em> has the <a href="http://code.google.com/p/googletest/wiki/Primer#Writing_the_main()_Function" title="GTest main function">main function</a>, and executes the test suite. And <em>gtest_testHelloWorld.cc</em> has the test cases and tests. Take note of the test case and tests names.</p>
-
-<p><a href="/2012/10/11/jenkins-testlink-and-gtest-in-5-minutes-or-so/screenshot_001.png"><img src="/2012/10/11/jenkins-testlink-and-gtest-in-5-minutes-or-so/screenshot_001.png" alt="" title="gtest_testHelloWorld.cc" width="546" height="482" class="aligncenter size-full wp-image-1083" /></a></p>
-
-<!-- html -->
-        <p>( <a href="/2012/10/11/jenkins-testlink-and-gtest-in-5-minutes-or-so.html" >Read more ...</a> )</p>
-        <p class="postmetadata">
-                <small>tags          [&nbsp;<a
-            href="/tag/jenkins.html"
-            rel="tag">jenkins</a>&nbsp;]&nbsp;
-                 [&nbsp;<a
-            href="/tag/testlink.html"
-            rel="tag">testlink</a>&nbsp;]&nbsp;
-                 [&nbsp;<a
-            href="/tag/googletest.html"
-            rel="tag">googletest</a>&nbsp;]&nbsp;
-                 [&nbsp;<a
-            href="/tag/gtest.html"
-            rel="tag">gtest</a>&nbsp;]&nbsp;
-                 [&nbsp;<a
-            href="/tag/c.html"
-            rel="tag">c++</a>&nbsp;]&nbsp;
-                 [&nbsp;<a
-            href="/tag/c.html"
-            rel="tag">c</a>&nbsp;]&nbsp;
-                 [&nbsp;<a
-            href="/tag/testing.html"
-            rel="tag">testing</a>&nbsp;]&nbsp;
                 </small>
                         <br/>
         <small>posted in 
