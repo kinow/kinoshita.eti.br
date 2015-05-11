@@ -1,0 +1,58 @@
+---
+title: 'Contract Tests'
+author: kinow
+tags:
+    - java
+    - junit
+    - unit testing
+    - contract test
+category: 'blog'
+time: '21:21:03'
+---
+
+[Apache Jena](https://jena.apache.org) is getting ready for the 3.0 release. In the meantime, 
+I've been trying to help with [JENA-380](https://issues.apache.org/jira/browse/JENA-380). Thankfully
+Claude joined and is working on the issue again.
+
+He proposed to start using [Contract Tests](https://github.com/Claudenw/junit-contracts) in tests
+in Jena. Having never heard about contract tests, I decided to write this blog post while I experimented
+with the examples in the project, and also with Claude's code in a branch in Jena Git repository.
+
+##What are contract tests?
+
+Contract tests are designed to test the behaviour of interfaces. Even though interfaces expose
+methods to users, its documentation may include extra details about its behaviour. For example, you
+may have the following method.
+
+{% geshi 'java' %}
+interface CouponGenerator {
+
+    void generateCoupon() throws CouponException;
+
+}
+{% endgeshi %}
+
+So it contains a single method to generate coupons. But it may also include some documentation.
+
+{% geshi 'java' %}
+interface CouponGenerator {
+
+    /**
+     * Generates a coupon, unless the coupon generation has been disabled.
+     * @throws CouponException if the coupon generation has been disabled
+     */
+    void generateCoupon() throws CouponException;
+
+}
+{% endgeshi %}
+
+This is a simple example, with no intention of representing anything useful. But being simple it
+is helpful to understand the concept of contract tests. Even though the class and its method names
+tell us that it generates coupons, the documentation extend the behaviour by saying that if
+the coupon generation has been disabled it will throw an exception.
+
+##Writing contract tests
+
+
+
+Happy testing!
