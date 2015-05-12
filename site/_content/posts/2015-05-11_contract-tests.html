@@ -27,6 +27,8 @@ may have the following method.
 {% geshi 'java' %}
 interface CouponGenerator {
 
+    boolean isEnabled();
+
     void generateCoupon() throws CouponException;
 
 }
@@ -36,6 +38,8 @@ So it contains a single method to generate coupons. But it may also include some
 
 {% geshi 'java' %}
 interface CouponGenerator {
+
+    boolean isEnabled();
 
     /**
      * Generates a coupon, unless the coupon generation has been disabled.
@@ -48,11 +52,11 @@ interface CouponGenerator {
 
 This is a simple example, with no intention of representing anything useful. But being simple it
 is helpful to understand the concept of contract tests. Even though the class and its method names
-tell us that it generates coupons, the documentation extend the behaviour by saying that if
+tell us that it generates coupons, the documentation extends the behaviour by saying that if
 the coupon generation has been disabled it will throw an exception.
 
 ##Writing contract tests
 
-
+We can cover the contract of the CouponGenerator interface with contract tests.
 
 Happy testing!
