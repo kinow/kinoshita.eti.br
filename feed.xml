@@ -13,10 +13,166 @@
     <atom:link href="http://kinoshita.eti.br/blog/feed.xml" rel="self" type="application/rss+xml" />
     <link>http://kinoshita.eti.br/</link>
     <description></description>
-    <lastBuildDate>Sun, 12 Apr 2015 11:55:58 +1200</lastBuildDate>
+    <lastBuildDate>Thu, 14 May 2015 21:53:40 +1200</lastBuildDate>
     <language>en-US</language>
     <generator>PieCrust 1.2.0</generator>
  
+<item>
+    <title>Contract Tests</title>
+    <pubDate>Mon, 11 May 2015 00:00:00 +1200</pubDate>
+    <link>/2015/05/11/contract-tests.html</link>
+    <dc:creator>Bruno P. Kinoshita</dc:creator>
+    <description>&lt;p&gt;&lt;a href=&quot;https://jena.apache.org&quot;&gt;Apache Jena&lt;/a&gt; is getting ready for the 3.0 release. In the meantime, 
+I&amp;#8217;ve been trying to help with &lt;a href=&quot;https://issues.apache.org/jira/browse/JENA-380&quot;&gt;JENA-380&lt;/a&gt;. Thankfully
+Claude joined and is working on the issue again.&lt;/p&gt;
+
+&lt;p&gt;He proposed to start using &lt;a href=&quot;https://github.com/Claudenw/junit-contracts&quot;&gt;Contract Tests&lt;/a&gt; in tests
+in Jena. Having never heard about contract tests, I decided to write this blog post while I experimented
+with the examples in the project, and also with Claude&amp;#8217;s code in a branch in Jena Git repository.&lt;/p&gt;
+
+&lt;h2&gt;What are contract tests?&lt;/h2&gt;
+
+&lt;p&gt;Contract tests are designed to test the behaviour of interfaces. Even though interfaces expose
+methods to users, its documentation may include extra details about its behaviour. For example, you
+may have the following method.&lt;/p&gt;
+
+&lt;pre class=&quot;java&quot; style=&quot;font-family:monospace;&quot;&gt;&lt;span style=&quot;color: #000000; font-weight: bold;&quot;&gt;interface&lt;/span&gt; CouponGenerator &lt;span style=&quot;color: #009900;&quot;&gt;&amp;#123;&lt;/span&gt;
+&amp;nbsp;
+    &lt;span style=&quot;color: #000066; font-weight: bold;&quot;&gt;boolean&lt;/span&gt; isEnabled&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#40;&lt;/span&gt;&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#41;&lt;/span&gt;&lt;span style=&quot;color: #339933;&quot;&gt;;&lt;/span&gt;
+&amp;nbsp;
+    &lt;span style=&quot;color: #000066; font-weight: bold;&quot;&gt;void&lt;/span&gt; generateCoupon&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#40;&lt;/span&gt;&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#41;&lt;/span&gt; &lt;span style=&quot;color: #000000; font-weight: bold;&quot;&gt;throws&lt;/span&gt; CouponException&lt;span style=&quot;color: #339933;&quot;&gt;;&lt;/span&gt;
+&amp;nbsp;
+&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#125;&lt;/span&gt;&lt;/pre&gt;
+
+&lt;p&gt;So it contains a single method to generate coupons. But it may also include some documentation.&lt;/p&gt;
+
+&lt;pre class=&quot;java&quot; style=&quot;font-family:monospace;&quot;&gt;&lt;span style=&quot;color: #000000; font-weight: bold;&quot;&gt;interface&lt;/span&gt; CouponGenerator &lt;span style=&quot;color: #009900;&quot;&gt;&amp;#123;&lt;/span&gt;
+&amp;nbsp;
+    &lt;span style=&quot;color: #000066; font-weight: bold;&quot;&gt;boolean&lt;/span&gt; isEnabled&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#40;&lt;/span&gt;&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#41;&lt;/span&gt;&lt;span style=&quot;color: #339933;&quot;&gt;;&lt;/span&gt;
+&amp;nbsp;
+    &lt;span style=&quot;color: #008000; font-style: italic; font-weight: bold;&quot;&gt;/**
+     * Generates a coupon, unless the coupon generation has been disabled.
+     * @throws CouponException if the coupon generation has been disabled
+     */&lt;/span&gt;
+    &lt;span style=&quot;color: #000066; font-weight: bold;&quot;&gt;void&lt;/span&gt; generateCoupon&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#40;&lt;/span&gt;&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#41;&lt;/span&gt; &lt;span style=&quot;color: #000000; font-weight: bold;&quot;&gt;throws&lt;/span&gt; CouponException&lt;span style=&quot;color: #339933;&quot;&gt;;&lt;/span&gt;
+&amp;nbsp;
+&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#125;&lt;/span&gt;&lt;/pre&gt;
+
+&lt;p&gt;This is a simple example, with no intention of representing anything useful. But being simple it
+is helpful to understand the concept of contract tests. Even though the class and its method names
+tell us that it generates coupons, the documentation extends the behaviour by saying that if
+the coupon generation has been disabled it will throw an exception.&lt;/p&gt;
+
+&lt;h2&gt;Writing contract tests&lt;/h2&gt;
+
+&lt;p&gt;We can cover the contract of the CouponGenerator interface with contract tests. We start by writing
+the tests for our interface.&lt;/p&gt;
+
+&lt;pre class=&quot;java&quot; style=&quot;font-family:monospace;&quot;&gt;&amp;nbsp;
+@Contract&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#40;&lt;/span&gt;CouponGenerator.&lt;span style=&quot;color: #000000; font-weight: bold;&quot;&gt;class&lt;/span&gt;&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#41;&lt;/span&gt;
+&lt;span style=&quot;color: #000000; font-weight: bold;&quot;&gt;public&lt;/span&gt; &lt;span style=&quot;color: #000000; font-weight: bold;&quot;&gt;class&lt;/span&gt; CouponGeneratorContractTest&lt;span style=&quot;color: #339933;&quot;&gt;&amp;lt;&lt;/span&gt;T &lt;span style=&quot;color: #000000; font-weight: bold;&quot;&gt;extends&lt;/span&gt; CouponGenerator&lt;span style=&quot;color: #339933;&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span style=&quot;color: #009900;&quot;&gt;&amp;#123;&lt;/span&gt;
+&amp;nbsp;
+    &lt;span style=&quot;color: #666666; font-style: italic;&quot;&gt;// the producer we will user&lt;/span&gt;
+    &lt;span style=&quot;color: #000000; font-weight: bold;&quot;&gt;private&lt;/span&gt; IProducer&lt;span style=&quot;color: #339933;&quot;&gt;&amp;lt;&lt;/span&gt;T&lt;span style=&quot;color: #339933;&quot;&gt;&amp;gt;&lt;/span&gt; producer&lt;span style=&quot;color: #339933;&quot;&gt;;&lt;/span&gt;
+&amp;nbsp;
+    @Contract.&lt;span style=&quot;color: #006633;&quot;&gt;Inject&lt;/span&gt;
+    &lt;span style=&quot;color: #666666; font-style: italic;&quot;&gt;// define the method to set producer.&lt;/span&gt;
+    &lt;span style=&quot;color: #000000; font-weight: bold;&quot;&gt;public&lt;/span&gt; &lt;span style=&quot;color: #000000; font-weight: bold;&quot;&gt;final&lt;/span&gt; &lt;span style=&quot;color: #000066; font-weight: bold;&quot;&gt;void&lt;/span&gt; setProducer&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#40;&lt;/span&gt;IProducer&lt;span style=&quot;color: #339933;&quot;&gt;&amp;lt;&lt;/span&gt;T&lt;span style=&quot;color: #339933;&quot;&gt;&amp;gt;&lt;/span&gt; producer&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#41;&lt;/span&gt; &lt;span style=&quot;color: #009900;&quot;&gt;&amp;#123;&lt;/span&gt;
+        &lt;span style=&quot;color: #000000; font-weight: bold;&quot;&gt;this&lt;/span&gt;.&lt;span style=&quot;color: #006633;&quot;&gt;producer&lt;/span&gt; &lt;span style=&quot;color: #339933;&quot;&gt;=&lt;/span&gt; producer&lt;span style=&quot;color: #339933;&quot;&gt;;&lt;/span&gt;
+    &lt;span style=&quot;color: #009900;&quot;&gt;&amp;#125;&lt;/span&gt;
+&amp;nbsp;
+    &lt;span style=&quot;color: #000000; font-weight: bold;&quot;&gt;protected&lt;/span&gt; &lt;span style=&quot;color: #000000; font-weight: bold;&quot;&gt;final&lt;/span&gt; IProducer&lt;span style=&quot;color: #339933;&quot;&gt;&amp;lt;&lt;/span&gt;T&lt;span style=&quot;color: #339933;&quot;&gt;&amp;gt;&lt;/span&gt; getProducer&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#40;&lt;/span&gt;&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#41;&lt;/span&gt; &lt;span style=&quot;color: #009900;&quot;&gt;&amp;#123;&lt;/span&gt;
+        &lt;span style=&quot;color: #000000; font-weight: bold;&quot;&gt;return&lt;/span&gt; producer&lt;span style=&quot;color: #339933;&quot;&gt;;&lt;/span&gt;
+    &lt;span style=&quot;color: #009900;&quot;&gt;&amp;#125;&lt;/span&gt;
+&amp;nbsp;
+    @After
+    &lt;span style=&quot;color: #000000; font-weight: bold;&quot;&gt;public&lt;/span&gt; &lt;span style=&quot;color: #000000; font-weight: bold;&quot;&gt;final&lt;/span&gt; &lt;span style=&quot;color: #000066; font-weight: bold;&quot;&gt;void&lt;/span&gt; cleanupAT&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#40;&lt;/span&gt;&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#41;&lt;/span&gt; &lt;span style=&quot;color: #009900;&quot;&gt;&amp;#123;&lt;/span&gt;
+        getProducer&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#40;&lt;/span&gt;&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#41;&lt;/span&gt;.&lt;span style=&quot;color: #006633;&quot;&gt;cleanUp&lt;/span&gt;&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#40;&lt;/span&gt;&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#41;&lt;/span&gt;&lt;span style=&quot;color: #339933;&quot;&gt;;&lt;/span&gt; &lt;span style=&quot;color: #666666; font-style: italic;&quot;&gt;// clean up the producer for the next run&lt;/span&gt;
+    &lt;span style=&quot;color: #009900;&quot;&gt;&amp;#125;&lt;/span&gt;
+&amp;nbsp;
+    @ContractTest
+    &lt;span style=&quot;color: #000000; font-weight: bold;&quot;&gt;public&lt;/span&gt; &lt;span style=&quot;color: #000066; font-weight: bold;&quot;&gt;void&lt;/span&gt; shouldGenerateACouponWhenEnabled&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#40;&lt;/span&gt;&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#41;&lt;/span&gt; &lt;span style=&quot;color: #000000; font-weight: bold;&quot;&gt;throws&lt;/span&gt; CouponException &lt;span style=&quot;color: #009900;&quot;&gt;&amp;#123;&lt;/span&gt;
+        CouponGenerator couponGenerator &lt;span style=&quot;color: #339933;&quot;&gt;=&lt;/span&gt; getProducer&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#40;&lt;/span&gt;&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#41;&lt;/span&gt;.&lt;span style=&quot;color: #006633;&quot;&gt;newInstance&lt;/span&gt;&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#40;&lt;/span&gt;&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#41;&lt;/span&gt;&lt;span style=&quot;color: #339933;&quot;&gt;;&lt;/span&gt;
+        couponGenerator.&lt;span style=&quot;color: #006633;&quot;&gt;generateCoupon&lt;/span&gt;&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#40;&lt;/span&gt;&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#41;&lt;/span&gt;&lt;span style=&quot;color: #339933;&quot;&gt;;&lt;/span&gt;
+        assertNotNull&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#40;&lt;/span&gt;couponGenerator&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#41;&lt;/span&gt;&lt;span style=&quot;color: #339933;&quot;&gt;;&lt;/span&gt;
+    &lt;span style=&quot;color: #009900;&quot;&gt;&amp;#125;&lt;/span&gt;
+&amp;nbsp;
+    @ContractTest
+    &lt;span style=&quot;color: #000000; font-weight: bold;&quot;&gt;public&lt;/span&gt; &lt;span style=&quot;color: #000066; font-weight: bold;&quot;&gt;void&lt;/span&gt; shouldFailWhenDisabled&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#40;&lt;/span&gt;&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#41;&lt;/span&gt; &lt;span style=&quot;color: #000000; font-weight: bold;&quot;&gt;throws&lt;/span&gt; CouponException &lt;span style=&quot;color: #009900;&quot;&gt;&amp;#123;&lt;/span&gt;
+        CouponGenerator couponGenerator &lt;span style=&quot;color: #339933;&quot;&gt;=&lt;/span&gt; getProducer&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#40;&lt;/span&gt;&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#41;&lt;/span&gt;.&lt;span style=&quot;color: #006633;&quot;&gt;newInstance&lt;/span&gt;&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#40;&lt;/span&gt;&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#41;&lt;/span&gt;&lt;span style=&quot;color: #339933;&quot;&gt;;&lt;/span&gt;
+        couponGenerator.&lt;span style=&quot;color: #006633;&quot;&gt;generateCoupon&lt;/span&gt;&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#40;&lt;/span&gt;&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#41;&lt;/span&gt;&lt;span style=&quot;color: #339933;&quot;&gt;;&lt;/span&gt;
+        assertNotNull&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#40;&lt;/span&gt;couponGenerator&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#41;&lt;/span&gt;&lt;span style=&quot;color: #339933;&quot;&gt;;&lt;/span&gt;
+        &lt;span style=&quot;color: #000000; font-weight: bold;&quot;&gt;try&lt;/span&gt; &lt;span style=&quot;color: #009900;&quot;&gt;&amp;#123;&lt;/span&gt;
+            couponGenerator.&lt;span style=&quot;color: #006633;&quot;&gt;setEnabled&lt;/span&gt;&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#40;&lt;/span&gt;&lt;span style=&quot;color: #000066; font-weight: bold;&quot;&gt;false&lt;/span&gt;&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#41;&lt;/span&gt;&lt;span style=&quot;color: #339933;&quot;&gt;;&lt;/span&gt;
+            couponGenerator.&lt;span style=&quot;color: #006633;&quot;&gt;generateCoupon&lt;/span&gt;&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#40;&lt;/span&gt;&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#41;&lt;/span&gt;&lt;span style=&quot;color: #339933;&quot;&gt;;&lt;/span&gt;
+            fail&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#40;&lt;/span&gt;&lt;span style=&quot;color: #0000ff;&quot;&gt;&amp;quot;Coupon Generator must fail if disabled!&amp;quot;&lt;/span&gt;&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#41;&lt;/span&gt;&lt;span style=&quot;color: #339933;&quot;&gt;;&lt;/span&gt;
+        &lt;span style=&quot;color: #009900;&quot;&gt;&amp;#125;&lt;/span&gt; &lt;span style=&quot;color: #000000; font-weight: bold;&quot;&gt;catch&lt;/span&gt; &lt;span style=&quot;color: #009900;&quot;&gt;&amp;#40;&lt;/span&gt;CouponException ce&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#41;&lt;/span&gt; &lt;span style=&quot;color: #009900;&quot;&gt;&amp;#123;&lt;/span&gt;
+            &lt;span style=&quot;color: #666666; font-style: italic;&quot;&gt;// ignore&lt;/span&gt;
+        &lt;span style=&quot;color: #009900;&quot;&gt;&amp;#125;&lt;/span&gt;
+    &lt;span style=&quot;color: #009900;&quot;&gt;&amp;#125;&lt;/span&gt;
+&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#125;&lt;/span&gt;&lt;/pre&gt;
+
+&lt;p&gt;This test covers the basic contract defined in our interface and is used by the junit-contracts
+library.&lt;/p&gt;
+
+&lt;h2&gt;Dissecting the code&lt;/h2&gt;
+
+&lt;p&gt;This first part defines the interface under test.&lt;/p&gt;
+
+&lt;pre class=&quot;java&quot; style=&quot;font-family:monospace;&quot;&gt;@Contract&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#40;&lt;/span&gt;CouponGenerator.&lt;span style=&quot;color: #000000; font-weight: bold;&quot;&gt;class&lt;/span&gt;&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#41;&lt;/span&gt;
+&lt;span style=&quot;color: #000000; font-weight: bold;&quot;&gt;public&lt;/span&gt; &lt;span style=&quot;color: #000000; font-weight: bold;&quot;&gt;class&lt;/span&gt; CouponGeneratorContractTest&lt;span style=&quot;color: #339933;&quot;&gt;&amp;lt;&lt;/span&gt;T &lt;span style=&quot;color: #000000; font-weight: bold;&quot;&gt;extends&lt;/span&gt; CouponGenerator&lt;span style=&quot;color: #339933;&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span style=&quot;color: #009900;&quot;&gt;&amp;#123;&lt;/span&gt;&lt;/pre&gt;
+
+&lt;p&gt;This next part is the producer which, as the name suggests, produces instances of our
+interface. These instances are used during testing, and are set by the implementation
+tests.&lt;/p&gt;
+
+&lt;p&gt;The methods annotated by @ContractTest are the tests for what is defined in our
+interface. They contain the assertions.&lt;/p&gt;
+
+&lt;pre class=&quot;java&quot; style=&quot;font-family:monospace;&quot;&gt;    &lt;span style=&quot;color: #666666; font-style: italic;&quot;&gt;// the producer we will user&lt;/span&gt;
+    &lt;span style=&quot;color: #000000; font-weight: bold;&quot;&gt;private&lt;/span&gt; IProducer&lt;span style=&quot;color: #339933;&quot;&gt;&amp;lt;&lt;/span&gt;T&lt;span style=&quot;color: #339933;&quot;&gt;&amp;gt;&lt;/span&gt; producer&lt;span style=&quot;color: #339933;&quot;&gt;;&lt;/span&gt;
+&amp;nbsp;
+    @Contract.&lt;span style=&quot;color: #006633;&quot;&gt;Inject&lt;/span&gt;
+    &lt;span style=&quot;color: #666666; font-style: italic;&quot;&gt;// define the method to set producer.&lt;/span&gt;
+    &lt;span style=&quot;color: #000000; font-weight: bold;&quot;&gt;public&lt;/span&gt; &lt;span style=&quot;color: #000000; font-weight: bold;&quot;&gt;final&lt;/span&gt; &lt;span style=&quot;color: #000066; font-weight: bold;&quot;&gt;void&lt;/span&gt; setProducer&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#40;&lt;/span&gt;IProducer&lt;span style=&quot;color: #339933;&quot;&gt;&amp;lt;&lt;/span&gt;T&lt;span style=&quot;color: #339933;&quot;&gt;&amp;gt;&lt;/span&gt; producer&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#41;&lt;/span&gt; &lt;span style=&quot;color: #009900;&quot;&gt;&amp;#123;&lt;/span&gt;
+        &lt;span style=&quot;color: #000000; font-weight: bold;&quot;&gt;this&lt;/span&gt;.&lt;span style=&quot;color: #006633;&quot;&gt;producer&lt;/span&gt; &lt;span style=&quot;color: #339933;&quot;&gt;=&lt;/span&gt; producer&lt;span style=&quot;color: #339933;&quot;&gt;;&lt;/span&gt;
+    &lt;span style=&quot;color: #009900;&quot;&gt;&amp;#125;&lt;/span&gt;
+&amp;nbsp;
+    &lt;span style=&quot;color: #000000; font-weight: bold;&quot;&gt;protected&lt;/span&gt; &lt;span style=&quot;color: #000000; font-weight: bold;&quot;&gt;final&lt;/span&gt; IProducer&lt;span style=&quot;color: #339933;&quot;&gt;&amp;lt;&lt;/span&gt;T&lt;span style=&quot;color: #339933;&quot;&gt;&amp;gt;&lt;/span&gt; getProducer&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#40;&lt;/span&gt;&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#41;&lt;/span&gt; &lt;span style=&quot;color: #009900;&quot;&gt;&amp;#123;&lt;/span&gt;
+        &lt;span style=&quot;color: #000000; font-weight: bold;&quot;&gt;return&lt;/span&gt; producer&lt;span style=&quot;color: #339933;&quot;&gt;;&lt;/span&gt;
+    &lt;span style=&quot;color: #009900;&quot;&gt;&amp;#125;&lt;/span&gt;&lt;/pre&gt;
+
+&lt;p&gt;Finally, you can write a class extending our test. This class will set the producer
+used during test. This new producer will create instances of the CouponGeneratorImpl
+for testing.&lt;/p&gt;
+
+&lt;pre class=&quot;java&quot; style=&quot;font-family:monospace;&quot;&gt;@RunWith&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#40;&lt;/span&gt;ContractTestRunner.&lt;span style=&quot;color: #000000; font-weight: bold;&quot;&gt;class&lt;/span&gt;&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#41;&lt;/span&gt;
+&lt;span style=&quot;color: #000000; font-weight: bold;&quot;&gt;public&lt;/span&gt; &lt;span style=&quot;color: #000000; font-weight: bold;&quot;&gt;class&lt;/span&gt; CouponGeneratorImplTest &lt;span style=&quot;color: #000000; font-weight: bold;&quot;&gt;extends&lt;/span&gt; CouponGeneratorContractTest&lt;span style=&quot;color: #339933;&quot;&gt;&amp;lt;&lt;/span&gt;CouponGeneratorImpl&lt;span style=&quot;color: #339933;&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span style=&quot;color: #009900;&quot;&gt;&amp;#123;&lt;/span&gt;
+&amp;nbsp;
+    &lt;span style=&quot;color: #000000; font-weight: bold;&quot;&gt;public&lt;/span&gt; CouponGeneratorImplTest&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#40;&lt;/span&gt;&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#41;&lt;/span&gt; &lt;span style=&quot;color: #009900;&quot;&gt;&amp;#123;&lt;/span&gt;
+        setProducer&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#40;&lt;/span&gt;&lt;span style=&quot;color: #000000; font-weight: bold;&quot;&gt;new&lt;/span&gt; IProducer&lt;span style=&quot;color: #339933;&quot;&gt;&amp;lt;&lt;/span&gt;CouponGeneratorImpl&lt;span style=&quot;color: #339933;&quot;&gt;&amp;gt;&lt;/span&gt;&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#40;&lt;/span&gt;&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#41;&lt;/span&gt; &lt;span style=&quot;color: #009900;&quot;&gt;&amp;#123;&lt;/span&gt;
+&amp;nbsp;
+            &lt;span style=&quot;color: #000000; font-weight: bold;&quot;&gt;public&lt;/span&gt; &lt;span style=&quot;color: #000066; font-weight: bold;&quot;&gt;void&lt;/span&gt; cleanUp&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#40;&lt;/span&gt;&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#41;&lt;/span&gt; &lt;span style=&quot;color: #009900;&quot;&gt;&amp;#123;&lt;/span&gt;
+                &lt;span style=&quot;color: #666666; font-style: italic;&quot;&gt;// nothing to do&lt;/span&gt;
+            &lt;span style=&quot;color: #009900;&quot;&gt;&amp;#125;&lt;/span&gt;
+&amp;nbsp;
+            &lt;span style=&quot;color: #000000; font-weight: bold;&quot;&gt;public&lt;/span&gt; CouponGeneratorImpl newInstance&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#40;&lt;/span&gt;&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#41;&lt;/span&gt; &lt;span style=&quot;color: #009900;&quot;&gt;&amp;#123;&lt;/span&gt;
+                &lt;span style=&quot;color: #000000; font-weight: bold;&quot;&gt;return&lt;/span&gt; &lt;span style=&quot;color: #000000; font-weight: bold;&quot;&gt;new&lt;/span&gt; CouponGeneratorImpl&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#40;&lt;/span&gt;&lt;span style=&quot;color: #000066; font-weight: bold;&quot;&gt;true&lt;/span&gt;&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#41;&lt;/span&gt;&lt;span style=&quot;color: #339933;&quot;&gt;;&lt;/span&gt;
+            &lt;span style=&quot;color: #009900;&quot;&gt;&amp;#125;&lt;/span&gt;
+        &lt;span style=&quot;color: #009900;&quot;&gt;&amp;#125;&lt;/span&gt;&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#41;&lt;/span&gt;&lt;span style=&quot;color: #339933;&quot;&gt;;&lt;/span&gt;
+    &lt;span style=&quot;color: #009900;&quot;&gt;&amp;#125;&lt;/span&gt;
+&amp;nbsp;
+&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#125;&lt;/span&gt;&lt;/pre&gt;
+
+&lt;p&gt;That&amp;#8217;s that. You can run the tests from Eclipse or with Maven Surefire. If one of the implementations
+don&amp;#8217;t follow the contract, tests will fail! There is also a plug-in to show what is not being tested,
+but I haven&amp;#8217;t investigated that part of the library yet. Neat!&lt;/p&gt;
+
+&lt;p&gt;You can clone the repository with this code &lt;a href=&quot;https://github.com/kinow/contract-tests-sandbox&quot;&gt;from GitHub&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;Happy testing!&lt;/p&gt;
+</description>
+</item>
 <item>
     <title>Groovy Hooks in Jenkins for increasing logging level</title>
     <pubDate>Sun, 12 Apr 2015 00:00:00 +1200</pubDate>
@@ -552,57 +708,6 @@ http://www.futurealoof.com/posts/apache-considered-harmful.html&lt;/a&gt;&lt;/su
 &lt;p&gt;&lt;sup&gt;&lt;a name=&quot;3&quot;&gt;3&lt;/a&gt; 
 &lt;a href=&quot;http://www.itworld.com/it-managementstrategy/227477/has-open-source-outgrown-apache-way&quot;&gt;
 http://www.itworld.com/it-managementstrategy/227477/has-open-source-outgrown-apache-way&lt;/a&gt;&lt;/sup&gt;&lt;/p&gt;
-</description>
-</item>
-<item>
-    <title>Too many SQL variables exception in Graphite with SQLite3</title>
-    <pubDate>Thu, 04 Jul 2013 00:00:00 +1200</pubDate>
-    <link>/2013/07/04/too_many_sql_variables_in_graphite_with_sqlite3.html</link>
-    <dc:creator>Bruno P. Kinoshita</dc:creator>
-    <description>&lt;p&gt;Having run &lt;a href=&quot;http://graphite.wikidot.com/&quot;&gt;Graphite&lt;/a&gt; for a while, today I found a rather annoying issue. We were using 
-&lt;a href=&quot;https://code.launchpad.net/~lucio.torre/graphite/add-events/+merge/69142&quot;&gt;events&lt;/a&gt;, and everything was working perfectly fine so far. But for the 24 last hours, 
-the graph was blank. &lt;/p&gt;
-
-&lt;p&gt;Actually, in the dashboard, the graph was &lt;em&gt;missing&lt;/em&gt;, being displayed as a gray box. 
-Enabling the web inspector in Google Chrome I got the graph URL. Opening the link in 
-a new tab gave me the exception message: &lt;strong&gt;too many SQL variables&lt;/strong&gt; (&lt;sup&gt;1&lt;/sup&gt;).&lt;/p&gt;
-
-&lt;p&gt;After some research, I found out this was a bug in SQLite. After trying to hack the code, 
-and being concerned about using a patched version of Graphite and having to update it 
-later, I decided to switch database. &lt;/p&gt;
-
-&lt;p&gt;But to avoid losing the graphs, users and other settings, including the events, I 
-migrated the SQLite database to a MySQL server. This MySQL server was already installed in 
-the server machine, since this machine hosted a &lt;a href=&quot;http://www.zabbix.com/&quot;&gt;Zabbix&lt;/a&gt; server too.&lt;/p&gt;
-
-&lt;p&gt;Here are the steps required to migrate your database from SQLite to MySQL (&lt;sup&gt;2&lt;/sup&gt;).&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Download &lt;strong&gt;sqlite3_mysql&lt;/strong&gt; python script from &lt;a href=&quot;http://www.redmine.org/boards/2/topics/12793&quot;&gt;http://www.redmine.org/boards/2/topics/12793&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;Stop Apache/Nginx&lt;/li&gt;
-&lt;li&gt;mysql -u user -p -e &amp;#8220;create database redmine graphite set utf8;&amp;#8221; &lt;/li&gt;
-&lt;li&gt;sqlite3 graphite.db .dump | sqlite3-to-mysql.py | mysql -uroot -pyourpass graphite&lt;/li&gt;
-&lt;li&gt;Start Apache again&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;After tail&amp;#8217;ing the Graphite webapp log file, &lt;/p&gt;
-
-&lt;pre class=&quot;shell&quot; style=&quot;font-family:monospace;&quot;&gt;tail f- storage/log/webapp/error.log&lt;/pre&gt;
-
-&lt;p&gt;I noticed the Python MySQLdb wasn&amp;#8217;t installed.&lt;/p&gt;
-
-&lt;pre class=&quot;python&quot; style=&quot;font-family:monospace;&quot;&gt;ImproperlyConfigured: Error loading MySQLdb module: No module named MySQLdb&lt;/pre&gt;
-
-&lt;p&gt;My server was an Ubuntu 13.04, so I installed the module simply with the following 
-command.&lt;/p&gt;
-
-&lt;pre class=&quot;shell&quot; style=&quot;font-family:monospace;&quot;&gt;apt-get install python-mysqldb&lt;/pre&gt;
-
-&lt;p&gt;Hope that helps!&lt;/p&gt;
-
-&lt;p&gt;&lt;small&gt;&lt;sup&gt;1&lt;/sup&gt; You may have to enable *DEBUG* in your Django settings for seeing the exception in your browser&lt;/small&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;p&gt;&lt;small&gt;&lt;sup&gt;2&lt;/sup&gt; Zabbix needed some minor tweaks in order to use &lt;a href=&quot;https://mariadb.org/&quot;&gt;MariaDB&lt;/a&gt;, but probably you can give it a try too&lt;/small&gt;&lt;/p&gt;&lt;/p&gt;
 </description>
 </item>
 </channel>

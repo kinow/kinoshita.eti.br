@@ -13,10 +13,27 @@
     <atom:link href="http://kinoshita.eti.br/blog/feed.xml" rel="self" type="application/rss+xml" />
     <link>http://kinoshita.eti.br/</link>
     <description></description>
-    <lastBuildDate>Sun, 12 Apr 2015 11:55:58 +1200</lastBuildDate>
+    <lastBuildDate>Thu, 14 May 2015 21:53:40 +1200</lastBuildDate>
     <language>en-US</language>
     <generator>PieCrust 1.2.0</generator>
  
+<item>
+    <title>Jenkins, TestLink and GTest in 5 minutes (or so)</title>
+    <pubDate>Thu, 11 Oct 2012 00:00:00 +1300</pubDate>
+    <link>/2012/10/11/jenkins-testlink-and-gtest-in-5-minutes-or-so.html</link>
+    <dc:creator>Bruno P. Kinoshita</dc:creator>
+    <description>&lt;p&gt;This is a 5 minutes guide on creating a job for a C++ project in &lt;a href=&quot;http://www.jenkins-ci.org&quot; title=&quot;Jenkins CI&quot;&gt;Jenkins&lt;/a&gt; with &lt;a href=&quot;http://code.google.com/p/googletest&quot; title=&quot;GoogleTest&quot;&gt;GoogleTest&lt;/a&gt; and reporting the test results back to &lt;a href=&quot;http://www.teamst.org&quot; title=&quot;TestLink&quot;&gt;TestLink&lt;/a&gt;, with &lt;a href=&quot;https://wiki.jenkins-ci.org/display/JENKINS/TestLink+Plugin&quot; title=&quot;Jenkins TestLink Plug-in&quot;&gt;testlink-plugin&lt;/a&gt;. &lt;/p&gt;
+
+&lt;h2&gt;The test project with GoogleTest&lt;/h2&gt;
+
+&lt;p&gt;For this simple guide we will use the samples that come with &lt;a href=&quot;https://github.com/kinow/gtest-tap-listener&quot; title=&quot;GTest TAP Listener&quot;&gt;GTest TAP Listener&lt;/a&gt;. You can get the code from GitHub with &lt;code&gt;git clone git://github.com/kinow/gtest-tap-listener.git&lt;/code&gt;. Take a look at &lt;em&gt;gtest-tap-listener/samples/src/&lt;/em&gt;, there you will find two C++ files: &lt;em&gt;gtest_main.cc&lt;/em&gt; and &lt;em&gt;gtest_testHelloWorld.cc&lt;/em&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;gtest_main.cc&lt;/em&gt; has the &lt;a href=&quot;http://code.google.com/p/googletest/wiki/Primer#Writing_the_main()_Function&quot; title=&quot;GTest main function&quot;&gt;main function&lt;/a&gt;, and executes the test suite. And &lt;em&gt;gtest_testHelloWorld.cc&lt;/em&gt; has the test cases and tests. Take note of the test case and tests names.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;/2012/10/11/jenkins-testlink-and-gtest-in-5-minutes-or-so/screenshot_001.png&quot;&gt;&lt;img src=&quot;/2012/10/11/jenkins-testlink-and-gtest-in-5-minutes-or-so/screenshot_001.png&quot; alt=&quot;&quot; title=&quot;gtest_testHelloWorld.cc&quot; width=&quot;546&quot; height=&quot;482&quot; class=&quot;aligncenter size-full wp-image-1083&quot; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+</description>
+</item>
 <item>
     <title>Paper: Patterns for Introducing a Superclass for Test Classes</title>
     <pubDate>Tue, 25 Sep 2012 00:00:00 +1200</pubDate>
@@ -183,25 +200,6 @@
 &lt;/ul&gt;
 Now, if you have some spare time or curiosity, keep reading :-)&lt;/p&gt;
 
-</description>
-</item>
-<item>
-    <title>Testing shell code and producing TAP using Jenkins?</title>
-    <pubDate>Fri, 30 Dec 2011 00:00:00 +1300</pubDate>
-    <link>/2011/12/30/testing-shell-code-and-producing-tap-using-jenkins.html</link>
-    <dc:creator>Bruno P. Kinoshita</dc:creator>
-    <description>&lt;p&gt;Definitely reading &lt;a title=&quot;Hacker News&quot; href=&quot;http://news.ycombinator.com/&quot;&gt;Hacker News&lt;/a&gt; before going to bed is a bad idea :-) Same goes for &lt;a title=&quot;Reddit&quot; href=&quot;http://www.reddit.com&quot;&gt;Reddit&lt;/a&gt;. So, I found a link about &lt;a title=&quot;Bats&quot; href=&quot;https://github.com/sstephenson/bats&quot;&gt;Bats&lt;/a&gt;, a tool to execute tests in Shell and output &lt;a title=&quot;Test Anything Protocol&quot; href=&quot;http://testanything.org&quot;&gt;TAP&lt;/a&gt; - Test Anything Protocol. Then I thought; why not ask the author to include Bats under the list of &lt;a title=&quot;TAP Producers&quot; href=&quot;http://testanything.org/wiki/index.php/TAP_Producers#SH_.2F_Shell_Script&quot;&gt;Producers&lt;/a&gt; in &lt;a title=&quot;Test Anything Protocol&quot; href=&quot;http://testanything.org&quot;&gt;testanything.org&lt;/a&gt;?&lt;/p&gt;
-
-&lt;p&gt;But you know what? Why not execute execute locally first to check if that&amp;#8217;s working&amp;#8230; moreover, why not use &lt;a title=&quot;Jenkins TAP Plug-in&quot; href=&quot;https://wiki.jenkins-ci.org/display/JENKINS/TAP+Plugin&quot;&gt;Jenkins TAP Plug-in&lt;/a&gt; and see what happens?&lt;/p&gt;
-
-&lt;p&gt;Here&amp;#8217;s what is necessary.
-&lt;ul&gt;
-    &lt;li&gt;&lt;a title=&quot;Jenkins CI&quot; href=&quot;http://www.jenkins-ci.org&quot;&gt;Jenkins&lt;/a&gt; (duh)&lt;/li&gt;
-    &lt;li&gt;&lt;a title=&quot;Jenkins TAP Plug-in&quot; href=&quot;https://wiki.jenkins-ci.org/display/JENKINS/TAP+Plugin&quot;&gt;tap plug-in&lt;/a&gt;&lt;/li&gt;
-    &lt;li&gt;&lt;a title=&quot;Jenkins Git Plugin&quot; href=&quot;https://wiki.jenkins-ci.org/display/JENKINS/git+Plugin&quot;&gt;git plug-in&lt;/a&gt;&lt;/li&gt;
-    &lt;li&gt;&lt;a title=&quot;Bast git repository&quot; href=&quot;https://github.com/sstephenson/bats&quot;&gt;Bats git repository URL&lt;/a&gt;&lt;/li&gt;
-    &lt;li&gt;&lt;a title=&quot;Baden Baden&quot; href=&quot;http://www.badenbaden.com.br/&quot;&gt;Baden Baden Red Ale beer&lt;/a&gt; (it&amp;#8217;s Friday, almost new years&amp;#8217; eve, c&amp;#8217;mon)&lt;/li&gt;
-&lt;/ul&gt;
 </description>
 </item>
 </channel>

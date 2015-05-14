@@ -113,6 +113,185 @@
                                                         Posts tagged with 'java'
 
 <div class="post type-post status-publish format-standard hentry">
+    <h2>Contract Tests</h2>
+    <p><small>kinow</small> @ <small>May 11, 2015&nbsp;21:21:03</small></p>
+    <div><a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2015/05/11/contract-tests.html" data-text="Contract Tests" data-via="kinow" data-hashtags="opensource">Tweet</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+</div>
+    <p><a href="https://jena.apache.org">Apache Jena</a> is getting ready for the 3.0 release. In the meantime, 
+I&#8217;ve been trying to help with <a href="https://issues.apache.org/jira/browse/JENA-380">JENA-380</a>. Thankfully
+Claude joined and is working on the issue again.</p>
+
+<p>He proposed to start using <a href="https://github.com/Claudenw/junit-contracts">Contract Tests</a> in tests
+in Jena. Having never heard about contract tests, I decided to write this blog post while I experimented
+with the examples in the project, and also with Claude&#8217;s code in a branch in Jena Git repository.</p>
+
+<h2>What are contract tests?</h2>
+
+<p>Contract tests are designed to test the behaviour of interfaces. Even though interfaces expose
+methods to users, its documentation may include extra details about its behaviour. For example, you
+may have the following method.</p>
+
+<pre class="java" style="font-family:monospace;"><span style="color: #000000; font-weight: bold;">interface</span> CouponGenerator <span style="color: #009900;">&#123;</span>
+&nbsp;
+    <span style="color: #000066; font-weight: bold;">boolean</span> isEnabled<span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+&nbsp;
+    <span style="color: #000066; font-weight: bold;">void</span> generateCoupon<span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span> <span style="color: #000000; font-weight: bold;">throws</span> CouponException<span style="color: #339933;">;</span>
+&nbsp;
+<span style="color: #009900;">&#125;</span></pre>
+
+<p>So it contains a single method to generate coupons. But it may also include some documentation.</p>
+
+<pre class="java" style="font-family:monospace;"><span style="color: #000000; font-weight: bold;">interface</span> CouponGenerator <span style="color: #009900;">&#123;</span>
+&nbsp;
+    <span style="color: #000066; font-weight: bold;">boolean</span> isEnabled<span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+&nbsp;
+    <span style="color: #008000; font-style: italic; font-weight: bold;">/**
+     * Generates a coupon, unless the coupon generation has been disabled.
+     * @throws CouponException if the coupon generation has been disabled
+     */</span>
+    <span style="color: #000066; font-weight: bold;">void</span> generateCoupon<span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span> <span style="color: #000000; font-weight: bold;">throws</span> CouponException<span style="color: #339933;">;</span>
+&nbsp;
+<span style="color: #009900;">&#125;</span></pre>
+
+<p>This is a simple example, with no intention of representing anything useful. But being simple it
+is helpful to understand the concept of contract tests. Even though the class and its method names
+tell us that it generates coupons, the documentation extends the behaviour by saying that if
+the coupon generation has been disabled it will throw an exception.</p>
+
+<h2>Writing contract tests</h2>
+
+<p>We can cover the contract of the CouponGenerator interface with contract tests. We start by writing
+the tests for our interface.</p>
+
+<pre class="java" style="font-family:monospace;">&nbsp;
+@Contract<span style="color: #009900;">&#40;</span>CouponGenerator.<span style="color: #000000; font-weight: bold;">class</span><span style="color: #009900;">&#41;</span>
+<span style="color: #000000; font-weight: bold;">public</span> <span style="color: #000000; font-weight: bold;">class</span> CouponGeneratorContractTest<span style="color: #339933;">&lt;</span>T <span style="color: #000000; font-weight: bold;">extends</span> CouponGenerator<span style="color: #339933;">&gt;</span> <span style="color: #009900;">&#123;</span>
+&nbsp;
+    <span style="color: #666666; font-style: italic;">// the producer we will user</span>
+    <span style="color: #000000; font-weight: bold;">private</span> IProducer<span style="color: #339933;">&lt;</span>T<span style="color: #339933;">&gt;</span> producer<span style="color: #339933;">;</span>
+&nbsp;
+    @Contract.<span style="color: #006633;">Inject</span>
+    <span style="color: #666666; font-style: italic;">// define the method to set producer.</span>
+    <span style="color: #000000; font-weight: bold;">public</span> <span style="color: #000000; font-weight: bold;">final</span> <span style="color: #000066; font-weight: bold;">void</span> setProducer<span style="color: #009900;">&#40;</span>IProducer<span style="color: #339933;">&lt;</span>T<span style="color: #339933;">&gt;</span> producer<span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
+        <span style="color: #000000; font-weight: bold;">this</span>.<span style="color: #006633;">producer</span> <span style="color: #339933;">=</span> producer<span style="color: #339933;">;</span>
+    <span style="color: #009900;">&#125;</span>
+&nbsp;
+    <span style="color: #000000; font-weight: bold;">protected</span> <span style="color: #000000; font-weight: bold;">final</span> IProducer<span style="color: #339933;">&lt;</span>T<span style="color: #339933;">&gt;</span> getProducer<span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
+        <span style="color: #000000; font-weight: bold;">return</span> producer<span style="color: #339933;">;</span>
+    <span style="color: #009900;">&#125;</span>
+&nbsp;
+    @After
+    <span style="color: #000000; font-weight: bold;">public</span> <span style="color: #000000; font-weight: bold;">final</span> <span style="color: #000066; font-weight: bold;">void</span> cleanupAT<span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
+        getProducer<span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span>.<span style="color: #006633;">cleanUp</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span> <span style="color: #666666; font-style: italic;">// clean up the producer for the next run</span>
+    <span style="color: #009900;">&#125;</span>
+&nbsp;
+    @ContractTest
+    <span style="color: #000000; font-weight: bold;">public</span> <span style="color: #000066; font-weight: bold;">void</span> shouldGenerateACouponWhenEnabled<span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span> <span style="color: #000000; font-weight: bold;">throws</span> CouponException <span style="color: #009900;">&#123;</span>
+        CouponGenerator couponGenerator <span style="color: #339933;">=</span> getProducer<span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span>.<span style="color: #006633;">newInstance</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+        couponGenerator.<span style="color: #006633;">generateCoupon</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+        assertNotNull<span style="color: #009900;">&#40;</span>couponGenerator<span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+    <span style="color: #009900;">&#125;</span>
+&nbsp;
+    @ContractTest
+    <span style="color: #000000; font-weight: bold;">public</span> <span style="color: #000066; font-weight: bold;">void</span> shouldFailWhenDisabled<span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span> <span style="color: #000000; font-weight: bold;">throws</span> CouponException <span style="color: #009900;">&#123;</span>
+        CouponGenerator couponGenerator <span style="color: #339933;">=</span> getProducer<span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span>.<span style="color: #006633;">newInstance</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+        couponGenerator.<span style="color: #006633;">generateCoupon</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+        assertNotNull<span style="color: #009900;">&#40;</span>couponGenerator<span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+        <span style="color: #000000; font-weight: bold;">try</span> <span style="color: #009900;">&#123;</span>
+            couponGenerator.<span style="color: #006633;">setEnabled</span><span style="color: #009900;">&#40;</span><span style="color: #000066; font-weight: bold;">false</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+            couponGenerator.<span style="color: #006633;">generateCoupon</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+            fail<span style="color: #009900;">&#40;</span><span style="color: #0000ff;">&quot;Coupon Generator must fail if disabled!&quot;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+        <span style="color: #009900;">&#125;</span> <span style="color: #000000; font-weight: bold;">catch</span> <span style="color: #009900;">&#40;</span>CouponException ce<span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
+            <span style="color: #666666; font-style: italic;">// ignore</span>
+        <span style="color: #009900;">&#125;</span>
+    <span style="color: #009900;">&#125;</span>
+<span style="color: #009900;">&#125;</span></pre>
+
+<p>This test covers the basic contract defined in our interface and is used by the junit-contracts
+library.</p>
+
+<h2>Dissecting the code</h2>
+
+<p>This first part defines the interface under test.</p>
+
+<pre class="java" style="font-family:monospace;">@Contract<span style="color: #009900;">&#40;</span>CouponGenerator.<span style="color: #000000; font-weight: bold;">class</span><span style="color: #009900;">&#41;</span>
+<span style="color: #000000; font-weight: bold;">public</span> <span style="color: #000000; font-weight: bold;">class</span> CouponGeneratorContractTest<span style="color: #339933;">&lt;</span>T <span style="color: #000000; font-weight: bold;">extends</span> CouponGenerator<span style="color: #339933;">&gt;</span> <span style="color: #009900;">&#123;</span></pre>
+
+<p>This next part is the producer which, as the name suggests, produces instances of our
+interface. These instances are used during testing, and are set by the implementation
+tests.</p>
+
+<p>The methods annotated by @ContractTest are the tests for what is defined in our
+interface. They contain the assertions.</p>
+
+<pre class="java" style="font-family:monospace;">    <span style="color: #666666; font-style: italic;">// the producer we will user</span>
+    <span style="color: #000000; font-weight: bold;">private</span> IProducer<span style="color: #339933;">&lt;</span>T<span style="color: #339933;">&gt;</span> producer<span style="color: #339933;">;</span>
+&nbsp;
+    @Contract.<span style="color: #006633;">Inject</span>
+    <span style="color: #666666; font-style: italic;">// define the method to set producer.</span>
+    <span style="color: #000000; font-weight: bold;">public</span> <span style="color: #000000; font-weight: bold;">final</span> <span style="color: #000066; font-weight: bold;">void</span> setProducer<span style="color: #009900;">&#40;</span>IProducer<span style="color: #339933;">&lt;</span>T<span style="color: #339933;">&gt;</span> producer<span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
+        <span style="color: #000000; font-weight: bold;">this</span>.<span style="color: #006633;">producer</span> <span style="color: #339933;">=</span> producer<span style="color: #339933;">;</span>
+    <span style="color: #009900;">&#125;</span>
+&nbsp;
+    <span style="color: #000000; font-weight: bold;">protected</span> <span style="color: #000000; font-weight: bold;">final</span> IProducer<span style="color: #339933;">&lt;</span>T<span style="color: #339933;">&gt;</span> getProducer<span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
+        <span style="color: #000000; font-weight: bold;">return</span> producer<span style="color: #339933;">;</span>
+    <span style="color: #009900;">&#125;</span></pre>
+
+<p>Finally, you can write a class extending our test. This class will set the producer
+used during test. This new producer will create instances of the CouponGeneratorImpl
+for testing.</p>
+
+<pre class="java" style="font-family:monospace;">@RunWith<span style="color: #009900;">&#40;</span>ContractTestRunner.<span style="color: #000000; font-weight: bold;">class</span><span style="color: #009900;">&#41;</span>
+<span style="color: #000000; font-weight: bold;">public</span> <span style="color: #000000; font-weight: bold;">class</span> CouponGeneratorImplTest <span style="color: #000000; font-weight: bold;">extends</span> CouponGeneratorContractTest<span style="color: #339933;">&lt;</span>CouponGeneratorImpl<span style="color: #339933;">&gt;</span> <span style="color: #009900;">&#123;</span>
+&nbsp;
+    <span style="color: #000000; font-weight: bold;">public</span> CouponGeneratorImplTest<span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
+        setProducer<span style="color: #009900;">&#40;</span><span style="color: #000000; font-weight: bold;">new</span> IProducer<span style="color: #339933;">&lt;</span>CouponGeneratorImpl<span style="color: #339933;">&gt;</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
+&nbsp;
+            <span style="color: #000000; font-weight: bold;">public</span> <span style="color: #000066; font-weight: bold;">void</span> cleanUp<span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
+                <span style="color: #666666; font-style: italic;">// nothing to do</span>
+            <span style="color: #009900;">&#125;</span>
+&nbsp;
+            <span style="color: #000000; font-weight: bold;">public</span> CouponGeneratorImpl newInstance<span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
+                <span style="color: #000000; font-weight: bold;">return</span> <span style="color: #000000; font-weight: bold;">new</span> CouponGeneratorImpl<span style="color: #009900;">&#40;</span><span style="color: #000066; font-weight: bold;">true</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+            <span style="color: #009900;">&#125;</span>
+        <span style="color: #009900;">&#125;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+    <span style="color: #009900;">&#125;</span>
+&nbsp;
+<span style="color: #009900;">&#125;</span></pre>
+
+<p>That&#8217;s that. You can run the tests from Eclipse or with Maven Surefire. If one of the implementations
+don&#8217;t follow the contract, tests will fail! There is also a plug-in to show what is not being tested,
+but I haven&#8217;t investigated that part of the library yet. Neat!</p>
+
+<p>You can clone the repository with this code <a href="https://github.com/kinow/contract-tests-sandbox">from GitHub</a>.</p>
+
+<p>Happy testing!</p>
+<!-- html -->
+        <p class="postmetadata">
+                <small>tags          [&nbsp;<a
+            href="/tag/java.html"
+            rel="tag">java</a>&nbsp;]&nbsp;
+                 [&nbsp;<a
+            href="/tag/junit.html"
+            rel="tag">junit</a>&nbsp;]&nbsp;
+                 [&nbsp;<a
+            href="/tag/unit-testing.html"
+            rel="tag">unit testing</a>&nbsp;]&nbsp;
+                 [&nbsp;<a
+            href="/tag/contract-test.html"
+            rel="tag">contract test</a>&nbsp;]&nbsp;
+                </small>
+                        <br/>
+        <small>posted in 
+        [&nbsp;<a
+            href="/blog.html"
+            title="View all posts in blog"
+            rel="category tag">blog</a>&nbsp;]&nbsp;
+        category </small>
+            </p>
+</div>
+<div class="post type-post status-publish format-standard hentry">
     <h2>Strings transliteration in Java with Apache Commons Lang</h2>
     <p><small>kinow</small> @ <small>August 9, 2014&nbsp;12:49:33</small></p>
     <div><a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2014/08/09/strings-transliteration-in-java-with-apache-commons-lang.html" data-text="Strings transliteration in Java with Apache Commons Lang" data-via="kinow" data-hashtags="opensource">Tweet</a>
@@ -308,45 +487,6 @@ special characters, spaces by _, and so it goes.</p>
             rel="tag">java</a>&nbsp;]&nbsp;
                 </small>
                     </p>
-</div>
-<div class="post type-post status-publish format-standard hentry">
-    <h2>Invoking Testopia XML-RPC or JSON methods using Java</h2>
-    <p><small>kinow</small> @ <small>September 9, 2012&nbsp;16:08:09</small></p>
-    <div><a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2012/09/09/invoking-testopia-xml-rpc-or-json-methods-using-java.html" data-text="Invoking Testopia XML-RPC or JSON methods using Java" data-via="kinow" data-hashtags="opensource">Tweet</a>
-<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-</div>
-    <p>Most <a href="http://www.teamst.org" title="TestLink">TestLink</a> [1] users are aware that there is an external API, maybe for the external API token being displayed in the user profile section. Today after a meeting with <a href="http://twitter.com/peterflorijn" title="Peter Florijn">Peter Florijn</a> [2], I realized that the same may not be true for <a href="http://www.mozilla.org/projects/testopia/" title="Testopia">Testopia</a>  [3] users.</p>
-
-<p>I am quite new to Testopia, and there are many features that I haven&#8217;t used yet. But if I understand it correctly, the database is interfaced by several Perl scripts that are, by its turns, exposed as Web Service (most of them). The web services are available via a JSON and a XML-RPC API (what is very useful, TestLink supports supports only XML-RPC).</p>
-
-<p>The communication between different programming languages and the external API&#8217;s is accomplished by a client API. In TestLink you have <a href="http://testlinkjavaapi.sourceforge.net/" title="TestLink Java API">testlink-java-api</a> [4] and <a href="http://code.google.com/p/testlink-api-java-client/" title="TestLink API Java Client">testlink-api-java-client</a> [5].</p>
-
-<p>Testopia has a Java client too, available in <a href="http://bzr.mozilla.org/bugzilla/extensions/testopia/2.2-bugzilla-3.2/files/head:/testopia/contrib/drivers/java/" title="Testopia source repository">Testopia source repository</a> [6] and can be used to integrate your existing Java code with Testopia.</p>
-
-<!-- html -->
-        <p>( <a href="/2012/09/09/invoking-testopia-xml-rpc-or-json-methods-using-java.html" >Read more ...</a> )</p>
-        <p class="postmetadata">
-                <small>tags          [&nbsp;<a
-            href="/tag/testopia.html"
-            rel="tag">testopia</a>&nbsp;]&nbsp;
-                 [&nbsp;<a
-            href="/tag/xml-rpc.html"
-            rel="tag">xml-rpc</a>&nbsp;]&nbsp;
-                 [&nbsp;<a
-            href="/tag/json.html"
-            rel="tag">json</a>&nbsp;]&nbsp;
-                 [&nbsp;<a
-            href="/tag/java.html"
-            rel="tag">java</a>&nbsp;]&nbsp;
-                </small>
-                        <br/>
-        <small>posted in 
-        [&nbsp;<a
-            href="/blog.html"
-            title="View all posts in blog"
-            rel="category tag">blog</a>&nbsp;]&nbsp;
-        category </small>
-            </p>
 </div>
 
                     <p class="postmetadata">
