@@ -57,6 +57,118 @@ the coupon generation has been disabled it will throw an exception.
 
 ##Writing contract tests
 
-We can cover the contract of the CouponGenerator interface with contract tests.
+We can cover the contract of the CouponGenerator interface with contract tests. We start by writing
+the tests for our interface.
+
+{% geshi 'java' %}
+
+@Contract(CouponGenerator.class)
+public class CouponGeneratorContractTest<T extends CouponGenerator> {
+
+    // the producer we will user
+    private IProducer<T> producer;
+
+    @Contract.Inject
+    // define the method to set producer.
+    public final void setProducer(IProducer<T> producer) {
+        this.producer = producer;
+    }
+
+    protected final IProducer<T> getProducer() {
+        return producer;
+    }
+
+    @After
+    public final void cleanupAT() {
+        getProducer().cleanUp(); // clean up the producer for the next run
+    }
+
+    @ContractTest
+    public void shouldGenerateACouponWhenEnabled() throws CouponException {
+        CouponGenerator couponGenerator = getProducer().newInstance();
+        couponGenerator.generateCoupon();
+        assertNotNull(couponGenerator);
+    }
+
+    @ContractTest
+    public void shouldFailWhenDisabled() throws CouponException {
+        CouponGenerator couponGenerator = getProducer().newInstance();
+        couponGenerator.generateCoupon();
+        assertNotNull(couponGenerator);
+        try {
+            couponGenerator.setEnabled(false);
+            couponGenerator.generateCoupon();
+            fail("Coupon Generator must fail if disabled!");
+        } catch (CouponException ce) {
+            // ignore
+        }
+    }
+}
+
+{% endgeshi %}
+
+This test covers the basic contract defined in our interface and is used by the junit-contracts
+library.
+
+## Dissecting the code
+
+This first part defines the interface under test.
+
+{% geshi 'java' %}
+@Contract(CouponGenerator.class)
+public class CouponGeneratorContractTest<T extends CouponGenerator> {
+{% endgeshi %}
+
+This next part is the producer which, as the name suggests, produces instances of our
+interface. These instances are used during testing, and are set by the implementation
+tests.
+
+The methods annotated by @ContractTest are the tests for what is defined in our
+interface. They contain the assertions.
+
+{% geshi 'java' %}
+    // the producer we will user
+    private IProducer<T> producer;
+
+    @Contract.Inject
+    // define the method to set producer.
+    public final void setProducer(IProducer<T> producer) {
+        this.producer = producer;
+    }
+
+    protected final IProducer<T> getProducer() {
+        return producer;
+    }
+{% endgeshi %}
+
+Finally, you can write a class extending our test. This class will set the producer
+used during test. This new producer will create instances of the CouponGeneratorImpl
+for testing.
+
+{% geshi 'java' %}
+@RunWith(ContractTestRunner.class)
+public class CouponGeneratorImplTest extends CouponGeneratorContractTest<CouponGeneratorImpl> {
+
+    public CouponGeneratorImplTest() {
+        setProducer(new IProducer<CouponGeneratorImpl>() {
+
+            public void cleanUp() {
+                // nothing to do
+            }
+
+            public CouponGeneratorImpl newInstance() {
+                return new CouponGeneratorImpl(true);
+            }
+        });
+    }
+
+}
+{% endgeshi %}
+
+That's that. You can run the tests from Eclipse or with Maven Surefire. If one of the implementations
+don't follow the contract, tests will fail! There is also a plug-in to show what is not being tested,
+but I haven't investigated that part of the library yet. Neat!
+
+You can clone the repository with this code [from GitHub](https://github.com/kinow/contract-tests-sandbox).
 
 Happy testing!
