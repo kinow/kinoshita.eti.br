@@ -1,0 +1,279 @@
+---
+title: 'Running IDL code in Java'
+author: kinow
+tags:
+    - java
+    - idl
+    - java bridge
+category: 'blog'
+time: '14:03:03'
+---
+
+***TL;DR** when using a Demo license (or a node-locked license I believe) you can call only one IDL program at
+a time. Otherwise you will get a JIDLBusyException.*
+
+[IDL](http://en.wikipedia.org/wiki/IDL_%28programming_language%29), or Interactive Data Language, "is a
+programming language used for data analysis". I had never heard about IDL until a few days ago, when
+I had to review an issue at work that involved a Java Web program running some IDL code.
+
+I decided to run IDL at home, using the Demo version from [Exelis](http://www.exelisvis.com/productsservices/idl.aspx) and
+investigate what would happen if I made multiple simultaneous calls using a single license
+(note: I'm using the Demo license, but there are
+[other licensing options](http://licensing.exelisvis.com/licensehelp.aspx) that give you more flexibility). 
+Furthermore, when running an IDL program using the Java bridge, you set a "process name". 
+I also wanted to confirm that changing the process name wouldn't make any difference.
+
+You can read the test source code below. The only IDL statement is `WAIT, 4`. It sleeps the program
+for four seconds, before exiting. This way we have a program using the Demo license for 4 seconds, and
+we can try using the license simultaneously.
+
+{% geshi 'java' %}
+package br.eti.kinoshita.idl;
+
+import com.idl.javaidl.JIDLBusyException;
+import com.idl.javaidl.JIDLObject;
+import com.idl.javaidl.JIDLObjectI;
+import com.idl.javaidl.JIDLOutputListener;
+import com.idl.javaidl.java_IDL_connect;
+
+public class SleepsTenSecondsHelloWorld implements Runnable, JIDLOutputListener {
+
+    public void run() {
+        final String tName = Thread.currentThread().getName();
+        try {
+            JIDLObject idlWrapper = new java_IDL_connect();
+            idlWrapper.createObject();
+            idlWrapper.addIDLOutputListener(this);
+            idlWrapper.setProcessName("process01");
+            idlWrapper.executeString("WAIT, 4");
+            System.out.println(String.format("THREAD %s SUCCEEDED!", tName));
+        } catch (JIDLBusyException jbe) {
+            System.out.println(String.format("THREAD %s FAILED WITH ERR: %s", tName, jbe.getMessage()));
+        }
+    }
+
+    public void IDLoutput(JIDLObjectI paramJIDLObjectI, String paramString) {
+        System.out.println(paramString);
+    }
+    
+    public static void main(String[] args) throws Exception {
+        Runnable r = new SleepsTenSecondsHelloWorld();
+        Thread t = new Thread(r);
+        t.start();
+    }
+    
+}
+{% endgeshi %}
+
+Turns out running IDL with Java is not so trivial, so the rest of the post will walk you through the problems
+I've had while trying to do so, before actually testing the code. 
+Hopefully it will be useful for others trying a similar approach. I'm using
+Oracle Java 8, Ubuntu 14.04, Eclipse + Maven, in a quad-core and 6GB notebook.
+
+##Troubleshooting IDL and Java errors
+
+The first thing you need in order to be able to write a program that calls IDL in Eclipse is
+import the JAR file that contains the IDL Java bridge API. This file is called
+`javaidlb.jar`. You can search for it after you install Exelis' IDL.
+
+Trying to run your program, the first error you will probably get is the following one:
+
+{% geshi 'shell' %}
+Failed to load javaidlb from  from default location.
+Exception in thread "Thread-0" java.lang.UnsatisfiedLinkError: com.idl.javaidl.JIDLPAL.nativeInitJPAL()V
+    at com.idl.javaidl.JIDLPAL.nativeInitJPAL(Native Method)
+    at com.idl.javaidl.JIDLPAL.<clinit>(JIDLPAL.java:193)
+    at com.idl.javaidl.JIDLObject.<init>(JIDLObject.java:72)
+    at com.idl.javaidl.java_IDL_connect.<init>(java_IDL_connect.java:27)
+    at br.eti.kinoshita.idl.SleepsTenSecondsHelloWorld.run(SleepsTenSecondsHelloWorld.java:11)
+    at java.lang.Thread.run(Thread.java:745)
+{% endgeshi %}
+
+Before trying to fix anything, there is a special and very useful setting that enables Debugging
+the Java IDL bridge program initialization: **`-DIDL_LOAD_DEBUG`**. Set it as a VM argument in your IDE
+to see extra debug information. 
+
+<div class='row'>
+<div class="span6 offset3" style='text-align: center;'>
+<figure>
+<a href="{{assets.idl_1}}" rel="prettyPhoto" class="thumbnail" title="Setting the DIDL_LOAD_DEBUG VM arg">
+<img src="{{assets.idl_1}}" alt="Setting the DIDL_LOAD_DEBUG VM arg" />
+</a>
+<figcaption>Setting the DIDL_LOAD_DEBUG VM arg</i></figcaption>
+</figure>
+</div>
+</div>
+
+{% geshi 'shell' %}
+Java location : /usr/lib/jvm/java-8-oracle/jre/lib/amd64 (set relative to java.home property)
+Successfully loaded libawt.so
+Successfully loaded libjawt.so
+*** java.lang.UnsatisfiedLinkError: /home/kinow/exelis/idl84/bin/bin.linux.x86_64/libjavaidlb.so: libidl_bml.so: cannot open shared object file: No such file or directory
+Failed to load javaidlb from  from default location.
+Exception in thread "Thread-0" java.lang.UnsatisfiedLinkError: com.idl.javaidl.JIDLPAL.nativeInitJPAL()V
+    at com.idl.javaidl.JIDLPAL.nativeInitJPAL(Native Method)
+    at com.idl.javaidl.JIDLPAL.<clinit>(JIDLPAL.java:193)
+    at com.idl.javaidl.JIDLObject.<init>(JIDLObject.java:72)
+    at com.idl.javaidl.java_IDL_connect.<init>(java_IDL_connect.java:27)
+    at br.eti.kinoshita.idl.SleepsTenSecondsHelloWorld.run(SleepsTenSecondsHelloWorld.java:11)
+    at java.lang.Thread.run(Thread.java:745)
+{% endgeshi %}
+
+Reading the exception and the error messages, you will probably notice that it looks
+like the Java program calls some native method but is not able to find a native library for it. 
+Time to initialize the `LD_LIBRARY_PATH` variable in your IDE too, to something like 
+`LD_LIBRARY_PATH=/home/kinow/exelis/idl/bin/bin.linux.x86_64:$LD_LIBRARY_PATH`. After doing so, 
+try running your program again, and you'll see the `libhavaidlb.so` library being loaded too.
+
+<div class='row'>
+<div class="span6 offset3" style='text-align: center;'>
+<figure>
+<a href="{{assets.idl_2}}" rel="prettyPhoto" class="thumbnail" title="Initializing the LD_LIBRARY_PATH in Eclipse">
+<img src="{{assets.idl_2}}" alt="Initializing the LD_LIBRARY_PATH in Eclipse" />
+</a>
+<figcaption>Initializing the LD_LIBRARY_PATH in Eclipse</i></figcaption>
+</figure>
+</div>
+</div>
+
+{% geshi 'shell' %}
+Java location : /usr/lib/jvm/java-8-oracle/jre/lib/amd64 (set relative to java.home property)
+Successfully loaded libawt.so
+Successfully loaded libjawt.so
+Successfully loaded libjavaidlb.so
+Exception in thread "Thread-0" com.idl.javaidl.JIDLException[iErr=-999 sMsg=OPS Initialization failed.  Verify that 'idl_opserver' exists in the IDL bin directory.]
+    at com.idl.javaidl.JIDLPAL.nativeThrowJIDLException(Native Method)
+    at com.idl.javaidl.JIDLPAL.throwSpecificException(JIDLPAL.java:1073)
+    at com.idl.javaidl.JIDLPAL.throwJIDLException(JIDLPAL.java:1102)
+    at com.idl.javaidl.JIDLPAL.createObject(JIDLPAL.java:382)
+    at com.idl.javaidl.JIDLPAL.createObject(JIDLPAL.java:318)
+    at com.idl.javaidl.JIDLObject.createObject(JIDLObject.java:193)
+    at com.idl.javaidl.JIDLObject.createObject(JIDLObject.java:103)
+    at br.eti.kinoshita.idl.SleepsTenSecondsHelloWorld.run(SleepsTenSecondsHelloWorld.java:12)
+    at java.lang.Thread.run(Thread.java:745)
+{% endgeshi %}
+
+Good. Now the error message seems to be telling us that it cannot find some program in the IDL bin directory. 
+You can find the exact library that contains this message by running 
+`for x in `ls -f`; do strings $x | grep "Verify that" && echo "-- > Found in $x" ; done` in
+the directory added to `LD_LIBRARY_PATH`, and further debug the issue using some *nix tools like 
+`gdb`, `ltrace`, `strace`, `strings`, etc.
+
+{% geshi 'shell' %}
+OPS Initialization failed.  Verify that '%s' exists in the IDL bin directory.
+-- > Found in libidl_bml.so
+{% endgeshi %}
+
+But it is easier to just guess that the `idl_opserver` executable is not being found by the library in the system `PATH`. 
+I didn't find anywhere in the documentation mentioning that the IDL executables must be in the `PATH`, 
+but thought it was worth a shot anyway.
+
+<div class='row'>
+<div class="span6 offset3" style='text-align: center;'>
+<figure>
+<a href="{{assets.idl_3}}" rel="prettyPhoto" class="thumbnail" title="Initializing the PATH in Eclipse">
+<img src="{{assets.idl_3}}" alt="Initializing the PATH in Eclipse" />
+</a>
+<figcaption>Initializing the PATH in Eclipse</i></figcaption>
+</figure>
+</div>
+</div>
+
+{% geshi 'shell' %}
+Java location : /usr/lib/jvm/java-8-oracle/jre/lib/amd64 (set relative to java.home property)
+Successfully loaded libawt.so
+Successfully loaded libjawt.so
+Successfully loaded libjavaidlb.so
+Exception in thread "Thread-0" com.idl.javaidl.JIDLException[iErr=-999 sMsg=Attempt to call undefined procedure: 'GMEM_UNMAP'.]
+    at com.idl.javaidl.JIDLPAL.nativeThrowJIDLException(Native Method)
+    at com.idl.javaidl.JIDLPAL.throwSpecificException(JIDLPAL.java:1073)
+    at com.idl.javaidl.JIDLPAL.throwJIDLException(JIDLPAL.java:1102)
+    at com.idl.javaidl.JIDLPAL.createObject(JIDLPAL.java:382)
+    at com.idl.javaidl.JIDLPAL.createObject(JIDLPAL.java:318)
+    at com.idl.javaidl.JIDLObject.createObject(JIDLObject.java:193)
+    at com.idl.javaidl.JIDLObject.createObject(JIDLObject.java:103)
+    at br.eti.kinoshita.idl.SleepsTenSecondsHelloWorld.run(SleepsTenSecondsHelloWorld.java:12)
+    at java.lang.Thread.run(Thread.java:745)
+{% endgeshi %}
+
+Well, a different message now. If you read the whole documentation for bridges in IDL, you
+will find somewhere that says that there are scripts in the IDL installation directory that
+initialize environment settings for you in the command line. For Linux, you can search for `id_setup.bash` 
+and `bridge_setup.bash`.
+
+Looking at these scripts, you'll find out that they are setting `LD_LIBRARY_PATH` and a few other
+variables. After trying a couple of combinations, I've found out that setting the `IDL_DIR` variable fixes
+this last error message. Et voilà.
+
+{% geshi 'shell' %}
+Java location : /usr/lib/jvm/java-8-oracle/jre/lib/amd64 (set relative to java.home property)
+Successfully loaded libawt.so
+Successfully loaded libjawt.so
+Successfully loaded libjavaidlb.so
+THREAD Thread-0 SUCCEEDED!
+{% endgeshi %}
+
+##Multiple calls with a single license
+
+Time to test what happens when we make multiple calls to an IDL program while using a
+Demo license. Let's start by changing the code to create a few more threads.
+
+{% geshi 'java' %}
+    public static void main(String[] args) throws Exception {
+        Runnable r = new SleepsTenSecondsHelloWorld();
+        Thread t = null;
+        for (int i = 0; i < 3; i++) {
+            t = new Thread(r);
+            t.start();
+        }
+    }
+{% endgeshi %}
+
+Running the code, we confirm that we can call only one program at a time under the Demo
+license - and probably it is the same with the node-locked license.
+
+{% geshi 'shell' %}
+Java location : /usr/lib/jvm/java-8-oracle/jre/lib/amd64 (set relative to java.home property)
+Successfully loaded libawt.so
+Successfully loaded libjawt.so
+Successfully loaded libjavaidlb.so
+THREAD Thread-1 FAILED WITH ERR: The object's associated IDL process is currently busy.
+THREAD Thread-0 FAILED WITH ERR: The object's associated IDL process is currently busy.
+THREAD Thread-2 SUCCEEDED!
+{% endgeshi %}
+
+One last change before giving up. Let's change the "process name", by simply appending the
+current thread name.
+
+{% geshi 'java' %}
+        try {
+            JIDLObject idlWrapper = new java_IDL_connect();
+            idlWrapper.createObject();
+            idlWrapper.addIDLOutputListener(this);
+            idlWrapper.setProcessName("process01"+tName);
+            idlWrapper.executeString("WAIT, 4");
+            System.out.println(String.format("THREAD %s SUCCEEDED!", tName));
+        } catch (JIDLBusyException jbe) {
+            System.out.println(String.format("THREAD %s FAILED WITH ERR: %s", tName, jbe.getMessage()));
+        }
+{% endgeshi %}
+
+And we can finally confirm that it doesn't make any difference.
+
+{% geshi 'shell' %}
+Java location : /usr/lib/jvm/java-8-oracle/jre/lib/amd64 (set relative to java.home property)
+Successfully loaded libawt.so
+Successfully loaded libjawt.so
+Successfully loaded libjavaidlb.so
+THREAD Thread-2 FAILED WITH ERR: The object's associated IDL process is currently busy.
+THREAD Thread-1 FAILED WITH ERR: The object's associated IDL process is currently busy.
+THREAD Thread-0 SUCCEEDED!
+{% endgeshi %}
+
+So if you need to run some IDL code in a Web application, for example, you'll probably have to
+consider the number of simultaneous users you will have, or you can try to enqueue user requests, 
+process the IDL code in the background, and notify users when the response is ready.
+
+The code for this post is hostead at [GitHub](https://github.com/kinow/idl-sandbox).
+
+Happy hacking!
