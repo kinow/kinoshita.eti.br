@@ -13,10 +13,23 @@
     <atom:link href="http://kinoshita.eti.br/blog/feed.xml" rel="self" type="application/rss+xml" />
     <link>http://kinoshita.eti.br/</link>
     <description></description>
-    <lastBuildDate>Thu, 14 May 2015 21:53:40 +1200</lastBuildDate>
+    <lastBuildDate>Sun, 17 May 2015 15:10:12 +1200</lastBuildDate>
     <language>en-US</language>
     <generator>PieCrust 1.2.0</generator>
  
+<item>
+    <title>Adding coverage reports in Jenkins to GoogleTest with gcovr</title>
+    <pubDate>Tue, 16 Oct 2012 00:00:00 +1300</pubDate>
+    <link>/2012/10/16/adding-coverage-reports-in-jenkins-to-googletest-with-gcovr.html</link>
+    <dc:creator>Bruno P. Kinoshita</dc:creator>
+    <description>&lt;p&gt;After the &lt;a href=&quot;/2012/10/11/jenkins-testlink-and-gtest-in-5-minutes-or-so&quot; title=&quot;Jenkins, TestLink and GTest in 5 minutes (or so)&quot;&gt;last post&lt;/a&gt; about &lt;a href=&quot;http://code.google.com/p/googletest/&quot; title=&quot;GoogleTest&quot;&gt;GoogleTest&lt;/a&gt; and &lt;a href=&quot;http://www.teamst.org&quot; title=&quot;TestLink&quot;&gt;TestLink&lt;/a&gt; using &lt;a href=&quot;https://wiki.jenkins-ci.org/display/JENKINS/TestLink+Plugin&quot; title=&quot;Jenkins TestLink Plug-in&quot;&gt;Jenkins TestLink Plug-in&lt;/a&gt;, I received an e-mail asking about &lt;a href=&quot;http://en.wikipedia.org/wiki/Code_coverage&quot; title=&quot;Code Coverage&quot;&gt;coverage&lt;/a&gt; with GoogleTest and &lt;a href=&quot;http://www.jenkins-ci.org&quot; title=&quot;Jenkins CI&quot;&gt;Jenkins&lt;/a&gt;. I&amp;#8217;ve just updated the &lt;a href=&quot;https://github.com/kinow/gtest-tap-listener/blob/master/samples/Makefile&quot;&gt;Makefile&lt;/a&gt; in the samples directory, of the &lt;a href=&quot;https://github.com/kinow/gtest-tap-listener&quot; title=&quot;GTest TAP Listener&quot;&gt;GoogleTest TAP listener project&lt;/a&gt;, to output coverage data.&lt;/p&gt;
+
+&lt;p&gt;Basically, you have to add the compiler flags &lt;em&gt;-fprofile-arcs -ftest-coverage&lt;/em&gt; and link the executable with -lgcov. Take a look at the project&amp;#8217;s Makefile and you&amp;#8217;ll notice how simple it is. In order to have Jenkins interpreting your coverage report, you&amp;#8217;ll have to convert it to &lt;a href=&quot;http://cobertura.sourceforge.net&quot; title=&quot;Cobertura&quot;&gt;cobertura&lt;/a&gt; XML. There is a Python utility that can be used for this: &lt;a href=&quot;https://software.sandia.gov/trac/fast/wiki/gcovr&quot; title=&quot;gcovr&quot;&gt;gcovr&lt;/a&gt;. Download it and copy it to somewhere where Jenkins can execute it (e.g.: &lt;em&gt;/usr/local/bin&lt;/em&gt;).&lt;/p&gt;
+
+&lt;p&gt;Now, if you&amp;#8217;ve followed the instructions from the previous post, you should have a job that reports your GoogleTest tests from Jenkins to TestLink using the plug-in, and is downloading the source code from GitHub. Add an extra build step  (Shell) to execute &lt;em&gt;gcovr&lt;/em&gt;.&lt;/p&gt;
+
+</description>
+</item>
 <item>
     <title>Jenkins, TestLink and GTest in 5 minutes (or so)</title>
     <pubDate>Thu, 11 Oct 2012 00:00:00 +1300</pubDate>
@@ -181,24 +194,6 @@
 &lt;span style=&quot;color: #009900;&quot;&gt;&lt;span style=&quot;color: #000000; font-weight: bold;&quot;&gt;&amp;lt;/skin&lt;span style=&quot;color: #000000; font-weight: bold;&quot;&gt;&amp;gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/pre&gt;
 
 &lt;p&gt;Here&amp;#8217;s a list of some projects using Maven Fluido Skin (hopefully, in the near future &lt;a title=&quot;Apache Commons&quot; href=&quot;http://commons.apache.org/&quot;&gt;Apache Commons&lt;/a&gt; and other projects will adopt this skin as default too :-)):&lt;/p&gt;
-
-</description>
-</item>
-<item>
-    <title>Ranges in Apache Commons Functor</title>
-    <pubDate>Sun, 22 Jan 2012 00:00:00 +1300</pubDate>
-    <link>/2012/01/22/ranges-in-apache-functor.html</link>
-    <dc:creator>Bruno P. Kinoshita</dc:creator>
-    <description>&lt;p&gt;This is a long post. So here is a &lt;strong&gt;TL;DR&lt;/strong&gt;:
-&lt;ul&gt;
-    &lt;li&gt;Apache Commons Functor has no Double or Float Range (yet)&lt;/li&gt;
-    &lt;li&gt;Apache Commons Functor IntegerRange and LongRange treat the low value as inclusive, and the high value as exclusive. How does that compare to other languages/APIs? (you will have to read to see some comparison)&lt;/li&gt;
-    &lt;li&gt;Perl has support for characters ranges, perhaps we could implement it in Functor too?&lt;/li&gt;
-    &lt;li&gt;In case we implemented a CharacterRange, it would have to be inclusive for both low and high limits. With &amp;#8216;z&amp;#8217; being the last character, there wouldn&amp;#8217;t have a way to include Z with the current approach. Or we would have to make the CharacterRange a special one. What would go against &lt;a title=&quot;Liskov Substitution Principle&quot; href=&quot;http://en.wikipedia.org/wiki/Liskov_substitution_principle&quot;&gt;Liskov Substitution Principle&lt;/a&gt;.&lt;/li&gt;
-    &lt;li&gt;You can see a comparison table with Apache Commons Functor, other Java API&amp;#8217;s and other programming languages for ranges clicking &lt;a href=&quot;#ctable&quot; title=&quot;Comparison table&quot;&gt;here&lt;/a&gt;.&lt;/li&gt;
-    &lt;li&gt;It would be nice to have a clear distinction in Functor documentation among a Sequence, a Generator and a Range. While I was gathering material for this post, I found places using range, others using sequence, and in Apache Commons Functor, an IntegerRange is a Generator.&lt;/li&gt;
-&lt;/ul&gt;
-Now, if you have some spare time or curiosity, keep reading :-)&lt;/p&gt;
 
 </description>
 </item>
