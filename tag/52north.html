@@ -110,48 +110,83 @@
 </div>            </div>
                         <div id="right" class="span8">
                 <div id="main">
-                                                        <h1 class='topic'>Blog</h1>
-                    <hr class="space" />
-                                        <p>Posts in category &#8216;blog&#8217;</p>
+                                                        Posts tagged with '52north'
 
 <div class="post type-post status-publish format-standard hentry">
-    <h2>Displaying Japanese characters in Java Swing</h2>
-    <p><small>kinow</small> @ <small>March 6, 2009&nbsp;12:10:07</small></p>
-    <div><a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2009/03/06/displaying-japanese-characters-n-java-swing.html" data-text="Displaying Japanese characters in Java Swing" data-via="kinow" data-hashtags="opensource">Tweet</a>
+    <h2>Modeling observation data in SOS (Sensor Observation Service)</h2>
+    <p><small>kinow</small> @ <small>June 23, 2015&nbsp;13:40:03</small></p>
+    <div><a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2015/06/23/modeling-observation-data-in-sos.html" data-text="Modeling observation data in SOS (Sensor Observation Service)" data-via="kinow" data-hashtags="opensource">Tweet</a>
 <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
 </div>
-    <p>It&#8217;s not as complicated as I first thought.</p>
+    <p>This week NZ Herald published an <a href="http://www.nzherald.co.nz/technology/news/article.cfm?c_id=5&amp;objectid=11469418">article</a>
+about a device created by an Irish farmer enterpreneur that sends a message to a farmer when the cow is about to give birth.
+The device monitors &#8220;heightened tail moviment&#8221;.</p>
 
-<p>Had to use this technique to develop an Swing application for the JLPT certification exam.</p>
+<p>In this post I will try to apply what I am learning following the <a href="http://www.ogcnetwork.net/SOS_2_0/tutorial">SOS Tutorial</a>
+(the Open Geospatial Consortium standard for Sensor Observation Service). Feel free to drop me a message via
+<a href="https://twitter.com/kinow">@kinow</a> if you find any mistakes or have any suggestions.</p>
 
-<pre class="java" style="font-family:monospace;"><span style="color: #000000; font-weight: bold;">public</span> <span style="color: #000000; font-weight: bold;">static</span> <span style="color: #000066; font-weight: bold;">void</span> main<span style="color: #009900;">&#40;</span><a href="http://www.google.com/search?hl=en&amp;q=allinurl%3Adocs.oracle.com+javase+docs+api+string"><span style="color: #003399;">String</span></a><span style="color: #009900;">&#91;</span><span style="color: #009900;">&#93;</span> args<span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
-    <a href="http://www.google.com/search?hl=en&amp;q=allinurl%3Adocs.oracle.com+javase+docs+api+jframe"><span style="color: #003399;">JFrame</span></a> frame <span style="color: #339933;">=</span> <span style="color: #000000; font-weight: bold;">new</span> <a href="http://www.google.com/search?hl=en&amp;q=allinurl%3Adocs.oracle.com+javase+docs+api+jframe"><span style="color: #003399;">JFrame</span></a><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-    frame.<span style="color: #006633;">setDefaultCloseOperation</span><span style="color: #009900;">&#40;</span><a href="http://www.google.com/search?hl=en&amp;q=allinurl%3Adocs.oracle.com+javase+docs+api+jframe"><span style="color: #003399;">JFrame</span></a>.<span style="color: #006633;">EXIT_ON_CLOSE</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-    <a href="http://www.google.com/search?hl=en&amp;q=allinurl%3Adocs.oracle.com+javase+docs+api+container"><span style="color: #003399;">Container</span></a> container <span style="color: #339933;">=</span> frame.<span style="color: #006633;">getContentPane</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-    <a href="http://www.google.com/search?hl=en&amp;q=allinurl%3Adocs.oracle.com+javase+docs+api+jlabel"><span style="color: #003399;">JLabel</span></a> japanese <span style="color: #339933;">=</span> <span style="color: #000000; font-weight: bold;">new</span> <a href="http://www.google.com/search?hl=en&amp;q=allinurl%3Adocs.oracle.com+javase+docs+api+jlabel"><span style="color: #003399;">JLabel</span></a><span style="color: #009900;">&#40;</span> <span style="color: #0000ff;">&quot;Kino<span style="color: #000099; font-weight: bold;">\u</span>304D<span style="color: #000099; font-weight: bold;">\u</span>306E&quot;</span> <span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-    japanese.<span style="color: #006633;">setToolTipText</span><span style="color: #009900;">&#40;</span> <span style="color: #0000ff;">&quot;This is Japanese&quot;</span> <span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-    <a href="http://www.google.com/search?hl=en&amp;q=allinurl%3Adocs.oracle.com+javase+docs+api+font"><span style="color: #003399;">Font</span></a> f <span style="color: #339933;">=</span> <span style="color: #000000; font-weight: bold;">new</span> <a href="http://www.google.com/search?hl=en&amp;q=allinurl%3Adocs.oracle.com+javase+docs+api+font"><span style="color: #003399;">Font</span></a><span style="color: #009900;">&#40;</span><span style="color: #0000ff;">&quot;Arial Unicode MS&quot;</span>, <a href="http://www.google.com/search?hl=en&amp;q=allinurl%3Adocs.oracle.com+javase+docs+api+font"><span style="color: #003399;">Font</span></a>.<span style="color: #006633;">BOLD</span>, <span style="color: #cc66cc;">16</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-    japanese.<span style="color: #006633;">setFont</span><span style="color: #009900;">&#40;</span>f<span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-    container.<span style="color: #006633;">add</span><span style="color: #009900;">&#40;</span> japanese <span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-    frame.<span style="color: #006633;">pack</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-    frame.<span style="color: #006633;">setLocationRelativeTo</span><span style="color: #009900;">&#40;</span><span style="color: #000066; font-weight: bold;">null</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-    frame.<span style="color: #006633;">setVisible</span><span style="color: #009900;">&#40;</span><span style="color: #000066; font-weight: bold;">true</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-<span style="color: #009900;">&#125;</span></pre>
+<h2>Modeling the tail moviment observation data in SOS</h2>
 
-<p>All you have to do is to use the hexadecimal representation of the characters instead of using plain text. And here is the result.
-<p style="text-align: center;"><a href=""><img class="aligncenter size-full wp-image-777" title="kino" src="" alt="" width="90" height="65" /></a></p>
-Banzai!</p>
+<p>SOS is a standard designed to provide access to observation data. There are several server implementations, such as Kisters KiWIS, 
+istSOS and 52North SOS.</p>
+
+<p>The standard mentions and utilises several other standards, such as SensorML, WFS, XML, WMS, etc. The SOS Tutorial on
+how to model your observation data for SOS starts by defining <em>procedure</em>, <em>observed property</em>, <em>feature of interest</em>,
+<em>phenomenon and result times</em>, and the <em>result value</em>.</p>
+
+<p>Let&#8217;s try to model the data from the tail moviment sensors in the following table.</p>
+
+<table class="table table-bordered">
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+<th>Our example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<th>Procedure</th>
+<td>The process that has generated the observation, such as a sensor, from the O&M specification. In our example that could be a sensor identification</td>
+<td>moocall_001</td>
+</tr>
+<tr>
+<th>Observed Property</th>
+<td>A property which is observed (look at NASA SWEET ontology for existing values)</td>
+<td>Heightned tail moviment</td>
+</tr>
+<tr>
+<th>Feature of Interest</th>
+<td>A feature that carries the property which is observed</td>
+<td>Pregnant cow</td>
+</tr>
+<tr>
+<th>Phenomenon and Result Times</th>
+<td>The phenomenon time is when the data has been taken, and the result time when it has been created. If both are the same, the resultTime can point to the phenomenonTime</td>
+<td>20150623142000</td>
+</tr>
+<tr>
+<th>Result value</th>
+<td>This is the result of the observation. Can be a OM_Measurement if numeric, OM_TruthObservation, etc (O&M)</td>
+<td>3 (supposing we have a scale from 1 to 5)</td>
+</tr>
+</tbody>
+</table>
+
+<p>In the next post I will try to show how to load this model and some dummy data into a fresh installation of
+52North SOS server.</p>
 <!-- html -->
         <p class="postmetadata">
                 <small>tags          [&nbsp;<a
-            href="/tag/java.html"
-            rel="tag">java</a>&nbsp;]&nbsp;
+            href="/tag/sos.html"
+            rel="tag">sos</a>&nbsp;]&nbsp;
                  [&nbsp;<a
-            href="/tag/swing.html"
-            rel="tag">swing</a>&nbsp;]&nbsp;
+            href="/tag/52north.html"
+            rel="tag">52north</a>&nbsp;]&nbsp;
                  [&nbsp;<a
-            href="/tag/internatonalization.html"
-            rel="tag">internatonalization</a>&nbsp;]&nbsp;
+            href="/tag/sensor-web.html"
+            rel="tag">sensor web</a>&nbsp;]&nbsp;
                 </small>
                         <br/>
         <small>posted in 

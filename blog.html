@@ -115,268 +115,80 @@
                                         <p>Posts in category &#8216;blog&#8217;</p>
 
 <div class="post type-post status-publish format-standard hentry">
-    <h2>Running IDL code in Java</h2>
-    <p><small>kinow</small> @ <small>May 17, 2015&nbsp;14:03:03</small></p>
-    <div><a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2015/05/17/running-idl-code-in-java.html" data-text="Running IDL code in Java" data-via="kinow" data-hashtags="opensource">Tweet</a>
+    <h2>Modeling observation data in SOS (Sensor Observation Service)</h2>
+    <p><small>kinow</small> @ <small>June 23, 2015&nbsp;13:40:03</small></p>
+    <div><a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2015/06/23/modeling-observation-data-in-sos.html" data-text="Modeling observation data in SOS (Sensor Observation Service)" data-via="kinow" data-hashtags="opensource">Tweet</a>
 <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
 </div>
-    <p><em><strong>TL;DR</strong> when using a Demo license (or a node-locked license I believe) you can call only one IDL program at
-a time. Otherwise you will get a JIDLBusyException.</em></p>
+    <p>This week NZ Herald published an <a href="http://www.nzherald.co.nz/technology/news/article.cfm?c_id=5&amp;objectid=11469418">article</a>
+about a device created by an Irish farmer enterpreneur that sends a message to a farmer when the cow is about to give birth.
+The device monitors &#8220;heightened tail moviment&#8221;.</p>
 
-<p><a href="http://en.wikipedia.org/wiki/IDL_%28programming_language%29">IDL</a>, or Interactive Data Language, &#8220;is a
-programming language used for data analysis&#8221;. I had never heard about IDL until a few days ago, when
-I had to review an issue at work that involved a Java Web program running some IDL code.</p>
+<p>In this post I will try to apply what I am learning following the <a href="http://www.ogcnetwork.net/SOS_2_0/tutorial">SOS Tutorial</a>
+(the Open Geospatial Consortium standard for Sensor Observation Service). Feel free to drop me a message via
+<a href="https://twitter.com/kinow">@kinow</a> if you find any mistakes or have any suggestions.</p>
 
-<p>I decided to run IDL at home, using the Demo version from <a href="http://www.exelisvis.com/productsservices/idl.aspx">Exelis</a> and
-investigate what would happen if I made multiple simultaneous calls using a single license
-(note: I&#8217;m using the Demo license, but there are
-<a href="http://licensing.exelisvis.com/licensehelp.aspx">other licensing options</a> that give you more flexibility). 
-Furthermore, when running an IDL program using the Java bridge, you set a &#8220;process name&#8221;. 
-I also wanted to confirm that changing the process name wouldn&#8217;t make any difference.</p>
+<h2>Modeling the tail moviment observation data in SOS</h2>
 
-<p>You can read the test source code below. The only IDL statement is <code>WAIT, 4</code>. It sleeps the program
-for four seconds, before exiting. This way we have a program using the Demo license for 4 seconds, and
-we can try using the license simultaneously.</p>
+<p>SOS is a standard designed to provide access to observation data. There are several server implementations, such as Kisters KiWIS, 
+istSOS and 52North SOS.</p>
 
-<pre class="java" style="font-family:monospace;"><span style="color: #000000; font-weight: bold;">package</span> <span style="color: #006699;">br.eti.kinoshita.idl</span><span style="color: #339933;">;</span>
-&nbsp;
-<span style="color: #000000; font-weight: bold;">import</span> <span style="color: #006699;">com.idl.javaidl.JIDLBusyException</span><span style="color: #339933;">;</span>
-<span style="color: #000000; font-weight: bold;">import</span> <span style="color: #006699;">com.idl.javaidl.JIDLObject</span><span style="color: #339933;">;</span>
-<span style="color: #000000; font-weight: bold;">import</span> <span style="color: #006699;">com.idl.javaidl.JIDLObjectI</span><span style="color: #339933;">;</span>
-<span style="color: #000000; font-weight: bold;">import</span> <span style="color: #006699;">com.idl.javaidl.JIDLOutputListener</span><span style="color: #339933;">;</span>
-<span style="color: #000000; font-weight: bold;">import</span> <span style="color: #006699;">com.idl.javaidl.java_IDL_connect</span><span style="color: #339933;">;</span>
-&nbsp;
-<span style="color: #000000; font-weight: bold;">public</span> <span style="color: #000000; font-weight: bold;">class</span> SleepsTenSecondsHelloWorld <span style="color: #000000; font-weight: bold;">implements</span> <a href="http://www.google.com/search?hl=en&amp;q=allinurl%3Adocs.oracle.com+javase+docs+api+runnable"><span style="color: #003399;">Runnable</span></a>, JIDLOutputListener <span style="color: #009900;">&#123;</span>
-&nbsp;
-    <span style="color: #000000; font-weight: bold;">public</span> <span style="color: #000066; font-weight: bold;">void</span> run<span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
-        <span style="color: #000000; font-weight: bold;">final</span> <a href="http://www.google.com/search?hl=en&amp;q=allinurl%3Adocs.oracle.com+javase+docs+api+string"><span style="color: #003399;">String</span></a> tName <span style="color: #339933;">=</span> <a href="http://www.google.com/search?hl=en&amp;q=allinurl%3Adocs.oracle.com+javase+docs+api+thread"><span style="color: #003399;">Thread</span></a>.<span style="color: #006633;">currentThread</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span>.<span style="color: #006633;">getName</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-        <span style="color: #000000; font-weight: bold;">try</span> <span style="color: #009900;">&#123;</span>
-            JIDLObject idlWrapper <span style="color: #339933;">=</span> <span style="color: #000000; font-weight: bold;">new</span> java_IDL_connect<span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-            idlWrapper.<span style="color: #006633;">createObject</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-            idlWrapper.<span style="color: #006633;">addIDLOutputListener</span><span style="color: #009900;">&#40;</span><span style="color: #000000; font-weight: bold;">this</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-            idlWrapper.<span style="color: #006633;">setProcessName</span><span style="color: #009900;">&#40;</span><span style="color: #0000ff;">&quot;process01&quot;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-            idlWrapper.<span style="color: #006633;">executeString</span><span style="color: #009900;">&#40;</span><span style="color: #0000ff;">&quot;WAIT, 4&quot;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-            <a href="http://www.google.com/search?hl=en&amp;q=allinurl%3Adocs.oracle.com+javase+docs+api+system"><span style="color: #003399;">System</span></a>.<span style="color: #006633;">out</span>.<span style="color: #006633;">println</span><span style="color: #009900;">&#40;</span><a href="http://www.google.com/search?hl=en&amp;q=allinurl%3Adocs.oracle.com+javase+docs+api+string"><span style="color: #003399;">String</span></a>.<span style="color: #006633;">format</span><span style="color: #009900;">&#40;</span><span style="color: #0000ff;">&quot;THREAD %s SUCCEEDED!&quot;</span>, tName<span style="color: #009900;">&#41;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-        <span style="color: #009900;">&#125;</span> <span style="color: #000000; font-weight: bold;">catch</span> <span style="color: #009900;">&#40;</span>JIDLBusyException jbe<span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
-            <a href="http://www.google.com/search?hl=en&amp;q=allinurl%3Adocs.oracle.com+javase+docs+api+system"><span style="color: #003399;">System</span></a>.<span style="color: #006633;">out</span>.<span style="color: #006633;">println</span><span style="color: #009900;">&#40;</span><a href="http://www.google.com/search?hl=en&amp;q=allinurl%3Adocs.oracle.com+javase+docs+api+string"><span style="color: #003399;">String</span></a>.<span style="color: #006633;">format</span><span style="color: #009900;">&#40;</span><span style="color: #0000ff;">&quot;THREAD %s FAILED WITH ERR: %s&quot;</span>, tName, jbe.<span style="color: #006633;">getMessage</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #009900;">&#41;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-        <span style="color: #009900;">&#125;</span>
-    <span style="color: #009900;">&#125;</span>
-&nbsp;
-    <span style="color: #000000; font-weight: bold;">public</span> <span style="color: #000066; font-weight: bold;">void</span> IDLoutput<span style="color: #009900;">&#40;</span>JIDLObjectI paramJIDLObjectI, <a href="http://www.google.com/search?hl=en&amp;q=allinurl%3Adocs.oracle.com+javase+docs+api+string"><span style="color: #003399;">String</span></a> paramString<span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
-        <a href="http://www.google.com/search?hl=en&amp;q=allinurl%3Adocs.oracle.com+javase+docs+api+system"><span style="color: #003399;">System</span></a>.<span style="color: #006633;">out</span>.<span style="color: #006633;">println</span><span style="color: #009900;">&#40;</span>paramString<span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-    <span style="color: #009900;">&#125;</span>
-&nbsp;
-    <span style="color: #000000; font-weight: bold;">public</span> <span style="color: #000000; font-weight: bold;">static</span> <span style="color: #000066; font-weight: bold;">void</span> main<span style="color: #009900;">&#40;</span><a href="http://www.google.com/search?hl=en&amp;q=allinurl%3Adocs.oracle.com+javase+docs+api+string"><span style="color: #003399;">String</span></a><span style="color: #009900;">&#91;</span><span style="color: #009900;">&#93;</span> args<span style="color: #009900;">&#41;</span> <span style="color: #000000; font-weight: bold;">throws</span> <a href="http://www.google.com/search?hl=en&amp;q=allinurl%3Adocs.oracle.com+javase+docs+api+exception"><span style="color: #003399;">Exception</span></a> <span style="color: #009900;">&#123;</span>
-        <a href="http://www.google.com/search?hl=en&amp;q=allinurl%3Adocs.oracle.com+javase+docs+api+runnable"><span style="color: #003399;">Runnable</span></a> r <span style="color: #339933;">=</span> <span style="color: #000000; font-weight: bold;">new</span> SleepsTenSecondsHelloWorld<span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-        <a href="http://www.google.com/search?hl=en&amp;q=allinurl%3Adocs.oracle.com+javase+docs+api+thread"><span style="color: #003399;">Thread</span></a> t <span style="color: #339933;">=</span> <span style="color: #000000; font-weight: bold;">new</span> <a href="http://www.google.com/search?hl=en&amp;q=allinurl%3Adocs.oracle.com+javase+docs+api+thread"><span style="color: #003399;">Thread</span></a><span style="color: #009900;">&#40;</span>r<span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-        t.<span style="color: #006633;">start</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-    <span style="color: #009900;">&#125;</span>
-&nbsp;
-<span style="color: #009900;">&#125;</span></pre>
+<p>The standard mentions and utilises several other standards, such as SensorML, WFS, XML, WMS, etc. The SOS Tutorial on
+how to model your observation data for SOS starts by defining <em>procedure</em>, <em>observed property</em>, <em>feature of interest</em>,
+<em>phenomenon and result times</em>, and the <em>result value</em>.</p>
 
-<p>Turns out running IDL with Java is not so trivial, so the rest of the post will walk you through the problems
-I&#8217;ve had while trying to do so, before actually testing the code. 
-Hopefully it will be useful for others trying a similar approach. I&#8217;m using
-Oracle Java 8, Ubuntu 14.04, Eclipse + Maven, in a quad-core and 6GB notebook.</p>
+<p>Let&#8217;s try to model the data from the tail moviment sensors in the following table.</p>
 
-<h2>Troubleshooting IDL and Java errors</h2>
+<table class="table table-bordered">
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+<th>Our example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<th>Procedure</th>
+<td>The process that has generated the observation, such as a sensor, from the O&M specification. In our example that could be a sensor identification</td>
+<td>moocall_001</td>
+</tr>
+<tr>
+<th>Observed Property</th>
+<td>A property which is observed (look at NASA SWEET ontology for existing values)</td>
+<td>Heightned tail moviment</td>
+</tr>
+<tr>
+<th>Feature of Interest</th>
+<td>A feature that carries the property which is observed</td>
+<td>Pregnant cow</td>
+</tr>
+<tr>
+<th>Phenomenon and Result Times</th>
+<td>The phenomenon time is when the data has been taken, and the result time when it has been created. If both are the same, the resultTime can point to the phenomenonTime</td>
+<td>20150623142000</td>
+</tr>
+<tr>
+<th>Result value</th>
+<td>This is the result of the observation. Can be a OM_Measurement if numeric, OM_TruthObservation, etc (O&M)</td>
+<td>3 (supposing we have a scale from 1 to 5)</td>
+</tr>
+</tbody>
+</table>
 
-<p>The first thing you need in order to be able to write a program that calls IDL in Eclipse is
-import the JAR file that contains the IDL Java bridge API. This file is called
-<code>javaidlb.jar</code>. You can search for it after you install Exelis&#8217; IDL.</p>
-
-<p>Trying to run your program, the first error you will probably get is the following one:</p>
-
-<pre class="shell" style="font-family:monospace;">Failed to load javaidlb from  from default location.
-Exception in thread &quot;Thread-0&quot; java.lang.UnsatisfiedLinkError: com.idl.javaidl.JIDLPAL.nativeInitJPAL()V
-    at com.idl.javaidl.JIDLPAL.nativeInitJPAL(Native Method)
-    at com.idl.javaidl.JIDLPAL.&lt;clinit&gt;(JIDLPAL.java:193)
-    at com.idl.javaidl.JIDLObject.&lt;init&gt;(JIDLObject.java:72)
-    at com.idl.javaidl.java_IDL_connect.&lt;init&gt;(java_IDL_connect.java:27)
-    at br.eti.kinoshita.idl.SleepsTenSecondsHelloWorld.run(SleepsTenSecondsHelloWorld.java:11)
-    at java.lang.Thread.run(Thread.java:745)</pre>
-
-<p>Before trying to fix anything, there is a special and very useful setting that enables Debugging
-the Java IDL bridge program initialization: <strong><code>-DIDL_LOAD_DEBUG</code></strong>. Set it as a VM argument in your IDE
-to see extra debug information. </p>
-
-<div class='row'>
-<div class="span6 offset3" style='text-align: center;'>
-<figure>
-<a href="/2015/05/17/running-idl-code-in-java/idl_1.png" rel="prettyPhoto" class="thumbnail" title="Setting the DIDL_LOAD_DEBUG VM arg">
-<img src="/2015/05/17/running-idl-code-in-java/idl_1.png" alt="Setting the DIDL_LOAD_DEBUG VM arg" />
-</a>
-<figcaption>Setting the DIDL_LOAD_DEBUG VM arg</i></figcaption>
-</figure>
-</div>
-</div>
-
-<pre class="shell" style="font-family:monospace;">Java location : /usr/lib/jvm/java-8-oracle/jre/lib/amd64 (set relative to java.home property)
-Successfully loaded libawt.so
-Successfully loaded libjawt.so
-*** java.lang.UnsatisfiedLinkError: /home/kinow/exelis/idl84/bin/bin.linux.x86_64/libjavaidlb.so: libidl_bml.so: cannot open shared object file: No such file or directory
-Failed to load javaidlb from  from default location.
-Exception in thread &quot;Thread-0&quot; java.lang.UnsatisfiedLinkError: com.idl.javaidl.JIDLPAL.nativeInitJPAL()V
-    at com.idl.javaidl.JIDLPAL.nativeInitJPAL(Native Method)
-    at com.idl.javaidl.JIDLPAL.&lt;clinit&gt;(JIDLPAL.java:193)
-    at com.idl.javaidl.JIDLObject.&lt;init&gt;(JIDLObject.java:72)
-    at com.idl.javaidl.java_IDL_connect.&lt;init&gt;(java_IDL_connect.java:27)
-    at br.eti.kinoshita.idl.SleepsTenSecondsHelloWorld.run(SleepsTenSecondsHelloWorld.java:11)
-    at java.lang.Thread.run(Thread.java:745)</pre>
-
-<p>Reading the exception and the error messages, you will probably notice that it looks
-like the Java program calls some native method but is not able to find a native library for it. 
-Time to initialize the <code>LD_LIBRARY_PATH</code> variable in your IDE too, to something like 
-<code>LD_LIBRARY_PATH=/home/kinow/exelis/idl/bin/bin.linux.x86_64:$LD_LIBRARY_PATH</code>. After doing so, 
-try running your program again, and you&#8217;ll see the <code>libhavaidlb.so</code> library being loaded too.</p>
-
-<div class='row'>
-<div class="span6 offset3" style='text-align: center;'>
-<figure>
-<a href="/2015/05/17/running-idl-code-in-java/idl_2.png" rel="prettyPhoto" class="thumbnail" title="Initializing the LD_LIBRARY_PATH in Eclipse">
-<img src="/2015/05/17/running-idl-code-in-java/idl_2.png" alt="Initializing the LD_LIBRARY_PATH in Eclipse" />
-</a>
-<figcaption>Initializing the LD_LIBRARY_PATH in Eclipse</i></figcaption>
-</figure>
-</div>
-</div>
-
-<pre class="shell" style="font-family:monospace;">Java location : /usr/lib/jvm/java-8-oracle/jre/lib/amd64 (set relative to java.home property)
-Successfully loaded libawt.so
-Successfully loaded libjawt.so
-Successfully loaded libjavaidlb.so
-Exception in thread &quot;Thread-0&quot; com.idl.javaidl.JIDLException[iErr=-999 sMsg=OPS Initialization failed.  Verify that 'idl_opserver' exists in the IDL bin directory.]
-    at com.idl.javaidl.JIDLPAL.nativeThrowJIDLException(Native Method)
-    at com.idl.javaidl.JIDLPAL.throwSpecificException(JIDLPAL.java:1073)
-    at com.idl.javaidl.JIDLPAL.throwJIDLException(JIDLPAL.java:1102)
-    at com.idl.javaidl.JIDLPAL.createObject(JIDLPAL.java:382)
-    at com.idl.javaidl.JIDLPAL.createObject(JIDLPAL.java:318)
-    at com.idl.javaidl.JIDLObject.createObject(JIDLObject.java:193)
-    at com.idl.javaidl.JIDLObject.createObject(JIDLObject.java:103)
-    at br.eti.kinoshita.idl.SleepsTenSecondsHelloWorld.run(SleepsTenSecondsHelloWorld.java:12)
-    at java.lang.Thread.run(Thread.java:745)</pre>
-
-<p>Good. Now the error message seems to be telling us that it cannot find some program in the IDL bin directory. 
-You can find the exact library that contains this message by running 
-<code>for x in</code>ls -f<code>; do strings $x | grep "Verify that" &amp;&amp; echo "-- &gt; Found in $x" ; done</code> in
-the directory added to <code>LD_LIBRARY_PATH</code>, and further debug the issue using some *nix tools like 
-<code>gdb</code>, <code>ltrace</code>, <code>strace</code>, <code>strings</code>, etc.</p>
-
-<pre class="shell" style="font-family:monospace;">OPS Initialization failed.  Verify that '%s' exists in the IDL bin directory.
--- &gt; Found in libidl_bml.so</pre>
-
-<p>But it is easier to just guess that the <code>idl_opserver</code> executable is not being found by the library in the system <code>PATH</code>. 
-I didn&#8217;t find anywhere in the documentation mentioning that the IDL executables must be in the <code>PATH</code>, 
-but thought it was worth a shot anyway.</p>
-
-<div class='row'>
-<div class="span6 offset3" style='text-align: center;'>
-<figure>
-<a href="/2015/05/17/running-idl-code-in-java/idl_3.png" rel="prettyPhoto" class="thumbnail" title="Initializing the PATH in Eclipse">
-<img src="/2015/05/17/running-idl-code-in-java/idl_3.png" alt="Initializing the PATH in Eclipse" />
-</a>
-<figcaption>Initializing the PATH in Eclipse</i></figcaption>
-</figure>
-</div>
-</div>
-
-<pre class="shell" style="font-family:monospace;">Java location : /usr/lib/jvm/java-8-oracle/jre/lib/amd64 (set relative to java.home property)
-Successfully loaded libawt.so
-Successfully loaded libjawt.so
-Successfully loaded libjavaidlb.so
-Exception in thread &quot;Thread-0&quot; com.idl.javaidl.JIDLException[iErr=-999 sMsg=Attempt to call undefined procedure: 'GMEM_UNMAP'.]
-    at com.idl.javaidl.JIDLPAL.nativeThrowJIDLException(Native Method)
-    at com.idl.javaidl.JIDLPAL.throwSpecificException(JIDLPAL.java:1073)
-    at com.idl.javaidl.JIDLPAL.throwJIDLException(JIDLPAL.java:1102)
-    at com.idl.javaidl.JIDLPAL.createObject(JIDLPAL.java:382)
-    at com.idl.javaidl.JIDLPAL.createObject(JIDLPAL.java:318)
-    at com.idl.javaidl.JIDLObject.createObject(JIDLObject.java:193)
-    at com.idl.javaidl.JIDLObject.createObject(JIDLObject.java:103)
-    at br.eti.kinoshita.idl.SleepsTenSecondsHelloWorld.run(SleepsTenSecondsHelloWorld.java:12)
-    at java.lang.Thread.run(Thread.java:745)</pre>
-
-<p>Well, a different message now. If you read the whole documentation for bridges in IDL, you
-will find somewhere that says that there are scripts in the IDL installation directory that
-initialize environment settings for you in the command line. For Linux, you can search for <code>id_setup.bash</code> 
-and <code>bridge_setup.bash</code>.</p>
-
-<p>Looking at these scripts, you&#8217;ll find out that they are setting <code>LD_LIBRARY_PATH</code> and a few other
-variables. After trying a couple of combinations, I&#8217;ve found out that setting the <code>IDL_DIR</code> variable fixes
-this last error message. Et voilà.</p>
-
-<pre class="shell" style="font-family:monospace;">Java location : /usr/lib/jvm/java-8-oracle/jre/lib/amd64 (set relative to java.home property)
-Successfully loaded libawt.so
-Successfully loaded libjawt.so
-Successfully loaded libjavaidlb.so
-THREAD Thread-0 SUCCEEDED!</pre>
-
-<h2>Multiple calls with a single license</h2>
-
-<p>Time to test what happens when we make multiple calls to an IDL program while using a
-Demo license. Let&#8217;s start by changing the code to create a few more threads.</p>
-
-<pre class="java" style="font-family:monospace;">    <span style="color: #000000; font-weight: bold;">public</span> <span style="color: #000000; font-weight: bold;">static</span> <span style="color: #000066; font-weight: bold;">void</span> main<span style="color: #009900;">&#40;</span><a href="http://www.google.com/search?hl=en&amp;q=allinurl%3Adocs.oracle.com+javase+docs+api+string"><span style="color: #003399;">String</span></a><span style="color: #009900;">&#91;</span><span style="color: #009900;">&#93;</span> args<span style="color: #009900;">&#41;</span> <span style="color: #000000; font-weight: bold;">throws</span> <a href="http://www.google.com/search?hl=en&amp;q=allinurl%3Adocs.oracle.com+javase+docs+api+exception"><span style="color: #003399;">Exception</span></a> <span style="color: #009900;">&#123;</span>
-        <a href="http://www.google.com/search?hl=en&amp;q=allinurl%3Adocs.oracle.com+javase+docs+api+runnable"><span style="color: #003399;">Runnable</span></a> r <span style="color: #339933;">=</span> <span style="color: #000000; font-weight: bold;">new</span> SleepsTenSecondsHelloWorld<span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-        <a href="http://www.google.com/search?hl=en&amp;q=allinurl%3Adocs.oracle.com+javase+docs+api+thread"><span style="color: #003399;">Thread</span></a> t <span style="color: #339933;">=</span> <span style="color: #000066; font-weight: bold;">null</span><span style="color: #339933;">;</span>
-        <span style="color: #000000; font-weight: bold;">for</span> <span style="color: #009900;">&#40;</span><span style="color: #000066; font-weight: bold;">int</span> i <span style="color: #339933;">=</span> <span style="color: #cc66cc;">0</span><span style="color: #339933;">;</span> i <span style="color: #339933;">&lt;</span> <span style="color: #cc66cc;">3</span><span style="color: #339933;">;</span> i<span style="color: #339933;">++</span><span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
-            t <span style="color: #339933;">=</span> <span style="color: #000000; font-weight: bold;">new</span> <a href="http://www.google.com/search?hl=en&amp;q=allinurl%3Adocs.oracle.com+javase+docs+api+thread"><span style="color: #003399;">Thread</span></a><span style="color: #009900;">&#40;</span>r<span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-            t.<span style="color: #006633;">start</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-        <span style="color: #009900;">&#125;</span>
-    <span style="color: #009900;">&#125;</span></pre>
-
-<p>Running the code, we confirm that we can call only one program at a time under the Demo
-license - and probably it is the same with the node-locked license.</p>
-
-<pre class="shell" style="font-family:monospace;">Java location : /usr/lib/jvm/java-8-oracle/jre/lib/amd64 (set relative to java.home property)
-Successfully loaded libawt.so
-Successfully loaded libjawt.so
-Successfully loaded libjavaidlb.so
-THREAD Thread-1 FAILED WITH ERR: The object's associated IDL process is currently busy.
-THREAD Thread-0 FAILED WITH ERR: The object's associated IDL process is currently busy.
-THREAD Thread-2 SUCCEEDED!</pre>
-
-<p>One last change before giving up. Let&#8217;s change the &#8220;process name&#8221;, by simply appending the
-current thread name.</p>
-
-<pre class="java" style="font-family:monospace;">        <span style="color: #000000; font-weight: bold;">try</span> <span style="color: #009900;">&#123;</span>
-            JIDLObject idlWrapper <span style="color: #339933;">=</span> <span style="color: #000000; font-weight: bold;">new</span> java_IDL_connect<span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-            idlWrapper.<span style="color: #006633;">createObject</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-            idlWrapper.<span style="color: #006633;">addIDLOutputListener</span><span style="color: #009900;">&#40;</span><span style="color: #000000; font-weight: bold;">this</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-            idlWrapper.<span style="color: #006633;">setProcessName</span><span style="color: #009900;">&#40;</span><span style="color: #0000ff;">&quot;process01&quot;</span><span style="color: #339933;">+</span>tName<span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-            idlWrapper.<span style="color: #006633;">executeString</span><span style="color: #009900;">&#40;</span><span style="color: #0000ff;">&quot;WAIT, 4&quot;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-            <a href="http://www.google.com/search?hl=en&amp;q=allinurl%3Adocs.oracle.com+javase+docs+api+system"><span style="color: #003399;">System</span></a>.<span style="color: #006633;">out</span>.<span style="color: #006633;">println</span><span style="color: #009900;">&#40;</span><a href="http://www.google.com/search?hl=en&amp;q=allinurl%3Adocs.oracle.com+javase+docs+api+string"><span style="color: #003399;">String</span></a>.<span style="color: #006633;">format</span><span style="color: #009900;">&#40;</span><span style="color: #0000ff;">&quot;THREAD %s SUCCEEDED!&quot;</span>, tName<span style="color: #009900;">&#41;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-        <span style="color: #009900;">&#125;</span> <span style="color: #000000; font-weight: bold;">catch</span> <span style="color: #009900;">&#40;</span>JIDLBusyException jbe<span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
-            <a href="http://www.google.com/search?hl=en&amp;q=allinurl%3Adocs.oracle.com+javase+docs+api+system"><span style="color: #003399;">System</span></a>.<span style="color: #006633;">out</span>.<span style="color: #006633;">println</span><span style="color: #009900;">&#40;</span><a href="http://www.google.com/search?hl=en&amp;q=allinurl%3Adocs.oracle.com+javase+docs+api+string"><span style="color: #003399;">String</span></a>.<span style="color: #006633;">format</span><span style="color: #009900;">&#40;</span><span style="color: #0000ff;">&quot;THREAD %s FAILED WITH ERR: %s&quot;</span>, tName, jbe.<span style="color: #006633;">getMessage</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #009900;">&#41;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-        <span style="color: #009900;">&#125;</span></pre>
-
-<p>And we can finally confirm that it doesn&#8217;t make any difference.</p>
-
-<pre class="shell" style="font-family:monospace;">Java location : /usr/lib/jvm/java-8-oracle/jre/lib/amd64 (set relative to java.home property)
-Successfully loaded libawt.so
-Successfully loaded libjawt.so
-Successfully loaded libjavaidlb.so
-THREAD Thread-2 FAILED WITH ERR: The object's associated IDL process is currently busy.
-THREAD Thread-1 FAILED WITH ERR: The object's associated IDL process is currently busy.
-THREAD Thread-0 SUCCEEDED!</pre>
-
-<p>So if you need to run some IDL code in a Web application, for example, you&#8217;ll probably have to
-consider the number of simultaneous users you will have, or you can try to enqueue user requests, 
-process the IDL code in the background, and notify users when the response is ready.</p>
-
-<p>The code for this post is hostead at <a href="https://github.com/kinow/idl-sandbox">GitHub</a>.</p>
-
-<p>Happy hacking!</p>
+<p>In the next post I will try to show how to load this model and some dummy data into a fresh installation of
+52North SOS server.</p>
 <!-- html -->
         <p class="postmetadata">
                 <small>tags          [&nbsp;<a
-            href="/tag/java.html"
-            rel="tag">java</a>&nbsp;]&nbsp;
+            href="/tag/sos.html"
+            rel="tag">sos</a>&nbsp;]&nbsp;
                  [&nbsp;<a
-            href="/tag/idl.html"
-            rel="tag">idl</a>&nbsp;]&nbsp;
+            href="/tag/52north.html"
+            rel="tag">52north</a>&nbsp;]&nbsp;
                  [&nbsp;<a
-            href="/tag/java-bridge.html"
-            rel="tag">java bridge</a>&nbsp;]&nbsp;
+            href="/tag/sensor-web.html"
+            rel="tag">sensor web</a>&nbsp;]&nbsp;
                 </small>
                         <br/>
         <small>posted in 
@@ -389,186 +201,6 @@ process the IDL code in the background, and notify users when the response is re
 </div>
 
 <p><div class="post type-post status-publish format-standard hentry">
-    <h2>Contract Tests</h2>
-    <p><small>kinow</small> @ <small>May 11, 2015&nbsp;21:21:03</small></p>
-    <div><a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2015/05/11/contract-tests.html" data-text="Contract Tests" data-via="kinow" data-hashtags="opensource">Tweet</a>
-<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-</div>
-    <p><a href="https://jena.apache.org">Apache Jena</a> is getting ready for the 3.0 release. In the meantime, 
-I&#8217;ve been trying to help with <a href="https://issues.apache.org/jira/browse/JENA-380">JENA-380</a>. Thankfully
-Claude joined and is working on the issue again.</p></p>
-
-<p>He proposed to start using <a href="https://github.com/Claudenw/junit-contracts">Contract Tests</a> in tests
-in Jena. Having never heard about contract tests, I decided to write this blog post while I experimented
-with the examples in the project, and also with Claude&#8217;s code in a branch in Jena Git repository.</p>
-
-<h2>What are contract tests?</h2>
-
-<p>Contract tests are designed to test the behaviour of interfaces. Even though interfaces expose
-methods to users, its documentation may include extra details about its behaviour. For example, you
-may have the following method.</p>
-
-<pre class="java" style="font-family:monospace;"><span style="color: #000000; font-weight: bold;">interface</span> CouponGenerator <span style="color: #009900;">&#123;</span>
-&nbsp;
-    <span style="color: #000066; font-weight: bold;">boolean</span> isEnabled<span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-&nbsp;
-    <span style="color: #000066; font-weight: bold;">void</span> generateCoupon<span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span> <span style="color: #000000; font-weight: bold;">throws</span> CouponException<span style="color: #339933;">;</span>
-&nbsp;
-<span style="color: #009900;">&#125;</span></pre>
-
-<p>So it contains a single method to generate coupons. But it may also include some documentation.</p>
-
-<pre class="java" style="font-family:monospace;"><span style="color: #000000; font-weight: bold;">interface</span> CouponGenerator <span style="color: #009900;">&#123;</span>
-&nbsp;
-    <span style="color: #000066; font-weight: bold;">boolean</span> isEnabled<span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-&nbsp;
-    <span style="color: #008000; font-style: italic; font-weight: bold;">/**
-     * Generates a coupon, unless the coupon generation has been disabled.
-     * @throws CouponException if the coupon generation has been disabled
-     */</span>
-    <span style="color: #000066; font-weight: bold;">void</span> generateCoupon<span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span> <span style="color: #000000; font-weight: bold;">throws</span> CouponException<span style="color: #339933;">;</span>
-&nbsp;
-<span style="color: #009900;">&#125;</span></pre>
-
-<p>This is a simple example, with no intention of representing anything useful. But being simple it
-is helpful to understand the concept of contract tests. Even though the class and its method names
-tell us that it generates coupons, the documentation extends the behaviour by saying that if
-the coupon generation has been disabled it will throw an exception.</p>
-
-<h2>Writing contract tests</h2>
-
-<p>We can cover the contract of the CouponGenerator interface with contract tests. We start by writing
-the tests for our interface.</p>
-
-<pre class="java" style="font-family:monospace;">&nbsp;
-@Contract<span style="color: #009900;">&#40;</span>CouponGenerator.<span style="color: #000000; font-weight: bold;">class</span><span style="color: #009900;">&#41;</span>
-<span style="color: #000000; font-weight: bold;">public</span> <span style="color: #000000; font-weight: bold;">class</span> CouponGeneratorContractTest<span style="color: #339933;">&lt;</span>T <span style="color: #000000; font-weight: bold;">extends</span> CouponGenerator<span style="color: #339933;">&gt;</span> <span style="color: #009900;">&#123;</span>
-&nbsp;
-    <span style="color: #666666; font-style: italic;">// the producer we will user</span>
-    <span style="color: #000000; font-weight: bold;">private</span> IProducer<span style="color: #339933;">&lt;</span>T<span style="color: #339933;">&gt;</span> producer<span style="color: #339933;">;</span>
-&nbsp;
-    @Contract.<span style="color: #006633;">Inject</span>
-    <span style="color: #666666; font-style: italic;">// define the method to set producer.</span>
-    <span style="color: #000000; font-weight: bold;">public</span> <span style="color: #000000; font-weight: bold;">final</span> <span style="color: #000066; font-weight: bold;">void</span> setProducer<span style="color: #009900;">&#40;</span>IProducer<span style="color: #339933;">&lt;</span>T<span style="color: #339933;">&gt;</span> producer<span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
-        <span style="color: #000000; font-weight: bold;">this</span>.<span style="color: #006633;">producer</span> <span style="color: #339933;">=</span> producer<span style="color: #339933;">;</span>
-    <span style="color: #009900;">&#125;</span>
-&nbsp;
-    <span style="color: #000000; font-weight: bold;">protected</span> <span style="color: #000000; font-weight: bold;">final</span> IProducer<span style="color: #339933;">&lt;</span>T<span style="color: #339933;">&gt;</span> getProducer<span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
-        <span style="color: #000000; font-weight: bold;">return</span> producer<span style="color: #339933;">;</span>
-    <span style="color: #009900;">&#125;</span>
-&nbsp;
-    @After
-    <span style="color: #000000; font-weight: bold;">public</span> <span style="color: #000000; font-weight: bold;">final</span> <span style="color: #000066; font-weight: bold;">void</span> cleanupAT<span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
-        getProducer<span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span>.<span style="color: #006633;">cleanUp</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span> <span style="color: #666666; font-style: italic;">// clean up the producer for the next run</span>
-    <span style="color: #009900;">&#125;</span>
-&nbsp;
-    @ContractTest
-    <span style="color: #000000; font-weight: bold;">public</span> <span style="color: #000066; font-weight: bold;">void</span> shouldGenerateACouponWhenEnabled<span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span> <span style="color: #000000; font-weight: bold;">throws</span> CouponException <span style="color: #009900;">&#123;</span>
-        CouponGenerator couponGenerator <span style="color: #339933;">=</span> getProducer<span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span>.<span style="color: #006633;">newInstance</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-        couponGenerator.<span style="color: #006633;">generateCoupon</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-        assertNotNull<span style="color: #009900;">&#40;</span>couponGenerator<span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-    <span style="color: #009900;">&#125;</span>
-&nbsp;
-    @ContractTest
-    <span style="color: #000000; font-weight: bold;">public</span> <span style="color: #000066; font-weight: bold;">void</span> shouldFailWhenDisabled<span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span> <span style="color: #000000; font-weight: bold;">throws</span> CouponException <span style="color: #009900;">&#123;</span>
-        CouponGenerator couponGenerator <span style="color: #339933;">=</span> getProducer<span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span>.<span style="color: #006633;">newInstance</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-        couponGenerator.<span style="color: #006633;">generateCoupon</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-        assertNotNull<span style="color: #009900;">&#40;</span>couponGenerator<span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-        <span style="color: #000000; font-weight: bold;">try</span> <span style="color: #009900;">&#123;</span>
-            couponGenerator.<span style="color: #006633;">setEnabled</span><span style="color: #009900;">&#40;</span><span style="color: #000066; font-weight: bold;">false</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-            couponGenerator.<span style="color: #006633;">generateCoupon</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-            fail<span style="color: #009900;">&#40;</span><span style="color: #0000ff;">&quot;Coupon Generator must fail if disabled!&quot;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-        <span style="color: #009900;">&#125;</span> <span style="color: #000000; font-weight: bold;">catch</span> <span style="color: #009900;">&#40;</span>CouponException ce<span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
-            <span style="color: #666666; font-style: italic;">// ignore</span>
-        <span style="color: #009900;">&#125;</span>
-    <span style="color: #009900;">&#125;</span>
-<span style="color: #009900;">&#125;</span></pre>
-
-<p>This test covers the basic contract defined in our interface and is used by the junit-contracts
-library.</p>
-
-<h2>Dissecting the code</h2>
-
-<p>This first part defines the interface under test.</p>
-
-<pre class="java" style="font-family:monospace;">@Contract<span style="color: #009900;">&#40;</span>CouponGenerator.<span style="color: #000000; font-weight: bold;">class</span><span style="color: #009900;">&#41;</span>
-<span style="color: #000000; font-weight: bold;">public</span> <span style="color: #000000; font-weight: bold;">class</span> CouponGeneratorContractTest<span style="color: #339933;">&lt;</span>T <span style="color: #000000; font-weight: bold;">extends</span> CouponGenerator<span style="color: #339933;">&gt;</span> <span style="color: #009900;">&#123;</span></pre>
-
-<p>This next part is the producer which, as the name suggests, produces instances of our
-interface. These instances are used during testing, and are set by the implementation
-tests.</p>
-
-<p>The methods annotated by @ContractTest are the tests for what is defined in our
-interface. They contain the assertions.</p>
-
-<pre class="java" style="font-family:monospace;">    <span style="color: #666666; font-style: italic;">// the producer we will user</span>
-    <span style="color: #000000; font-weight: bold;">private</span> IProducer<span style="color: #339933;">&lt;</span>T<span style="color: #339933;">&gt;</span> producer<span style="color: #339933;">;</span>
-&nbsp;
-    @Contract.<span style="color: #006633;">Inject</span>
-    <span style="color: #666666; font-style: italic;">// define the method to set producer.</span>
-    <span style="color: #000000; font-weight: bold;">public</span> <span style="color: #000000; font-weight: bold;">final</span> <span style="color: #000066; font-weight: bold;">void</span> setProducer<span style="color: #009900;">&#40;</span>IProducer<span style="color: #339933;">&lt;</span>T<span style="color: #339933;">&gt;</span> producer<span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
-        <span style="color: #000000; font-weight: bold;">this</span>.<span style="color: #006633;">producer</span> <span style="color: #339933;">=</span> producer<span style="color: #339933;">;</span>
-    <span style="color: #009900;">&#125;</span>
-&nbsp;
-    <span style="color: #000000; font-weight: bold;">protected</span> <span style="color: #000000; font-weight: bold;">final</span> IProducer<span style="color: #339933;">&lt;</span>T<span style="color: #339933;">&gt;</span> getProducer<span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
-        <span style="color: #000000; font-weight: bold;">return</span> producer<span style="color: #339933;">;</span>
-    <span style="color: #009900;">&#125;</span></pre>
-
-<p>Finally, you can write a class extending our test. This class will set the producer
-used during test. This new producer will create instances of the CouponGeneratorImpl
-for testing.</p>
-
-<pre class="java" style="font-family:monospace;">@RunWith<span style="color: #009900;">&#40;</span>ContractTestRunner.<span style="color: #000000; font-weight: bold;">class</span><span style="color: #009900;">&#41;</span>
-<span style="color: #000000; font-weight: bold;">public</span> <span style="color: #000000; font-weight: bold;">class</span> CouponGeneratorImplTest <span style="color: #000000; font-weight: bold;">extends</span> CouponGeneratorContractTest<span style="color: #339933;">&lt;</span>CouponGeneratorImpl<span style="color: #339933;">&gt;</span> <span style="color: #009900;">&#123;</span>
-&nbsp;
-    <span style="color: #000000; font-weight: bold;">public</span> CouponGeneratorImplTest<span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
-        setProducer<span style="color: #009900;">&#40;</span><span style="color: #000000; font-weight: bold;">new</span> IProducer<span style="color: #339933;">&lt;</span>CouponGeneratorImpl<span style="color: #339933;">&gt;</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
-&nbsp;
-            <span style="color: #000000; font-weight: bold;">public</span> <span style="color: #000066; font-weight: bold;">void</span> cleanUp<span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
-                <span style="color: #666666; font-style: italic;">// nothing to do</span>
-            <span style="color: #009900;">&#125;</span>
-&nbsp;
-            <span style="color: #000000; font-weight: bold;">public</span> CouponGeneratorImpl newInstance<span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
-                <span style="color: #000000; font-weight: bold;">return</span> <span style="color: #000000; font-weight: bold;">new</span> CouponGeneratorImpl<span style="color: #009900;">&#40;</span><span style="color: #000066; font-weight: bold;">true</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-            <span style="color: #009900;">&#125;</span>
-        <span style="color: #009900;">&#125;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-    <span style="color: #009900;">&#125;</span>
-&nbsp;
-<span style="color: #009900;">&#125;</span></pre>
-
-<p>That&#8217;s that. You can run the tests from Eclipse or with Maven Surefire. If one of the implementations
-don&#8217;t follow the contract, tests will fail! There is also a plug-in to show what is not being tested,
-but I haven&#8217;t investigated that part of the library yet. Neat!</p>
-
-<p>You can clone the repository with this code <a href="https://github.com/kinow/contract-tests-sandbox">from GitHub</a>.</p>
-
-<p>Happy testing!</p>
-
-<p><!-- html -->
-        <p class="postmetadata">
-                <small>tags          [&nbsp;<a
-            href="/tag/java.html"
-            rel="tag">java</a>&nbsp;]&nbsp;
-                 [&nbsp;<a
-            href="/tag/junit.html"
-            rel="tag">junit</a>&nbsp;]&nbsp;
-                 [&nbsp;<a
-            href="/tag/unit-testing.html"
-            rel="tag">unit testing</a>&nbsp;]&nbsp;
-                 [&nbsp;<a
-            href="/tag/contract-test.html"
-            rel="tag">contract test</a>&nbsp;]&nbsp;
-                </small>
-                        <br/>
-        <small>posted in 
-        [&nbsp;<a
-            href="/blog.html"
-            title="View all posts in blog"
-            rel="category tag">blog</a>&nbsp;]&nbsp;
-        category </small>
-            </p>
-</div>
-<div class="post type-post status-publish format-standard hentry">
     <h2>Groovy Hooks in Jenkins for increasing logging level</h2>
     <p><small>kinow</small> @ <small>April 12, 2015&nbsp;11:30:03</small></p>
     <div><a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2015/04/12/groovy-hooks-in-jenkins-for-increasing-logging-level.html" data-text="Groovy Hooks in Jenkins for increasing logging level" data-via="kinow" data-hashtags="opensource">Tweet</a>
@@ -766,6 +398,173 @@ updated version of this graph soon.</p>
                  [&nbsp;<a
             href="/tag/development.html"
             rel="tag">development</a>&nbsp;]&nbsp;
+                </small>
+                        <br/>
+        <small>posted in 
+        [&nbsp;<a
+            href="/blog.html"
+            title="View all posts in blog"
+            rel="category tag">blog</a>&nbsp;]&nbsp;
+        category </small>
+            </p>
+</div>
+<div class="post type-post status-publish format-standard hentry">
+    <h2>Cypher, Gremlin and SPARQL: Graph dialects</h2>
+    <p><small>kinow</small> @ <small>September 9, 2014&nbsp;10:14:33</small></p>
+    <div><a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2014/09/09/cypher-gremlin-and-sparql-graph-dialects.html" data-text="Cypher, Gremlin and SPARQL: Graph dialects" data-via="kinow" data-hashtags="opensource">Tweet</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+</div>
+    <p>When I was younger and my older brother was living in Germany, I asked him if he 
+had learned German. He said that he did, and explained that there are several 
+dialects, and he was quite proud for some people told him that he was using the 
+Bavarian dialect correctly.</p></p>
+
+<p>Even though <a href="http://www.neo4j.org/learn/cypher">Cypher</a>, 
+<a href="http://gremlindocs.com/">Gremlin</a> and <a href="http://en.wikipedia.org/wiki/SPARQL">SPARQL</a> 
+are all query languages, I think we can consider them dialects of a common graph language. 
+Cypher is the query language used in <a href="http://www.neo4j.org/">neo4j</a>, a graph database. 
+Gremlin is part of the <a href="http://www.tinkerpop.com/">Tinkerpop</a>, an open source project 
+that contains graph server, graph algorithms, graph language, among other sub-projects. 
+And last but not least, SPARQL is used to query <a href="http://en.wikipedia.org/wiki/Resource_Description_Framework">RDF documents</a>.</p>
+
+<p>Let&#8217;s use the example of the Matrix movie provided by neo4j to take a look at the 
+three languages.</p>
+
+<h2>Cypher</h2>
+
+<p>First we create the graph.</p>
+
+<pre class="sql" style="font-family:monospace;"><span style="color: #993333; font-weight: bold;">CREATE</span> <span style="color: #66cc66;">&#40;</span>matrix1:Movie <span style="color: #66cc66;">&#123;</span>id : <span style="color: #ff0000;">'603'</span><span style="color: #66cc66;">,</span> title : <span style="color: #ff0000;">'The Matrix'</span><span style="color: #66cc66;">,</span> <span style="color: #993333; font-weight: bold;">YEAR</span> : <span style="color: #ff0000;">'1999-03-31'</span><span style="color: #66cc66;">&#125;</span><span style="color: #66cc66;">&#41;</span><span style="color: #66cc66;">,</span>
+ <span style="color: #66cc66;">&#40;</span>matrix2:Movie <span style="color: #66cc66;">&#123;</span>id : <span style="color: #ff0000;">'604'</span><span style="color: #66cc66;">,</span> title : <span style="color: #ff0000;">'The Matrix Reloaded'</span><span style="color: #66cc66;">,</span> <span style="color: #993333; font-weight: bold;">YEAR</span> : <span style="color: #ff0000;">'2003-05-07'</span><span style="color: #66cc66;">&#125;</span><span style="color: #66cc66;">&#41;</span><span style="color: #66cc66;">,</span>
+ <span style="color: #66cc66;">&#40;</span>matrix3:Movie <span style="color: #66cc66;">&#123;</span>id : <span style="color: #ff0000;">'605'</span><span style="color: #66cc66;">,</span> title : <span style="color: #ff0000;">'The Matrix Revolutions'</span><span style="color: #66cc66;">,</span> <span style="color: #993333; font-weight: bold;">YEAR</span> : <span style="color: #ff0000;">'2003-10-27'</span><span style="color: #66cc66;">&#125;</span><span style="color: #66cc66;">&#41;</span><span style="color: #66cc66;">,</span>
+&nbsp;
+ <span style="color: #66cc66;">&#40;</span>neo:Actor <span style="color: #66cc66;">&#123;</span>name:<span style="color: #ff0000;">'Keanu Reeves'</span><span style="color: #66cc66;">&#125;</span><span style="color: #66cc66;">&#41;</span><span style="color: #66cc66;">,</span>
+ <span style="color: #66cc66;">&#40;</span>morpheus:Actor <span style="color: #66cc66;">&#123;</span>name:<span style="color: #ff0000;">'Laurence Fishburne'</span><span style="color: #66cc66;">&#125;</span><span style="color: #66cc66;">&#41;</span><span style="color: #66cc66;">,</span>
+ <span style="color: #66cc66;">&#40;</span>trinity:Actor <span style="color: #66cc66;">&#123;</span>name:<span style="color: #ff0000;">'Carrie-Anne Moss'</span><span style="color: #66cc66;">&#125;</span><span style="color: #66cc66;">&#41;</span><span style="color: #66cc66;">,</span>
+&nbsp;
+ <span style="color: #66cc66;">&#40;</span>matrix1<span style="color: #66cc66;">&#41;</span><span style="color: #66cc66;">&lt;-</span><span style="color: #66cc66;">&#91;</span>:ACTS_IN <span style="color: #66cc66;">&#123;</span><span style="color: #993333; font-weight: bold;">ROLE</span> : <span style="color: #ff0000;">'Neo'</span><span style="color: #66cc66;">&#125;</span><span style="color: #66cc66;">&#93;</span><span style="color: #66cc66;">-</span><span style="color: #66cc66;">&#40;</span>neo<span style="color: #66cc66;">&#41;</span><span style="color: #66cc66;">,</span>
+ <span style="color: #66cc66;">&#40;</span>matrix2<span style="color: #66cc66;">&#41;</span><span style="color: #66cc66;">&lt;-</span><span style="color: #66cc66;">&#91;</span>:ACTS_IN <span style="color: #66cc66;">&#123;</span><span style="color: #993333; font-weight: bold;">ROLE</span> : <span style="color: #ff0000;">'Neo'</span><span style="color: #66cc66;">&#125;</span><span style="color: #66cc66;">&#93;</span><span style="color: #66cc66;">-</span><span style="color: #66cc66;">&#40;</span>neo<span style="color: #66cc66;">&#41;</span><span style="color: #66cc66;">,</span>
+ <span style="color: #66cc66;">&#40;</span>matrix3<span style="color: #66cc66;">&#41;</span><span style="color: #66cc66;">&lt;-</span><span style="color: #66cc66;">&#91;</span>:ACTS_IN <span style="color: #66cc66;">&#123;</span><span style="color: #993333; font-weight: bold;">ROLE</span> : <span style="color: #ff0000;">'Neo'</span><span style="color: #66cc66;">&#125;</span><span style="color: #66cc66;">&#93;</span><span style="color: #66cc66;">-</span><span style="color: #66cc66;">&#40;</span>neo<span style="color: #66cc66;">&#41;</span><span style="color: #66cc66;">,</span>
+ <span style="color: #66cc66;">&#40;</span>matrix1<span style="color: #66cc66;">&#41;</span><span style="color: #66cc66;">&lt;-</span><span style="color: #66cc66;">&#91;</span>:ACTS_IN <span style="color: #66cc66;">&#123;</span><span style="color: #993333; font-weight: bold;">ROLE</span> : <span style="color: #ff0000;">'Morpheus'</span><span style="color: #66cc66;">&#125;</span><span style="color: #66cc66;">&#93;</span><span style="color: #66cc66;">-</span><span style="color: #66cc66;">&#40;</span>morpheus<span style="color: #66cc66;">&#41;</span><span style="color: #66cc66;">,</span>
+ <span style="color: #66cc66;">&#40;</span>matrix2<span style="color: #66cc66;">&#41;</span><span style="color: #66cc66;">&lt;-</span><span style="color: #66cc66;">&#91;</span>:ACTS_IN <span style="color: #66cc66;">&#123;</span><span style="color: #993333; font-weight: bold;">ROLE</span> : <span style="color: #ff0000;">'Morpheus'</span><span style="color: #66cc66;">&#125;</span><span style="color: #66cc66;">&#93;</span><span style="color: #66cc66;">-</span><span style="color: #66cc66;">&#40;</span>morpheus<span style="color: #66cc66;">&#41;</span><span style="color: #66cc66;">,</span>
+ <span style="color: #66cc66;">&#40;</span>matrix3<span style="color: #66cc66;">&#41;</span><span style="color: #66cc66;">&lt;-</span><span style="color: #66cc66;">&#91;</span>:ACTS_IN <span style="color: #66cc66;">&#123;</span><span style="color: #993333; font-weight: bold;">ROLE</span> : <span style="color: #ff0000;">'Morpheus'</span><span style="color: #66cc66;">&#125;</span><span style="color: #66cc66;">&#93;</span><span style="color: #66cc66;">-</span><span style="color: #66cc66;">&#40;</span>morpheus<span style="color: #66cc66;">&#41;</span><span style="color: #66cc66;">,</span>
+ <span style="color: #66cc66;">&#40;</span>matrix1<span style="color: #66cc66;">&#41;</span><span style="color: #66cc66;">&lt;-</span><span style="color: #66cc66;">&#91;</span>:ACTS_IN <span style="color: #66cc66;">&#123;</span><span style="color: #993333; font-weight: bold;">ROLE</span> : <span style="color: #ff0000;">'Trinity'</span><span style="color: #66cc66;">&#125;</span><span style="color: #66cc66;">&#93;</span><span style="color: #66cc66;">-</span><span style="color: #66cc66;">&#40;</span>trinity<span style="color: #66cc66;">&#41;</span><span style="color: #66cc66;">,</span>
+ <span style="color: #66cc66;">&#40;</span>matrix2<span style="color: #66cc66;">&#41;</span><span style="color: #66cc66;">&lt;-</span><span style="color: #66cc66;">&#91;</span>:ACTS_IN <span style="color: #66cc66;">&#123;</span><span style="color: #993333; font-weight: bold;">ROLE</span> : <span style="color: #ff0000;">'Trinity'</span><span style="color: #66cc66;">&#125;</span><span style="color: #66cc66;">&#93;</span><span style="color: #66cc66;">-</span><span style="color: #66cc66;">&#40;</span>trinity<span style="color: #66cc66;">&#41;</span><span style="color: #66cc66;">,</span>
+ <span style="color: #66cc66;">&#40;</span>matrix3<span style="color: #66cc66;">&#41;</span><span style="color: #66cc66;">&lt;-</span><span style="color: #66cc66;">&#91;</span>:ACTS_IN <span style="color: #66cc66;">&#123;</span><span style="color: #993333; font-weight: bold;">ROLE</span> : <span style="color: #ff0000;">'Trinity'</span><span style="color: #66cc66;">&#125;</span><span style="color: #66cc66;">&#93;</span><span style="color: #66cc66;">-</span><span style="color: #66cc66;">&#40;</span>trinity<span style="color: #66cc66;">&#41;</span></pre>
+
+<p><code>Added 6 labels, created 6 nodes, set 21 properties, created 9 relationships, returned 0 rows in 2791 ms</code></p>
+
+<p>And execute a simple query.</p>
+
+<pre class="sql" style="font-family:monospace;"><span style="color: #993333; font-weight: bold;">MATCH</span> <span style="color: #66cc66;">&#40;</span>a:Actor <span style="color: #66cc66;">&#123;</span> name:<span style="color: #ff0000;">&quot;Keanu Reeves&quot;</span> <span style="color: #66cc66;">&#125;</span><span style="color: #66cc66;">&#41;</span>
+<span style="color: #993333; font-weight: bold;">RETURN</span> a</pre>
+
+<p><code>(9:Actor {name:"Keanu Reeves"})</code></p>
+
+<h2>Gremlin</h2>
+
+<p>Again, let&#8217;s start by creating our graph.</p>
+
+<pre class="sql" style="font-family:monospace;">g <span style="color: #66cc66;">=</span> <span style="color: #993333; font-weight: bold;">NEW</span> TinkerGraph<span style="color: #66cc66;">&#40;</span><span style="color: #66cc66;">&#41;</span>;
+matrix1 <span style="color: #66cc66;">=</span> g<span style="color: #66cc66;">.</span>addVertex<span style="color: #66cc66;">&#40;</span><span style="color: #66cc66;">&#91;</span><span style="color: #ff0000;">&quot;_id&quot;</span>:<span style="color: #cc66cc;">603</span><span style="color: #66cc66;">,</span><span style="color: #ff0000;">&quot;title&quot;</span>:<span style="color: #ff0000;">&quot;The Matrix&quot;</span><span style="color: #66cc66;">,</span> <span style="color: #ff0000;">&quot;year&quot;</span>: <span style="color: #ff0000;">&quot;1999-03-31&quot;</span><span style="color: #66cc66;">&#93;</span><span style="color: #66cc66;">&#41;</span>;
+matrix2 <span style="color: #66cc66;">=</span> g<span style="color: #66cc66;">.</span>addVertex<span style="color: #66cc66;">&#40;</span><span style="color: #66cc66;">&#91;</span><span style="color: #ff0000;">&quot;_id&quot;</span>:<span style="color: #cc66cc;">604</span><span style="color: #66cc66;">,</span><span style="color: #ff0000;">&quot;title&quot;</span>:<span style="color: #ff0000;">&quot;The Matrix Reloaded&quot;</span><span style="color: #66cc66;">,</span> <span style="color: #ff0000;">&quot;year&quot;</span>: <span style="color: #ff0000;">&quot;2003-05-07&quot;</span><span style="color: #66cc66;">&#93;</span><span style="color: #66cc66;">&#41;</span>;
+matrix3 <span style="color: #66cc66;">=</span> g<span style="color: #66cc66;">.</span>addVertex<span style="color: #66cc66;">&#40;</span><span style="color: #66cc66;">&#91;</span><span style="color: #ff0000;">&quot;_id&quot;</span>:<span style="color: #cc66cc;">605</span><span style="color: #66cc66;">,</span><span style="color: #ff0000;">&quot;title&quot;</span>:<span style="color: #ff0000;">&quot;The Matrix Revolutions&quot;</span><span style="color: #66cc66;">,</span> <span style="color: #ff0000;">&quot;year&quot;</span>: <span style="color: #ff0000;">&quot;2003-10-27&quot;</span><span style="color: #66cc66;">&#93;</span><span style="color: #66cc66;">&#41;</span>;
+&nbsp;
+neo <span style="color: #66cc66;">=</span> g<span style="color: #66cc66;">.</span>addVertex<span style="color: #66cc66;">&#40;</span><span style="color: #66cc66;">&#91;</span><span style="color: #ff0000;">&quot;name&quot;</span>: <span style="color: #ff0000;">&quot;Keanu Reeves&quot;</span><span style="color: #66cc66;">&#93;</span><span style="color: #66cc66;">&#41;</span>;
+morpheus <span style="color: #66cc66;">=</span> g<span style="color: #66cc66;">.</span>addVertex<span style="color: #66cc66;">&#40;</span><span style="color: #66cc66;">&#91;</span><span style="color: #ff0000;">&quot;name&quot;</span>: <span style="color: #ff0000;">&quot;Laurence Fishburne&quot;</span><span style="color: #66cc66;">&#93;</span><span style="color: #66cc66;">&#41;</span>;
+trinity <span style="color: #66cc66;">=</span> g<span style="color: #66cc66;">.</span>addVertex<span style="color: #66cc66;">&#40;</span><span style="color: #66cc66;">&#91;</span><span style="color: #ff0000;">&quot;name&quot;</span>: <span style="color: #ff0000;">&quot;Carrie-Anne Moss&quot;</span><span style="color: #66cc66;">&#93;</span><span style="color: #66cc66;">&#41;</span>;
+&nbsp;
+neo<span style="color: #66cc66;">.</span>addEdge<span style="color: #66cc66;">&#40;</span><span style="color: #ff0000;">&quot;actsIn&quot;</span><span style="color: #66cc66;">,</span> matrix1<span style="color: #66cc66;">&#41;</span>; 
+neo<span style="color: #66cc66;">.</span>addEdge<span style="color: #66cc66;">&#40;</span><span style="color: #ff0000;">&quot;actsIn&quot;</span><span style="color: #66cc66;">,</span> matrix2<span style="color: #66cc66;">&#41;</span>; 
+neo<span style="color: #66cc66;">.</span>addEdge<span style="color: #66cc66;">&#40;</span><span style="color: #ff0000;">&quot;actsIn&quot;</span><span style="color: #66cc66;">,</span> matrix3<span style="color: #66cc66;">&#41;</span>; 
+morpheus<span style="color: #66cc66;">.</span>addEdge<span style="color: #66cc66;">&#40;</span><span style="color: #ff0000;">&quot;actsIn&quot;</span><span style="color: #66cc66;">,</span> matrix1<span style="color: #66cc66;">&#41;</span>; 
+morpheus<span style="color: #66cc66;">.</span>addEdge<span style="color: #66cc66;">&#40;</span><span style="color: #ff0000;">&quot;actsIn&quot;</span><span style="color: #66cc66;">,</span> matrix2<span style="color: #66cc66;">&#41;</span>; 
+morpheus<span style="color: #66cc66;">.</span>addEdge<span style="color: #66cc66;">&#40;</span><span style="color: #ff0000;">&quot;actsIn&quot;</span><span style="color: #66cc66;">,</span> matrix3<span style="color: #66cc66;">&#41;</span>; 
+trinity<span style="color: #66cc66;">.</span>addEdge<span style="color: #66cc66;">&#40;</span><span style="color: #ff0000;">&quot;actsIn&quot;</span><span style="color: #66cc66;">,</span> matrix1<span style="color: #66cc66;">&#41;</span>; 
+trinity<span style="color: #66cc66;">.</span>addEdge<span style="color: #66cc66;">&#40;</span><span style="color: #ff0000;">&quot;actsIn&quot;</span><span style="color: #66cc66;">,</span> matrix2<span style="color: #66cc66;">&#41;</span>; 
+trinity<span style="color: #66cc66;">.</span>addEdge<span style="color: #66cc66;">&#40;</span><span style="color: #ff0000;">&quot;actsIn&quot;</span><span style="color: #66cc66;">,</span> matrix3<span style="color: #66cc66;">&#41;</span>;</pre>
+
+<p>And execute a simple query.</p>
+
+<pre class="sql" style="font-family:monospace;">g<span style="color: #66cc66;">.</span>V<span style="color: #66cc66;">.</span>has<span style="color: #66cc66;">&#40;</span><span style="color: #ff0000;">'name'</span><span style="color: #66cc66;">,</span> <span style="color: #ff0000;">'Keanu Reeves'</span><span style="color: #66cc66;">&#41;</span><span style="color: #66cc66;">.</span>map</pre>
+
+<p><code>gremlin> g.V.has('name', 'Keanu Reeves').map
+==>{name=Keanu Reeves}
+gremlin></code></p>
+
+<p>Quite similar to neo4j.</p>
+
+<h2>SPARQL</h2>
+
+<p>Let&#8217;s load our example (thanks to <a href="https://twitter.com/kendall">Kendall G. Clark</a>). I used 
+<a href="http://jena.apache.org/documentation/serving_data/">Fuseki</a> to run these queries.</p>
+
+<pre class="xml" style="font-family:monospace;">@prefix :          <span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;http:</span>//example.org/matrix<span style="color: #000000; font-weight: bold;">/&gt;</span></span> .
+&nbsp;
+ :m1 a :Movie; :title &quot;The Matrix&quot;; :year &quot;1999-03-31&quot;.
+ :m2 a :Movie; :title &quot;The Matrix Reloaded&quot;; :year &quot;2003-05-07&quot;.
+ :m3 a :Movie; :title &quot;The Matrix Revolutions&quot;; :year &quot;2003-10-27&quot;.
+&nbsp;
+ :neo a :Actor; :name &quot;Keanu Reeves&quot;.
+ :morpheus a :Actor; :name &quot;Laurence Fishburne&quot;.
+ :trinity a :Actor; :name &quot;Carrie-Anne Moss&quot;.
+&nbsp;
+ :neo :hasRole [:as &quot;Neo&quot;; :in :m1].
+ :neo :hasRole [:as &quot;Neo&quot;; :in :m2].
+ :neo :hasRole [:as &quot;Neo&quot;; :in :m2].
+ :morpheus :hasRole [:as &quot;Morpheus&quot;; :in :m1].
+ :morpheus :hasRole [:as &quot;Morpheus&quot;; :in :m2].
+ :morpheus :hasRole [:as &quot;Morpheus&quot;; :in :m2].
+ :trinity :hasRole [:as &quot;Trinity&quot;; :in :m1].
+ :trinity :hasRole [:as &quot;Trinity&quot;; :in :m2].
+ :trinity :hasRole [:as &quot;Trinity&quot;; :in :m2].</pre>
+
+<p>And finally the SPARQL query.</p>
+
+<pre class="sql" style="font-family:monospace;"><span style="color: #993333; font-weight: bold;">SELECT</span> ?a <span style="color: #993333; font-weight: bold;">WHERE</span> <span style="color: #66cc66;">&#123;</span>
+   ?a a <span style="color: #66cc66;">&lt;</span>http:<span style="color: #66cc66;">//</span>example<span style="color: #66cc66;">.</span>org<span style="color: #66cc66;">/</span>matrix<span style="color: #66cc66;">/</span>Actor<span style="color: #66cc66;">&gt;</span> <span style="color: #66cc66;">.</span>
+   ?a <span style="color: #66cc66;">&lt;</span>http:<span style="color: #66cc66;">//</span>example<span style="color: #66cc66;">.</span>org<span style="color: #66cc66;">/</span>matrix<span style="color: #66cc66;">/</span>name<span style="color: #66cc66;">&gt;</span> ?name <span style="color: #66cc66;">.</span>
+   <span style="color: #993333; font-weight: bold;">FILTER</span><span style="color: #66cc66;">&#40;</span>?name  <span style="color: #66cc66;">=</span> <span style="color: #ff0000;">&quot;Keanu Reeves&quot;</span><span style="color: #66cc66;">&#41;</span>
+<span style="color: #66cc66;">&#125;</span></pre>
+
+<p>Returning the Keanu Reeves actor instance.</p>
+
+<pre>-----------------------------------
+| a                               |
+===================================
+| &lt;http://example.org/matrix/neo&gt; |
+-----------------------------------</pre>
+
+<p>SPARQL supports inference (or I must say that OWL, RDFS and the reasoners do), 
+but it is easier to define the depth of a search in the graph using neo4j. As for 
+Gremlin, it has native support to Groovy and Java. There is a common denominator 
+for these three languages, but what makes them really powerful are their unique features. </p>
+
+<p>I hope you enjoyed, and that this post gave you a quick overview of some of the existing 
+graph languages. Make sure you ponder the pros and cons of each server/language, and 
+make the best decision for your project. Take a look at <a href="http://en.wikipedia.org/wiki/Graph_database#APIs_and_Graph_Query.2FProgramming_Languages">other graph query languages</a> too.</p>
+
+<p>Happy hacking!</p>
+
+<hr />
+
+<p>This post has been updated as suggested by <a href="https://twitter.com/kendall">@kendall</a> (Thank you!).
+You can check the diff at <a href="https://github.com/kinow/kinoshita.eti.br/commits/master/site/_content/posts/2014-09-09_cypher-gremlin-and-sparql-graph-dialects.html">GitHub</a></p>
+
+<p><!-- html -->
+        <p class="postmetadata">
+                <small>tags          [&nbsp;<a
+            href="/tag/graph.html"
+            rel="tag">graph</a>&nbsp;]&nbsp;
+                 [&nbsp;<a
+            href="/tag/neo4j.html"
+            rel="tag">neo4j</a>&nbsp;]&nbsp;
+                 [&nbsp;<a
+            href="/tag/gremlin.html"
+            rel="tag">gremlin</a>&nbsp;]&nbsp;
+                 [&nbsp;<a
+            href="/tag/sparql.html"
+            rel="tag">sparql</a>&nbsp;]&nbsp;
                 </small>
                         <br/>
         <small>posted in 

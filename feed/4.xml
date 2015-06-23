@@ -13,28 +13,10 @@
     <atom:link href="http://kinoshita.eti.br/blog/feed.xml" rel="self" type="application/rss+xml" />
     <link>http://kinoshita.eti.br/</link>
     <description></description>
-    <lastBuildDate>Sun, 17 May 2015 15:10:12 +1200</lastBuildDate>
+    <lastBuildDate>Tue, 23 Jun 2015 14:32:16 +1200</lastBuildDate>
     <language>en-US</language>
     <generator>PieCrust 1.2.0</generator>
  
-<item>
-    <title>Ranges in Apache Commons Functor</title>
-    <pubDate>Sun, 22 Jan 2012 00:00:00 +1300</pubDate>
-    <link>/2012/01/22/ranges-in-apache-functor.html</link>
-    <dc:creator>Bruno P. Kinoshita</dc:creator>
-    <description>&lt;p&gt;This is a long post. So here is a &lt;strong&gt;TL;DR&lt;/strong&gt;:
-&lt;ul&gt;
-    &lt;li&gt;Apache Commons Functor has no Double or Float Range (yet)&lt;/li&gt;
-    &lt;li&gt;Apache Commons Functor IntegerRange and LongRange treat the low value as inclusive, and the high value as exclusive. How does that compare to other languages/APIs? (you will have to read to see some comparison)&lt;/li&gt;
-    &lt;li&gt;Perl has support for characters ranges, perhaps we could implement it in Functor too?&lt;/li&gt;
-    &lt;li&gt;In case we implemented a CharacterRange, it would have to be inclusive for both low and high limits. With &amp;#8216;z&amp;#8217; being the last character, there wouldn&amp;#8217;t have a way to include Z with the current approach. Or we would have to make the CharacterRange a special one. What would go against &lt;a title=&quot;Liskov Substitution Principle&quot; href=&quot;http://en.wikipedia.org/wiki/Liskov_substitution_principle&quot;&gt;Liskov Substitution Principle&lt;/a&gt;.&lt;/li&gt;
-    &lt;li&gt;You can see a comparison table with Apache Commons Functor, other Java API&amp;#8217;s and other programming languages for ranges clicking &lt;a href=&quot;#ctable&quot; title=&quot;Comparison table&quot;&gt;here&lt;/a&gt;.&lt;/li&gt;
-    &lt;li&gt;It would be nice to have a clear distinction in Functor documentation among a Sequence, a Generator and a Range. While I was gathering material for this post, I found places using range, others using sequence, and in Apache Commons Functor, an IntegerRange is a Generator.&lt;/li&gt;
-&lt;/ul&gt;
-Now, if you have some spare time or curiosity, keep reading :-)&lt;/p&gt;
-
-</description>
-</item>
 <item>
     <title>Testing shell code and producing TAP using Jenkins?</title>
     <pubDate>Fri, 30 Dec 2011 00:00:00 +1300</pubDate>
@@ -206,6 +188,249 @@ Cheers&lt;/p&gt;
 &lt;p style=&quot;text-align: center;&quot;&gt;&lt;a href=&quot;/2011/06/15/why-am-i-learning-perl/larry_wall.jpg&quot;&gt;&lt;img class=&quot;aligncenter size-full wp-image-740&quot; title=&quot;Bruno and Larry @ II Sao Paulo Perl Workshop&quot; src=&quot;/2011/06/15/why-am-i-learning-perl/larry_wall.jpg&quot; alt=&quot;&quot; width=&quot;560&quot; height=&quot;315&quot; /&gt;&lt;/a&gt;&lt;/p&gt;
 Well, what was my idea of Perl before the event? I thought it was an old programming language, very powerful, but over complicated. And what do I think of Perl now? I think it is an old programming language, very powerful, but may be complicated.&lt;/p&gt;
 
+</description>
+</item>
+<item>
+    <title>A comparison of TAP (Test Anything Protocol) and SubUnit</title>
+    <pubDate>Sat, 04 Jun 2011 00:00:00 +1200</pubDate>
+    <link>/2011/06/04/a-comparison-of-tap-test-anything-protocol-and-subunit.html</link>
+    <dc:creator>Bruno P. Kinoshita</dc:creator>
+    <description>&lt;p&gt;
+    I have been playing with &lt;a href=&quot;http://www.testanything.org&quot;&gt;TAP&lt;/a&gt; for some time and even implemented a &lt;a
+        href=&quot;http://www.tap4j.org&quot;&gt;Java API&lt;/a&gt; to let &lt;a href=&quot;http://www.testng.org&quot;&gt;TestNG&lt;/a&gt;, &lt;a
+        href=&quot;http://www.junit.org&quot;&gt;JUnit&lt;/a&gt; and other Test Frameworks to produce and consume TAP. TAP is a standard
+    format for test output that first appeared with Perl 1 in 1987. It is human and machine readable, easy to be
+    serialized, language independent and extensible&lt;sup&gt;&lt;a href=&quot;#1&quot;&gt;1&lt;/a&gt;&lt;/sup&gt; through the use of &lt;a
+        href=&quot;http://www.yaml.org&quot;&gt;YAML&lt;/a&gt;.
+&lt;/p&gt;
+
+&lt;p&gt;
+    Some days ago while I was designing a plug-in to show TAP test results in &lt;a href=&quot;http://www.jenkins-ci.org&quot;&gt;Jenkins&lt;/a&gt;
+    I stumbled across a message in &lt;a href=&quot;http://jenkins.361315.n4.nabble.com/Jenkins-dev-f387835.html&quot;&gt;Jenkins
+        dev-list&lt;/a&gt; where Max Magee and Nick Wiesmueller were discussing about a way of showing more details about the test
+    executions. I thought that the TAP Plug-in would fit perfectly, until one of the users, &lt;a
+        href=&quot;https://launchpad.net/~lifeless&quot;&gt;Robert Collins&lt;/a&gt;, mentioned &lt;a href=&quot;https://launchpad.net/subunit&quot;&gt;SubUnit&lt;/a&gt;.
+&lt;/p&gt;
+
+&lt;p&gt;&lt;p&gt;
+    Shame on me, but I hadn&amp;#8217;t heard of SubUnit until that message. Max Magee and I exchanged some messages after that,
+    talking about a initial design and analysis for the TAP Plug-in&lt;sup&gt;&lt;a href=&quot;#2&quot;&gt;2&lt;/a&gt;&lt;/sup&gt;. Here is the initial
+    idea:
+&lt;p&gt;
+&lt;ul&gt;
+    &lt;li&gt;The plug-in will be able to parse one or more test formats (maybe SubUnit, TAP and the formats available in
+        xUnit?).&lt;/li&gt;
+    &lt;li&gt;The test results will be displayed the same way JUnit tests are displayed in Jenkins (I think Jenkins
+        supports JUnit format by default, but you can use objects and create test results data, independently of the
+        test framework that you are using).&lt;/li&gt;
+    &lt;li&gt;There will be a table containing the Test Name, Description and Status and an expandable section.&lt;/li&gt;
+    &lt;li&gt;Inside this expandable section will be available all the details about the test.&lt;/li&gt;
+    &lt;li&gt;In case there are images within the test details, they should be displayed as a lightbox gallery.&lt;sup&gt;&lt;a
+            href=&quot;#3&quot;&gt;3&lt;/a&gt;&lt;/sup&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;
+    Although I have worked with TAP and spent some good time writing the tap4j port for Java, I am not convinced it is
+    the best solution for this issue yet. Hence I am posting this initial comparison between TAP and SubUnit hoping that
+    more people will contribute with the design of this solution. My goal is not only having a super cool plug-in for
+    Jenkins, but ease integration of test results in different tools and collaborate with both TAP and SubUnit. Another
+    objective that I have in mind is improving the way that test results are displayed in Jenkins and enabling it to be
+    an alternative for tools like &lt;a href=&quot;http://sourceforge.net/projects/smolder/&quot;&gt;Smolder&lt;/a&gt;, &lt;a
+        href=&quot;https://launchpad.net/testrepository&quot;&gt;TestRepository&lt;/a&gt; or &lt;a href=&quot;https://launchpad.net/tribunal&quot;&gt;Tribunal&lt;/a&gt;.
+    Because I believe the tasks done by these tools could be all done in my favorite CI Server, and it would increase
+    the productivity of Build &amp;amp; Release professionals :-))
+&lt;/p&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;!--more--&gt;
+&lt;h2&gt;
+    Comparison table&lt;sup&gt;&lt;a href=&quot;#4&quot;&gt;4&lt;/a&gt;&lt;/sup&gt;
+&lt;/h2&gt;
+&lt;p&gt;I believe tables are a good way to compare different technologies. However if anybody has any recommendation on a
+    different way of doing it, I would be glad to give it a try. In case there are missing items or other suggestion,
+    please, do not hesitate in getting in touch.&lt;/p&gt;
+&lt;table class=&#039;table table-bordered table-hover table-striped&#039;&gt;
+    &lt;tbody&gt;
+        &lt;tr&gt;
+            &lt;th&gt;&lt;/th&gt;
+            &lt;th class=&quot;center&quot;&gt;TAP&lt;/th&gt;
+            &lt;th class=&quot;center&quot;&gt;SubUnit&lt;/th&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+            &lt;th&gt;Human and Machine readable format&lt;/th&gt;
+            &lt;td class=&quot;center&quot;&gt;Yes&lt;/td&gt;
+            &lt;td class=&quot;center&quot;&gt;Yes&lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+            &lt;th&gt;Language independent&lt;/th&gt;
+            &lt;td class=&quot;center&quot;&gt;Yes&lt;/td&gt;
+            &lt;td class=&quot;center&quot;&gt;Yes&lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+            &lt;th&gt;Programming languages supported&lt;sup&gt;&lt;a href=&quot;#5&quot;&gt;5&lt;/a&gt;&lt;/sup&gt;&lt;/th&gt;
+            &lt;td class=&quot;center&quot;&gt;Perl, Python, PHP, Java, C, C++, C#, Lua, Shell, Ruby, Javascript, Pascal,
+                PostgreSQL, Haskell, Lisp, Forth, Limbo&lt;/td&gt;
+            &lt;td class=&quot;center&quot;&gt;Python, C, C++ and Shell&lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+            &lt;th&gt;Since&lt;/th&gt;
+            &lt;td class=&quot;center&quot;&gt;1987&lt;/td&gt;
+            &lt;td class=&quot;center&quot;&gt;2006&lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+            &lt;th&gt;Grouping tests in some category/tag style&lt;/th&gt;
+            &lt;td class=&quot;center&quot;&gt;Proposal&lt;sup&gt;&lt;a href=&quot;#6&quot;&gt;6&lt;/a&gt;&lt;/sup&gt;&lt;sup&gt;&lt;a href=&quot;#7&quot;&gt;7&lt;/a&gt;&lt;/sup&gt;&lt;/td&gt;
+            &lt;td class=&quot;center&quot;&gt;Yes&lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+            &lt;th&gt;Extensible&lt;/th&gt;
+            &lt;td class=&quot;center&quot;&gt;Yes, YAML&lt;/td&gt;
+            &lt;td class=&quot;center&quot;&gt;N/A?&lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+            &lt;th&gt;Documentation&lt;/th&gt;
+            &lt;td class=&quot;center&quot;&gt;Good, but old.&lt;/td&gt;
+            &lt;td class=&quot;center&quot;&gt;Few examples, blogs or Wikis for beginners.&lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+            &lt;th&gt;Used in real-world?&lt;/th&gt;
+            &lt;td class=&quot;center&quot;&gt;Yes, an enormous number of modules in &lt;a href=&quot;http://www.cpan.org/&quot;&gt;CPAN&lt;/a&gt; use it
+            &lt;/td&gt;
+            &lt;td class=&quot;center&quot;&gt;Yes (e.g.: &lt;a href=&quot;http://www.samba.org/&quot;&gt;Samba&lt;/a&gt;)
+            &lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+            &lt;th&gt;Format specification&lt;/th&gt;
+            &lt;td class=&quot;center&quot;&gt;Draft at &lt;a
+                href=&quot;http://testanything.org/wiki/index.php/TAP_at_IETF:_Draft_Standard&quot;&gt;IETF&lt;/a&gt;&lt;/td&gt;
+            &lt;td class=&quot;center&quot;&gt;Information on Python Package Index &lt;sup&gt;&lt;a href=&quot;#8&quot;&gt;8&lt;/a&gt;&lt;/sup&gt;&lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+            &lt;th&gt;Show time of tests&lt;/th&gt;
+            &lt;td class=&quot;center&quot;&gt;Yes, with YAML&lt;/td&gt;
+            &lt;td class=&quot;center&quot;&gt;Yes, natively&lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+            &lt;th&gt;Use custom test status&lt;/th&gt;
+            &lt;td class=&quot;center&quot;&gt;No&lt;/td&gt;
+            &lt;td class=&quot;center&quot;&gt;No&lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+            &lt;th&gt;Attach files to test result&lt;/th&gt;
+            &lt;td class=&quot;center&quot;&gt;Yes, Base64 encoded in YAML&lt;/td&gt;
+            &lt;td class=&quot;center&quot;&gt;Yes, Base64 encoded in test output&lt;/td&gt;
+        &lt;/tr&gt;
+    &lt;/tbody&gt;
+&lt;/table&gt;&lt;/p&gt;
+
+&lt;h2&gt;Examples&lt;/h2&gt;
+
+&lt;p&gt;TAP: 
+&lt;pre class=&quot;tap&quot; style=&quot;font-family:monospace;&quot;&gt;1..1
+not ok 1 Wrong length 
+    ---
+    wanted: 5
+    found: 4
+    time: 2011-02-01 00:09:01-07
+    extensions: 
+        files: 
+            1.txt:
+                name: 1.txt 
+                file-type: text/plain 
+                file-size: 43 
+                content: c2FtcGxl ...&lt;/pre&gt;&lt;/p&gt;
+
+&lt;p&gt;SubUnit (using Python + nose): 
+&lt;pre class=&quot;shell&quot; style=&quot;font-family:monospace;&quot;&gt;time: 2011-05-23 22:49:38.856075Z
+test: my&lt;em&gt;test.SampleTestCase.runTest 
+failure: my&lt;/em&gt;test.SampleTestCase.runTest 
+[ 
+    Traceback (most recent call last): File &amp;quot;/media/windows/dev/java/qa&lt;em&gt;workspace/python&lt;/em&gt;nose&lt;em&gt;tests/src/my&lt;/em&gt;test.py&amp;quot;, line
+    11, in runTest self.assertEqual(len(s), 4, &#039;Wrong length&#039;) AssertionError: Wrong length 
+] 
+time: 2011-05-2322:49:38.858163Z&lt;/pre&gt;&lt;/p&gt;
+
+&lt;h2&gt;Final considerations&lt;/h2&gt;
+
+&lt;p&gt;Although I posted this comparison in my blog my intention is turning it to the community somehow, probably putting it in
+Wikipedia. Perhaps my thoughts here were biased by my proximity with TAP, however I am open to suggestions, ideas or
+critics (as a proof that I am open to SubUnit, I included it to the list of &amp;#8216;Other test protocols&amp;#8217; in TAP Wiki, as there
+was only TST :-))&lt;/p&gt;
+
+&lt;p&gt;&lt;p&gt;Initially I wrote this post as a draft and sent it to Max, Nick, Cesar Fernandes and to Robert Collins for 
+revisions (hadn&amp;#8217;t heard back from Robert, unfortunately). Later I plan sending it to the TAP
+development team and for the guys responsible for the Automake GSoC TAP/SubUnit project. Then decide which protocol
+stick with to develop the TAP Plug-in (or SubUnit :-)). When this analysis is finished I will write an alpha version of
+this plug-in to send to the Jenkins dev-list, let me know if you would like to give it a try too. I believe that the
+easiest way to spread TAP or SubUnit as the de facto standard is using it, and asking for maintainers of test frameworks
+such as TestNG and JUnit to add support for these formats in theirs tools or make it the default output format.&lt;/p&gt;
+
+&lt;hr/&gt;
+
+&lt;p&gt;&lt;strong&gt;Edit&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;As pointed by Renormalist, some tools that generate TAP also use another kind of diagnostics for extending the
+    test protocol. In this approach, in the next line after a test result the first character is a &amp;#8216;#&amp;#8217; followed by a
+    message. A test result may have several comment lines with diagnostic information. The comments in this case, belong
+    to the test result above it. Perl Test::More module produces diagnostics in this way by default. Below you find an
+    example of these diagnostics.&lt;/p&gt;
+
+&lt;pre class=&quot;tap&quot; style=&quot;font-family:monospace;&quot;&gt;1..1 
+not ok 1 - There&#039;s a foo user 
+# Failed test &#039;There&#039;s a foo user&#039; 
+# at /home/kinow/perl/workspace/tests_with_testmore/main.pl line 2. 
+# Since there&#039;s no foo, check that /etc/bar is set up right 
+# Looks like you failed 1 test of 1.&lt;/pre&gt;
+
+&lt;p&gt;&lt;sup&gt;&lt;a name=&quot;1&quot;&gt;&lt;/a&gt;1&lt;/sup&gt;
+Available in TAP version 13, http://testanything.org/wiki/index.php/YAMLish.&lt;/p&gt;
+
+&lt;p&gt;&lt;sup&gt;&lt;a name=&quot;2&quot;&gt;&lt;/a&gt;2&lt;/sup&gt;
+During this article I use TAP Plug-in to refer to the plug-in to display detailed test result, though after talking with
+Max we agreed that perhaps it would be a good idea implement it in some generic manner, not specific to TAP. We also
+agreed it would be good check other plug-ins like
+&lt;a href=&quot;https://wiki.jenkins-ci.org/display/JENKINS/xUnit+Plugin&quot;&gt;xUnit&lt;/a&gt;
+to see if we can extend it or use some code as basis.&lt;/p&gt;
+
+&lt;p&gt;&lt;sup&gt;&lt;a name=&quot;3&quot;&gt;&lt;/a&gt;3&lt;/sup&gt;
+Still got think more about it. Probably the images will be enclosed in the TAP Stream (or another format) Base64
+encoded. Perhaps we would have to decode each attachment in the test result and display it according to its mimetype
+(zips, pdf, etc). But a lightbox gallery for attachments would be awesome!&lt;/p&gt;
+
+&lt;p&gt;&lt;sup&gt;&lt;a name=&quot;4&quot;&gt;&lt;/a&gt;4&lt;/sup&gt;
+For the first version of this comparison table I added the items that I could think of, and other items retrieved from
+the comparison done in Automake GSoC discussion list about the choice between TAP and SubUnit.&lt;/p&gt;
+
+&lt;p&gt;&lt;sup&gt;&lt;a name=&quot;5&quot;&gt;&lt;/a&gt;5&lt;/sup&gt;
+Here we considered languages that have at least one producer for the the protocol.&lt;/p&gt;
+
+&lt;p&gt;&lt;sup&gt;&lt;a name=&quot;6&quot;&gt;&lt;/a&gt;6&lt;/sup&gt;
+Test Blocks proposal,
+&lt;a href=&quot;http://testanything.org/wiki/index.php/Test_Blocks&quot;&gt;http://testanything.org/wiki/index.php/Test_Blocks&lt;/a&gt;
+.&lt;/p&gt;
+
+&lt;p&gt;&lt;sup&gt;&lt;a name=&quot;7&quot;&gt;&lt;/a&gt;7&lt;/sup&gt;
+Test Groups proposal,
+&lt;a href=&quot;http://testanything.org/wiki/index.php/Test_Groups&quot;&gt;http://testanything.org/wiki/index.php/Test_Groups&lt;/a&gt;
+.&lt;/p&gt;
+
+&lt;p&gt;&lt;sup&gt;&lt;a name=&quot;8&quot;&gt;&lt;/a&gt;8&lt;/sup&gt;
+Python Package Index for python-subunit 0.0.6,
+&lt;a href=&quot;http://pypi.python.org/pypi/python-subunit/0.0.6&quot;&gt;http://pypi.python.org/pypi/python-subunit/0.0.6. This
+    was the only one that I could find, but there may have another specification somewhere else.&lt;/a&gt;&lt;/p&gt;
+
+&lt;h2&gt;Referecens&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Jenkins dev-list discussion where the TAP Plug-in idea was sent to
+&lt;a href=&quot;http://jenkins.361315.n4.nabble.com/Re-Additional-Test-Result-Display-Idea-tt3510669.html&quot;&gt;http://jenkins.361315.n4.nabble.com/Re-Additional-Test-Result-Display-Idea-tt3510669.html&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Another discussion in Jenkins dev-list about Test Result refactoring
+&lt;a href=&quot;http://jenkins.361315.n4.nabble.com/Review-requested-Test-Result-Refactoring-tt978100.html&quot;&gt;http://jenkins.361315.n4.nabble.com/Review-requested-Test-Result-Refactoring-tt978100.html&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Test Anything Protocol Wiki -
+&lt;a href=&quot;http://www.testanything.org&quot;&gt;http://www.testanything.org&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Perl Wikipedia Article, History section -
+&lt;a href=&quot;http://en.wikipedia.org/wiki/Perl#History&quot;&gt;http://en.wikipedia.org/wiki/Perl#History&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;automake - Interfacing with a test protocol like TAP or subunit (GSoC)
+&lt;a href=&quot;http://www.google-melange.com/gsoc/proposal/review/google/gsoc2011/slattarini/1&quot;&gt;http://www.google-melange.com/gsoc/proposal/review/google/gsoc2011/slattarini/1&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
 </description>
 </item>
 </channel>

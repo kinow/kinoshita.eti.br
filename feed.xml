@@ -13,417 +13,73 @@
     <atom:link href="http://kinoshita.eti.br/blog/feed.xml" rel="self" type="application/rss+xml" />
     <link>http://kinoshita.eti.br/</link>
     <description></description>
-    <lastBuildDate>Sun, 17 May 2015 15:10:12 +1200</lastBuildDate>
+    <lastBuildDate>Tue, 23 Jun 2015 14:32:16 +1200</lastBuildDate>
     <language>en-US</language>
     <generator>PieCrust 1.2.0</generator>
  
 <item>
-    <title>Running IDL code in Java</title>
-    <pubDate>Sun, 17 May 2015 00:00:00 +1200</pubDate>
-    <link>/2015/05/17/running-idl-code-in-java.html</link>
+    <title>Modeling observation data in SOS (Sensor Observation Service)</title>
+    <pubDate>Tue, 23 Jun 2015 00:00:00 +1200</pubDate>
+    <link>/2015/06/23/modeling-observation-data-in-sos.html</link>
     <dc:creator>Bruno P. Kinoshita</dc:creator>
-    <description>&lt;p&gt;&lt;em&gt;&lt;strong&gt;TL;DR&lt;/strong&gt; when using a Demo license (or a node-locked license I believe) you can call only one IDL program at
-a time. Otherwise you will get a JIDLBusyException.&lt;/em&gt;&lt;/p&gt;
+    <description>&lt;p&gt;This week NZ Herald published an &lt;a href=&quot;http://www.nzherald.co.nz/technology/news/article.cfm?c_id=5&amp;amp;objectid=11469418&quot;&gt;article&lt;/a&gt;
+about a device created by an Irish farmer enterpreneur that sends a message to a farmer when the cow is about to give birth.
+The device monitors &amp;#8220;heightened tail moviment&amp;#8221;.&lt;/p&gt;
 
-&lt;p&gt;&lt;a href=&quot;http://en.wikipedia.org/wiki/IDL_%28programming_language%29&quot;&gt;IDL&lt;/a&gt;, or Interactive Data Language, &amp;#8220;is a
-programming language used for data analysis&amp;#8221;. I had never heard about IDL until a few days ago, when
-I had to review an issue at work that involved a Java Web program running some IDL code.&lt;/p&gt;
+&lt;p&gt;In this post I will try to apply what I am learning following the &lt;a href=&quot;http://www.ogcnetwork.net/SOS_2_0/tutorial&quot;&gt;SOS Tutorial&lt;/a&gt;
+(the Open Geospatial Consortium standard for Sensor Observation Service). Feel free to drop me a message via
+&lt;a href=&quot;https://twitter.com/kinow&quot;&gt;@kinow&lt;/a&gt; if you find any mistakes or have any suggestions.&lt;/p&gt;
 
-&lt;p&gt;I decided to run IDL at home, using the Demo version from &lt;a href=&quot;http://www.exelisvis.com/productsservices/idl.aspx&quot;&gt;Exelis&lt;/a&gt; and
-investigate what would happen if I made multiple simultaneous calls using a single license
-(note: I&amp;#8217;m using the Demo license, but there are
-&lt;a href=&quot;http://licensing.exelisvis.com/licensehelp.aspx&quot;&gt;other licensing options&lt;/a&gt; that give you more flexibility). 
-Furthermore, when running an IDL program using the Java bridge, you set a &amp;#8220;process name&amp;#8221;. 
-I also wanted to confirm that changing the process name wouldn&amp;#8217;t make any difference.&lt;/p&gt;
+&lt;h2&gt;Modeling the tail moviment observation data in SOS&lt;/h2&gt;
 
-&lt;p&gt;You can read the test source code below. The only IDL statement is &lt;code&gt;WAIT, 4&lt;/code&gt;. It sleeps the program
-for four seconds, before exiting. This way we have a program using the Demo license for 4 seconds, and
-we can try using the license simultaneously.&lt;/p&gt;
+&lt;p&gt;SOS is a standard designed to provide access to observation data. There are several server implementations, such as Kisters KiWIS, 
+istSOS and 52North SOS.&lt;/p&gt;
 
-&lt;pre class=&quot;java&quot; style=&quot;font-family:monospace;&quot;&gt;&lt;span style=&quot;color: #000000; font-weight: bold;&quot;&gt;package&lt;/span&gt; &lt;span style=&quot;color: #006699;&quot;&gt;br.eti.kinoshita.idl&lt;/span&gt;&lt;span style=&quot;color: #339933;&quot;&gt;;&lt;/span&gt;
-&amp;nbsp;
-&lt;span style=&quot;color: #000000; font-weight: bold;&quot;&gt;import&lt;/span&gt; &lt;span style=&quot;color: #006699;&quot;&gt;com.idl.javaidl.JIDLBusyException&lt;/span&gt;&lt;span style=&quot;color: #339933;&quot;&gt;;&lt;/span&gt;
-&lt;span style=&quot;color: #000000; font-weight: bold;&quot;&gt;import&lt;/span&gt; &lt;span style=&quot;color: #006699;&quot;&gt;com.idl.javaidl.JIDLObject&lt;/span&gt;&lt;span style=&quot;color: #339933;&quot;&gt;;&lt;/span&gt;
-&lt;span style=&quot;color: #000000; font-weight: bold;&quot;&gt;import&lt;/span&gt; &lt;span style=&quot;color: #006699;&quot;&gt;com.idl.javaidl.JIDLObjectI&lt;/span&gt;&lt;span style=&quot;color: #339933;&quot;&gt;;&lt;/span&gt;
-&lt;span style=&quot;color: #000000; font-weight: bold;&quot;&gt;import&lt;/span&gt; &lt;span style=&quot;color: #006699;&quot;&gt;com.idl.javaidl.JIDLOutputListener&lt;/span&gt;&lt;span style=&quot;color: #339933;&quot;&gt;;&lt;/span&gt;
-&lt;span style=&quot;color: #000000; font-weight: bold;&quot;&gt;import&lt;/span&gt; &lt;span style=&quot;color: #006699;&quot;&gt;com.idl.javaidl.java_IDL_connect&lt;/span&gt;&lt;span style=&quot;color: #339933;&quot;&gt;;&lt;/span&gt;
-&amp;nbsp;
-&lt;span style=&quot;color: #000000; font-weight: bold;&quot;&gt;public&lt;/span&gt; &lt;span style=&quot;color: #000000; font-weight: bold;&quot;&gt;class&lt;/span&gt; SleepsTenSecondsHelloWorld &lt;span style=&quot;color: #000000; font-weight: bold;&quot;&gt;implements&lt;/span&gt; &lt;a href=&quot;http://www.google.com/search?hl=en&amp;amp;q=allinurl%3Adocs.oracle.com+javase+docs+api+runnable&quot;&gt;&lt;span style=&quot;color: #003399;&quot;&gt;Runnable&lt;/span&gt;&lt;/a&gt;, JIDLOutputListener &lt;span style=&quot;color: #009900;&quot;&gt;&amp;#123;&lt;/span&gt;
-&amp;nbsp;
-    &lt;span style=&quot;color: #000000; font-weight: bold;&quot;&gt;public&lt;/span&gt; &lt;span style=&quot;color: #000066; font-weight: bold;&quot;&gt;void&lt;/span&gt; run&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#40;&lt;/span&gt;&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#41;&lt;/span&gt; &lt;span style=&quot;color: #009900;&quot;&gt;&amp;#123;&lt;/span&gt;
-        &lt;span style=&quot;color: #000000; font-weight: bold;&quot;&gt;final&lt;/span&gt; &lt;a href=&quot;http://www.google.com/search?hl=en&amp;amp;q=allinurl%3Adocs.oracle.com+javase+docs+api+string&quot;&gt;&lt;span style=&quot;color: #003399;&quot;&gt;String&lt;/span&gt;&lt;/a&gt; tName &lt;span style=&quot;color: #339933;&quot;&gt;=&lt;/span&gt; &lt;a href=&quot;http://www.google.com/search?hl=en&amp;amp;q=allinurl%3Adocs.oracle.com+javase+docs+api+thread&quot;&gt;&lt;span style=&quot;color: #003399;&quot;&gt;Thread&lt;/span&gt;&lt;/a&gt;.&lt;span style=&quot;color: #006633;&quot;&gt;currentThread&lt;/span&gt;&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#40;&lt;/span&gt;&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#41;&lt;/span&gt;.&lt;span style=&quot;color: #006633;&quot;&gt;getName&lt;/span&gt;&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#40;&lt;/span&gt;&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#41;&lt;/span&gt;&lt;span style=&quot;color: #339933;&quot;&gt;;&lt;/span&gt;
-        &lt;span style=&quot;color: #000000; font-weight: bold;&quot;&gt;try&lt;/span&gt; &lt;span style=&quot;color: #009900;&quot;&gt;&amp;#123;&lt;/span&gt;
-            JIDLObject idlWrapper &lt;span style=&quot;color: #339933;&quot;&gt;=&lt;/span&gt; &lt;span style=&quot;color: #000000; font-weight: bold;&quot;&gt;new&lt;/span&gt; java_IDL_connect&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#40;&lt;/span&gt;&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#41;&lt;/span&gt;&lt;span style=&quot;color: #339933;&quot;&gt;;&lt;/span&gt;
-            idlWrapper.&lt;span style=&quot;color: #006633;&quot;&gt;createObject&lt;/span&gt;&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#40;&lt;/span&gt;&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#41;&lt;/span&gt;&lt;span style=&quot;color: #339933;&quot;&gt;;&lt;/span&gt;
-            idlWrapper.&lt;span style=&quot;color: #006633;&quot;&gt;addIDLOutputListener&lt;/span&gt;&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#40;&lt;/span&gt;&lt;span style=&quot;color: #000000; font-weight: bold;&quot;&gt;this&lt;/span&gt;&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#41;&lt;/span&gt;&lt;span style=&quot;color: #339933;&quot;&gt;;&lt;/span&gt;
-            idlWrapper.&lt;span style=&quot;color: #006633;&quot;&gt;setProcessName&lt;/span&gt;&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#40;&lt;/span&gt;&lt;span style=&quot;color: #0000ff;&quot;&gt;&amp;quot;process01&amp;quot;&lt;/span&gt;&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#41;&lt;/span&gt;&lt;span style=&quot;color: #339933;&quot;&gt;;&lt;/span&gt;
-            idlWrapper.&lt;span style=&quot;color: #006633;&quot;&gt;executeString&lt;/span&gt;&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#40;&lt;/span&gt;&lt;span style=&quot;color: #0000ff;&quot;&gt;&amp;quot;WAIT, 4&amp;quot;&lt;/span&gt;&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#41;&lt;/span&gt;&lt;span style=&quot;color: #339933;&quot;&gt;;&lt;/span&gt;
-            &lt;a href=&quot;http://www.google.com/search?hl=en&amp;amp;q=allinurl%3Adocs.oracle.com+javase+docs+api+system&quot;&gt;&lt;span style=&quot;color: #003399;&quot;&gt;System&lt;/span&gt;&lt;/a&gt;.&lt;span style=&quot;color: #006633;&quot;&gt;out&lt;/span&gt;.&lt;span style=&quot;color: #006633;&quot;&gt;println&lt;/span&gt;&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#40;&lt;/span&gt;&lt;a href=&quot;http://www.google.com/search?hl=en&amp;amp;q=allinurl%3Adocs.oracle.com+javase+docs+api+string&quot;&gt;&lt;span style=&quot;color: #003399;&quot;&gt;String&lt;/span&gt;&lt;/a&gt;.&lt;span style=&quot;color: #006633;&quot;&gt;format&lt;/span&gt;&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#40;&lt;/span&gt;&lt;span style=&quot;color: #0000ff;&quot;&gt;&amp;quot;THREAD %s SUCCEEDED!&amp;quot;&lt;/span&gt;, tName&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#41;&lt;/span&gt;&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#41;&lt;/span&gt;&lt;span style=&quot;color: #339933;&quot;&gt;;&lt;/span&gt;
-        &lt;span style=&quot;color: #009900;&quot;&gt;&amp;#125;&lt;/span&gt; &lt;span style=&quot;color: #000000; font-weight: bold;&quot;&gt;catch&lt;/span&gt; &lt;span style=&quot;color: #009900;&quot;&gt;&amp;#40;&lt;/span&gt;JIDLBusyException jbe&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#41;&lt;/span&gt; &lt;span style=&quot;color: #009900;&quot;&gt;&amp;#123;&lt;/span&gt;
-            &lt;a href=&quot;http://www.google.com/search?hl=en&amp;amp;q=allinurl%3Adocs.oracle.com+javase+docs+api+system&quot;&gt;&lt;span style=&quot;color: #003399;&quot;&gt;System&lt;/span&gt;&lt;/a&gt;.&lt;span style=&quot;color: #006633;&quot;&gt;out&lt;/span&gt;.&lt;span style=&quot;color: #006633;&quot;&gt;println&lt;/span&gt;&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#40;&lt;/span&gt;&lt;a href=&quot;http://www.google.com/search?hl=en&amp;amp;q=allinurl%3Adocs.oracle.com+javase+docs+api+string&quot;&gt;&lt;span style=&quot;color: #003399;&quot;&gt;String&lt;/span&gt;&lt;/a&gt;.&lt;span style=&quot;color: #006633;&quot;&gt;format&lt;/span&gt;&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#40;&lt;/span&gt;&lt;span style=&quot;color: #0000ff;&quot;&gt;&amp;quot;THREAD %s FAILED WITH ERR: %s&amp;quot;&lt;/span&gt;, tName, jbe.&lt;span style=&quot;color: #006633;&quot;&gt;getMessage&lt;/span&gt;&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#40;&lt;/span&gt;&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#41;&lt;/span&gt;&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#41;&lt;/span&gt;&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#41;&lt;/span&gt;&lt;span style=&quot;color: #339933;&quot;&gt;;&lt;/span&gt;
-        &lt;span style=&quot;color: #009900;&quot;&gt;&amp;#125;&lt;/span&gt;
-    &lt;span style=&quot;color: #009900;&quot;&gt;&amp;#125;&lt;/span&gt;
-&amp;nbsp;
-    &lt;span style=&quot;color: #000000; font-weight: bold;&quot;&gt;public&lt;/span&gt; &lt;span style=&quot;color: #000066; font-weight: bold;&quot;&gt;void&lt;/span&gt; IDLoutput&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#40;&lt;/span&gt;JIDLObjectI paramJIDLObjectI, &lt;a href=&quot;http://www.google.com/search?hl=en&amp;amp;q=allinurl%3Adocs.oracle.com+javase+docs+api+string&quot;&gt;&lt;span style=&quot;color: #003399;&quot;&gt;String&lt;/span&gt;&lt;/a&gt; paramString&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#41;&lt;/span&gt; &lt;span style=&quot;color: #009900;&quot;&gt;&amp;#123;&lt;/span&gt;
-        &lt;a href=&quot;http://www.google.com/search?hl=en&amp;amp;q=allinurl%3Adocs.oracle.com+javase+docs+api+system&quot;&gt;&lt;span style=&quot;color: #003399;&quot;&gt;System&lt;/span&gt;&lt;/a&gt;.&lt;span style=&quot;color: #006633;&quot;&gt;out&lt;/span&gt;.&lt;span style=&quot;color: #006633;&quot;&gt;println&lt;/span&gt;&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#40;&lt;/span&gt;paramString&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#41;&lt;/span&gt;&lt;span style=&quot;color: #339933;&quot;&gt;;&lt;/span&gt;
-    &lt;span style=&quot;color: #009900;&quot;&gt;&amp;#125;&lt;/span&gt;
-&amp;nbsp;
-    &lt;span style=&quot;color: #000000; font-weight: bold;&quot;&gt;public&lt;/span&gt; &lt;span style=&quot;color: #000000; font-weight: bold;&quot;&gt;static&lt;/span&gt; &lt;span style=&quot;color: #000066; font-weight: bold;&quot;&gt;void&lt;/span&gt; main&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#40;&lt;/span&gt;&lt;a href=&quot;http://www.google.com/search?hl=en&amp;amp;q=allinurl%3Adocs.oracle.com+javase+docs+api+string&quot;&gt;&lt;span style=&quot;color: #003399;&quot;&gt;String&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#91;&lt;/span&gt;&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#93;&lt;/span&gt; args&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#41;&lt;/span&gt; &lt;span style=&quot;color: #000000; font-weight: bold;&quot;&gt;throws&lt;/span&gt; &lt;a href=&quot;http://www.google.com/search?hl=en&amp;amp;q=allinurl%3Adocs.oracle.com+javase+docs+api+exception&quot;&gt;&lt;span style=&quot;color: #003399;&quot;&gt;Exception&lt;/span&gt;&lt;/a&gt; &lt;span style=&quot;color: #009900;&quot;&gt;&amp;#123;&lt;/span&gt;
-        &lt;a href=&quot;http://www.google.com/search?hl=en&amp;amp;q=allinurl%3Adocs.oracle.com+javase+docs+api+runnable&quot;&gt;&lt;span style=&quot;color: #003399;&quot;&gt;Runnable&lt;/span&gt;&lt;/a&gt; r &lt;span style=&quot;color: #339933;&quot;&gt;=&lt;/span&gt; &lt;span style=&quot;color: #000000; font-weight: bold;&quot;&gt;new&lt;/span&gt; SleepsTenSecondsHelloWorld&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#40;&lt;/span&gt;&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#41;&lt;/span&gt;&lt;span style=&quot;color: #339933;&quot;&gt;;&lt;/span&gt;
-        &lt;a href=&quot;http://www.google.com/search?hl=en&amp;amp;q=allinurl%3Adocs.oracle.com+javase+docs+api+thread&quot;&gt;&lt;span style=&quot;color: #003399;&quot;&gt;Thread&lt;/span&gt;&lt;/a&gt; t &lt;span style=&quot;color: #339933;&quot;&gt;=&lt;/span&gt; &lt;span style=&quot;color: #000000; font-weight: bold;&quot;&gt;new&lt;/span&gt; &lt;a href=&quot;http://www.google.com/search?hl=en&amp;amp;q=allinurl%3Adocs.oracle.com+javase+docs+api+thread&quot;&gt;&lt;span style=&quot;color: #003399;&quot;&gt;Thread&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#40;&lt;/span&gt;r&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#41;&lt;/span&gt;&lt;span style=&quot;color: #339933;&quot;&gt;;&lt;/span&gt;
-        t.&lt;span style=&quot;color: #006633;&quot;&gt;start&lt;/span&gt;&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#40;&lt;/span&gt;&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#41;&lt;/span&gt;&lt;span style=&quot;color: #339933;&quot;&gt;;&lt;/span&gt;
-    &lt;span style=&quot;color: #009900;&quot;&gt;&amp;#125;&lt;/span&gt;
-&amp;nbsp;
-&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#125;&lt;/span&gt;&lt;/pre&gt;
+&lt;p&gt;The standard mentions and utilises several other standards, such as SensorML, WFS, XML, WMS, etc. The SOS Tutorial on
+how to model your observation data for SOS starts by defining &lt;em&gt;procedure&lt;/em&gt;, &lt;em&gt;observed property&lt;/em&gt;, &lt;em&gt;feature of interest&lt;/em&gt;,
+&lt;em&gt;phenomenon and result times&lt;/em&gt;, and the &lt;em&gt;result value&lt;/em&gt;.&lt;/p&gt;
 
-&lt;p&gt;Turns out running IDL with Java is not so trivial, so the rest of the post will walk you through the problems
-I&amp;#8217;ve had while trying to do so, before actually testing the code. 
-Hopefully it will be useful for others trying a similar approach. I&amp;#8217;m using
-Oracle Java 8, Ubuntu 14.04, Eclipse + Maven, in a quad-core and 6GB notebook.&lt;/p&gt;
+&lt;p&gt;Let&amp;#8217;s try to model the data from the tail moviment sensors in the following table.&lt;/p&gt;
 
-&lt;h2&gt;Troubleshooting IDL and Java errors&lt;/h2&gt;
+&lt;table class=&quot;table table-bordered&quot;&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Name&lt;/th&gt;
+&lt;th&gt;Description&lt;/th&gt;
+&lt;th&gt;Our example&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;th&gt;Procedure&lt;/th&gt;
+&lt;td&gt;The process that has generated the observation, such as a sensor, from the O&amp;M specification. In our example that could be a sensor identification&lt;/td&gt;
+&lt;td&gt;moocall_001&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;th&gt;Observed Property&lt;/th&gt;
+&lt;td&gt;A property which is observed (look at NASA SWEET ontology for existing values)&lt;/td&gt;
+&lt;td&gt;Heightned tail moviment&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;th&gt;Feature of Interest&lt;/th&gt;
+&lt;td&gt;A feature that carries the property which is observed&lt;/td&gt;
+&lt;td&gt;Pregnant cow&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;th&gt;Phenomenon and Result Times&lt;/th&gt;
+&lt;td&gt;The phenomenon time is when the data has been taken, and the result time when it has been created. If both are the same, the resultTime can point to the phenomenonTime&lt;/td&gt;
+&lt;td&gt;20150623142000&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;th&gt;Result value&lt;/th&gt;
+&lt;td&gt;This is the result of the observation. Can be a OM_Measurement if numeric, OM_TruthObservation, etc (O&amp;M)&lt;/td&gt;
+&lt;td&gt;3 (supposing we have a scale from 1 to 5)&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
 
-&lt;p&gt;The first thing you need in order to be able to write a program that calls IDL in Eclipse is
-import the JAR file that contains the IDL Java bridge API. This file is called
-&lt;code&gt;javaidlb.jar&lt;/code&gt;. You can search for it after you install Exelis&amp;#8217; IDL.&lt;/p&gt;
-
-&lt;p&gt;Trying to run your program, the first error you will probably get is the following one:&lt;/p&gt;
-
-&lt;pre class=&quot;shell&quot; style=&quot;font-family:monospace;&quot;&gt;Failed to load javaidlb from  from default location.
-Exception in thread &amp;quot;Thread-0&amp;quot; java.lang.UnsatisfiedLinkError: com.idl.javaidl.JIDLPAL.nativeInitJPAL()V
-    at com.idl.javaidl.JIDLPAL.nativeInitJPAL(Native Method)
-    at com.idl.javaidl.JIDLPAL.&amp;lt;clinit&amp;gt;(JIDLPAL.java:193)
-    at com.idl.javaidl.JIDLObject.&amp;lt;init&amp;gt;(JIDLObject.java:72)
-    at com.idl.javaidl.java_IDL_connect.&amp;lt;init&amp;gt;(java_IDL_connect.java:27)
-    at br.eti.kinoshita.idl.SleepsTenSecondsHelloWorld.run(SleepsTenSecondsHelloWorld.java:11)
-    at java.lang.Thread.run(Thread.java:745)&lt;/pre&gt;
-
-&lt;p&gt;Before trying to fix anything, there is a special and very useful setting that enables Debugging
-the Java IDL bridge program initialization: &lt;strong&gt;&lt;code&gt;-DIDL_LOAD_DEBUG&lt;/code&gt;&lt;/strong&gt;. Set it as a VM argument in your IDE
-to see extra debug information. &lt;/p&gt;
-
-&lt;div class=&#039;row&#039;&gt;
-&lt;div class=&quot;span6 offset3&quot; style=&#039;text-align: center;&#039;&gt;
-&lt;figure&gt;
-&lt;a href=&quot;/2015/05/17/running-idl-code-in-java/idl_1.png&quot; rel=&quot;prettyPhoto&quot; class=&quot;thumbnail&quot; title=&quot;Setting the DIDL_LOAD_DEBUG VM arg&quot;&gt;
-&lt;img src=&quot;/2015/05/17/running-idl-code-in-java/idl_1.png&quot; alt=&quot;Setting the DIDL_LOAD_DEBUG VM arg&quot; /&gt;
-&lt;/a&gt;
-&lt;figcaption&gt;Setting the DIDL_LOAD_DEBUG VM arg&lt;/i&gt;&lt;/figcaption&gt;
-&lt;/figure&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;pre class=&quot;shell&quot; style=&quot;font-family:monospace;&quot;&gt;Java location : /usr/lib/jvm/java-8-oracle/jre/lib/amd64 (set relative to java.home property)
-Successfully loaded libawt.so
-Successfully loaded libjawt.so
-*** java.lang.UnsatisfiedLinkError: /home/kinow/exelis/idl84/bin/bin.linux.x86_64/libjavaidlb.so: libidl_bml.so: cannot open shared object file: No such file or directory
-Failed to load javaidlb from  from default location.
-Exception in thread &amp;quot;Thread-0&amp;quot; java.lang.UnsatisfiedLinkError: com.idl.javaidl.JIDLPAL.nativeInitJPAL()V
-    at com.idl.javaidl.JIDLPAL.nativeInitJPAL(Native Method)
-    at com.idl.javaidl.JIDLPAL.&amp;lt;clinit&amp;gt;(JIDLPAL.java:193)
-    at com.idl.javaidl.JIDLObject.&amp;lt;init&amp;gt;(JIDLObject.java:72)
-    at com.idl.javaidl.java_IDL_connect.&amp;lt;init&amp;gt;(java_IDL_connect.java:27)
-    at br.eti.kinoshita.idl.SleepsTenSecondsHelloWorld.run(SleepsTenSecondsHelloWorld.java:11)
-    at java.lang.Thread.run(Thread.java:745)&lt;/pre&gt;
-
-&lt;p&gt;Reading the exception and the error messages, you will probably notice that it looks
-like the Java program calls some native method but is not able to find a native library for it. 
-Time to initialize the &lt;code&gt;LD_LIBRARY_PATH&lt;/code&gt; variable in your IDE too, to something like 
-&lt;code&gt;LD_LIBRARY_PATH=/home/kinow/exelis/idl/bin/bin.linux.x86_64:$LD_LIBRARY_PATH&lt;/code&gt;. After doing so, 
-try running your program again, and you&amp;#8217;ll see the &lt;code&gt;libhavaidlb.so&lt;/code&gt; library being loaded too.&lt;/p&gt;
-
-&lt;div class=&#039;row&#039;&gt;
-&lt;div class=&quot;span6 offset3&quot; style=&#039;text-align: center;&#039;&gt;
-&lt;figure&gt;
-&lt;a href=&quot;/2015/05/17/running-idl-code-in-java/idl_2.png&quot; rel=&quot;prettyPhoto&quot; class=&quot;thumbnail&quot; title=&quot;Initializing the LD_LIBRARY_PATH in Eclipse&quot;&gt;
-&lt;img src=&quot;/2015/05/17/running-idl-code-in-java/idl_2.png&quot; alt=&quot;Initializing the LD_LIBRARY_PATH in Eclipse&quot; /&gt;
-&lt;/a&gt;
-&lt;figcaption&gt;Initializing the LD_LIBRARY_PATH in Eclipse&lt;/i&gt;&lt;/figcaption&gt;
-&lt;/figure&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;pre class=&quot;shell&quot; style=&quot;font-family:monospace;&quot;&gt;Java location : /usr/lib/jvm/java-8-oracle/jre/lib/amd64 (set relative to java.home property)
-Successfully loaded libawt.so
-Successfully loaded libjawt.so
-Successfully loaded libjavaidlb.so
-Exception in thread &amp;quot;Thread-0&amp;quot; com.idl.javaidl.JIDLException[iErr=-999 sMsg=OPS Initialization failed.  Verify that &#039;idl_opserver&#039; exists in the IDL bin directory.]
-    at com.idl.javaidl.JIDLPAL.nativeThrowJIDLException(Native Method)
-    at com.idl.javaidl.JIDLPAL.throwSpecificException(JIDLPAL.java:1073)
-    at com.idl.javaidl.JIDLPAL.throwJIDLException(JIDLPAL.java:1102)
-    at com.idl.javaidl.JIDLPAL.createObject(JIDLPAL.java:382)
-    at com.idl.javaidl.JIDLPAL.createObject(JIDLPAL.java:318)
-    at com.idl.javaidl.JIDLObject.createObject(JIDLObject.java:193)
-    at com.idl.javaidl.JIDLObject.createObject(JIDLObject.java:103)
-    at br.eti.kinoshita.idl.SleepsTenSecondsHelloWorld.run(SleepsTenSecondsHelloWorld.java:12)
-    at java.lang.Thread.run(Thread.java:745)&lt;/pre&gt;
-
-&lt;p&gt;Good. Now the error message seems to be telling us that it cannot find some program in the IDL bin directory. 
-You can find the exact library that contains this message by running 
-&lt;code&gt;for x in&lt;/code&gt;ls -f&lt;code&gt;; do strings $x | grep &quot;Verify that&quot; &amp;amp;&amp;amp; echo &quot;-- &amp;gt; Found in $x&quot; ; done&lt;/code&gt; in
-the directory added to &lt;code&gt;LD_LIBRARY_PATH&lt;/code&gt;, and further debug the issue using some *nix tools like 
-&lt;code&gt;gdb&lt;/code&gt;, &lt;code&gt;ltrace&lt;/code&gt;, &lt;code&gt;strace&lt;/code&gt;, &lt;code&gt;strings&lt;/code&gt;, etc.&lt;/p&gt;
-
-&lt;pre class=&quot;shell&quot; style=&quot;font-family:monospace;&quot;&gt;OPS Initialization failed.  Verify that &#039;%s&#039; exists in the IDL bin directory.
--- &amp;gt; Found in libidl_bml.so&lt;/pre&gt;
-
-&lt;p&gt;But it is easier to just guess that the &lt;code&gt;idl_opserver&lt;/code&gt; executable is not being found by the library in the system &lt;code&gt;PATH&lt;/code&gt;. 
-I didn&amp;#8217;t find anywhere in the documentation mentioning that the IDL executables must be in the &lt;code&gt;PATH&lt;/code&gt;, 
-but thought it was worth a shot anyway.&lt;/p&gt;
-
-&lt;div class=&#039;row&#039;&gt;
-&lt;div class=&quot;span6 offset3&quot; style=&#039;text-align: center;&#039;&gt;
-&lt;figure&gt;
-&lt;a href=&quot;/2015/05/17/running-idl-code-in-java/idl_3.png&quot; rel=&quot;prettyPhoto&quot; class=&quot;thumbnail&quot; title=&quot;Initializing the PATH in Eclipse&quot;&gt;
-&lt;img src=&quot;/2015/05/17/running-idl-code-in-java/idl_3.png&quot; alt=&quot;Initializing the PATH in Eclipse&quot; /&gt;
-&lt;/a&gt;
-&lt;figcaption&gt;Initializing the PATH in Eclipse&lt;/i&gt;&lt;/figcaption&gt;
-&lt;/figure&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;pre class=&quot;shell&quot; style=&quot;font-family:monospace;&quot;&gt;Java location : /usr/lib/jvm/java-8-oracle/jre/lib/amd64 (set relative to java.home property)
-Successfully loaded libawt.so
-Successfully loaded libjawt.so
-Successfully loaded libjavaidlb.so
-Exception in thread &amp;quot;Thread-0&amp;quot; com.idl.javaidl.JIDLException[iErr=-999 sMsg=Attempt to call undefined procedure: &#039;GMEM_UNMAP&#039;.]
-    at com.idl.javaidl.JIDLPAL.nativeThrowJIDLException(Native Method)
-    at com.idl.javaidl.JIDLPAL.throwSpecificException(JIDLPAL.java:1073)
-    at com.idl.javaidl.JIDLPAL.throwJIDLException(JIDLPAL.java:1102)
-    at com.idl.javaidl.JIDLPAL.createObject(JIDLPAL.java:382)
-    at com.idl.javaidl.JIDLPAL.createObject(JIDLPAL.java:318)
-    at com.idl.javaidl.JIDLObject.createObject(JIDLObject.java:193)
-    at com.idl.javaidl.JIDLObject.createObject(JIDLObject.java:103)
-    at br.eti.kinoshita.idl.SleepsTenSecondsHelloWorld.run(SleepsTenSecondsHelloWorld.java:12)
-    at java.lang.Thread.run(Thread.java:745)&lt;/pre&gt;
-
-&lt;p&gt;Well, a different message now. If you read the whole documentation for bridges in IDL, you
-will find somewhere that says that there are scripts in the IDL installation directory that
-initialize environment settings for you in the command line. For Linux, you can search for &lt;code&gt;id_setup.bash&lt;/code&gt; 
-and &lt;code&gt;bridge_setup.bash&lt;/code&gt;.&lt;/p&gt;
-
-&lt;p&gt;Looking at these scripts, you&amp;#8217;ll find out that they are setting &lt;code&gt;LD_LIBRARY_PATH&lt;/code&gt; and a few other
-variables. After trying a couple of combinations, I&amp;#8217;ve found out that setting the &lt;code&gt;IDL_DIR&lt;/code&gt; variable fixes
-this last error message. Et voilà.&lt;/p&gt;
-
-&lt;pre class=&quot;shell&quot; style=&quot;font-family:monospace;&quot;&gt;Java location : /usr/lib/jvm/java-8-oracle/jre/lib/amd64 (set relative to java.home property)
-Successfully loaded libawt.so
-Successfully loaded libjawt.so
-Successfully loaded libjavaidlb.so
-THREAD Thread-0 SUCCEEDED!&lt;/pre&gt;
-
-&lt;h2&gt;Multiple calls with a single license&lt;/h2&gt;
-
-&lt;p&gt;Time to test what happens when we make multiple calls to an IDL program while using a
-Demo license. Let&amp;#8217;s start by changing the code to create a few more threads.&lt;/p&gt;
-
-&lt;pre class=&quot;java&quot; style=&quot;font-family:monospace;&quot;&gt;    &lt;span style=&quot;color: #000000; font-weight: bold;&quot;&gt;public&lt;/span&gt; &lt;span style=&quot;color: #000000; font-weight: bold;&quot;&gt;static&lt;/span&gt; &lt;span style=&quot;color: #000066; font-weight: bold;&quot;&gt;void&lt;/span&gt; main&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#40;&lt;/span&gt;&lt;a href=&quot;http://www.google.com/search?hl=en&amp;amp;q=allinurl%3Adocs.oracle.com+javase+docs+api+string&quot;&gt;&lt;span style=&quot;color: #003399;&quot;&gt;String&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#91;&lt;/span&gt;&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#93;&lt;/span&gt; args&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#41;&lt;/span&gt; &lt;span style=&quot;color: #000000; font-weight: bold;&quot;&gt;throws&lt;/span&gt; &lt;a href=&quot;http://www.google.com/search?hl=en&amp;amp;q=allinurl%3Adocs.oracle.com+javase+docs+api+exception&quot;&gt;&lt;span style=&quot;color: #003399;&quot;&gt;Exception&lt;/span&gt;&lt;/a&gt; &lt;span style=&quot;color: #009900;&quot;&gt;&amp;#123;&lt;/span&gt;
-        &lt;a href=&quot;http://www.google.com/search?hl=en&amp;amp;q=allinurl%3Adocs.oracle.com+javase+docs+api+runnable&quot;&gt;&lt;span style=&quot;color: #003399;&quot;&gt;Runnable&lt;/span&gt;&lt;/a&gt; r &lt;span style=&quot;color: #339933;&quot;&gt;=&lt;/span&gt; &lt;span style=&quot;color: #000000; font-weight: bold;&quot;&gt;new&lt;/span&gt; SleepsTenSecondsHelloWorld&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#40;&lt;/span&gt;&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#41;&lt;/span&gt;&lt;span style=&quot;color: #339933;&quot;&gt;;&lt;/span&gt;
-        &lt;a href=&quot;http://www.google.com/search?hl=en&amp;amp;q=allinurl%3Adocs.oracle.com+javase+docs+api+thread&quot;&gt;&lt;span style=&quot;color: #003399;&quot;&gt;Thread&lt;/span&gt;&lt;/a&gt; t &lt;span style=&quot;color: #339933;&quot;&gt;=&lt;/span&gt; &lt;span style=&quot;color: #000066; font-weight: bold;&quot;&gt;null&lt;/span&gt;&lt;span style=&quot;color: #339933;&quot;&gt;;&lt;/span&gt;
-        &lt;span style=&quot;color: #000000; font-weight: bold;&quot;&gt;for&lt;/span&gt; &lt;span style=&quot;color: #009900;&quot;&gt;&amp;#40;&lt;/span&gt;&lt;span style=&quot;color: #000066; font-weight: bold;&quot;&gt;int&lt;/span&gt; i &lt;span style=&quot;color: #339933;&quot;&gt;=&lt;/span&gt; &lt;span style=&quot;color: #cc66cc;&quot;&gt;0&lt;/span&gt;&lt;span style=&quot;color: #339933;&quot;&gt;;&lt;/span&gt; i &lt;span style=&quot;color: #339933;&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span style=&quot;color: #cc66cc;&quot;&gt;3&lt;/span&gt;&lt;span style=&quot;color: #339933;&quot;&gt;;&lt;/span&gt; i&lt;span style=&quot;color: #339933;&quot;&gt;++&lt;/span&gt;&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#41;&lt;/span&gt; &lt;span style=&quot;color: #009900;&quot;&gt;&amp;#123;&lt;/span&gt;
-            t &lt;span style=&quot;color: #339933;&quot;&gt;=&lt;/span&gt; &lt;span style=&quot;color: #000000; font-weight: bold;&quot;&gt;new&lt;/span&gt; &lt;a href=&quot;http://www.google.com/search?hl=en&amp;amp;q=allinurl%3Adocs.oracle.com+javase+docs+api+thread&quot;&gt;&lt;span style=&quot;color: #003399;&quot;&gt;Thread&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#40;&lt;/span&gt;r&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#41;&lt;/span&gt;&lt;span style=&quot;color: #339933;&quot;&gt;;&lt;/span&gt;
-            t.&lt;span style=&quot;color: #006633;&quot;&gt;start&lt;/span&gt;&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#40;&lt;/span&gt;&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#41;&lt;/span&gt;&lt;span style=&quot;color: #339933;&quot;&gt;;&lt;/span&gt;
-        &lt;span style=&quot;color: #009900;&quot;&gt;&amp;#125;&lt;/span&gt;
-    &lt;span style=&quot;color: #009900;&quot;&gt;&amp;#125;&lt;/span&gt;&lt;/pre&gt;
-
-&lt;p&gt;Running the code, we confirm that we can call only one program at a time under the Demo
-license - and probably it is the same with the node-locked license.&lt;/p&gt;
-
-&lt;pre class=&quot;shell&quot; style=&quot;font-family:monospace;&quot;&gt;Java location : /usr/lib/jvm/java-8-oracle/jre/lib/amd64 (set relative to java.home property)
-Successfully loaded libawt.so
-Successfully loaded libjawt.so
-Successfully loaded libjavaidlb.so
-THREAD Thread-1 FAILED WITH ERR: The object&#039;s associated IDL process is currently busy.
-THREAD Thread-0 FAILED WITH ERR: The object&#039;s associated IDL process is currently busy.
-THREAD Thread-2 SUCCEEDED!&lt;/pre&gt;
-
-&lt;p&gt;One last change before giving up. Let&amp;#8217;s change the &amp;#8220;process name&amp;#8221;, by simply appending the
-current thread name.&lt;/p&gt;
-
-&lt;pre class=&quot;java&quot; style=&quot;font-family:monospace;&quot;&gt;        &lt;span style=&quot;color: #000000; font-weight: bold;&quot;&gt;try&lt;/span&gt; &lt;span style=&quot;color: #009900;&quot;&gt;&amp;#123;&lt;/span&gt;
-            JIDLObject idlWrapper &lt;span style=&quot;color: #339933;&quot;&gt;=&lt;/span&gt; &lt;span style=&quot;color: #000000; font-weight: bold;&quot;&gt;new&lt;/span&gt; java_IDL_connect&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#40;&lt;/span&gt;&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#41;&lt;/span&gt;&lt;span style=&quot;color: #339933;&quot;&gt;;&lt;/span&gt;
-            idlWrapper.&lt;span style=&quot;color: #006633;&quot;&gt;createObject&lt;/span&gt;&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#40;&lt;/span&gt;&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#41;&lt;/span&gt;&lt;span style=&quot;color: #339933;&quot;&gt;;&lt;/span&gt;
-            idlWrapper.&lt;span style=&quot;color: #006633;&quot;&gt;addIDLOutputListener&lt;/span&gt;&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#40;&lt;/span&gt;&lt;span style=&quot;color: #000000; font-weight: bold;&quot;&gt;this&lt;/span&gt;&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#41;&lt;/span&gt;&lt;span style=&quot;color: #339933;&quot;&gt;;&lt;/span&gt;
-            idlWrapper.&lt;span style=&quot;color: #006633;&quot;&gt;setProcessName&lt;/span&gt;&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#40;&lt;/span&gt;&lt;span style=&quot;color: #0000ff;&quot;&gt;&amp;quot;process01&amp;quot;&lt;/span&gt;&lt;span style=&quot;color: #339933;&quot;&gt;+&lt;/span&gt;tName&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#41;&lt;/span&gt;&lt;span style=&quot;color: #339933;&quot;&gt;;&lt;/span&gt;
-            idlWrapper.&lt;span style=&quot;color: #006633;&quot;&gt;executeString&lt;/span&gt;&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#40;&lt;/span&gt;&lt;span style=&quot;color: #0000ff;&quot;&gt;&amp;quot;WAIT, 4&amp;quot;&lt;/span&gt;&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#41;&lt;/span&gt;&lt;span style=&quot;color: #339933;&quot;&gt;;&lt;/span&gt;
-            &lt;a href=&quot;http://www.google.com/search?hl=en&amp;amp;q=allinurl%3Adocs.oracle.com+javase+docs+api+system&quot;&gt;&lt;span style=&quot;color: #003399;&quot;&gt;System&lt;/span&gt;&lt;/a&gt;.&lt;span style=&quot;color: #006633;&quot;&gt;out&lt;/span&gt;.&lt;span style=&quot;color: #006633;&quot;&gt;println&lt;/span&gt;&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#40;&lt;/span&gt;&lt;a href=&quot;http://www.google.com/search?hl=en&amp;amp;q=allinurl%3Adocs.oracle.com+javase+docs+api+string&quot;&gt;&lt;span style=&quot;color: #003399;&quot;&gt;String&lt;/span&gt;&lt;/a&gt;.&lt;span style=&quot;color: #006633;&quot;&gt;format&lt;/span&gt;&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#40;&lt;/span&gt;&lt;span style=&quot;color: #0000ff;&quot;&gt;&amp;quot;THREAD %s SUCCEEDED!&amp;quot;&lt;/span&gt;, tName&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#41;&lt;/span&gt;&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#41;&lt;/span&gt;&lt;span style=&quot;color: #339933;&quot;&gt;;&lt;/span&gt;
-        &lt;span style=&quot;color: #009900;&quot;&gt;&amp;#125;&lt;/span&gt; &lt;span style=&quot;color: #000000; font-weight: bold;&quot;&gt;catch&lt;/span&gt; &lt;span style=&quot;color: #009900;&quot;&gt;&amp;#40;&lt;/span&gt;JIDLBusyException jbe&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#41;&lt;/span&gt; &lt;span style=&quot;color: #009900;&quot;&gt;&amp;#123;&lt;/span&gt;
-            &lt;a href=&quot;http://www.google.com/search?hl=en&amp;amp;q=allinurl%3Adocs.oracle.com+javase+docs+api+system&quot;&gt;&lt;span style=&quot;color: #003399;&quot;&gt;System&lt;/span&gt;&lt;/a&gt;.&lt;span style=&quot;color: #006633;&quot;&gt;out&lt;/span&gt;.&lt;span style=&quot;color: #006633;&quot;&gt;println&lt;/span&gt;&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#40;&lt;/span&gt;&lt;a href=&quot;http://www.google.com/search?hl=en&amp;amp;q=allinurl%3Adocs.oracle.com+javase+docs+api+string&quot;&gt;&lt;span style=&quot;color: #003399;&quot;&gt;String&lt;/span&gt;&lt;/a&gt;.&lt;span style=&quot;color: #006633;&quot;&gt;format&lt;/span&gt;&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#40;&lt;/span&gt;&lt;span style=&quot;color: #0000ff;&quot;&gt;&amp;quot;THREAD %s FAILED WITH ERR: %s&amp;quot;&lt;/span&gt;, tName, jbe.&lt;span style=&quot;color: #006633;&quot;&gt;getMessage&lt;/span&gt;&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#40;&lt;/span&gt;&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#41;&lt;/span&gt;&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#41;&lt;/span&gt;&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#41;&lt;/span&gt;&lt;span style=&quot;color: #339933;&quot;&gt;;&lt;/span&gt;
-        &lt;span style=&quot;color: #009900;&quot;&gt;&amp;#125;&lt;/span&gt;&lt;/pre&gt;
-
-&lt;p&gt;And we can finally confirm that it doesn&amp;#8217;t make any difference.&lt;/p&gt;
-
-&lt;pre class=&quot;shell&quot; style=&quot;font-family:monospace;&quot;&gt;Java location : /usr/lib/jvm/java-8-oracle/jre/lib/amd64 (set relative to java.home property)
-Successfully loaded libawt.so
-Successfully loaded libjawt.so
-Successfully loaded libjavaidlb.so
-THREAD Thread-2 FAILED WITH ERR: The object&#039;s associated IDL process is currently busy.
-THREAD Thread-1 FAILED WITH ERR: The object&#039;s associated IDL process is currently busy.
-THREAD Thread-0 SUCCEEDED!&lt;/pre&gt;
-
-&lt;p&gt;So if you need to run some IDL code in a Web application, for example, you&amp;#8217;ll probably have to
-consider the number of simultaneous users you will have, or you can try to enqueue user requests, 
-process the IDL code in the background, and notify users when the response is ready.&lt;/p&gt;
-
-&lt;p&gt;The code for this post is hostead at &lt;a href=&quot;https://github.com/kinow/idl-sandbox&quot;&gt;GitHub&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;Happy hacking!&lt;/p&gt;
-</description>
-</item>
-<item>
-    <title>Contract Tests</title>
-    <pubDate>Mon, 11 May 2015 00:00:00 +1200</pubDate>
-    <link>/2015/05/11/contract-tests.html</link>
-    <dc:creator>Bruno P. Kinoshita</dc:creator>
-    <description>&lt;p&gt;&lt;a href=&quot;https://jena.apache.org&quot;&gt;Apache Jena&lt;/a&gt; is getting ready for the 3.0 release. In the meantime, 
-I&amp;#8217;ve been trying to help with &lt;a href=&quot;https://issues.apache.org/jira/browse/JENA-380&quot;&gt;JENA-380&lt;/a&gt;. Thankfully
-Claude joined and is working on the issue again.&lt;/p&gt;
-
-&lt;p&gt;He proposed to start using &lt;a href=&quot;https://github.com/Claudenw/junit-contracts&quot;&gt;Contract Tests&lt;/a&gt; in tests
-in Jena. Having never heard about contract tests, I decided to write this blog post while I experimented
-with the examples in the project, and also with Claude&amp;#8217;s code in a branch in Jena Git repository.&lt;/p&gt;
-
-&lt;h2&gt;What are contract tests?&lt;/h2&gt;
-
-&lt;p&gt;Contract tests are designed to test the behaviour of interfaces. Even though interfaces expose
-methods to users, its documentation may include extra details about its behaviour. For example, you
-may have the following method.&lt;/p&gt;
-
-&lt;pre class=&quot;java&quot; style=&quot;font-family:monospace;&quot;&gt;&lt;span style=&quot;color: #000000; font-weight: bold;&quot;&gt;interface&lt;/span&gt; CouponGenerator &lt;span style=&quot;color: #009900;&quot;&gt;&amp;#123;&lt;/span&gt;
-&amp;nbsp;
-    &lt;span style=&quot;color: #000066; font-weight: bold;&quot;&gt;boolean&lt;/span&gt; isEnabled&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#40;&lt;/span&gt;&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#41;&lt;/span&gt;&lt;span style=&quot;color: #339933;&quot;&gt;;&lt;/span&gt;
-&amp;nbsp;
-    &lt;span style=&quot;color: #000066; font-weight: bold;&quot;&gt;void&lt;/span&gt; generateCoupon&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#40;&lt;/span&gt;&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#41;&lt;/span&gt; &lt;span style=&quot;color: #000000; font-weight: bold;&quot;&gt;throws&lt;/span&gt; CouponException&lt;span style=&quot;color: #339933;&quot;&gt;;&lt;/span&gt;
-&amp;nbsp;
-&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#125;&lt;/span&gt;&lt;/pre&gt;
-
-&lt;p&gt;So it contains a single method to generate coupons. But it may also include some documentation.&lt;/p&gt;
-
-&lt;pre class=&quot;java&quot; style=&quot;font-family:monospace;&quot;&gt;&lt;span style=&quot;color: #000000; font-weight: bold;&quot;&gt;interface&lt;/span&gt; CouponGenerator &lt;span style=&quot;color: #009900;&quot;&gt;&amp;#123;&lt;/span&gt;
-&amp;nbsp;
-    &lt;span style=&quot;color: #000066; font-weight: bold;&quot;&gt;boolean&lt;/span&gt; isEnabled&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#40;&lt;/span&gt;&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#41;&lt;/span&gt;&lt;span style=&quot;color: #339933;&quot;&gt;;&lt;/span&gt;
-&amp;nbsp;
-    &lt;span style=&quot;color: #008000; font-style: italic; font-weight: bold;&quot;&gt;/**
-     * Generates a coupon, unless the coupon generation has been disabled.
-     * @throws CouponException if the coupon generation has been disabled
-     */&lt;/span&gt;
-    &lt;span style=&quot;color: #000066; font-weight: bold;&quot;&gt;void&lt;/span&gt; generateCoupon&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#40;&lt;/span&gt;&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#41;&lt;/span&gt; &lt;span style=&quot;color: #000000; font-weight: bold;&quot;&gt;throws&lt;/span&gt; CouponException&lt;span style=&quot;color: #339933;&quot;&gt;;&lt;/span&gt;
-&amp;nbsp;
-&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#125;&lt;/span&gt;&lt;/pre&gt;
-
-&lt;p&gt;This is a simple example, with no intention of representing anything useful. But being simple it
-is helpful to understand the concept of contract tests. Even though the class and its method names
-tell us that it generates coupons, the documentation extends the behaviour by saying that if
-the coupon generation has been disabled it will throw an exception.&lt;/p&gt;
-
-&lt;h2&gt;Writing contract tests&lt;/h2&gt;
-
-&lt;p&gt;We can cover the contract of the CouponGenerator interface with contract tests. We start by writing
-the tests for our interface.&lt;/p&gt;
-
-&lt;pre class=&quot;java&quot; style=&quot;font-family:monospace;&quot;&gt;&amp;nbsp;
-@Contract&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#40;&lt;/span&gt;CouponGenerator.&lt;span style=&quot;color: #000000; font-weight: bold;&quot;&gt;class&lt;/span&gt;&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#41;&lt;/span&gt;
-&lt;span style=&quot;color: #000000; font-weight: bold;&quot;&gt;public&lt;/span&gt; &lt;span style=&quot;color: #000000; font-weight: bold;&quot;&gt;class&lt;/span&gt; CouponGeneratorContractTest&lt;span style=&quot;color: #339933;&quot;&gt;&amp;lt;&lt;/span&gt;T &lt;span style=&quot;color: #000000; font-weight: bold;&quot;&gt;extends&lt;/span&gt; CouponGenerator&lt;span style=&quot;color: #339933;&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span style=&quot;color: #009900;&quot;&gt;&amp;#123;&lt;/span&gt;
-&amp;nbsp;
-    &lt;span style=&quot;color: #666666; font-style: italic;&quot;&gt;// the producer we will user&lt;/span&gt;
-    &lt;span style=&quot;color: #000000; font-weight: bold;&quot;&gt;private&lt;/span&gt; IProducer&lt;span style=&quot;color: #339933;&quot;&gt;&amp;lt;&lt;/span&gt;T&lt;span style=&quot;color: #339933;&quot;&gt;&amp;gt;&lt;/span&gt; producer&lt;span style=&quot;color: #339933;&quot;&gt;;&lt;/span&gt;
-&amp;nbsp;
-    @Contract.&lt;span style=&quot;color: #006633;&quot;&gt;Inject&lt;/span&gt;
-    &lt;span style=&quot;color: #666666; font-style: italic;&quot;&gt;// define the method to set producer.&lt;/span&gt;
-    &lt;span style=&quot;color: #000000; font-weight: bold;&quot;&gt;public&lt;/span&gt; &lt;span style=&quot;color: #000000; font-weight: bold;&quot;&gt;final&lt;/span&gt; &lt;span style=&quot;color: #000066; font-weight: bold;&quot;&gt;void&lt;/span&gt; setProducer&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#40;&lt;/span&gt;IProducer&lt;span style=&quot;color: #339933;&quot;&gt;&amp;lt;&lt;/span&gt;T&lt;span style=&quot;color: #339933;&quot;&gt;&amp;gt;&lt;/span&gt; producer&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#41;&lt;/span&gt; &lt;span style=&quot;color: #009900;&quot;&gt;&amp;#123;&lt;/span&gt;
-        &lt;span style=&quot;color: #000000; font-weight: bold;&quot;&gt;this&lt;/span&gt;.&lt;span style=&quot;color: #006633;&quot;&gt;producer&lt;/span&gt; &lt;span style=&quot;color: #339933;&quot;&gt;=&lt;/span&gt; producer&lt;span style=&quot;color: #339933;&quot;&gt;;&lt;/span&gt;
-    &lt;span style=&quot;color: #009900;&quot;&gt;&amp;#125;&lt;/span&gt;
-&amp;nbsp;
-    &lt;span style=&quot;color: #000000; font-weight: bold;&quot;&gt;protected&lt;/span&gt; &lt;span style=&quot;color: #000000; font-weight: bold;&quot;&gt;final&lt;/span&gt; IProducer&lt;span style=&quot;color: #339933;&quot;&gt;&amp;lt;&lt;/span&gt;T&lt;span style=&quot;color: #339933;&quot;&gt;&amp;gt;&lt;/span&gt; getProducer&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#40;&lt;/span&gt;&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#41;&lt;/span&gt; &lt;span style=&quot;color: #009900;&quot;&gt;&amp;#123;&lt;/span&gt;
-        &lt;span style=&quot;color: #000000; font-weight: bold;&quot;&gt;return&lt;/span&gt; producer&lt;span style=&quot;color: #339933;&quot;&gt;;&lt;/span&gt;
-    &lt;span style=&quot;color: #009900;&quot;&gt;&amp;#125;&lt;/span&gt;
-&amp;nbsp;
-    @After
-    &lt;span style=&quot;color: #000000; font-weight: bold;&quot;&gt;public&lt;/span&gt; &lt;span style=&quot;color: #000000; font-weight: bold;&quot;&gt;final&lt;/span&gt; &lt;span style=&quot;color: #000066; font-weight: bold;&quot;&gt;void&lt;/span&gt; cleanupAT&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#40;&lt;/span&gt;&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#41;&lt;/span&gt; &lt;span style=&quot;color: #009900;&quot;&gt;&amp;#123;&lt;/span&gt;
-        getProducer&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#40;&lt;/span&gt;&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#41;&lt;/span&gt;.&lt;span style=&quot;color: #006633;&quot;&gt;cleanUp&lt;/span&gt;&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#40;&lt;/span&gt;&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#41;&lt;/span&gt;&lt;span style=&quot;color: #339933;&quot;&gt;;&lt;/span&gt; &lt;span style=&quot;color: #666666; font-style: italic;&quot;&gt;// clean up the producer for the next run&lt;/span&gt;
-    &lt;span style=&quot;color: #009900;&quot;&gt;&amp;#125;&lt;/span&gt;
-&amp;nbsp;
-    @ContractTest
-    &lt;span style=&quot;color: #000000; font-weight: bold;&quot;&gt;public&lt;/span&gt; &lt;span style=&quot;color: #000066; font-weight: bold;&quot;&gt;void&lt;/span&gt; shouldGenerateACouponWhenEnabled&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#40;&lt;/span&gt;&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#41;&lt;/span&gt; &lt;span style=&quot;color: #000000; font-weight: bold;&quot;&gt;throws&lt;/span&gt; CouponException &lt;span style=&quot;color: #009900;&quot;&gt;&amp;#123;&lt;/span&gt;
-        CouponGenerator couponGenerator &lt;span style=&quot;color: #339933;&quot;&gt;=&lt;/span&gt; getProducer&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#40;&lt;/span&gt;&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#41;&lt;/span&gt;.&lt;span style=&quot;color: #006633;&quot;&gt;newInstance&lt;/span&gt;&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#40;&lt;/span&gt;&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#41;&lt;/span&gt;&lt;span style=&quot;color: #339933;&quot;&gt;;&lt;/span&gt;
-        couponGenerator.&lt;span style=&quot;color: #006633;&quot;&gt;generateCoupon&lt;/span&gt;&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#40;&lt;/span&gt;&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#41;&lt;/span&gt;&lt;span style=&quot;color: #339933;&quot;&gt;;&lt;/span&gt;
-        assertNotNull&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#40;&lt;/span&gt;couponGenerator&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#41;&lt;/span&gt;&lt;span style=&quot;color: #339933;&quot;&gt;;&lt;/span&gt;
-    &lt;span style=&quot;color: #009900;&quot;&gt;&amp;#125;&lt;/span&gt;
-&amp;nbsp;
-    @ContractTest
-    &lt;span style=&quot;color: #000000; font-weight: bold;&quot;&gt;public&lt;/span&gt; &lt;span style=&quot;color: #000066; font-weight: bold;&quot;&gt;void&lt;/span&gt; shouldFailWhenDisabled&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#40;&lt;/span&gt;&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#41;&lt;/span&gt; &lt;span style=&quot;color: #000000; font-weight: bold;&quot;&gt;throws&lt;/span&gt; CouponException &lt;span style=&quot;color: #009900;&quot;&gt;&amp;#123;&lt;/span&gt;
-        CouponGenerator couponGenerator &lt;span style=&quot;color: #339933;&quot;&gt;=&lt;/span&gt; getProducer&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#40;&lt;/span&gt;&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#41;&lt;/span&gt;.&lt;span style=&quot;color: #006633;&quot;&gt;newInstance&lt;/span&gt;&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#40;&lt;/span&gt;&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#41;&lt;/span&gt;&lt;span style=&quot;color: #339933;&quot;&gt;;&lt;/span&gt;
-        couponGenerator.&lt;span style=&quot;color: #006633;&quot;&gt;generateCoupon&lt;/span&gt;&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#40;&lt;/span&gt;&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#41;&lt;/span&gt;&lt;span style=&quot;color: #339933;&quot;&gt;;&lt;/span&gt;
-        assertNotNull&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#40;&lt;/span&gt;couponGenerator&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#41;&lt;/span&gt;&lt;span style=&quot;color: #339933;&quot;&gt;;&lt;/span&gt;
-        &lt;span style=&quot;color: #000000; font-weight: bold;&quot;&gt;try&lt;/span&gt; &lt;span style=&quot;color: #009900;&quot;&gt;&amp;#123;&lt;/span&gt;
-            couponGenerator.&lt;span style=&quot;color: #006633;&quot;&gt;setEnabled&lt;/span&gt;&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#40;&lt;/span&gt;&lt;span style=&quot;color: #000066; font-weight: bold;&quot;&gt;false&lt;/span&gt;&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#41;&lt;/span&gt;&lt;span style=&quot;color: #339933;&quot;&gt;;&lt;/span&gt;
-            couponGenerator.&lt;span style=&quot;color: #006633;&quot;&gt;generateCoupon&lt;/span&gt;&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#40;&lt;/span&gt;&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#41;&lt;/span&gt;&lt;span style=&quot;color: #339933;&quot;&gt;;&lt;/span&gt;
-            fail&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#40;&lt;/span&gt;&lt;span style=&quot;color: #0000ff;&quot;&gt;&amp;quot;Coupon Generator must fail if disabled!&amp;quot;&lt;/span&gt;&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#41;&lt;/span&gt;&lt;span style=&quot;color: #339933;&quot;&gt;;&lt;/span&gt;
-        &lt;span style=&quot;color: #009900;&quot;&gt;&amp;#125;&lt;/span&gt; &lt;span style=&quot;color: #000000; font-weight: bold;&quot;&gt;catch&lt;/span&gt; &lt;span style=&quot;color: #009900;&quot;&gt;&amp;#40;&lt;/span&gt;CouponException ce&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#41;&lt;/span&gt; &lt;span style=&quot;color: #009900;&quot;&gt;&amp;#123;&lt;/span&gt;
-            &lt;span style=&quot;color: #666666; font-style: italic;&quot;&gt;// ignore&lt;/span&gt;
-        &lt;span style=&quot;color: #009900;&quot;&gt;&amp;#125;&lt;/span&gt;
-    &lt;span style=&quot;color: #009900;&quot;&gt;&amp;#125;&lt;/span&gt;
-&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#125;&lt;/span&gt;&lt;/pre&gt;
-
-&lt;p&gt;This test covers the basic contract defined in our interface and is used by the junit-contracts
-library.&lt;/p&gt;
-
-&lt;h2&gt;Dissecting the code&lt;/h2&gt;
-
-&lt;p&gt;This first part defines the interface under test.&lt;/p&gt;
-
-&lt;pre class=&quot;java&quot; style=&quot;font-family:monospace;&quot;&gt;@Contract&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#40;&lt;/span&gt;CouponGenerator.&lt;span style=&quot;color: #000000; font-weight: bold;&quot;&gt;class&lt;/span&gt;&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#41;&lt;/span&gt;
-&lt;span style=&quot;color: #000000; font-weight: bold;&quot;&gt;public&lt;/span&gt; &lt;span style=&quot;color: #000000; font-weight: bold;&quot;&gt;class&lt;/span&gt; CouponGeneratorContractTest&lt;span style=&quot;color: #339933;&quot;&gt;&amp;lt;&lt;/span&gt;T &lt;span style=&quot;color: #000000; font-weight: bold;&quot;&gt;extends&lt;/span&gt; CouponGenerator&lt;span style=&quot;color: #339933;&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span style=&quot;color: #009900;&quot;&gt;&amp;#123;&lt;/span&gt;&lt;/pre&gt;
-
-&lt;p&gt;This next part is the producer which, as the name suggests, produces instances of our
-interface. These instances are used during testing, and are set by the implementation
-tests.&lt;/p&gt;
-
-&lt;p&gt;The methods annotated by @ContractTest are the tests for what is defined in our
-interface. They contain the assertions.&lt;/p&gt;
-
-&lt;pre class=&quot;java&quot; style=&quot;font-family:monospace;&quot;&gt;    &lt;span style=&quot;color: #666666; font-style: italic;&quot;&gt;// the producer we will user&lt;/span&gt;
-    &lt;span style=&quot;color: #000000; font-weight: bold;&quot;&gt;private&lt;/span&gt; IProducer&lt;span style=&quot;color: #339933;&quot;&gt;&amp;lt;&lt;/span&gt;T&lt;span style=&quot;color: #339933;&quot;&gt;&amp;gt;&lt;/span&gt; producer&lt;span style=&quot;color: #339933;&quot;&gt;;&lt;/span&gt;
-&amp;nbsp;
-    @Contract.&lt;span style=&quot;color: #006633;&quot;&gt;Inject&lt;/span&gt;
-    &lt;span style=&quot;color: #666666; font-style: italic;&quot;&gt;// define the method to set producer.&lt;/span&gt;
-    &lt;span style=&quot;color: #000000; font-weight: bold;&quot;&gt;public&lt;/span&gt; &lt;span style=&quot;color: #000000; font-weight: bold;&quot;&gt;final&lt;/span&gt; &lt;span style=&quot;color: #000066; font-weight: bold;&quot;&gt;void&lt;/span&gt; setProducer&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#40;&lt;/span&gt;IProducer&lt;span style=&quot;color: #339933;&quot;&gt;&amp;lt;&lt;/span&gt;T&lt;span style=&quot;color: #339933;&quot;&gt;&amp;gt;&lt;/span&gt; producer&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#41;&lt;/span&gt; &lt;span style=&quot;color: #009900;&quot;&gt;&amp;#123;&lt;/span&gt;
-        &lt;span style=&quot;color: #000000; font-weight: bold;&quot;&gt;this&lt;/span&gt;.&lt;span style=&quot;color: #006633;&quot;&gt;producer&lt;/span&gt; &lt;span style=&quot;color: #339933;&quot;&gt;=&lt;/span&gt; producer&lt;span style=&quot;color: #339933;&quot;&gt;;&lt;/span&gt;
-    &lt;span style=&quot;color: #009900;&quot;&gt;&amp;#125;&lt;/span&gt;
-&amp;nbsp;
-    &lt;span style=&quot;color: #000000; font-weight: bold;&quot;&gt;protected&lt;/span&gt; &lt;span style=&quot;color: #000000; font-weight: bold;&quot;&gt;final&lt;/span&gt; IProducer&lt;span style=&quot;color: #339933;&quot;&gt;&amp;lt;&lt;/span&gt;T&lt;span style=&quot;color: #339933;&quot;&gt;&amp;gt;&lt;/span&gt; getProducer&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#40;&lt;/span&gt;&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#41;&lt;/span&gt; &lt;span style=&quot;color: #009900;&quot;&gt;&amp;#123;&lt;/span&gt;
-        &lt;span style=&quot;color: #000000; font-weight: bold;&quot;&gt;return&lt;/span&gt; producer&lt;span style=&quot;color: #339933;&quot;&gt;;&lt;/span&gt;
-    &lt;span style=&quot;color: #009900;&quot;&gt;&amp;#125;&lt;/span&gt;&lt;/pre&gt;
-
-&lt;p&gt;Finally, you can write a class extending our test. This class will set the producer
-used during test. This new producer will create instances of the CouponGeneratorImpl
-for testing.&lt;/p&gt;
-
-&lt;pre class=&quot;java&quot; style=&quot;font-family:monospace;&quot;&gt;@RunWith&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#40;&lt;/span&gt;ContractTestRunner.&lt;span style=&quot;color: #000000; font-weight: bold;&quot;&gt;class&lt;/span&gt;&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#41;&lt;/span&gt;
-&lt;span style=&quot;color: #000000; font-weight: bold;&quot;&gt;public&lt;/span&gt; &lt;span style=&quot;color: #000000; font-weight: bold;&quot;&gt;class&lt;/span&gt; CouponGeneratorImplTest &lt;span style=&quot;color: #000000; font-weight: bold;&quot;&gt;extends&lt;/span&gt; CouponGeneratorContractTest&lt;span style=&quot;color: #339933;&quot;&gt;&amp;lt;&lt;/span&gt;CouponGeneratorImpl&lt;span style=&quot;color: #339933;&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span style=&quot;color: #009900;&quot;&gt;&amp;#123;&lt;/span&gt;
-&amp;nbsp;
-    &lt;span style=&quot;color: #000000; font-weight: bold;&quot;&gt;public&lt;/span&gt; CouponGeneratorImplTest&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#40;&lt;/span&gt;&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#41;&lt;/span&gt; &lt;span style=&quot;color: #009900;&quot;&gt;&amp;#123;&lt;/span&gt;
-        setProducer&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#40;&lt;/span&gt;&lt;span style=&quot;color: #000000; font-weight: bold;&quot;&gt;new&lt;/span&gt; IProducer&lt;span style=&quot;color: #339933;&quot;&gt;&amp;lt;&lt;/span&gt;CouponGeneratorImpl&lt;span style=&quot;color: #339933;&quot;&gt;&amp;gt;&lt;/span&gt;&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#40;&lt;/span&gt;&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#41;&lt;/span&gt; &lt;span style=&quot;color: #009900;&quot;&gt;&amp;#123;&lt;/span&gt;
-&amp;nbsp;
-            &lt;span style=&quot;color: #000000; font-weight: bold;&quot;&gt;public&lt;/span&gt; &lt;span style=&quot;color: #000066; font-weight: bold;&quot;&gt;void&lt;/span&gt; cleanUp&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#40;&lt;/span&gt;&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#41;&lt;/span&gt; &lt;span style=&quot;color: #009900;&quot;&gt;&amp;#123;&lt;/span&gt;
-                &lt;span style=&quot;color: #666666; font-style: italic;&quot;&gt;// nothing to do&lt;/span&gt;
-            &lt;span style=&quot;color: #009900;&quot;&gt;&amp;#125;&lt;/span&gt;
-&amp;nbsp;
-            &lt;span style=&quot;color: #000000; font-weight: bold;&quot;&gt;public&lt;/span&gt; CouponGeneratorImpl newInstance&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#40;&lt;/span&gt;&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#41;&lt;/span&gt; &lt;span style=&quot;color: #009900;&quot;&gt;&amp;#123;&lt;/span&gt;
-                &lt;span style=&quot;color: #000000; font-weight: bold;&quot;&gt;return&lt;/span&gt; &lt;span style=&quot;color: #000000; font-weight: bold;&quot;&gt;new&lt;/span&gt; CouponGeneratorImpl&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#40;&lt;/span&gt;&lt;span style=&quot;color: #000066; font-weight: bold;&quot;&gt;true&lt;/span&gt;&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#41;&lt;/span&gt;&lt;span style=&quot;color: #339933;&quot;&gt;;&lt;/span&gt;
-            &lt;span style=&quot;color: #009900;&quot;&gt;&amp;#125;&lt;/span&gt;
-        &lt;span style=&quot;color: #009900;&quot;&gt;&amp;#125;&lt;/span&gt;&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#41;&lt;/span&gt;&lt;span style=&quot;color: #339933;&quot;&gt;;&lt;/span&gt;
-    &lt;span style=&quot;color: #009900;&quot;&gt;&amp;#125;&lt;/span&gt;
-&amp;nbsp;
-&lt;span style=&quot;color: #009900;&quot;&gt;&amp;#125;&lt;/span&gt;&lt;/pre&gt;
-
-&lt;p&gt;That&amp;#8217;s that. You can run the tests from Eclipse or with Maven Surefire. If one of the implementations
-don&amp;#8217;t follow the contract, tests will fail! There is also a plug-in to show what is not being tested,
-but I haven&amp;#8217;t investigated that part of the library yet. Neat!&lt;/p&gt;
-
-&lt;p&gt;You can clone the repository with this code &lt;a href=&quot;https://github.com/kinow/contract-tests-sandbox&quot;&gt;from GitHub&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;Happy testing!&lt;/p&gt;
+&lt;p&gt;In the next post I will try to show how to load this model and some dummy data into a fresh installation of
+52North SOS server.&lt;/p&gt;
 </description>
 </item>
 <item>
@@ -881,6 +537,86 @@ fixed the issue for me.&lt;/p&gt;
 
 &lt;p&gt;Hope that helps.
 Happy testing!&lt;/p&gt;
+</description>
+</item>
+<item>
+    <title>The Apache Way and on writing software reviews</title>
+    <pubDate>Sun, 29 Sep 2013 00:00:00 +1200</pubDate>
+    <link>/2013/09/29/the-apache-way-and-on-writing-software-reviews.html</link>
+    <dc:creator>Bruno P. Kinoshita</dc:creator>
+    <description>&lt;p&gt;The &lt;a href=&quot;http://www.apache.org/foundation/how-it-works.html&quot;&gt;Apache Way&lt;/a&gt; is the philosophy behind 
+Apache Software Foundation and is shared by all of its projects. It is composed by a set of principles:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Collaborative software development&lt;/li&gt;
+&lt;li&gt;Commercial-friendly standard license&lt;/li&gt;
+&lt;li&gt;Consistently high quality software&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Respectful, honest, technical-based interaction&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;Faithful implementation of standards&lt;/li&gt;
+&lt;li&gt;Security as a mandatory feature&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;I have been part of &lt;a href=&quot;http://commons.apache.org&quot;&gt;Apache Commons&lt;/a&gt; for a while, and haven&amp;#8217;t 
+really contributed much yet. Maybe because I had lots of projects related to 
+&lt;a href=&quot;http://tupilabs.com&quot;&gt;TupiLabs&lt;/a&gt; as well as my own wedding this year. But I can 
+assure that &lt;em&gt;respectful, honest, technical-based interaction&lt;/em&gt; is quite right (not to discredit the 
+other items, of course).&lt;/p&gt;
+
+&lt;p&gt;Even though there are critics of the Apache Way (&lt;a href=&quot;/2013/09/29/the-apache-way-and-on-writing-software-reviews#1.html&quot;&gt;1&lt;/a&gt;, &lt;a href=&quot;/2013/09/29/the-apache-way-and-on-writing-software-reviews#2.html&quot;&gt;2&lt;/a&gt;, &lt;a href=&quot;/2013/09/29/the-apache-way-and-on-writing-software-reviews#3.html&quot;&gt;3&lt;/a&gt;), it still stands as an important 
+pillar for the Apache Software Foundation, and its principles help to create stable and 
+production ready software, such as &lt;a href=&quot;http://hadoop.apache.org&quot;&gt;Apache Hadoop&lt;/a&gt;, 
+&lt;a href=&quot;http://httpd.apache.org&quot;&gt;Apache Httpd&lt;/a&gt;, &lt;a href=&quot;http://commons.apache.org/lang&quot;&gt;Apache Commons Lang&lt;/a&gt;, 
+among &lt;a href=&quot;http://projects.apache.org&quot;&gt;others&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;There are many reviews and comparisons on Apache software (as well as on 
+other software, like JavaScript libraries, Java Web Frameworks, Ruby Web servers and so on). 
+Sometimes, though, these reviews or comparisons can be biased or not well founded. In 
+cases like this, the developers of the tools may be frustrated, or users can be 
+misled and choose the software based on wrong assertions.&lt;/p&gt;
+
+&lt;p&gt;I have just returned from honey moon, ready to start writing code again, but 
+first I had to read all the unread messages in my inbox. Some were e-mails from &lt;a href=&quot;https://www.apache.org/foundation/mailinglists.html&quot;&gt;Apache 
+mailing lists&lt;/a&gt;. &lt;a href=&quot;http://markmail.org/thread/uoh5m55mh4qjybaw&quot;&gt;One of these e-mails&lt;/a&gt; 
+had Phil Steitz comments on a post by Daniel Wu. &lt;/p&gt;
+
+&lt;p&gt;Instead of publishing his performance benchmark results of 
+&lt;a href=&quot;http://commons.apache.org/pool&quot;&gt;Apache Commons Pool&lt;/a&gt;, Daniel posted his 
+code to the commons-dev mailing list. Phil Steitz, one of Apache Commons Pool 
+committers replied with questions and a few points that Daniel could use to 
+enrich his bechmark tests.&lt;/p&gt;
+
+&lt;p&gt;This kind of behavior happens a lot within Apache (at least in the mailing lists that 
+I follow), and it produces a lot of benefits for different parts. &lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;The person writing a review or comparison can get the programmer opinion before actually 
+publishing anything. &lt;/li&gt;
+&lt;li&gt;The programmer can see how other people were testing his/her code.&lt;/li&gt;
+&lt;li&gt;All other commons-pool committers and maintainers, the mailing list readers, and 
+people that found the mailing list archives will be able to read the conversation 
+history.&lt;/li&gt;
+&lt;li&gt;No misguided benchmark results were published (and lots of wrong decisions were avoided).&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;I keep loving the Apache Way and the resulting community and code around it. There are 
+always lots of things to learn, the Open Source projects communities are healthy and you will always find 
+people willing to share their experience and time teaching you.&lt;/p&gt;
+
+&lt;p&gt;♥ Open Source&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;&lt;sup&gt;&lt;a name=&quot;1&quot;&gt;1&lt;/a&gt; 
+&lt;a href=&quot;http://www.infoworld.com/d/open-source-software/has-apache-lost-its-way-225267?page=0,2&quot;&gt;
+http://www.infoworld.com/d/open-source-software/has-apache-lost-its-way-225267?page=0,2&lt;/a&gt;&lt;/sup&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;sup&gt;&lt;a name=&quot;2&quot;&gt;2&lt;/a&gt; 
+&lt;a href=&quot;http://www.futurealoof.com/posts/apache-considered-harmful.html&quot;&gt;
+http://www.futurealoof.com/posts/apache-considered-harmful.html&lt;/a&gt;&lt;/sup&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;sup&gt;&lt;a name=&quot;3&quot;&gt;3&lt;/a&gt; 
+&lt;a href=&quot;http://www.itworld.com/it-managementstrategy/227477/has-open-source-outgrown-apache-way&quot;&gt;
+http://www.itworld.com/it-managementstrategy/227477/has-open-source-outgrown-apache-way&lt;/a&gt;&lt;/sup&gt;&lt;/p&gt;
 </description>
 </item>
 </channel>

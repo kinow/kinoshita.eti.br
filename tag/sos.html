@@ -1,7 +1,7 @@
   <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en">
 <head profile="http://gmpg.org/xfn/11">
-<title>Bruno P. Kinoshita &mdash; Groovy Hooks in Jenkins for increasing logging level</title>
+<title>Bruno P. Kinoshita</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="description" content="Bruno de Paula Kinoshita personal web site" />
 <meta name="keywords"
@@ -110,46 +110,83 @@
 </div>            </div>
                         <div id="right" class="span8">
                 <div id="main">
-                <div class="post type-post status-publish format-standard hentry">
-    <h1 class='post-topic'>Groovy Hooks in Jenkins for increasing logging level</h1>
-    <small>Bruno P. Kinoshita</small> @
-	<small>April 12, 2015&nbsp;11:30:03</small>
-    <div class="entry">
-       <a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2015/04/12/groovy-hooks-in-jenkins-for-increasing-logging-level.html" data-text="Groovy Hooks in Jenkins for increasing logging level" data-via="kinow" data-hashtags="opensource">Tweet</a>
+                                                        Posts tagged with 'sos'
+
+<div class="post type-post status-publish format-standard hentry">
+    <h2>Modeling observation data in SOS (Sensor Observation Service)</h2>
+    <p><small>kinow</small> @ <small>June 23, 2015&nbsp;13:40:03</small></p>
+    <div><a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2015/06/23/modeling-observation-data-in-sos.html" data-text="Modeling observation data in SOS (Sensor Observation Service)" data-via="kinow" data-hashtags="opensource">Tweet</a>
 <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+</div>
+    <p>This week NZ Herald published an <a href="http://www.nzherald.co.nz/technology/news/article.cfm?c_id=5&amp;objectid=11469418">article</a>
+about a device created by an Irish farmer enterpreneur that sends a message to a farmer when the cow is about to give birth.
+The device monitors &#8220;heightened tail moviment&#8221;.</p>
 
-	   <p>Yesterday, while debugging a problem we had in the <a href="http://biouno.org">BioUno</a> update center, 
-I realized that after <a href="https://wiki.jenkins-ci.org/display/JENKINS/Logging">increasing the logging level in the WEB interface</a>, 
-the messages that I needed weren&#8217;t being displayed in the logs.</p>
+<p>In this post I will try to apply what I am learning following the <a href="http://www.ogcnetwork.net/SOS_2_0/tutorial">SOS Tutorial</a>
+(the Open Geospatial Consortium standard for Sensor Observation Service). Feel free to drop me a message via
+<a href="https://twitter.com/kinow">@kinow</a> if you find any mistakes or have any suggestions.</p>
 
-<p>It happened because some of the logging happened during Jenkins initialization, and before I could adjust the log level.</p>
+<h2>Modeling the tail moviment observation data in SOS</h2>
 
-<p>The solution was to use a <a href="https://wiki.jenkins-ci.org/display/JENKINS/Groovy+Hook+Script">Groovy Hook Script</a>. 
-If you are familiar with Linux init scripts, the idea is quite similar. </p>
+<p>SOS is a standard designed to provide access to observation data. There are several server implementations, such as Kisters KiWIS, 
+istSOS and 52North SOS.</p>
 
-<p>A Groovy script in the <code>$JENKINS_ROOT_DIR/init.groovy.d/</code> directory is executed during
-Jenkins initialization. This way you can increase the global logger level with a script
-as the following below.</p>
+<p>The standard mentions and utilises several other standards, such as SensorML, WFS, XML, WMS, etc. The SOS Tutorial on
+how to model your observation data for SOS starts by defining <em>procedure</em>, <em>observed property</em>, <em>feature of interest</em>,
+<em>phenomenon and result times</em>, and the <em>result value</em>.</p>
 
-<pre class="java" style="font-family:monospace;"><span style="color: #000000; font-weight: bold;">import</span> <span style="color: #006699;">java.util.logging.ConsoleHandler</span>
-<span style="color: #000000; font-weight: bold;">import</span> <span style="color: #006699;">java.util.logging.LogManager</span>
-<span style="color: #000000; font-weight: bold;">import</span> <span style="color: #006699;">java.util.logging.Logger</span>
-<span style="color: #000000; font-weight: bold;">import</span> <span style="color: #006699;">java.util.logging.Level</span>
-&nbsp;
-def logger <span style="color: #339933;">=</span> Logger.<span style="color: #006633;">getLogger</span><span style="color: #009900;">&#40;</span><span style="color: #0000ff;">&quot;&quot;</span><span style="color: #009900;">&#41;</span>
-logger.<span style="color: #006633;">setLevel</span><span style="color: #009900;">&#40;</span>Level.<span style="color: #006633;">FINEST</span><span style="color: #009900;">&#41;</span>
-logger.<span style="color: #006633;">addHandler</span> <span style="color: #009900;">&#40;</span><span style="color: #000000; font-weight: bold;">new</span> ConsoleHandler<span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #009900;">&#41;</span></pre>
+<p>Let&#8217;s try to model the data from the tail moviment sensors in the following table.</p>
 
-<p>Happy logging!</p>
+<table class="table table-bordered">
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+<th>Our example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<th>Procedure</th>
+<td>The process that has generated the observation, such as a sensor, from the O&M specification. In our example that could be a sensor identification</td>
+<td>moocall_001</td>
+</tr>
+<tr>
+<th>Observed Property</th>
+<td>A property which is observed (look at NASA SWEET ontology for existing values)</td>
+<td>Heightned tail moviment</td>
+</tr>
+<tr>
+<th>Feature of Interest</th>
+<td>A feature that carries the property which is observed</td>
+<td>Pregnant cow</td>
+</tr>
+<tr>
+<th>Phenomenon and Result Times</th>
+<td>The phenomenon time is when the data has been taken, and the result time when it has been created. If both are the same, the resultTime can point to the phenomenonTime</td>
+<td>20150623142000</td>
+</tr>
+<tr>
+<th>Result value</th>
+<td>This is the result of the observation. Can be a OM_Measurement if numeric, OM_TruthObservation, etc (O&M)</td>
+<td>3 (supposing we have a scale from 1 to 5)</td>
+</tr>
+</tbody>
+</table>
 
-    </div>
-    <p class="postmetadata">
+<p>In the next post I will try to show how to load this model and some dummy data into a fresh installation of
+52North SOS server.</p>
+<!-- html -->
+        <p class="postmetadata">
                 <small>tags          [&nbsp;<a
-            href="/tag/jenkins.html"
-            rel="tag">jenkins</a>&nbsp;]&nbsp;
+            href="/tag/sos.html"
+            rel="tag">sos</a>&nbsp;]&nbsp;
                  [&nbsp;<a
-            href="/tag/groovy.html"
-            rel="tag">groovy</a>&nbsp;]&nbsp;
+            href="/tag/52north.html"
+            rel="tag">52north</a>&nbsp;]&nbsp;
+                 [&nbsp;<a
+            href="/tag/sensor-web.html"
+            rel="tag">sensor web</a>&nbsp;]&nbsp;
                 </small>
                         <br/>
         <small>posted in 
@@ -159,12 +196,11 @@ logger.<span style="color: #006633;">addHandler</span> <span style="color: #0099
             rel="category tag">blog</a>&nbsp;]&nbsp;
         category </small>
             </p>
-    <div id="navigation">
-                    &larr;&nbsp;<a href="/2015/06/23/modeling-observation-data-in-sos.html" id="navigation-next">Previous post</a>
-                            &mdash; <a href="/2015/01/01/contributing-to-apache-jena.html" id="navigation-next">Next Entries</a>&nbsp;&rarr;
-            </div>
 </div>
-                    <br/>
+
+                    <p class="postmetadata">
+                                                                    </p>
+                                    <br/>
                 </div><!-- /#main -->
                             <div id="copy" class="">
                 <p>&copy; <a href="http://kinoshita.eti.br/about"><span

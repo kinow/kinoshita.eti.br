@@ -113,104 +113,6 @@
                                                         Posts tagged with 'java'
 
 <div class="post type-post status-publish format-standard hentry">
-    <h2>Replacing a HashSet with a BitSet</h2>
-    <p><small>kinow</small> @ <small>October 20, 2012&nbsp;23:07:39</small></p>
-    <div><a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2012/10/20/replacing-a-hashset-with-a-bitset.html" data-text="Replacing a HashSet with a BitSet" data-via="kinow" data-hashtags="opensource">Tweet</a>
-<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-</div>
-    <p>I always read the messages in the <a href="http://www.apache.org/foundation/mailinglists.html" title="Apache mailing lists">Apache dev mailing lists</a>, including Apache Commons <a href="http://commons.apache.org/mail-lists.html" title="Apache Commons mailing lists">dev mailing list</a>. And you should too. There are always interesting discussions. Sometimes you participate, other times you only watch what&#8217;s happening, but in the end <strong>you always learn something new</strong>.</p>
-
-<p>A few days ago, I found <a href="https://issues.apache.org/jira/browse/LANG-839" title="LANG-839">an issue</a> where it was being proposed to replace an unnecessary <a href="http://docs.oracle.com/javase/6/docs/api/java/util/HashSet.html" title="HashSet">HashSet</a> in <a href="http://commons.apache.org/lang/api-release/org/apache/commons/lang3/ArrayUtils.html" title="ArrayUtils">ArrayUtils</a>#removeElements() by a <a href="http://docs.oracle.com/javase/6/docs/api/java/util/BitSet.html" title="BitSet">BitSet</a>. Here&#8217;s how the code looked like: </p>
-
-<pre class="java" style="font-family:monospace;">HashSet<span style="color: #339933;">&lt;</span>Integer<span style="color: #339933;">&gt;</span> toRemove <span style="color: #339933;">=</span> <span style="color: #000000; font-weight: bold;">new</span> HashSet<span style="color: #339933;">&lt;</span>Integer<span style="color: #339933;">&gt;</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-<span style="color: #000000; font-weight: bold;">for</span> <span style="color: #009900;">&#40;</span><a href="http://www.google.com/search?hl=en&amp;q=allinurl%3Adocs.oracle.com+javase+docs+api+map"><span style="color: #003399;">Map</span></a>.<span style="color: #006633;">Entry</span><span style="color: #339933;">&lt;</span><a href="http://www.google.com/search?hl=en&amp;q=allinurl%3Adocs.oracle.com+javase+docs+api+character"><span style="color: #003399;">Character</span></a>, MutableInt<span style="color: #339933;">&gt;</span> e <span style="color: #339933;">:</span> occurrences.<span style="color: #006633;">entrySet</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
-    <a href="http://www.google.com/search?hl=en&amp;q=allinurl%3Adocs.oracle.com+javase+docs+api+character"><span style="color: #003399;">Character</span></a> v <span style="color: #339933;">=</span> e.<span style="color: #006633;">getKey</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-    <span style="color: #000066; font-weight: bold;">int</span> found <span style="color: #339933;">=</span> <span style="color: #cc66cc;">0</span><span style="color: #339933;">;</span>
-    <span style="color: #000000; font-weight: bold;">for</span> <span style="color: #009900;">&#40;</span><span style="color: #000066; font-weight: bold;">int</span> i <span style="color: #339933;">=</span> <span style="color: #cc66cc;">0</span>, ct <span style="color: #339933;">=</span> e.<span style="color: #006633;">getValue</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span>.<span style="color: #006633;">intValue</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span> i <span style="color: #339933;">&lt;</span> ct<span style="color: #339933;">;</span> i<span style="color: #339933;">++</span><span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
-        found <span style="color: #339933;">=</span> indexOf<span style="color: #009900;">&#40;</span>array, v.<span style="color: #006633;">charValue</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span>, found<span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-        <span style="color: #000000; font-weight: bold;">if</span> <span style="color: #009900;">&#40;</span>found <span style="color: #339933;">&lt;</span> <span style="color: #cc66cc;">0</span><span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
-            <span style="color: #000000; font-weight: bold;">break</span><span style="color: #339933;">;</span>
-        <span style="color: #009900;">&#125;</span>
-        toRemove.<span style="color: #006633;">add</span><span style="color: #009900;">&#40;</span>found<span style="color: #339933;">++</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-    <span style="color: #009900;">&#125;</span>
-<span style="color: #009900;">&#125;</span>
-<span style="color: #000000; font-weight: bold;">return</span> <span style="color: #009900;">&#40;</span><span style="color: #000066; font-weight: bold;">char</span><span style="color: #009900;">&#91;</span><span style="color: #009900;">&#93;</span><span style="color: #009900;">&#41;</span> removeAll<span style="color: #009900;">&#40;</span><span style="color: #009900;">&#40;</span><a href="http://www.google.com/search?hl=en&amp;q=allinurl%3Adocs.oracle.com+javase+docs+api+object"><span style="color: #003399;">Object</span></a><span style="color: #009900;">&#41;</span>array, extractIndices<span style="color: #009900;">&#40;</span>toRemove<span style="color: #009900;">&#41;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span></pre>
-
-<p style="text-align: center"><a href="/2012/10/20/replacing-a-hashset-with-a-bitset/feather_small.gif"><img src="/2012/10/20/replacing-a-hashset-with-a-bitset/feather_small.gif" alt="" title="Apache Software Foundation" width="203" height="61" class="aligncenter size-full wp-image-1125" /></a></p>
-
-<p>The HashSet created at line 1, in the code above, was used to store the array index of the elements that should be removed. And at line 13 there is a call to removeAll method, passing the indexes to be removed. And here&#8217;s how the new code looks like: </p>
-
-<pre class="java" style="font-family:monospace;"><a href="http://www.google.com/search?hl=en&amp;q=allinurl%3Adocs.oracle.com+javase+docs+api+bitset"><span style="color: #003399;">BitSet</span></a> toRemove <span style="color: #339933;">=</span> <span style="color: #000000; font-weight: bold;">new</span> <a href="http://www.google.com/search?hl=en&amp;q=allinurl%3Adocs.oracle.com+javase+docs+api+bitset"><span style="color: #003399;">BitSet</span></a><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-<span style="color: #000000; font-weight: bold;">for</span> <span style="color: #009900;">&#40;</span><a href="http://www.google.com/search?hl=en&amp;q=allinurl%3Adocs.oracle.com+javase+docs+api+map"><span style="color: #003399;">Map</span></a>.<span style="color: #006633;">Entry</span><span style="color: #339933;">&lt;</span><a href="http://www.google.com/search?hl=en&amp;q=allinurl%3Adocs.oracle.com+javase+docs+api+character"><span style="color: #003399;">Character</span></a>, MutableInt<span style="color: #339933;">&gt;</span> e <span style="color: #339933;">:</span> occurrences.<span style="color: #006633;">entrySet</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
-    <a href="http://www.google.com/search?hl=en&amp;q=allinurl%3Adocs.oracle.com+javase+docs+api+character"><span style="color: #003399;">Character</span></a> v <span style="color: #339933;">=</span> e.<span style="color: #006633;">getKey</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-    <span style="color: #000066; font-weight: bold;">int</span> found <span style="color: #339933;">=</span> <span style="color: #cc66cc;">0</span><span style="color: #339933;">;</span>
-    <span style="color: #000000; font-weight: bold;">for</span> <span style="color: #009900;">&#40;</span><span style="color: #000066; font-weight: bold;">int</span> i <span style="color: #339933;">=</span> <span style="color: #cc66cc;">0</span>, ct <span style="color: #339933;">=</span> e.<span style="color: #006633;">getValue</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span>.<span style="color: #006633;">intValue</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span> i <span style="color: #339933;">&lt;</span> ct<span style="color: #339933;">;</span> i<span style="color: #339933;">++</span><span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
-        found <span style="color: #339933;">=</span> indexOf<span style="color: #009900;">&#40;</span>array, v.<span style="color: #006633;">charValue</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span>, found<span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-        <span style="color: #000000; font-weight: bold;">if</span> <span style="color: #009900;">&#40;</span>found <span style="color: #339933;">&lt;</span> <span style="color: #cc66cc;">0</span><span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
-            <span style="color: #000000; font-weight: bold;">break</span><span style="color: #339933;">;</span>
-        <span style="color: #009900;">&#125;</span>
-        toRemove.<span style="color: #006633;">set</span><span style="color: #009900;">&#40;</span>found<span style="color: #339933;">++</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-    <span style="color: #009900;">&#125;</span>
-<span style="color: #009900;">&#125;</span>
-<span style="color: #000000; font-weight: bold;">return</span> <span style="color: #009900;">&#40;</span><span style="color: #000066; font-weight: bold;">char</span><span style="color: #009900;">&#91;</span><span style="color: #009900;">&#93;</span><span style="color: #009900;">&#41;</span> removeAll<span style="color: #009900;">&#40;</span>array, toRemove<span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span></pre>
-
-<p>The first difference is at line 1. Instead of a HashSet, it is now using a BitSet. And at line 10, instead of adding a new element to the HashSet, now it &#8220;sets&#8221; a bit in the set (the bit at the specified position is now true). But there are important changes at line 13. The method removeAll was changed, and now the array doesn&#8217;t require a cast anymore. And the it is not necessary to cast the elements from HashSet anymore, as now the bit in the index position of the set is set to true. So the extractIndices method could be removed.</p>
-
-<p><p>The code got simpler. But that&#8217;s not all. At <a href="http://www.apache.org" title="Apache Software Foundation">Apache Software Foundation</a> you can find a lot of talented developers - that&#8217;s why I got so excited after joining them. Besides simplifying the code, the developer responsible for these changes (<strong>sebb</strong>) also pointed out that the new code <strong>consumes less memory and is faster</strong>. Ah! And he also wrote <strong>unit tests</strong></p>
-<!-- html -->
-        <p class="postmetadata">
-                <small>tags          [&nbsp;<a
-            href="/tag/open-source.html"
-            rel="tag">open source</a>&nbsp;]&nbsp;
-                 [&nbsp;<a
-            href="/tag/apache.html"
-            rel="tag">apache</a>&nbsp;]&nbsp;
-                 [&nbsp;<a
-            href="/tag/java.html"
-            rel="tag">java</a>&nbsp;]&nbsp;
-                </small>
-                    </p>
-</div>
-<div class="post type-post status-publish format-standard hentry">
-    <h2>Invoking Testopia XML-RPC or JSON methods using Java</h2>
-    <p><small>kinow</small> @ <small>September 9, 2012&nbsp;16:08:09</small></p>
-    <div><a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2012/09/09/invoking-testopia-xml-rpc-or-json-methods-using-java.html" data-text="Invoking Testopia XML-RPC or JSON methods using Java" data-via="kinow" data-hashtags="opensource">Tweet</a>
-<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-</div>
-    <p>Most <a href="http://www.teamst.org" title="TestLink">TestLink</a> [1] users are aware that there is an external API, maybe for the external API token being displayed in the user profile section. Today after a meeting with <a href="http://twitter.com/peterflorijn" title="Peter Florijn">Peter Florijn</a> [2], I realized that the same may not be true for <a href="http://www.mozilla.org/projects/testopia/" title="Testopia">Testopia</a>  [3] users.</p>
-
-<p>I am quite new to Testopia, and there are many features that I haven&#8217;t used yet. But if I understand it correctly, the database is interfaced by several Perl scripts that are, by its turns, exposed as Web Service (most of them). The web services are available via a JSON and a XML-RPC API (what is very useful, TestLink supports supports only XML-RPC).</p>
-
-<p>The communication between different programming languages and the external API&#8217;s is accomplished by a client API. In TestLink you have <a href="http://testlinkjavaapi.sourceforge.net/" title="TestLink Java API">testlink-java-api</a> [4] and <a href="http://code.google.com/p/testlink-api-java-client/" title="TestLink API Java Client">testlink-api-java-client</a> [5].</p>
-
-<p>Testopia has a Java client too, available in <a href="http://bzr.mozilla.org/bugzilla/extensions/testopia/2.2-bugzilla-3.2/files/head:/testopia/contrib/drivers/java/" title="Testopia source repository">Testopia source repository</a> [6] and can be used to integrate your existing Java code with Testopia.</p>
-
-<!-- html -->
-        <p>( <a href="/2012/09/09/invoking-testopia-xml-rpc-or-json-methods-using-java.html" >Read more ...</a> )</p>
-        <p class="postmetadata">
-                <small>tags          [&nbsp;<a
-            href="/tag/testopia.html"
-            rel="tag">testopia</a>&nbsp;]&nbsp;
-                 [&nbsp;<a
-            href="/tag/xml-rpc.html"
-            rel="tag">xml-rpc</a>&nbsp;]&nbsp;
-                 [&nbsp;<a
-            href="/tag/json.html"
-            rel="tag">json</a>&nbsp;]&nbsp;
-                 [&nbsp;<a
-            href="/tag/java.html"
-            rel="tag">java</a>&nbsp;]&nbsp;
-                </small>
-                        <br/>
-        <small>posted in 
-        [&nbsp;<a
-            href="/blog.html"
-            title="View all posts in blog"
-            rel="category tag">blog</a>&nbsp;]&nbsp;
-        category </small>
-            </p>
-</div>
-<div class="post type-post status-publish format-standard hentry">
     <h2>Writing code to integrate Java projects to Testopia</h2>
     <p><small>kinow</small> @ <small>May 18, 2012&nbsp;17:16:25</small></p>
     <div><a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2012/05/18/writing-coding-to-integrate-java-projects-to-testopia.html" data-text="Writing code to integrate Java projects to Testopia" data-via="kinow" data-hashtags="opensource">Tweet</a>
@@ -330,6 +232,54 @@ extensions:
                  [&nbsp;<a
             href="/tag/testing.html"
             rel="tag">testing</a>&nbsp;]&nbsp;
+                </small>
+                        <br/>
+        <small>posted in 
+        [&nbsp;<a
+            href="/blog.html"
+            title="View all posts in blog"
+            rel="category tag">blog</a>&nbsp;]&nbsp;
+        category </small>
+            </p>
+</div>
+<div class="post type-post status-publish format-standard hentry">
+    <h2>Displaying Japanese characters in Java Swing</h2>
+    <p><small>kinow</small> @ <small>March 6, 2009&nbsp;12:10:07</small></p>
+    <div><a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2009/03/06/displaying-japanese-characters-n-java-swing.html" data-text="Displaying Japanese characters in Java Swing" data-via="kinow" data-hashtags="opensource">Tweet</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+</div>
+    <p>It&#8217;s not as complicated as I first thought.</p>
+
+<p>Had to use this technique to develop an Swing application for the JLPT certification exam.</p>
+
+<pre class="java" style="font-family:monospace;"><span style="color: #000000; font-weight: bold;">public</span> <span style="color: #000000; font-weight: bold;">static</span> <span style="color: #000066; font-weight: bold;">void</span> main<span style="color: #009900;">&#40;</span><a href="http://www.google.com/search?hl=en&amp;q=allinurl%3Adocs.oracle.com+javase+docs+api+string"><span style="color: #003399;">String</span></a><span style="color: #009900;">&#91;</span><span style="color: #009900;">&#93;</span> args<span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
+    <a href="http://www.google.com/search?hl=en&amp;q=allinurl%3Adocs.oracle.com+javase+docs+api+jframe"><span style="color: #003399;">JFrame</span></a> frame <span style="color: #339933;">=</span> <span style="color: #000000; font-weight: bold;">new</span> <a href="http://www.google.com/search?hl=en&amp;q=allinurl%3Adocs.oracle.com+javase+docs+api+jframe"><span style="color: #003399;">JFrame</span></a><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+    frame.<span style="color: #006633;">setDefaultCloseOperation</span><span style="color: #009900;">&#40;</span><a href="http://www.google.com/search?hl=en&amp;q=allinurl%3Adocs.oracle.com+javase+docs+api+jframe"><span style="color: #003399;">JFrame</span></a>.<span style="color: #006633;">EXIT_ON_CLOSE</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+    <a href="http://www.google.com/search?hl=en&amp;q=allinurl%3Adocs.oracle.com+javase+docs+api+container"><span style="color: #003399;">Container</span></a> container <span style="color: #339933;">=</span> frame.<span style="color: #006633;">getContentPane</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+    <a href="http://www.google.com/search?hl=en&amp;q=allinurl%3Adocs.oracle.com+javase+docs+api+jlabel"><span style="color: #003399;">JLabel</span></a> japanese <span style="color: #339933;">=</span> <span style="color: #000000; font-weight: bold;">new</span> <a href="http://www.google.com/search?hl=en&amp;q=allinurl%3Adocs.oracle.com+javase+docs+api+jlabel"><span style="color: #003399;">JLabel</span></a><span style="color: #009900;">&#40;</span> <span style="color: #0000ff;">&quot;Kino<span style="color: #000099; font-weight: bold;">\u</span>304D<span style="color: #000099; font-weight: bold;">\u</span>306E&quot;</span> <span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+    japanese.<span style="color: #006633;">setToolTipText</span><span style="color: #009900;">&#40;</span> <span style="color: #0000ff;">&quot;This is Japanese&quot;</span> <span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+    <a href="http://www.google.com/search?hl=en&amp;q=allinurl%3Adocs.oracle.com+javase+docs+api+font"><span style="color: #003399;">Font</span></a> f <span style="color: #339933;">=</span> <span style="color: #000000; font-weight: bold;">new</span> <a href="http://www.google.com/search?hl=en&amp;q=allinurl%3Adocs.oracle.com+javase+docs+api+font"><span style="color: #003399;">Font</span></a><span style="color: #009900;">&#40;</span><span style="color: #0000ff;">&quot;Arial Unicode MS&quot;</span>, <a href="http://www.google.com/search?hl=en&amp;q=allinurl%3Adocs.oracle.com+javase+docs+api+font"><span style="color: #003399;">Font</span></a>.<span style="color: #006633;">BOLD</span>, <span style="color: #cc66cc;">16</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+    japanese.<span style="color: #006633;">setFont</span><span style="color: #009900;">&#40;</span>f<span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+    container.<span style="color: #006633;">add</span><span style="color: #009900;">&#40;</span> japanese <span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+    frame.<span style="color: #006633;">pack</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+    frame.<span style="color: #006633;">setLocationRelativeTo</span><span style="color: #009900;">&#40;</span><span style="color: #000066; font-weight: bold;">null</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+    frame.<span style="color: #006633;">setVisible</span><span style="color: #009900;">&#40;</span><span style="color: #000066; font-weight: bold;">true</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+<span style="color: #009900;">&#125;</span></pre>
+
+<p>All you have to do is to use the hexadecimal representation of the characters instead of using plain text. And here is the result.
+<p style="text-align: center;"><a href=""><img class="aligncenter size-full wp-image-777" title="kino" src="" alt="" width="90" height="65" /></a></p>
+Banzai!</p>
+<!-- html -->
+        <p class="postmetadata">
+                <small>tags          [&nbsp;<a
+            href="/tag/java.html"
+            rel="tag">java</a>&nbsp;]&nbsp;
+                 [&nbsp;<a
+            href="/tag/swing.html"
+            rel="tag">swing</a>&nbsp;]&nbsp;
+                 [&nbsp;<a
+            href="/tag/internatonalization.html"
+            rel="tag">internatonalization</a>&nbsp;]&nbsp;
                 </small>
                         <br/>
         <small>posted in 
