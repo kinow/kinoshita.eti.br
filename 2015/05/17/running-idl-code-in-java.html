@@ -1,0 +1,434 @@
+  <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head profile="http://gmpg.org/xfn/11">
+<title>Bruno P. Kinoshita &mdash; Running IDL code in Java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="description" content="Bruno de Paula Kinoshita personal web site" />
+<meta name="keywords"
+    content="kinoshita, bruno de paula kinoshita, geek, geek stuff, java, python, c, c++, msn now playing, neural network, mackenzie, sao paulo, brasil, brazil, nerd, nerd stuff, cool, jenkins, illustration, quadrinhos, machine learning, linguistic, apache" />
+<meta name="author" content="Bruno P. Kinoshita" />
+<meta name="generator" content="PieCrust 1.2.0" />
+<meta name="template-engine" content="Twig" />
+<meta name="robots" content="all=index,follow" />
+<meta name="revisit-after" content="15 days" />
+<meta http-equiv="Pragma" content="no-cache" />
+<meta name="distribution" content="Global" />
+<meta name="url" content="http://kinoshita.eti.br/" />
+<meta name="copyright" content="Bruno de Paula Kinoshita" />
+<meta name="Googlebot" content="all" />
+<meta name="rating" content="general" />
+<meta http-equiv="expires" content="0" />
+<meta name="city" content="Sao Paulo" />
+<meta name="state" content="Brasil, Sao Paulo" />
+<meta http-equiv="content-language" content="en" />
+<meta http-equiv="imagetoolbar" content="no" />
+<meta id="page_favicon" href="http://kinoshita.eti.br/favicon.ico" rel="icon" type="image/x-icon" />
+<link rel="shortcut icon" type="image/x-icon" href="http://kinoshita.eti.br/favicon.ico">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<!--[if lt IE 9]>
+<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+<script src="http://kinoshita.eti.br/js/jquery-1.6.1.min.js"  type="text/javascript" charset="utf-8"></script>
+<script src="http://kinoshita.eti.br/js/jquery.prettyPhoto.js"></script>
+<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<link rel="alternate" type="application/rss+xml" title="Bruno P. Kinoshita &raquo; Feed" href="http://kinoshita.eti.br//feed.xml" />
+<link rel="stylesheet" href="http://kinoshita.eti.br/css/prettyPhoto.css" type="text/css" media="screen, projection" />
+<link rel="stylesheet" href="http://kinoshita.eti.br/css/bootstrap.css" type="text/css" media="screen, projection" />
+<link rel="stylesheet" href="http://kinoshita.eti.br/css/bootstrap-responsive.css" type="text/css" media="screen, projection" />
+<link rel="stylesheet" href="http://kinoshita.eti.br/css/style.css" type="text/css" media="screen, projection" />
+<!--[if lt IE 8]>
+    <link rel="stylesheet" href="/css/blueprint/ie.css" type="text/css" media="screen, projection" />
+<![endif]-->
+<link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Droid+Sans">
+ <link rel="stylesheet" href="/css/default.css" type="text/css" media="all" />
+ 
+</head>
+<body class="home blog">
+    <div class="container-fluid">
+            <div class="row-fluid">
+            <div id="left" class="span2">
+                <div style="padding-top: 6px;">
+                    <ul>
+                        <li><a style="color: #E13F4D;" class="mainlink"
+                            href="http://kinoshita.eti.br/">Kinoshita</a></li>
+                    </ul>
+                </div>
+                <div class="menu-main-menu-container">
+    <ul
+        id="menu-main-menu"
+        class="menu">
+        <li
+            class="menu-item"><a
+            href="http://kinoshita.eti.br/software.html">Software</a></li>
+        <li
+            class="menu-item"><a
+            href="http://kinoshita.eti.br/illustrations.html">Illustrations</a></li>
+        <li
+            class="menu-item"><a
+            href="http://kinoshita.eti.br/articles.html">Articles</a></li>
+        <li
+            class="menu-item"><a
+            href="http://kinoshita.eti.br/about.html">About &#038; CV</a></li>
+        <li
+            class="menu-item"><a
+            href="http://kinoshita.eti.br/contact.html">Contact</a></li>
+    </ul>
+</div>                <hr class="space" />
+                <img src="http://kinoshita.eti.br/img/bruno.jpg"
+                    title="Hmmmm" alt="Hmmmm" width="134px" height="215px" />
+                <hr class="space" />
+                <div class="logos">
+    <a href="http://www.tupilabs.com"><img
+        src="http://kinoshita.eti.br/img/logos/tupilabs_logo.png"
+        title="TupiLabs"
+        alt="TupiLabs" /></a> <a href="http://www.javacodegeeks.com/"><img
+        src="http://kinoshita.eti.br/img/logos/logo_jcg_115x100.png"
+        title="Java Code Geeks"
+        alt="Java Code Geeks" /></a> <a href="http://www.open-bio.org/wiki/BOSC_2012"><img
+        src="http://kinoshita.eti.br/img/logos/ISMB2012.jpg"
+        title="BOSC 2012"
+        alt="BOSC 2012" /></a> <a href="http://www.stpcon.com/"><img
+        src="http://kinoshita.eti.br/img/logos/stpconspring2012.png"
+        title="STPCon Spring 2012"
+        alt="STPCon Spring 2012" /></a> <a href="http://www.oracle.com/javaone/lad-pt/"><img
+        src="http://kinoshita.eti.br/img/logos/javaone.png"
+        title="JavaOne 2011 LAD"
+        alt="JavaOne 2011 LAD" /></a> <a href="http://www.jcertif.com"><img
+        src="http://kinoshita.eti.br/img/logos/JCertif_Conf2011_2.png"
+        title="JCertif 2011"
+        alt="JCertif 2011" /></a> <a href="http://www.thedevelopersconference.com.br/tdc/2011/"><img
+        src="http://kinoshita.eti.br/img/logos/banner-TDC2011-234x60.png"
+        title="The Developer's Conference 2011"
+        alt="The Developer's Conference 2011" /></a> <a href="http://belgiumtestingdays.com/past.php"><img
+        src="http://kinoshita.eti.br/img/logos/btd2011_speakers_banner_1.png"
+        title="Belgium Testing Days 2011"
+        alt="Belgium Testing Days 2011" /></a> <a href="http://www.encontroagil.com.br/2010/principal/home.html"><img
+        src="http://kinoshita.eti.br/img/logos/banner_encontro_agil.png"
+        title="Encontro &Aacute;gil 2010"
+        alt="Encontro &Aacute;gil 2010" /></a>
+</div>            </div>
+                        <div id="right" class="span8">
+                <div id="main">
+                <div class="post type-post status-publish format-standard hentry">
+    <h1 class='post-topic'>Running IDL code in Java</h1>
+    <small>Bruno P. Kinoshita</small> @
+	<small>May 17, 2015&nbsp;14:03:03</small>
+    <div class="entry">
+       <a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2015/05/17/running-idl-code-in-java.html" data-text="Running IDL code in Java" data-via="kinow" data-hashtags="opensource">Tweet</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+
+	   <p><em><strong>TL;DR</strong> when using a Demo license (or a node-locked license I believe) you can call only one IDL program at
+a time. Otherwise you will get a JIDLBusyException.</em></p>
+
+<p><a href="http://en.wikipedia.org/wiki/IDL_%28programming_language%29">IDL</a>, or Interactive Data Language, &#8220;is a
+programming language used for data analysis&#8221;. I had never heard about IDL until a few days ago, when
+I had to review an issue at work that involved a Java Web program running some IDL code.</p>
+
+<p>I decided to run IDL at home, using the Demo version from <a href="http://www.exelisvis.com/productsservices/idl.aspx">Exelis</a> and
+investigate what would happen if I made multiple simultaneous calls using a single license
+(note: I&#8217;m using the Demo license, but there are
+<a href="http://licensing.exelisvis.com/licensehelp.aspx">other licensing options</a> that give you more flexibility). 
+Furthermore, when running an IDL program using the Java bridge, you set a &#8220;process name&#8221;. 
+I also wanted to confirm that changing the process name wouldn&#8217;t make any difference.</p>
+
+<p>You can read the test source code below. The only IDL statement is <code>WAIT, 4</code>. It sleeps the program
+for four seconds, before exiting. This way we have a program using the Demo license for 4 seconds, and
+we can try using the license simultaneously.</p>
+
+<pre class="java" style="font-family:monospace;"><span style="color: #000000; font-weight: bold;">package</span> <span style="color: #006699;">br.eti.kinoshita.idl</span><span style="color: #339933;">;</span>
+&nbsp;
+<span style="color: #000000; font-weight: bold;">import</span> <span style="color: #006699;">com.idl.javaidl.JIDLBusyException</span><span style="color: #339933;">;</span>
+<span style="color: #000000; font-weight: bold;">import</span> <span style="color: #006699;">com.idl.javaidl.JIDLObject</span><span style="color: #339933;">;</span>
+<span style="color: #000000; font-weight: bold;">import</span> <span style="color: #006699;">com.idl.javaidl.JIDLObjectI</span><span style="color: #339933;">;</span>
+<span style="color: #000000; font-weight: bold;">import</span> <span style="color: #006699;">com.idl.javaidl.JIDLOutputListener</span><span style="color: #339933;">;</span>
+<span style="color: #000000; font-weight: bold;">import</span> <span style="color: #006699;">com.idl.javaidl.java_IDL_connect</span><span style="color: #339933;">;</span>
+&nbsp;
+<span style="color: #000000; font-weight: bold;">public</span> <span style="color: #000000; font-weight: bold;">class</span> SleepsTenSecondsHelloWorld <span style="color: #000000; font-weight: bold;">implements</span> <a href="http://www.google.com/search?hl=en&amp;q=allinurl%3Adocs.oracle.com+javase+docs+api+runnable"><span style="color: #003399;">Runnable</span></a>, JIDLOutputListener <span style="color: #009900;">&#123;</span>
+&nbsp;
+    <span style="color: #000000; font-weight: bold;">public</span> <span style="color: #000066; font-weight: bold;">void</span> run<span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
+        <span style="color: #000000; font-weight: bold;">final</span> <a href="http://www.google.com/search?hl=en&amp;q=allinurl%3Adocs.oracle.com+javase+docs+api+string"><span style="color: #003399;">String</span></a> tName <span style="color: #339933;">=</span> <a href="http://www.google.com/search?hl=en&amp;q=allinurl%3Adocs.oracle.com+javase+docs+api+thread"><span style="color: #003399;">Thread</span></a>.<span style="color: #006633;">currentThread</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span>.<span style="color: #006633;">getName</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+        <span style="color: #000000; font-weight: bold;">try</span> <span style="color: #009900;">&#123;</span>
+            JIDLObject idlWrapper <span style="color: #339933;">=</span> <span style="color: #000000; font-weight: bold;">new</span> java_IDL_connect<span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+            idlWrapper.<span style="color: #006633;">createObject</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+            idlWrapper.<span style="color: #006633;">addIDLOutputListener</span><span style="color: #009900;">&#40;</span><span style="color: #000000; font-weight: bold;">this</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+            idlWrapper.<span style="color: #006633;">setProcessName</span><span style="color: #009900;">&#40;</span><span style="color: #0000ff;">&quot;process01&quot;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+            idlWrapper.<span style="color: #006633;">executeString</span><span style="color: #009900;">&#40;</span><span style="color: #0000ff;">&quot;WAIT, 4&quot;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+            <a href="http://www.google.com/search?hl=en&amp;q=allinurl%3Adocs.oracle.com+javase+docs+api+system"><span style="color: #003399;">System</span></a>.<span style="color: #006633;">out</span>.<span style="color: #006633;">println</span><span style="color: #009900;">&#40;</span><a href="http://www.google.com/search?hl=en&amp;q=allinurl%3Adocs.oracle.com+javase+docs+api+string"><span style="color: #003399;">String</span></a>.<span style="color: #006633;">format</span><span style="color: #009900;">&#40;</span><span style="color: #0000ff;">&quot;THREAD %s SUCCEEDED!&quot;</span>, tName<span style="color: #009900;">&#41;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+        <span style="color: #009900;">&#125;</span> <span style="color: #000000; font-weight: bold;">catch</span> <span style="color: #009900;">&#40;</span>JIDLBusyException jbe<span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
+            <a href="http://www.google.com/search?hl=en&amp;q=allinurl%3Adocs.oracle.com+javase+docs+api+system"><span style="color: #003399;">System</span></a>.<span style="color: #006633;">out</span>.<span style="color: #006633;">println</span><span style="color: #009900;">&#40;</span><a href="http://www.google.com/search?hl=en&amp;q=allinurl%3Adocs.oracle.com+javase+docs+api+string"><span style="color: #003399;">String</span></a>.<span style="color: #006633;">format</span><span style="color: #009900;">&#40;</span><span style="color: #0000ff;">&quot;THREAD %s FAILED WITH ERR: %s&quot;</span>, tName, jbe.<span style="color: #006633;">getMessage</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #009900;">&#41;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+        <span style="color: #009900;">&#125;</span>
+    <span style="color: #009900;">&#125;</span>
+&nbsp;
+    <span style="color: #000000; font-weight: bold;">public</span> <span style="color: #000066; font-weight: bold;">void</span> IDLoutput<span style="color: #009900;">&#40;</span>JIDLObjectI paramJIDLObjectI, <a href="http://www.google.com/search?hl=en&amp;q=allinurl%3Adocs.oracle.com+javase+docs+api+string"><span style="color: #003399;">String</span></a> paramString<span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
+        <a href="http://www.google.com/search?hl=en&amp;q=allinurl%3Adocs.oracle.com+javase+docs+api+system"><span style="color: #003399;">System</span></a>.<span style="color: #006633;">out</span>.<span style="color: #006633;">println</span><span style="color: #009900;">&#40;</span>paramString<span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+    <span style="color: #009900;">&#125;</span>
+&nbsp;
+    <span style="color: #000000; font-weight: bold;">public</span> <span style="color: #000000; font-weight: bold;">static</span> <span style="color: #000066; font-weight: bold;">void</span> main<span style="color: #009900;">&#40;</span><a href="http://www.google.com/search?hl=en&amp;q=allinurl%3Adocs.oracle.com+javase+docs+api+string"><span style="color: #003399;">String</span></a><span style="color: #009900;">&#91;</span><span style="color: #009900;">&#93;</span> args<span style="color: #009900;">&#41;</span> <span style="color: #000000; font-weight: bold;">throws</span> <a href="http://www.google.com/search?hl=en&amp;q=allinurl%3Adocs.oracle.com+javase+docs+api+exception"><span style="color: #003399;">Exception</span></a> <span style="color: #009900;">&#123;</span>
+        <a href="http://www.google.com/search?hl=en&amp;q=allinurl%3Adocs.oracle.com+javase+docs+api+runnable"><span style="color: #003399;">Runnable</span></a> r <span style="color: #339933;">=</span> <span style="color: #000000; font-weight: bold;">new</span> SleepsTenSecondsHelloWorld<span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+        <a href="http://www.google.com/search?hl=en&amp;q=allinurl%3Adocs.oracle.com+javase+docs+api+thread"><span style="color: #003399;">Thread</span></a> t <span style="color: #339933;">=</span> <span style="color: #000000; font-weight: bold;">new</span> <a href="http://www.google.com/search?hl=en&amp;q=allinurl%3Adocs.oracle.com+javase+docs+api+thread"><span style="color: #003399;">Thread</span></a><span style="color: #009900;">&#40;</span>r<span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+        t.<span style="color: #006633;">start</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+    <span style="color: #009900;">&#125;</span>
+&nbsp;
+<span style="color: #009900;">&#125;</span></pre>
+
+<p>Turns out running IDL with Java is not so trivial, so the rest of the post will walk you through the problems
+I&#8217;ve had while trying to do so, before actually testing the code. 
+Hopefully it will be useful for others trying a similar approach. I&#8217;m using
+Oracle Java 8, Ubuntu 14.04, Eclipse + Maven, in a quad-core and 6GB notebook.</p>
+
+<h2>Troubleshooting IDL and Java errors</h2>
+
+<p>The first thing you need in order to be able to write a program that calls IDL in Eclipse is
+import the JAR file that contains the IDL Java bridge API. This file is called
+<code>javaidlb.jar</code>. You can search for it after you install Exelis&#8217; IDL.</p>
+
+<p>Trying to run your program, the first error you will probably get is the following one:</p>
+
+<pre class="shell" style="font-family:monospace;">Failed to load javaidlb from  from default location.
+Exception in thread &quot;Thread-0&quot; java.lang.UnsatisfiedLinkError: com.idl.javaidl.JIDLPAL.nativeInitJPAL()V
+    at com.idl.javaidl.JIDLPAL.nativeInitJPAL(Native Method)
+    at com.idl.javaidl.JIDLPAL.&lt;clinit&gt;(JIDLPAL.java:193)
+    at com.idl.javaidl.JIDLObject.&lt;init&gt;(JIDLObject.java:72)
+    at com.idl.javaidl.java_IDL_connect.&lt;init&gt;(java_IDL_connect.java:27)
+    at br.eti.kinoshita.idl.SleepsTenSecondsHelloWorld.run(SleepsTenSecondsHelloWorld.java:11)
+    at java.lang.Thread.run(Thread.java:745)</pre>
+
+<p>Before trying to fix anything, there is a special and very useful setting that enables Debugging
+the Java IDL bridge program initialization: <strong><code>-DIDL_LOAD_DEBUG</code></strong>. Set it as a VM argument in your IDE
+to see extra debug information. </p>
+
+<div class='row'>
+<div class="span6 offset3" style='text-align: center;'>
+<figure>
+<a href="/2015/05/17/running-idl-code-in-java/idl_1.png" rel="prettyPhoto" class="thumbnail" title="Setting the DIDL_LOAD_DEBUG VM arg">
+<img src="/2015/05/17/running-idl-code-in-java/idl_1.png" alt="Setting the DIDL_LOAD_DEBUG VM arg" />
+</a>
+<figcaption>Setting the DIDL_LOAD_DEBUG VM arg</i></figcaption>
+</figure>
+</div>
+</div>
+
+<pre class="shell" style="font-family:monospace;">Java location : /usr/lib/jvm/java-8-oracle/jre/lib/amd64 (set relative to java.home property)
+Successfully loaded libawt.so
+Successfully loaded libjawt.so
+*** java.lang.UnsatisfiedLinkError: /home/kinow/exelis/idl84/bin/bin.linux.x86_64/libjavaidlb.so: libidl_bml.so: cannot open shared object file: No such file or directory
+Failed to load javaidlb from  from default location.
+Exception in thread &quot;Thread-0&quot; java.lang.UnsatisfiedLinkError: com.idl.javaidl.JIDLPAL.nativeInitJPAL()V
+    at com.idl.javaidl.JIDLPAL.nativeInitJPAL(Native Method)
+    at com.idl.javaidl.JIDLPAL.&lt;clinit&gt;(JIDLPAL.java:193)
+    at com.idl.javaidl.JIDLObject.&lt;init&gt;(JIDLObject.java:72)
+    at com.idl.javaidl.java_IDL_connect.&lt;init&gt;(java_IDL_connect.java:27)
+    at br.eti.kinoshita.idl.SleepsTenSecondsHelloWorld.run(SleepsTenSecondsHelloWorld.java:11)
+    at java.lang.Thread.run(Thread.java:745)</pre>
+
+<p>Reading the exception and the error messages, you will probably notice that it looks
+like the Java program calls some native method but is not able to find a native library for it. 
+Time to initialize the <code>LD_LIBRARY_PATH</code> variable in your IDE too, to something like 
+<code>LD_LIBRARY_PATH=/home/kinow/exelis/idl/bin/bin.linux.x86_64:$LD_LIBRARY_PATH</code>. After doing so, 
+try running your program again, and you&#8217;ll see the <code>libhavaidlb.so</code> library being loaded too.</p>
+
+<div class='row'>
+<div class="span6 offset3" style='text-align: center;'>
+<figure>
+<a href="/2015/05/17/running-idl-code-in-java/idl_2.png" rel="prettyPhoto" class="thumbnail" title="Initializing the LD_LIBRARY_PATH in Eclipse">
+<img src="/2015/05/17/running-idl-code-in-java/idl_2.png" alt="Initializing the LD_LIBRARY_PATH in Eclipse" />
+</a>
+<figcaption>Initializing the LD_LIBRARY_PATH in Eclipse</i></figcaption>
+</figure>
+</div>
+</div>
+
+<pre class="shell" style="font-family:monospace;">Java location : /usr/lib/jvm/java-8-oracle/jre/lib/amd64 (set relative to java.home property)
+Successfully loaded libawt.so
+Successfully loaded libjawt.so
+Successfully loaded libjavaidlb.so
+Exception in thread &quot;Thread-0&quot; com.idl.javaidl.JIDLException[iErr=-999 sMsg=OPS Initialization failed.  Verify that 'idl_opserver' exists in the IDL bin directory.]
+    at com.idl.javaidl.JIDLPAL.nativeThrowJIDLException(Native Method)
+    at com.idl.javaidl.JIDLPAL.throwSpecificException(JIDLPAL.java:1073)
+    at com.idl.javaidl.JIDLPAL.throwJIDLException(JIDLPAL.java:1102)
+    at com.idl.javaidl.JIDLPAL.createObject(JIDLPAL.java:382)
+    at com.idl.javaidl.JIDLPAL.createObject(JIDLPAL.java:318)
+    at com.idl.javaidl.JIDLObject.createObject(JIDLObject.java:193)
+    at com.idl.javaidl.JIDLObject.createObject(JIDLObject.java:103)
+    at br.eti.kinoshita.idl.SleepsTenSecondsHelloWorld.run(SleepsTenSecondsHelloWorld.java:12)
+    at java.lang.Thread.run(Thread.java:745)</pre>
+
+<p>Good. Now the error message seems to be telling us that it cannot find some program in the IDL bin directory. 
+You can find the exact library that contains this message by running 
+<code>for x in</code>ls -f<code>; do strings $x | grep "Verify that" &amp;&amp; echo "-- &gt; Found in $x" ; done</code> in
+the directory added to <code>LD_LIBRARY_PATH</code>, and further debug the issue using some *nix tools like 
+<code>gdb</code>, <code>ltrace</code>, <code>strace</code>, <code>strings</code>, etc.</p>
+
+<pre class="shell" style="font-family:monospace;">OPS Initialization failed.  Verify that '%s' exists in the IDL bin directory.
+-- &gt; Found in libidl_bml.so</pre>
+
+<p>But it is easier to just guess that the <code>idl_opserver</code> executable is not being found by the library in the system <code>PATH</code>. 
+I didn&#8217;t find anywhere in the documentation mentioning that the IDL executables must be in the <code>PATH</code>, 
+but thought it was worth a shot anyway.</p>
+
+<div class='row'>
+<div class="span6 offset3" style='text-align: center;'>
+<figure>
+<a href="/2015/05/17/running-idl-code-in-java/idl_3.png" rel="prettyPhoto" class="thumbnail" title="Initializing the PATH in Eclipse">
+<img src="/2015/05/17/running-idl-code-in-java/idl_3.png" alt="Initializing the PATH in Eclipse" />
+</a>
+<figcaption>Initializing the PATH in Eclipse</i></figcaption>
+</figure>
+</div>
+</div>
+
+<pre class="shell" style="font-family:monospace;">Java location : /usr/lib/jvm/java-8-oracle/jre/lib/amd64 (set relative to java.home property)
+Successfully loaded libawt.so
+Successfully loaded libjawt.so
+Successfully loaded libjavaidlb.so
+Exception in thread &quot;Thread-0&quot; com.idl.javaidl.JIDLException[iErr=-999 sMsg=Attempt to call undefined procedure: 'GMEM_UNMAP'.]
+    at com.idl.javaidl.JIDLPAL.nativeThrowJIDLException(Native Method)
+    at com.idl.javaidl.JIDLPAL.throwSpecificException(JIDLPAL.java:1073)
+    at com.idl.javaidl.JIDLPAL.throwJIDLException(JIDLPAL.java:1102)
+    at com.idl.javaidl.JIDLPAL.createObject(JIDLPAL.java:382)
+    at com.idl.javaidl.JIDLPAL.createObject(JIDLPAL.java:318)
+    at com.idl.javaidl.JIDLObject.createObject(JIDLObject.java:193)
+    at com.idl.javaidl.JIDLObject.createObject(JIDLObject.java:103)
+    at br.eti.kinoshita.idl.SleepsTenSecondsHelloWorld.run(SleepsTenSecondsHelloWorld.java:12)
+    at java.lang.Thread.run(Thread.java:745)</pre>
+
+<p>Well, a different message now. If you read the whole documentation for bridges in IDL, you
+will find somewhere that says that there are scripts in the IDL installation directory that
+initialize environment settings for you in the command line. For Linux, you can search for <code>id_setup.bash</code> 
+and <code>bridge_setup.bash</code>.</p>
+
+<p>Looking at these scripts, you&#8217;ll find out that they are setting <code>LD_LIBRARY_PATH</code> and a few other
+variables. After trying a couple of combinations, I&#8217;ve found out that setting the <code>IDL_DIR</code> variable fixes
+this last error message. Et voilà.</p>
+
+<pre class="shell" style="font-family:monospace;">Java location : /usr/lib/jvm/java-8-oracle/jre/lib/amd64 (set relative to java.home property)
+Successfully loaded libawt.so
+Successfully loaded libjawt.so
+Successfully loaded libjavaidlb.so
+THREAD Thread-0 SUCCEEDED!</pre>
+
+<h2>Multiple calls with a single license</h2>
+
+<p>Time to test what happens when we make multiple calls to an IDL program while using a
+Demo license. Let&#8217;s start by changing the code to create a few more threads.</p>
+
+<pre class="java" style="font-family:monospace;">    <span style="color: #000000; font-weight: bold;">public</span> <span style="color: #000000; font-weight: bold;">static</span> <span style="color: #000066; font-weight: bold;">void</span> main<span style="color: #009900;">&#40;</span><a href="http://www.google.com/search?hl=en&amp;q=allinurl%3Adocs.oracle.com+javase+docs+api+string"><span style="color: #003399;">String</span></a><span style="color: #009900;">&#91;</span><span style="color: #009900;">&#93;</span> args<span style="color: #009900;">&#41;</span> <span style="color: #000000; font-weight: bold;">throws</span> <a href="http://www.google.com/search?hl=en&amp;q=allinurl%3Adocs.oracle.com+javase+docs+api+exception"><span style="color: #003399;">Exception</span></a> <span style="color: #009900;">&#123;</span>
+        <a href="http://www.google.com/search?hl=en&amp;q=allinurl%3Adocs.oracle.com+javase+docs+api+runnable"><span style="color: #003399;">Runnable</span></a> r <span style="color: #339933;">=</span> <span style="color: #000000; font-weight: bold;">new</span> SleepsTenSecondsHelloWorld<span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+        <a href="http://www.google.com/search?hl=en&amp;q=allinurl%3Adocs.oracle.com+javase+docs+api+thread"><span style="color: #003399;">Thread</span></a> t <span style="color: #339933;">=</span> <span style="color: #000066; font-weight: bold;">null</span><span style="color: #339933;">;</span>
+        <span style="color: #000000; font-weight: bold;">for</span> <span style="color: #009900;">&#40;</span><span style="color: #000066; font-weight: bold;">int</span> i <span style="color: #339933;">=</span> <span style="color: #cc66cc;">0</span><span style="color: #339933;">;</span> i <span style="color: #339933;">&lt;</span> <span style="color: #cc66cc;">3</span><span style="color: #339933;">;</span> i<span style="color: #339933;">++</span><span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
+            t <span style="color: #339933;">=</span> <span style="color: #000000; font-weight: bold;">new</span> <a href="http://www.google.com/search?hl=en&amp;q=allinurl%3Adocs.oracle.com+javase+docs+api+thread"><span style="color: #003399;">Thread</span></a><span style="color: #009900;">&#40;</span>r<span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+            t.<span style="color: #006633;">start</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+        <span style="color: #009900;">&#125;</span>
+    <span style="color: #009900;">&#125;</span></pre>
+
+<p>Running the code, we confirm that we can call only one program at a time under the Demo
+license - and probably it is the same with the node-locked license.</p>
+
+<pre class="shell" style="font-family:monospace;">Java location : /usr/lib/jvm/java-8-oracle/jre/lib/amd64 (set relative to java.home property)
+Successfully loaded libawt.so
+Successfully loaded libjawt.so
+Successfully loaded libjavaidlb.so
+THREAD Thread-1 FAILED WITH ERR: The object's associated IDL process is currently busy.
+THREAD Thread-0 FAILED WITH ERR: The object's associated IDL process is currently busy.
+THREAD Thread-2 SUCCEEDED!</pre>
+
+<p>One last change before giving up. Let&#8217;s change the &#8220;process name&#8221;, by simply appending the
+current thread name.</p>
+
+<pre class="java" style="font-family:monospace;">        <span style="color: #000000; font-weight: bold;">try</span> <span style="color: #009900;">&#123;</span>
+            JIDLObject idlWrapper <span style="color: #339933;">=</span> <span style="color: #000000; font-weight: bold;">new</span> java_IDL_connect<span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+            idlWrapper.<span style="color: #006633;">createObject</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+            idlWrapper.<span style="color: #006633;">addIDLOutputListener</span><span style="color: #009900;">&#40;</span><span style="color: #000000; font-weight: bold;">this</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+            idlWrapper.<span style="color: #006633;">setProcessName</span><span style="color: #009900;">&#40;</span><span style="color: #0000ff;">&quot;process01&quot;</span><span style="color: #339933;">+</span>tName<span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+            idlWrapper.<span style="color: #006633;">executeString</span><span style="color: #009900;">&#40;</span><span style="color: #0000ff;">&quot;WAIT, 4&quot;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+            <a href="http://www.google.com/search?hl=en&amp;q=allinurl%3Adocs.oracle.com+javase+docs+api+system"><span style="color: #003399;">System</span></a>.<span style="color: #006633;">out</span>.<span style="color: #006633;">println</span><span style="color: #009900;">&#40;</span><a href="http://www.google.com/search?hl=en&amp;q=allinurl%3Adocs.oracle.com+javase+docs+api+string"><span style="color: #003399;">String</span></a>.<span style="color: #006633;">format</span><span style="color: #009900;">&#40;</span><span style="color: #0000ff;">&quot;THREAD %s SUCCEEDED!&quot;</span>, tName<span style="color: #009900;">&#41;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+        <span style="color: #009900;">&#125;</span> <span style="color: #000000; font-weight: bold;">catch</span> <span style="color: #009900;">&#40;</span>JIDLBusyException jbe<span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
+            <a href="http://www.google.com/search?hl=en&amp;q=allinurl%3Adocs.oracle.com+javase+docs+api+system"><span style="color: #003399;">System</span></a>.<span style="color: #006633;">out</span>.<span style="color: #006633;">println</span><span style="color: #009900;">&#40;</span><a href="http://www.google.com/search?hl=en&amp;q=allinurl%3Adocs.oracle.com+javase+docs+api+string"><span style="color: #003399;">String</span></a>.<span style="color: #006633;">format</span><span style="color: #009900;">&#40;</span><span style="color: #0000ff;">&quot;THREAD %s FAILED WITH ERR: %s&quot;</span>, tName, jbe.<span style="color: #006633;">getMessage</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #009900;">&#41;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+        <span style="color: #009900;">&#125;</span></pre>
+
+<p>And we can finally confirm that it doesn&#8217;t make any difference.</p>
+
+<pre class="shell" style="font-family:monospace;">Java location : /usr/lib/jvm/java-8-oracle/jre/lib/amd64 (set relative to java.home property)
+Successfully loaded libawt.so
+Successfully loaded libjawt.so
+Successfully loaded libjavaidlb.so
+THREAD Thread-2 FAILED WITH ERR: The object's associated IDL process is currently busy.
+THREAD Thread-1 FAILED WITH ERR: The object's associated IDL process is currently busy.
+THREAD Thread-0 SUCCEEDED!</pre>
+
+<p>So if you need to run some IDL code in a Web application, for example, you&#8217;ll probably have to
+consider the number of simultaneous users you will have, or you can try to enqueue user requests, 
+process the IDL code in the background, and notify users when the response is ready.</p>
+
+<p>The code for this post is hostead at <a href="https://github.com/kinow/idl-sandbox">GitHub</a>.</p>
+
+<p>Happy hacking!</p>
+
+    </div>
+    <p class="postmetadata">
+                <small>tags          [&nbsp;<a
+            href="/tag/java.html"
+            rel="tag">java</a>&nbsp;]&nbsp;
+                 [&nbsp;<a
+            href="/tag/idl.html"
+            rel="tag">idl</a>&nbsp;]&nbsp;
+                 [&nbsp;<a
+            href="/tag/java-bridge.html"
+            rel="tag">java bridge</a>&nbsp;]&nbsp;
+                </small>
+                        <br/>
+        <small>posted in 
+        [&nbsp;<a
+            href="/blog.html"
+            title="View all posts in blog"
+            rel="category tag">blog</a>&nbsp;]&nbsp;
+        category </small>
+            </p>
+    <div id="navigation">
+                            &mdash; <a href="/2015/05/11/contract-tests.html" id="navigation-next">Next Entries</a>&nbsp;&rarr;
+            </div>
+</div>
+                    <br/>
+                </div><!-- /#main -->
+                            <div id="copy" class="">
+                <p>&copy; <a href="http://kinoshita.eti.br/about"><span
+                            class="b">Bru</span><span
+                            class="r">no de</span> <span
+                            class="a">Paula</span> <span
+                            class="s"></span><span
+                            class="i">Kinos</span><span
+                            class="l">hita</span></a>
+                </p>
+            </div>
+ 
+                                
+            </div><!-- /#right -->
+        </div>
+    </div>
+</body>
+</html>
+<script type="text/javascript" charset="utf-8">
+  $(document).ready(function(){
+    $("a[rel^='prettyPhoto']").prettyPhoto({
+    	social_tools: false,
+    	autoplay_slideshow: false, 
+    	hideflash: true, 
+    	autoplay: false, 
+    	overlay_gallery: false
+    });
+  });
+</script>
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-32767310-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>

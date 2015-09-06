@@ -79,10 +79,10 @@
                     title="Hmmmm" alt="Hmmmm" width="134px" height="215px" />
                 <hr class="space" />
                 <div class="logos">
-    <a href="http://www.tupilabs.com"><img
-        src="http://kinoshita.eti.br/img/logos/tupilabs_logo.png"
-        title="TupiLabs"
-        alt="TupiLabs" /></a> <a href="http://www.javacodegeeks.com/"><img
+ <a href="http://apache.org"><img
+        src="http://kinoshita.eti.br/img/logos/asf-logo.gif"
+        title="Apache Software Foundation"
+        alt="Apache Software Foundation" /></a> <a href="http://www.javacodegeeks.com/"><img
         src="http://kinoshita.eti.br/img/logos/logo_jcg_115x100.png"
         title="Java Code Geeks"
         alt="Java Code Geeks" /></a> <a href="http://www.open-bio.org/wiki/BOSC_2012"><img
@@ -103,15 +103,92 @@
         alt="The Developer's Conference 2011" /></a> <a href="http://belgiumtestingdays.com/past.php"><img
         src="http://kinoshita.eti.br/img/logos/btd2011_speakers_banner_1.png"
         title="Belgium Testing Days 2011"
-        alt="Belgium Testing Days 2011" /></a> <a href="http://www.encontroagil.com.br/2010/principal/home.html"><img
-        src="http://kinoshita.eti.br/img/logos/banner_encontro_agil.png"
-        title="Encontro &Aacute;gil 2010"
-        alt="Encontro &Aacute;gil 2010" /></a>
+        alt="Belgium Testing Days 2011" /></a>
 </div>            </div>
                         <div id="right" class="span8">
                 <div id="main">
                                                         Posts tagged with 'jenkins'
 
+<div class="post type-post status-publish format-standard hentry">
+    <h2>How does the Jenkins Credentials Plug-in store passwords?</h2>
+    <p><small>kinow</small> @ <small>September 7, 2015&nbsp;01:25:03</small></p>
+    <div><a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2015/09/07/how_does_the_jenkins_credentials_plugin_store_passwords.html" data-text="How does the Jenkins Credentials Plug-in store passwords?" data-via="kinow" data-hashtags="opensource">Tweet</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+</div>
+    <p><a href="https://wiki.jenkins-ci.org/display/JENKINS/Credentials+Plugin">Jenkins Credentials Plug-in</a> manages credentials stored in Jenkins. These credentials can be used in many jobs and by plug-ins for executing SSH commands, authenticating to systems, or running other commands that need some sort of authentication or authorisation.</p>
+
+<p>I recently used its API for the first time in the <a href="https://github.com/biouno/figshare-plugin">BioUno figshare Plug-in</a> to store OAuth 1.0 credentials (consumer key, consumer secret, token key, token secret). This <a href="http://biouno.org/2015/09/05/using_jenkins_credentials_plugin_to_create_the_biouno_figshare_plugin/">blog post</a> has more details about how we used the plug-in, but this post is specifically on how the passwords are stored by Jenkins.</p>
+
+<h2>Secret and ciphers</h2>
+
+<p>Jenkins stores its configuration on disk as XML using the XStream library. Plug-in developers using the Credentials Plug-in API must use the <strong>Secret</strong> class to encrypt sensitive information.</p>
+
+<p>The <code>Secret.fromString</code> method is responsible for creating a cipher from a given String. As in the Secret Javadoc,  <em>&#8220;this is not meant as a protection against code running in the same VM, nor against an attacker who has local file system access on Jenkins master&#8221;</em>. But at least makes things more complicated :-)</p>
+
+<ul>
+<li><a href="http://javadoc.jenkins-ci.org/hudson/util/Secret.html">Secret Javadoc</a></li>
+<li><a href="https://github.com/jenkinsci/jenkins/blob/master/core/src/main/java/hudson/util/Secret.java">Secret source code</a></li>
+</ul>
+
+<pre class="java" style="font-family:monospace;"><span style="color: #000000; font-weight: bold;">public</span> <span style="color: #000000; font-weight: bold;">static</span> Secret fromString<span style="color: #009900;">&#40;</span><a href="http://www.google.com/search?hl=en&amp;q=allinurl%3Adocs.oracle.com+javase+docs+api+string"><span style="color: #003399;">String</span></a> data<span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
+    data <span style="color: #339933;">=</span> <a href="http://www.google.com/search?hl=en&amp;q=allinurl%3Adocs.oracle.com+javase+docs+api+util"><span style="color: #003399;">Util</span></a>.<span style="color: #006633;">fixNull</span><span style="color: #009900;">&#40;</span>data<span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+    Secret s <span style="color: #339933;">=</span> decrypt<span style="color: #009900;">&#40;</span>data<span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+    <span style="color: #000000; font-weight: bold;">if</span><span style="color: #009900;">&#40;</span>s<span style="color: #339933;">==</span><span style="color: #000066; font-weight: bold;">null</span><span style="color: #009900;">&#41;</span> s<span style="color: #339933;">=</span><span style="color: #000000; font-weight: bold;">new</span> Secret<span style="color: #009900;">&#40;</span>data<span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+    <span style="color: #000000; font-weight: bold;">return</span> s<span style="color: #339933;">;</span>
+<span style="color: #009900;">&#125;</span></pre>
+
+<p>The first line simply replaces a null string by an empty &#8220;&#8221;, or keeps the current value of not null.</p>
+
+<p>After that, the decrypt method is called.</p>
+
+<pre class="java" style="font-family:monospace;"><span style="color: #000000; font-weight: bold;">public</span> <span style="color: #000000; font-weight: bold;">static</span> Secret decrypt<span style="color: #009900;">&#40;</span><a href="http://www.google.com/search?hl=en&amp;q=allinurl%3Adocs.oracle.com+javase+docs+api+string"><span style="color: #003399;">String</span></a> data<span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
+    <span style="color: #000000; font-weight: bold;">if</span><span style="color: #009900;">&#40;</span>data<span style="color: #339933;">==</span><span style="color: #000066; font-weight: bold;">null</span><span style="color: #009900;">&#41;</span>      <span style="color: #000000; font-weight: bold;">return</span> <span style="color: #000066; font-weight: bold;">null</span><span style="color: #339933;">;</span>
+    <span style="color: #000000; font-weight: bold;">try</span> <span style="color: #009900;">&#123;</span>
+        <span style="color: #000066; font-weight: bold;">byte</span><span style="color: #009900;">&#91;</span><span style="color: #009900;">&#93;</span> in <span style="color: #339933;">=</span> Base64.<span style="color: #006633;">decode</span><span style="color: #009900;">&#40;</span>data.<span style="color: #006633;">toCharArray</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+        Secret s <span style="color: #339933;">=</span> tryDecrypt<span style="color: #009900;">&#40;</span>KEY.<span style="color: #006633;">decrypt</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span>, in<span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+        <span style="color: #000000; font-weight: bold;">if</span> <span style="color: #009900;">&#40;</span>s<span style="color: #339933;">!=</span><span style="color: #000066; font-weight: bold;">null</span><span style="color: #009900;">&#41;</span>    <span style="color: #000000; font-weight: bold;">return</span> s<span style="color: #339933;">;</span>
+&nbsp;
+        <span style="color: #666666; font-style: italic;">// try our historical key for backward compatibility</span>
+        Cipher cipher <span style="color: #339933;">=</span> getCipher<span style="color: #009900;">&#40;</span><span style="color: #0000ff;">&quot;AES&quot;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+        cipher.<span style="color: #006633;">init</span><span style="color: #009900;">&#40;</span>Cipher.<span style="color: #006633;">DECRYPT_MODE</span>, getLegacyKey<span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+        <span style="color: #000000; font-weight: bold;">return</span> tryDecrypt<span style="color: #009900;">&#40;</span>cipher, in<span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+    <span style="color: #009900;">&#125;</span> <span style="color: #000000; font-weight: bold;">catch</span> <span style="color: #009900;">&#40;</span><a href="http://www.google.com/search?hl=en&amp;q=allinurl%3Adocs.oracle.com+javase+docs+api+generalsecurityexception"><span style="color: #003399;">GeneralSecurityException</span></a> e<span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
+        <span style="color: #000000; font-weight: bold;">return</span> <span style="color: #000066; font-weight: bold;">null</span><span style="color: #339933;">;</span>
+    <span style="color: #009900;">&#125;</span> <span style="color: #000000; font-weight: bold;">catch</span> <span style="color: #009900;">&#40;</span><a href="http://www.google.com/search?hl=en&amp;q=allinurl%3Adocs.oracle.com+javase+docs+api+unsupportedencodingexception"><span style="color: #003399;">UnsupportedEncodingException</span></a> e<span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
+        <span style="color: #000000; font-weight: bold;">throw</span> <span style="color: #000000; font-weight: bold;">new</span> <a href="http://www.google.com/search?hl=en&amp;q=allinurl%3Adocs.oracle.com+javase+docs+api+error"><span style="color: #003399;">Error</span></a><span style="color: #009900;">&#40;</span>e<span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span> <span style="color: #666666; font-style: italic;">// impossible</span>
+    <span style="color: #009900;">&#125;</span> <span style="color: #000000; font-weight: bold;">catch</span> <span style="color: #009900;">&#40;</span><a href="http://www.google.com/search?hl=en&amp;q=allinurl%3Adocs.oracle.com+javase+docs+api+ioexception"><span style="color: #003399;">IOException</span></a> e<span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
+        <span style="color: #000000; font-weight: bold;">return</span> <span style="color: #000066; font-weight: bold;">null</span><span style="color: #339933;">;</span>
+    <span style="color: #009900;">&#125;</span>
+<span style="color: #009900;">&#125;</span></pre>
+
+<p>The <code>KEY.decrypt()</code> call will return a <a href="http://docs.oracle.com/javase/8/docs/api/javax/crypto/Cipher.html"><code>javax.crypto.Cipher</code></a>. The Cipher class is handled in <a href="https://github.com/jenkinsci/jenkins/blob/93dfe3377ec8d430818f5b9073f16c677343adb4/core/src/main/java/jenkins/security/CryptoConfidentialKey.java">CryptoConfidentialKey</a> in Jenkins API, where it defines the algorithm used to create the cipher: <a href="https://en.wikipedia.org/wiki/Advanced_Encryption_Standard">AES</a>.</p>
+
+<p>Jenkins has also a <a href="https://github.com/jenkinsci/jenkins/blob/93dfe3377ec8d430818f5b9073f16c677343adb4/core/src/main/java/jenkins/security/ConfidentialStore.java#L63">ConfidentialStore</a>, that is required to create the cipher. This class must be initialized before someone tries to create or read a cipher. This extra step also increases security, though access to the JVM is still a problem.</p>
+
+<p>It is a bit late, so it is all for today. In summary: the credentials plug-in gives you a central place to manage credentials, but it is up to plug-in developers to use it. Sensitive values can be encrypted with AES on disk. So it is important that your file permissions, ACL and system auditing processes are in place and well maintained and monitored.</p>
+
+<p>Happy hacking!</p>
+<!-- html -->
+        <p class="postmetadata">
+                <small>tags          [&nbsp;<a
+            href="/tag/jenkins.html"
+            rel="tag">jenkins</a>&nbsp;]&nbsp;
+                 [&nbsp;<a
+            href="/tag/plugin.html"
+            rel="tag">plugin</a>&nbsp;]&nbsp;
+                 [&nbsp;<a
+            href="/tag/security.html"
+            rel="tag">security</a>&nbsp;]&nbsp;
+                </small>
+                        <br/>
+        <small>posted in 
+        [&nbsp;<a
+            href="/blog.html"
+            title="View all posts in blog"
+            rel="category tag">blog</a>&nbsp;]&nbsp;
+        category </small>
+            </p>
+</div>
 <div class="post type-post status-publish format-standard hentry">
     <h2>Groovy Hooks in Jenkins for increasing logging level</h2>
     <p><small>kinow</small> @ <small>April 12, 2015&nbsp;11:30:03</small></p>
@@ -326,49 +403,6 @@ dev.off()</pre>
             href="/blog.html"
             title="View all posts in blog"
             rel="category tag">blog</a>&nbsp;]&nbsp;
-        category </small>
-            </p>
-</div>
-<div class="post type-post status-publish format-standard hentry">
-    <h2>Adding coverage reports in Jenkins to GoogleTest with gcovr</h2>
-    <p><small>kinow</small> @ <small>October 16, 2012&nbsp;16:09:33</small></p>
-    <div><a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2012/10/16/adding-coverage-reports-in-jenkins-to-googletest-with-gcovr.html" data-text="Adding coverage reports in Jenkins to GoogleTest with gcovr" data-via="kinow" data-hashtags="opensource">Tweet</a>
-<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-</div>
-    <p>After the <a href="/2012/10/11/jenkins-testlink-and-gtest-in-5-minutes-or-so" title="Jenkins, TestLink and GTest in 5 minutes (or so)">last post</a> about <a href="http://code.google.com/p/googletest/" title="GoogleTest">GoogleTest</a> and <a href="http://www.teamst.org" title="TestLink">TestLink</a> using <a href="https://wiki.jenkins-ci.org/display/JENKINS/TestLink+Plugin" title="Jenkins TestLink Plug-in">Jenkins TestLink Plug-in</a>, I received an e-mail asking about <a href="http://en.wikipedia.org/wiki/Code_coverage" title="Code Coverage">coverage</a> with GoogleTest and <a href="http://www.jenkins-ci.org" title="Jenkins CI">Jenkins</a>. I&#8217;ve just updated the <a href="https://github.com/kinow/gtest-tap-listener/blob/master/samples/Makefile">Makefile</a> in the samples directory, of the <a href="https://github.com/kinow/gtest-tap-listener" title="GTest TAP Listener">GoogleTest TAP listener project</a>, to output coverage data.</p>
-
-<p>Basically, you have to add the compiler flags <em>-fprofile-arcs -ftest-coverage</em> and link the executable with -lgcov. Take a look at the project&#8217;s Makefile and you&#8217;ll notice how simple it is. In order to have Jenkins interpreting your coverage report, you&#8217;ll have to convert it to <a href="http://cobertura.sourceforge.net" title="Cobertura">cobertura</a> XML. There is a Python utility that can be used for this: <a href="https://software.sandia.gov/trac/fast/wiki/gcovr" title="gcovr">gcovr</a>. Download it and copy it to somewhere where Jenkins can execute it (e.g.: <em>/usr/local/bin</em>).</p>
-
-<p>Now, if you&#8217;ve followed the instructions from the previous post, you should have a job that reports your GoogleTest tests from Jenkins to TestLink using the plug-in, and is downloading the source code from GitHub. Add an extra build step  (Shell) to execute <em>gcovr</em>.</p>
-
-<!-- html -->
-        <p>( <a href="/2012/10/16/adding-coverage-reports-in-jenkins-to-googletest-with-gcovr.html" >Read more ...</a> )</p>
-        <p class="postmetadata">
-                <small>tags          [&nbsp;<a
-            href="/tag/jenkins.html"
-            rel="tag">jenkins</a>&nbsp;]&nbsp;
-                 [&nbsp;<a
-            href="/tag/c.html"
-            rel="tag">c</a>&nbsp;]&nbsp;
-                 [&nbsp;<a
-            href="/tag/googletest.html"
-            rel="tag">googletest</a>&nbsp;]&nbsp;
-                 [&nbsp;<a
-            href="/tag/testing.html"
-            rel="tag">testing</a>&nbsp;]&nbsp;
-                 [&nbsp;<a
-            href="/tag/coverage.html"
-            rel="tag">coverage</a>&nbsp;]&nbsp;
-                 [&nbsp;<a
-            href="/tag/gcovr.html"
-            rel="tag">gcovr</a>&nbsp;]&nbsp;
-                </small>
-                        <br/>
-        <small>posted in 
-        [&nbsp;<a
-            href="/jenkins.html"
-            title="View all posts in jenkins"
-            rel="category tag">jenkins</a>&nbsp;]&nbsp;
         category </small>
             </p>
 </div>

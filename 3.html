@@ -78,10 +78,10 @@
                     title="Hmmmm" alt="Hmmmm" width="134px" height="215px" />
                 <hr class="space" />
                 <div class="logos">
-    <a href="http://www.tupilabs.com"><img
-        src="http://kinoshita.eti.br/img/logos/tupilabs_logo.png"
-        title="TupiLabs"
-        alt="TupiLabs" /></a> <a href="http://www.javacodegeeks.com/"><img
+ <a href="http://apache.org"><img
+        src="http://kinoshita.eti.br/img/logos/asf-logo.gif"
+        title="Apache Software Foundation"
+        alt="Apache Software Foundation" /></a> <a href="http://www.javacodegeeks.com/"><img
         src="http://kinoshita.eti.br/img/logos/logo_jcg_115x100.png"
         title="Java Code Geeks"
         alt="Java Code Geeks" /></a> <a href="http://www.open-bio.org/wiki/BOSC_2012"><img
@@ -102,16 +102,180 @@
         alt="The Developer's Conference 2011" /></a> <a href="http://belgiumtestingdays.com/past.php"><img
         src="http://kinoshita.eti.br/img/logos/btd2011_speakers_banner_1.png"
         title="Belgium Testing Days 2011"
-        alt="Belgium Testing Days 2011" /></a> <a href="http://www.encontroagil.com.br/2010/principal/home.html"><img
-        src="http://kinoshita.eti.br/img/logos/banner_encontro_agil.png"
-        title="Encontro &Aacute;gil 2010"
-        alt="Encontro &Aacute;gil 2010" /></a>
+        alt="Belgium Testing Days 2011" /></a>
 </div>            </div>
                         <div id="right" class="span8">
                 <div id="main">
                                                     <h1 class='topic'>Home</h1>
                     <hr class="space" />
                                                         <div
+                        class="post type-post status-publish format-standard hentry">
+                        <h2>
+                            <a href="/2013/10/27/missing-menus-in-new-installation-of-testlink.html" title="Permanent link">Missing menus in new installation of TestLink 1.9.8</a>
+                        </h2>
+                        <small>Bruno P. Kinoshita</small> @ <small>October 27, 2013&nbsp;12:42:33</small>
+                        <div class="entry">
+                            <a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2013/10/27/missing-menus-in-new-installation-of-testlink.html" data-text="Missing menus in new installation of TestLink 1.9.8" data-via="kinow" data-hashtags="opensource">Tweet</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+                            
+                            <p>I recently installed TestLink 1.9.8 and noticed that the menus and some other parts 
+of the UI we missing. Looking at <code>/var/log/testlink/userlog1.log</code> (the location 
+may change depending on your settings) I realized that there was something wrong 
+with my PHP installation. There were log messages like the below.</p>
+
+<pre><code>include_once(ADORecordSet_ext_empty.class.php): failed to open stream: No such file or directory - in /home/kinow/php/workspace/testlink-1.9.8/lib/functions/common.php - Line 92
+[13/Sep/18 12:51:09][WARNING][2o0h173pdgg5fjqh1pukr83og2][GUI]
+E_WARNING
+include_once(): Failed opening 'ADORecordSet_ext_empty.class.php' for inclusion (include_path='.:/usr/share/php:/usr/share/pear:.:/home/kinow/php/workspace/testlink-1.9.8/lib/functions/:/home/kinow/php/workspace/testlink-1.9.8/lib/issuet
+...
+</code></pre>
+
+<p>I found a post in a forum (but unfortunately I forgot to save the link) that suggested 
+these ADORecordSet were being caused by the module <strong>php5-adodb</strong>. Removing the module, and 
+cleaning the templates cache directory (<code>$TESTLINK<em>HOME/gui/templates</em>c/*</code>) 
+fixed the issue for me.</p>
+
+<p>Hope that helps.
+Happy testing!</p>
+
+                            
+                                                        
+                        </div>
+                        <p class="postmetadata">
+                                                        <small>tags                              [&nbsp;<a
+                                href="/tag/testlink.html"
+                                rel="tag">testlink</a>&nbsp;]&nbsp;
+                                                         [&nbsp;<a
+                                href="/tag/troubleshooting.html"
+                                rel="tag">troubleshooting</a>&nbsp;]&nbsp;
+                                                         [&nbsp;<a
+                                href="/tag/opensource.html"
+                                rel="tag">opensource</a>&nbsp;]&nbsp;
+                                                        </small>
+                                                                                    <br/>
+                            <small>posted in 
+                            [&nbsp;<a
+                                href="/blog.html"
+                                title="View all posts in blog"
+                                rel="category tag">blog</a>&nbsp;]
+                                &nbsp;category
+                            </small>
+                                                    </p>
+                    </div>
+                    <hr class='space' />
+                                        <div
+                        class="post type-post status-publish format-standard hentry">
+                        <h2>
+                            <a href="/2013/09/29/the-apache-way-and-on-writing-software-reviews.html" title="Permanent link">The Apache Way and on writing software reviews</a>
+                        </h2>
+                        <small>Bruno P. Kinoshita</small> @ <small>September 29, 2013&nbsp;14:53:53</small>
+                        <div class="entry">
+                            <a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2013/09/29/the-apache-way-and-on-writing-software-reviews.html" data-text="The Apache Way and on writing software reviews" data-via="kinow" data-hashtags="opensource">Tweet</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+                            
+                            <p>The <a href="http://www.apache.org/foundation/how-it-works.html">Apache Way</a> is the philosophy behind 
+Apache Software Foundation and is shared by all of its projects. It is composed by a set of principles:</p>
+
+<ul>
+<li>Collaborative software development</li>
+<li>Commercial-friendly standard license</li>
+<li>Consistently high quality software</li>
+<li><strong>Respectful, honest, technical-based interaction</strong></li>
+<li>Faithful implementation of standards</li>
+<li>Security as a mandatory feature</li>
+</ul>
+
+<p>I have been part of <a href="http://commons.apache.org">Apache Commons</a> for a while, and haven&#8217;t 
+really contributed much yet. Maybe because I had lots of projects related to 
+<a href="http://tupilabs.com">TupiLabs</a> as well as my own wedding this year. But I can 
+assure that <em>respectful, honest, technical-based interaction</em> is quite right (not to discredit the 
+other items, of course).</p>
+
+<p>Even though there are critics of the Apache Way (<a href="/2013/09/29/the-apache-way-and-on-writing-software-reviews#1.html">1</a>, <a href="/2013/09/29/the-apache-way-and-on-writing-software-reviews#2.html">2</a>, <a href="/2013/09/29/the-apache-way-and-on-writing-software-reviews#3.html">3</a>), it still stands as an important 
+pillar for the Apache Software Foundation, and its principles help to create stable and 
+production ready software, such as <a href="http://hadoop.apache.org">Apache Hadoop</a>, 
+<a href="http://httpd.apache.org">Apache Httpd</a>, <a href="http://commons.apache.org/lang">Apache Commons Lang</a>, 
+among <a href="http://projects.apache.org">others</a>.</p>
+
+<p>There are many reviews and comparisons on Apache software (as well as on 
+other software, like JavaScript libraries, Java Web Frameworks, Ruby Web servers and so on). 
+Sometimes, though, these reviews or comparisons can be biased or not well founded. In 
+cases like this, the developers of the tools may be frustrated, or users can be 
+misled and choose the software based on wrong assertions.</p>
+
+<p>I have just returned from honey moon, ready to start writing code again, but 
+first I had to read all the unread messages in my inbox. Some were e-mails from <a href="https://www.apache.org/foundation/mailinglists.html">Apache 
+mailing lists</a>. <a href="http://markmail.org/thread/uoh5m55mh4qjybaw">One of these e-mails</a> 
+had Phil Steitz comments on a post by Daniel Wu. </p>
+
+<p>Instead of publishing his performance benchmark results of 
+<a href="http://commons.apache.org/pool">Apache Commons Pool</a>, Daniel posted his 
+code to the commons-dev mailing list. Phil Steitz, one of Apache Commons Pool 
+committers replied with questions and a few points that Daniel could use to 
+enrich his bechmark tests.</p>
+
+<p>This kind of behavior happens a lot within Apache (at least in the mailing lists that 
+I follow), and it produces a lot of benefits for different parts. </p>
+
+<ul>
+<li>The person writing a review or comparison can get the programmer opinion before actually 
+publishing anything. </li>
+<li>The programmer can see how other people were testing his/her code.</li>
+<li>All other commons-pool committers and maintainers, the mailing list readers, and 
+people that found the mailing list archives will be able to read the conversation 
+history.</li>
+<li>No misguided benchmark results were published (and lots of wrong decisions were avoided).</li>
+</ul>
+
+<p>I keep loving the Apache Way and the resulting community and code around it. There are 
+always lots of things to learn, the Open Source projects communities are healthy and you will always find 
+people willing to share their experience and time teaching you.</p>
+
+<p>♥ Open Source</p>
+
+<hr />
+
+<p><sup><a name="1">1</a> 
+<a href="http://www.infoworld.com/d/open-source-software/has-apache-lost-its-way-225267?page=0,2">
+http://www.infoworld.com/d/open-source-software/has-apache-lost-its-way-225267?page=0,2</a></sup></p>
+
+<p><sup><a name="2">2</a> 
+<a href="http://www.futurealoof.com/posts/apache-considered-harmful.html">
+http://www.futurealoof.com/posts/apache-considered-harmful.html</a></sup></p>
+
+<p><sup><a name="3">3</a> 
+<a href="http://www.itworld.com/it-managementstrategy/227477/has-open-source-outgrown-apache-way">
+http://www.itworld.com/it-managementstrategy/227477/has-open-source-outgrown-apache-way</a></sup></p>
+
+                            
+                                                        
+                        </div>
+                        <p class="postmetadata">
+                                                        <small>tags                              [&nbsp;<a
+                                href="/tag/asf.html"
+                                rel="tag">asf</a>&nbsp;]&nbsp;
+                                                         [&nbsp;<a
+                                href="/tag/comparison.html"
+                                rel="tag">comparison</a>&nbsp;]&nbsp;
+                                                         [&nbsp;<a
+                                href="/tag/review.html"
+                                rel="tag">review</a>&nbsp;]&nbsp;
+                                                         [&nbsp;<a
+                                href="/tag/opensource.html"
+                                rel="tag">opensource</a>&nbsp;]&nbsp;
+                                                        </small>
+                                                                                    <br/>
+                            <small>posted in 
+                            [&nbsp;<a
+                                href="/blog.html"
+                                title="View all posts in blog"
+                                rel="category tag">blog</a>&nbsp;]
+                                &nbsp;category
+                            </small>
+                                                    </p>
+                    </div>
+                    <hr class='space' />
+                                        <div
                         class="post type-post status-publish format-standard hentry">
                         <h2>
                             <a href="/2013/07/04/too_many_sql_variables_in_graphite_with_sqlite3.html" title="Permanent link">Too many SQL variables exception in Graphite with SQLite3</a>
@@ -308,88 +472,6 @@ command.</p>
                                 &nbsp;category
                             </small>
                                                     </p>
-                    </div>
-                    <hr class='space' />
-                                        <div
-                        class="post type-post status-publish format-standard hentry">
-                        <h2>
-                            <a href="/2013/02/10/learning-with-open-source-reviewing-svn-commits-log.html" title="Permanent link">Learning with Open Source: Reviewing SVN commits log</a>
-                        </h2>
-                        <small>Bruno P. Kinoshita</small> @ <small>February 10, 2013&nbsp;13:02:45</small>
-                        <div class="entry">
-                            <a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2013/02/10/learning-with-open-source-reviewing-svn-commits-log.html" data-text="Learning with Open Source: Reviewing SVN commits log" data-via="kinow" data-hashtags="opensource">Tweet</a>
-<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-                            
-                            <p>Last year I became an <a href="http://www.apache.org" title="Apache">Apache</a> committer, and dedicated most of my time learning the <a href="http://incubator.apache.org/learn/theapacheway.html" title="The Apache Way">Apache way</a>, reading different mailing lists and getting used to the things a committer is supposed to know (voting process, keeping everything in the mailing list, and so it goes) and getting used to <a href="http://commons.apache.org/functor" title="Apache Commons Functor">[functor]</a> API.</p>
-
-<p>In 2013 I hope I can help in the release of [functor], since Java and <a href="http://reddit.com/r/functionalprogramming">functional programming</a> are getting a lot more of attention recently, probably due to the <a href="http://openjdk.java.net/projects/lambda/" title="Project Lambda">project lambda</a>. But I also want to start contributing with the other components from commons (like <a href="http://commons.apache.org/math/" title="Apache Commons Math">math</a>, <a href="http://commons.apache.org/io/" title="Apache Commons IO">io</a>, <a href="http://commons.apache.org/jcs/" title="Apache Commons JCS">jcs</a>) and other top level projects (<a href="http://hadoop.apache.org/" title="Apache Hadoop">hadoop</a>, <a href="http://nutch.apache.org/" title="Apache Nutch">nutch</a>, <a href="http://lucene.apache.org/" title="Apache Lucene">lucene</a>).</p>
-
-<h4>Reviewing SVN commits log</h4>
-
-<p><a href="https://issues.apache.org/jira/browse/FUNCTOR-14" title="Apache Commons Functor - Issue 14">FUNCTOR-14</a> was created to enhance the <a href="http://commons.apache.org/functor/apidocs/org/apache/commons/functor/generator/package-summary.html">generators API</a> in [functor]. I&#8217;d worked on <a href="http://svn.apache.org/viewvc/commons/proper/functor/branches/generators-FUNCTOR-14/">a branch</a> for this issue, but needed some review in order to be able to merge it with the trunk. That&#8217;s where you can see why Open Source is so awesome. Another Apache member, Matt Benson, created <a href="http://svn.apache.org/viewvc/commons/proper/functor/branches/FUNCTOR-14-mm/">another branch</a> to work on the project structure, but also to review the generator API.</p>
-
-<p style='text-align: center'><a href="/2013/02/10/learning-with-open-source-reviewing-svn-commits-log/feather_small.gif"><img src="/2013/02/10/learning-with-open-source-reviewing-svn-commits-log/feather_small.gif" alt="Apache Software Foundation" width="203" height="61" class="alignnone size-full wp-image-1125" /></a></p>
-
-
-                            
-                                                        <p>( <a href="/2013/02/10/learning-with-open-source-reviewing-svn-commits-log.html" >Read more ...</a> )</p>
-                                                        
-                        </div>
-                        <p class="postmetadata">
-                                                        <small>tags                              [&nbsp;<a
-                                href="/tag/apache.html"
-                                rel="tag">apache</a>&nbsp;]&nbsp;
-                                                         [&nbsp;<a
-                                href="/tag/functor.html"
-                                rel="tag">functor</a>&nbsp;]&nbsp;
-                                                         [&nbsp;<a
-                                href="/tag/java.html"
-                                rel="tag">java</a>&nbsp;]&nbsp;
-                                                         [&nbsp;<a
-                                href="/tag/lambda.html"
-                                rel="tag">lambda</a>&nbsp;]&nbsp;
-                                                         [&nbsp;<a
-                                href="/tag/open-source.html"
-                                rel="tag">open source</a>&nbsp;]&nbsp;
-                                                        </small>
-                                                                                    <br/>
-                            <small>posted in 
-                            [&nbsp;<a
-                                href="/open-source.html"
-                                title="View all posts in open source"
-                                rel="category tag">open source</a>&nbsp;]
-                                &nbsp;category
-                            </small>
-                                                    </p>
-                    </div>
-                    <hr class='space' />
-                                        <div
-                        class="post type-post status-publish format-standard hentry">
-                        <h2>
-                            <a href="/2013/01/17/git-clone-fails-with-fatal-unable-to-find-remote-helper-for-https.html" title="Permanent link">git clone fails with fatal: Unable to find remote helper for &#039;https&#039;</a>
-                        </h2>
-                        <small>Bruno P. Kinoshita</small> @ <small>January 17, 2013&nbsp;14:49:50</small>
-                        <div class="entry">
-                            <a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2013/01/17/git-clone-fails-with-fatal-unable-to-find-remote-helper-for-https.html" data-text="git clone fails with fatal: Unable to find remote helper for &#039;https&#039;" data-via="kinow" data-hashtags="opensource">Tweet</a>
-<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-                            
-                            <p>I&#8217;ve been working in a client site without Internet connection, and behind a troll proxy. There is an internal yum repository, but many dependencies are missing.</p>
-
-<p>There weren&#8217;t git-all, git or git-core packages there, so I had to download and install from sources. I didn&#8217;t pay attention to the <code>./configure</code> output and proceeded with <code>make</code> and <code>make install</code>.</p>
-
-<p>Git was installed and ready to rock, but in my first <code>git clone https://</code> (SSH ports are blocked) I received: <strong>fatal: Unable to find remote helper for &#8216;https&#8217;</strong>.</p>
-
-<p>Turns out that I was missing libcurl-devel, though I did have curl. After installing libcurl-devel and installing from sources again all worked fine.</p>
-
-                            
-                                                        
-                        </div>
-                        <p class="postmetadata">
-                                                        <small>tags                              [&nbsp;<a
-                                href="/tag/git.html"
-                                rel="tag">git</a>&nbsp;]&nbsp;
-                                                        </small>
-                                                                                </p>
                     </div>
                     <hr class='space' />
                                         <div id="navigation">

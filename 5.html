@@ -78,10 +78,10 @@
                     title="Hmmmm" alt="Hmmmm" width="134px" height="215px" />
                 <hr class="space" />
                 <div class="logos">
-    <a href="http://www.tupilabs.com"><img
-        src="http://kinoshita.eti.br/img/logos/tupilabs_logo.png"
-        title="TupiLabs"
-        alt="TupiLabs" /></a> <a href="http://www.javacodegeeks.com/"><img
+ <a href="http://apache.org"><img
+        src="http://kinoshita.eti.br/img/logos/asf-logo.gif"
+        title="Apache Software Foundation"
+        alt="Apache Software Foundation" /></a> <a href="http://www.javacodegeeks.com/"><img
         src="http://kinoshita.eti.br/img/logos/logo_jcg_115x100.png"
         title="Java Code Geeks"
         alt="Java Code Geeks" /></a> <a href="http://www.open-bio.org/wiki/BOSC_2012"><img
@@ -102,16 +102,132 @@
         alt="The Developer's Conference 2011" /></a> <a href="http://belgiumtestingdays.com/past.php"><img
         src="http://kinoshita.eti.br/img/logos/btd2011_speakers_banner_1.png"
         title="Belgium Testing Days 2011"
-        alt="Belgium Testing Days 2011" /></a> <a href="http://www.encontroagil.com.br/2010/principal/home.html"><img
-        src="http://kinoshita.eti.br/img/logos/banner_encontro_agil.png"
-        title="Encontro &Aacute;gil 2010"
-        alt="Encontro &Aacute;gil 2010" /></a>
+        alt="Belgium Testing Days 2011" /></a>
 </div>            </div>
                         <div id="right" class="span8">
                 <div id="main">
                                                     <h1 class='topic'>Home</h1>
                     <hr class="space" />
                                                         <div
+                        class="post type-post status-publish format-standard hentry">
+                        <h2>
+                            <a href="/2012/10/20/replacing-a-hashset-with-a-bitset.html" title="Permanent link">Replacing a HashSet with a BitSet</a>
+                        </h2>
+                        <small>Bruno P. Kinoshita</small> @ <small>October 20, 2012&nbsp;23:07:39</small>
+                        <div class="entry">
+                            <a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2012/10/20/replacing-a-hashset-with-a-bitset.html" data-text="Replacing a HashSet with a BitSet" data-via="kinow" data-hashtags="opensource">Tweet</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+                            
+                            <p>I always read the messages in the <a href="http://www.apache.org/foundation/mailinglists.html" title="Apache mailing lists">Apache dev mailing lists</a>, including Apache Commons <a href="http://commons.apache.org/mail-lists.html" title="Apache Commons mailing lists">dev mailing list</a>. And you should too. There are always interesting discussions. Sometimes you participate, other times you only watch what&#8217;s happening, but in the end <strong>you always learn something new</strong>.</p>
+
+<p>A few days ago, I found <a href="https://issues.apache.org/jira/browse/LANG-839" title="LANG-839">an issue</a> where it was being proposed to replace an unnecessary <a href="http://docs.oracle.com/javase/6/docs/api/java/util/HashSet.html" title="HashSet">HashSet</a> in <a href="http://commons.apache.org/lang/api-release/org/apache/commons/lang3/ArrayUtils.html" title="ArrayUtils">ArrayUtils</a>#removeElements() by a <a href="http://docs.oracle.com/javase/6/docs/api/java/util/BitSet.html" title="BitSet">BitSet</a>. Here&#8217;s how the code looked like: </p>
+
+<pre class="java" style="font-family:monospace;">HashSet<span style="color: #339933;">&lt;</span>Integer<span style="color: #339933;">&gt;</span> toRemove <span style="color: #339933;">=</span> <span style="color: #000000; font-weight: bold;">new</span> HashSet<span style="color: #339933;">&lt;</span>Integer<span style="color: #339933;">&gt;</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+<span style="color: #000000; font-weight: bold;">for</span> <span style="color: #009900;">&#40;</span><a href="http://www.google.com/search?hl=en&amp;q=allinurl%3Adocs.oracle.com+javase+docs+api+map"><span style="color: #003399;">Map</span></a>.<span style="color: #006633;">Entry</span><span style="color: #339933;">&lt;</span><a href="http://www.google.com/search?hl=en&amp;q=allinurl%3Adocs.oracle.com+javase+docs+api+character"><span style="color: #003399;">Character</span></a>, MutableInt<span style="color: #339933;">&gt;</span> e <span style="color: #339933;">:</span> occurrences.<span style="color: #006633;">entrySet</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
+    <a href="http://www.google.com/search?hl=en&amp;q=allinurl%3Adocs.oracle.com+javase+docs+api+character"><span style="color: #003399;">Character</span></a> v <span style="color: #339933;">=</span> e.<span style="color: #006633;">getKey</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+    <span style="color: #000066; font-weight: bold;">int</span> found <span style="color: #339933;">=</span> <span style="color: #cc66cc;">0</span><span style="color: #339933;">;</span>
+    <span style="color: #000000; font-weight: bold;">for</span> <span style="color: #009900;">&#40;</span><span style="color: #000066; font-weight: bold;">int</span> i <span style="color: #339933;">=</span> <span style="color: #cc66cc;">0</span>, ct <span style="color: #339933;">=</span> e.<span style="color: #006633;">getValue</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span>.<span style="color: #006633;">intValue</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span> i <span style="color: #339933;">&lt;</span> ct<span style="color: #339933;">;</span> i<span style="color: #339933;">++</span><span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
+        found <span style="color: #339933;">=</span> indexOf<span style="color: #009900;">&#40;</span>array, v.<span style="color: #006633;">charValue</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span>, found<span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+        <span style="color: #000000; font-weight: bold;">if</span> <span style="color: #009900;">&#40;</span>found <span style="color: #339933;">&lt;</span> <span style="color: #cc66cc;">0</span><span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
+            <span style="color: #000000; font-weight: bold;">break</span><span style="color: #339933;">;</span>
+        <span style="color: #009900;">&#125;</span>
+        toRemove.<span style="color: #006633;">add</span><span style="color: #009900;">&#40;</span>found<span style="color: #339933;">++</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+    <span style="color: #009900;">&#125;</span>
+<span style="color: #009900;">&#125;</span>
+<span style="color: #000000; font-weight: bold;">return</span> <span style="color: #009900;">&#40;</span><span style="color: #000066; font-weight: bold;">char</span><span style="color: #009900;">&#91;</span><span style="color: #009900;">&#93;</span><span style="color: #009900;">&#41;</span> removeAll<span style="color: #009900;">&#40;</span><span style="color: #009900;">&#40;</span><a href="http://www.google.com/search?hl=en&amp;q=allinurl%3Adocs.oracle.com+javase+docs+api+object"><span style="color: #003399;">Object</span></a><span style="color: #009900;">&#41;</span>array, extractIndices<span style="color: #009900;">&#40;</span>toRemove<span style="color: #009900;">&#41;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span></pre>
+
+<p style="text-align: center"><a href="/2012/10/20/replacing-a-hashset-with-a-bitset/feather_small.gif"><img src="/2012/10/20/replacing-a-hashset-with-a-bitset/feather_small.gif" alt="" title="Apache Software Foundation" width="203" height="61" class="aligncenter size-full wp-image-1125" /></a></p>
+
+<p>The HashSet created at line 1, in the code above, was used to store the array index of the elements that should be removed. And at line 13 there is a call to removeAll method, passing the indexes to be removed. And here&#8217;s how the new code looks like: </p>
+
+<pre class="java" style="font-family:monospace;"><a href="http://www.google.com/search?hl=en&amp;q=allinurl%3Adocs.oracle.com+javase+docs+api+bitset"><span style="color: #003399;">BitSet</span></a> toRemove <span style="color: #339933;">=</span> <span style="color: #000000; font-weight: bold;">new</span> <a href="http://www.google.com/search?hl=en&amp;q=allinurl%3Adocs.oracle.com+javase+docs+api+bitset"><span style="color: #003399;">BitSet</span></a><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+<span style="color: #000000; font-weight: bold;">for</span> <span style="color: #009900;">&#40;</span><a href="http://www.google.com/search?hl=en&amp;q=allinurl%3Adocs.oracle.com+javase+docs+api+map"><span style="color: #003399;">Map</span></a>.<span style="color: #006633;">Entry</span><span style="color: #339933;">&lt;</span><a href="http://www.google.com/search?hl=en&amp;q=allinurl%3Adocs.oracle.com+javase+docs+api+character"><span style="color: #003399;">Character</span></a>, MutableInt<span style="color: #339933;">&gt;</span> e <span style="color: #339933;">:</span> occurrences.<span style="color: #006633;">entrySet</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
+    <a href="http://www.google.com/search?hl=en&amp;q=allinurl%3Adocs.oracle.com+javase+docs+api+character"><span style="color: #003399;">Character</span></a> v <span style="color: #339933;">=</span> e.<span style="color: #006633;">getKey</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+    <span style="color: #000066; font-weight: bold;">int</span> found <span style="color: #339933;">=</span> <span style="color: #cc66cc;">0</span><span style="color: #339933;">;</span>
+    <span style="color: #000000; font-weight: bold;">for</span> <span style="color: #009900;">&#40;</span><span style="color: #000066; font-weight: bold;">int</span> i <span style="color: #339933;">=</span> <span style="color: #cc66cc;">0</span>, ct <span style="color: #339933;">=</span> e.<span style="color: #006633;">getValue</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span>.<span style="color: #006633;">intValue</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span> i <span style="color: #339933;">&lt;</span> ct<span style="color: #339933;">;</span> i<span style="color: #339933;">++</span><span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
+        found <span style="color: #339933;">=</span> indexOf<span style="color: #009900;">&#40;</span>array, v.<span style="color: #006633;">charValue</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span>, found<span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+        <span style="color: #000000; font-weight: bold;">if</span> <span style="color: #009900;">&#40;</span>found <span style="color: #339933;">&lt;</span> <span style="color: #cc66cc;">0</span><span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
+            <span style="color: #000000; font-weight: bold;">break</span><span style="color: #339933;">;</span>
+        <span style="color: #009900;">&#125;</span>
+        toRemove.<span style="color: #006633;">set</span><span style="color: #009900;">&#40;</span>found<span style="color: #339933;">++</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+    <span style="color: #009900;">&#125;</span>
+<span style="color: #009900;">&#125;</span>
+<span style="color: #000000; font-weight: bold;">return</span> <span style="color: #009900;">&#40;</span><span style="color: #000066; font-weight: bold;">char</span><span style="color: #009900;">&#91;</span><span style="color: #009900;">&#93;</span><span style="color: #009900;">&#41;</span> removeAll<span style="color: #009900;">&#40;</span>array, toRemove<span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span></pre>
+
+<p>The first difference is at line 1. Instead of a HashSet, it is now using a BitSet. And at line 10, instead of adding a new element to the HashSet, now it &#8220;sets&#8221; a bit in the set (the bit at the specified position is now true). But there are important changes at line 13. The method removeAll was changed, and now the array doesn&#8217;t require a cast anymore. And the it is not necessary to cast the elements from HashSet anymore, as now the bit in the index position of the set is set to true. So the extractIndices method could be removed.</p>
+
+<p><p>The code got simpler. But that&#8217;s not all. At <a href="http://www.apache.org" title="Apache Software Foundation">Apache Software Foundation</a> you can find a lot of talented developers - that&#8217;s why I got so excited after joining them. Besides simplifying the code, the developer responsible for these changes (<strong>sebb</strong>) also pointed out that the new code <strong>consumes less memory and is faster</strong>. Ah! And he also wrote <strong>unit tests</strong></p>
+
+                            
+                                                        
+                        </div>
+                        <p class="postmetadata">
+                                                        <small>tags                              [&nbsp;<a
+                                href="/tag/open-source.html"
+                                rel="tag">open source</a>&nbsp;]&nbsp;
+                                                         [&nbsp;<a
+                                href="/tag/apache.html"
+                                rel="tag">apache</a>&nbsp;]&nbsp;
+                                                         [&nbsp;<a
+                                href="/tag/java.html"
+                                rel="tag">java</a>&nbsp;]&nbsp;
+                                                        </small>
+                                                                                </p>
+                    </div>
+                    <hr class='space' />
+                                        <div
+                        class="post type-post status-publish format-standard hentry">
+                        <h2>
+                            <a href="/2012/10/16/adding-coverage-reports-in-jenkins-to-googletest-with-gcovr.html" title="Permanent link">Adding coverage reports in Jenkins to GoogleTest with gcovr</a>
+                        </h2>
+                        <small>Bruno P. Kinoshita</small> @ <small>October 16, 2012&nbsp;16:09:33</small>
+                        <div class="entry">
+                            <a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2012/10/16/adding-coverage-reports-in-jenkins-to-googletest-with-gcovr.html" data-text="Adding coverage reports in Jenkins to GoogleTest with gcovr" data-via="kinow" data-hashtags="opensource">Tweet</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+                            
+                            <p>After the <a href="/2012/10/11/jenkins-testlink-and-gtest-in-5-minutes-or-so" title="Jenkins, TestLink and GTest in 5 minutes (or so)">last post</a> about <a href="http://code.google.com/p/googletest/" title="GoogleTest">GoogleTest</a> and <a href="http://www.teamst.org" title="TestLink">TestLink</a> using <a href="https://wiki.jenkins-ci.org/display/JENKINS/TestLink+Plugin" title="Jenkins TestLink Plug-in">Jenkins TestLink Plug-in</a>, I received an e-mail asking about <a href="http://en.wikipedia.org/wiki/Code_coverage" title="Code Coverage">coverage</a> with GoogleTest and <a href="http://www.jenkins-ci.org" title="Jenkins CI">Jenkins</a>. I&#8217;ve just updated the <a href="https://github.com/kinow/gtest-tap-listener/blob/master/samples/Makefile">Makefile</a> in the samples directory, of the <a href="https://github.com/kinow/gtest-tap-listener" title="GTest TAP Listener">GoogleTest TAP listener project</a>, to output coverage data.</p>
+
+<p>Basically, you have to add the compiler flags <em>-fprofile-arcs -ftest-coverage</em> and link the executable with -lgcov. Take a look at the project&#8217;s Makefile and you&#8217;ll notice how simple it is. In order to have Jenkins interpreting your coverage report, you&#8217;ll have to convert it to <a href="http://cobertura.sourceforge.net" title="Cobertura">cobertura</a> XML. There is a Python utility that can be used for this: <a href="https://software.sandia.gov/trac/fast/wiki/gcovr" title="gcovr">gcovr</a>. Download it and copy it to somewhere where Jenkins can execute it (e.g.: <em>/usr/local/bin</em>).</p>
+
+<p>Now, if you&#8217;ve followed the instructions from the previous post, you should have a job that reports your GoogleTest tests from Jenkins to TestLink using the plug-in, and is downloading the source code from GitHub. Add an extra build step  (Shell) to execute <em>gcovr</em>.</p>
+
+
+                            
+                                                        <p>( <a href="/2012/10/16/adding-coverage-reports-in-jenkins-to-googletest-with-gcovr.html" >Read more ...</a> )</p>
+                                                        
+                        </div>
+                        <p class="postmetadata">
+                                                        <small>tags                              [&nbsp;<a
+                                href="/tag/jenkins.html"
+                                rel="tag">jenkins</a>&nbsp;]&nbsp;
+                                                         [&nbsp;<a
+                                href="/tag/c.html"
+                                rel="tag">c</a>&nbsp;]&nbsp;
+                                                         [&nbsp;<a
+                                href="/tag/googletest.html"
+                                rel="tag">googletest</a>&nbsp;]&nbsp;
+                                                         [&nbsp;<a
+                                href="/tag/testing.html"
+                                rel="tag">testing</a>&nbsp;]&nbsp;
+                                                         [&nbsp;<a
+                                href="/tag/coverage.html"
+                                rel="tag">coverage</a>&nbsp;]&nbsp;
+                                                         [&nbsp;<a
+                                href="/tag/gcovr.html"
+                                rel="tag">gcovr</a>&nbsp;]&nbsp;
+                                                        </small>
+                                                                                    <br/>
+                            <small>posted in 
+                            [&nbsp;<a
+                                href="/jenkins.html"
+                                title="View all posts in jenkins"
+                                rel="category tag">jenkins</a>&nbsp;]
+                                &nbsp;category
+                            </small>
+                                                    </p>
+                    </div>
+                    <hr class='space' />
+                                        <div
                         class="post type-post status-publish format-standard hentry">
                         <h2>
                             <a href="/2012/10/11/jenkins-testlink-and-gtest-in-5-minutes-or-so.html" title="Permanent link">Jenkins, TestLink and GTest in 5 minutes (or so)</a>
@@ -254,93 +370,6 @@
                                 &nbsp;category
                             </small>
                                                     </p>
-                    </div>
-                    <hr class='space' />
-                                        <div
-                        class="post type-post status-publish format-standard hentry">
-                        <h2>
-                            <a href="/2012/09/20/running-word-count-example-on-a-hadoop-commodity-hardware-cluster-and-on-a-hadoop-local-installation.html" title="Permanent link">Running word-count example on a Hadoop commodity-hardware cluster and on a Hadoop local installation</a>
-                        </h2>
-                        <small>Bruno P. Kinoshita</small> @ <small>September 20, 2012&nbsp;21:49:38</small>
-                        <div class="entry">
-                            <a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2012/09/20/running-word-count-example-on-a-hadoop-commodity-hardware-cluster-and-on-a-hadoop-local-installation.html" data-text="Running word-count example on a Hadoop commodity-hardware cluster and on a Hadoop local installation" data-via="kinow" data-hashtags="opensource">Tweet</a>
-<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-                            
-                            <p>Last weekend I spent some hours assembling old computer parts to create my commodity hardware cluster for running Hadoop. I already had a local installation in my notebook, so I thought it would be cool to run the word-count example in both scenarios to see what would be the results.</p>
-
-<p>But first, let&#8217;s review the hardware configurations:</p>
-
-
-                            
-                                                        <p>( <a href="/2012/09/20/running-word-count-example-on-a-hadoop-commodity-hardware-cluster-and-on-a-hadoop-local-installation.html" >Read more ...</a> )</p>
-                                                        
-                        </div>
-                        <p class="postmetadata">
-                                                        <small>tags                              [&nbsp;<a
-                                href="/tag/big-data.html"
-                                rel="tag">big data</a>&nbsp;]&nbsp;
-                                                         [&nbsp;<a
-                                href="/tag/hadoop.html"
-                                rel="tag">hadoop</a>&nbsp;]&nbsp;
-                                                        </small>
-                                                                                    <br/>
-                            <small>posted in 
-                            [&nbsp;<a
-                                href="/data-analysis.html"
-                                title="View all posts in data analysis"
-                                rel="category tag">data analysis</a>&nbsp;]
-                                &nbsp;category
-                            </small>
-                                                    </p>
-                    </div>
-                    <hr class='space' />
-                                        <div
-                        class="post type-post status-publish format-standard hentry">
-                        <h2>
-                            <a href="/2012/09/14/integrating-nutch-2-x-mysql-and-solr.html" title="Permanent link">Integrating Nutch 2.x, MySQL and Solr</a>
-                        </h2>
-                        <small>Bruno P. Kinoshita</small> @ <small>September 14, 2012&nbsp;00:02:31</small>
-                        <div class="entry">
-                            <a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2012/09/14/integrating-nutch-2-x-mysql-and-solr.html" data-text="Integrating Nutch 2.x, MySQL and Solr" data-via="kinow" data-hashtags="opensource">Tweet</a>
-<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-                            
-                            <p>Right now we are working on a new project using <a href="http://nutch.apache.org" title="Apache Nutch">Apache Nutch</a> 2.x, <a href="http://hadoop.apache.org" title="Apache Hadoop">Apache Hadoop</a>, <a href="http://solr.apache.org" title="Apache Solr">Apache Solr</a> 4 and a lot of other cool tools/modules/API&#8217;s/etc. After following the instructions found on <a href="http://nlp.solutions.asia/?p=180" title="http://nlp.solutions.asia/?p=180">http://nlp.solutions.asia/?p=180</a>, I&#8217;ve successfully connected Apache Nutch, MySQL and Apache Solr.</p>
-
-<p><img src="/2012/09/14/integrating-nutch-2-x-mysql-and-solr/mysql_hadoop_solr_nutch.png" alt="mysql_hadoop_solr_nutch" title="mysql_hadoop_solr_nutch" width="800" class="aligncenter size-medium wp-image-994" /></p>
-
-<p>In summary:</p>
-
-<ul>
-<li>Create a database to hold your data</li>
-<li>Use SQLDataStore and add configuration for your MySQL server</li>
-<li>Update Apache Nutch configuration</li>
-<li>Update Solr schema</li>
-</ul>
-
-<p>Now our Apache Nutch uses MySQL as data store (the place where it keeps the result of the crawling process, such as URL,  text content, metadata, and so on). That&#8217;s grand, but there is one part missing in the Solr Schema provided in the blog post.</p> 
-
-<p>Due to <a href="https://issues.apache.org/jira/browse/SOLR-3432" title="SOLR-3432">SOLR-3432</a>, after following the tutorial and replacing the schema, we couldn&#8217;t delete the whole index anymore. After following the instructions in the bug comments, and adding the following entry in schema.xml it worked again.</p>
-
-
-                            
-                                                        <p>( <a href="/2012/09/14/integrating-nutch-2-x-mysql-and-solr.html" >Read more ...</a> )</p>
-                                                        
-                        </div>
-                        <p class="postmetadata">
-                                                        <small>tags                              [&nbsp;<a
-                                href="/tag/solr.html"
-                                rel="tag">solr</a>&nbsp;]&nbsp;
-                                                         [&nbsp;<a
-                                href="/tag/nutch.html"
-                                rel="tag">nutch</a>&nbsp;]&nbsp;
-                                                         [&nbsp;<a
-                                href="/tag/apache.html"
-                                rel="tag">apache</a>&nbsp;]&nbsp;
-                                                         [&nbsp;<a
-                                href="/tag/mysql.html"
-                                rel="tag">mysql</a>&nbsp;]&nbsp;
-                                                        </small>
-                                                                                </p>
                     </div>
                     <hr class='space' />
                                         <div id="navigation">

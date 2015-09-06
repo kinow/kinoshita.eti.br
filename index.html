@@ -78,10 +78,10 @@
                     title="Hmmmm" alt="Hmmmm" width="134px" height="215px" />
                 <hr class="space" />
                 <div class="logos">
-    <a href="http://www.tupilabs.com"><img
-        src="http://kinoshita.eti.br/img/logos/tupilabs_logo.png"
-        title="TupiLabs"
-        alt="TupiLabs" /></a> <a href="http://www.javacodegeeks.com/"><img
+ <a href="http://apache.org"><img
+        src="http://kinoshita.eti.br/img/logos/asf-logo.gif"
+        title="Apache Software Foundation"
+        alt="Apache Software Foundation" /></a> <a href="http://www.javacodegeeks.com/"><img
         src="http://kinoshita.eti.br/img/logos/logo_jcg_115x100.png"
         title="Java Code Geeks"
         alt="Java Code Geeks" /></a> <a href="http://www.open-bio.org/wiki/BOSC_2012"><img
@@ -102,16 +102,139 @@
         alt="The Developer's Conference 2011" /></a> <a href="http://belgiumtestingdays.com/past.php"><img
         src="http://kinoshita.eti.br/img/logos/btd2011_speakers_banner_1.png"
         title="Belgium Testing Days 2011"
-        alt="Belgium Testing Days 2011" /></a> <a href="http://www.encontroagil.com.br/2010/principal/home.html"><img
-        src="http://kinoshita.eti.br/img/logos/banner_encontro_agil.png"
-        title="Encontro &Aacute;gil 2010"
-        alt="Encontro &Aacute;gil 2010" /></a>
+        alt="Belgium Testing Days 2011" /></a>
 </div>            </div>
                         <div id="right" class="span8">
                 <div id="main">
                                                     <h1 class='topic'>Home</h1>
                     <hr class="space" />
                                                         <div
+                        class="post type-post status-publish format-standard hentry">
+                        <h2>
+                            <a href="/2015/09/07/how_does_the_jenkins_credentials_plugin_store_passwords.html" title="Permanent link">How does the Jenkins Credentials Plug-in store passwords?</a>
+                        </h2>
+                        <small>Bruno P. Kinoshita</small> @ <small>September 7, 2015&nbsp;01:25:03</small>
+                        <div class="entry">
+                            <a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2015/09/07/how_does_the_jenkins_credentials_plugin_store_passwords.html" data-text="How does the Jenkins Credentials Plug-in store passwords?" data-via="kinow" data-hashtags="opensource">Tweet</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+                            
+                            <p><a href="https://wiki.jenkins-ci.org/display/JENKINS/Credentials+Plugin">Jenkins Credentials Plug-in</a> manages credentials stored in Jenkins. These credentials can be used in many jobs and by plug-ins for executing SSH commands, authenticating to systems, or running other commands that need some sort of authentication or authorisation.</p>
+
+<p>I recently used its API for the first time in the <a href="https://github.com/biouno/figshare-plugin">BioUno figshare Plug-in</a> to store OAuth 1.0 credentials (consumer key, consumer secret, token key, token secret). This <a href="http://biouno.org/2015/09/05/using_jenkins_credentials_plugin_to_create_the_biouno_figshare_plugin/">blog post</a> has more details about how we used the plug-in, but this post is specifically on how the passwords are stored by Jenkins.</p>
+
+<h2>Secret and ciphers</h2>
+
+<p>Jenkins stores its configuration on disk as XML using the XStream library. Plug-in developers using the Credentials Plug-in API must use the <strong>Secret</strong> class to encrypt sensitive information.</p>
+
+<p>The <code>Secret.fromString</code> method is responsible for creating a cipher from a given String. As in the Secret Javadoc,  <em>&#8220;this is not meant as a protection against code running in the same VM, nor against an attacker who has local file system access on Jenkins master&#8221;</em>. But at least makes things more complicated :-)</p>
+
+<ul>
+<li><a href="http://javadoc.jenkins-ci.org/hudson/util/Secret.html">Secret Javadoc</a></li>
+<li><a href="https://github.com/jenkinsci/jenkins/blob/master/core/src/main/java/hudson/util/Secret.java">Secret source code</a></li>
+</ul>
+
+<pre class="java" style="font-family:monospace;"><span style="color: #000000; font-weight: bold;">public</span> <span style="color: #000000; font-weight: bold;">static</span> Secret fromString<span style="color: #009900;">&#40;</span><a href="http://www.google.com/search?hl=en&amp;q=allinurl%3Adocs.oracle.com+javase+docs+api+string"><span style="color: #003399;">String</span></a> data<span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
+    data <span style="color: #339933;">=</span> <a href="http://www.google.com/search?hl=en&amp;q=allinurl%3Adocs.oracle.com+javase+docs+api+util"><span style="color: #003399;">Util</span></a>.<span style="color: #006633;">fixNull</span><span style="color: #009900;">&#40;</span>data<span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+    Secret s <span style="color: #339933;">=</span> decrypt<span style="color: #009900;">&#40;</span>data<span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+    <span style="color: #000000; font-weight: bold;">if</span><span style="color: #009900;">&#40;</span>s<span style="color: #339933;">==</span><span style="color: #000066; font-weight: bold;">null</span><span style="color: #009900;">&#41;</span> s<span style="color: #339933;">=</span><span style="color: #000000; font-weight: bold;">new</span> Secret<span style="color: #009900;">&#40;</span>data<span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+    <span style="color: #000000; font-weight: bold;">return</span> s<span style="color: #339933;">;</span>
+<span style="color: #009900;">&#125;</span></pre>
+
+<p>The first line simply replaces a null string by an empty &#8220;&#8221;, or keeps the current value of not null.</p>
+
+<p>After that, the decrypt method is called.</p>
+
+<pre class="java" style="font-family:monospace;"><span style="color: #000000; font-weight: bold;">public</span> <span style="color: #000000; font-weight: bold;">static</span> Secret decrypt<span style="color: #009900;">&#40;</span><a href="http://www.google.com/search?hl=en&amp;q=allinurl%3Adocs.oracle.com+javase+docs+api+string"><span style="color: #003399;">String</span></a> data<span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
+    <span style="color: #000000; font-weight: bold;">if</span><span style="color: #009900;">&#40;</span>data<span style="color: #339933;">==</span><span style="color: #000066; font-weight: bold;">null</span><span style="color: #009900;">&#41;</span>      <span style="color: #000000; font-weight: bold;">return</span> <span style="color: #000066; font-weight: bold;">null</span><span style="color: #339933;">;</span>
+    <span style="color: #000000; font-weight: bold;">try</span> <span style="color: #009900;">&#123;</span>
+        <span style="color: #000066; font-weight: bold;">byte</span><span style="color: #009900;">&#91;</span><span style="color: #009900;">&#93;</span> in <span style="color: #339933;">=</span> Base64.<span style="color: #006633;">decode</span><span style="color: #009900;">&#40;</span>data.<span style="color: #006633;">toCharArray</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+        Secret s <span style="color: #339933;">=</span> tryDecrypt<span style="color: #009900;">&#40;</span>KEY.<span style="color: #006633;">decrypt</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span>, in<span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+        <span style="color: #000000; font-weight: bold;">if</span> <span style="color: #009900;">&#40;</span>s<span style="color: #339933;">!=</span><span style="color: #000066; font-weight: bold;">null</span><span style="color: #009900;">&#41;</span>    <span style="color: #000000; font-weight: bold;">return</span> s<span style="color: #339933;">;</span>
+&nbsp;
+        <span style="color: #666666; font-style: italic;">// try our historical key for backward compatibility</span>
+        Cipher cipher <span style="color: #339933;">=</span> getCipher<span style="color: #009900;">&#40;</span><span style="color: #0000ff;">&quot;AES&quot;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+        cipher.<span style="color: #006633;">init</span><span style="color: #009900;">&#40;</span>Cipher.<span style="color: #006633;">DECRYPT_MODE</span>, getLegacyKey<span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+        <span style="color: #000000; font-weight: bold;">return</span> tryDecrypt<span style="color: #009900;">&#40;</span>cipher, in<span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+    <span style="color: #009900;">&#125;</span> <span style="color: #000000; font-weight: bold;">catch</span> <span style="color: #009900;">&#40;</span><a href="http://www.google.com/search?hl=en&amp;q=allinurl%3Adocs.oracle.com+javase+docs+api+generalsecurityexception"><span style="color: #003399;">GeneralSecurityException</span></a> e<span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
+        <span style="color: #000000; font-weight: bold;">return</span> <span style="color: #000066; font-weight: bold;">null</span><span style="color: #339933;">;</span>
+    <span style="color: #009900;">&#125;</span> <span style="color: #000000; font-weight: bold;">catch</span> <span style="color: #009900;">&#40;</span><a href="http://www.google.com/search?hl=en&amp;q=allinurl%3Adocs.oracle.com+javase+docs+api+unsupportedencodingexception"><span style="color: #003399;">UnsupportedEncodingException</span></a> e<span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
+        <span style="color: #000000; font-weight: bold;">throw</span> <span style="color: #000000; font-weight: bold;">new</span> <a href="http://www.google.com/search?hl=en&amp;q=allinurl%3Adocs.oracle.com+javase+docs+api+error"><span style="color: #003399;">Error</span></a><span style="color: #009900;">&#40;</span>e<span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span> <span style="color: #666666; font-style: italic;">// impossible</span>
+    <span style="color: #009900;">&#125;</span> <span style="color: #000000; font-weight: bold;">catch</span> <span style="color: #009900;">&#40;</span><a href="http://www.google.com/search?hl=en&amp;q=allinurl%3Adocs.oracle.com+javase+docs+api+ioexception"><span style="color: #003399;">IOException</span></a> e<span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
+        <span style="color: #000000; font-weight: bold;">return</span> <span style="color: #000066; font-weight: bold;">null</span><span style="color: #339933;">;</span>
+    <span style="color: #009900;">&#125;</span>
+<span style="color: #009900;">&#125;</span></pre>
+
+<p>The <code>KEY.decrypt()</code> call will return a <a href="http://docs.oracle.com/javase/8/docs/api/javax/crypto/Cipher.html"><code>javax.crypto.Cipher</code></a>. The Cipher class is handled in <a href="https://github.com/jenkinsci/jenkins/blob/93dfe3377ec8d430818f5b9073f16c677343adb4/core/src/main/java/jenkins/security/CryptoConfidentialKey.java">CryptoConfidentialKey</a> in Jenkins API, where it defines the algorithm used to create the cipher: <a href="https://en.wikipedia.org/wiki/Advanced_Encryption_Standard">AES</a>.</p>
+
+<p>Jenkins has also a <a href="https://github.com/jenkinsci/jenkins/blob/93dfe3377ec8d430818f5b9073f16c677343adb4/core/src/main/java/jenkins/security/ConfidentialStore.java#L63">ConfidentialStore</a>, that is required to create the cipher. This class must be initialized before someone tries to create or read a cipher. This extra step also increases security, though access to the JVM is still a problem.</p>
+
+<p>It is a bit late, so it is all for today. In summary: the credentials plug-in gives you a central place to manage credentials, but it is up to plug-in developers to use it. Sensitive values can be encrypted with AES on disk. So it is important that your file permissions, ACL and system auditing processes are in place and well maintained and monitored.</p>
+
+<p>Happy hacking!</p>
+
+                            
+                                                        
+                        </div>
+                        <p class="postmetadata">
+                                                        <small>tags                              [&nbsp;<a
+                                href="/tag/jenkins.html"
+                                rel="tag">jenkins</a>&nbsp;]&nbsp;
+                                                         [&nbsp;<a
+                                href="/tag/plugin.html"
+                                rel="tag">plugin</a>&nbsp;]&nbsp;
+                                                         [&nbsp;<a
+                                href="/tag/security.html"
+                                rel="tag">security</a>&nbsp;]&nbsp;
+                                                        </small>
+                                                                                    <br/>
+                            <small>posted in 
+                            [&nbsp;<a
+                                href="/blog.html"
+                                title="View all posts in blog"
+                                rel="category tag">blog</a>&nbsp;]
+                                &nbsp;category
+                            </small>
+                                                    </p>
+                    </div>
+                    <hr class='space' />
+                                        <div
+                        class="post type-post status-publish format-standard hentry">
+                        <h2>
+                            <a href="/2015/06/25/uploading-data-to-52-north-sos.html" title="Permanent link">Uploading data to 52 North SOS</a>
+                        </h2>
+                        <small>Bruno P. Kinoshita</small> @ <small>June 25, 2015&nbsp;18:40:03</small>
+                        <div class="entry">
+                            <a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2015/06/25/uploading-data-to-52-north-sos.html" data-text="Uploading data to 52 North SOS" data-via="kinow" data-hashtags="opensource">Tweet</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+                            
+                            
+
+                            
+                                                        
+                        </div>
+                        <p class="postmetadata">
+                                                        <small>tags                              [&nbsp;<a
+                                href="/tag/sos.html"
+                                rel="tag">sos</a>&nbsp;]&nbsp;
+                                                         [&nbsp;<a
+                                href="/tag/52north.html"
+                                rel="tag">52north</a>&nbsp;]&nbsp;
+                                                         [&nbsp;<a
+                                href="/tag/sensor-web.html"
+                                rel="tag">sensor web</a>&nbsp;]&nbsp;
+                                                        </small>
+                                                                                    <br/>
+                            <small>posted in 
+                            [&nbsp;<a
+                                href="/blog.html"
+                                title="View all posts in blog"
+                                rel="category tag">blog</a>&nbsp;]
+                                &nbsp;category
+                            </small>
+                                                    </p>
+                    </div>
+                    <hr class='space' />
+                                        <div
                         class="post type-post status-publish format-standard hentry">
                         <h2>
                             <a href="/2015/06/23/modeling-observation-data-in-sos.html" title="Permanent link">Modeling observation data in SOS (Sensor Observation Service)</a>
@@ -355,251 +478,6 @@ of fun!</strong></p>
                                                          [&nbsp;<a
                                 href="/tag/apache-software-foundation.html"
                                 rel="tag">apache software foundation</a>&nbsp;]&nbsp;
-                                                        </small>
-                                                                                    <br/>
-                            <small>posted in 
-                            [&nbsp;<a
-                                href="/blog.html"
-                                title="View all posts in blog"
-                                rel="category tag">blog</a>&nbsp;]
-                                &nbsp;category
-                            </small>
-                                                    </p>
-                    </div>
-                    <hr class='space' />
-                                        <div
-                        class="post type-post status-publish format-standard hentry">
-                        <h2>
-                            <a href="/2014/10/11/basic-workflow-of-a-sparql-query-in-fuseki.html" title="Permanent link">Basic workflow of a SPARQL query in Fuseki</a>
-                        </h2>
-                        <small>Bruno P. Kinoshita</small> @ <small>October 11, 2014&nbsp;20:36:33</small>
-                        <div class="entry">
-                            <a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2014/10/11/basic-workflow-of-a-sparql-query-in-fuseki.html" data-text="Basic workflow of a SPARQL query in Fuseki" data-via="kinow" data-hashtags="opensource">Tweet</a>
-<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-                            
-                            <p>Before using any library or tool in a customer project, specially when it is an Open Source one, 
-there are many things that I like to look at before deploying it. Basically, I look at the 
-features, documentation, community, open issues (in special blockers or criticals), the time 
-to release fixes and new features and, obviously, the license.</p>
-
-<p>At the moment I&#8217;m using <a href="http://jena.apache.org">Apache Jena</a> to work with ontologies, SPARQL 
-and data matching and enrichment for a customer. </p>
-
-<p>Jena is fantastic, and similar tools include <a href="http://www.w3.org/wiki/VirtuosoUniversalServer">Virtuoso</a>, 
-<a href="http://stardog.com/">StarDog</a>, <a href="http://www.ontotext.com/products/ontotext-graphdb-owlim/">GraphDB</a>, 
-<a href="http://4store.org/">4Store</a> and others. From looking at the code and its community and documentation, 
-Jena seems like a great choice. </p>
-
-<p>I&#8217;m still investigating if/how we gonna need to use inference and reasoners, looking 
-at the issues, and learning my way through its code base. The following is my initial mapping 
-of what happens when you submit a SPARQL query to Fuseki.</p>
-
-<div class='row'>
-<div class="span6 offset3" style='text-align: center;'>
-<figure>
-<a href="/2014/10/11/basic-workflow-of-a-sparql-query-in-fuseki/drawing1.png" rel="prettyPhoto" class="thumbnail" title="Fuseki SPARQL query work flow">
-<img src="/2014/10/11/basic-workflow-of-a-sparql-query-in-fuseki/drawing1.png" alt="Fuseki SPARQL query work flow" />
-</a>
-<figcaption>Jena JDBC</i></figcaption>
-</figure>
-</div>
-</div>
-
-<p>My understanding is that Fuseki is just a web layer, handling a bunch of validations, logging, 
-error handling, and relying on the ARQ module, that is who actually handles the requests. 
-I also think a new Fuseki server is baking in the project git repo, so stay tuned for an 
-updated version of this graph soon.</p>
-
-<p>Happy hacking!</p>
-
-                            
-                                                        
-                        </div>
-                        <p class="postmetadata">
-                                                        <small>tags                              [&nbsp;<a
-                                href="/tag/sparql.html"
-                                rel="tag">sparql</a>&nbsp;]&nbsp;
-                                                         [&nbsp;<a
-                                href="/tag/jena.html"
-                                rel="tag">jena</a>&nbsp;]&nbsp;
-                                                         [&nbsp;<a
-                                href="/tag/development.html"
-                                rel="tag">development</a>&nbsp;]&nbsp;
-                                                        </small>
-                                                                                    <br/>
-                            <small>posted in 
-                            [&nbsp;<a
-                                href="/blog.html"
-                                title="View all posts in blog"
-                                rel="category tag">blog</a>&nbsp;]
-                                &nbsp;category
-                            </small>
-                                                    </p>
-                    </div>
-                    <hr class='space' />
-                                        <div
-                        class="post type-post status-publish format-standard hentry">
-                        <h2>
-                            <a href="/2014/09/09/cypher-gremlin-and-sparql-graph-dialects.html" title="Permanent link">Cypher, Gremlin and SPARQL: Graph dialects</a>
-                        </h2>
-                        <small>Bruno P. Kinoshita</small> @ <small>September 9, 2014&nbsp;10:14:33</small>
-                        <div class="entry">
-                            <a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2014/09/09/cypher-gremlin-and-sparql-graph-dialects.html" data-text="Cypher, Gremlin and SPARQL: Graph dialects" data-via="kinow" data-hashtags="opensource">Tweet</a>
-<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-                            
-                            <p>When I was younger and my older brother was living in Germany, I asked him if he 
-had learned German. He said that he did, and explained that there are several 
-dialects, and he was quite proud for some people told him that he was using the 
-Bavarian dialect correctly.</p>
-
-<p>Even though <a href="http://www.neo4j.org/learn/cypher">Cypher</a>, 
-<a href="http://gremlindocs.com/">Gremlin</a> and <a href="http://en.wikipedia.org/wiki/SPARQL">SPARQL</a> 
-are all query languages, I think we can consider them dialects of a common graph language. 
-Cypher is the query language used in <a href="http://www.neo4j.org/">neo4j</a>, a graph database. 
-Gremlin is part of the <a href="http://www.tinkerpop.com/">Tinkerpop</a>, an open source project 
-that contains graph server, graph algorithms, graph language, among other sub-projects. 
-And last but not least, SPARQL is used to query <a href="http://en.wikipedia.org/wiki/Resource_Description_Framework">RDF documents</a>.</p>
-
-<p>Let&#8217;s use the example of the Matrix movie provided by neo4j to take a look at the 
-three languages.</p>
-
-<h2>Cypher</h2>
-
-<p>First we create the graph.</p>
-
-<pre class="sql" style="font-family:monospace;"><span style="color: #993333; font-weight: bold;">CREATE</span> <span style="color: #66cc66;">&#40;</span>matrix1:Movie <span style="color: #66cc66;">&#123;</span>id : <span style="color: #ff0000;">'603'</span><span style="color: #66cc66;">,</span> title : <span style="color: #ff0000;">'The Matrix'</span><span style="color: #66cc66;">,</span> <span style="color: #993333; font-weight: bold;">YEAR</span> : <span style="color: #ff0000;">'1999-03-31'</span><span style="color: #66cc66;">&#125;</span><span style="color: #66cc66;">&#41;</span><span style="color: #66cc66;">,</span>
- <span style="color: #66cc66;">&#40;</span>matrix2:Movie <span style="color: #66cc66;">&#123;</span>id : <span style="color: #ff0000;">'604'</span><span style="color: #66cc66;">,</span> title : <span style="color: #ff0000;">'The Matrix Reloaded'</span><span style="color: #66cc66;">,</span> <span style="color: #993333; font-weight: bold;">YEAR</span> : <span style="color: #ff0000;">'2003-05-07'</span><span style="color: #66cc66;">&#125;</span><span style="color: #66cc66;">&#41;</span><span style="color: #66cc66;">,</span>
- <span style="color: #66cc66;">&#40;</span>matrix3:Movie <span style="color: #66cc66;">&#123;</span>id : <span style="color: #ff0000;">'605'</span><span style="color: #66cc66;">,</span> title : <span style="color: #ff0000;">'The Matrix Revolutions'</span><span style="color: #66cc66;">,</span> <span style="color: #993333; font-weight: bold;">YEAR</span> : <span style="color: #ff0000;">'2003-10-27'</span><span style="color: #66cc66;">&#125;</span><span style="color: #66cc66;">&#41;</span><span style="color: #66cc66;">,</span>
-&nbsp;
- <span style="color: #66cc66;">&#40;</span>neo:Actor <span style="color: #66cc66;">&#123;</span>name:<span style="color: #ff0000;">'Keanu Reeves'</span><span style="color: #66cc66;">&#125;</span><span style="color: #66cc66;">&#41;</span><span style="color: #66cc66;">,</span>
- <span style="color: #66cc66;">&#40;</span>morpheus:Actor <span style="color: #66cc66;">&#123;</span>name:<span style="color: #ff0000;">'Laurence Fishburne'</span><span style="color: #66cc66;">&#125;</span><span style="color: #66cc66;">&#41;</span><span style="color: #66cc66;">,</span>
- <span style="color: #66cc66;">&#40;</span>trinity:Actor <span style="color: #66cc66;">&#123;</span>name:<span style="color: #ff0000;">'Carrie-Anne Moss'</span><span style="color: #66cc66;">&#125;</span><span style="color: #66cc66;">&#41;</span><span style="color: #66cc66;">,</span>
-&nbsp;
- <span style="color: #66cc66;">&#40;</span>matrix1<span style="color: #66cc66;">&#41;</span><span style="color: #66cc66;">&lt;-</span><span style="color: #66cc66;">&#91;</span>:ACTS_IN <span style="color: #66cc66;">&#123;</span><span style="color: #993333; font-weight: bold;">ROLE</span> : <span style="color: #ff0000;">'Neo'</span><span style="color: #66cc66;">&#125;</span><span style="color: #66cc66;">&#93;</span><span style="color: #66cc66;">-</span><span style="color: #66cc66;">&#40;</span>neo<span style="color: #66cc66;">&#41;</span><span style="color: #66cc66;">,</span>
- <span style="color: #66cc66;">&#40;</span>matrix2<span style="color: #66cc66;">&#41;</span><span style="color: #66cc66;">&lt;-</span><span style="color: #66cc66;">&#91;</span>:ACTS_IN <span style="color: #66cc66;">&#123;</span><span style="color: #993333; font-weight: bold;">ROLE</span> : <span style="color: #ff0000;">'Neo'</span><span style="color: #66cc66;">&#125;</span><span style="color: #66cc66;">&#93;</span><span style="color: #66cc66;">-</span><span style="color: #66cc66;">&#40;</span>neo<span style="color: #66cc66;">&#41;</span><span style="color: #66cc66;">,</span>
- <span style="color: #66cc66;">&#40;</span>matrix3<span style="color: #66cc66;">&#41;</span><span style="color: #66cc66;">&lt;-</span><span style="color: #66cc66;">&#91;</span>:ACTS_IN <span style="color: #66cc66;">&#123;</span><span style="color: #993333; font-weight: bold;">ROLE</span> : <span style="color: #ff0000;">'Neo'</span><span style="color: #66cc66;">&#125;</span><span style="color: #66cc66;">&#93;</span><span style="color: #66cc66;">-</span><span style="color: #66cc66;">&#40;</span>neo<span style="color: #66cc66;">&#41;</span><span style="color: #66cc66;">,</span>
- <span style="color: #66cc66;">&#40;</span>matrix1<span style="color: #66cc66;">&#41;</span><span style="color: #66cc66;">&lt;-</span><span style="color: #66cc66;">&#91;</span>:ACTS_IN <span style="color: #66cc66;">&#123;</span><span style="color: #993333; font-weight: bold;">ROLE</span> : <span style="color: #ff0000;">'Morpheus'</span><span style="color: #66cc66;">&#125;</span><span style="color: #66cc66;">&#93;</span><span style="color: #66cc66;">-</span><span style="color: #66cc66;">&#40;</span>morpheus<span style="color: #66cc66;">&#41;</span><span style="color: #66cc66;">,</span>
- <span style="color: #66cc66;">&#40;</span>matrix2<span style="color: #66cc66;">&#41;</span><span style="color: #66cc66;">&lt;-</span><span style="color: #66cc66;">&#91;</span>:ACTS_IN <span style="color: #66cc66;">&#123;</span><span style="color: #993333; font-weight: bold;">ROLE</span> : <span style="color: #ff0000;">'Morpheus'</span><span style="color: #66cc66;">&#125;</span><span style="color: #66cc66;">&#93;</span><span style="color: #66cc66;">-</span><span style="color: #66cc66;">&#40;</span>morpheus<span style="color: #66cc66;">&#41;</span><span style="color: #66cc66;">,</span>
- <span style="color: #66cc66;">&#40;</span>matrix3<span style="color: #66cc66;">&#41;</span><span style="color: #66cc66;">&lt;-</span><span style="color: #66cc66;">&#91;</span>:ACTS_IN <span style="color: #66cc66;">&#123;</span><span style="color: #993333; font-weight: bold;">ROLE</span> : <span style="color: #ff0000;">'Morpheus'</span><span style="color: #66cc66;">&#125;</span><span style="color: #66cc66;">&#93;</span><span style="color: #66cc66;">-</span><span style="color: #66cc66;">&#40;</span>morpheus<span style="color: #66cc66;">&#41;</span><span style="color: #66cc66;">,</span>
- <span style="color: #66cc66;">&#40;</span>matrix1<span style="color: #66cc66;">&#41;</span><span style="color: #66cc66;">&lt;-</span><span style="color: #66cc66;">&#91;</span>:ACTS_IN <span style="color: #66cc66;">&#123;</span><span style="color: #993333; font-weight: bold;">ROLE</span> : <span style="color: #ff0000;">'Trinity'</span><span style="color: #66cc66;">&#125;</span><span style="color: #66cc66;">&#93;</span><span style="color: #66cc66;">-</span><span style="color: #66cc66;">&#40;</span>trinity<span style="color: #66cc66;">&#41;</span><span style="color: #66cc66;">,</span>
- <span style="color: #66cc66;">&#40;</span>matrix2<span style="color: #66cc66;">&#41;</span><span style="color: #66cc66;">&lt;-</span><span style="color: #66cc66;">&#91;</span>:ACTS_IN <span style="color: #66cc66;">&#123;</span><span style="color: #993333; font-weight: bold;">ROLE</span> : <span style="color: #ff0000;">'Trinity'</span><span style="color: #66cc66;">&#125;</span><span style="color: #66cc66;">&#93;</span><span style="color: #66cc66;">-</span><span style="color: #66cc66;">&#40;</span>trinity<span style="color: #66cc66;">&#41;</span><span style="color: #66cc66;">,</span>
- <span style="color: #66cc66;">&#40;</span>matrix3<span style="color: #66cc66;">&#41;</span><span style="color: #66cc66;">&lt;-</span><span style="color: #66cc66;">&#91;</span>:ACTS_IN <span style="color: #66cc66;">&#123;</span><span style="color: #993333; font-weight: bold;">ROLE</span> : <span style="color: #ff0000;">'Trinity'</span><span style="color: #66cc66;">&#125;</span><span style="color: #66cc66;">&#93;</span><span style="color: #66cc66;">-</span><span style="color: #66cc66;">&#40;</span>trinity<span style="color: #66cc66;">&#41;</span></pre>
-
-<p><code>Added 6 labels, created 6 nodes, set 21 properties, created 9 relationships, returned 0 rows in 2791 ms</code></p>
-
-<p>And execute a simple query.</p>
-
-<pre class="sql" style="font-family:monospace;"><span style="color: #993333; font-weight: bold;">MATCH</span> <span style="color: #66cc66;">&#40;</span>a:Actor <span style="color: #66cc66;">&#123;</span> name:<span style="color: #ff0000;">&quot;Keanu Reeves&quot;</span> <span style="color: #66cc66;">&#125;</span><span style="color: #66cc66;">&#41;</span>
-<span style="color: #993333; font-weight: bold;">RETURN</span> a</pre>
-
-<p><code>(9:Actor {name:"Keanu Reeves"})</code></p>
-
-<h2>Gremlin</h2>
-
-<p>Again, let&#8217;s start by creating our graph.</p>
-
-<pre class="sql" style="font-family:monospace;">g <span style="color: #66cc66;">=</span> <span style="color: #993333; font-weight: bold;">NEW</span> TinkerGraph<span style="color: #66cc66;">&#40;</span><span style="color: #66cc66;">&#41;</span>;
-matrix1 <span style="color: #66cc66;">=</span> g<span style="color: #66cc66;">.</span>addVertex<span style="color: #66cc66;">&#40;</span><span style="color: #66cc66;">&#91;</span><span style="color: #ff0000;">&quot;_id&quot;</span>:<span style="color: #cc66cc;">603</span><span style="color: #66cc66;">,</span><span style="color: #ff0000;">&quot;title&quot;</span>:<span style="color: #ff0000;">&quot;The Matrix&quot;</span><span style="color: #66cc66;">,</span> <span style="color: #ff0000;">&quot;year&quot;</span>: <span style="color: #ff0000;">&quot;1999-03-31&quot;</span><span style="color: #66cc66;">&#93;</span><span style="color: #66cc66;">&#41;</span>;
-matrix2 <span style="color: #66cc66;">=</span> g<span style="color: #66cc66;">.</span>addVertex<span style="color: #66cc66;">&#40;</span><span style="color: #66cc66;">&#91;</span><span style="color: #ff0000;">&quot;_id&quot;</span>:<span style="color: #cc66cc;">604</span><span style="color: #66cc66;">,</span><span style="color: #ff0000;">&quot;title&quot;</span>:<span style="color: #ff0000;">&quot;The Matrix Reloaded&quot;</span><span style="color: #66cc66;">,</span> <span style="color: #ff0000;">&quot;year&quot;</span>: <span style="color: #ff0000;">&quot;2003-05-07&quot;</span><span style="color: #66cc66;">&#93;</span><span style="color: #66cc66;">&#41;</span>;
-matrix3 <span style="color: #66cc66;">=</span> g<span style="color: #66cc66;">.</span>addVertex<span style="color: #66cc66;">&#40;</span><span style="color: #66cc66;">&#91;</span><span style="color: #ff0000;">&quot;_id&quot;</span>:<span style="color: #cc66cc;">605</span><span style="color: #66cc66;">,</span><span style="color: #ff0000;">&quot;title&quot;</span>:<span style="color: #ff0000;">&quot;The Matrix Revolutions&quot;</span><span style="color: #66cc66;">,</span> <span style="color: #ff0000;">&quot;year&quot;</span>: <span style="color: #ff0000;">&quot;2003-10-27&quot;</span><span style="color: #66cc66;">&#93;</span><span style="color: #66cc66;">&#41;</span>;
-&nbsp;
-neo <span style="color: #66cc66;">=</span> g<span style="color: #66cc66;">.</span>addVertex<span style="color: #66cc66;">&#40;</span><span style="color: #66cc66;">&#91;</span><span style="color: #ff0000;">&quot;name&quot;</span>: <span style="color: #ff0000;">&quot;Keanu Reeves&quot;</span><span style="color: #66cc66;">&#93;</span><span style="color: #66cc66;">&#41;</span>;
-morpheus <span style="color: #66cc66;">=</span> g<span style="color: #66cc66;">.</span>addVertex<span style="color: #66cc66;">&#40;</span><span style="color: #66cc66;">&#91;</span><span style="color: #ff0000;">&quot;name&quot;</span>: <span style="color: #ff0000;">&quot;Laurence Fishburne&quot;</span><span style="color: #66cc66;">&#93;</span><span style="color: #66cc66;">&#41;</span>;
-trinity <span style="color: #66cc66;">=</span> g<span style="color: #66cc66;">.</span>addVertex<span style="color: #66cc66;">&#40;</span><span style="color: #66cc66;">&#91;</span><span style="color: #ff0000;">&quot;name&quot;</span>: <span style="color: #ff0000;">&quot;Carrie-Anne Moss&quot;</span><span style="color: #66cc66;">&#93;</span><span style="color: #66cc66;">&#41;</span>;
-&nbsp;
-neo<span style="color: #66cc66;">.</span>addEdge<span style="color: #66cc66;">&#40;</span><span style="color: #ff0000;">&quot;actsIn&quot;</span><span style="color: #66cc66;">,</span> matrix1<span style="color: #66cc66;">&#41;</span>; 
-neo<span style="color: #66cc66;">.</span>addEdge<span style="color: #66cc66;">&#40;</span><span style="color: #ff0000;">&quot;actsIn&quot;</span><span style="color: #66cc66;">,</span> matrix2<span style="color: #66cc66;">&#41;</span>; 
-neo<span style="color: #66cc66;">.</span>addEdge<span style="color: #66cc66;">&#40;</span><span style="color: #ff0000;">&quot;actsIn&quot;</span><span style="color: #66cc66;">,</span> matrix3<span style="color: #66cc66;">&#41;</span>; 
-morpheus<span style="color: #66cc66;">.</span>addEdge<span style="color: #66cc66;">&#40;</span><span style="color: #ff0000;">&quot;actsIn&quot;</span><span style="color: #66cc66;">,</span> matrix1<span style="color: #66cc66;">&#41;</span>; 
-morpheus<span style="color: #66cc66;">.</span>addEdge<span style="color: #66cc66;">&#40;</span><span style="color: #ff0000;">&quot;actsIn&quot;</span><span style="color: #66cc66;">,</span> matrix2<span style="color: #66cc66;">&#41;</span>; 
-morpheus<span style="color: #66cc66;">.</span>addEdge<span style="color: #66cc66;">&#40;</span><span style="color: #ff0000;">&quot;actsIn&quot;</span><span style="color: #66cc66;">,</span> matrix3<span style="color: #66cc66;">&#41;</span>; 
-trinity<span style="color: #66cc66;">.</span>addEdge<span style="color: #66cc66;">&#40;</span><span style="color: #ff0000;">&quot;actsIn&quot;</span><span style="color: #66cc66;">,</span> matrix1<span style="color: #66cc66;">&#41;</span>; 
-trinity<span style="color: #66cc66;">.</span>addEdge<span style="color: #66cc66;">&#40;</span><span style="color: #ff0000;">&quot;actsIn&quot;</span><span style="color: #66cc66;">,</span> matrix2<span style="color: #66cc66;">&#41;</span>; 
-trinity<span style="color: #66cc66;">.</span>addEdge<span style="color: #66cc66;">&#40;</span><span style="color: #ff0000;">&quot;actsIn&quot;</span><span style="color: #66cc66;">,</span> matrix3<span style="color: #66cc66;">&#41;</span>;</pre>
-
-<p>And execute a simple query.</p>
-
-<pre class="sql" style="font-family:monospace;">g<span style="color: #66cc66;">.</span>V<span style="color: #66cc66;">.</span>has<span style="color: #66cc66;">&#40;</span><span style="color: #ff0000;">'name'</span><span style="color: #66cc66;">,</span> <span style="color: #ff0000;">'Keanu Reeves'</span><span style="color: #66cc66;">&#41;</span><span style="color: #66cc66;">.</span>map</pre>
-
-<p><code>gremlin> g.V.has('name', 'Keanu Reeves').map
-==>{name=Keanu Reeves}
-gremlin></code></p>
-
-<p>Quite similar to neo4j.</p>
-
-<h2>SPARQL</h2>
-
-<p>Let&#8217;s load our example (thanks to <a href="https://twitter.com/kendall">Kendall G. Clark</a>). I used 
-<a href="http://jena.apache.org/documentation/serving_data/">Fuseki</a> to run these queries.</p>
-
-<pre class="xml" style="font-family:monospace;">@prefix :          <span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;http:</span>//example.org/matrix<span style="color: #000000; font-weight: bold;">/&gt;</span></span> .
-&nbsp;
- :m1 a :Movie; :title &quot;The Matrix&quot;; :year &quot;1999-03-31&quot;.
- :m2 a :Movie; :title &quot;The Matrix Reloaded&quot;; :year &quot;2003-05-07&quot;.
- :m3 a :Movie; :title &quot;The Matrix Revolutions&quot;; :year &quot;2003-10-27&quot;.
-&nbsp;
- :neo a :Actor; :name &quot;Keanu Reeves&quot;.
- :morpheus a :Actor; :name &quot;Laurence Fishburne&quot;.
- :trinity a :Actor; :name &quot;Carrie-Anne Moss&quot;.
-&nbsp;
- :neo :hasRole [:as &quot;Neo&quot;; :in :m1].
- :neo :hasRole [:as &quot;Neo&quot;; :in :m2].
- :neo :hasRole [:as &quot;Neo&quot;; :in :m2].
- :morpheus :hasRole [:as &quot;Morpheus&quot;; :in :m1].
- :morpheus :hasRole [:as &quot;Morpheus&quot;; :in :m2].
- :morpheus :hasRole [:as &quot;Morpheus&quot;; :in :m2].
- :trinity :hasRole [:as &quot;Trinity&quot;; :in :m1].
- :trinity :hasRole [:as &quot;Trinity&quot;; :in :m2].
- :trinity :hasRole [:as &quot;Trinity&quot;; :in :m2].</pre>
-
-<p>And finally the SPARQL query.</p>
-
-<pre class="sql" style="font-family:monospace;"><span style="color: #993333; font-weight: bold;">SELECT</span> ?a <span style="color: #993333; font-weight: bold;">WHERE</span> <span style="color: #66cc66;">&#123;</span>
-   ?a a <span style="color: #66cc66;">&lt;</span>http:<span style="color: #66cc66;">//</span>example<span style="color: #66cc66;">.</span>org<span style="color: #66cc66;">/</span>matrix<span style="color: #66cc66;">/</span>Actor<span style="color: #66cc66;">&gt;</span> <span style="color: #66cc66;">.</span>
-   ?a <span style="color: #66cc66;">&lt;</span>http:<span style="color: #66cc66;">//</span>example<span style="color: #66cc66;">.</span>org<span style="color: #66cc66;">/</span>matrix<span style="color: #66cc66;">/</span>name<span style="color: #66cc66;">&gt;</span> ?name <span style="color: #66cc66;">.</span>
-   <span style="color: #993333; font-weight: bold;">FILTER</span><span style="color: #66cc66;">&#40;</span>?name  <span style="color: #66cc66;">=</span> <span style="color: #ff0000;">&quot;Keanu Reeves&quot;</span><span style="color: #66cc66;">&#41;</span>
-<span style="color: #66cc66;">&#125;</span></pre>
-
-<p>Returning the Keanu Reeves actor instance.</p>
-
-<pre>-----------------------------------
-| a                               |
-===================================
-| &lt;http://example.org/matrix/neo&gt; |
------------------------------------</pre>
-
-<p>SPARQL supports inference (or I must say that OWL, RDFS and the reasoners do), 
-but it is easier to define the depth of a search in the graph using neo4j. As for 
-Gremlin, it has native support to Groovy and Java. There is a common denominator 
-for these three languages, but what makes them really powerful are their unique features. </p>
-
-<p>I hope you enjoyed, and that this post gave you a quick overview of some of the existing 
-graph languages. Make sure you ponder the pros and cons of each server/language, and 
-make the best decision for your project. Take a look at <a href="http://en.wikipedia.org/wiki/Graph_database#APIs_and_Graph_Query.2FProgramming_Languages">other graph query languages</a> too.</p>
-
-<p>Happy hacking!</p>
-
-<hr />
-
-<p>This post has been updated as suggested by <a href="https://twitter.com/kendall">@kendall</a> (Thank you!).
-You can check the diff at <a href="https://github.com/kinow/kinoshita.eti.br/commits/master/site/_content/posts/2014-09-09_cypher-gremlin-and-sparql-graph-dialects.html">GitHub</a></p>
-
-                            
-                                                        
-                        </div>
-                        <p class="postmetadata">
-                                                        <small>tags                              [&nbsp;<a
-                                href="/tag/graph.html"
-                                rel="tag">graph</a>&nbsp;]&nbsp;
-                                                         [&nbsp;<a
-                                href="/tag/neo4j.html"
-                                rel="tag">neo4j</a>&nbsp;]&nbsp;
-                                                         [&nbsp;<a
-                                href="/tag/gremlin.html"
-                                rel="tag">gremlin</a>&nbsp;]&nbsp;
-                                                         [&nbsp;<a
-                                href="/tag/sparql.html"
-                                rel="tag">sparql</a>&nbsp;]&nbsp;
                                                         </small>
                                                                                     <br/>
                             <small>posted in 
