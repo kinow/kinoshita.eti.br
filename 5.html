@@ -62,9 +62,6 @@
             href="http://kinoshita.eti.br/software.html">Software</a></li>
         <li
             class="menu-item"><a
-            href="http://kinoshita.eti.br/illustrations.html">Illustrations</a></li>
-        <li
-            class="menu-item"><a
             href="http://kinoshita.eti.br/articles.html">Articles</a></li>
         <li
             class="menu-item"><a
@@ -77,105 +74,12 @@
                 <img src="http://kinoshita.eti.br/img/bruno.jpg"
                     title="Hmmmm" alt="Hmmmm" width="134px" height="215px" />
                 <hr class="space" />
-                <div class="logos">
- <a href="http://apache.org"><img
-        src="http://kinoshita.eti.br/img/logos/asf-logo.gif"
-        title="Apache Software Foundation"
-        alt="Apache Software Foundation" /></a> <a href="http://www.javacodegeeks.com/"><img
-        src="http://kinoshita.eti.br/img/logos/logo_jcg_115x100.png"
-        title="Java Code Geeks"
-        alt="Java Code Geeks" /></a> <a href="http://www.open-bio.org/wiki/BOSC_2012"><img
-        src="http://kinoshita.eti.br/img/logos/ISMB2012.jpg"
-        title="BOSC 2012"
-        alt="BOSC 2012" /></a> <a href="http://www.stpcon.com/"><img
-        src="http://kinoshita.eti.br/img/logos/stpconspring2012.png"
-        title="STPCon Spring 2012"
-        alt="STPCon Spring 2012" /></a> <a href="http://www.oracle.com/javaone/lad-pt/"><img
-        src="http://kinoshita.eti.br/img/logos/javaone.png"
-        title="JavaOne 2011 LAD"
-        alt="JavaOne 2011 LAD" /></a> <a href="http://www.jcertif.com"><img
-        src="http://kinoshita.eti.br/img/logos/JCertif_Conf2011_2.png"
-        title="JCertif 2011"
-        alt="JCertif 2011" /></a> <a href="http://www.thedevelopersconference.com.br/tdc/2011/"><img
-        src="http://kinoshita.eti.br/img/logos/banner-TDC2011-234x60.png"
-        title="The Developer's Conference 2011"
-        alt="The Developer's Conference 2011" /></a> <a href="http://belgiumtestingdays.com/past.php"><img
-        src="http://kinoshita.eti.br/img/logos/btd2011_speakers_banner_1.png"
-        title="Belgium Testing Days 2011"
-        alt="Belgium Testing Days 2011" /></a>
-</div>            </div>
+                            </div>
                         <div id="right" class="span8">
                 <div id="main">
                                                     <h1 class='topic'>Home</h1>
                     <hr class="space" />
                                                         <div
-                        class="post type-post status-publish format-standard hentry">
-                        <h2>
-                            <a href="/2012/10/20/replacing-a-hashset-with-a-bitset.html" title="Permanent link">Replacing a HashSet with a BitSet</a>
-                        </h2>
-                        <small>Bruno P. Kinoshita</small> @ <small>October 20, 2012&nbsp;23:07:39</small>
-                        <div class="entry">
-                            <a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2012/10/20/replacing-a-hashset-with-a-bitset.html" data-text="Replacing a HashSet with a BitSet" data-via="kinow" data-hashtags="opensource">Tweet</a>
-<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-                            
-                            <p>I always read the messages in the <a href="http://www.apache.org/foundation/mailinglists.html" title="Apache mailing lists">Apache dev mailing lists</a>, including Apache Commons <a href="http://commons.apache.org/mail-lists.html" title="Apache Commons mailing lists">dev mailing list</a>. And you should too. There are always interesting discussions. Sometimes you participate, other times you only watch what&#8217;s happening, but in the end <strong>you always learn something new</strong>.</p>
-
-<p>A few days ago, I found <a href="https://issues.apache.org/jira/browse/LANG-839" title="LANG-839">an issue</a> where it was being proposed to replace an unnecessary <a href="http://docs.oracle.com/javase/6/docs/api/java/util/HashSet.html" title="HashSet">HashSet</a> in <a href="http://commons.apache.org/lang/api-release/org/apache/commons/lang3/ArrayUtils.html" title="ArrayUtils">ArrayUtils</a>#removeElements() by a <a href="http://docs.oracle.com/javase/6/docs/api/java/util/BitSet.html" title="BitSet">BitSet</a>. Here&#8217;s how the code looked like: </p>
-
-<pre class="java" style="font-family:monospace;">HashSet<span style="color: #339933;">&lt;</span>Integer<span style="color: #339933;">&gt;</span> toRemove <span style="color: #339933;">=</span> <span style="color: #000000; font-weight: bold;">new</span> HashSet<span style="color: #339933;">&lt;</span>Integer<span style="color: #339933;">&gt;</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-<span style="color: #000000; font-weight: bold;">for</span> <span style="color: #009900;">&#40;</span><a href="http://www.google.com/search?hl=en&amp;q=allinurl%3Adocs.oracle.com+javase+docs+api+map"><span style="color: #003399;">Map</span></a>.<span style="color: #006633;">Entry</span><span style="color: #339933;">&lt;</span><a href="http://www.google.com/search?hl=en&amp;q=allinurl%3Adocs.oracle.com+javase+docs+api+character"><span style="color: #003399;">Character</span></a>, MutableInt<span style="color: #339933;">&gt;</span> e <span style="color: #339933;">:</span> occurrences.<span style="color: #006633;">entrySet</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
-    <a href="http://www.google.com/search?hl=en&amp;q=allinurl%3Adocs.oracle.com+javase+docs+api+character"><span style="color: #003399;">Character</span></a> v <span style="color: #339933;">=</span> e.<span style="color: #006633;">getKey</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-    <span style="color: #000066; font-weight: bold;">int</span> found <span style="color: #339933;">=</span> <span style="color: #cc66cc;">0</span><span style="color: #339933;">;</span>
-    <span style="color: #000000; font-weight: bold;">for</span> <span style="color: #009900;">&#40;</span><span style="color: #000066; font-weight: bold;">int</span> i <span style="color: #339933;">=</span> <span style="color: #cc66cc;">0</span>, ct <span style="color: #339933;">=</span> e.<span style="color: #006633;">getValue</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span>.<span style="color: #006633;">intValue</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span> i <span style="color: #339933;">&lt;</span> ct<span style="color: #339933;">;</span> i<span style="color: #339933;">++</span><span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
-        found <span style="color: #339933;">=</span> indexOf<span style="color: #009900;">&#40;</span>array, v.<span style="color: #006633;">charValue</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span>, found<span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-        <span style="color: #000000; font-weight: bold;">if</span> <span style="color: #009900;">&#40;</span>found <span style="color: #339933;">&lt;</span> <span style="color: #cc66cc;">0</span><span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
-            <span style="color: #000000; font-weight: bold;">break</span><span style="color: #339933;">;</span>
-        <span style="color: #009900;">&#125;</span>
-        toRemove.<span style="color: #006633;">add</span><span style="color: #009900;">&#40;</span>found<span style="color: #339933;">++</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-    <span style="color: #009900;">&#125;</span>
-<span style="color: #009900;">&#125;</span>
-<span style="color: #000000; font-weight: bold;">return</span> <span style="color: #009900;">&#40;</span><span style="color: #000066; font-weight: bold;">char</span><span style="color: #009900;">&#91;</span><span style="color: #009900;">&#93;</span><span style="color: #009900;">&#41;</span> removeAll<span style="color: #009900;">&#40;</span><span style="color: #009900;">&#40;</span><a href="http://www.google.com/search?hl=en&amp;q=allinurl%3Adocs.oracle.com+javase+docs+api+object"><span style="color: #003399;">Object</span></a><span style="color: #009900;">&#41;</span>array, extractIndices<span style="color: #009900;">&#40;</span>toRemove<span style="color: #009900;">&#41;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span></pre>
-
-<p style="text-align: center"><a href="/2012/10/20/replacing-a-hashset-with-a-bitset/feather_small.gif"><img src="/2012/10/20/replacing-a-hashset-with-a-bitset/feather_small.gif" alt="" title="Apache Software Foundation" width="203" height="61" class="aligncenter size-full wp-image-1125" /></a></p>
-
-<p>The HashSet created at line 1, in the code above, was used to store the array index of the elements that should be removed. And at line 13 there is a call to removeAll method, passing the indexes to be removed. And here&#8217;s how the new code looks like: </p>
-
-<pre class="java" style="font-family:monospace;"><a href="http://www.google.com/search?hl=en&amp;q=allinurl%3Adocs.oracle.com+javase+docs+api+bitset"><span style="color: #003399;">BitSet</span></a> toRemove <span style="color: #339933;">=</span> <span style="color: #000000; font-weight: bold;">new</span> <a href="http://www.google.com/search?hl=en&amp;q=allinurl%3Adocs.oracle.com+javase+docs+api+bitset"><span style="color: #003399;">BitSet</span></a><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-<span style="color: #000000; font-weight: bold;">for</span> <span style="color: #009900;">&#40;</span><a href="http://www.google.com/search?hl=en&amp;q=allinurl%3Adocs.oracle.com+javase+docs+api+map"><span style="color: #003399;">Map</span></a>.<span style="color: #006633;">Entry</span><span style="color: #339933;">&lt;</span><a href="http://www.google.com/search?hl=en&amp;q=allinurl%3Adocs.oracle.com+javase+docs+api+character"><span style="color: #003399;">Character</span></a>, MutableInt<span style="color: #339933;">&gt;</span> e <span style="color: #339933;">:</span> occurrences.<span style="color: #006633;">entrySet</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
-    <a href="http://www.google.com/search?hl=en&amp;q=allinurl%3Adocs.oracle.com+javase+docs+api+character"><span style="color: #003399;">Character</span></a> v <span style="color: #339933;">=</span> e.<span style="color: #006633;">getKey</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-    <span style="color: #000066; font-weight: bold;">int</span> found <span style="color: #339933;">=</span> <span style="color: #cc66cc;">0</span><span style="color: #339933;">;</span>
-    <span style="color: #000000; font-weight: bold;">for</span> <span style="color: #009900;">&#40;</span><span style="color: #000066; font-weight: bold;">int</span> i <span style="color: #339933;">=</span> <span style="color: #cc66cc;">0</span>, ct <span style="color: #339933;">=</span> e.<span style="color: #006633;">getValue</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span>.<span style="color: #006633;">intValue</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span> i <span style="color: #339933;">&lt;</span> ct<span style="color: #339933;">;</span> i<span style="color: #339933;">++</span><span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
-        found <span style="color: #339933;">=</span> indexOf<span style="color: #009900;">&#40;</span>array, v.<span style="color: #006633;">charValue</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span>, found<span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-        <span style="color: #000000; font-weight: bold;">if</span> <span style="color: #009900;">&#40;</span>found <span style="color: #339933;">&lt;</span> <span style="color: #cc66cc;">0</span><span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
-            <span style="color: #000000; font-weight: bold;">break</span><span style="color: #339933;">;</span>
-        <span style="color: #009900;">&#125;</span>
-        toRemove.<span style="color: #006633;">set</span><span style="color: #009900;">&#40;</span>found<span style="color: #339933;">++</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-    <span style="color: #009900;">&#125;</span>
-<span style="color: #009900;">&#125;</span>
-<span style="color: #000000; font-weight: bold;">return</span> <span style="color: #009900;">&#40;</span><span style="color: #000066; font-weight: bold;">char</span><span style="color: #009900;">&#91;</span><span style="color: #009900;">&#93;</span><span style="color: #009900;">&#41;</span> removeAll<span style="color: #009900;">&#40;</span>array, toRemove<span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span></pre>
-
-<p>The first difference is at line 1. Instead of a HashSet, it is now using a BitSet. And at line 10, instead of adding a new element to the HashSet, now it &#8220;sets&#8221; a bit in the set (the bit at the specified position is now true). But there are important changes at line 13. The method removeAll was changed, and now the array doesn&#8217;t require a cast anymore. And the it is not necessary to cast the elements from HashSet anymore, as now the bit in the index position of the set is set to true. So the extractIndices method could be removed.</p>
-
-<p><p>The code got simpler. But that&#8217;s not all. At <a href="http://www.apache.org" title="Apache Software Foundation">Apache Software Foundation</a> you can find a lot of talented developers - that&#8217;s why I got so excited after joining them. Besides simplifying the code, the developer responsible for these changes (<strong>sebb</strong>) also pointed out that the new code <strong>consumes less memory and is faster</strong>. Ah! And he also wrote <strong>unit tests</strong></p>
-
-                            
-                                                        
-                        </div>
-                        <p class="postmetadata">
-                                                        <small>tags                              [&nbsp;<a
-                                href="/tag/open-source.html"
-                                rel="tag">open source</a>&nbsp;]&nbsp;
-                                                         [&nbsp;<a
-                                href="/tag/apache.html"
-                                rel="tag">apache</a>&nbsp;]&nbsp;
-                                                         [&nbsp;<a
-                                href="/tag/java.html"
-                                rel="tag">java</a>&nbsp;]&nbsp;
-                                                        </small>
-                                                                                </p>
-                    </div>
-                    <hr class='space' />
-                                        <div
                         class="post type-post status-publish format-standard hentry">
                         <h2>
                             <a href="/2012/10/16/adding-coverage-reports-in-jenkins-to-googletest-with-gcovr.html" title="Permanent link">Adding coverage reports in Jenkins to GoogleTest with gcovr</a>
@@ -367,6 +271,44 @@
                                 href="/bioinformatics.html"
                                 title="View all posts in bioinformatics"
                                 rel="category tag">bioinformatics</a>&nbsp;]
+                                &nbsp;category
+                            </small>
+                                                    </p>
+                    </div>
+                    <hr class='space' />
+                                        <div
+                        class="post type-post status-publish format-standard hentry">
+                        <h2>
+                            <a href="/2012/09/20/running-word-count-example-on-a-hadoop-commodity-hardware-cluster-and-on-a-hadoop-local-installation.html" title="Permanent link">Running word-count example on a Hadoop commodity-hardware cluster and on a Hadoop local installation</a>
+                        </h2>
+                        <small>Bruno P. Kinoshita</small> @ <small>September 20, 2012&nbsp;21:49:38</small>
+                        <div class="entry">
+                            <a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2012/09/20/running-word-count-example-on-a-hadoop-commodity-hardware-cluster-and-on-a-hadoop-local-installation.html" data-text="Running word-count example on a Hadoop commodity-hardware cluster and on a Hadoop local installation" data-via="kinow" data-hashtags="opensource">Tweet</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+                            
+                            <p>Last weekend I spent some hours assembling old computer parts to create my commodity hardware cluster for running Hadoop. I already had a local installation in my notebook, so I thought it would be cool to run the word-count example in both scenarios to see what would be the results.</p>
+
+<p>But first, let&#8217;s review the hardware configurations:</p>
+
+
+                            
+                                                        <p>( <a href="/2012/09/20/running-word-count-example-on-a-hadoop-commodity-hardware-cluster-and-on-a-hadoop-local-installation.html" >Read more ...</a> )</p>
+                                                        
+                        </div>
+                        <p class="postmetadata">
+                                                        <small>tags                              [&nbsp;<a
+                                href="/tag/big-data.html"
+                                rel="tag">big data</a>&nbsp;]&nbsp;
+                                                         [&nbsp;<a
+                                href="/tag/hadoop.html"
+                                rel="tag">hadoop</a>&nbsp;]&nbsp;
+                                                        </small>
+                                                                                    <br/>
+                            <small>posted in 
+                            [&nbsp;<a
+                                href="/data-analysis.html"
+                                title="View all posts in data analysis"
+                                rel="category tag">data analysis</a>&nbsp;]
                                 &nbsp;category
                             </small>
                                                     </p>

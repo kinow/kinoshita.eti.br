@@ -13,7 +13,7 @@
     <atom:link href="http://kinoshita.eti.br/blog/feed.xml" rel="self" type="application/rss+xml" />
     <link>http://kinoshita.eti.br/</link>
     <description></description>
-    <lastBuildDate>Mon, 07 Sep 2015 01:43:20 +1200</lastBuildDate>
+    <lastBuildDate>Sat, 03 Oct 2015 13:20:43 +1300</lastBuildDate>
     <language>en-US</language>
     <generator>PieCrust 1.2.0</generator>
  
@@ -75,14 +75,6 @@
 &lt;p&gt;It is a bit late, so it is all for today. In summary: the credentials plug-in gives you a central place to manage credentials, but it is up to plug-in developers to use it. Sensitive values can be encrypted with AES on disk. So it is important that your file permissions, ACL and system auditing processes are in place and well maintained and monitored.&lt;/p&gt;
 
 &lt;p&gt;Happy hacking!&lt;/p&gt;
-</description>
-</item>
-<item>
-    <title>Uploading data to 52 North SOS</title>
-    <pubDate>Thu, 25 Jun 2015 00:00:00 +1200</pubDate>
-    <link>/2015/06/25/uploading-data-to-52-north-sos.html</link>
-    <dc:creator>Bruno P. Kinoshita</dc:creator>
-    <description>
 </description>
 </item>
 <item>
@@ -579,6 +571,32 @@ creates the database schema docs in the &lt;code&gt;database-schema&lt;/code&gt;
 &lt;p&gt;Check this &lt;a href=&quot;https://gist.github.com/kinow/8936667&quot;&gt;gist&lt;/a&gt; for the final code.&lt;/p&gt;
 
 &lt;p&gt;Happy coding!&lt;/p&gt;
+</description>
+</item>
+<item>
+    <title>Missing menus in new installation of TestLink 1.9.8</title>
+    <pubDate>Sun, 27 Oct 2013 00:00:00 +1300</pubDate>
+    <link>/2013/10/27/missing-menus-in-new-installation-of-testlink.html</link>
+    <dc:creator>Bruno P. Kinoshita</dc:creator>
+    <description>&lt;p&gt;I recently installed TestLink 1.9.8 and noticed that the menus and some other parts 
+of the UI we missing. Looking at &lt;code&gt;/var/log/testlink/userlog1.log&lt;/code&gt; (the location 
+may change depending on your settings) I realized that there was something wrong 
+with my PHP installation. There were log messages like the below.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;include_once(ADORecordSet_ext_empty.class.php): failed to open stream: No such file or directory - in /home/kinow/php/workspace/testlink-1.9.8/lib/functions/common.php - Line 92
+[13/Sep/18 12:51:09][WARNING][2o0h173pdgg5fjqh1pukr83og2][GUI]
+E_WARNING
+include_once(): Failed opening &#039;ADORecordSet_ext_empty.class.php&#039; for inclusion (include_path=&#039;.:/usr/share/php:/usr/share/pear:.:/home/kinow/php/workspace/testlink-1.9.8/lib/functions/:/home/kinow/php/workspace/testlink-1.9.8/lib/issuet
+...
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;I found a post in a forum (but unfortunately I forgot to save the link) that suggested 
+these ADORecordSet were being caused by the module &lt;strong&gt;php5-adodb&lt;/strong&gt;. Removing the module, and 
+cleaning the templates cache directory (&lt;code&gt;$TESTLINK&lt;em&gt;HOME/gui/templates&lt;/em&gt;c/*&lt;/code&gt;) 
+fixed the issue for me.&lt;/p&gt;
+
+&lt;p&gt;Hope that helps.
+Happy testing!&lt;/p&gt;
 </description>
 </item>
 </channel>
