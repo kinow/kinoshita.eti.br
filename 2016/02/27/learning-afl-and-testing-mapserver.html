@@ -1,0 +1,310 @@
+  <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head profile="http://gmpg.org/xfn/11">
+<title>Bruno P. Kinoshita &mdash; Learning afl and testing MapServer</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="description" content="Bruno de Paula Kinoshita personal web site" />
+<meta name="keywords"
+    content="kinoshita, bruno de paula kinoshita, geek, geek stuff, java, python, c, c++, msn now playing, neural network, mackenzie, sao paulo, brasil, brazil, nerd, nerd stuff, cool, jenkins, illustration, quadrinhos, machine learning, linguistic, apache" />
+<meta name="author" content="Bruno P. Kinoshita" />
+<meta name="generator" content="PieCrust 1.2.0" />
+<meta name="template-engine" content="Twig" />
+<meta name="robots" content="all=index,follow" />
+<meta name="revisit-after" content="15 days" />
+<meta http-equiv="Pragma" content="no-cache" />
+<meta name="distribution" content="Global" />
+<meta name="url" content="http://kinoshita.eti.br/" />
+<meta name="copyright" content="Bruno de Paula Kinoshita" />
+<meta name="Googlebot" content="all" />
+<meta name="rating" content="general" />
+<meta http-equiv="expires" content="0" />
+<meta name="city" content="Sao Paulo" />
+<meta name="state" content="Brasil, Sao Paulo" />
+<meta http-equiv="content-language" content="en" />
+<meta http-equiv="imagetoolbar" content="no" />
+<meta id="page_favicon" href="http://kinoshita.eti.br/favicon.ico" rel="icon" type="image/x-icon" />
+<link rel="shortcut icon" type="image/x-icon" href="http://kinoshita.eti.br/favicon.ico">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<!--[if lt IE 9]>
+<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+<script src="http://kinoshita.eti.br/js/jquery-1.6.1.min.js"  type="text/javascript" charset="utf-8"></script>
+<script src="http://kinoshita.eti.br/js/jquery.prettyPhoto.js"></script>
+<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<link rel="alternate" type="application/rss+xml" title="Bruno P. Kinoshita &raquo; Feed" href="http://kinoshita.eti.br//feed.xml" />
+<link rel="stylesheet" href="http://kinoshita.eti.br/css/prettyPhoto.css" type="text/css" media="screen, projection" />
+<link rel="stylesheet" href="http://kinoshita.eti.br/css/bootstrap.css" type="text/css" media="screen, projection" />
+<link rel="stylesheet" href="http://kinoshita.eti.br/css/bootstrap-responsive.css" type="text/css" media="screen, projection" />
+<link rel="stylesheet" href="http://kinoshita.eti.br/css/style.css" type="text/css" media="screen, projection" />
+<!--[if lt IE 8]>
+    <link rel="stylesheet" href="/css/blueprint/ie.css" type="text/css" media="screen, projection" />
+<![endif]-->
+<link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Droid+Sans">
+ <link rel="stylesheet" href="/css/default.css" type="text/css" media="all" />
+ 
+</head>
+<body class="home blog">
+    <div class="container-fluid">
+            <div class="row-fluid">
+            <div id="left" class="span2">
+                <div style="padding-top: 6px;">
+                    <ul>
+                        <li><a style="color: #E13F4D;" class="mainlink"
+                            href="http://kinoshita.eti.br/">Kinoshita</a></li>
+                    </ul>
+                </div>
+                <div class="menu-main-menu-container">
+    <ul
+        id="menu-main-menu"
+        class="menu">
+        <li
+            class="menu-item"><a
+            href="http://kinoshita.eti.br/software.html">Software</a></li>
+        <li
+            class="menu-item"><a
+            href="http://kinoshita.eti.br/articles.html">Articles</a></li>
+        <li
+            class="menu-item"><a
+            href="http://kinoshita.eti.br/about.html">About &#038; CV</a></li>
+        <li
+            class="menu-item"><a
+            href="http://kinoshita.eti.br/contact.html">Contact</a></li>
+    </ul>
+</div>                <hr class="space" />
+                <img src="http://kinoshita.eti.br/img/bruno.jpg"
+                    title="Hmmmm" alt="Hmmmm" width="134px" height="215px" />
+                <hr class="space" />
+                            </div>
+                        <div id="right" class="span8">
+                <div id="main">
+                <div class="post type-post status-publish format-standard hentry">
+    <h1 class='post-topic'>Learning afl and testing MapServer</h1>
+    <small>Bruno P. Kinoshita</small> @
+	<small>February 27, 2016&nbsp;23:21:03</small>
+    <div class="entry">
+       <a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2016/02/27/learning-afl-and-testing-mapserver.html" data-text="Learning afl and testing MapServer" data-via="kinow" data-hashtags="opensource">Tweet</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+
+	   <p><a href="http://lcamtuf.coredump.cx/afl/">afl</a> is a fuzzer, an application that combines a series of algorithms
+in order to try invoking programs with several different input values. It then analyses the application
+execution flow given different test case scenarios. 
+You can read more about fuzzing at <a href="https://www.owasp.org/index.php/Fuzzing">this OWASP page</a>, or in other
+blogs that I also used while learning about afl
+<a href="/2016/02/27/using-afl-to-test-mapserver#1.html">1</a>
+<a href="/2016/02/27/using-afl-to-test-mapserver#2.html">2</a></p>
+
+<p>At work we are using MapServer for serving WFS and WMS. And I am using it for the
+<a href="http://maps.nzoss.org.nz">NZ OpenStreetMap maps</a> too. MapServer is written in C++ and is normally
+exposed as a CGI script, so I thought it was worth learning about afl and trying it on MapServer,
+as in case it finds any interesting bug I can submit it to the MapServer project.</p>
+
+<!--more-->
+
+<h2>Download and build MapServer source code</h2>
+
+<p>MapServer code is hosted on <a href="https://github.com/mapserver/mapserver">GitHub</a> and once you have cloned it a look
+at the Travis CI configuration file will give you some hints on which dependencies you must have
+installed on your operating system in order to build it. I will omit the steps to make this post shorter.</p>
+
+<p>Once you have successfully built mapserv binary you will need to remove the generated files, and execute
+CMake again but now using afl&#8217;s compiler. This way the application will be instrumented and afl can
+analyse its execution flow.</p>
+
+<p>You can do that by exporting these two variables before running CMake.</p>
+
+<pre class="shell" style="font-family:monospace;">export CXX=/opt/afl-2.05b/afl-g++
+export CC=/opt/afl-2.05b/afl-gcc</pre>
+
+<p>After this you can run CMake and GNU make again. That should create a binary instrumented mapserv,
+that can be tested with afl.</p>
+
+<pre class="shell" style="font-family:monospace;">cd /home/kinow/Development/cpp/workspace/mapserver/
+mkdir build &amp;&amp; cd build
+cmake ..
+make
+./mapserv -v</pre>
+
+<h2>Creating a shapefile mapfile</h2>
+
+<p>The easiest way to test MapServer locally, without Postgres or Postgis, is probably by
+creating a single layer mapfile. LINZ provides shapefiles for New Zealand
+(<a href="https://data.linz.govt.nz/layer/1153-nz-coastlines-and-islands-polygons-topo-150k/">here&#8217;s an example</a>)
+that I used for this experiment.</p>
+
+<div class='row'>
+<div class="span6 offset3" style='text-align: center;'>
+<figure>
+<a href="/2016/02/27/learning-afl-and-testing-mapserver/qgis_settings.png" rel="prettyPhoto" class="thumbnail" title="QGIS Bounding Area settings">
+<img class="span12" src="/2016/02/27/learning-afl-and-testing-mapserver/qgis_settings.png" alt="QGIS Bounding Area settings" />
+</a>
+<figcaption>QGIS Bounding Area settings</i></figcaption>
+</figure>
+</div>
+</div>
+
+<p>I used <a href="http://www.qgis.org/en/site/">QGIS</a> to load the shapefile, take a look at the map,
+and get the bounding area and projection. Here&#8217;s the final mapfile.</p>
+
+<pre class="shell" style="font-family:monospace;">MAP
+  IMAGETYPE      JPEG
+  EXTENT         -97.238976 41.619778 -82.122902 49.385620
+  SIZE           400 300
+  SHAPEPATH      &quot;/home/kinow/Downloads/linz-shp&quot;
+  IMAGECOLOR     255 255 255
+&nbsp;
+  WEB
+    METADATA
+      &quot;wms_title&quot;           &quot;WMS Fake Server&quot;
+      &quot;wms_onlineresource&quot;  &quot;http://127.0.0.1/cgi-bin/mapserv?map=wms.map&amp;&quot;
+      &quot;wms_srs&quot;             &quot;EPSG:4167&quot;
+      &quot;wms_enable_request&quot;  &quot;*&quot;
+    END
+  END
+&nbsp;
+  PROJECTION
+    &quot;init=epsg:4167&quot;
+  END
+&nbsp;
+  LAYER # States polygon layer begins here
+    NAME         nz-coastlines-and-islands-polygons-topo-150k
+    DATA         nz-coastlines-and-islands-polygons-topo-150k
+    STATUS       OFF
+    TYPE         POLYGON
+&nbsp;
+    CLASS
+      NAME       &quot;NZ Topo LINZ map&quot;
+&nbsp;
+      STYLE
+        COLOR        232 232 232
+        OUTLINECOLOR 32 32 32
+      END
+    END
+  END
+END</pre>
+
+<p>Then you can finally execute MapServer binary program and output to a local image file.</p>
+
+<pre class="shell" style="font-family:monospace;">export MS_ERRORFILE=&quot;stderr&quot;
+export MS_MAPFILE=/home/kinow/Development/cpp/workspace/mapserver/nztopo1.map
+&nbsp;
+./mapserv -nh QUERY_STRING=&quot;VERSION=1.1.0&amp;REQUEST=GetMap&amp;LAYERS=nz-coastlines-and-islands-polygons-topo-150k&amp;SRS=EPSG:4167&amp;SERVICE=WMS&amp;TEMPLATE=OpenLayers&amp;BBOX=165.869,-52.6209,183.846,-29.2313&amp;FORMAT=image/jpeg&amp;HEIGHT=800&amp;WIDTH=800&quot; 2&gt;/dev/null &gt; /tmp/nzmap.jpg</pre>
+
+<h2>Running afl</h2>
+
+<p>I decided to use a RAM disk while running afl as suggested
+<a href="http://www.cipherdyne.org/blog/2014/12/ram-disks-and-saving-your-ssd-from-afl-fuzzing.html">in this blog post</a>
+to avoid a lot of writes in my SSD disk. Then moved MapServer there and fired afl.</p>
+
+<pre class="shell" style="font-family:monospace;">cd /tmp/afl-ramdisk/mapserver
+mkdir fuzz-input fuzz-output
+&nbsp;
+/opt/afl-2.05b/afl-fuzz -m 500 -i fuzz-input/ -o fuzz-output/ -t 2000 ./mapserv QUERY_STRING=&quot;VERSION=1.1.0&amp;REQUEST=GetMap&amp;LAYERS=nz-coastlines-and-islands-polygons-topo-150k&amp;SRS=EPSG:4167&amp;SERVICE=WMS&amp;TEMPLATE=OpenLayers&amp;BBOX=165.869,-52.6209,183.846,-29.2313&amp;FORMAT=image/jpeg&amp;HEIGHT=800&amp;WIDTH=800&quot;</pre>
+
+<div class='row'>
+<div class="span6 offset3" style='text-align: center;'>
+<figure>
+<a href="/2016/02/27/learning-afl-and-testing-mapserver/afl_testing_mapserver.png" rel="prettyPhoto" class="thumbnail" title="afl testing MapServer">
+<img class="span12" src="/2016/02/27/learning-afl-and-testing-mapserver/afl_testing_mapserver.png" alt="afl testing MapServer" />
+</a>
+<figcaption>afl testing MapServer</i></figcaption>
+</figure>
+</div>
+</div>
+
+<p>However, it is not mutating the program input as I didn&#8217;t use &#8220;@@&#8221; nor a dictionary. When you use @@, afl will replace
+it by the location of a file that it generated. Or by using &#8220;-x&#8221; you can provide a dictionary used to generate
+variations of parameters.</p>
+
+<p>During the next days I will give it another go at work, and will investigate how to test MapServer without having to write
+a wrapper in Shell or C/C++. You can still test other programs that are shipped with MapServer though.</p>
+
+<pre class="shell" style="font-family:monospace;">cd /tmp/afl-ramdisk/mapserver
+&nbsp;
+/opt/afl-2.05b/afl-fuzz -m 512 -i fuzz-input -o fuzz-output -f /tmp/afl-ramdisk/input ./shp2img -m @@ -l nz-coastlines-and-islands-polygons-topo-150k -i image/jpeg -o /tmp/afl-ramdisk/nzmap.jpg -e 165.869 -52.6209 183.846 -29.2313</pre>
+
+<p>I hope it helps you get started with afl in case you are learning about it too :-) Happy hacking!</p>
+
+<p><br/>
+<br/>
+<sup><a name="1">1</a> 
+<a href="https://fuzzing-project.org/tutorial3.html">
+https://fuzzing-project.org/tutorial3.html</a></sup></p>
+
+<p><sup><a name="2">2</a> 
+<a href="https://www.nettitude.co.uk/fuzzing-with-american-fuzzy-lop-afl/">
+https://www.nettitude.co.uk/fuzzing-with-american-fuzzy-lop-afl/</a></sup></p>
+
+    </div>
+    <p class="postmetadata">
+                <small>tags          [&nbsp;<a
+            href="/tag/mapserver.html"
+            rel="tag">mapserver</a>&nbsp;]&nbsp;
+                 [&nbsp;<a
+            href="/tag/afl.html"
+            rel="tag">afl</a>&nbsp;]&nbsp;
+                 [&nbsp;<a
+            href="/tag/fuzz-testing.html"
+            rel="tag">fuzz testing</a>&nbsp;]&nbsp;
+                 [&nbsp;<a
+            href="/tag/security.html"
+            rel="tag">security</a>&nbsp;]&nbsp;
+                 [&nbsp;<a
+            href="/tag/testing.html"
+            rel="tag">testing</a>&nbsp;]&nbsp;
+                </small>
+                        <br/>
+        <small>posted in 
+        [&nbsp;<a
+            href="/blog.html"
+            title="View all posts in blog"
+            rel="category tag">blog</a>&nbsp;]&nbsp;
+        category </small>
+            </p>
+    <div id="navigation">
+                            &mdash; <a href="/2015/09/07/how_does_the_jenkins_credentials_plugin_store_passwords.html" id="navigation-next">Next Entries</a>&nbsp;&rarr;
+            </div>
+</div>
+                    <br/>
+                </div><!-- /#main -->
+                            <div id="copy" class="">
+                <p>&copy; <a href="http://kinoshita.eti.br/about"><span
+                            class="b">Bru</span><span
+                            class="r">no de</span> <span
+                            class="a">Paula</span> <span
+                            class="s"></span><span
+                            class="i">Kinos</span><span
+                            class="l">hita</span></a>
+                </p>
+            </div>
+ 
+                                
+            </div><!-- /#right -->
+        </div>
+    </div>
+</body>
+</html>
+<script type="text/javascript" charset="utf-8">
+  $(document).ready(function(){
+    $("a[rel^='prettyPhoto']").prettyPhoto({
+    	social_tools: false,
+    	autoplay_slideshow: false, 
+    	hideflash: true, 
+    	autoplay: false, 
+    	overlay_gallery: false
+    });
+  });
+</script>
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-32767310-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>

@@ -83,12 +83,103 @@
                                         <p>Posts in category &#8216;blog&#8217;</p>
 
 <div class="post type-post status-publish format-standard hentry">
+    <h2>Code to change your message in MSN messenger</h2>
+    <p><small>kinow</small> @ <small>March 22, 2009&nbsp;14:31:18</small></p>
+    <div><a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2009/03/22/code-to-change-your-message-in-msn-messenger.html" data-text="Code to change your message in MSN messenger" data-via="kinow" data-hashtags="opensource">Tweet</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+</div>
+    <p>I&#8217;ve always wanted to know how does the code to show what was I listening to looked like. I found it after installing XMPlay and XMPlay MSN Plug-in. The plug-in zip had the plug-in itself and its source code. And what a neat source code (-:.</p>
+
+<p>Basically, you just send a message to the MSN UI API with a defined data structure. And to remove the message, just send again with an empty string.</p>
+
+<pre class="c" style="font-family:monospace;"><span style="color: #808080; font-style: italic;">/*
+Bruno de Paula Kinoshita
+original src code:
+XMPlay MSN Plugin (c) 2005-2006 Elliott Sales de Andrade
+*/</span>
+&nbsp;
+<span style="color: #339933;">#include &lt;cstdlib&gt;</span>
+<span style="color: #339933;">#include &lt;iostream&gt;</span>
+<span style="color: #339933;">#include &lt;windows.h&gt;</span>
+&nbsp;
+using namespace std<span style="color: #339933;">;</span>
+&nbsp;
+<span style="color: #993333;">typedef</span> <span style="color: #993333;">struct</span> <span style="color: #009900;">&#123;</span>
+BOOL showCues<span style="color: #339933;">;</span>
+BOOL keepOnClose<span style="color: #339933;">;</span>
+<span style="color: #009900;">&#125;</span> MSNStuff<span style="color: #339933;">;</span>
+<span style="color: #993333;">static</span> MSNStuff msnConf<span style="color: #339933;">;</span>
+&nbsp;
+<span style="color: #993333;">void</span> setNowPlaying<span style="color: #009900;">&#40;</span> <span style="color: #993333;">char</span> <span style="color: #339933;">*</span>title<span style="color: #009900;">&#41;</span>
+<span style="color: #009900;">&#123;</span>
+    <span style="color: #993333;">wchar_t</span> <span style="color: #339933;">*</span>lpMsn<span style="color: #339933;">;</span>
+    <span style="color: #993333;">int</span> strLen <span style="color: #339933;">=</span> <span style="color: #0000dd;">20</span><span style="color: #339933;">;</span>
+    HWND xmpwin<span style="color: #339933;">;</span>
+    HWND msnui<span style="color: #339933;">=</span><span style="color: #0000dd;">0</span><span style="color: #339933;">;</span>
+&nbsp;
+    lpMsn <span style="color: #339933;">=</span> <span style="color: #009900;">&#40;</span><span style="color: #993333;">wchar_t</span><span style="color: #339933;">*</span><span style="color: #009900;">&#41;</span><a href="http://www.opengroup.org/onlinepubs/009695399/functions/calloc.html"><span style="color: #000066;">calloc</span></a><span style="color: #009900;">&#40;</span><span style="color: #0000dd;">1024</span><span style="color: #339933;">,</span><span style="color: #0000dd;">1024</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+    <span style="color: #666666; font-style: italic;">// stuff for MSN before...</span>
+    <a href="http://www.opengroup.org/onlinepubs/009695399/functions/memcpy.html"><span style="color: #000066;">memcpy</span></a><span style="color: #009900;">&#40;</span>lpMsn<span style="color: #339933;">,</span> L<span style="color: #339933;">&amp;</span>quot<span style="color: #339933;">;</span>\<span style="color: #339933;">&amp;</span><span style="color: #339933;">#92;&amp;#48;Music\&amp;#92;&amp;#48;1\&amp;#92;&amp;#48;{0}\&amp;#92;&amp;#48;&amp;quot;, 17*2);</span>
+    <span style="color: #666666; font-style: italic;">// actual title...</span>
+    strLen<span style="color: #339933;">=</span>MultiByteToWideChar<span style="color: #009900;">&#40;</span><span style="color: #000000; font-weight: bold;">false</span><span style="color: #339933;">?</span>CP_UTF8<span style="color: #339933;">:</span>CP_ACP<span style="color: #339933;">,</span><span style="color: #0000dd;">0</span><span style="color: #339933;">,</span>title<span style="color: #339933;">,-</span><span style="color: #0000dd;">1</span><span style="color: #339933;">,</span>lpMsn<span style="color: #339933;">+</span><span style="color: #0000dd;">17</span><span style="color: #339933;">,</span><span style="color: #0000dd;">492</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">-</span><span style="color: #0000dd;">1</span><span style="color: #339933;">;</span>Â  <span style="color: #808080; font-style: italic;">/* 1024/2 - 20 */</span>
+    <span style="color: #666666; font-style: italic;">// stuff for MSN after...</span>
+    <a href="http://www.opengroup.org/onlinepubs/009695399/functions/memcpy.html"><span style="color: #000066;">memcpy</span></a><span style="color: #009900;">&#40;</span>lpMsn <span style="color: #339933;">+</span> <span style="color: #0000dd;">17</span> <span style="color: #339933;">+</span> strLen<span style="color: #339933;">,</span> L<span style="color: #339933;">&amp;</span>quot<span style="color: #339933;">;</span>\<span style="color: #339933;">&amp;</span><span style="color: #339933;">#92;&amp;#48;&amp;quot;, 3*2);</span>
+    strLen <span style="color: #339933;">+=</span> <span style="color: #0000dd;">20</span><span style="color: #339933;">;</span>
+&nbsp;
+    COPYDATASTRUCT msndata<span style="color: #339933;">;</span>
+    msndata.<span style="color: #202020;">dwData</span> <span style="color: #339933;">=</span> <span style="color: #208080;">0x547</span><span style="color: #339933;">;</span>
+    msndata.<span style="color: #202020;">lpData</span> <span style="color: #339933;">=</span> <span style="color: #009900;">&#40;</span><span style="color: #993333;">void</span><span style="color: #339933;">*</span><span style="color: #009900;">&#41;</span>lpMsn<span style="color: #339933;">;</span>
+    msndata.<span style="color: #202020;">cbData</span> <span style="color: #339933;">=</span> strLen <span style="color: #339933;">*</span> <span style="color: #0000dd;">2</span><span style="color: #339933;">;</span>
+&nbsp;
+    <span style="color: #b1b100;">while</span> <span style="color: #009900;">&#40;</span> msnui <span style="color: #339933;">=</span> FindWindowEx<span style="color: #009900;">&#40;</span>NULL<span style="color: #339933;">,</span> msnui<span style="color: #339933;">,</span> <span style="color: #339933;">&amp;</span>quot<span style="color: #339933;">;</span>MsnMsgrUIManager<span style="color: #339933;">&amp;</span>quot<span style="color: #339933;">;,</span> NULL<span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#41;</span>
+        SendMessage<span style="color: #009900;">&#40;</span>msnui<span style="color: #339933;">,</span> WM_COPYDATA<span style="color: #339933;">,</span> <span style="color: #009900;">&#40;</span>WPARAM<span style="color: #009900;">&#41;</span>xmpwin<span style="color: #339933;">,</span> <span style="color: #009900;">&#40;</span>LPARAM<span style="color: #009900;">&#41;</span><span style="color: #339933;">&amp;</span>amp<span style="color: #339933;">;</span>msndata<span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+<span style="color: #009900;">&#125;</span>
+&nbsp;
+<span style="color: #993333;">int</span> main<span style="color: #009900;">&#40;</span><span style="color: #993333;">int</span> argc<span style="color: #339933;">,</span> <span style="color: #993333;">char</span> <span style="color: #339933;">*</span>argv<span style="color: #009900;">&#91;</span><span style="color: #009900;">&#93;</span><span style="color: #009900;">&#41;</span>
+<span style="color: #009900;">&#123;</span>
+    <span style="color: #993333;">char</span> <span style="color: #339933;">*</span>title<span style="color: #339933;">;</span>
+&nbsp;
+    <span style="color: #b1b100;">if</span> <span style="color: #009900;">&#40;</span> argc <span style="color: #339933;">==</span> <span style="color: #0000dd;">1</span> <span style="color: #009900;">&#41;</span>
+        title <span style="color: #339933;">=</span> <span style="color: #339933;">&amp;</span>quot<span style="color: #339933;">;&amp;</span>quot<span style="color: #339933;">;;</span>
+    <span style="color: #b1b100;">else</span>
+        title <span style="color: #339933;">=</span> argv<span style="color: #009900;">&#91;</span><span style="color: #0000dd;">1</span><span style="color: #009900;">&#93;</span><span style="color: #339933;">;</span>
+&nbsp;
+    setNowPlaying <span style="color: #009900;">&#40;</span> title <span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+&nbsp;
+    <span style="color: #b1b100;">return</span> EXIT_SUCCESS<span style="color: #339933;">;</span>
+<span style="color: #009900;">&#125;</span></pre>
+<!-- html -->
+        <p class="postmetadata">
+                <small>tags          [&nbsp;<a
+            href="/tag/c.html"
+            rel="tag">c</a>&nbsp;]&nbsp;
+                 [&nbsp;<a
+            href="/tag/c.html"
+            rel="tag">c++</a>&nbsp;]&nbsp;
+                 [&nbsp;<a
+            href="/tag/tools.html"
+            rel="tag">tools</a>&nbsp;]&nbsp;
+                 [&nbsp;<a
+            href="/tag/geek.html"
+            rel="tag">geek</a>&nbsp;]&nbsp;
+                </small>
+                        <br/>
+        <small>posted in 
+        [&nbsp;<a
+            href="/blog.html"
+            title="View all posts in blog"
+            rel="category tag">blog</a>&nbsp;]&nbsp;
+        category </small>
+            </p>
+</div>
+
+<p><div class="post type-post status-publish format-standard hentry">
     <h2>Displaying Japanese characters in Java Swing</h2>
     <p><small>kinow</small> @ <small>March 6, 2009&nbsp;12:10:07</small></p>
     <div><a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2009/03/06/displaying-japanese-characters-n-java-swing.html" data-text="Displaying Japanese characters in Java Swing" data-via="kinow" data-hashtags="opensource">Tweet</a>
 <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
 </div>
-    <p>It&#8217;s not as complicated as I first thought.</p>
+    <p>It&#8217;s not as complicated as I first thought.</p></p>
 
 <p>Had to use this technique to develop an Swing application for the JLPT certification exam.</p>
 
@@ -109,7 +200,8 @@
 <p>All you have to do is to use the hexadecimal representation of the characters instead of using plain text. And here is the result.
 <p style="text-align: center;"><a href=""><img class="aligncenter size-full wp-image-777" title="kino" src="" alt="" width="90" height="65" /></a></p>
 Banzai!</p>
-<!-- html -->
+
+<p><!-- html -->
         <p class="postmetadata">
                 <small>tags          [&nbsp;<a
             href="/tag/java.html"
@@ -129,7 +221,7 @@ Banzai!</p>
             rel="category tag">blog</a>&nbsp;]&nbsp;
         category </small>
             </p>
-</div>
+</div></p>
 
                     <p class="postmetadata">
                                                                     </p>
