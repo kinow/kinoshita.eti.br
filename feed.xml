@@ -13,10 +13,29 @@
     <atom:link href="http://kinoshita.eti.br/blog/feed.xml" rel="self" type="application/rss+xml" />
     <link>http://kinoshita.eti.br/</link>
     <description></description>
-    <lastBuildDate>Sun, 28 Feb 2016 10:10:09 +1300</lastBuildDate>
+    <lastBuildDate>Sun, 20 Mar 2016 11:33:51 +1300</lastBuildDate>
     <language>en-US</language>
     <generator>PieCrust 1.2.0</generator>
  
+<item>
+    <title>Drawing sketch: Cheese</title>
+    <pubDate>Sun, 20 Mar 2016 00:00:00 +1300</pubDate>
+    <link>/2016/03/20/drawing-sketch-cheese.html</link>
+    <dc:creator>Bruno P. Kinoshita</dc:creator>
+    <description>&lt;div class=&#039;row&#039;&gt;
+&lt;div class=&quot;span12&quot; style=&#039;text-align: center;&#039;&gt;
+&lt;figure&gt;
+&lt;a href=&quot;/2016/03/20/drawing-sketch-cheese/cheese.png&quot; rel=&quot;prettyPhoto&quot; class=&quot;thumbnail&quot; title=&quot;Cheese&quot;&gt;
+&lt;img class=&quot;span12&quot; src=&quot;/2016/03/20/drawing-sketch-cheese/cheese.png&quot; alt=&quot;Cheese&quot; /&gt;
+&lt;/a&gt;
+&lt;figcaption&gt;Cheese&lt;/i&gt;&lt;/figcaption&gt;
+&lt;/figure&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;p&gt;For &lt;a href=&quot;https://www.reddit.com/r/redditgetsdrawn/comments/42izou/this_is_me_with_my_favourite_food_its_cheese/&quot;&gt;redditgetsdrawn&lt;/a&gt;&lt;/p&gt;
+</description>
+</item>
 <item>
     <title>Learning afl and testing MapServer</title>
     <pubDate>Sat, 27 Feb 2016 00:00:00 +1300</pubDate>
@@ -544,53 +563,6 @@ for (i in seq_along(extensionPoints)) {
 png(filename=&amp;quot;extension-points.png&amp;quot;, width=2048, height=1536, units=&amp;quot;px&amp;quot;, bg=&amp;quot;white&amp;quot;)
 map.market(id=seq_along(extensionPoints), area=numberOfImplementations, group=namesOfTheExtensionPoints, color=numberOfImplementations, main=&amp;quot;Jenkins Extension Points&amp;quot;)
 dev.off()&lt;/pre&gt;
-</description>
-</item>
-<item>
-    <title>Writing a custom SchemaSpy command for Laravel 4</title>
-    <pubDate>Tue, 11 Feb 2014 00:00:00 +1300</pubDate>
-    <link>/2014/02/11/writing-a-custom-schemaspy-command-for-laravel-4.html</link>
-    <dc:creator>Bruno P. Kinoshita</dc:creator>
-    <description>&lt;p&gt;This week I had to write my first custom command for &lt;a href=&quot;http://laravel.com/&quot;&gt;Laravel 4&lt;/a&gt;. 
-In &lt;a href=&quot;http://nestor-qa.org/&quot;&gt;Nestor-QA&lt;/a&gt;, &lt;a href=&quot;https://github.com/tooh&quot;&gt;Peter&lt;/a&gt; and I thought it would be useful to have 
-the database schema being automatically generated with 
-&lt;a href=&quot;http://schemaspy.sourceforge.net/&quot;&gt;SchemaSpy&lt;/a&gt; in our &lt;a href=&quot;http://builds.tupilabs.com/view/Nestor-QA/&quot;&gt;Jenkins box&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;Thanks to &lt;a href=&quot;http://laravel.com/docs/artisan&quot;&gt;Artisan&lt;/a&gt; this task is much simpler than I thought. 
-The following command creates the &lt;code&gt;schemaspy&lt;/code&gt; command.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;php artisan command:make SchemaSpyCommand --command=schemaspy
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;This will create the file &lt;code&gt;app/commands/SchemaSpyCommand.php&lt;/code&gt;. And all I had to do was 
-just fill in the options and write the exec command as the &lt;a href=&quot;http://laravel.com/docs/commands&quot;&gt;Laravel 4 docs&lt;/a&gt; explain. &lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;$this-&amp;gt;info(&#039;Creating SchemaSpy&#039;);
-
-$jar = $this-&amp;gt;option(&quot;jar&quot;);
-$dbtype = $this-&amp;gt;option(&quot;dbtype&quot;);
-$output = $this-&amp;gt;option(&quot;output&quot;);
-
-$commandLine = sprintf(&quot;java -jar %s -u none -t %s -o %s&quot;, $jar, $dbtype, $output);
-
-$this-&amp;gt;info(sprintf(&quot;Command line: [%s]&quot;, $commandLine));
-
-exec($commandLine);
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;That&amp;#8217;s how my final command looks. Now the final step is integrate it into the application by adding the line below to 
-&lt;code&gt;app/start/artisan.php&lt;/code&gt;.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;Artisan::add(new SchemaSpyCommand);
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;And that&amp;#8217;s it, running &lt;code&gt;php artisan schemaspy --jar=/opt/schemaspy/schemaSpy_5.0.0.jar 
---dbtype=app/database/sqlite.properties --output=database-schema&lt;/code&gt; 
-creates the database schema docs in the &lt;code&gt;database-schema&lt;/code&gt; directory. &lt;/p&gt;
-
-&lt;p&gt;Check this &lt;a href=&quot;https://gist.github.com/kinow/8936667&quot;&gt;gist&lt;/a&gt; for the final code.&lt;/p&gt;
-
-&lt;p&gt;Happy coding!&lt;/p&gt;
 </description>
 </item>
 </channel>

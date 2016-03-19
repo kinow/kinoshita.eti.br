@@ -13,10 +13,57 @@
     <atom:link href="http://kinoshita.eti.br/blog/feed.xml" rel="self" type="application/rss+xml" />
     <link>http://kinoshita.eti.br/</link>
     <description></description>
-    <lastBuildDate>Sun, 28 Feb 2016 10:10:09 +1300</lastBuildDate>
+    <lastBuildDate>Sun, 20 Mar 2016 11:33:51 +1300</lastBuildDate>
     <language>en-US</language>
     <generator>PieCrust 1.2.0</generator>
  
+<item>
+    <title>Writing a custom SchemaSpy command for Laravel 4</title>
+    <pubDate>Tue, 11 Feb 2014 00:00:00 +1300</pubDate>
+    <link>/2014/02/11/writing-a-custom-schemaspy-command-for-laravel-4.html</link>
+    <dc:creator>Bruno P. Kinoshita</dc:creator>
+    <description>&lt;p&gt;This week I had to write my first custom command for &lt;a href=&quot;http://laravel.com/&quot;&gt;Laravel 4&lt;/a&gt;. 
+In &lt;a href=&quot;http://nestor-qa.org/&quot;&gt;Nestor-QA&lt;/a&gt;, &lt;a href=&quot;https://github.com/tooh&quot;&gt;Peter&lt;/a&gt; and I thought it would be useful to have 
+the database schema being automatically generated with 
+&lt;a href=&quot;http://schemaspy.sourceforge.net/&quot;&gt;SchemaSpy&lt;/a&gt; in our &lt;a href=&quot;http://builds.tupilabs.com/view/Nestor-QA/&quot;&gt;Jenkins box&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;Thanks to &lt;a href=&quot;http://laravel.com/docs/artisan&quot;&gt;Artisan&lt;/a&gt; this task is much simpler than I thought. 
+The following command creates the &lt;code&gt;schemaspy&lt;/code&gt; command.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;php artisan command:make SchemaSpyCommand --command=schemaspy
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;This will create the file &lt;code&gt;app/commands/SchemaSpyCommand.php&lt;/code&gt;. And all I had to do was 
+just fill in the options and write the exec command as the &lt;a href=&quot;http://laravel.com/docs/commands&quot;&gt;Laravel 4 docs&lt;/a&gt; explain. &lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$this-&amp;gt;info(&#039;Creating SchemaSpy&#039;);
+
+$jar = $this-&amp;gt;option(&quot;jar&quot;);
+$dbtype = $this-&amp;gt;option(&quot;dbtype&quot;);
+$output = $this-&amp;gt;option(&quot;output&quot;);
+
+$commandLine = sprintf(&quot;java -jar %s -u none -t %s -o %s&quot;, $jar, $dbtype, $output);
+
+$this-&amp;gt;info(sprintf(&quot;Command line: [%s]&quot;, $commandLine));
+
+exec($commandLine);
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;That&amp;#8217;s how my final command looks. Now the final step is integrate it into the application by adding the line below to 
+&lt;code&gt;app/start/artisan.php&lt;/code&gt;.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;Artisan::add(new SchemaSpyCommand);
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;And that&amp;#8217;s it, running &lt;code&gt;php artisan schemaspy --jar=/opt/schemaspy/schemaSpy_5.0.0.jar 
+--dbtype=app/database/sqlite.properties --output=database-schema&lt;/code&gt; 
+creates the database schema docs in the &lt;code&gt;database-schema&lt;/code&gt; directory. &lt;/p&gt;
+
+&lt;p&gt;Check this &lt;a href=&quot;https://gist.github.com/kinow/8936667&quot;&gt;gist&lt;/a&gt; for the final code.&lt;/p&gt;
+
+&lt;p&gt;Happy coding!&lt;/p&gt;
+</description>
+</item>
 <item>
     <title>Missing menus in new installation of TestLink 1.9.8</title>
     <pubDate>Sun, 27 Oct 2013 00:00:00 +1300</pubDate>
@@ -270,19 +317,6 @@ command.&lt;/p&gt;
 &lt;p style=&#039;text-align: center&#039;&gt;&lt;a href=&quot;/2012/11/07/running-bdd-tests-from-testlink-in-jenkins/tl_bdd.png&quot;&gt;&lt;img src=&quot;/2012/11/07/running-bdd-tests-from-testlink-in-jenkins/tl_bdd.png&quot; alt=&quot;&quot; title=&quot;TestLink BDD&quot; class=&quot;aligncenter size-full wp-image-1207&quot; /&gt;&lt;/a&gt;&lt;/p&gt;
 
 &lt;p&gt;There are many ways to use BDD. In some of them you write code like Java, Ruby or Perl, and in others you write a DSL. I started working with JBehave, but for this integration, I preferred to use a &lt;a href=&quot;http://en.wikipedia.org/wiki/Domain-specific_language&quot; title=&quot;DSL&quot;&gt;DSL&lt;/a&gt; - as TestLink doesn&amp;#8217;t maintain source code, only test cases -, so I switched to &lt;a href=&quot;http://www.easyb.org&quot; title=&quot;easyb&quot;&gt;easyb&lt;/a&gt;.&lt;/p&gt;
-
-</description>
-</item>
-<item>
-    <title>A quick view on Wordpress, Mantis and Jenkins plug-in API</title>
-    <pubDate>Thu, 25 Oct 2012 00:00:00 +1300</pubDate>
-    <link>/2012/10/25/a-quick-view-on-wordpress-mantis-and-jenkins-plug-in-api.html</link>
-    <dc:creator>Bruno P. Kinoshita</dc:creator>
-    <description>&lt;p&gt;I&amp;#8217;m preparing a &lt;em&gt;plug-in API proposal for &lt;a href=&quot;http://www.teamst.org&quot; title=&quot;TestLink&quot;&gt;TestLink&lt;/a&gt;&lt;/em&gt;, and thought that the best way to learn how to write a good plug-in API would be by looking at other application&amp;#8217;s plug-in API&amp;#8217;s.&lt;/p&gt;
-
-&lt;p style=&quot;text-align: center&quot;&gt;&lt;img src=&quot;/2012/10/25/a-quick-view-on-wordpress-mantis-and-jenkins-plug-in-api/testlink_logo_2.jpg &quot; alt=&quot;&quot; title=&quot;TestLink&quot; width=&quot;283&quot; height=&quot;170&quot; class=&quot;aligncenter size-full wp-image-1153&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;This post contains information that I gathered for creating this new API, but that may also be useful for other programmers. I used &lt;a href=&quot;#wp&quot;&gt;Wordpress&lt;/a&gt;, &lt;a href=&quot;#mantis&quot;&gt;Mantis&lt;/a&gt; and &lt;a href=&quot;#jenkins&quot;&gt;Jenkins&lt;/a&gt; in this study. Let me know if you find any mistakes or if you have any other suggestions.&lt;/p&gt;
 
 </description>
 </item>
