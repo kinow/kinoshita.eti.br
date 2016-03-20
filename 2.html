@@ -82,6 +82,62 @@
                                                         <div
                         class="post type-post status-publish format-standard hentry">
                         <h2>
+                            <a href="/2015/04/12/groovy-hooks-in-jenkins-for-increasing-logging-level.html" title="Permanent link">Groovy Hooks in Jenkins for increasing logging level</a>
+                        </h2>
+                        <small>Bruno P. Kinoshita</small> @ <small>April 12, 2015&nbsp;11:30:03</small>
+                        <div class="entry">
+                            <a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2015/04/12/groovy-hooks-in-jenkins-for-increasing-logging-level.html" data-text="Groovy Hooks in Jenkins for increasing logging level" data-via="kinow" data-hashtags="opensource">Tweet</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+                            
+                            <p>Yesterday, while debugging a problem we had in the <a href="http://biouno.org">BioUno</a> update center, 
+I realized that after <a href="https://wiki.jenkins-ci.org/display/JENKINS/Logging">increasing the logging level in the WEB interface</a>, 
+the messages that I needed weren&#8217;t being displayed in the logs.</p>
+
+<p>It happened because some of the logging happened during Jenkins initialization, and before I could adjust the log level.</p>
+
+<p>The solution was to use a <a href="https://wiki.jenkins-ci.org/display/JENKINS/Groovy+Hook+Script">Groovy Hook Script</a>. 
+If you are familiar with Linux init scripts, the idea is quite similar. </p>
+
+<p>A Groovy script in the <code>$JENKINS_ROOT_DIR/init.groovy.d/</code> directory is executed during
+Jenkins initialization. This way you can increase the global logger level with a script
+as the following below.</p>
+
+<pre class="java" style="font-family:monospace;"><span style="color: #000000; font-weight: bold;">import</span> <span style="color: #006699;">java.util.logging.ConsoleHandler</span>
+<span style="color: #000000; font-weight: bold;">import</span> <span style="color: #006699;">java.util.logging.LogManager</span>
+<span style="color: #000000; font-weight: bold;">import</span> <span style="color: #006699;">java.util.logging.Logger</span>
+<span style="color: #000000; font-weight: bold;">import</span> <span style="color: #006699;">java.util.logging.Level</span>
+&nbsp;
+def logger <span style="color: #339933;">=</span> Logger.<span style="color: #006633;">getLogger</span><span style="color: #009900;">&#40;</span><span style="color: #0000ff;">&quot;&quot;</span><span style="color: #009900;">&#41;</span>
+logger.<span style="color: #006633;">setLevel</span><span style="color: #009900;">&#40;</span>Level.<span style="color: #006633;">FINEST</span><span style="color: #009900;">&#41;</span>
+logger.<span style="color: #006633;">addHandler</span> <span style="color: #009900;">&#40;</span><span style="color: #000000; font-weight: bold;">new</span> ConsoleHandler<span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #009900;">&#41;</span></pre>
+
+<p>Happy logging!</p>
+
+                            
+                                                        
+                        </div>
+                        <p class="postmetadata">
+                                                        <small>tags                              [&nbsp;<a
+                                href="/tag/jenkins.html"
+                                rel="tag">jenkins</a>&nbsp;]&nbsp;
+                                                         [&nbsp;<a
+                                href="/tag/groovy.html"
+                                rel="tag">groovy</a>&nbsp;]&nbsp;
+                                                        </small>
+                                                                                    <br/>
+                            <small>posted in 
+                            [&nbsp;<a
+                                href="/blog.html"
+                                title="View all posts in blog"
+                                rel="category tag">blog</a>&nbsp;]
+                                &nbsp;category
+                            </small>
+                                                    </p>
+                    </div>
+                    <hr class='space' />
+                                        <div
+                        class="post type-post status-publish format-standard hentry">
+                        <h2>
                             <a href="/2015/01/01/contributing-to-apache-jena.html" title="Permanent link">Contributing to Apache Jena</a>
                         </h2>
                         <small>Bruno P. Kinoshita</small> @ <small>January 1, 2015&nbsp;18:49:03</small>
@@ -478,103 +534,6 @@ special characters, spaces by _, and so it goes.</p>
                                                          [&nbsp;<a
                                 href="/tag/rosalind.html"
                                 rel="tag">rosalind</a>&nbsp;]&nbsp;
-                                                        </small>
-                                                                                    <br/>
-                            <small>posted in 
-                            [&nbsp;<a
-                                href="/blog.html"
-                                title="View all posts in blog"
-                                rel="category tag">blog</a>&nbsp;]
-                                &nbsp;category
-                            </small>
-                                                    </p>
-                    </div>
-                    <hr class='space' />
-                                        <div
-                        class="post type-post status-publish format-standard hentry">
-                        <h2>
-                            <a href="/2014/05/19/treemapping-jenkins-extension-points-with-r.html" title="Permanent link">Treemapping Jenkins Extension Points with R</a>
-                        </h2>
-                        <small>Bruno P. Kinoshita</small> @ <small>May 19, 2014&nbsp;00:51:33</small>
-                        <div class="entry">
-                            <a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2014/05/19/treemapping-jenkins-extension-points-with-r.html" data-text="Treemapping Jenkins Extension Points with R" data-via="kinow" data-hashtags="opensource">Tweet</a>
-<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-                            
-                            <p>I have been playing with R and its packages for some time, and decided to study it a 
-bit harder. Last week I started reading the <a href="http://adv-r.had.co.nz/">Advanced R Programming</a> 
-by Hadley Wickham. </p>
-
-<p>One of the first chapters talks about the basic data structures in R. In order to 
-get my feet wet I thought about a simple example: <a href="http://en.wikipedia.org/wiki/Treemapping">treemapping</a> 
-Jenkins extension points. </p>
-
-<p style="text-align: center;"><a href="/2014/05/19/treemapping-jenkins-extension-points-with-r/extension_points.png"><img src="/2014/05/19/treemapping-jenkins-extension-points-with-r/extension_points.png" width="600px" alt="Treemap graph" /></a></p>
-
-<p>There is a <a href="https://wiki.jenkins-ci.org/display/JENKINS/Extension+points">Wiki page with the extension points in Jenkins</a> (what parts of Jenkins can be customized) 
-and its implementations. That page is generated by a <a href="https://ci.jenkins-ci.org/view/Infrastructure/job/infra_extension-indexer/">Jenkins job</a>. </p>
-
-<p>That job outputs a JSON file that contains each available extension points, as well as 
-an array with its implementations. The R code below will produce two vectors, one with the 
-count of implementations of each extension point, and the other with the class name.</p>
-
-<pre class="r" style="font-family:monospace;">nExtensionPoints &lt;- length(extensionPointsJson$extensionPoints)
-numberOfImplementations &lt;- vector(length = nExtensionPoints)
-namesOfTheExtensionPoints &lt;- vector(length = nExtensionPoints)
-for (i in seq_along(extensionPoints)) {
-  extensionName = extensionPoints[[i]]$className
-  lastIndexOfDot = regexpr(&quot;\\.[^\\.]*$&quot;, extensionName)
-  namesOfTheExtensionPoints[[i]] = substr(extensionName, lastIndexOfDot[1]+1, nchar(extensionName))
-  numberOfImplementations[[i]] = length(extensionPoints[[i]]$implementations)
-  print(paste(namesOfTheExtensionPoints[[i]], &quot; -&gt; &quot;, numberOfImplementations[[i]]))
-}</pre>
-
-<p>For creating the treemap I used the <strong><a href="http://flowingdata.com/2010/02/11/an-easy-way-to-make-a-treemap/">portfolio package</a></strong>, and the <code>map.market</code> 
-function. The structures previously created and the next snippet of code are all that is 
-needed to create the treemap of the Jenkins extension points.</p>
-
-<pre class="r" style="font-family:monospace;">map.market(id=seq_along(extensionPoints), area=numberOfImplementations, group=namesOfTheExtensionPoints, color=numberOfImplementations, main=&quot;Jenkins Extension Points&quot;)</pre>
-
-<p>You can also use the <a href="https://wiki.jenkins-ci.org/display/JENKINS/R+Plugin">Jenkins R Plug-in</a> to produce this graph, 
-as in this <a href="http://builds.tupilabs.com/job/backend-extension-points-treemap/2/">sample job</a>. 
-You can get the complete script in this <a href="https://gist.github.com/kinow/d5a2221c32dce3aa1076">gist</a>, or just 
-copy it here.</p>
-
-<pre class="r" style="font-family:monospace;">library('rjson')
-library('portfolio')
-&nbsp;
-download.file(url=&quot;https://ci.jenkins-ci.org/view/Infrastructure/job/infra_extension-indexer/ws/extension-points.json&quot;, destfile=&quot;extension-points.json&quot;, method=&quot;wget&quot;)
-extensionPointsJson &lt;- fromJSON(paste(readLines(&quot;extension-points.json&quot;), collapse=&quot;&quot;))
-extensionPoints &lt;- extensionPointsJson$extensionPoints
-nExtensionPoints &lt;- length(extensionPointsJson$extensionPoints)
-numberOfImplementations &lt;- vector(length = nExtensionPoints)
-namesOfTheExtensionPoints &lt;- vector(length = nExtensionPoints)
-for (i in seq_along(extensionPoints)) {
-  extensionName = extensionPoints[[i]]$className
-  lastIndexOfDot = regexpr(&quot;\\.[^\\.]*$&quot;, extensionName)
-  namesOfTheExtensionPoints[[i]] = substr(extensionName, lastIndexOfDot[1]+1, nchar(extensionName))
-  numberOfImplementations[[i]] = length(extensionPoints[[i]]$implementations)
-  print(paste(namesOfTheExtensionPoints[[i]], &quot; -&gt; &quot;, numberOfImplementations[[i]]))
-}
-png(filename=&quot;extension-points.png&quot;, width=2048, height=1536, units=&quot;px&quot;, bg=&quot;white&quot;)
-map.market(id=seq_along(extensionPoints), area=numberOfImplementations, group=namesOfTheExtensionPoints, color=numberOfImplementations, main=&quot;Jenkins Extension Points&quot;)
-dev.off()</pre>
-
-                            
-                                                        
-                        </div>
-                        <p class="postmetadata">
-                                                        <small>tags                              [&nbsp;<a
-                                href="/tag/jenkins.html"
-                                rel="tag">jenkins</a>&nbsp;]&nbsp;
-                                                         [&nbsp;<a
-                                href="/tag/r.html"
-                                rel="tag">r</a>&nbsp;]&nbsp;
-                                                         [&nbsp;<a
-                                href="/tag/treemapping.html"
-                                rel="tag">treemapping</a>&nbsp;]&nbsp;
-                                                         [&nbsp;<a
-                                href="/tag/extension-points.html"
-                                rel="tag">extension-points</a>&nbsp;]&nbsp;
                                                         </small>
                                                                                     <br/>
                             <small>posted in 

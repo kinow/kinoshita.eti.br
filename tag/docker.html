@@ -1,7 +1,7 @@
   <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en">
 <head profile="http://gmpg.org/xfn/11">
-<title>Bruno P. Kinoshita &mdash; Drawing sketch: Cheese</title>
+<title>Bruno P. Kinoshita</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="description" content="Bruno de Paula Kinoshita personal web site" />
 <meta name="keywords"
@@ -78,35 +78,54 @@
                             </div>
                         <div id="right" class="span8">
                 <div id="main">
-                <div class="post type-post status-publish format-standard hentry">
-    <h1 class='post-topic'>Drawing sketch: Cheese</h1>
-    <small>Bruno P. Kinoshita</small> @
-	<small>March 20, 2016&nbsp;11:13:03</small>
-    <div class="entry">
-       <a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2016/03/20/drawing-sketch-cheese.html" data-text="Drawing sketch: Cheese" data-via="kinow" data-hashtags="opensource">Tweet</a>
+                                                        Posts tagged with 'docker'
+
+<div class="post type-post status-publish format-standard hentry">
+    <h2>Deploying WAR files to Tomcat with Jenkins</h2>
+    <p><small>kinow</small> @ <small>March 20, 2016&nbsp;15:29:03</small></p>
+    <div><a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2016/03/20/deploying-war-files-to-tomcat-with-jenkins.html" data-text="Deploying WAR files to Tomcat with Jenkins" data-via="kinow" data-hashtags="opensource">Tweet</a>
 <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-
-	   <div class='row'>
-<div class="span12" style='text-align: center;'>
-<figure>
-<a href="/2016/03/20/drawing-sketch-cheese/cheese.png" rel="prettyPhoto" class="thumbnail" title="Cheese">
-<img class="span12" src="/2016/03/20/drawing-sketch-cheese/cheese.png" alt="Cheese" />
-</a>
-<figcaption>Cheese</i></figcaption>
-</figure>
 </div>
-</div>
+    <p><strong>Table of Contents</strong></p>
 
-<p>For <a href="https://www.reddit.com/r/redditgetsdrawn/comments/42izou/this_is_me_with_my_favourite_food_its_cheese/">redditgetsdrawn</a></p>
+<ul>
+<li><a href="#1-deploying-with-custom-scripts">Deploying with custom scripts</a></li>
+<li><a href="#2-deploying-with-a-build-tool">Deploying with a build tool</a></li>
+<li><a href="#3-deploying-with-a-build-server">Deploying with a build server</a></li>
+<li><a href="#final-thoughts">Final thoughts</a></li>
+</ul>
 
-    </div>
-    <p class="postmetadata">
+<p>A co-worker asked me this week about how to deploy a WAR file to Tomcat with Jenkins. In my team we are
+currently maintaining and deploying about 10 Java web systems, but we have no consistent way of deploying
+the applications to Tomcat yet. In the past I used Ant, Maven, Cargo, Grunt, and Jenkins, so I
+decided to write this short post to show a few different ways it can be achieved, &agrave; la
+<a href="https://en.wikipedia.org/wiki/There's_more_than_one_way_to_do_it">Perl&#8217;s TMTOWTDI</a> motto.</p>
+
+<h2><a name="1-deploying-with-custom-scripts" style="color: #222222;">#1 Deploying with custom scripts</a></h2>
+
+<p>At first you may be tempted to write your own script to deploy to Tomcat with some Shell, Perl, Python
+or Java. But I think I would choose this option only because either I needed some feature that is not
+available in the other options, or in order to call other tasks or debug some problem.</p>
+
+<p>Example:</p>
+
+<pre class="bash" style="font-family:monospace;">$ docker run <span style="color: #660033;">-d</span> <span style="color: #660033;">-p</span> <span style="color: #000000;">8888</span>:<span style="color: #000000;">8080</span> jeanblanchard<span style="color: #000000; font-weight: bold;">/</span>tomcat:<span style="color: #000000;">8</span>
+$ <span style="color: #c20cb9; font-weight: bold;">git clone</span> https:<span style="color: #000000; font-weight: bold;">//</span>github.com<span style="color: #000000; font-weight: bold;">/</span>spring-projects<span style="color: #000000; font-weight: bold;">/</span>spring-petclinic.git <span style="color: #000000; font-weight: bold;">&amp;&amp;</span> <span style="color: #7a0874; font-weight: bold;">cd</span> spring-petclinic <span style="color: #000000; font-weight: bold;">&amp;&amp;</span> mvn package
+$ curl <span style="color: #660033;">--upload-file</span> target<span style="color: #000000; font-weight: bold;">/</span>petclinic.war <span style="color: #ff0000;">&quot;http://admin:admin@localhost:8888/manager/text/deploy?path=/spring-petclinic&amp;update=true&quot;</span>
+OK - Deployed application at context path <span style="color: #000000; font-weight: bold;">/</span>spring-petclinic</pre>
+
+<!-- html -->
+        <p>( <a href="/2016/03/20/deploying-war-files-to-tomcat-with-jenkins.html" >Read more ...</a> )</p>
+        <p class="postmetadata">
                 <small>tags          [&nbsp;<a
-            href="/tag/drawing.html"
-            rel="tag">drawing</a>&nbsp;]&nbsp;
+            href="/tag/jenkins.html"
+            rel="tag">jenkins</a>&nbsp;]&nbsp;
                  [&nbsp;<a
-            href="/tag/sketch.html"
-            rel="tag">sketch</a>&nbsp;]&nbsp;
+            href="/tag/tomcat.html"
+            rel="tag">tomcat</a>&nbsp;]&nbsp;
+                 [&nbsp;<a
+            href="/tag/docker.html"
+            rel="tag">docker</a>&nbsp;]&nbsp;
                 </small>
                         <br/>
         <small>posted in 
@@ -116,12 +135,11 @@
             rel="category tag">blog</a>&nbsp;]&nbsp;
         category </small>
             </p>
-    <div id="navigation">
-                    &larr;&nbsp;<a href="/2016/03/20/deploying-war-files-to-tomcat-with-jenkins.html" id="navigation-next">Previous post</a>
-                            &mdash; <a href="/2016/02/27/learning-afl-and-testing-mapserver.html" id="navigation-next">Next Entries</a>&nbsp;&rarr;
-            </div>
 </div>
-                    <br/>
+
+                    <p class="postmetadata">
+                                                                    </p>
+                                    <br/>
                 </div><!-- /#main -->
                             <div id="copy" class="">
                 <p>&copy; <a href="http://kinoshita.eti.br/about"><span
