@@ -86,12 +86,90 @@
                                         <p>Posts in category &#8216;blog&#8217;</p>
 
 <div class="post type-post status-publish format-standard hentry">
+    <h2>Too many SQL variables exception in Graphite with SQLite3</h2>
+    <p><small>kinow</small> @ <small>July 4, 2013&nbsp;13:54:53</small></p>
+    <div><a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2013/07/04/too_many_sql_variables_in_graphite_with_sqlite3.html" data-text="Too many SQL variables exception in Graphite with SQLite3" data-via="kinow" data-hashtags="opensource">Tweet</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+</div>
+    <p>Having run <a href="http://graphite.wikidot.com/">Graphite</a> for a while, today I found a rather annoying issue. We were using 
+<a href="https://code.launchpad.net/~lucio.torre/graphite/add-events/+merge/69142">events</a>, and everything was working perfectly fine so far. But for the 24 last hours, 
+the graph was blank. </p>
+
+<p>Actually, in the dashboard, the graph was <em>missing</em>, being displayed as a gray box. 
+Enabling the web inspector in Google Chrome I got the graph URL. Opening the link in 
+a new tab gave me the exception message: <strong>too many SQL variables</strong> (<sup>1</sup>).</p>
+
+<p>After some research, I found out this was a bug in SQLite. After trying to hack the code, 
+and being concerned about using a patched version of Graphite and having to update it 
+later, I decided to switch database. </p>
+
+<p>But to avoid losing the graphs, users and other settings, including the events, I 
+migrated the SQLite database to a MySQL server. This MySQL server was already installed in 
+the server machine, since this machine hosted a <a href="http://www.zabbix.com/">Zabbix</a> server too.</p>
+
+<p>Here are the steps required to migrate your database from SQLite to MySQL (<sup>2</sup>).</p>
+
+<ul>
+<li>Download <strong>sqlite3_mysql</strong> python script from <a href="http://www.redmine.org/boards/2/topics/12793">http://www.redmine.org/boards/2/topics/12793</a></li>
+<li>Stop Apache/Nginx</li>
+<li>mysql -u user -p -e &#8220;create database redmine graphite set utf8;&#8221; </li>
+<li>sqlite3 graphite.db .dump | sqlite3-to-mysql.py | mysql -uroot -pyourpass graphite</li>
+<li>Start Apache again</li>
+</ul>
+
+<p>After tail&#8217;ing the Graphite webapp log file, </p>
+
+<pre class="shell" style="font-family:monospace;">tail f- storage/log/webapp/error.log</pre>
+
+<p>I noticed the Python MySQLdb wasn&#8217;t installed.</p>
+
+<pre class="python" style="font-family:monospace;">ImproperlyConfigured: Error loading MySQLdb module: No module named MySQLdb</pre>
+
+<p>My server was an Ubuntu 13.04, so I installed the module simply with the following 
+command.</p>
+
+<pre class="shell" style="font-family:monospace;">apt-get install python-mysqldb</pre>
+
+<p>Hope that helps!</p>
+
+<p><small><sup>1</sup> You may have to enable *DEBUG* in your Django settings for seeing the exception in your browser</small></p>
+
+<p><p><small><sup>2</sup> Zabbix needed some minor tweaks in order to use <a href="https://mariadb.org/">MariaDB</a>, but probably you can give it a try too</small></p></p>
+<!-- html -->
+        <p class="postmetadata">
+                <small>tags          [&nbsp;<a
+            href="/tag/graphite.html"
+            rel="tag">graphite</a>&nbsp;]&nbsp;
+                 [&nbsp;<a
+            href="/tag/monitoring.html"
+            rel="tag">monitoring</a>&nbsp;]&nbsp;
+                 [&nbsp;<a
+            href="/tag/python.html"
+            rel="tag">python</a>&nbsp;]&nbsp;
+                 [&nbsp;<a
+            href="/tag/mysql.html"
+            rel="tag">mysql</a>&nbsp;]&nbsp;
+                 [&nbsp;<a
+            href="/tag/troubleshooting.html"
+            rel="tag">troubleshooting</a>&nbsp;]&nbsp;
+                </small>
+                        <br/>
+        <small>posted in 
+        [&nbsp;<a
+            href="/blog.html"
+            title="View all posts in blog"
+            rel="category tag">blog</a>&nbsp;]&nbsp;
+        category </small>
+            </p>
+</div>
+
+<p><div class="post type-post status-publish format-standard hentry">
     <h2>Graphite: Broken images</h2>
     <p><small>kinow</small> @ <small>April 17, 2013&nbsp;11:36:38</small></p>
     <div><a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2013/04/17/graphite-broken-images.html" data-text="Graphite: Broken images" data-via="kinow" data-hashtags="opensource">Tweet</a>
 <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
 </div>
-    <p>This morning I was setting up a <a href="http://graphite.wikidot.com/" title="Graphite">Graphite </a>server to collect metrics with <a href="https://github.com/etsy/statsd/" title="statsd">statsd</a>, <a href="http://logstash.net/" title="LogStash">LogStash </a>and <a href="https://github.com/jmxtrans/jmxtrans" title="jmxtrans">jmxtrans</a>. After following the instructions from @jgeurst, I&#8217;ve successfully installed Graphite.</p>
+    <p>This morning I was setting up a <a href="http://graphite.wikidot.com/" title="Graphite">Graphite </a>server to collect metrics with <a href="https://github.com/etsy/statsd/" title="statsd">statsd</a>, <a href="http://logstash.net/" title="LogStash">LogStash </a>and <a href="https://github.com/jmxtrans/jmxtrans" title="jmxtrans">jmxtrans</a>. After following the instructions from @jgeurst, I&#8217;ve successfully installed Graphite.</p></p>
 
 <p>I had previously installed another test box, so I decided to take a deeper look at the settings, write a <a href="https://puppetlabs.com/" title="Puppet">puppet</a> manifest and prepare this new box to become a production server. However, after browsing the webapp, all graphs were broken.</p>
 
@@ -100,7 +178,8 @@
 <p>By following the program workflow I found out it was entering a block after checking if it should remotely render the image. This feature is turned on/off by <strong>REMOTE_RENDERING</strong> = True/False, in local_settings.py.</p>
 
 <p>After setting this to <em>False</em> the problem was solved.</p>
-<!-- html -->
+
+<p><!-- html -->
         <p class="postmetadata">
                 <small>tags          [&nbsp;<a
             href="/tag/graphite.html"
@@ -121,8 +200,7 @@
         category </small>
             </p>
 </div>
-
-<p><div class="post type-post status-publish format-standard hentry">
+<div class="post type-post status-publish format-standard hentry">
     <h2>Fix laggy Flash (Pepper) in Chrome</h2>
     <p><small>kinow</small> @ <small>March 31, 2013&nbsp;11:32:10</small></p>
     <div><a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2013/03/31/fix-laggy-flash-pepper-in-chrome.html" data-text="Fix laggy Flash (Pepper) in Chrome" data-via="kinow" data-hashtags="opensource">Tweet</a>
@@ -251,46 +329,6 @@
                  [&nbsp;<a
             href="/tag/json.html"
             rel="tag">json</a>&nbsp;]&nbsp;
-                 [&nbsp;<a
-            href="/tag/java.html"
-            rel="tag">java</a>&nbsp;]&nbsp;
-                </small>
-                        <br/>
-        <small>posted in 
-        [&nbsp;<a
-            href="/blog.html"
-            title="View all posts in blog"
-            rel="category tag">blog</a>&nbsp;]&nbsp;
-        category </small>
-            </p>
-</div>
-<div class="post type-post status-publish format-standard hentry">
-    <h2>Writing code to integrate Java projects to Testopia</h2>
-    <p><small>kinow</small> @ <small>May 18, 2012&nbsp;17:16:25</small></p>
-    <div><a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2012/05/18/writing-coding-to-integrate-java-projects-to-testopia.html" data-text="Writing code to integrate Java projects to Testopia" data-via="kinow" data-hashtags="opensource">Tweet</a>
-<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-</div>
-    <p><em>Peter Florijn</em> and I are writing a <a href="http://www.jenkins-ci.org" title="Jenkins CI">Jenkins</a> plug-in to <em>integrate several test tools into Jenkins</em>, something similar to what is done in <a href="https://wiki.jenkins-ci.org/display/JENKINS/TestLink+Plugin" title="Jenkins TestLink Plug-in">TestLink plug-in</a>. It&#8217;s still an idea being explored, and the whole project is subjected to changes without warning. The code is at <a href="https://github.com/kinow/testthemall" title="https://github.com/kinow/testthemall">https://github.com/kinow/testthemall</a>.</p></p>
-
-<p>The first tool that we are integrating is not <a href="http://www.teamst.org" title="TestLink">TestLink</a>, but <a href="http://www.mozilla.org/projects/testopia/" title="Mozilla Testopia">Mozilla Testopia</a>. As part of the process to integrate these tools, many Java API&#8217;s to interface the existing external APIs will be created, like it was done in TestLink with <a href="https://sourceforge.net/projects/testlinkjavaapi/" title="TestLink Java API">TestLink Java API</a>.</p>
-
-<p style="text-align: center"><img src="/2012/05/18/writing-coding-to-integrate-java-projects-to-testopia/Jenkins1_300_224.png" alt="" title="Jenkins CI" height="128" class="aligncenter size-medium wp-image-978" /><img src="/2012/05/18/writing-coding-to-integrate-java-projects-to-testopia/testopia_128_128.png" alt="" title="Testopia" width="128" height="128" class="aligncenter size-full wp-image-979" /></p>
-
-<p>Installing Testopia is very easy and straightforward. <a href="http://blog.marcweigand.de/2011/02/20/how-to-setup-bugzilla-with-testopia-on-a-new-debian-squeeze-60/" title="http://blog.marcweigand.de/2011/02/20/how-to-setup-bugzilla-with-testopia-on-a-new-debian-squeeze-60/">This</a> was the best guide that I could find, and worked without errors at my Debian Squeeze. I only had to move the directories from <code>/var/www</code> to my home directory (I use my PHP Eclipse workspace as Apache home).</p>
-
-<p>Testopia has a XML-RPC APi, just like TestLink, however it lacks an user friendly documentation and examples. I migrated the Java driver from Ant to Maven, for the sake of commodity. But the XML-RPC server is complaining that I have to log-in before listing the test cases of a test plan.</p>
-
-<p>If you are interested in using Java and Testopia, here&#8217;s the link for the java project with Maven support: <a href="https://github.com/kinow/testopia-java-driver" title="https://github.com/kinow/testopia-java-driver">https://github.com/kinow/testopia-java-driver</a>. I will update the project with examples, more tests and will try to clean up the code. Probably I will use either GitHub pages or a Wiki somewhere to document how to use Testopia and Java. </p>
-
-<p>Stay tuned!</p>
-
-<p>Cheers,</p>
-
-<p><!-- html -->
-        <p class="postmetadata">
-                <small>tags          [&nbsp;<a
-            href="/tag/testopia.html"
-            rel="tag">testopia</a>&nbsp;]&nbsp;
                  [&nbsp;<a
             href="/tag/java.html"
             rel="tag">java</a>&nbsp;]&nbsp;
