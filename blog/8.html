@@ -106,32 +106,49 @@
                                                         <div class='ui padded text container'>
                         <h1 class='topic'>Blog</h1>
                     </div>
-                                        <div class="ui raised padded text container segment">
-                        <p>Posts in category &#8216;blog&#8217;</p>
+                                        <p>Posts in category &#8216;blog&#8217;</p>
 
 <div class="ui raised padded text container segment">
-    <h2>Jacobe Maven Plugin</h2>
-    <p><small>kinow</small> @ <small>September 29, 2010&nbsp;16:43:25</small></p>
-    <div><a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2010/09/29/jacobe-maven-plugin.html" data-text="Jacobe Maven Plugin" data-via="kinow" data-hashtags="opensource">Tweet</a>
+    <h2>tap4j - A new TAP implementation in Java</h2>
+    <p><small>kinow</small> @ <small>October 12, 2010&nbsp;09:45:49</small></p>
+    <div><a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2010/10/12/tap4j-a-new-tap-implementation-in-java.html" data-text="tap4j - A new TAP implementation in Java" data-via="kinow" data-hashtags="opensource">Tweet</a>
 <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
 </div>
-    <p>When I started working in the <a title="TestLink java api" href="http://code.google.com/p/testlink-api-java-client/">TestLink java api</a> with Daniel Padilla, he mentioned in some of his mails a tool called Jacobe. After I googled for this tool I found it in <a title="TIOBE" href="http://www.tiobe.com">TIOBE</a>&#8217;s website. <a title="TIOBE Jacobe" href="http://www.tiobe.com/index.php/content/products/jacobe/Jacobe.html">Jacobe</a> is a tool of TIOBE that beautifies your Java code, according to some rules that you can specify in one configuration file.</p>
+    <p>A month ago I started a project to help me in my new version of the <a title="TestLink Hudson Plug-in" href="http://wiki.hudson-ci.org/display/HUDSON/TestLink+Plugin">TestLink Hudson plug-in</a>. The plugin now relies heavily on Apache Maven for test execution. After reading a post on <a title="TestLink Forum" href="http://www.teamst.org/forum/">TestLink forum</a> about an automation done using TAP, I googled to learn what that acronym stood for.</p>
 
-<p>This is what Jacobe does, basically.
-<p style="text-align: center;"><a href="/2010/09/29/jacobe-maven-plugin/jacobe_big.jpg"><img class="size-full wp-image-464  aligncenter" title="TIOBE Jacobe" src="/2010/09/29/jacobe-maven-plugin/jacobe_big.jpg" alt="" width="151" height="107" /></a></p>
-Jacobe itself is an executable but TIOBE provides an Ant task that lets you call Jacobe from an Ant build file. But wait a minute! What about Maven? Yeah, exactly. Jacobe lacked of Maven support. I talked to the guys from TIOBE and they kindly let me implement a Maven Plugin for Jacobe.</p>
+<p><a title="Test Anything Protocol" href="http://www.testanything.org">TAP</a> is the abbreviation of Test Anything Protocol.It is a protocol to produce information about test execution and used mainly by the Perl community. For instance, you can test your system using <a title="PHPUnit" href="www.phpunit.de">PHPUnit</a>, <a title="JUnit" href="http://www.junit.org">JUnit</a>, <a title="Selenium" href="http://www.seleniumhq.org">Selenium</a> or even a C class and produce what they call a TAP Stream. This stream&#8217;s content is like follows:
+<pre class="tap" style="font-family:monospace;">TAP version 13
+1..2
+ok 1 Test 1
+ok 2</pre>
+The text above tells us that we are using the version 13 of TAP. That we have 2 tests (1..&#8217;2&#8217;) and that both tests were executed without errors. TAP is a human readable text that can be interpreted by a software for audit, report or whatever. Another tool can then parse this TAP Stream and prepare Reports, update Database among other uses (this is what <a title="TestLink Hudson Plug-in" href="http://wiki.hudson-ci.org/display/HUDSON/TestLink+Plugin">TestLink Hudson plug-in</a> is going to do on its new version ;-).</p>
 
-<p>The plugin source code is hosted at <a title="maven-jacobe-plugin sf.net" href="https://sourceforge.net/projects/maven-jacobe">SourceForge.net</a>, and you can find a quick Introduction about it in <a title="http://maven-jacobe.sourceforge.net/" href="http://maven-jacobe.sourceforge.net/">http://maven-jacobe.sourceforge.net/</a>. The maven plugin version 1.0 artifact was released on Wednesday to <a title="Sonatype releases repository - TIOBE Jacobe" href="https://oss.sonatype.org/content/repositories/releases/com/tiobe/jacobe/maven-jacobe-plugin/">Sonatype&#8217;s release repository</a> and Sonatype already enabled <a title="Maven central repo - TIOBE Jacobe" href="http://repo1.maven.org/maven2/com/tiobe/jacobe/maven-jacobe-plugin/">Maven Central Repository</a> synchronization. However it may take some time for them update the repository index.</p>
+<p><a title="tap4j" href="http://tap4j.sourceforge.net/">tap4j</a> is a simple Java implementation of the TAP protocol (sorry to repeat the protocol part of the acronym right after it, but sounds cool :-). The project is built with Java 1.5 and Maven and hosted on SourceForge. The artifacts are published on Maven Central Repository but the jar is also uploaded into SourceForge. Up to now the project has only two members. Apart from me, there is CÃ©sar Fernandes Almeida, a friend from university that is helping me with the ideas, tests and code. But we really need more help, specially from people that know Perl (Harness, Simple, etc) to help us make integration tests using TAP Streams generated by these tools.
+<p style="text-align: center;"><a href=""><img class="size-medium wp-image-472  aligncenter" title="tap4j" src="" alt="" width="300" height="265" /></a></p>
+The 1.0 version supports Header, Plan, Footer, Test Results, Comments and Bail Out expressions. All these supported elements can be retrieved through the API, even the comments list. Any invalid text is ignored but you can also retrieve this information using the API.</p>
 
-<p>Cheers.</p>
+<p>We are already working on a new version, 1.1. This version will support YAML diagnostics, letting you put a whole Exception stack trace on your TAP Stream. Nice uhn? Check how YAML looks like.
+<pre class="tap" style="font-family:monospace;">file:  foo.t
+line:  45
+description: an important test
+found: this
+wanted: that
+raw_test: is( &quot;this&quot;, &quot;that&quot;, &quot;an important test&quot; );
+extensions:
+    THAC0: 16</pre></p>
+
+<p>Cheers</p>
 <!-- html -->
         <p class="postmetadata">
                 <small>tags          [&nbsp;<a
-            href="/tag/tools.html"
-            rel="tag">tools</a>&nbsp;]&nbsp;
+            href="/tag/test-anything-protocol.html"
+            rel="tag">test anything protocol</a>&nbsp;]&nbsp;
                  [&nbsp;<a
-            href="/tag/geek.html"
-            rel="tag">geek</a>&nbsp;]&nbsp;
+            href="/tag/java.html"
+            rel="tag">java</a>&nbsp;]&nbsp;
+                 [&nbsp;<a
+            href="/tag/software-quality.html"
+            rel="tag">software quality</a>&nbsp;]&nbsp;
                 </small>
                         <br/>
         <small>posted in 
@@ -144,6 +161,37 @@ Jacobe itself is an executable but TIOBE provides an Ant task that lets you call
 </div>
 
 <p><div class="ui raised padded text container segment">
+    <h2>Jacobe Maven Plugin</h2>
+    <p><small>kinow</small> @ <small>September 29, 2010&nbsp;16:43:25</small></p>
+    <div><a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2010/09/29/jacobe-maven-plugin.html" data-text="Jacobe Maven Plugin" data-via="kinow" data-hashtags="opensource">Tweet</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+</div>
+    <p>When I started working in the <a title="TestLink java api" href="http://code.google.com/p/testlink-api-java-client/">TestLink java api</a> with Daniel Padilla, he mentioned in some of his mails a tool called Jacobe. After I googled for this tool I found it in <a title="TIOBE" href="http://www.tiobe.com">TIOBE</a>&#8217;s website. <a title="TIOBE Jacobe" href="http://www.tiobe.com/index.php/content/products/jacobe/Jacobe.html">Jacobe</a> is a tool of TIOBE that beautifies your Java code, according to some rules that you can specify in one configuration file.</p></p>
+
+<p>This is what Jacobe does, basically.
+<p style="text-align: center;"><a href="/2010/09/29/jacobe-maven-plugin/jacobe_big.jpg"><img class="size-full wp-image-464  aligncenter" title="TIOBE Jacobe" src="/2010/09/29/jacobe-maven-plugin/jacobe_big.jpg" alt="" width="151" height="107" /></a></p>
+Jacobe itself is an executable but TIOBE provides an Ant task that lets you call Jacobe from an Ant build file. But wait a minute! What about Maven? Yeah, exactly. Jacobe lacked of Maven support. I talked to the guys from TIOBE and they kindly let me implement a Maven Plugin for Jacobe.</p>
+
+<p>The plugin source code is hosted at <a title="maven-jacobe-plugin sf.net" href="https://sourceforge.net/projects/maven-jacobe">SourceForge.net</a>, and you can find a quick Introduction about it in <a title="http://maven-jacobe.sourceforge.net/" href="http://maven-jacobe.sourceforge.net/">http://maven-jacobe.sourceforge.net/</a>. The maven plugin version 1.0 artifact was released on Wednesday to <a title="Sonatype releases repository - TIOBE Jacobe" href="https://oss.sonatype.org/content/repositories/releases/com/tiobe/jacobe/maven-jacobe-plugin/">Sonatype&#8217;s release repository</a> and Sonatype already enabled <a title="Maven central repo - TIOBE Jacobe" href="http://repo1.maven.org/maven2/com/tiobe/jacobe/maven-jacobe-plugin/">Maven Central Repository</a> synchronization. However it may take some time for them update the repository index.</p>
+
+<p>Cheers.</p>
+
+<p><!-- html -->
+        <p class="postmetadata">
+                <small>tags          [&nbsp;<a
+            href="/tag/java.html"
+            rel="tag">java</a>&nbsp;]&nbsp;
+                </small>
+                        <br/>
+        <small>posted in 
+        [&nbsp;<a
+            href="/blog.html"
+            title="View all posts in blog"
+            rel="category tag">blog</a>&nbsp;]&nbsp;
+        category </small>
+            </p>
+</div>
+<div class="ui raised padded text container segment">
     <h2>TestLink BUG-1890: Possibility to add attachment by using API</h2>
     <p><small>kinow</small> @ <small>September 19, 2010&nbsp;20:44:38</small></p>
     <div><a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2010/09/19/testlink-bug-1890-possibility-to-add-attachment-by-using-api.html" data-text="TestLink BUG-1890: Possibility to add attachment by using API" data-via="kinow" data-hashtags="opensource">Tweet</a>
@@ -161,8 +209,11 @@ I decided to contribute with this code because I needed something similar for th
             href="/tag/testlink.html"
             rel="tag">testlink</a>&nbsp;]&nbsp;
                  [&nbsp;<a
-            href="/tag/xml-rpc.html"
-            rel="tag">xml-rpc</a>&nbsp;]&nbsp;
+            href="/tag/open-source.html"
+            rel="tag">open source</a>&nbsp;]&nbsp;
+                 [&nbsp;<a
+            href="/tag/software-quality.html"
+            rel="tag">software quality</a>&nbsp;]&nbsp;
                 </small>
                         <br/>
         <small>posted in 
@@ -187,9 +238,6 @@ However the quality was very good and it fitted perfectly. I wear P in Brazil an
                 <small>tags          [&nbsp;<a
             href="/tag/jenkins.html"
             rel="tag">jenkins</a>&nbsp;]&nbsp;
-                 [&nbsp;<a
-            href="/tag/geek.html"
-            rel="tag">geek</a>&nbsp;]&nbsp;
                 </small>
                         <br/>
         <small>posted in 
@@ -271,65 +319,7 @@ BOOL keepOnClose<span style="color: #339933;">;</span>
         <p class="postmetadata">
                 <small>tags          [&nbsp;<a
             href="/tag/c.html"
-            rel="tag">c</a>&nbsp;]&nbsp;
-                 [&nbsp;<a
-            href="/tag/c.html"
             rel="tag">c++</a>&nbsp;]&nbsp;
-                 [&nbsp;<a
-            href="/tag/tools.html"
-            rel="tag">tools</a>&nbsp;]&nbsp;
-                 [&nbsp;<a
-            href="/tag/geek.html"
-            rel="tag">geek</a>&nbsp;]&nbsp;
-                </small>
-                        <br/>
-        <small>posted in 
-        [&nbsp;<a
-            href="/blog.html"
-            title="View all posts in blog"
-            rel="category tag">blog</a>&nbsp;]&nbsp;
-        category </small>
-            </p>
-</div>
-<div class="ui raised padded text container segment">
-    <h2>Displaying Japanese characters in Java Swing</h2>
-    <p><small>kinow</small> @ <small>March 6, 2009&nbsp;12:10:07</small></p>
-    <div><a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2009/03/06/displaying-japanese-characters-n-java-swing.html" data-text="Displaying Japanese characters in Java Swing" data-via="kinow" data-hashtags="opensource">Tweet</a>
-<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-</div>
-    <p>It&#8217;s not as complicated as I first thought.</p></p>
-
-<p>Had to use this technique to develop an Swing application for the JLPT certification exam.</p>
-
-<pre class="java" style="font-family:monospace;"><span style="color: #000000; font-weight: bold;">public</span> <span style="color: #000000; font-weight: bold;">static</span> <span style="color: #000066; font-weight: bold;">void</span> main<span style="color: #009900;">&#40;</span><a href="http://www.google.com/search?hl=en&amp;q=allinurl%3Adocs.oracle.com+javase+docs+api+string"><span style="color: #003399;">String</span></a><span style="color: #009900;">&#91;</span><span style="color: #009900;">&#93;</span> args<span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
-    <a href="http://www.google.com/search?hl=en&amp;q=allinurl%3Adocs.oracle.com+javase+docs+api+jframe"><span style="color: #003399;">JFrame</span></a> frame <span style="color: #339933;">=</span> <span style="color: #000000; font-weight: bold;">new</span> <a href="http://www.google.com/search?hl=en&amp;q=allinurl%3Adocs.oracle.com+javase+docs+api+jframe"><span style="color: #003399;">JFrame</span></a><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-    frame.<span style="color: #006633;">setDefaultCloseOperation</span><span style="color: #009900;">&#40;</span><a href="http://www.google.com/search?hl=en&amp;q=allinurl%3Adocs.oracle.com+javase+docs+api+jframe"><span style="color: #003399;">JFrame</span></a>.<span style="color: #006633;">EXIT_ON_CLOSE</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-    <a href="http://www.google.com/search?hl=en&amp;q=allinurl%3Adocs.oracle.com+javase+docs+api+container"><span style="color: #003399;">Container</span></a> container <span style="color: #339933;">=</span> frame.<span style="color: #006633;">getContentPane</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-    <a href="http://www.google.com/search?hl=en&amp;q=allinurl%3Adocs.oracle.com+javase+docs+api+jlabel"><span style="color: #003399;">JLabel</span></a> japanese <span style="color: #339933;">=</span> <span style="color: #000000; font-weight: bold;">new</span> <a href="http://www.google.com/search?hl=en&amp;q=allinurl%3Adocs.oracle.com+javase+docs+api+jlabel"><span style="color: #003399;">JLabel</span></a><span style="color: #009900;">&#40;</span> <span style="color: #0000ff;">&quot;Kino<span style="color: #000099; font-weight: bold;">\u</span>304D<span style="color: #000099; font-weight: bold;">\u</span>306E&quot;</span> <span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-    japanese.<span style="color: #006633;">setToolTipText</span><span style="color: #009900;">&#40;</span> <span style="color: #0000ff;">&quot;This is Japanese&quot;</span> <span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-    <a href="http://www.google.com/search?hl=en&amp;q=allinurl%3Adocs.oracle.com+javase+docs+api+font"><span style="color: #003399;">Font</span></a> f <span style="color: #339933;">=</span> <span style="color: #000000; font-weight: bold;">new</span> <a href="http://www.google.com/search?hl=en&amp;q=allinurl%3Adocs.oracle.com+javase+docs+api+font"><span style="color: #003399;">Font</span></a><span style="color: #009900;">&#40;</span><span style="color: #0000ff;">&quot;Arial Unicode MS&quot;</span>, <a href="http://www.google.com/search?hl=en&amp;q=allinurl%3Adocs.oracle.com+javase+docs+api+font"><span style="color: #003399;">Font</span></a>.<span style="color: #006633;">BOLD</span>, <span style="color: #cc66cc;">16</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-    japanese.<span style="color: #006633;">setFont</span><span style="color: #009900;">&#40;</span>f<span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-    container.<span style="color: #006633;">add</span><span style="color: #009900;">&#40;</span> japanese <span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-    frame.<span style="color: #006633;">pack</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-    frame.<span style="color: #006633;">setLocationRelativeTo</span><span style="color: #009900;">&#40;</span><span style="color: #000066; font-weight: bold;">null</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-    frame.<span style="color: #006633;">setVisible</span><span style="color: #009900;">&#40;</span><span style="color: #000066; font-weight: bold;">true</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-<span style="color: #009900;">&#125;</span></pre>
-
-<p>All you have to do is to use the hexadecimal representation of the characters instead of using plain text. And here is the result.
-<p style="text-align: center;"><a href=""><img class="aligncenter size-full wp-image-777" title="kino" src="" alt="" width="90" height="65" /></a></p>
-Banzai!</p>
-
-<p><!-- html -->
-        <p class="postmetadata">
-                <small>tags          [&nbsp;<a
-            href="/tag/java.html"
-            rel="tag">java</a>&nbsp;]&nbsp;
-                 [&nbsp;<a
-            href="/tag/swing.html"
-            rel="tag">swing</a>&nbsp;]&nbsp;
-                 [&nbsp;<a
-            href="/tag/internatonalization.html"
-            rel="tag">internatonalization</a>&nbsp;]&nbsp;
                 </small>
                         <br/>
         <small>posted in 
@@ -341,7 +331,6 @@ Banzai!</p>
             </p>
 </div></p>
 
-                    </div>
                     <p class="postmetadata">
                                                                     </p>
                                 </div>
