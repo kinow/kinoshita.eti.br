@@ -65,7 +65,21 @@
             </div>
             <div class="article">
                 <div class="main container">
-
+                    <!-- right fixed menu -->
+                    <div class="ui dividing right rail" id="taxonomy">
+                        <div class="ui sticky fixed top">
+                            <h1 class='topic'>&nbsp;</h1>
+                            <h4>Blog Taxonomy</h4>
+                            <nav id="tag-cloud" class="sidebar-box">
+                              {% pccache 'tag-cloud' %}
+                              {% for t in blog.tags if t.post_count > 2 %}
+                              <span style="font-size: {{ t.post_count/2 + 10 }}pt"><a href="{{ pctagurl(t.name) }}">{{t.name}}</a></span>&nbsp;({{t.post_count}})
+                              {% endfor %}
+                              {% endpccache %}
+                            </nav>
+                            
+                        </div>
+                    </div>
                 {% block content %}
                     {% if page.title %}
                     <div class='ui padded text container'>
