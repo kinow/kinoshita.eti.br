@@ -109,13 +109,107 @@
                                         <p>Posts in category &#8216;blog&#8217;</p>
 
 <div class="ui raised padded text container segment">
+    <h2>Trying SaltStack with Docker</h2>
+    <p><small>kinow</small> @ <small>April 17, 2016&nbsp;22:06:03</small></p>
+    <div><a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2016/04/17/trying-saltstack-with-docker.html" data-text="Trying SaltStack with Docker" data-via="kinow" data-hashtags="opensource">Tweet</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+</div>
+    <p>Some weeks ago I started learning <a href="http://saltstack.com/">SaltStack</a> for a project at work. But I couldn&#8217;t
+find a good Docker image for that and I had to ask the Ops team for some VM&#8217;s. We
+are having a rainy weekend in Auckland, so I decided to have another look at the
+<a href="https://wiki.jenkins-ci.org/display/JENKINS/saltstack-plugin">Jenkins SaltStack Plug-in</a>.</p>
+
+<p>But now since I was at home, I couldn&#8217;t use the VM&#8217;s that I had access to at
+work. So decided to look again at Docker or Vagrant images. After playing
+with a few images, I found <a href="https://hub.docker.com/r/bbinet/salt-master/">bbinet/salt-master</a>.
+It not only sets up a master, but also provides an easy way to enable the cherrypy
+API (necessary for the Jenkins plug-in).</p>
+
+<p>This post describes the steps that I took to have a running Salt Master with the API
+enabled. First you need to create some directories and files to use with the image.</p>
+
+<pre class="shell" style="font-family:monospace;">shell$ mkdir ~/master &amp;&amp; cd ~/master
+shell$ mkdir -p config/master.d/
+shell$ vim config/master.d/api.conf</pre>
+
+<p>The api.conf contains the SaltStack API configuration. You can change port, user
+and other settings if necessary. Just remember to add a credential in Jenkins
+for the plug-in.</p>
+
+<pre class="shell" style="font-family:monospace;"># File: api.conf
+external_auth:
+  pam:
+    saltapiuser:
+      - .*
+      - '@runner'
+      - '@wheel'
+      - '@jobs'
+rest_cherrypy:
+  port: 8000
+  host: 0.0.0.0
+  disable_ssl: True
+  static: /opt/molten
+  static_path: /assets
+  app: /opt/molten/index.html
+  app_path: /molten</pre>
+
+<p>The image also conveniently provides a script that is executed before the
+entry point (if provided). So we can also create a user for the API automatically
+when the image is created.</p>
+
+<pre class="shell" style="font-family:monospace;">shell$ vim config/before-exec.sh</pre>
+
+<pre class="shell" style="font-family:monospace;">#!/bin/bash
+# File: before-exec.sh
+useradd saltapiuser
+echo -e &quot;nosecret\nnosecret\n&quot; | passwd saltapiuser
+exit 0</pre>
+
+<p>Also make the script executable.</p>
+
+<pre class="shell" style="font-family:monospace;">chmod +x config/before-exec.sh</pre>
+
+<p>And finally start the container.</p>
+
+<pre class="shell" style="font-family:monospace;">docker run --name salt-master -v $PWD/config:/config \
+    -p 4505:4505 -p 4506:4506 -p 443:443 -p 8000:8000 \
+    bbinet/salt-master</pre>
+
+<p>Once the container is running, you can go to http://localhost:8000 and
+log in as saltapiuser:nosecret, and also configure your plug-in
+in Jenkins.</p>
+
+<p>Happy hacking!</p>
+<!-- html -->
+        <p class="postmetadata">
+                <small>tags          [&nbsp;<a
+            href="/tag/jenkins.html"
+            rel="tag">jenkins</a>&nbsp;]&nbsp;
+                 [&nbsp;<a
+            href="/tag/docker.html"
+            rel="tag">docker</a>&nbsp;]&nbsp;
+                 [&nbsp;<a
+            href="/tag/saltstack.html"
+            rel="tag">saltstack</a>&nbsp;]&nbsp;
+                </small>
+                        <br/>
+        <small>posted in 
+        [&nbsp;<a
+            href="/blog.html"
+            title="View all posts in blog"
+            rel="category tag">blog</a>&nbsp;]&nbsp;
+        category </small>
+            </p>
+</div>
+
+<p><div class="ui raised padded text container segment">
     <h2>Geek Vacation 2016</h2>
     <p><small>kinow</small> @ <small>April 8, 2016&nbsp;22:17:03</small></p>
     <div><a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2016/04/08/geek-vacation-2016.html" data-text="Geek Vacation 2016" data-via="kinow" data-hashtags="opensource">Tweet</a>
 <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
 </div>
     <p>I just had a two week vacation, and I tried to use my time to rest, play some music, and
-complete a geek todo-list. </p>
+complete a geek todo-list. </p></p>
 
 <p>The list included things that I used some time ago but wanted to
 refresh my memory, things that I already used but never spent time reading the manuals, and
@@ -155,7 +249,8 @@ pointers to what I used to study.</p>
 
 <p>Going to have less spare time now for Open Source and learning the rest of the stuff on this list,
 but there&#8217;s always some books to read, and things to learn anyway right ¯&#92;<em>(ツ)</em>/¯</p>
-<!-- html -->
+
+<p><!-- html -->
         <p class="postmetadata">
                 <small>tags          [&nbsp;<a
             href="/tag/geek.html"
@@ -170,8 +265,7 @@ but there&#8217;s always some books to read, and things to learn anyway right ¯
         category </small>
             </p>
 </div>
-
-<p><div class="ui raised padded text container segment">
+<div class="ui raised padded text container segment">
     <h2>Deploying WAR files to Tomcat with Jenkins</h2>
     <p><small>kinow</small> @ <small>March 20, 2016&nbsp;15:29:03</small></p>
     <div><a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2016/03/20/deploying-war-files-to-tomcat-with-jenkins.html" data-text="Deploying WAR files to Tomcat with Jenkins" data-via="kinow" data-hashtags="opensource">Tweet</a>
@@ -295,84 +389,6 @@ as in case it finds any interesting bug I can submit it to the MapServer project
                  [&nbsp;<a
             href="/tag/software-quality.html"
             rel="tag">software quality</a>&nbsp;]&nbsp;
-                </small>
-                        <br/>
-        <small>posted in 
-        [&nbsp;<a
-            href="/blog.html"
-            title="View all posts in blog"
-            rel="category tag">blog</a>&nbsp;]&nbsp;
-        category </small>
-            </p>
-</div>
-<div class="ui raised padded text container segment">
-    <h2>How does the Jenkins Credentials Plug-in store passwords?</h2>
-    <p><small>kinow</small> @ <small>September 7, 2015&nbsp;01:25:03</small></p>
-    <div><a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2015/09/07/how_does_the_jenkins_credentials_plugin_store_passwords.html" data-text="How does the Jenkins Credentials Plug-in store passwords?" data-via="kinow" data-hashtags="opensource">Tweet</a>
-<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-</div>
-    <p><a href="https://wiki.jenkins-ci.org/display/JENKINS/Credentials+Plugin">Jenkins Credentials Plug-in</a> manages credentials stored in Jenkins. These credentials can be used in many jobs and by plug-ins for executing SSH commands, authenticating to systems, or running other commands that need some sort of authentication or authorisation.</p></p>
-
-<p>I recently used its API for the first time in the <a href="https://github.com/biouno/figshare-plugin">BioUno figshare Plug-in</a> to store OAuth 1.0 credentials (consumer key, consumer secret, token key, token secret). This <a href="http://biouno.org/2015/09/05/using_jenkins_credentials_plugin_to_create_the_biouno_figshare_plugin/">blog post</a> has more details about how we used the plug-in, but this post is specifically on how the passwords are stored by Jenkins.</p>
-
-<h2>Secret and ciphers</h2>
-
-<p>Jenkins stores its configuration on disk as XML using the XStream library. Plug-in developers using the Credentials Plug-in API must use the <strong>Secret</strong> class to encrypt sensitive information.</p>
-
-<p>The <code>Secret.fromString</code> method is responsible for creating a cipher from a given String. As in the Secret Javadoc,  <em>&#8220;this is not meant as a protection against code running in the same VM, nor against an attacker who has local file system access on Jenkins master&#8221;</em>. But at least makes things more complicated :-)</p>
-
-<ul>
-<li><a href="http://javadoc.jenkins-ci.org/hudson/util/Secret.html">Secret Javadoc</a></li>
-<li><a href="https://github.com/jenkinsci/jenkins/blob/master/core/src/main/java/hudson/util/Secret.java">Secret source code</a></li>
-</ul>
-
-<pre class="java" style="font-family:monospace;"><span style="color: #000000; font-weight: bold;">public</span> <span style="color: #000000; font-weight: bold;">static</span> Secret fromString<span style="color: #009900;">&#40;</span><a href="http://www.google.com/search?hl=en&amp;q=allinurl%3Adocs.oracle.com+javase+docs+api+string"><span style="color: #003399;">String</span></a> data<span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
-    data <span style="color: #339933;">=</span> <a href="http://www.google.com/search?hl=en&amp;q=allinurl%3Adocs.oracle.com+javase+docs+api+util"><span style="color: #003399;">Util</span></a>.<span style="color: #006633;">fixNull</span><span style="color: #009900;">&#40;</span>data<span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-    Secret s <span style="color: #339933;">=</span> decrypt<span style="color: #009900;">&#40;</span>data<span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-    <span style="color: #000000; font-weight: bold;">if</span><span style="color: #009900;">&#40;</span>s<span style="color: #339933;">==</span><span style="color: #000066; font-weight: bold;">null</span><span style="color: #009900;">&#41;</span> s<span style="color: #339933;">=</span><span style="color: #000000; font-weight: bold;">new</span> Secret<span style="color: #009900;">&#40;</span>data<span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-    <span style="color: #000000; font-weight: bold;">return</span> s<span style="color: #339933;">;</span>
-<span style="color: #009900;">&#125;</span></pre>
-
-<p>The first line simply replaces a null string by an empty &#8220;&#8221;, or keeps the current value of not null.</p>
-
-<p>After that, the decrypt method is called.</p>
-
-<pre class="java" style="font-family:monospace;"><span style="color: #000000; font-weight: bold;">public</span> <span style="color: #000000; font-weight: bold;">static</span> Secret decrypt<span style="color: #009900;">&#40;</span><a href="http://www.google.com/search?hl=en&amp;q=allinurl%3Adocs.oracle.com+javase+docs+api+string"><span style="color: #003399;">String</span></a> data<span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
-    <span style="color: #000000; font-weight: bold;">if</span><span style="color: #009900;">&#40;</span>data<span style="color: #339933;">==</span><span style="color: #000066; font-weight: bold;">null</span><span style="color: #009900;">&#41;</span>      <span style="color: #000000; font-weight: bold;">return</span> <span style="color: #000066; font-weight: bold;">null</span><span style="color: #339933;">;</span>
-    <span style="color: #000000; font-weight: bold;">try</span> <span style="color: #009900;">&#123;</span>
-        <span style="color: #000066; font-weight: bold;">byte</span><span style="color: #009900;">&#91;</span><span style="color: #009900;">&#93;</span> in <span style="color: #339933;">=</span> Base64.<span style="color: #006633;">decode</span><span style="color: #009900;">&#40;</span>data.<span style="color: #006633;">toCharArray</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-        Secret s <span style="color: #339933;">=</span> tryDecrypt<span style="color: #009900;">&#40;</span>KEY.<span style="color: #006633;">decrypt</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span>, in<span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-        <span style="color: #000000; font-weight: bold;">if</span> <span style="color: #009900;">&#40;</span>s<span style="color: #339933;">!=</span><span style="color: #000066; font-weight: bold;">null</span><span style="color: #009900;">&#41;</span>    <span style="color: #000000; font-weight: bold;">return</span> s<span style="color: #339933;">;</span>
-&nbsp;
-        <span style="color: #666666; font-style: italic;">// try our historical key for backward compatibility</span>
-        Cipher cipher <span style="color: #339933;">=</span> getCipher<span style="color: #009900;">&#40;</span><span style="color: #0000ff;">&quot;AES&quot;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-        cipher.<span style="color: #006633;">init</span><span style="color: #009900;">&#40;</span>Cipher.<span style="color: #006633;">DECRYPT_MODE</span>, getLegacyKey<span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-        <span style="color: #000000; font-weight: bold;">return</span> tryDecrypt<span style="color: #009900;">&#40;</span>cipher, in<span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-    <span style="color: #009900;">&#125;</span> <span style="color: #000000; font-weight: bold;">catch</span> <span style="color: #009900;">&#40;</span><a href="http://www.google.com/search?hl=en&amp;q=allinurl%3Adocs.oracle.com+javase+docs+api+generalsecurityexception"><span style="color: #003399;">GeneralSecurityException</span></a> e<span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
-        <span style="color: #000000; font-weight: bold;">return</span> <span style="color: #000066; font-weight: bold;">null</span><span style="color: #339933;">;</span>
-    <span style="color: #009900;">&#125;</span> <span style="color: #000000; font-weight: bold;">catch</span> <span style="color: #009900;">&#40;</span><a href="http://www.google.com/search?hl=en&amp;q=allinurl%3Adocs.oracle.com+javase+docs+api+unsupportedencodingexception"><span style="color: #003399;">UnsupportedEncodingException</span></a> e<span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
-        <span style="color: #000000; font-weight: bold;">throw</span> <span style="color: #000000; font-weight: bold;">new</span> <a href="http://www.google.com/search?hl=en&amp;q=allinurl%3Adocs.oracle.com+javase+docs+api+error"><span style="color: #003399;">Error</span></a><span style="color: #009900;">&#40;</span>e<span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span> <span style="color: #666666; font-style: italic;">// impossible</span>
-    <span style="color: #009900;">&#125;</span> <span style="color: #000000; font-weight: bold;">catch</span> <span style="color: #009900;">&#40;</span><a href="http://www.google.com/search?hl=en&amp;q=allinurl%3Adocs.oracle.com+javase+docs+api+ioexception"><span style="color: #003399;">IOException</span></a> e<span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
-        <span style="color: #000000; font-weight: bold;">return</span> <span style="color: #000066; font-weight: bold;">null</span><span style="color: #339933;">;</span>
-    <span style="color: #009900;">&#125;</span>
-<span style="color: #009900;">&#125;</span></pre>
-
-<p>The <code>KEY.decrypt()</code> call will return a <a href="http://docs.oracle.com/javase/8/docs/api/javax/crypto/Cipher.html"><code>javax.crypto.Cipher</code></a>. The Cipher class is handled in <a href="https://github.com/jenkinsci/jenkins/blob/93dfe3377ec8d430818f5b9073f16c677343adb4/core/src/main/java/jenkins/security/CryptoConfidentialKey.java">CryptoConfidentialKey</a> in Jenkins API, where it defines the algorithm used to create the cipher: <a href="https://en.wikipedia.org/wiki/Advanced_Encryption_Standard">AES</a>.</p>
-
-<p>Jenkins has also a <a href="https://github.com/jenkinsci/jenkins/blob/93dfe3377ec8d430818f5b9073f16c677343adb4/core/src/main/java/jenkins/security/ConfidentialStore.java#L63">ConfidentialStore</a>, that is required to create the cipher. This class must be initialized before someone tries to create or read a cipher. This extra step also increases security, though access to the JVM is still a problem.</p>
-
-<p>It is a bit late, so it is all for today. In summary: the credentials plug-in gives you a central place to manage credentials, but it is up to plug-in developers to use it. Sensitive values can be encrypted with AES on disk. So it is important that your file permissions, ACL and system auditing processes are in place and well maintained and monitored.</p>
-
-<p>Happy hacking!</p>
-
-<p><!-- html -->
-        <p class="postmetadata">
-                <small>tags          [&nbsp;<a
-            href="/tag/jenkins.html"
-            rel="tag">jenkins</a>&nbsp;]&nbsp;
-                 [&nbsp;<a
-            href="/tag/security.html"
-            rel="tag">security</a>&nbsp;]&nbsp;
                 </small>
                         <br/>
         <small>posted in 
