@@ -2,7 +2,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en">
 <head profile="http://gmpg.org/xfn/11">
-    <title>Bruno P. Kinoshita &mdash; Home</title> 
+    <title>Bruno P. Kinoshita</title> 
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="description" content="Bruno de Paula Kinoshita personal web site" />
     <meta name="keywords"
@@ -72,7 +72,7 @@
                 <i class="content icon"></i>
             </a>
             <div class="item">
-                Home
+                None
             </div>
         </div>
     </div>
@@ -105,53 +105,15 @@
             </div>
             <div class="article">
                 <div class="main container">
-                    <!-- right fixed menu -->
-                    <div class="ui dividing right rail" id="taxonomy">
-                        <div class="ui sticky fixed top">
-                            <h1 class='topic'>&nbsp;</h1>
-                            <h4>Blog Taxonomy</h4>
-                            <nav id="tag-cloud" class="sidebar-box">
-                              
-                              
-                              <span style="font-size: 14.5pt"><a href="/tag/apache%20software%20foundation">apache software foundation</a></span>&nbsp;(9)
-                              
-                              <span style="font-size: 12.5pt"><a href="/tag/articles">articles</a></span>&nbsp;(5)
-                              
-                              <span style="font-size: 11.5pt"><a href="/tag/c%2B%2B">c++</a></span>&nbsp;(3)
-                              
-                              <span style="font-size: 12.5pt"><a href="/tag/events">events</a></span>&nbsp;(5)
-                              
-                              <span style="font-size: 11.5pt"><a href="/tag/functional%20programming">functional programming</a></span>&nbsp;(3)
-                              
-                              <span style="font-size: 17.0pt"><a href="/tag/java">java</a></span>&nbsp;(14)
-                              
-                              <span style="font-size: 20.5pt"><a href="/tag/jenkins">jenkins</a></span>&nbsp;(21)
-                              
-                              <span style="font-size: 23.5pt"><a href="/tag/software%20quality">software quality</a></span>&nbsp;(27)
-                              
-                              <span style="font-size: 13.5pt"><a href="/tag/test%20anything%20protocol">test anything protocol</a></span>&nbsp;(7)
-                              
-                              <span style="font-size: 15.5pt"><a href="/tag/testlink">testlink</a></span>&nbsp;(11)
-                              
-                              
-                            </nav>
-                            
-                        </div>
-                    </div>
+
                 
                     
-                    <div class='ui padded container'>
-                        <h1 class='topic'>Home</h1>
-                    </div>
-                    
-                    
-                    <div class="ui raised padded container segment">
-                        <h2>
-                            <a href="/2016/04/24/using-active-choices-with-role-strategy-plugin" title="Permanent link">Using Active Choices with Role Strategy Plug-in</a>
-                        </h2>
-                        <small>kinow</small> @ <small>Apr 24, 2016&nbsp;16:05:03</small>
-                        <div class="entry">
-                            
+                    <p>Posts tagged with &#8216;jenkins&#8217;</p>
+<div class="ui raised padded container segment">
+    <h2>Using Active Choices with Role Strategy Plug-in</h2>
+    <p><small>kinow</small> @ <small>Apr 24, 2016&nbsp;16:05:03</small></p>
+
+
 
 
 
@@ -159,8 +121,9 @@
 
 <a href="https://twitter.com/share" class="twitter-share-button" data-url="/2016/04/24/using-active-choices-with-role-strategy-plugin" data-text="Using Active Choices with Role Strategy Plug-in" data-via="kinow" data-hashtags="opensource">Tweet</a>
 <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-                            
-                            <p>Having worked in Open Source for a few years, one of my favorite things is when you can
+
+
+    <p>Having worked in Open Source for a few years, one of my favorite things is when you can
 share experience with other people that you meet. <a href="https://github.com/agray">Andrew Gray</a>
 has worked with .NET and Jenkins for years, and we met through Open Source. He has helped me
 in the past with Jenkins and .NET, and also maintains the blog
@@ -209,6 +172,7 @@ displayed.</p>
 </pre></div>
 
 <p>And now let&#8217;s dissect the code.</p>
+
 <div class="highlight"><pre><span class="kn">import</span> <span class="nn">hudson.model.User</span>
 <span class="kn">import</span> <span class="nn">hudson.model.Hudson</span>
 <span class="kn">import</span> <span class="nn">hudson.security.AuthorizationStrategy</span>
@@ -218,6 +182,7 @@ displayed.</p>
 </pre></div>
 
 <p>You start by importing the classes that you need.</p>
+
 <div class="highlight"><pre><span class="n">AuthorizationStrategy</span> <span class="n">strategy</span> <span class="o">=</span> <span class="n">Hudson</span><span class="o">.</span><span class="na">getInstance</span><span class="o">().</span><span class="na">getAuthorizationStrategy</span><span class="o">();</span>
 
 <span class="n">jobs</span> <span class="o">=</span> <span class="o">[]</span>
@@ -227,8 +192,10 @@ displayed.</p>
 
 <p>The first line gets the current <a href="https://github.com/jenkinsci/jenkins/blob/f6e431b80c4d162560419fa51633224a9724bb0d/core/src/main/java/hudson/security/AuthorizationStrategy.java">AuthorizationStrategy</a>
 used in Jenkins.</p>
+
 <p>Then we create an empty array of jobs, which is the value returned by default. And get the current
 logged in user ID.</p>
+
 <div class="highlight"><pre><span class="k">if</span> <span class="o">(</span><span class="n">strategy</span> <span class="o">!=</span> <span class="kc">null</span> 
     <span class="c1">// not very straightforward to get the groups for a given user</span>
     <span class="n">roles</span> <span class="o">=</span> <span class="n">roleStrategy</span><span class="o">.</span><span class="na">getGrantedRoles</span><span class="o">(</span><span class="s">&quot;globalRoles&quot;</span><span class="o">)</span>
@@ -257,19 +224,24 @@ logged in user ID.</p>
 users in that role. I could not find a more ellegant way of doing that, but in case
 you would like to maybe optimize the code, here are the main classes that I
 used from Jenkins to write the script.</p>
+
 <ul>
 <li><a href="https://github.com/jenkinsci/role-strategy-plugin/blob/b6dca7904ce1c83b3afef0995ef5f42823171b0b/src/main/java/com/michelin/cio/hudson/plugins/rolestrategy/RoleBasedAuthorizationStrategy.java">RoleBasedAuthorizationStrategy.java</a></li>
 <li><a href="https://github.com/jenkinsci/role-strategy-plugin/blob/master/src/main/java/com/michelin/cio/hudson/plugins/rolestrategy/Role.java">Role.java</a></li>
 <li><a href="https://github.com/jenkinsci/role-strategy-plugin/blob/b6dca7904ce1c83b3afef0995ef5f42823171b0b/src/main/java/com/michelin/cio/hudson/plugins/rolestrategy/RoleMap.java">RoleMap</a></li>
 <li><a href="https://github.com/jenkinsci/jenkins/blob/f6e431b80c4d162560419fa51633224a9724bb0d/core/src/main/java/hudson/model/User.java">User.java</a></li>
 </ul>
+
 <p>Normally I either use my local working copy of Jenkins project imported in Eclipse, or use the
 &#8220;Find File&#8221; feature in GitHub. Then remember a little bit about Jenkins Java API to walk
 through the classes and write the Groovy code (I made a
 <a href="https://www.youtube.com/watch?v=jmPJvJGEFb4">video</a> about writing Groovy with Auto Complete in
 Eclipse, but that&#8217;s in Portuguese only).</p>
+
 <h2>What the result looks like in Jenkins</h2>
+
 <p>In this section we have just simple screenshots, showing the script in the job configuration.</p>
+
 <div class='row'>
 <div class="ui container" style='text-align: center;'>
 <figure>
@@ -283,6 +255,7 @@ Eclipse, but that&#8217;s in Portuguese only).</p>
 
 <p>And the resulting screen. The parameter <strong>DeployAPP</strong> will be available during the build,
 and can be used to trigger other jobs or pipelines.</p>
+
 <div class='row'>
 <div class="ui container" style='text-align: center;'>
 <figure>
@@ -295,101 +268,49 @@ and can be used to trigger other jobs or pipelines.</p>
 </div>
 
 <h2>Where can you find this script?</h2>
+
 <p>This blog post has a copy of the script, but I have also submitted
 a pull request to a <a href="https://github.com/imoutsatsos/jenkins-scriptlets">repository</a>
 maintained by another friend, <a href="https://github.com/imoutsatsos">Ioannis Moutsatsos</a>. Ioannis
 maintains a Jenkins installation in Novartis, and is probably the most skillful user
 of the Active Choices Plug-in.</p>
+
 <p>Another advantage of this other copy, is that it may be updated with time, in case there are
 bugs or improvements. So watch Ioannis&#8217; repository for updates!</p>
+
 <p>ps: I&#8217;ve also met Ioannis through Open Source code, and have learned a lot by working with him. </p>
+
 <p>♥ Open Source!</p>
-                            
-                            
-                            
-                        </div>
-                        <p class="postmetadata">
-                            
-                            <small>tags 
-                             [&nbsp;<a
-                                href="/tag/jenkins"
-                                rel="tag">jenkins</a>&nbsp;]&nbsp;
-                            
-                            </small>
-                            
-                            
-                            <br/>
-                            <small>posted in 
-                            [&nbsp;<a
-                                href="/blog"
-                                title="View all posts in blog"
-                                rel="category tag">blog</a>&nbsp;]
-                                &nbsp;category
-                            </small>
-                            
-                        </p>
-                    </div>
-                    
-                    <div class="ui raised padded container segment">
-                        <h2>
-                            <a href="/2016/04/19/drawing-kumamoto-kenjinkai-mascot" title="Permanent link">Drawing vector art: Kumamoto Kenjinkai mascot</a>
-                        </h2>
-                        <small>kinow</small> @ <small>Apr 19, 2016&nbsp;21:39:03</small>
-                        <div class="entry">
-                            
+
+<!-- html -->
+
+<pre><code>&lt;p class="postmetadata"&gt;
+
+    &lt;small&gt;tags 
+     [&amp;nbsp;&lt;a
+        href="/tag/jenkins"
+        rel="tag"&gt;jenkins&lt;/a&gt;&amp;nbsp;]&amp;nbsp;
+
+    &lt;/small&gt;
 
 
+    &lt;br/&gt;
+    &lt;small&gt;posted in 
+    [&amp;nbsp;&lt;a
+        href="/blog"
+        title="View all posts in blog"
+        rel="category tag"&gt;blog&lt;/a&gt;&amp;nbsp;]&amp;nbsp;
+    category &lt;/small&gt;
 
-
-
-<a href="https://twitter.com/share" class="twitter-share-button" data-url="/2016/04/19/drawing-kumamoto-kenjinkai-mascot" data-text="Drawing vector art: Kumamoto Kenjinkai mascot" data-via="kinow" data-hashtags="opensource">Tweet</a>
-<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-                            
-                            <div class='row'>
-<div class="ui container" style='text-align: center;'>
-<figure>
-<a href="/2016/04/19/drawing-kumamoto-kenjinkai-mascot/mascot.png" rel="prettyPhoto" class="thumbnail" title="Kumamoto Kenjinkai mascot">
-<img class="ui fluid image" src="/2016/04/19/drawing-kumamoto-kenjinkai-mascot/mascot.png" alt="Kumamoto Kenjinkai mascot" />
-</a>
-<figcaption>Kumamoto Kenjinkai mascot</figcaption>
-</figure>
-</div>
+&lt;/p&gt;
+</code></pre>
 </div>
 
-<p>For Brazilian Kumamoto Kenjinkai. Done with Macromedia Freehand MX, some long time ago.</p>
-                            
-                            
-                            
-                        </div>
-                        <p class="postmetadata">
-                            
-                            <small>tags 
-                             [&nbsp;<a
-                                href="/tag/illustrations"
-                                rel="tag">illustrations</a>&nbsp;]&nbsp;
-                            
-                            </small>
-                            
-                            
-                            <br/>
-                            <small>posted in 
-                            [&nbsp;<a
-                                href="/blog"
-                                title="View all posts in blog"
-                                rel="category tag">blog</a>&nbsp;]
-                                &nbsp;category
-                            </small>
-                            
-                        </p>
-                    </div>
-                    
-                    <div class="ui raised padded container segment">
-                        <h2>
-                            <a href="/2016/04/17/trying-saltstack-with-docker" title="Permanent link">Trying SaltStack with Docker</a>
-                        </h2>
-                        <small>kinow</small> @ <small>Apr 17, 2016&nbsp;22:06:03</small>
-                        <div class="entry">
-                            
+<div class="ui raised padded container segment">
+    <h2>Trying SaltStack with Docker</h2>
+    <p><small>kinow</small> @ <small>Apr 17, 2016&nbsp;22:06:03</small></p>
+
+
 
 
 
@@ -397,8 +318,9 @@ bugs or improvements. So watch Ioannis&#8217; repository for updates!</p>
 
 <a href="https://twitter.com/share" class="twitter-share-button" data-url="/2016/04/17/trying-saltstack-with-docker" data-text="Trying SaltStack with Docker" data-via="kinow" data-hashtags="opensource">Tweet</a>
 <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-                            
-                            <p>Some weeks ago I started learning <a href="http://saltstack.com/">SaltStack</a> for a project at work. But I couldn&#8217;t
+
+
+    <p>Some weeks ago I started learning <a href="http://saltstack.com/">SaltStack</a> for a project at work. But I couldn&#8217;t
 find a good Docker image for that and I had to ask the Ops team for some VM&#8217;s. We
 are having a rainy weekend in Auckland, so I decided to have another look at the
 <a href="https://wiki.jenkins-ci.org/display/JENKINS/saltstack-plugin">Jenkins SaltStack Plug-in</a>.</p>
@@ -461,126 +383,42 @@ useradd saltapiuser
 <p>Once the container is running, you can go to http://localhost:8000 and
 log in as saltapiuser:nosecret, and also configure your plug-in
 in Jenkins.</p>
-<p>Happy hacking!</p>
-                            
-                            
-                            
-                        </div>
-                        <p class="postmetadata">
-                            
-                            <small>tags 
-                             [&nbsp;<a
-                                href="/tag/jenkins"
-                                rel="tag">jenkins</a>&nbsp;]&nbsp;
-                            
-                             [&nbsp;<a
-                                href="/tag/docker"
-                                rel="tag">docker</a>&nbsp;]&nbsp;
-                            
-                             [&nbsp;<a
-                                href="/tag/saltstack"
-                                rel="tag">saltstack</a>&nbsp;]&nbsp;
-                            
-                            </small>
-                            
-                            
-                            <br/>
-                            <small>posted in 
-                            [&nbsp;<a
-                                href="/blog"
-                                title="View all posts in blog"
-                                rel="category tag">blog</a>&nbsp;]
-                                &nbsp;category
-                            </small>
-                            
-                        </p>
-                    </div>
-                    
-                    <div class="ui raised padded container segment">
-                        <h2>
-                            <a href="/2016/04/08/geek-vacation-2016" title="Permanent link">Geek Vacation 2016</a>
-                        </h2>
-                        <small>kinow</small> @ <small>Apr 08, 2016&nbsp;22:17:03</small>
-                        <div class="entry">
-                            
+<p>Happy hacking!</p><!-- html -->
+
+    <p class="postmetadata">
+
+        <small>tags 
+         [&nbsp;<a
+            href="/tag/jenkins"
+            rel="tag">jenkins</a>&nbsp;]&nbsp;
+
+         [&nbsp;<a
+            href="/tag/docker"
+            rel="tag">docker</a>&nbsp;]&nbsp;
+
+         [&nbsp;<a
+            href="/tag/saltstack"
+            rel="tag">saltstack</a>&nbsp;]&nbsp;
+
+        </small>
 
 
+        <br/>
+        <small>posted in 
+        [&nbsp;<a
+            href="/blog"
+            title="View all posts in blog"
+            rel="category tag">blog</a>&nbsp;]&nbsp;
+        category </small>
+
+    </p>
+</div>
+
+<div class="ui raised padded container segment">
+    <h2>Deploying WAR files to Tomcat with Jenkins</h2>
+    <p><small>kinow</small> @ <small>Mar 20, 2016&nbsp;15:29:03</small></p>
 
 
-
-<a href="https://twitter.com/share" class="twitter-share-button" data-url="/2016/04/08/geek-vacation-2016" data-text="Geek Vacation 2016" data-via="kinow" data-hashtags="opensource">Tweet</a>
-<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-                            
-                            <p>I just had a two week vacation, and I tried to use my time to rest, play some music, and
-complete a geek todo-list. </p>
-<p>The list included things that I used some time ago but wanted to
-refresh my memory, things that I already used but never spent time reading the manuals, and
-other things that I saw somewhere but never actually used in any project.</p>
-<p>Here the complete list, with the items that were completed highlighted. Some links with
-pointers to what I used to study.</p>
-<ul>
-<li>gdb, strace, ptrace, etc, sysdig, dtrace (looked for links at <a href="https://news.ycombinator.com/">HackerNews</a> and <a href="https://www.reddit.com/">reddit</a>) ✔</li>
-<li>geodesy (<a href="https://en.wikipedia.org/wiki/Geodesy">Wikipedia</a>, some PDF&#8217;s) ✔</li>
-<li>QGIS (<a href="http://www.bostongis.com/?content_name=qgis">Boston GIS docs</a> and <a href="http://youtube.com">YouTube</a> videos) ✔</li>
-<li>SRS &amp; CRS (<a href="https://en.wikipedia.org/wiki/Spatial_reference_system">Wikipedia</a>) ✔</li>
-<li>BioPython (<a href="http://biopython.org/">project page</a>) ✔</li>
-<li>BioConda (<a href="https://bioconda.github.io/">project page</a>) ✔</li>
-<li>Weaver &amp; asm (<a href="https://commons.apache.org/proper/commons-weaver/">project page</a> and <a href="https://en.wikipedia.org/wiki/ObjectWeb_ASM">Wikipedia</a>) ✔</li>
-<li>afl (project page, and some <a href="http://kinoshita.eti.br/2016/02/27/learning-afl-and-testing-mapserver.html">tests with MapServer</a>) ✔</li>
-<li>WFS (<a href="https://en.wikipedia.org/wiki/Web_Feature_Service">Wikipedia</a>, <a href="http://docs.geoserver.org/latest/en/user/services/wfs/reference.html">GeoServer</a> and <a href="http://mapserver.org/ogc/wfs_server.html">MapServer</a>) ✔</li>
-<li>SaltStack (<a href="http://saltstack.com/">project page</a>, <a href="https://wiki.jenkins-ci.org/display/JENKINS/saltstack-plugin">Jenkins Plug-ins for SaltStack</a>, and a few tests with VM&#8217;s and Docker) ✔</li>
-<li>InfluxDB (<a href="https://influxdata.com/">project page</a>) ✔</li>
-<li>rr (<a href="http://rr-project.org/">project page</a> and some local tests) ✔</li>
-<li>ZeroMQ (<a href="http://zeromq.org/">project page</a>, <a href="https://github.com/saltstack/salt/blob/90b0a42a21dc11ca118ffbb679e0871f234c17bc/salt/transport/zeromq.py">SaltStack source code</a>) ✔</li>
-<li>netty (<a href="http://netty.io/">project page</a>) ✔</li>
-<li>RethinkDB (<a href="https://rethinkdb.com/">project page</a>, and a <a href="https://github.com/kinow/jira-rethinkdb">test project</a>) ✔</li>
-<li>C++ (templates, abstractions in C++, etc) (<a href="http://www.codeproject.com/Articles/257589/An-Idiots-Guide-to-Cplusplus-Templates-Part">just this article to remember syntax</a>) ✔</li>
-<li>Linear programming (<a href="http://benalexkeen.com/linear-programming-with-python-and-pulp/">PuLP docs</a>) ✔</li>
-<li>AKKA (<a href="http://akka.io/">project page</a>) ✔</li>
-<li>Frege (<a href="https://github.com/Frege/frege">project page</a> (reading their <a href="https://www.gitbook.com/book/dierk/fregegoodness/details">new book</a>))</li>
-<li>JVM internals (played a little with <a href="http://asm.ow2.org/">asm</a>, <a href="http://docs.oracle.com/javase/7/docs/technotes/tools/windows/javap.html">javap</a>)</li>
-<li>Java Concurrency (started re-reading <a href="http://jcip.net/">Java Concurrency in Practice</a>, but still in the initial chapters)</li>
-<li>PostGIS (<a href="postgis.net/">project page</a>)</li>
-<li>Krita (<a href="https://krita.org/">project page</a> and <a href="http://www.davidrevoy.com/article193/guide-building-krita-on-linux-for-cats">David Revoy&#8217;s tutorials</a>)</li>
-<li>Scala (<a href="http://www.scala-lang.org/">project page</a>)</li>
-<li>Minecraft Forge (<a href="http://www.minecraftforge.net/forum/">project forum</a>)</li>
-<li>Graphs in Jenkins, cylc, Spark, Jena and clue/graph (didn&#8217;t have time for this one)</li>
-</ul>
-<p>Going to have less spare time now for Open Source and learning the rest of the stuff on this list,
-but there&#8217;s always some books to read, and things to learn anyway right ¯\<em>(ツ)</em>/¯</p>
-                            
-                            
-                            
-                        </div>
-                        <p class="postmetadata">
-                            
-                            <small>tags 
-                             [&nbsp;<a
-                                href="/tag/geek"
-                                rel="tag">geek</a>&nbsp;]&nbsp;
-                            
-                            </small>
-                            
-                            
-                            <br/>
-                            <small>posted in 
-                            [&nbsp;<a
-                                href="/blog"
-                                title="View all posts in blog"
-                                rel="category tag">blog</a>&nbsp;]
-                                &nbsp;category
-                            </small>
-                            
-                        </p>
-                    </div>
-                    
-                    <div class="ui raised padded container segment">
-                        <h2>
-                            <a href="/2016/03/20/deploying-war-files-to-tomcat-with-jenkins" title="Permanent link">Deploying WAR files to Tomcat with Jenkins</a>
-                        </h2>
-                        <small>kinow</small> @ <small>Mar 20, 2016&nbsp;15:29:03</small>
-                        <div class="entry">
-                            
 
 
 
@@ -588,8 +426,9 @@ but there&#8217;s always some books to read, and things to learn anyway right ¯
 
 <a href="https://twitter.com/share" class="twitter-share-button" data-url="/2016/03/20/deploying-war-files-to-tomcat-with-jenkins" data-text="Deploying WAR files to Tomcat with Jenkins" data-via="kinow" data-hashtags="opensource">Tweet</a>
 <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-                            
-                            <p><strong>Table of Contents</strong></p>
+
+
+    <p><strong>Table of Contents</strong></p>
 <ul>
 <li><a href="#1-deploying-with-custom-scripts">Deploying with custom scripts</a></li>
 <li><a href="#2-deploying-with-a-build-tool">Deploying with a build tool</a></li>
@@ -613,53 +452,204 @@ available in the other options, or in order to call other tasks or debug some pr
 OK - Deployed application at context path /spring-petclinic
 </pre></div>
 
+<!-- html -->
 
-                            
-                            
-                            <p>( <a href="/2016/03/20/deploying-war-files-to-tomcat-with-jenkins" >Read more ...</a> )</p>
-                            
-                            
-                        </div>
-                        <p class="postmetadata">
-                            
-                            <small>tags 
-                             [&nbsp;<a
-                                href="/tag/jenkins"
-                                rel="tag">jenkins</a>&nbsp;]&nbsp;
-                            
-                             [&nbsp;<a
-                                href="/tag/tomcat"
-                                rel="tag">tomcat</a>&nbsp;]&nbsp;
-                            
-                             [&nbsp;<a
-                                href="/tag/docker"
-                                rel="tag">docker</a>&nbsp;]&nbsp;
-                            
-                            </small>
-                            
-                            
-                            <br/>
-                            <small>posted in 
-                            [&nbsp;<a
-                                href="/blog"
-                                title="View all posts in blog"
-                                rel="category tag">blog</a>&nbsp;]
-                                &nbsp;category
-                            </small>
-                            
-                        </p>
-                    </div>
-                    
-                    
-                    <div class="ui pagination menu">
+    <p>( <a href="/2016/03/20/deploying-war-files-to-tomcat-with-jenkins" >Read more &#8230;</a> )</p>
+
+    <p class="postmetadata">
+
+        <small>tags 
+         [&nbsp;<a
+            href="/tag/jenkins"
+            rel="tag">jenkins</a>&nbsp;]&nbsp;
+
+         [&nbsp;<a
+            href="/tag/tomcat"
+            rel="tag">tomcat</a>&nbsp;]&nbsp;
+
+         [&nbsp;<a
+            href="/tag/docker"
+            rel="tag">docker</a>&nbsp;]&nbsp;
+
+        </small>
+
+
+        <br/>
+        <small>posted in 
+        [&nbsp;<a
+            href="/blog"
+            title="View all posts in blog"
+            rel="category tag">blog</a>&nbsp;]&nbsp;
+        category </small>
+
+    </p>
+</div>
+
+<div class="ui raised padded container segment">
+    <h2>How does the Jenkins Credentials Plug-in store passwords?</h2>
+    <p><small>kinow</small> @ <small>Sep 07, 2015&nbsp;01:25:03</small></p>
+
+
+
+
+
+
+
+<a href="https://twitter.com/share" class="twitter-share-button" data-url="/2015/09/07/how_does_the_jenkins_credentials_plugin_store_passwords" data-text="How does the Jenkins Credentials Plug-in store passwords?" data-via="kinow" data-hashtags="opensource">Tweet</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+
+
+    <p><a href="https://wiki.jenkins-ci.org/display/JENKINS/Credentials+Plugin">Jenkins Credentials Plug-in</a> manages credentials stored in Jenkins. These credentials can be used in many jobs and by plug-ins for executing SSH commands, authenticating to systems, or running other commands that need some sort of authentication or authorisation.</p>
+<p>I recently used its API for the first time in the <a href="https://github.com/biouno/figshare-plugin">BioUno figshare Plug-in</a> to store OAuth 1.0 credentials (consumer key, consumer secret, token key, token secret). This <a href="http://biouno.org/2015/09/05/using_jenkins_credentials_plugin_to_create_the_biouno_figshare_plugin/">blog post</a> has more details about how we used the plug-in, but this post is specifically on how the passwords are stored by Jenkins.</p>
+<h2>Secret and ciphers</h2>
+<p>Jenkins stores its configuration on disk as XML using the XStream library. Plug-in developers using the Credentials Plug-in API must use the <strong>Secret</strong> class to encrypt sensitive information.</p>
+<p>The <code>Secret.fromString</code> method is responsible for creating a cipher from a given String. As in the Secret Javadoc,  <em>&#8220;this is not meant as a protection against code running in the same VM, nor against an attacker who has local file system access on Jenkins master&#8221;</em>. But at least makes things more complicated :-)</p>
+<ul>
+<li><a href="http://javadoc.jenkins-ci.org/hudson/util/Secret.html">Secret Javadoc</a></li>
+<li><a href="https://github.com/jenkinsci/jenkins/blob/master/core/src/main/java/hudson/util/Secret.java">Secret source code</a></li>
+</ul>
+<div class="highlight"><pre><span class="kd">public</span> <span class="kd">static</span> <span class="n">Secret</span> <span class="nf">fromString</span><span class="o">(</span><span class="n">String</span> <span class="n">data</span><span class="o">)</span> <span class="o">{</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">Util</span><span class="o">.</span><span class="na">fixNull</span><span class="o">(</span><span class="n">data</span><span class="o">);</span>
+    <span class="n">Secret</span> <span class="n">s</span> <span class="o">=</span> <span class="n">decrypt</span><span class="o">(</span><span class="n">data</span><span class="o">);</span>
+    <span class="k">if</span><span class="o">(</span><span class="n">s</span><span class="o">==</span><span class="kc">null</span><span class="o">)</span> <span class="n">s</span><span class="o">=</span><span class="k">new</span> <span class="n">Secret</span><span class="o">(</span><span class="n">data</span><span class="o">);</span>
+    <span class="k">return</span> <span class="n">s</span><span class="o">;</span>
+<span class="o">}</span>
+</pre></div>
+
+<p>The first line simply replaces a null string by an empty &#8220;&#8221;, or keeps the current value of not null.</p>
+<p>After that, the decrypt method is called.</p>
+<div class="highlight"><pre><span class="kd">public</span> <span class="kd">static</span> <span class="n">Secret</span> <span class="nf">decrypt</span><span class="o">(</span><span class="n">String</span> <span class="n">data</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">if</span><span class="o">(</span><span class="n">data</span><span class="o">==</span><span class="kc">null</span><span class="o">)</span>      <span class="k">return</span> <span class="kc">null</span><span class="o">;</span>
+    <span class="k">try</span> <span class="o">{</span>
+        <span class="kt">byte</span><span class="o">[]</span> <span class="n">in</span> <span class="o">=</span> <span class="n">Base64</span><span class="o">.</span><span class="na">decode</span><span class="o">(</span><span class="n">data</span><span class="o">.</span><span class="na">toCharArray</span><span class="o">());</span>
+        <span class="n">Secret</span> <span class="n">s</span> <span class="o">=</span> <span class="n">tryDecrypt</span><span class="o">(</span><span class="n">KEY</span><span class="o">.</span><span class="na">decrypt</span><span class="o">(),</span> <span class="n">in</span><span class="o">);</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">s</span><span class="o">!=</span><span class="kc">null</span><span class="o">)</span>    <span class="k">return</span> <span class="n">s</span><span class="o">;</span>
+
+        <span class="c1">// try our historical key for backward compatibility</span>
+        <span class="n">Cipher</span> <span class="n">cipher</span> <span class="o">=</span> <span class="n">getCipher</span><span class="o">(</span><span class="s">&quot;AES&quot;</span><span class="o">);</span>
+        <span class="n">cipher</span><span class="o">.</span><span class="na">init</span><span class="o">(</span><span class="n">Cipher</span><span class="o">.</span><span class="na">DECRYPT_MODE</span><span class="o">,</span> <span class="n">getLegacyKey</span><span class="o">());</span>
+        <span class="k">return</span> <span class="n">tryDecrypt</span><span class="o">(</span><span class="n">cipher</span><span class="o">,</span> <span class="n">in</span><span class="o">);</span>
+    <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">GeneralSecurityException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="kc">null</span><span class="o">;</span>
+    <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">UnsupportedEncodingException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">throw</span> <span class="k">new</span> <span class="n">Error</span><span class="o">(</span><span class="n">e</span><span class="o">);</span> <span class="c1">// impossible</span>
+    <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">IOException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="kc">null</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</pre></div>
+
+<p>The <code>KEY.decrypt()</code> call will return a <a href="http://docs.oracle.com/javase/8/docs/api/javax/crypto/Cipher.html"><code>javax.crypto.Cipher</code></a>. The Cipher class is handled in <a href="https://github.com/jenkinsci/jenkins/blob/93dfe3377ec8d430818f5b9073f16c677343adb4/core/src/main/java/jenkins/security/CryptoConfidentialKey.java">CryptoConfidentialKey</a> in Jenkins API, where it defines the algorithm used to create the cipher: <a href="https://en.wikipedia.org/wiki/Advanced_Encryption_Standard">AES</a>.</p>
+
+<p>Jenkins has also a <a href="https://github.com/jenkinsci/jenkins/blob/93dfe3377ec8d430818f5b9073f16c677343adb4/core/src/main/java/jenkins/security/ConfidentialStore.java#L63">ConfidentialStore</a>, that is required to create the cipher. This class must be initialized before someone tries to create or read a cipher. This extra step also increases security, though access to the JVM is still a problem.</p>
+
+<p>It is a bit late, so it is all for today. In summary: the credentials plug-in gives you a central place to manage credentials, but it is up to plug-in developers to use it. Sensitive values can be encrypted with AES on disk. So it is important that your file permissions, ACL and system auditing processes are in place and well maintained and monitored.</p>
+
+<p>Happy hacking!</p>
+
+<!-- html -->
+
+<pre><code>&lt;p class="postmetadata"&gt;
+
+    &lt;small&gt;tags 
+     [&amp;nbsp;&lt;a
+        href="/tag/jenkins"
+        rel="tag"&gt;jenkins&lt;/a&gt;&amp;nbsp;]&amp;nbsp;
+
+     [&amp;nbsp;&lt;a
+        href="/tag/security"
+        rel="tag"&gt;security&lt;/a&gt;&amp;nbsp;]&amp;nbsp;
+
+    &lt;/small&gt;
+
+
+    &lt;br/&gt;
+    &lt;small&gt;posted in 
+    [&amp;nbsp;&lt;a
+        href="/blog"
+        title="View all posts in blog"
+        rel="category tag"&gt;blog&lt;/a&gt;&amp;nbsp;]&amp;nbsp;
+    category &lt;/small&gt;
+
+&lt;/p&gt;
+</code></pre>
+</div>
+
+<div class="ui raised padded container segment">
+    <h2>Groovy Hooks in Jenkins for increasing logging level</h2>
+    <p><small>kinow</small> @ <small>Apr 12, 2015&nbsp;11:30:03</small></p>
+
+
+
+
+
+
+
+<a href="https://twitter.com/share" class="twitter-share-button" data-url="/2015/04/12/groovy-hooks-in-jenkins-for-increasing-logging-level" data-text="Groovy Hooks in Jenkins for increasing logging level" data-via="kinow" data-hashtags="opensource">Tweet</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+
+
+    <p>Yesterday, while debugging a problem we had in the <a href="http://biouno.org">BioUno</a> update center, 
+I realized that after <a href="https://wiki.jenkins-ci.org/display/JENKINS/Logging">increasing the logging level in the WEB interface</a>, 
+the messages that I needed weren&#8217;t being displayed in the logs.</p>
+<p>It happened because some of the logging happened during Jenkins initialization, and before I could adjust the log level.</p>
+<p>The solution was to use a <a href="https://wiki.jenkins-ci.org/display/JENKINS/Groovy+Hook+Script">Groovy Hook Script</a>. 
+If you are familiar with Linux init scripts, the idea is quite similar. </p>
+<p>A Groovy script in the <code>$JENKINS_ROOT_DIR/init.groovy.d/</code> directory is executed during
+Jenkins initialization. This way you can increase the global logger level with a script
+as the following below.</p>
+<div class="highlight"><pre><span class="kn">import</span> <span class="nn">java.util.logging.ConsoleHandler</span>
+<span class="kn">import</span> <span class="nn">java.util.logging.LogManager</span>
+<span class="kn">import</span> <span class="nn">java.util.logging.Logger</span>
+<span class="kn">import</span> <span class="nn">java.util.logging.Level</span>
+
+<span class="n">def</span> <span class="n">logger</span> <span class="o">=</span> <span class="n">Logger</span><span class="o">.</span><span class="na">getLogger</span><span class="o">(</span><span class="s">&quot;&quot;</span><span class="o">)</span>
+<span class="n">logger</span><span class="o">.</span><span class="na">setLevel</span><span class="o">(</span><span class="n">Level</span><span class="o">.</span><span class="na">FINEST</span><span class="o">)</span>
+<span class="n">logger</span><span class="o">.</span><span class="na">addHandler</span> <span class="o">(</span><span class="k">new</span> <span class="n">ConsoleHandler</span><span class="o">())</span>
+</pre></div>
+
+<p>Happy logging!</p>
+
+<!-- html -->
+
+<pre><code>&lt;p class="postmetadata"&gt;
+
+    &lt;small&gt;tags 
+     [&amp;nbsp;&lt;a
+        href="/tag/jenkins"
+        rel="tag"&gt;jenkins&lt;/a&gt;&amp;nbsp;]&amp;nbsp;
+
+     [&amp;nbsp;&lt;a
+        href="/tag/groovy"
+        rel="tag"&gt;groovy&lt;/a&gt;&amp;nbsp;]&amp;nbsp;
+
+    &lt;/small&gt;
+
+
+    &lt;br/&gt;
+    &lt;small&gt;posted in 
+    [&amp;nbsp;&lt;a
+        href="/blog"
+        title="View all posts in blog"
+        rel="category tag"&gt;blog&lt;/a&gt;&amp;nbsp;]&amp;nbsp;
+    category &lt;/small&gt;
+
+&lt;/p&gt;
+</code></pre>
+</div>
+
+<div id="navigation">
+
+        &larr;&nbsp;<a href="//tag/jenkins/2" id="navigation-next">Older Entries</a>
+
+
+</div>
+                    <p class="postmetadata">
                         
-                        <a class="item" href="/2"><i class='left arrow icon'></i> Previous Posts</a>
                         
-                        
-                    </div>
-                    
+                    </p>
                 
-               </div>
+                </div>
             </div>
         </div>
         <div class="ui vertical footer segment">
