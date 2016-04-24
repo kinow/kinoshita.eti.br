@@ -9,16 +9,16 @@ time: '16:05:03'
 
 Having worked in Open Source for a few years, one of my favorite things is when you can
 share experience with other people that you meet. [Andrew Gray](https://github.com/agray)
-has worked with .NET and Jenkins for years, and we met through some Open Source. He also
-writes the blog [Jenkins.NET](http://jenkinsheaven.blogspot.co.nz/).
+has worked with .NET and Jenkins for years, and we met through Open Source. He has helped me
+in the past with Jenkins and .NET, and also maintains the blog
+[Jenkins.NET](http://jenkinsheaven.blogspot.co.nz/).
 
-A couple of days ago he had an interesting question about using Active Choices Plug-in
-in Jenkins. He wanted to see if that would be possible to use the plug-in to show different
-parameters depending on the user permission.
+A couple of days ago he sent me an interesting question. He asked me if that would be possible
+to use Active Choices Plug-in with the [Role Strategy Plug-in](https://wiki.jenkins-ci.org/display/JENKINS/Role+Strategy+Plugin). This plug-in lets you define roles, define which permissions a role has, and then assign users to the roles.
 
-Another important point is that it needed to support the
-[Role Strategy Plug-in](https://wiki.jenkins-ci.org/display/JENKINS/Role+Strategy+Plugin). This plug-in
-lets you define roles, define which permissions a role has, and then assign users to the roles.
+The idea was to show a set of parameters that would vary according to the user roles. So, say that the user
+is a tester. Then s/he would see certain parameters. But if s/he was a manager, other parameters would be
+displayed.
 
 ## To the code
 
@@ -61,7 +61,7 @@ return jobs
 // TODO: handle anonymous user ;-)
 {% endgeshi %}
 
-Let's dissect the code.
+And now let's dissect the code.
 
 {% geshi 'java' %}
 import hudson.model.User
@@ -72,8 +72,7 @@ import com.michelin.cio.hudson.plugins.rolestrategy.RoleBasedAuthorizationStrate
 import com.michelin.cio.hudson.plugins.rolestrategy.RoleMap
 {% endgeshi %}
 
-You start by importing the classes that you need. If you are going to run the code against classes
-that may exist only on slaves, you may have to write some more logic to import classes accordingly.
+You start by importing the classes that you need.
 
 {% geshi 'java' %}
 AuthorizationStrategy strategy = Hudson.getInstance().getAuthorizationStrategy();
@@ -125,38 +124,44 @@ used from Jenkins to write the script.
 * [RoleMap](https://github.com/jenkinsci/role-strategy-plugin/blob/b6dca7904ce1c83b3afef0995ef5f42823171b0b/src/main/java/com/michelin/cio/hudson/plugins/rolestrategy/RoleMap.java)
 * [User.java](https://github.com/jenkinsci/jenkins/blob/f6e431b80c4d162560419fa51633224a9724bb0d/core/src/main/java/hudson/model/User.java)
 
-## What the code does
+Normally I either use my local working copy of Jenkins project imported in Eclipse, or use the
+"Find File" feature in GitHub. Then remember a little bit about Jenkins Java API to walk
+through the classes and write the Groovy code (I made a
+[video](https://www.youtube.com/watch?v=jmPJvJGEFb4) about writing Groovy with Auto Complete in
+Eclipse, but that's in Portuguese only).
+
+## What the result looks like in Jenkins
 
 In this section we have just simple screenshots, showing the script in the job configuration.
 
 <div class='row'>
 <div class="ui container" style='text-align: center;'>
 <figure>
-<a href="{{assets.screenshot01}}" rel="prettyPhoto" class="thumbnail" title="Screen shot 01">
-<img class="ui fluid image" src="{{assets.screenshot01}}" alt="Screen shot 01" />
+<a href="{{assets.screenshot01}}" rel="prettyPhoto" class="thumbnail" title="Screenshot 01">
+<img class="ui fluid image" src="{{assets.screenshot01}}" alt="Screenshot 01" />
 </a>
-<figcaption>Screen shot 01</figcaption>
+<figcaption>Screenshot 01</figcaption>
 </figure>
 </div>
 </div>
 
-And the resulting screen. The parameter **DeployApp** will be available during the build,
+And the resulting screen. The parameter **DeployAPP** will be available during the build,
 and can be used to trigger other jobs or pipelines.
 
 <div class='row'>
 <div class="ui container" style='text-align: center;'>
 <figure>
-<a href="{{assets.screenshot02}}" rel="prettyPhoto" class="thumbnail" title="Screen shot 02">
-<img class="ui fluid image" src="{{assets.screenshot02}}" alt="Screen shot 02" />
+<a href="{{assets.screenshot02}}" rel="prettyPhoto" class="thumbnail" title="Screenshot 02">
+<img class="ui fluid image" src="{{assets.screenshot02}}" alt="Screenshot 02" />
 </a>
-<figcaption>Screen shot 02</figcaption>
+<figcaption>Screenshot 02</figcaption>
 </figure>
 </div>
 </div>
 
 ## Where can you find this script?
 
-This blog has a copy of the script, but in case you forget the address, I have submitted
+This blog post has a copy of the script, but I have also submitted
 a pull request to a [repository](https://github.com/imoutsatsos/jenkins-scriptlets)
 maintained by another friend, [Ioannis Moutsatsos](https://github.com/imoutsatsos). Ioannis
 maintains a Jenkins installation in Novartis, and is probably the most skillful user
@@ -165,5 +170,6 @@ of the Active Choices Plug-in.
 Another advantage of this other copy, is that it may be updated with time, in case there are
 bugs or improvements. So watch Ioannis' repository for updates!
 
-Happy hacking!
+ps: I've also met Ioannis through Open Source code, and have learned a lot by working with him. 
 
+♥ Open Source!
