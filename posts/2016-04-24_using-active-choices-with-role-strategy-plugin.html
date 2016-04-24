@@ -22,7 +22,7 @@ lets you define roles, define which permissions a role has, and then assign user
 
 ## To the code
 
-{% geshi 'groovy' %}
+{% geshi 'java' %}
 import hudson.model.User
 import hudson.model.Hudson
 import hudson.security.AuthorizationStrategy
@@ -63,7 +63,7 @@ return jobs
 
 Let's dissect the code.
 
-{% geshi 'groovy' %}
+{% geshi 'java' %}
 import hudson.model.User
 import hudson.model.Hudson
 import hudson.security.AuthorizationStrategy
@@ -75,7 +75,7 @@ import com.michelin.cio.hudson.plugins.rolestrategy.RoleMap
 You start by importing the classes that you need. If you are going to run the code against classes
 that may exist only on slaves, you may have to write some more logic to import classes accordingly.
 
-{% geshi 'groovy' %}
+{% geshi 'java' %}
 AuthorizationStrategy strategy = Hudson.getInstance().getAuthorizationStrategy();
 
 jobs = []
@@ -89,7 +89,7 @@ used in Jenkins.
 Then we create an empty array of jobs, which is the value returned by default. And get the current
 logged in user ID.
 
-{% geshi 'groovy' %}
+{% geshi 'java' %}
 if (strategy != null && strategy instanceof com.michelin.cio.hudson.plugins.rolestrategy.RoleBasedAuthorizationStrategy) {
     roleStrategy = (RoleBasedAuthorizationStrategy) strategy;
     // not very straightforward to get the groups for a given user
