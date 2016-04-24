@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0"
+    xmlns:content="http://purl.org/rss/1.0/modules/content/"
+    xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+    xmlns:dc="http://purl.org/dc/elements/1.1/"
+    xmlns:atom="http://www.w3.org/2005/Atom"
+    xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+    xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+>
+ 
+<channel>
+    <title>Bruno P. Kinoshita</title>
+    <atom:link href="/blog/feed.xml" rel="self" type="application/rss+xml" />
+    <link>/</link>
+    <description></description>
+    <lastBuildDate>1461480017.3140304</lastBuildDate>
+    <language>en-US</language>
+    <generator>PieCrust 2.0.0b5</generator>
+ 
+
+<item>
+    <title>Fix laggy Flash (Pepper) in Chrome</title>
+    <pubDate>Mar 31, 2013</pubDate>
+    <link>/2013/03/31/fix-laggy-flash-pepper-in-chrome</link>
+    <dc:creator></dc:creator>
+    <description><p>My chrome died twice this morning. Checking the system logs I found some segmentation errors. Since it was not so recent version, I updated to the latest version of Chrome. But after that my Flash player was laggy/slowly, and I couldn&#8217;t listen to <a href="http://tunein.com/radio/Live-Ireland-Channel-1-s17895/#" title="Live Ireland Channel 1">Live Ireland Channel 1</a> no more :-( (I listen to either this radio or r/electrohouse on reddit.tv while I&#8217;m programming&#8230; I know, I&#8217;m a bit weird).</p>
+
+<p>If you are having the same problem, here&#8217;s the list of actions that I did to fix it.</p>
+
+<p>TL;DR: Disable the Pepper Flash, as well as the Gnash or other flash libraries installed, download flash plug-in from <a href="http://get.adobe.com/flashplayer/" title="http://get.adobe.com/flashplayer/">http://get.adobe.com/flashplayer/</a> and enable it.</p>
+
+<ul>
+    <li>Went to chrome:plugins and disabled the Pepper Flash.</li>
+    <li>Now I was back at using the Gnash flash plug-in previously installed. Now, although I could watch to Youtube videos, my radio wasn&#8217;t playing yet.</li>
+    <li>Disabled all Flash plug-ins, went to <a href="http://get.adobe.com/flashplayer/" title="http://get.adobe.com/flashplayer/">http://get.adobe.com/flashplayer/</a> and got the latest version (tar.gz, since I&#8217;m using Debian).</li>
+    <li>Copied the libflashplayer.so to <em>/opt/google/chrome/plugins</em></li>
+    <li>Re-enabled the Shockwave Flash plug-in (you have to expand the details section, in order to be able to choose which version you want to enable</li>
+</ul>
+
+<p>And now I&#8217;m happily writing this blog and code, listening to Salonika - Dublin City Ramblers.</p>
+
+<p>Cheers</p></description>
+</item>
+
+<item>
+    <title>Learning with Open Source: Reviewing SVN commits log</title>
+    <pubDate>Feb 10, 2013</pubDate>
+    <link>/2013/02/10/learning-with-open-source-reviewing-svn-commits-log</link>
+    <dc:creator></dc:creator>
+    <description><p>Last year I became an <a href="http://www.apache.org" title="Apache">Apache</a> committer, and dedicated most of my time learning the <a href="http://incubator.apache.org/learn/theapacheway.html" title="The Apache Way">Apache way</a>, reading different mailing lists and getting used to the things a committer is supposed to know (voting process, keeping everything in the mailing list, and so it goes) and getting used to <a href="http://commons.apache.org/functor" title="Apache Commons Functor">[functor]</a> API.</p>
+
+<p>In 2013 I hope I can help in the release of [functor], since Java and <a href="http://reddit.com/r/functionalprogramming">functional programming</a> are getting a lot more of attention recently, probably due to the <a href="http://openjdk.java.net/projects/lambda/" title="Project Lambda">project lambda</a>. But I also want to start contributing with the other components from commons (like <a href="http://commons.apache.org/math/" title="Apache Commons Math">math</a>, <a href="http://commons.apache.org/io/" title="Apache Commons IO">io</a>, <a href="http://commons.apache.org/jcs/" title="Apache Commons JCS">jcs</a>) and other top level projects (<a href="http://hadoop.apache.org/" title="Apache Hadoop">hadoop</a>, <a href="http://nutch.apache.org/" title="Apache Nutch">nutch</a>, <a href="http://lucene.apache.org/" title="Apache Lucene">lucene</a>).</p>
+
+<h4>Reviewing SVN commits log</h4>
+
+<p><a href="https://issues.apache.org/jira/browse/FUNCTOR-14" title="Apache Commons Functor - Issue 14">FUNCTOR-14</a> was created to enhance the <a href="http://commons.apache.org/functor/apidocs/org/apache/commons/functor/generator/package-summary.html">generators API</a> in [functor]. I&#8217;d worked on <a href="http://svn.apache.org/viewvc/commons/proper/functor/branches/generators-FUNCTOR-14/">a branch</a> for this issue, but needed some review in order to be able to merge it with the trunk. That&#8217;s where you can see why Open Source is so awesome. Another Apache member, Matt Benson, created <a href="http://svn.apache.org/viewvc/commons/proper/functor/branches/FUNCTOR-14-mm/">another branch</a> to work on the project structure, but also to review the generator API.</p>
+
+<p style='text-align: center'><a href="/2013/02/10/learning-with-open-source-reviewing-svn-commits-log/feather_small.gif"><img src="/2013/02/10/learning-with-open-source-reviewing-svn-commits-log/feather_small.gif" alt="Apache Software Foundation" width="203" height="61" class="alignnone size-full wp-image-1125" /></a></p>
+
+</description>
+</item>
+
+<item>
+    <title>git clone fails with fatal: Unable to find remote helper for 'https'</title>
+    <pubDate>Jan 17, 2013</pubDate>
+    <link>/2013/01/17/git-clone-fails-with-fatal-unable-to-find-remote-helper-for-https</link>
+    <dc:creator></dc:creator>
+    <description><p>I&#8217;ve been working in a client site without Internet connection, and behind a troll proxy. There is an internal yum repository, but many dependencies are missing.</p>
+
+<p>There weren&#8217;t git-all, git or git-core packages there, so I had to download and install from sources. I didn&#8217;t pay attention to the <code>./configure</code> output and proceeded with <code>make</code> and <code>make install</code>.</p>
+
+<p>Git was installed and ready to rock, but in my first <code>git clone https://</code> (SSH ports are blocked) I received: <strong>fatal: Unable to find remote helper for &#8216;https&#8217;</strong>.</p>
+
+<p>Turns out that I was missing libcurl-devel, though I did have curl. After installing libcurl-devel and installing from sources again all worked fine.</p></description>
+</item>
+
+<item>
+    <title>Using Apache Commons Functor functional interfaces with Java 8 lambdas</title>
+    <pubDate>Dec 21, 2012</pubDate>
+    <link>/2012/12/21/using-apache-commons-functor-functional-interfaces-with-java-8-lambdas</link>
+    <dc:creator></dc:creator>
+    <description><p><a href='http://commons.apache.org/sandbox/functor/'>Apache Commons Functor</a> (hereon [functor]) is an <a href='http://commons.apache.org/'>Apache Commons</a> component that provides a functional programming API and several patterns implemented (visitor, generator, aggregator, etc). <a href="http://openjdk.java.net/projects/lambda/" title="Java 8 lambda">Java 8</a> has several nice new features, including lambda expressions and <a href="http://datumedge.blogspot.com.br/2012/06/java-8-lambdas.html">functional interfaces</a>. In Java 8, lambdas or lambdas expressions are <a href="http://tronicek.blogspot.com.br/2007/12/closures-closure-is-form-of-anonymous_28.html">closures</a> that can be evaluated and behave like anonymous methods.</p>
+
+<p>Functional interfaces are interfaces with only one method. These interfaces can be used in lambdas and save you a lot of time from writing anonymous classes or even implementing the interfaces. [functor] provides several functional interfaces (thanks to <a href="https://issues.apache.org/jira/browse/FUNCTOR-20">Matt Benson</a>). It hasn&#8217;t been released yet, but there are some new examples in the project site, in the <a href="http://svn.apache.org/viewvc/commons/proper/functor/trunk/" title="[functor] SVN trunk">trunk of the SVN</a>. I will use one of these examples to show how [functor] functional interfaces can be used in conjunction with Java 8 lambdas.</p>
+
+<p>After the example with [functor] in Java 8, I will explain how I am running Java 8 in Eclipse (it&#8217;s kind of a <a href="http://www.speaklikeabrazilian.com/expression/define?e=Gambiarra" title="Gambiarra">gambiarra</a>, but works well).</p>
+
+</description>
+</item>
+
+<item>
+    <title>Running BDD tests from TestLink in Jenkins</title>
+    <pubDate>Nov 07, 2012</pubDate>
+    <link>/2012/11/07/running-bdd-tests-from-testlink-in-jenkins</link>
+    <dc:creator></dc:creator>
+    <description><p>Last night and this morning I spent some time working on running <a href="http://en.wikipedia.org/wiki/Behavior-driven_development" title="BDD">BDD</a> tests that were created in <a href="http://www.teamst.org" title="TestLink">TestLink</a> in <a href="http://jenkins-ci.org" title="Jenkins CI">Jenkins</a>, using <a href="https://wiki.jenkins-ci.org/display/JENKINS/TestLink+Plugin" title="Jenkins TestLink Plugin">testlink-plugin</a>.</p>
+
+<p>Similar integration has already been proposed in <a href="http://www.sqaopen.net/blog/en/?tag=jinfeng" title="JinFeng - by Olivier Renault">JinFeng</a>, by Olivier Renault. Basically, you write BDD stories in TestLink (a story goes into the Test Case summary), Jenkins retrieves these stories and executes them using a skeleton project.</p>
+
+<div class='row'>
+<div class="ui container" style='text-align: center;'>
+<figure>
+<a href="/2012/11/07/running-bdd-tests-from-testlink-in-jenkins/tl_bdd.png" rel="prettyPhoto" class="thumbnail" title="TestLink BDD">
+<img class="ui fluid image" src="/2012/11/07/running-bdd-tests-from-testlink-in-jenkins/tl_bdd.png" alt="TestLink BDD" />
+</a>
+<figcaption>TestLink BDD</figcaption>
+</figure>
+</div>
+</div>
+
+<p>There are many ways to use BDD. In some of them you write code like Java, Ruby or Perl, and in others you write a DSL. I started working with JBehave, but for this integration, I preferred to use a <a href="http://en.wikipedia.org/wiki/Domain-specific_language" title="DSL">DSL</a> - as TestLink doesn&#8217;t maintain source code, only test cases -, so I switched to <a href="http://www.easyb.org" title="easyb">easyb</a>.</p>
+
+</description>
+</item>
+
+<item>
+    <title>A quick view on Wordpress, Mantis and Jenkins plug-in API</title>
+    <pubDate>Oct 25, 2012</pubDate>
+    <link>/2012/10/25/a-quick-view-on-wordpress-mantis-and-jenkins-plug-in-api</link>
+    <dc:creator></dc:creator>
+    <description><p>I&#8217;m preparing a <em>plug-in API proposal for <a href="http://www.teamst.org" title="TestLink">TestLink</a></em>, and thought that the best way to learn how to write a good plug-in API would be by looking at other application&#8217;s plug-in API&#8217;s.</p>
+
+<p style="text-align: center"><img src="/2012/10/25/a-quick-view-on-wordpress-mantis-and-jenkins-plug-in-api/testlink_logo_2.jpg " alt="" title="TestLink" width="283" height="170" class="aligncenter size-full wp-image-1153" /></p>
+
+<p>This post contains information that I gathered for creating this new API, but that may also be useful for other programmers. I used <a href="#wp">Wordpress</a>, <a href="#mantis">Mantis</a> and <a href="#jenkins">Jenkins</a> in this study. Let me know if you find any mistakes or if you have any other suggestions.</p>
+
+</description>
+</item>
+
+<item>
+    <title>Replacing a HashSet with a BitSet</title>
+    <pubDate>Oct 20, 2012</pubDate>
+    <link>/2012/10/20/replacing-a-hashset-with-a-bitset</link>
+    <dc:creator></dc:creator>
+    <description><p>I always read the messages in the <a href="http://www.apache.org/foundation/mailinglists.html" title="Apache mailing lists">Apache dev mailing lists</a>, including Apache Commons <a href="http://commons.apache.org/mail-lists.html" title="Apache Commons mailing lists">dev mailing list</a>. And you should too. There are always interesting discussions. Sometimes you participate, other times you only watch what&#8217;s happening, but in the end <strong>you always learn something new</strong>.</p>
+
+<p>A few days ago, I found <a href="https://issues.apache.org/jira/browse/LANG-839" title="LANG-839">an issue</a> where it was being proposed to replace an unnecessary <a href="http://docs.oracle.com/javase/6/docs/api/java/util/HashSet.html" title="HashSet">HashSet</a> in <a href="http://commons.apache.org/lang/api-release/org/apache/commons/lang3/ArrayUtils.html" title="ArrayUtils">ArrayUtils</a>#removeElements() by a <a href="http://docs.oracle.com/javase/6/docs/api/java/util/BitSet.html" title="BitSet">BitSet</a>. Here&#8217;s how the code looked like: </p>
+
+<div class="highlight"><pre><span class="n">HashSet</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">&gt;</span> <span class="n">toRemove</span> <span class="o">=</span> <span class="k">new</span> <span class="n">HashSet</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">&gt;();</span>
+<span class="k">for</span> <span class="o">(</span><span class="n">Map</span><span class="o">.</span><span class="na">Entry</span><span class="o">&lt;</span><span class="n">Character</span><span class="o">,</span> <span class="n">MutableInt</span><span class="o">&gt;</span> <span class="n">e</span> <span class="o">:</span> <span class="n">occurrences</span><span class="o">.</span><span class="na">entrySet</span><span class="o">())</span> <span class="o">{</span>
+    <span class="n">Character</span> <span class="n">v</span> <span class="o">=</span> <span class="n">e</span><span class="o">.</span><span class="na">getKey</span><span class="o">();</span>
+    <span class="kt">int</span> <span class="n">found</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
+    <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">,</span> <span class="n">ct</span> <span class="o">=</span> <span class="n">e</span><span class="o">.</span><span class="na">getValue</span><span class="o">().</span><span class="na">intValue</span><span class="o">();</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">ct</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+        <span class="n">found</span> <span class="o">=</span> <span class="n">indexOf</span><span class="o">(</span><span class="n">array</span><span class="o">,</span> <span class="n">v</span><span class="o">.</span><span class="na">charValue</span><span class="o">(),</span> <span class="n">found</span><span class="o">);</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">found</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">break</span><span class="o">;</span>
+        <span class="o">}</span>
+        <span class="n">toRemove</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">found</span><span class="o">++);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+<span class="k">return</span> <span class="o">(</span><span class="kt">char</span><span class="o">[])</span> <span class="n">removeAll</span><span class="o">((</span><span class="n">Object</span><span class="o">)</span><span class="n">array</span><span class="o">,</span> <span class="n">extractIndices</span><span class="o">(</span><span class="n">toRemove</span><span class="o">));</span>
+</pre></div>
+
+<p style="text-align: center"><a href="/2012/10/20/replacing-a-hashset-with-a-bitset/feather_small.gif"><img src="/2012/10/20/replacing-a-hashset-with-a-bitset/feather_small.gif" alt="" title="Apache Software Foundation" width="203" height="61" class="aligncenter size-full wp-image-1125" /></a></p>
+
+<p>The HashSet created at line 1, in the code above, was used to store the array index of the elements that should be removed. And at line 13 there is a call to removeAll method, passing the indexes to be removed. And here&#8217;s how the new code looks like: </p>
+
+<div class="highlight"><pre><span class="n">BitSet</span> <span class="n">toRemove</span> <span class="o">=</span> <span class="k">new</span> <span class="n">BitSet</span><span class="o">();</span>
+<span class="k">for</span> <span class="o">(</span><span class="n">Map</span><span class="o">.</span><span class="na">Entry</span><span class="o">&lt;</span><span class="n">Character</span><span class="o">,</span> <span class="n">MutableInt</span><span class="o">&gt;</span> <span class="n">e</span> <span class="o">:</span> <span class="n">occurrences</span><span class="o">.</span><span class="na">entrySet</span><span class="o">())</span> <span class="o">{</span>
+    <span class="n">Character</span> <span class="n">v</span> <span class="o">=</span> <span class="n">e</span><span class="o">.</span><span class="na">getKey</span><span class="o">();</span>
+    <span class="kt">int</span> <span class="n">found</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
+    <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">,</span> <span class="n">ct</span> <span class="o">=</span> <span class="n">e</span><span class="o">.</span><span class="na">getValue</span><span class="o">().</span><span class="na">intValue</span><span class="o">();</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">ct</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+        <span class="n">found</span> <span class="o">=</span> <span class="n">indexOf</span><span class="o">(</span><span class="n">array</span><span class="o">,</span> <span class="n">v</span><span class="o">.</span><span class="na">charValue</span><span class="o">(),</span> <span class="n">found</span><span class="o">);</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">found</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">break</span><span class="o">;</span>
+        <span class="o">}</span>
+        <span class="n">toRemove</span><span class="o">.</span><span class="na">set</span><span class="o">(</span><span class="n">found</span><span class="o">++);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+<span class="k">return</span> <span class="o">(</span><span class="kt">char</span><span class="o">[])</span> <span class="n">removeAll</span><span class="o">(</span><span class="n">array</span><span class="o">,</span> <span class="n">toRemove</span><span class="o">);</span>
+</pre></div>
+
+<p>The first difference is at line 1. Instead of a HashSet, it is now using a BitSet. And at line 10, instead of adding a new element to the HashSet, now it &#8220;sets&#8221; a bit in the set (the bit at the specified position is now true). But there are important changes at line 13. The method removeAll was changed, and now the array doesn&#8217;t require a cast anymore. And the it is not necessary to cast the elements from HashSet anymore, as now the bit in the index position of the set is set to true. So the extractIndices method could be removed.</p>
+
+<p>The code got simpler. But that&#8217;s not all. At <a href="http://www.apache.org" title="Apache Software Foundation">Apache Software Foundation</a> you can find a lot of talented developers - that&#8217;s why I got so excited after joining them. Besides simplifying the code, the developer responsible for these changes (<strong>sebb</strong>) also pointed out that the new code <strong>consumes less memory and is faster</strong>. Ah! And he also wrote <strong>unit tests</strong></description>
+</item>
+
+<item>
+    <title>Adding coverage reports in Jenkins to GoogleTest with gcovr</title>
+    <pubDate>Oct 16, 2012</pubDate>
+    <link>/2012/10/16/adding-coverage-reports-in-jenkins-to-googletest-with-gcovr</link>
+    <dc:creator></dc:creator>
+    <description><p>After the <a href="//2012/10/11/jenkins-testlink-and-gtest-in-5-minutes-or-so" title="Jenkins, TestLink and GTest in 5 minutes (or so)">last post</a> about <a href="http://code.google.com/p/googletest/" title="GoogleTest">GoogleTest</a> and <a href="http://www.teamst.org" title="TestLink">TestLink</a> using <a href="https://wiki.jenkins-ci.org/display/JENKINS/TestLink+Plugin" title="Jenkins TestLink Plug-in">Jenkins TestLink Plug-in</a>, I received an e-mail asking about <a href="http://en.wikipedia.org/wiki/Code_coverage" title="Code Coverage">coverage</a> with GoogleTest and <a href="http://www.jenkins-ci.org" title="Jenkins CI">Jenkins</a>. I&#8217;ve just updated the <a href="https://github.com/kinow/gtest-tap-listener/blob/master/samples/Makefile">Makefile</a> in the samples directory, of the <a href="https://github.com/kinow/gtest-tap-listener" title="GTest TAP Listener">GoogleTest TAP listener project</a>, to output coverage data.</p>
+
+<p>Basically, you have to add the compiler flags <em>-fprofile-arcs -ftest-coverage</em> and link the executable with -lgcov. Take a look at the project&#8217;s Makefile and you&#8217;ll notice how simple it is. In order to have Jenkins interpreting your coverage report, you&#8217;ll have to convert it to <a href="http://cobertura.sourceforge.net" title="Cobertura">cobertura</a> XML. There is a Python utility that can be used for this: <a href="https://software.sandia.gov/trac/fast/wiki/gcovr" title="gcovr">gcovr</a>. Download it and copy it to somewhere where Jenkins can execute it (e.g.: <em>/usr/local/bin</em>).</p>
+
+<p>Now, if you&#8217;ve followed the instructions from the previous post, you should have a job that reports your GoogleTest tests from Jenkins to TestLink using the plug-in, and is downloading the source code from GitHub. Add an extra build step  (Shell) to execute <em>gcovr</em>.</p>
+
+</description>
+</item>
+
+<item>
+    <title>Jenkins, TestLink and GTest in 5 minutes (or so)</title>
+    <pubDate>Oct 11, 2012</pubDate>
+    <link>/2012/10/11/jenkins-testlink-and-gtest-in-5-minutes-or-so</link>
+    <dc:creator></dc:creator>
+    <description><p>This is a 5 minutes guide on creating a job for a C++ project in <a href="http://www.jenkins-ci.org" title="Jenkins CI">Jenkins</a> with <a href="http://code.google.com/p/googletest" title="GoogleTest">GoogleTest</a> and reporting the test results back to <a href="http://www.teamst.org" title="TestLink">TestLink</a>, with <a href="https://wiki.jenkins-ci.org/display/JENKINS/TestLink+Plugin" title="Jenkins TestLink Plug-in">testlink-plugin</a>. </p>
+
+<h2>The test project with GoogleTest</h2>
+
+<p>For this simple guide we will use the samples that come with <a href="https://github.com/kinow/gtest-tap-listener" title="GTest TAP Listener">GTest TAP Listener</a>. You can get the code from GitHub with <code>git clone git://github.com/kinow/gtest-tap-listener.git</code>. Take a look at <em>gtest-tap-listener/samples/src/</em>, there you will find two C++ files: <em>gtest_main.cc</em> and <em>gtest_testHelloWorld.cc</em>.</p>
+
+<p><em>gtest_main.cc</em> has the <a href="http://code.google.com/p/googletest/wiki/Primer#Writing_the_main()_Function" title="GTest main function">main function</a>, and executes the test suite. And <em>gtest_testHelloWorld.cc</em> has the test cases and tests. Take note of the test case and tests names.</p>
+
+<p><a href="/2012/10/11/jenkins-testlink-and-gtest-in-5-minutes-or-so/screenshot_001.png"><img src="/2012/10/11/jenkins-testlink-and-gtest-in-5-minutes-or-so/screenshot_001.png" alt="" title="gtest_testHelloWorld.cc" width="546" height="482" class="aligncenter size-full wp-image-1083" /></a></p>
+
+</description>
+</item>
+
+<item>
+    <title>Paper: Patterns for Introducing a Superclass for Test Classes</title>
+    <pubDate>Sep 25, 2012</pubDate>
+    <link>/2012/09/25/paper-patterns-for-introducing-a-superclass-for-test-classes</link>
+    <dc:creator></dc:creator>
+    <description><p>Few days ago we had <a href="http://www.dimap.ufrn.br/sugarloafplop2012/" title="SugarLoafPlop 2012">SugarLoafPlop 2012</a> in <a href="http://maps.google.com.br/maps?q=natal+-+rn&hl=en&sll=-23.682803,-46.595546&sspn=0.653971,1.352692&hnear=Natal+-+Rio+Grande+do+Norte&t=m&z=11" title="Natal - RN">Natal - RN</a>. It is a conference on <a href="http://en.wikipedia.org/wiki/Pattern_language" title="Pattern Language">pattern languages</a> of programming. About six months ago I saw a tweet by <a href="https://twitter.com/emguerra" title="Eduardo Guerra">Eduardo Guerra</a> asking if anyone had some cases where certain patterns were applied. It was a big coincidence, since I was working on <a href="http://commons.apache.org/sandbox/functor/" title="Apache Commons Functor">Apache Commons Functor</a> and some <a href="http://www.jenkins-ci.org" title="Jenkins-CI">Jenkins plugins</a>, both projects with cases that could be used in his paper.</p>
+
+<p style="text-align: center"><a href="http://www.dimap.ufrn.br/sugarloafplop2012/"><img src="/2012/09/25/paper-patterns-for-introducing-a-superclass-for-test-classes/sugarloaf2012_300_146.jpg" alt="" title="SugarLoaf Plop 2012" width="300" height="146" class="aligncenter size-medium wp-image-1071" /></a></p>
+
+<p>So I joined Guerra and gave my small contribution to the paper that <a href="http://www.dimap.ufrn.br/sugarloafplop2012/pages/acceptedpapers.html" title="accepted papers">has been accepted</a> for this edition of SugarLoafPlop. Guerra also went there to give a talk and participate in an open discussion about several papers, including ours.</p>
+
+<p>I simply love when these things happen, it was great work with Guerra, and even better for being able to use Open Source examples in our paper.</p></description>
+</item>
+
+</channel>
+</rss>

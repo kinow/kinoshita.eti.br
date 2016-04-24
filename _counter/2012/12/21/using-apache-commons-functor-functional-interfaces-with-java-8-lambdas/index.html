@@ -1,0 +1,316 @@
+  
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head profile="http://gmpg.org/xfn/11">
+    <title>Bruno P. Kinoshita &mdash; Using Apache Commons Functor functional interfaces with Java 8 lambdas</title> 
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="description" content="Bruno de Paula Kinoshita personal web site" />
+    <meta name="keywords"
+        content="kinoshita, bruno de paula kinoshita, geek, geek stuff, java, python, c, c++, msn now playing, neural network, mackenzie, sao paulo, brasil, brazil, nerd, nerd stuff, cool, jenkins, illustration, quadrinhos, machine learning, linguistic, apache, open source, codigo livre, codigo aberto" />
+    <meta name="author" content="" />
+    <meta name="generator" content="PieCrust 2.0.0b5" />
+    <meta name="template-engine" content="Twig" />
+    <meta name="robots" content="all=index,follow" />
+    <meta name="revisit-after" content="15 days" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta name="distribution" content="Global" />
+    <meta name="url" content="/" />
+    <meta name="copyright" content="Bruno de Paula Kinoshita" />
+    <meta name="Googlebot" content="all" />
+    <meta name="rating" content="general" />
+    <meta http-equiv="expires" content="0" />
+    <meta name="city" content="Sao Paulo" />
+    <meta name="state" content="Brasil, Sao Paulo" />
+    <meta http-equiv="content-language" content="en" />
+    <meta http-equiv="imagetoolbar" content="no" />
+    <meta id="page_favicon" href="/favicon.ico" rel="icon" type="image/x-icon" />
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <!--[if lt IE 9]>
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link rel="alternate" type="application/rss+xml" title="Bruno P. Kinoshita &raquo; Feed" href="//feed.xml" />
+    <link rel="stylesheet" href="/css/semantic/dist/semantic.min.css" type="text/css" media="screen, projection" />
+    <link rel="stylesheet" href="/css/style.css" type="text/css" media="screen, projection" />
+    <!--[if lt IE 8]>
+    <link rel="stylesheet" href="/css/blueprint/ie.css" type="text/css" media="screen, projection" />
+    <![endif]-->
+    <link rel="stylesheet" href="/css/prettyPhoto.css" type="text/css" media="all" />
+</head>
+<body id="body">
+    <div class="ui vertical sidebar menu" id="toc">
+        <div class="menu">
+    <div class="item">
+        <a href="/" class="main-link">Kinoshita</a>
+    </div>
+    <div class="item">
+        <a href="/software.html">Software</a>
+    </div>
+    <div class="item">
+        <a href="/articles.html">Articles</a>
+    </div>
+    <div class="item">
+        <a href="/books.html">Books</a>
+    </div>
+    <div class="item">
+        <a href="/about.html">About &#038; CV</a>
+    </div>
+    <div class="item">
+        <a href="/contact.html">Contact</a>
+    </div>
+</div>
+<img id="me" src="/img/bruno.jpg" title="Hmmmm" alt="Hmmmm" width="134px" height="215px" />
+    </div>
+    <div class="ui black big launch right attached fixed button">
+        <i class="content icon"></i>
+        <span class="text">Menu</span>
+    </div>
+    <div class="ui fixed inverted main menu">
+        <div class="ui container">
+            <a class="launch icon item">
+                <i class="content icon"></i>
+            </a>
+            <div class="item">
+                Using Apache Commons Functor functional interfaces with Java 8 lambdas
+            </div>
+        </div>
+    </div>
+    <div class="pusher">
+        <div class="full height">
+            <div class="toc">
+                <div class="ui vertical sticky fixed top menu">
+                    <div class="menu">
+    <div class="item">
+        <a href="/" class="main-link">Kinoshita</a>
+    </div>
+    <div class="item">
+        <a href="/software.html">Software</a>
+    </div>
+    <div class="item">
+        <a href="/articles.html">Articles</a>
+    </div>
+    <div class="item">
+        <a href="/books.html">Books</a>
+    </div>
+    <div class="item">
+        <a href="/about.html">About &#038; CV</a>
+    </div>
+    <div class="item">
+        <a href="/contact.html">Contact</a>
+    </div>
+</div>
+<img id="me" src="/img/bruno.jpg" title="Hmmmm" alt="Hmmmm" width="134px" height="215px" />
+                </div>
+            </div>
+            <div class="article">
+                <div class="main container">
+
+                
+<div class="ui raised padded text container segment">
+    <h1 class='post-topic'>Using Apache Commons Functor functional interfaces with Java 8 lambdas</h1>
+    <small></small> @
+	<small>Dec 21, 2012&nbsp;15:08:14</small>
+    <div class="entry">
+       
+
+
+
+
+
+<a href="https://twitter.com/share" class="twitter-share-button" data-url="/2012/12/21/using-apache-commons-functor-functional-interfaces-with-java-8-lambdas" data-text="Using Apache Commons Functor functional interfaces with Java 8 lambdas" data-via="kinow" data-hashtags="opensource">Tweet</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+
+	   <p><a href='http://commons.apache.org/sandbox/functor/'>Apache Commons Functor</a> (hereon [functor]) is an <a href='http://commons.apache.org/'>Apache Commons</a> component that provides a functional programming API and several patterns implemented (visitor, generator, aggregator, etc). <a href="http://openjdk.java.net/projects/lambda/" title="Java 8 lambda">Java 8</a> has several nice new features, including lambda expressions and <a href="http://datumedge.blogspot.com.br/2012/06/java-8-lambdas.html">functional interfaces</a>. In Java 8, lambdas or lambdas expressions are <a href="http://tronicek.blogspot.com.br/2007/12/closures-closure-is-form-of-anonymous_28.html">closures</a> that can be evaluated and behave like anonymous methods.</p>
+
+<p>Functional interfaces are interfaces with only one method. These interfaces can be used in lambdas and save you a lot of time from writing anonymous classes or even implementing the interfaces. [functor] provides several functional interfaces (thanks to <a href="https://issues.apache.org/jira/browse/FUNCTOR-20">Matt Benson</a>). It hasn&#8217;t been released yet, but there are some new examples in the project site, in the <a href="http://svn.apache.org/viewvc/commons/proper/functor/trunk/" title="[functor] SVN trunk">trunk of the SVN</a>. I will use one of these examples to show how [functor] functional interfaces can be used in conjunction with Java 8 lambdas.</p>
+
+<p>After the example with [functor] in Java 8, I will explain how I am running Java 8 in Eclipse (it&#8217;s kind of a <a href="http://www.speaklikeabrazilian.com/expression/define?e=Gambiarra" title="Gambiarra">gambiarra</a>, but works well).</p>
+
+<!-- more -->
+
+<h2>Example using Apache Commons Functor</h2>
+<p>Here is a simple example with one Predicate.</p>
+
+<div class="highlight"><pre><span class="n">List</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">&gt;</span> <span class="n">numbers</span> <span class="o">=</span> <span class="n">Arrays</span><span class="o">.</span><span class="na">asList</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span> <span class="mi">2</span><span class="o">,</span> <span class="mi">3</span><span class="o">,</span> <span class="mi">4</span><span class="o">);</span>
+
+<span class="n">UnaryPredicate</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">&gt;</span> <span class="n">isEven</span> <span class="o">=</span> <span class="k">new</span> <span class="n">UnaryPredicate</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">&gt;()</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">test</span><span class="o">(</span><span class="n">Integer</span> <span class="n">obj</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="n">obj</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">};</span>
+
+<span class="k">for</span><span class="o">(</span> <span class="n">Integer</span> <span class="n">number</span> <span class="o">:</span> <span class="n">numbers</span> <span class="o">)</span> <span class="o">{</span>
+    <span class="k">if</span> <span class="o">(</span><span class="n">isEven</span><span class="o">.</span><span class="na">test</span><span class="o">(</span><span class="n">number</span><span class="o">))</span> <span class="o">{</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">print</span><span class="o">(</span><span class="n">number</span> <span class="o">+</span> <span class="s">&quot; &quot;</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</pre></div>
+
+<p>It prints only the the even numbers, those that pass by the predicate test.</p>
+
+<h2>Example with Java 8 lambdas</h2>
+<p>This modified version is using Java 8 lambdas</p>
+
+<div class="highlight"><pre><span class="n">List</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">&gt;</span> <span class="n">numbers</span> <span class="o">=</span> <span class="n">Arrays</span><span class="o">.</span><span class="na">asList</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span> <span class="mi">2</span><span class="o">,</span> <span class="mi">3</span><span class="o">,</span> <span class="mi">4</span><span class="o">);</span>
+
+<span class="n">UnaryPredicate</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">&gt;</span> <span class="n">isEven</span> <span class="o">=</span> <span class="o">(</span><span class="n">Integer</span> <span class="n">obj</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="o">{</span> <span class="k">return</span> <span class="n">obj</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span><span class="o">;</span> <span class="o">};</span>
+
+<span class="k">for</span><span class="o">(</span> <span class="n">Integer</span> <span class="n">number</span> <span class="o">:</span> <span class="n">numbers</span> <span class="o">)</span> <span class="o">{</span>
+    <span class="k">if</span> <span class="o">(</span><span class="n">isEven</span><span class="o">.</span><span class="na">test</span><span class="o">(</span><span class="n">number</span><span class="o">))</span> <span class="o">{</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">print</span><span class="o">(</span><span class="n">number</span> <span class="o">+</span> <span class="s">&quot; &quot;</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</pre></div>
+
+<p>The behaviour is the same. <strong>UnaryPredicate</strong> is a functional interface. Its only method is <code>boolean test(A obj);</code>. And when used in a lambda expression you just have to provide the right number of arguments and implement the closure code.</p>
+
+<p>The difference in the two code snippets are the way that the UnaryPredicate for even numbers is created. Below you can see the two ways of creating this predicate, with and without Java 8 lambdas.</p>
+
+<div class="highlight"><pre><span class="c1">// pre-java-8</span>
+<span class="n">UnaryPredicate</span> <span class="n">isEven</span> <span class="o">=</span> <span class="k">new</span> <span class="n">UnaryPredicate</span><span class="o">()</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">test</span><span class="o">(</span><span class="n">Integer</span> <span class="n">obj</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="n">obj</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">};</span>
+
+<span class="c1">// with lambda-8</span>
+<span class="n">UnaryPredicate</span> <span class="n">isEven</span> <span class="o">=</span> <span class="o">(</span><span class="n">Integer</span> <span class="n">obj</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="o">{</span> <span class="k">return</span> <span class="n">obj</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span><span class="o">;</span> <span class="o">};</span>
+</pre></div>
+
+<h3>Java 8 in Eclipse</h3>
+
+<p>Eclipse 8 doesn&#8217;t support Java 8, so you have to create a new builder in order to have Eclipse compiling your project&#8217;s sources. For a complete step-by-step guide on how to set up Eclipse Juno and Java 8, please refer to <a href="http://tuhrig.de/?p=921" title="http://tuhrig.de/?p=921">http://tuhrig.de/?p=921</a>. I will summarize the steps here, and will show how to include [functor] jar to the project classpath.</p>
+
+<ul>
+    <li>Download the JDK from <a href="http://jdk8.java.net/lambda" title="http://jdk8.java.net/lambda">http://jdk8.java.net/lambda</a> and install it (I installed in <em>/opt/java/jdk1.8.0</em>)</li>
+    <li>Create a new Java project in Eclipse (<em>try-lambdas</em> in my case)</li>
+    <li>Disable the default <strong>Java Builder</strong> from your Eclipse project, as it doesn&#8217;t work with Java 8</li>
+    <li>Create a new builder. When prompted with a screen that lets you browse for a program, select Java 8 javac (for me it was <em>/opt/java/jdk1.8.0/bin/javac</em>)</li>
+    <li>Add the arguments below to your builder: <br />
+<div class="highlight"><pre>-classpath %CLASSPATH%<span class="p">;</span>commons-functor-1.0-SNAPSHOT-jar-with-dependencies.jar<span class="p">;</span>.
+-source 8
+-d <span class="si">${</span><span class="nv">workspace_loc</span><span class="p">:/lambdas</span><span class="si">}</span>/bin
+<span class="si">${</span><span class="nv">workspace_loc</span><span class="p">:/Java8</span><span class="si">}</span>/src/lambdas/*.java
+</pre></div>
+
+</li>
+</ul>
+
+<p>You have to include [functor]&#8217;s jar, as well as its dependencies. For the sake of convenience, I used <a href="http://maven.apache.org/plugins/maven-assembly-plugin/" title="maven-assembly-plugin">maven-assembly-plugin</a> to generate a jar with dependencies for [functor]. The code and the jar are available from this <a href="https://github.com/kinow/try-lambdas" title="try-lambdas GitHub repository">GitHub repository</a>. Or if you prefer generate your own [functor] jar with dependencies, check out the code from the repository as below.</p>
+
+<div class="highlight"><pre>svn checkout https://svn.apache.org/repos/asf/commons/sandbox/functor/trunk/ commons-functor
+</pre></div>
+
+<p>And finally include the following to [functor] <em>pom.xml</em> before running <code>mvn clean assembly:assembly</code>.</p>
+
+<div class="highlight"><pre><span class="nt">&lt;plugin&gt;</span>
+  <span class="nt">&lt;artifactId&gt;</span>maven-assembly-plugin<span class="nt">&lt;/artifactId&gt;</span>
+  <span class="nt">&lt;version&gt;</span>2.3<span class="nt">&lt;/version&gt;</span>
+  <span class="nt">&lt;configuration&gt;</span>
+    <span class="nt">&lt;descriptorRefs&gt;</span>
+      <span class="nt">&lt;descriptorRef&gt;</span>jar-with-dependencies<span class="nt">&lt;/descriptorRef&gt;</span>
+    <span class="nt">&lt;/descriptorRefs&gt;</span>
+  <span class="nt">&lt;/configuration&gt;</span>
+<span class="nt">&lt;/plugin&gt;</span>
+</pre></div>
+
+<p>Thanks for your time, hope you enjoyed it! :-)</p>
+    </div>
+    <p class="postmetadata">
+        
+        <small>tags 
+         [&nbsp;<a
+            href="/tag/apache%20software%20foundation"
+            rel="tag">apache software foundation</a>&nbsp;]&nbsp;
+        
+         [&nbsp;<a
+            href="/tag/java"
+            rel="tag">java</a>&nbsp;]&nbsp;
+        
+         [&nbsp;<a
+            href="/tag/functional%20programming"
+            rel="tag">functional programming</a>&nbsp;]&nbsp;
+        
+        </small>
+        
+        
+        <br/>
+        <small>posted in 
+        [&nbsp;<a
+            href="/functional%20programming"
+            title="View all posts in functional programming"
+            rel="category tag">functional programming</a>&nbsp;]&nbsp;
+        category </small>
+        
+    </p>
+    <div id="navigation">
+        
+            &larr;&nbsp;<a href="//2013/01/17/git-clone-fails-with-fatal-unable-to-find-remote-helper-for-https" id="navigation-next">Previous post</a>
+        
+        
+            &mdash; <a href="//2012/11/07/running-bdd-tests-from-testlink-in-jenkins" id="navigation-next">Next Entries</a>&nbsp;&rarr;
+        
+    </div>
+</div>
+
+                </div>
+            </div>
+        </div>
+        <div class="ui vertical footer segment">
+            <div class="ui center aligned container">
+                           <div id="copy" class="">
+                <p>&copy; <a href="/about"><span
+                            class="b">Bru</span><span
+                            class="r">no de</span> <span
+                            class="a">Paula</span> <span
+                            class="s"></span><span
+                            class="i">Kinos</span><span
+                            class="l">hita</span></a>
+                </p>
+            </div>
+            </div>
+         </div>
+    </div>
+</body>
+</html>
+<script src="/js/jquery-2.2.3.min.js"  type="text/javascript"></script>
+    <script src="/css/semantic/dist/semantic.min.js"  type="text/javascript"></script>
+    <script src="/js/jquery.prettyPhoto.js"></script>
+<script type="text/javascript" charset="utf-8">
+  $(document).ready(function(){
+    $("a[rel^='prettyPhoto']").prettyPhoto({
+        social_tools: false,
+        autoplay_slideshow: false, 
+        hideflash: true, 
+        autoplay: false, 
+        overlay_gallery: false
+    });
+
+    $("#toc")
+        .sidebar({
+          dimPage          : true,
+          transition       : 'overlay',
+          mobileTransition : 'uncover'
+        })
+    ;
+
+    $("#toc")
+        .sidebar('attach events', '.launch.button, .view-ui, .launch.item')
+    ;
+  });
+</script>
+
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-32767310-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>

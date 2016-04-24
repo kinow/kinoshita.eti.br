@@ -1,0 +1,526 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0"
+    xmlns:content="http://purl.org/rss/1.0/modules/content/"
+    xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+    xmlns:dc="http://purl.org/dc/elements/1.1/"
+    xmlns:atom="http://www.w3.org/2005/Atom"
+    xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+    xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+>
+ 
+<channel>
+    <title>Bruno P. Kinoshita</title>
+    <atom:link href="/blog/feed.xml" rel="self" type="application/rss+xml" />
+    <link>/</link>
+    <description></description>
+    <lastBuildDate>1461480017.3140304</lastBuildDate>
+    <language>en-US</language>
+    <generator>PieCrust 2.0.0b5</generator>
+ 
+
+<item>
+    <title>Contributing to Apache Jena</title>
+    <pubDate>Jan 01, 2015</pubDate>
+    <link>/2015/01/01/contributing-to-apache-jena</link>
+    <dc:creator></dc:creator>
+    <description><p>As I mentioned in my <a href="2014/10/11/basic-workflow-of-a-sparql-query-in-fuseki.html">previous post</a>, 
+I am using <a href="http://jena.apache.org">Apache Jena</a> for a project of a customer. I had never used 
+any triple store, nor a SPARQL Endpoint server before. But for being involved with the Apache 
+Software Foundation, and since the company itself is using several Apache components, it was only 
+natural Jena to be our first choice.</p>
+<p>It has served us very well so far. At the moment we have less than 100 queries per day, but the 
+project is still under development and we expect 1000 queries per day by the first quarter of 
+2015 and 1000000 near the end of 2015. We also have few entries in TDB, but expect to grow this 
+number to a few million before 2016.</p>
+<p>When I work for companies and we use Open Source Software (OSS) in a project, I always 
+prepare assessment reports to include in the deliveries. In this report I justify the choice 
+of Open Source Software (as well as commercial software). Sometimes I 
+am lucky to work for a company that asks me to include hours to work on OSS :-)</p>
+<p>I use <a href="http://trello.com">Trello</a> to triage issues in OSS projects (and for several other 
+things). I have a board with several cards for Open Source. About a month ago I set up one 
+for Jena and listed the issues that I thought I could contribute to. </p>
+<div class='row'>
+<div class="span6 offset3" style='text-align: center;'>
+<figure>
+<a href="/2015/01/01/contributing-to-apache-jena/jena_trello.png" rel="prettyPhoto" class="thumbnail" title="Jena Trello card">
+<img src="/2015/01/01/contributing-to-apache-jena/jena_trello.png" alt="Jena Trello card" />
+</a>
+<figcaption>Jena Trello card</i></figcaption>
+</figure>
+</div>
+</div>
+
+<p>I annotate easy issues with a &#8220;lhf&#8221; suffix for Low Hanging Fruit issues, and delete issues from 
+the card once I submit a patch or update it (and include it in another card for the 
+<a href="http://tupilabs.com/tag/tupilabs-report.html">TupiLabs reports</a>).</p>
+<p>Most of the issues I included in the card for Jena had been created over two years ago, and hadn&#8217;t 
+been updated in a while. When you test these issues against the current code, usually you find that 
+some of them have already been fixed. Other issues included documentation problems, and minor features. I didn&#8217;t find any blocker issue that would impede us to use Jena in production.</p>
+<div class='row'>
+<div class="span6 offset3" style='text-align: center;'>
+<figure>
+<a href="/2015/01/01/contributing-to-apache-jena/jena_jira.png" rel="prettyPhoto" class="thumbnail" title="Jena JIRA activity summary">
+<img src="/2015/01/01/contributing-to-apache-jena/jena_jira.png" alt="Jena JIRA activity summary" />
+</a>
+<figcaption>Jena JIRA activity summary</figcaption>
+</figure>
+</div>
+</div>
+
+<p>The picture above shows the past 30 days activity summary in JIRA for Jena. The red line shows 
+issues created, and the green line issues resolved. <a href="https://github.com/afs">Andy Seaborne</a> 
+was very active in the past days and fixed several issues that were too old and had already been fixed in the trunk, and kindly merged patches and pull requests.</p>
+<p>Some issues like <a href="https://issues.apache.org/jira/browse/JENA-632">JENA-632</a> will take a 
+longer time to fix, but I&#8217;m getting used to Jena&#8217;s source code, and at the same getting more 
+confident to use it in production - especially with a supportive OSS community. We are using 
+Jena for RDF with Hadoop, and I learned that I can replace some custom Writables by others 
+in the Jena Hadoop submodule.</p>
+<p>By the way, even though this project ends in April, I intend to continue contributing to Jena. 
+There is a lot of parts of the code that I would love to be able to understand and contribute, 
+in special the Graph database, optimization techniques for SPARQL queries, the grammars used 
+in the project, Fuseki v2 and enhance its testing harness (as well as the test coverage).</p>
+<p><strong>If you are looking for a interesting project to get you started with semantics, linked data, 
+RDF, and even graphs and database querying, try contributing to Jena. I bet you&#8217;ll have a lot 
+of fun!</strong></p>
+<p>Happy hacking and happy 2015!</p></description>
+</item>
+
+<item>
+    <title>Basic workflow of a SPARQL query in Fuseki</title>
+    <pubDate>Oct 11, 2014</pubDate>
+    <link>/2014/10/11/basic-workflow-of-a-sparql-query-in-fuseki</link>
+    <dc:creator></dc:creator>
+    <description><p>Before using any library or tool in a customer project, specially when it is an Open Source one, 
+there are many things that I like to look at before deploying it. Basically, I look at the 
+features, documentation, community, open issues (in special blockers or criticals), the time 
+to release fixes and new features and, obviously, the license.</p>
+<p>At the moment I&#8217;m using <a href="http://jena.apache.org">Apache Jena</a> to work with ontologies, SPARQL 
+and data matching and enrichment for a customer. </p>
+<p>Jena is fantastic, and similar tools include <a href="http://www.w3.org/wiki/VirtuosoUniversalServer">Virtuoso</a>, 
+<a href="http://stardog.com/">StarDog</a>, <a href="http://www.ontotext.com/products/ontotext-graphdb-owlim/">GraphDB</a>, 
+<a href="http://4store.org/">4Store</a> and others. From looking at the code and its community and documentation, 
+Jena seems like a great choice. </p>
+<p>I&#8217;m still investigating if/how we gonna need to use inference and reasoners, looking 
+at the issues, and learning my way through its code base. The following is my initial mapping 
+of what happens when you submit a SPARQL query to Fuseki.</p>
+<div class='row'>
+<div class="span6 offset3" style='text-align: center;'>
+<figure>
+<a href="/2014/10/11/basic-workflow-of-a-sparql-query-in-fuseki/drawing1.png" rel="prettyPhoto" class="thumbnail" title="Fuseki SPARQL query work flow">
+<img src="/2014/10/11/basic-workflow-of-a-sparql-query-in-fuseki/drawing1.png" alt="Fuseki SPARQL query work flow" />
+</a>
+<figcaption>Jena JDBC</figcaption>
+</figure>
+</div>
+</div>
+
+<p>My understanding is that Fuseki is just a web layer, handling a bunch of validations, logging, 
+error handling, and relying on the ARQ module, that is who actually handles the requests. 
+I also think a new Fuseki server is baking in the project git repo, so stay tuned for an 
+updated version of this graph soon.</p>
+<p>Happy hacking!</p></description>
+</item>
+
+<item>
+    <title>Cypher, Gremlin and SPARQL: Graph dialects</title>
+    <pubDate>Sep 09, 2014</pubDate>
+    <link>/2014/09/09/cypher-gremlin-and-sparql-graph-dialects</link>
+    <dc:creator></dc:creator>
+    <description><p>When I was younger and my older brother was living in Germany, I asked him if he 
+had learned German. He said that he did, and explained that there are several 
+dialects, and he was quite proud for some people told him that he was using the 
+Bavarian dialect correctly.</p>
+<p>Even though <a href="http://www.neo4j.org/learn/cypher">Cypher</a>, 
+<a href="http://gremlindocs.com/">Gremlin</a> and <a href="http://en.wikipedia.org/wiki/SPARQL">SPARQL</a> 
+are all query languages, I think we can consider them dialects of a common graph language. 
+Cypher is the query language used in <a href="http://www.neo4j.org/">neo4j</a>, a graph database. 
+Gremlin is part of the <a href="http://www.tinkerpop.com/">Tinkerpop</a>, an open source project 
+that contains graph server, graph algorithms, graph language, among other sub-projects. 
+And last but not least, SPARQL is used to query <a href="http://en.wikipedia.org/wiki/Resource_Description_Framework">RDF documents</a>.</p>
+<p>Let&#8217;s use the example of the Matrix movie provided by neo4j to take a look at the 
+three languages.</p>
+<h2>Cypher</h2>
+<p>First we create the graph.</p>
+<div class="highlight"><pre><span class="k">create</span> <span class="p">(</span><span class="n">matrix1</span><span class="p">:</span><span class="n">Movie</span> <span class="err">{</span><span class="n">id</span> <span class="p">:</span> <span class="s1">&#39;603&#39;</span><span class="p">,</span> <span class="n">title</span> <span class="p">:</span> <span class="s1">&#39;The Matrix&#39;</span><span class="p">,</span> <span class="k">year</span> <span class="p">:</span> <span class="s1">&#39;1999-03-31&#39;</span><span class="err">}</span><span class="p">),</span>
+ <span class="p">(</span><span class="n">matrix2</span><span class="p">:</span><span class="n">Movie</span> <span class="err">{</span><span class="n">id</span> <span class="p">:</span> <span class="s1">&#39;604&#39;</span><span class="p">,</span> <span class="n">title</span> <span class="p">:</span> <span class="s1">&#39;The Matrix Reloaded&#39;</span><span class="p">,</span> <span class="k">year</span> <span class="p">:</span> <span class="s1">&#39;2003-05-07&#39;</span><span class="err">}</span><span class="p">),</span>
+ <span class="p">(</span><span class="n">matrix3</span><span class="p">:</span><span class="n">Movie</span> <span class="err">{</span><span class="n">id</span> <span class="p">:</span> <span class="s1">&#39;605&#39;</span><span class="p">,</span> <span class="n">title</span> <span class="p">:</span> <span class="s1">&#39;The Matrix Revolutions&#39;</span><span class="p">,</span> <span class="k">year</span> <span class="p">:</span> <span class="s1">&#39;2003-10-27&#39;</span><span class="err">}</span><span class="p">),</span>
+
+ <span class="p">(</span><span class="n">neo</span><span class="p">:</span><span class="n">Actor</span> <span class="err">{</span><span class="n">name</span><span class="p">:</span><span class="s1">&#39;Keanu Reeves&#39;</span><span class="err">}</span><span class="p">),</span>
+ <span class="p">(</span><span class="n">morpheus</span><span class="p">:</span><span class="n">Actor</span> <span class="err">{</span><span class="n">name</span><span class="p">:</span><span class="s1">&#39;Laurence Fishburne&#39;</span><span class="err">}</span><span class="p">),</span>
+ <span class="p">(</span><span class="n">trinity</span><span class="p">:</span><span class="n">Actor</span> <span class="err">{</span><span class="n">name</span><span class="p">:</span><span class="s1">&#39;Carrie-Anne Moss&#39;</span><span class="err">}</span><span class="p">),</span>
+
+ <span class="p">(</span><span class="n">matrix1</span><span class="p">)</span><span class="o">&lt;-</span><span class="p">[:</span><span class="n">ACTS_IN</span> <span class="err">{</span><span class="k">role</span> <span class="p">:</span> <span class="s1">&#39;Neo&#39;</span><span class="err">}</span><span class="p">]</span><span class="o">-</span><span class="p">(</span><span class="n">neo</span><span class="p">),</span>
+ <span class="p">(</span><span class="n">matrix2</span><span class="p">)</span><span class="o">&lt;-</span><span class="p">[:</span><span class="n">ACTS_IN</span> <span class="err">{</span><span class="k">role</span> <span class="p">:</span> <span class="s1">&#39;Neo&#39;</span><span class="err">}</span><span class="p">]</span><span class="o">-</span><span class="p">(</span><span class="n">neo</span><span class="p">),</span>
+ <span class="p">(</span><span class="n">matrix3</span><span class="p">)</span><span class="o">&lt;-</span><span class="p">[:</span><span class="n">ACTS_IN</span> <span class="err">{</span><span class="k">role</span> <span class="p">:</span> <span class="s1">&#39;Neo&#39;</span><span class="err">}</span><span class="p">]</span><span class="o">-</span><span class="p">(</span><span class="n">neo</span><span class="p">),</span>
+ <span class="p">(</span><span class="n">matrix1</span><span class="p">)</span><span class="o">&lt;-</span><span class="p">[:</span><span class="n">ACTS_IN</span> <span class="err">{</span><span class="k">role</span> <span class="p">:</span> <span class="s1">&#39;Morpheus&#39;</span><span class="err">}</span><span class="p">]</span><span class="o">-</span><span class="p">(</span><span class="n">morpheus</span><span class="p">),</span>
+ <span class="p">(</span><span class="n">matrix2</span><span class="p">)</span><span class="o">&lt;-</span><span class="p">[:</span><span class="n">ACTS_IN</span> <span class="err">{</span><span class="k">role</span> <span class="p">:</span> <span class="s1">&#39;Morpheus&#39;</span><span class="err">}</span><span class="p">]</span><span class="o">-</span><span class="p">(</span><span class="n">morpheus</span><span class="p">),</span>
+ <span class="p">(</span><span class="n">matrix3</span><span class="p">)</span><span class="o">&lt;-</span><span class="p">[:</span><span class="n">ACTS_IN</span> <span class="err">{</span><span class="k">role</span> <span class="p">:</span> <span class="s1">&#39;Morpheus&#39;</span><span class="err">}</span><span class="p">]</span><span class="o">-</span><span class="p">(</span><span class="n">morpheus</span><span class="p">),</span>
+ <span class="p">(</span><span class="n">matrix1</span><span class="p">)</span><span class="o">&lt;-</span><span class="p">[:</span><span class="n">ACTS_IN</span> <span class="err">{</span><span class="k">role</span> <span class="p">:</span> <span class="s1">&#39;Trinity&#39;</span><span class="err">}</span><span class="p">]</span><span class="o">-</span><span class="p">(</span><span class="n">trinity</span><span class="p">),</span>
+ <span class="p">(</span><span class="n">matrix2</span><span class="p">)</span><span class="o">&lt;-</span><span class="p">[:</span><span class="n">ACTS_IN</span> <span class="err">{</span><span class="k">role</span> <span class="p">:</span> <span class="s1">&#39;Trinity&#39;</span><span class="err">}</span><span class="p">]</span><span class="o">-</span><span class="p">(</span><span class="n">trinity</span><span class="p">),</span>
+ <span class="p">(</span><span class="n">matrix3</span><span class="p">)</span><span class="o">&lt;-</span><span class="p">[:</span><span class="n">ACTS_IN</span> <span class="err">{</span><span class="k">role</span> <span class="p">:</span> <span class="s1">&#39;Trinity&#39;</span><span class="err">}</span><span class="p">]</span><span class="o">-</span><span class="p">(</span><span class="n">trinity</span><span class="p">)</span>
+</pre></div>
+
+<p><code>Added 6 labels, created 6 nodes, set 21 properties, created 9 relationships, returned 0 rows in 2791 ms</code></p>
+<p>And execute a simple query.</p>
+<div class="highlight"><pre><span class="k">MATCH</span> <span class="p">(</span><span class="n">a</span><span class="p">:</span><span class="n">Actor</span> <span class="err">{</span> <span class="n">name</span><span class="p">:</span><span class="ss">&quot;Keanu Reeves&quot;</span> <span class="err">}</span><span class="p">)</span>
+<span class="k">RETURN</span> <span class="n">a</span>
+</pre></div>
+
+<p><code>(9:Actor {name:"Keanu Reeves"})</code></p>
+<h2>Gremlin</h2>
+<p>Again, let&#8217;s start by creating our graph.</p>
+<div class="highlight"><pre><span class="k">g</span> <span class="o">=</span> <span class="k">new</span> <span class="n">TinkerGraph</span><span class="p">();</span>
+<span class="n">matrix1</span> <span class="o">=</span> <span class="k">g</span><span class="p">.</span><span class="n">addVertex</span><span class="p">([</span><span class="ss">&quot;_id&quot;</span><span class="p">:</span><span class="mi">603</span><span class="p">,</span><span class="ss">&quot;title&quot;</span><span class="p">:</span><span class="ss">&quot;The Matrix&quot;</span><span class="p">,</span> <span class="ss">&quot;year&quot;</span><span class="p">:</span> <span class="ss">&quot;1999-03-31&quot;</span><span class="p">]);</span>
+<span class="n">matrix2</span> <span class="o">=</span> <span class="k">g</span><span class="p">.</span><span class="n">addVertex</span><span class="p">([</span><span class="ss">&quot;_id&quot;</span><span class="p">:</span><span class="mi">604</span><span class="p">,</span><span class="ss">&quot;title&quot;</span><span class="p">:</span><span class="ss">&quot;The Matrix Reloaded&quot;</span><span class="p">,</span> <span class="ss">&quot;year&quot;</span><span class="p">:</span> <span class="ss">&quot;2003-05-07&quot;</span><span class="p">]);</span>
+<span class="n">matrix3</span> <span class="o">=</span> <span class="k">g</span><span class="p">.</span><span class="n">addVertex</span><span class="p">([</span><span class="ss">&quot;_id&quot;</span><span class="p">:</span><span class="mi">605</span><span class="p">,</span><span class="ss">&quot;title&quot;</span><span class="p">:</span><span class="ss">&quot;The Matrix Revolutions&quot;</span><span class="p">,</span> <span class="ss">&quot;year&quot;</span><span class="p">:</span> <span class="ss">&quot;2003-10-27&quot;</span><span class="p">]);</span>
+
+<span class="n">neo</span> <span class="o">=</span> <span class="k">g</span><span class="p">.</span><span class="n">addVertex</span><span class="p">([</span><span class="ss">&quot;name&quot;</span><span class="p">:</span> <span class="ss">&quot;Keanu Reeves&quot;</span><span class="p">]);</span>
+<span class="n">morpheus</span> <span class="o">=</span> <span class="k">g</span><span class="p">.</span><span class="n">addVertex</span><span class="p">([</span><span class="ss">&quot;name&quot;</span><span class="p">:</span> <span class="ss">&quot;Laurence Fishburne&quot;</span><span class="p">]);</span>
+<span class="n">trinity</span> <span class="o">=</span> <span class="k">g</span><span class="p">.</span><span class="n">addVertex</span><span class="p">([</span><span class="ss">&quot;name&quot;</span><span class="p">:</span> <span class="ss">&quot;Carrie-Anne Moss&quot;</span><span class="p">]);</span>
+
+<span class="n">neo</span><span class="p">.</span><span class="n">addEdge</span><span class="p">(</span><span class="ss">&quot;actsIn&quot;</span><span class="p">,</span> <span class="n">matrix1</span><span class="p">);</span> 
+<span class="n">neo</span><span class="p">.</span><span class="n">addEdge</span><span class="p">(</span><span class="ss">&quot;actsIn&quot;</span><span class="p">,</span> <span class="n">matrix2</span><span class="p">);</span> 
+<span class="n">neo</span><span class="p">.</span><span class="n">addEdge</span><span class="p">(</span><span class="ss">&quot;actsIn&quot;</span><span class="p">,</span> <span class="n">matrix3</span><span class="p">);</span> 
+<span class="n">morpheus</span><span class="p">.</span><span class="n">addEdge</span><span class="p">(</span><span class="ss">&quot;actsIn&quot;</span><span class="p">,</span> <span class="n">matrix1</span><span class="p">);</span> 
+<span class="n">morpheus</span><span class="p">.</span><span class="n">addEdge</span><span class="p">(</span><span class="ss">&quot;actsIn&quot;</span><span class="p">,</span> <span class="n">matrix2</span><span class="p">);</span> 
+<span class="n">morpheus</span><span class="p">.</span><span class="n">addEdge</span><span class="p">(</span><span class="ss">&quot;actsIn&quot;</span><span class="p">,</span> <span class="n">matrix3</span><span class="p">);</span> 
+<span class="n">trinity</span><span class="p">.</span><span class="n">addEdge</span><span class="p">(</span><span class="ss">&quot;actsIn&quot;</span><span class="p">,</span> <span class="n">matrix1</span><span class="p">);</span> 
+<span class="n">trinity</span><span class="p">.</span><span class="n">addEdge</span><span class="p">(</span><span class="ss">&quot;actsIn&quot;</span><span class="p">,</span> <span class="n">matrix2</span><span class="p">);</span> 
+<span class="n">trinity</span><span class="p">.</span><span class="n">addEdge</span><span class="p">(</span><span class="ss">&quot;actsIn&quot;</span><span class="p">,</span> <span class="n">matrix3</span><span class="p">);</span>
+</pre></div>
+
+<p>And execute a simple query.</p>
+<div class="highlight"><pre><span class="k">g</span><span class="p">.</span><span class="n">V</span><span class="p">.</span><span class="n">has</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;Keanu Reeves&#39;</span><span class="p">).</span><span class="k">map</span>
+</pre></div>
+
+<p><code>gremlin&gt; g.V.has('name', 'Keanu Reeves').map
+==&gt;{name=Keanu Reeves}
+gremlin&gt;</code></p>
+<p>Quite similar to neo4j.</p>
+<h2>SPARQL</h2>
+<p>Let&#8217;s load our example (thanks to <a href="https://twitter.com/kendall">Kendall G. Clark</a>). I used 
+<a href="http://jena.apache.org/documentation/serving_data/">Fuseki</a> to run these queries.</p>
+<div class="highlight"><pre>@prefix :          <span class="nt">&lt;http:</span><span class="err">//example.org/matrix</span><span class="nt">/&gt;</span> .
+
+ :m1 a :Movie; :title &quot;The Matrix&quot;; :year &quot;1999-03-31&quot;.
+ :m2 a :Movie; :title &quot;The Matrix Reloaded&quot;; :year &quot;2003-05-07&quot;.
+ :m3 a :Movie; :title &quot;The Matrix Revolutions&quot;; :year &quot;2003-10-27&quot;.
+
+ :neo a :Actor; :name &quot;Keanu Reeves&quot;.
+ :morpheus a :Actor; :name &quot;Laurence Fishburne&quot;.
+ :trinity a :Actor; :name &quot;Carrie-Anne Moss&quot;.
+
+ :neo :hasRole [:as &quot;Neo&quot;; :in :m1].
+ :neo :hasRole [:as &quot;Neo&quot;; :in :m2].
+ :neo :hasRole [:as &quot;Neo&quot;; :in :m2].
+ :morpheus :hasRole [:as &quot;Morpheus&quot;; :in :m1].
+ :morpheus :hasRole [:as &quot;Morpheus&quot;; :in :m2].
+ :morpheus :hasRole [:as &quot;Morpheus&quot;; :in :m2].
+ :trinity :hasRole [:as &quot;Trinity&quot;; :in :m1].
+ :trinity :hasRole [:as &quot;Trinity&quot;; :in :m2].
+ :trinity :hasRole [:as &quot;Trinity&quot;; :in :m2].
+</pre></div>
+
+<p>And finally the SPARQL query.</p>
+<div class="highlight"><pre><span class="k">SELECT</span> <span class="o">?</span><span class="n">a</span> <span class="k">WHERE</span> <span class="err">{</span>
+   <span class="o">?</span><span class="n">a</span> <span class="n">a</span> <span class="o">&lt;</span><span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">example</span><span class="p">.</span><span class="n">org</span><span class="o">/</span><span class="n">matrix</span><span class="o">/</span><span class="n">Actor</span><span class="o">&gt;</span> <span class="p">.</span>
+   <span class="o">?</span><span class="n">a</span> <span class="o">&lt;</span><span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">example</span><span class="p">.</span><span class="n">org</span><span class="o">/</span><span class="n">matrix</span><span class="o">/</span><span class="n">name</span><span class="o">&gt;</span> <span class="o">?</span><span class="n">name</span> <span class="p">.</span>
+   <span class="n">FILTER</span><span class="p">(</span><span class="o">?</span><span class="n">name</span>  <span class="o">=</span> <span class="ss">&quot;Keanu Reeves&quot;</span><span class="p">)</span>
+<span class="err">}</span>
+</pre></div>
+
+<p>Returning the Keanu Reeves actor instance.</p>
+<pre>-----------------------------------
+| a                               |
+===================================
+| &lt;http://example.org/matrix/neo&gt; |
+-----------------------------------</pre>
+
+<p>SPARQL supports inference (or I must say that OWL, RDFS and the reasoners do), 
+but it is easier to define the depth of a search in the graph using neo4j. As for 
+Gremlin, it has native support to Groovy and Java. There is a common denominator 
+for these three languages, but what makes them really powerful are their unique features. </p>
+<p>I hope you enjoyed, and that this post gave you a quick overview of some of the existing 
+graph languages. Make sure you ponder the pros and cons of each server/language, and 
+make the best decision for your project. Take a look at <a href="http://en.wikipedia.org/wiki/Graph_database#APIs_and_Graph_Query.2FProgramming_Languages">other graph query languages</a> too.</p>
+<p>Happy hacking!</p>
+<hr />
+<p>This post has been updated as suggested by <a href="https://twitter.com/kendall">@kendall</a> (Thank you!).
+You can check the diff at <a href="https://github.com/kinow/kinoshita.eti.br/commits/master/site/_content/posts/2014-09-09_cypher-gremlin-and-sparql-graph-dialects.html">GitHub</a></p></description>
+</item>
+
+<item>
+    <title>Strings transliteration in Java with Apache Commons Lang</title>
+    <pubDate>Aug 09, 2014</pubDate>
+    <link>/2014/08/09/strings-transliteration-in-java-with-apache-commons-lang</link>
+    <dc:creator></dc:creator>
+    <description><p><a href="http://rosalind.info">Rosalind</a> is a website with a curated set of exercices for bioinformatics, organized hierarchily. 
+In some of these examples you are required to replace characters (nucleotides) by other characters. It is a rather common 
+task for developers, like when you need to replace special characters in user&#8217;s names.</p>
+<p>There are different ways of describing it, such as translate, replace, or <strong><a href="http://en.wikipedia.org/wiki/Transliteration">transliterate</a></strong>. The latter being my favorite definition. </p>
+<p>In Python I know that there are several different ways of transliterating strings 
+[<a href="https://pypi.python.org/pypi/transliterate">1</a>][<a href="http://blog.lebowtech.com/blog/programming/python/transliterate-with-python.html">2</a>]. But in Java I always ended up using a Map or a Enum and writing my own method in some <em>Util</em> class for that.</p>
+<p>Turns out that <a href="http://commons.apache.org">Apache Commons Lang</a>, which I use in most of my projects, 
+provided this feature. What means that I will be able to reduce the length of my code, what also means 
+less code to be tested (and one less place to look for bugs).</p>
+<div class="highlight"><pre><span class="n">String</span> <span class="n">s</span> <span class="o">=</span> <span class="n">StringUtils</span><span class="o">.</span><span class="na">replaceChars</span><span class="o">(</span><span class="s">&quot;ATGCATGC&quot;</span><span class="o">,</span> <span class="s">&quot;GTCA&quot;</span><span class="o">,</span> <span class="s">&quot;CAGT&quot;</span><span class="o">);</span> <span class="c1">// &quot;TACGTACG&quot;</span>
+<span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">s</span><span class="o">);</span>
+</pre></div>
+
+<p>What the code above does, is replace G by C, T by A, C by G and A by T. This process is part of finding the 
+<a href="http://www.bioinformatics.org/sms/rev_comp.html">DNA reverse complement</a>. But you can also use this for replacing 
+special characters, spaces by _, and so it goes.</p>
+<p>Happy hacking!</p></description>
+</item>
+
+<item>
+    <title>Treemapping Jenkins Extension Points with R</title>
+    <pubDate>May 19, 2014</pubDate>
+    <link>/2014/05/19/treemapping-jenkins-extension-points-with-r</link>
+    <dc:creator></dc:creator>
+    <description><p>I have been playing with R and its packages for some time, and decided to study it a 
+bit harder. Last week I started reading the <a href="http://adv-r.had.co.nz/">Advanced R Programming</a> 
+by Hadley Wickham. </p>
+<p>One of the first chapters talks about the basic data structures in R. In order to 
+get my feet wet I thought about a simple example: <a href="http://en.wikipedia.org/wiki/Treemapping">treemapping</a> 
+Jenkins extension points. </p>
+<p style="text-align: center;"><a href="/2014/05/19/treemapping-jenkins-extension-points-with-r/extension_points.png"><img src="/2014/05/19/treemapping-jenkins-extension-points-with-r/extension_points.png" width="600px" alt="Treemap graph" /></a></p>
+
+<p>There is a <a href="https://wiki.jenkins-ci.org/display/JENKINS/Extension+points">Wiki page with the extension points in Jenkins</a> (what parts of Jenkins can be customized) 
+and its implementations. That page is generated by a <a href="https://ci.jenkins-ci.org/view/Infrastructure/job/infra_extension-indexer/">Jenkins job</a>. </p>
+<p>That job outputs a JSON file that contains each available extension points, as well as 
+an array with its implementations. The R code below will produce two vectors, one with the 
+count of implementations of each extension point, and the other with the class name.</p>
+<div class="highlight"><pre>nExtensionPoints <span class="o">&lt;-</span> <span class="kp">length</span><span class="p">(</span>extensionPointsJson<span class="o">$</span>extensionPoints<span class="p">)</span>
+numberOfImplementations <span class="o">&lt;-</span> <span class="kt">vector</span><span class="p">(</span>length <span class="o">=</span> nExtensionPoints<span class="p">)</span>
+namesOfTheExtensionPoints <span class="o">&lt;-</span> <span class="kt">vector</span><span class="p">(</span>length <span class="o">=</span> nExtensionPoints<span class="p">)</span>
+<span class="kr">for</span> <span class="p">(</span>i <span class="kr">in</span> <span class="kp">seq_along</span><span class="p">(</span>extensionPoints<span class="p">))</span> <span class="p">{</span>
+  extensionName <span class="o">=</span> extensionPoints<span class="p">[[</span>i<span class="p">]]</span><span class="o">$</span>className
+  lastIndexOfDot <span class="o">=</span> <span class="kp">regexpr</span><span class="p">(</span><span class="s">&quot;\\.[^\\.]*$&quot;</span><span class="p">,</span> extensionName<span class="p">)</span>
+  namesOfTheExtensionPoints<span class="p">[[</span>i<span class="p">]]</span> <span class="o">=</span> <span class="kp">substr</span><span class="p">(</span>extensionName<span class="p">,</span> lastIndexOfDot<span class="p">[</span><span class="m">1</span><span class="p">]</span><span class="m">+1</span><span class="p">,</span> <span class="kp">nchar</span><span class="p">(</span>extensionName<span class="p">))</span>
+  numberOfImplementations<span class="p">[[</span>i<span class="p">]]</span> <span class="o">=</span> <span class="kp">length</span><span class="p">(</span>extensionPoints<span class="p">[[</span>i<span class="p">]]</span><span class="o">$</span>implementations<span class="p">)</span>
+  <span class="kp">print</span><span class="p">(</span><span class="kp">paste</span><span class="p">(</span>namesOfTheExtensionPoints<span class="p">[[</span>i<span class="p">]],</span> <span class="s">&quot; -&gt; &quot;</span><span class="p">,</span> numberOfImplementations<span class="p">[[</span>i<span class="p">]]))</span>
+<span class="p">}</span>
+</pre></div>
+
+<p>For creating the treemap I used the <strong><a href="http://flowingdata.com/2010/02/11/an-easy-way-to-make-a-treemap/">portfolio package</a></strong>, and the <code>map.market</code> 
+function. The structures previously created and the next snippet of code are all that is 
+needed to create the treemap of the Jenkins extension points.</p>
+<div class="highlight"><pre>map.market<span class="p">(</span>id<span class="o">=</span><span class="kp">seq_along</span><span class="p">(</span>extensionPoints<span class="p">),</span> area<span class="o">=</span>numberOfImplementations<span class="p">,</span> group<span class="o">=</span>namesOfTheExtensionPoints<span class="p">,</span> color<span class="o">=</span>numberOfImplementations<span class="p">,</span> main<span class="o">=</span><span class="s">&quot;Jenkins Extension Points&quot;</span><span class="p">)</span>
+</pre></div>
+
+<p>You can also use the <a href="https://wiki.jenkins-ci.org/display/JENKINS/R+Plugin">Jenkins R Plug-in</a> to produce this graph, 
+as in this <a href="http://builds.tupilabs.com/job/backend-extension-points-treemap/2/">sample job</a>. 
+You can get the complete script in this <a href="https://gist.github.com/kinow/d5a2221c32dce3aa1076">gist</a>, or just 
+copy it here.</p>
+<div class="highlight"><pre><span class="kn">library</span><span class="p">(</span><span class="s">&#39;rjson&#39;</span><span class="p">)</span>
+<span class="kn">library</span><span class="p">(</span><span class="s">&#39;portfolio&#39;</span><span class="p">)</span>
+
+download.file<span class="p">(</span>url<span class="o">=</span><span class="s">&quot;https://ci.jenkins-ci.org/view/Infrastructure/job/infra_extension-indexer/ws/extension-points.json&quot;</span><span class="p">,</span> destfile<span class="o">=</span><span class="s">&quot;extension-points.json&quot;</span><span class="p">,</span> method<span class="o">=</span><span class="s">&quot;wget&quot;</span><span class="p">)</span>
+extensionPointsJson <span class="o">&lt;-</span> fromJSON<span class="p">(</span><span class="kp">paste</span><span class="p">(</span><span class="kp">readLines</span><span class="p">(</span><span class="s">&quot;extension-points.json&quot;</span><span class="p">),</span> collapse<span class="o">=</span><span class="s">&quot;&quot;</span><span class="p">))</span>
+extensionPoints <span class="o">&lt;-</span> extensionPointsJson<span class="o">$</span>extensionPoints
+nExtensionPoints <span class="o">&lt;-</span> <span class="kp">length</span><span class="p">(</span>extensionPointsJson<span class="o">$</span>extensionPoints<span class="p">)</span>
+numberOfImplementations <span class="o">&lt;-</span> <span class="kt">vector</span><span class="p">(</span>length <span class="o">=</span> nExtensionPoints<span class="p">)</span>
+namesOfTheExtensionPoints <span class="o">&lt;-</span> <span class="kt">vector</span><span class="p">(</span>length <span class="o">=</span> nExtensionPoints<span class="p">)</span>
+<span class="kr">for</span> <span class="p">(</span>i <span class="kr">in</span> <span class="kp">seq_along</span><span class="p">(</span>extensionPoints<span class="p">))</span> <span class="p">{</span>
+  extensionName <span class="o">=</span> extensionPoints<span class="p">[[</span>i<span class="p">]]</span><span class="o">$</span>className
+  lastIndexOfDot <span class="o">=</span> <span class="kp">regexpr</span><span class="p">(</span><span class="s">&quot;\\.[^\\.]*$&quot;</span><span class="p">,</span> extensionName<span class="p">)</span>
+  namesOfTheExtensionPoints<span class="p">[[</span>i<span class="p">]]</span> <span class="o">=</span> <span class="kp">substr</span><span class="p">(</span>extensionName<span class="p">,</span> lastIndexOfDot<span class="p">[</span><span class="m">1</span><span class="p">]</span><span class="m">+1</span><span class="p">,</span> <span class="kp">nchar</span><span class="p">(</span>extensionName<span class="p">))</span>
+  numberOfImplementations<span class="p">[[</span>i<span class="p">]]</span> <span class="o">=</span> <span class="kp">length</span><span class="p">(</span>extensionPoints<span class="p">[[</span>i<span class="p">]]</span><span class="o">$</span>implementations<span class="p">)</span>
+  <span class="kp">print</span><span class="p">(</span><span class="kp">paste</span><span class="p">(</span>namesOfTheExtensionPoints<span class="p">[[</span>i<span class="p">]],</span> <span class="s">&quot; -&gt; &quot;</span><span class="p">,</span> numberOfImplementations<span class="p">[[</span>i<span class="p">]]))</span>
+<span class="p">}</span>
+png<span class="p">(</span>filename<span class="o">=</span><span class="s">&quot;extension-points.png&quot;</span><span class="p">,</span> width<span class="o">=</span><span class="m">2048</span><span class="p">,</span> height<span class="o">=</span><span class="m">1536</span><span class="p">,</span> units<span class="o">=</span><span class="s">&quot;px&quot;</span><span class="p">,</span> bg<span class="o">=</span><span class="s">&quot;white&quot;</span><span class="p">)</span>
+map.market<span class="p">(</span>id<span class="o">=</span><span class="kp">seq_along</span><span class="p">(</span>extensionPoints<span class="p">),</span> area<span class="o">=</span>numberOfImplementations<span class="p">,</span> group<span class="o">=</span>namesOfTheExtensionPoints<span class="p">,</span> color<span class="o">=</span>numberOfImplementations<span class="p">,</span> main<span class="o">=</span><span class="s">&quot;Jenkins Extension Points&quot;</span><span class="p">)</span>
+dev.off<span class="p">()</span>
+</pre></div></description>
+</item>
+
+<item>
+    <title>Writing a custom SchemaSpy command for Laravel 4</title>
+    <pubDate>Feb 11, 2014</pubDate>
+    <link>/2014/02/11/writing-a-custom-schemaspy-command-for-laravel-4</link>
+    <dc:creator></dc:creator>
+    <description><p>This week I had to write my first custom command for <a href="http://laravel.com/">Laravel 4</a>. 
+In <a href="http://nestor-qa.org/">Nestor-QA</a>, <a href="https://github.com/tooh">Peter</a> and I thought it would be useful to have 
+the database schema being automatically generated with 
+<a href="http://schemaspy.sourceforge.net/">SchemaSpy</a> in our <a href="http://builds.tupilabs.com/view/Nestor-QA/">Jenkins box</a>.</p>
+<p>Thanks to <a href="http://laravel.com/docs/artisan">Artisan</a> this task is much simpler than I thought. 
+The following command creates the <code>schemaspy</code> command.</p>
+<pre><code>php artisan command:make SchemaSpyCommand --command=schemaspy
+</code></pre>
+<p>This will create the file <code>app/commands/SchemaSpyCommand.php</code>. And all I had to do was 
+just fill in the options and write the exec command as the <a href="http://laravel.com/docs/commands">Laravel 4 docs</a> explain. </p>
+<pre><code>$this-&gt;info('Creating SchemaSpy');
+
+$jar = $this-&gt;option("jar");
+$dbtype = $this-&gt;option("dbtype");
+$output = $this-&gt;option("output");
+
+$commandLine = sprintf("java -jar %s -u none -t %s -o %s", $jar, $dbtype, $output);
+
+$this-&gt;info(sprintf("Command line: [%s]", $commandLine));
+
+exec($commandLine);
+</code></pre>
+<p>That&#8217;s how my final command looks. Now the final step is integrate it into the application by adding the line below to 
+<code>app/start/artisan.php</code>.</p>
+<pre><code>Artisan::add(new SchemaSpyCommand);
+</code></pre>
+<p>And that&#8217;s it, running <code>php artisan schemaspy --jar=/opt/schemaspy/schemaSpy_5.0.0.jar 
+--dbtype=app/database/sqlite.properties --output=database-schema</code> 
+creates the database schema docs in the <code>database-schema</code> directory. </p>
+<p>Check this <a href="https://gist.github.com/kinow/8936667">gist</a> for the final code.</p>
+<p>Happy coding!</p></description>
+</item>
+
+<item>
+    <title>Missing menus in new installation of TestLink 1.9.8</title>
+    <pubDate>Oct 27, 2013</pubDate>
+    <link>/2013/10/27/missing-menus-in-new-installation-of-testlink</link>
+    <dc:creator></dc:creator>
+    <description><p>I recently installed TestLink 1.9.8 and noticed that the menus and some other parts 
+of the UI we missing. Looking at <code>/var/log/testlink/userlog1.log</code> (the location 
+may change depending on your settings) I realized that there was something wrong 
+with my PHP installation. There were log messages like the below.</p>
+<pre><code>include_once(ADORecordSet_ext_empty.class.php): failed to open stream: No such file or directory - in /home/kinow/php/workspace/testlink-1.9.8/lib/functions/common.php - Line 92
+[13/Sep/18 12:51:09][WARNING][2o0h173pdgg5fjqh1pukr83og2][GUI]
+E_WARNING
+include_once(): Failed opening 'ADORecordSet_ext_empty.class.php' for inclusion (include_path='.:/usr/share/php:/usr/share/pear:.:/home/kinow/php/workspace/testlink-1.9.8/lib/functions/:/home/kinow/php/workspace/testlink-1.9.8/lib/issuet
+...
+</code></pre>
+<p>I found a post in a forum (but unfortunately I forgot to save the link) that suggested 
+these ADORecordSet were being caused by the module <strong>php5-adodb</strong>. Removing the module, and 
+cleaning the templates cache directory (<code>$TESTLINK_HOME/gui/templates_c/*</code>) 
+fixed the issue for me.</p>
+<p>Hope that helps.
+Happy testing!</p></description>
+</item>
+
+<item>
+    <title>The Apache Way and on writing software reviews</title>
+    <pubDate>Sep 29, 2013</pubDate>
+    <link>/2013/09/29/the-apache-way-and-on-writing-software-reviews</link>
+    <dc:creator></dc:creator>
+    <description><p>The <a href="http://www.apache.org/foundation/how-it-works.html">Apache Way</a> is the philosophy behind 
+Apache Software Foundation and is shared by all of its projects. It is composed by a set of principles:</p>
+<ul>
+<li>Collaborative software development</li>
+<li>Commercial-friendly standard license</li>
+<li>Consistently high quality software</li>
+<li><strong>Respectful, honest, technical-based interaction</strong></li>
+<li>Faithful implementation of standards</li>
+<li>Security as a mandatory feature</li>
+</ul>
+<p>I have been part of <a href="http://commons.apache.org">Apache Commons</a> for a while, and haven&#8217;t 
+really contributed much yet. Maybe because I had lots of projects related to 
+<a href="http://tupilabs.com">TupiLabs</a> as well as my own wedding this year. But I can 
+assure that <em>respectful, honest, technical-based interaction</em> is quite right (not to discredit the 
+other items, of course).</p>
+<p>Even though there are critics of the Apache Way (<a href="/2013/09/29/the-apache-way-and-on-writing-software-reviews%231">1</a>, <a href="/2013/09/29/the-apache-way-and-on-writing-software-reviews%232">2</a>, <a href="/2013/09/29/the-apache-way-and-on-writing-software-reviews%233">3</a>), it still stands as an important 
+pillar for the Apache Software Foundation, and its principles help to create stable and 
+production ready software, such as <a href="http://hadoop.apache.org">Apache Hadoop</a>, 
+<a href="http://httpd.apache.org">Apache Httpd</a>, <a href="http://commons.apache.org/lang">Apache Commons Lang</a>, 
+among <a href="http://projects.apache.org">others</a>.</p>
+<p>There are many reviews and comparisons on Apache software (as well as on 
+other software, like JavaScript libraries, Java Web Frameworks, Ruby Web servers and so on). 
+Sometimes, though, these reviews or comparisons can be biased or not well founded. In 
+cases like this, the developers of the tools may be frustrated, or users can be 
+misled and choose the software based on wrong assertions.</p>
+<p>I have just returned from honey moon, ready to start writing code again, but 
+first I had to read all the unread messages in my inbox. Some were e-mails from <a href="https://www.apache.org/foundation/mailinglists.html">Apache 
+mailing lists</a>. <a href="http://markmail.org/thread/uoh5m55mh4qjybaw">One of these e-mails</a> 
+had Phil Steitz comments on a post by Daniel Wu. </p>
+<p>Instead of publishing his performance benchmark results of 
+<a href="http://commons.apache.org/pool">Apache Commons Pool</a>, Daniel posted his 
+code to the commons-dev mailing list. Phil Steitz, one of Apache Commons Pool 
+committers replied with questions and a few points that Daniel could use to 
+enrich his bechmark tests.</p>
+<p>This kind of behavior happens a lot within Apache (at least in the mailing lists that 
+I follow), and it produces a lot of benefits for different parts. </p>
+<ul>
+<li>The person writing a review or comparison can get the programmer opinion before actually 
+publishing anything. </li>
+<li>The programmer can see how other people were testing his/her code.</li>
+<li>All other commons-pool committers and maintainers, the mailing list readers, and 
+people that found the mailing list archives will be able to read the conversation 
+history.</li>
+<li>No misguided benchmark results were published (and lots of wrong decisions were avoided).</li>
+</ul>
+<p>I keep loving the Apache Way and the resulting community and code around it. There are 
+always lots of things to learn, the Open Source projects communities are healthy and you will always find 
+people willing to share their experience and time teaching you.</p>
+<p>♥ Open Source</p>
+<hr />
+<p><sup><a name="1">1</a> 
+<a href="http://www.infoworld.com/d/open-source-software/has-apache-lost-its-way-225267?page=0,2">
+http://www.infoworld.com/d/open-source-software/has-apache-lost-its-way-225267?page=0,2</a></sup></p>
+<p><sup><a name="2">2</a> 
+<a href="http://www.futurealoof.com/posts/apache-considered-harmful.html">
+http://www.futurealoof.com/posts/apache-considered-harmful.html</a></sup></p>
+<p><sup><a name="3">3</a> 
+<a href="http://www.itworld.com/it-managementstrategy/227477/has-open-source-outgrown-apache-way">
+http://www.itworld.com/it-managementstrategy/227477/has-open-source-outgrown-apache-way</a></sup></p></description>
+</item>
+
+<item>
+    <title>Too many SQL variables exception in Graphite with SQLite3</title>
+    <pubDate>Jul 04, 2013</pubDate>
+    <link>/2013/07/04/too_many_sql_variables_in_graphite_with_sqlite3</link>
+    <dc:creator></dc:creator>
+    <description><p>Having run <a href="http://graphite.wikidot.com/">Graphite</a> for a while, today I found a rather annoying issue. We were using 
+<a href="https://code.launchpad.net/~lucio.torre/graphite/add-events/+merge/69142">events</a>, and everything was working perfectly fine so far. But for the 24 last hours, 
+the graph was blank. </p>
+<p>Actually, in the dashboard, the graph was <em>missing</em>, being displayed as a gray box. 
+Enabling the web inspector in Google Chrome I got the graph URL. Opening the link in 
+a new tab gave me the exception message: <strong>too many SQL variables</strong> (<sup>1</sup>).</p>
+<p>After some research, I found out this was a bug in SQLite. After trying to hack the code, 
+and being concerned about using a patched version of Graphite and having to update it 
+later, I decided to switch database. </p>
+<p>But to avoid losing the graphs, users and other settings, including the events, I 
+migrated the SQLite database to a MySQL server. This MySQL server was already installed in 
+the server machine, since this machine hosted a <a href="http://www.zabbix.com/">Zabbix</a> server too.</p>
+<p>Here are the steps required to migrate your database from SQLite to MySQL (<sup>2</sup>).</p>
+<ul>
+<li>Download <strong>sqlite3_mysql</strong> python script from <a href="http://www.redmine.org/boards/2/topics/12793">http://www.redmine.org/boards/2/topics/12793</a></li>
+<li>Stop Apache/Nginx</li>
+<li>mysql -u user -p -e &#8220;create database redmine graphite set utf8;&#8221; </li>
+<li>sqlite3 graphite.db .dump | sqlite3-to-mysql.py | mysql -uroot -pyourpass graphite</li>
+<li>Start Apache again</li>
+</ul>
+<p>After tail&#8217;ing the Graphite webapp log file, </p>
+<div class="highlight"><pre>tail f- storage/log/webapp/error.log
+</pre></div>
+
+<p>I noticed the Python MySQLdb wasn&#8217;t installed.</p>
+<div class="highlight"><pre><span class="n">ImproperlyConfigured</span><span class="p">:</span> <span class="n">Error</span> <span class="n">loading</span> <span class="n">MySQLdb</span> <span class="n">module</span><span class="p">:</span> <span class="n">No</span> <span class="n">module</span> <span class="n">named</span> <span class="n">MySQLdb</span>
+</pre></div>
+
+<p>My server was an Ubuntu 13.04, so I installed the module simply with the following 
+command.</p>
+<div class="highlight"><pre>apt-get install python-mysqldb
+</pre></div>
+
+<p>Hope that helps!</p>
+<p><small><sup>1</sup> You may have to enable *DEBUG* in your Django settings for seeing the exception in your browser</small></p>
+
+<p><small><sup>2</sup> Zabbix needed some minor tweaks in order to use [MariaDB](https://mariadb.org/), but probably you can give it a try too</small></p></description>
+</item>
+
+<item>
+    <title>Graphite: Broken images</title>
+    <pubDate>Apr 17, 2013</pubDate>
+    <link>/2013/04/17/graphite-broken-images</link>
+    <dc:creator></dc:creator>
+    <description><p>This morning I was setting up a <a href="http://graphite.wikidot.com/" title="Graphite">Graphite </a>server to collect metrics with <a href="https://github.com/etsy/statsd/" title="statsd">statsd</a>, <a href="http://logstash.net/" title="LogStash">LogStash </a>and <a href="https://github.com/jmxtrans/jmxtrans" title="jmxtrans">jmxtrans</a>. After following the instructions from @jgeurst, I&#8217;ve successfully installed Graphite.</p>
+
+<p>I had previously installed another test box, so I decided to take a deeper look at the settings, write a <a href="https://puppetlabs.com/" title="Puppet">puppet</a> manifest and prepare this new box to become a production server. However, after browsing the webapp, all graphs were broken.</p>
+
+<p>After googling a while, reading forums and bugs, I decided to open the <em>$GRAPHITE_HOME/webapp/graphite/render/views.py</em>, adding <em>log.rendering(&#8230;)</em> statements (not the most elegant solution, I know).</p>
+
+<p>By following the program workflow I found out it was entering a block after checking if it should remotely render the image. This feature is turned on/off by <strong>REMOTE_RENDERING</strong> = True/False, in local_settings.py.</p>
+
+<p>After setting this to <em>False</em> the problem was solved.</p></description>
+</item>
+
+</channel>
+</rss>
