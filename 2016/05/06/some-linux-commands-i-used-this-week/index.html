@@ -167,6 +167,54 @@ to inspect its sources.</p>
 <div class="highlight"><pre>/usr/lib/python2.7/dist-packages
 </pre></div>
 
+<h2>Force no-cache via curl for a list of files</h2>
+<p>Useful when you have a proxy like squid caching some requests from an application and you
+want to flush the cache and get the latest content (which will be cached again, but then
+you can fix it once confirmed).</p>
+<div class="highlight"><pre>curl --silent -H <span class="s1">&#39;Cache-Control: no-cache&#39;</span> http://systemcachingvalues.local/somedoc.html
+</pre></div>
+
+<h2>Find to which servers a Linux process is talking to</h2>
+<p>You have to find the pid of the process that you would like to investigate (e.g. 6364) and have
+<a href="http://linux.die.net/man/1/strace">strace</a> installed.</p>
+<div class="highlight"><pre>strace -p <span class="m">6364</span> -f -e <span class="nv">trace</span><span class="o">=</span>network -o output.txt
+</pre></div>
+
+<p>The command above creates output.txt with the trace information. Then you can grep for
+the IP addresses with the following regex.</p>
+<div class="highlight"><pre>grep -E -o <span class="s2">&quot;(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)&quot;</span> output.txt
+</pre></div>
+
+<p>Which will output something similar to the following example.</p>
+<div class="highlight"><pre>127.0.1.1
+127.0.1.1
+127.0.1.1
+192.168.20.4
+10.10.0.12
+...
+</pre></div>
+
+<p>And finally, you can call dig to get the server name, and also remove duplicates.</p>
+<div class="highlight"><pre>grep -E -o <span class="s2">&quot;(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)&quot;</span> output.txt <span class="p">|</span> xargs -l dig +noall +answer +nocmd -x <span class="p">|</span> awk <span class="s1">&#39;{ print $5}&#39;</span> <span class="p">|</span> sort <span class="p">|</span> uniq
+</pre></div>
+
+<p>Which gives you the following.</p>
+<div class="highlight"><pre>ec2-52-13-43-205.compute-1.amazonaws.com.
+ec2-52-32-244-147.compute-1.amazonaws.com.
+ec2-52-44-11-85.compute-1.amazonaws.com.
+ec2-52-55-36-20.us-west-2.compute.amazonaws.com.
+ec2-52-11-19-24.us-west-2.compute.amazonaws.com.
+ec2-52-2-21-13.compute-1.amazonaws.com.
+ec2-54-33-249-49.us-west-2.compute.amazonaws.com.
+ec2-54-180-165-17.us-west-2.compute.amazonaws.com.
+ec2-54-2-177-91.compute-1.amazonaws.com.
+ec2-54-8-163-15.compute-1.amazonaws.com.
+syd11s01-in-f124.1e110.net.
+syd11s02-in-f5.1e110.net.
+syd12s02-in-f3.1e110.net.
+...
+</pre></div>
+
 <p>That&#8217;s all for today.</p>
 <p>Happy hacking!</p>
     </div>
