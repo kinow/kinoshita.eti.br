@@ -8,7 +8,7 @@
     <meta name="keywords"
         content="kinoshita, bruno de paula kinoshita, geek, geek stuff, java, python, c, c++, msn now playing, neural network, mackenzie, sao paulo, brasil, brazil, nerd, nerd stuff, cool, jenkins, illustration, quadrinhos, machine learning, linguistic, apache, open source, codigo livre, codigo aberto" />
     <meta name="author" content="" />
-    <meta name="generator" content="PieCrust 2.0.0rc1" />
+    <meta name="generator" content="PieCrust 2.0.0b5" />
     <meta name="template-engine" content="Twig" />
     <meta name="robots" content="all=index,follow" />
     <meta name="revisit-after" content="15 days" />
@@ -113,6 +113,59 @@
                     </div>
                     
                     <p>Posts in category &#8216;blog&#8217;</p>
+<div class="ui raised padded container segment">
+    <h2>Extract images from a Word document</h2>
+    <p><small>kinow</small> @ <small>Oct 15, 2010&nbsp;16:10:26</small></p>
+
+
+
+
+
+
+
+<a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2010/10/15/extract-images-from-a-word-document" data-text="Extract images from a Word document" data-via="kinow" data-hashtags="opensource">Tweet</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+
+
+    <p>Some time ago I was asked by my boss to get all the images out of a Word document and save them in a separated directory. In this <a title="Extract images from word" href="http://www.gmayor.com/extract_images_from_word.htm">site</a> the author gives you several different ways of extracting images from a Word document. However what I wanted was a quick and dirt way of having these images extracted without macros or having to open and save the document in HTML format.</p>
+<p>So I wrote this quick and dirt word images extractor. It has two versions, one where you need to pass the .doc file as parameter and another one that gives you an input dialog box to point out where is the file. You can get the VBScripts from <a title="http://github.com/kinow/word-images-extractor" href="http://github.com/kinow/word-images-extractor">http://github.com/kinow/word-images-extractor</a>.</p>
+<div class='row'>
+<div class="ui container" style='text-align: center;'>
+<figure>
+<a href="assets['word-images-extractor']" rel="prettyPhoto" class="thumbnail" title="">
+<img class="ui fluid image" src="assets['word-images-extractor']" alt="=" />
+</a>
+<figcaption></figcaption>
+</figure>
+</div>
+</div>
+
+<p>Behind the scenes, this VBScript uses Word to save your .doc as .html and then copies the saved images into the same directory as your word file. So yes, you do have to have Word installed. If somebody gets interested in improving it, he/she could find a way of extracting multiple files at once. In this version some files are overridden. He/she could add to the beginning of the image name the word file name. Or it could be required to pass the output directory together with the input word file.</p>
+<p>That&#8217;s it, I hope it might be helpful to somebody as it was - and still is - to me. :-)</p>
+<p><a title="http://github.com/kinow/word-images-extractor" href="http://github.com/kinow/word-images-extractor">http://github.com/kinow/word-images-extractor</a></p>
+<p>Cheers</p><!-- html -->
+
+    <p class="postmetadata">
+
+        <small>tags 
+         [&nbsp;<a
+            href="/tag/vb"
+            rel="tag">vb</a>&nbsp;]&nbsp;
+
+        </small>
+
+
+        <br/>
+        <small>posted in 
+        [&nbsp;<a
+            href="/blog"
+            title="View all posts in blog"
+            rel="category tag">blog</a>&nbsp;]&nbsp;
+        category </small>
+
+    </p>
+</div>
+
 <div class="ui raised padded container segment">
     <h2>tap4j - A new TAP implementation in Java</h2>
     <p><small>kinow</small> @ <small>Oct 12, 2010&nbsp;09:45:49</small></p>
@@ -336,104 +389,6 @@ extensions:
         category </small>
 
     </p>
-</div>
-
-<div class="ui raised padded container segment">
-    <h2>Code to change your message in MSN messenger</h2>
-    <p><small>kinow</small> @ <small>Mar 22, 2009&nbsp;14:31:18</small></p>
-
-
-
-
-
-
-
-<a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2009/03/22/code-to-change-your-message-in-msn-messenger" data-text="Code to change your message in MSN messenger" data-via="kinow" data-hashtags="opensource">Tweet</a>
-<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-
-
-    <p>I&#8217;ve always wanted to know how does the code to show what was I listening to looked like. I found it after installing XMPlay and XMPlay MSN Plug-in. The plug-in zip had the plug-in itself and its source code. And what a neat source code (-:.</p>
-<p>Basically, you just send a message to the MSN UI API with a defined data structure. And to remove the message, just send again with an empty string.</p>
-<div class="highlight"><pre><span class="cm">/*</span>
-<span class="cm">Bruno de Paula Kinoshita</span>
-<span class="cm">original src code:</span>
-<span class="cm">XMPlay MSN Plugin (c) 2005-2006 Elliott Sales de Andrade</span>
-<span class="cm">*/</span>
-
-<span class="cp">#include &lt;cstdlib&gt;</span>
-<span class="cp">#include &lt;iostream&gt;</span>
-<span class="cp">#include &lt;windows.h&gt;</span>
-
-<span class="n">using</span> <span class="n">namespace</span> <span class="n">std</span><span class="p">;</span>
-
-<span class="k">typedef</span> <span class="k">struct</span> <span class="p">{</span>
-<span class="n">BOOL</span> <span class="n">showCues</span><span class="p">;</span>
-<span class="n">BOOL</span> <span class="n">keepOnClose</span><span class="p">;</span>
-<span class="p">}</span> <span class="n">MSNStuff</span><span class="p">;</span>
-<span class="k">static</span> <span class="n">MSNStuff</span> <span class="n">msnConf</span><span class="p">;</span>
-
-<span class="kt">void</span> <span class="nf">setNowPlaying</span><span class="p">(</span> <span class="kt">char</span> <span class="o">*</span><span class="n">title</span><span class="p">)</span>
-<span class="p">{</span>
-    <span class="kt">wchar_t</span> <span class="o">*</span><span class="n">lpMsn</span><span class="p">;</span>
-    <span class="kt">int</span> <span class="n">strLen</span> <span class="o">=</span> <span class="mi">20</span><span class="p">;</span>
-    <span class="n">HWND</span> <span class="n">xmpwin</span><span class="p">;</span>
-    <span class="n">HWND</span> <span class="n">msnui</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
-
-    <span class="n">lpMsn</span> <span class="o">=</span> <span class="p">(</span><span class="kt">wchar_t</span><span class="o">*</span><span class="p">)</span><span class="n">calloc</span><span class="p">(</span><span class="mi">1024</span><span class="p">,</span><span class="mi">1024</span><span class="p">);</span>
-    <span class="c1">// stuff for MSN before...</span>
-    <span class="n">memcpy</span><span class="p">(</span><span class="n">lpMsn</span><span class="p">,</span> <span class="s">L&quot;</span><span class="se">\\</span><span class="s">0Music</span><span class="se">\\</span><span class="s">01</span><span class="se">\\</span><span class="s">0{0}</span><span class="se">\\</span><span class="s">0&quot;</span><span class="p">,</span> <span class="mi">17</span><span class="o">*</span><span class="mi">2</span><span class="p">);</span>
-    <span class="c1">// actual title...</span>
-    <span class="n">strLen</span><span class="o">=</span><span class="n">MultiByteToWideChar</span><span class="p">(</span><span class="nb">false</span><span class="o">?</span><span class="nl">CP_UTF8</span><span class="p">:</span><span class="n">CP_ACP</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="n">title</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="n">lpMsn</span><span class="o">+</span><span class="mi">17</span><span class="p">,</span><span class="mi">492</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">;</span><span class="err">Â</span>  <span class="cm">/* 1024/2 - 20 */</span>
-    <span class="c1">// stuff for MSN after...</span>
-    <span class="n">memcpy</span><span class="p">(</span><span class="n">lpMsn</span> <span class="o">+</span> <span class="mi">17</span> <span class="o">+</span> <span class="n">strLen</span><span class="p">,</span> <span class="s">L&quot;</span><span class="se">\\</span><span class="s">0&quot;</span><span class="p">,</span> <span class="mi">3</span><span class="o">*</span><span class="mi">2</span><span class="p">);</span>
-    <span class="n">strLen</span> <span class="o">+=</span> <span class="mi">20</span><span class="p">;</span>
-
-    <span class="n">COPYDATASTRUCT</span> <span class="n">msndata</span><span class="p">;</span>
-    <span class="n">msndata</span><span class="p">.</span><span class="n">dwData</span> <span class="o">=</span> <span class="mh">0x547</span><span class="p">;</span>
-    <span class="n">msndata</span><span class="p">.</span><span class="n">lpData</span> <span class="o">=</span> <span class="p">(</span><span class="kt">void</span><span class="o">*</span><span class="p">)</span><span class="n">lpMsn</span><span class="p">;</span>
-    <span class="n">msndata</span><span class="p">.</span><span class="n">cbData</span> <span class="o">=</span> <span class="n">strLen</span> <span class="o">*</span> <span class="mi">2</span><span class="p">;</span>
-
-    <span class="k">while</span> <span class="p">(</span> <span class="n">msnui</span> <span class="o">=</span> <span class="n">FindWindowEx</span><span class="p">(</span><span class="nb">NULL</span><span class="p">,</span> <span class="n">msnui</span><span class="p">,</span> <span class="s">&quot;MsnMsgrUIManager&quot;</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">)</span> <span class="p">)</span>
-        <span class="n">SendMessage</span><span class="p">(</span><span class="n">msnui</span><span class="p">,</span> <span class="n">WM_COPYDATA</span><span class="p">,</span> <span class="p">(</span><span class="n">WPARAM</span><span class="p">)</span><span class="n">xmpwin</span><span class="p">,</span> <span class="p">(</span><span class="n">LPARAM</span><span class="p">)</span><span class="o">&amp;</span><span class="n">msndata</span><span class="p">);</span>
-<span class="p">}</span>
-
-<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span><span class="n">argv</span><span class="p">[])</span>
-<span class="p">{</span>
-    <span class="kt">char</span> <span class="o">*</span><span class="n">title</span><span class="p">;</span>
-
-    <span class="k">if</span> <span class="p">(</span> <span class="n">argc</span> <span class="o">==</span> <span class="mi">1</span> <span class="p">)</span>
-        <span class="n">title</span> <span class="o">=</span> <span class="s">&quot;&quot;</span><span class="p">;</span>
-    <span class="k">else</span>
-        <span class="n">title</span> <span class="o">=</span> <span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span>
-
-    <span class="n">setNowPlaying</span> <span class="p">(</span> <span class="n">title</span> <span class="p">);</span>
-
-    <span class="k">return</span> <span class="n">EXIT_SUCCESS</span><span class="p">;</span>
-<span class="p">}</span>
-</pre></div>
-
-<!-- html -->
-
-<pre><code>&lt;p class="postmetadata"&gt;
-
-    &lt;small&gt;tags 
-     [&amp;nbsp;&lt;a
-        href="/tag/c%2B%2B"
-        rel="tag"&gt;c++&lt;/a&gt;&amp;nbsp;]&amp;nbsp;
-
-    &lt;/small&gt;
-
-
-    &lt;br/&gt;
-    &lt;small&gt;posted in 
-    [&amp;nbsp;&lt;a
-        href="/blog"
-        title="View all posts in blog"
-        rel="category tag"&gt;blog&lt;/a&gt;&amp;nbsp;]&amp;nbsp;
-    category &lt;/small&gt;
-
-&lt;/p&gt;
-</code></pre>
 </div>
 
 <div id="navigation">

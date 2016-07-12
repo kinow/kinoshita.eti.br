@@ -1,0 +1,400 @@
+  
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head profile="http://gmpg.org/xfn/11">
+    <title>Bruno P. Kinoshita &mdash; Processing Vaisala Radiosonde data with Python, and creating GRUAN-like NetCDF files</title> 
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="description" content="Bruno de Paula Kinoshita personal web site" />
+    <meta name="keywords"
+        content="kinoshita, bruno de paula kinoshita, geek, geek stuff, java, python, c, c++, msn now playing, neural network, mackenzie, sao paulo, brasil, brazil, nerd, nerd stuff, cool, jenkins, illustration, quadrinhos, machine learning, linguistic, apache, open source, codigo livre, codigo aberto" />
+    <meta name="author" content="" />
+    <meta name="generator" content="PieCrust 2.0.0b5" />
+    <meta name="template-engine" content="Twig" />
+    <meta name="robots" content="all=index,follow" />
+    <meta name="revisit-after" content="15 days" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta name="distribution" content="Global" />
+    <meta name="url" content="/" />
+    <meta name="copyright" content="Bruno de Paula Kinoshita" />
+    <meta name="Googlebot" content="all" />
+    <meta name="rating" content="general" />
+    <meta http-equiv="expires" content="0" />
+    <meta name="city" content="Sao Paulo" />
+    <meta name="state" content="Brasil, Sao Paulo" />
+    <meta http-equiv="content-language" content="en" />
+    <meta http-equiv="imagetoolbar" content="no" />
+    <meta id="page_favicon" href="/favicon.ico" rel="icon" type="image/x-icon" />
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <!--[if lt IE 9]>
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link rel="alternate" type="application/rss+xml" title="Bruno P. Kinoshita &raquo; Feed" href="//feed.xml" />
+    <link rel="stylesheet" href="/css/semantic/dist/semantic.min.css" type="text/css" media="screen, projection" />
+    <link rel="stylesheet" href="/css/style.css" type="text/css" media="screen, projection" />
+    <!--[if lt IE 8]>
+    <link rel="stylesheet" href="/css/blueprint/ie.css" type="text/css" media="screen, projection" />
+    <![endif]-->
+    <link rel="stylesheet" href="/css/prettyPhoto.css" type="text/css" media="all" />
+</head>
+<body id="body">
+    <div class="ui vertical sidebar menu" id="toc">
+        <div class="menu">
+    <div class="item">
+        <a href="/" class="main-link">Kinoshita</a>
+    </div>
+    <div class="item">
+        <a href="/software/">Software</a>
+    </div>
+    <div class="item">
+        <a href="/articles/">Articles</a>
+    </div>
+    <div class="item">
+        <a href="/books/">Books</a>
+    </div>
+    <div class="item">
+        <a href="/about/">About &#038; CV</a>
+    </div>
+    <div class="item">
+        <a href="/contact/">Contact</a>
+    </div>
+</div>
+<img id="me" src="/img/bruno.jpg" title="Hmmmm" alt="Hmmmm" width="134px" height="215px" />
+    </div>
+    <div class="ui black big launch right attached fixed button">
+        <i class="content icon"></i>
+        <span class="text">Menu</span>
+    </div>
+    <div class="ui fixed inverted main menu">
+        <div class="ui container">
+            <a class="launch icon item">
+                <i class="content icon"></i>
+            </a>
+            <div class="item">
+                Processing Vaisala Radiosonde data with Python, and creating GRUAN-like NetCDF files
+            </div>
+        </div>
+    </div>
+    <div class="pusher">
+        <div class="full height">
+            <div class="toc">
+                <div class="ui vertical sticky fixed top menu">
+                    <div class="menu">
+    <div class="item">
+        <a href="/" class="main-link">Kinoshita</a>
+    </div>
+    <div class="item">
+        <a href="/software/">Software</a>
+    </div>
+    <div class="item">
+        <a href="/articles/">Articles</a>
+    </div>
+    <div class="item">
+        <a href="/books/">Books</a>
+    </div>
+    <div class="item">
+        <a href="/about/">About &#038; CV</a>
+    </div>
+    <div class="item">
+        <a href="/contact/">Contact</a>
+    </div>
+</div>
+<img id="me" src="/img/bruno.jpg" title="Hmmmm" alt="Hmmmm" width="134px" height="215px" />
+                </div>
+            </div>
+            <div class="article">
+                <div class="main container">
+
+                
+<div class="ui raised padded container segment">
+    <h1 class='post-topic'>Processing Vaisala Radiosonde data with Python, and creating GRUAN-like NetCDF files</h1>
+    <small>kinow</small> @
+	<small>Jul 12, 2016&nbsp;21:18:03</small>
+    <div class="entry">
+       
+
+
+
+
+
+<a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2016/07/12/processing-vaisala-radiosonde-data-with-python-and-creating-gruan-like-netcdf-files" data-text="Processing Vaisala Radiosonde data with Python, and creating GRUAN-like NetCDF files" data-via="kinow" data-hashtags="opensource">Tweet</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+
+	   <p>One of my last projects involved parsing a few GB&#8217;s of data that was in a certain binary format,
+and convert it into NetCDF files. In this post I will describe what was done, what I learned about radiosonde,
+<a href="http://www.dwd.de/EN/research/international_programme/gruan/home.html">GRUAN</a> and other geek stuff. Ready?</p>
+<h3>Vaisala Radiosonde data</h3>
+<p>When I was told the data was in some binary format, I thought it would be similar to
+parsing a flat file. That this would contain a fixed length entry, with the same
+kind of item repeated multiple times.</p>
+<p>Well, not exactly.</p>
+<p>The files had been generated by an instrument made by <a href="http://www.vaisala.com">Vaisala</a>, a Finnish company. This
+instrument is called a <strong>radiosonde</strong>. It is an instrument about the size of an old
+mobile phone, that is launched with a balloon into the atmosphere.</p>
+<p>I was lucky to be given the chance to release one of these balloons carrying a newer
+version of this equipment.</p>
+<p><img class="ui centered large bordered image" src="/2016/07/12/processing-vaisala-radiosonde-data-with-python-and-creating-gruan-like-netcdf-files/balloon-launch.jpg" alt="Radiosonde balloon launch" /></p>
+<p>The balloon may carries equipments for measuring different things, like pressure,
+altitude, temperature, latitude, longitude, humidity, among others. And it sends
+the data back to a station via radio, in a short interval.</p>
+<!-- more -->
+
+<p>But the data that I had to parse was in an older format. The documentation for the format
+can be found online at <a href="http://badc.nerc.ac.uk/data/ukmo-rad-hires/pc-coradata.html">http://badc.nerc.ac.uk/data/ukmo-rad-hires/pc-coradata.html</a>.</p>
+<p>There are four different sections. And one field in the identification section defines the
+number of entries found in another field (high resolution). Each section has multiple fields,
+with different data types.</p>
+<p>Not so easy&#8230;</p>
+<h3>Parsing binary data with Python and construct</h3>
+<p><a href="https://construct.readthedocs.io/">Construct</a> is a declarative parser for binary data.
+You can build a parser by simply saying what you expect to be in each field. For example.</p>
+<div class="highlight"><pre><span class="n">pccora_header</span> <span class="o">=</span> <span class="n">Struct</span><span class="p">(</span><span class="s">&quot;pccora_header&quot;</span><span class="p">,</span>
+    <span class="n">ExprAdapter</span><span class="p">(</span><span class="n">String</span><span class="p">(</span><span class="s">&quot;copyright&quot;</span><span class="p">,</span> <span class="mi">20</span><span class="p">),</span>
+        <span class="n">encoder</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">obj</span><span class="p">,</span> <span class="n">ctx</span><span class="p">:</span> <span class="n">obj</span><span class="o">.</span><span class="n">encode</span><span class="p">(),</span>
+        <span class="n">decoder</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">obj</span><span class="p">,</span> <span class="n">ctx</span><span class="p">:</span> <span class="n">obj</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s">&#39;utf-8&#39;</span><span class="p">,</span> <span class="s">&#39;ignore&#39;</span><span class="p">)</span>
+    <span class="p">),</span>
+    <span class="n">SLInt16</span><span class="p">(</span><span class="s">&quot;identification_length&quot;</span><span class="p">),</span>
+    <span class="n">SLInt16</span><span class="p">(</span><span class="s">&quot;syspar_length&quot;</span><span class="p">),</span>
+    <span class="n">SLInt16</span><span class="p">(</span><span class="s">&quot;data_records&quot;</span><span class="p">),</span>
+    <span class="n">SLInt16</span><span class="p">(</span><span class="s">&quot;standard_levels&quot;</span><span class="p">),</span>
+    <span class="n">SLInt16</span><span class="p">(</span><span class="s">&quot;data_type&quot;</span><span class="p">),</span>
+    <span class="n">SLInt16</span><span class="p">(</span><span class="s">&quot;data_length&quot;</span><span class="p">),</span>
+    <span class="n">Enum</span><span class="p">(</span><span class="n">Byte</span><span class="p">(</span><span class="s">&quot;file_ready&quot;</span><span class="p">),</span>
+        <span class="n">READY</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="n">NOT_READY</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="n">_default_</span> <span class="o">=</span> <span class="s">&quot;UNKNOWN&quot;</span><span class="p">,</span>
+    <span class="p">),</span>
+    <span class="n">Bytes</span><span class="p">(</span><span class="s">&quot;reserved&quot;</span><span class="p">,</span> <span class="mi">17</span><span class="p">)</span>
+<span class="p">)</span>
+</pre></div>
+
+<p>This sample code parses the Header section of the binary file. You define each field,
+with a short name, a data type and a length. You can also have expressions to encode
+or decode.</p>
+<p>A complete parser for the binary format was written with Construct, and is available
+via pip as well, as a package called <a href="https://github.com/kinow/pccora">pccora</a>. You can
+install it via <code>pip install pccora</code>, and use it to parse any data in this old binary
+format.</p>
+<p>There are also scripts in the GitHub project. One of the scripts in the, <strong>convert2netcdf.py</strong>,
+converts the data into a NetCDF that is close to what GRUAN produces.</p>
+<h3>What is GRUAN, and why should I care?</h3>
+<p><img class="ui centered large bordered image" src="/2016/07/12/processing-vaisala-radiosonde-data-with-python-and-creating-gruan-like-netcdf-files/sherlock1.jpg" alt="OG Sherlock Kush" /></p>
+<p>This part of the post is more research oriented. So if you are more geek-savvy, feel free
+to skip it.</p>
+<p><a href="http://www.dwd.de/EN/research/international_programme/gruan/home.html">GRUAN</a> stands for
+<em>Global Climate Observing System (GCOS) Reference Upper-Air Network (GRUAN)</em>.</p>
+<p>It is a group of professionals and researchers that work together to create a reference
+network for climate records. They provide data in a standardised way, and with a uniform
+quality control process.</p>
+<p>This makes it much easier for researchers and groups to adopt and use the data. It also means
+that if you write scripts or programs to work with certain data that came from a certified
+GRUAN site, it should also work with data coming from other organisations that are also certified
+by GRUAN.</p>
+<h3>Producing NetCDF files with Python</h3>
+<p><a href="https://en.wikipedia.org/wiki/NetCDF">NetCDF</a>, the Network Common Data Form, is
+a data format that supports arrays with dimensions. Version 4 of NetCDF supports
+<a href="https://en.wikipedia.org/wiki/HDF5">HDF5</a> too, which is a hierarchical data format.</p>
+<p>In NetCDF, you create variables, which contains an array of values - or missing values.
+These variables relate to one or more dimensions, like time, or altitude.</p>
+<p>As for radiosonde data, we have NetCDF files created by GRUAN certified sites. Like
+<a href="http://www.esrl.noaa.gov/psd/iasoa/dataset_record/?datasetid=1111">this example from NOAA</a>.
+Following the Download link you should be directed to the FTP site. There you
+can grab any example GRUAN NetCDF (.nc) file and inspect with <em>ncdump</em>,
+<em>Panoply</em>, <em>ncBrowse</em> or your favourite editor.</p>
+<p>For the file <a href="ftp://ftp.ncdc.noaa.gov/pub/data/gruan/processing/level2/RS92-GDP/version-002/TAT/2016/TAT-RS-01_2_RS92-GDP_002_20160104T000000_1-000-001.nc"></a>
+for example, the <strong>time</strong> and <strong>pressure</strong> variables are described below.</p>
+<div class="highlight"><pre><span class="n">dimensions</span><span class="p">:</span>
+  <span class="n">time</span> <span class="o">=</span> <span class="n">UNLIMITED</span> <span class="p">;</span> <span class="o">//</span> <span class="p">(</span><span class="mi">5735</span> <span class="n">currently</span><span class="p">)</span>
+<span class="n">variables</span><span class="p">:</span>
+  <span class="nb">float</span> <span class="n">time</span><span class="p">(</span><span class="n">time</span><span class="p">)</span> <span class="p">;</span>
+    <span class="n">time</span><span class="p">:</span><span class="n">standard_name</span> <span class="o">=</span> <span class="s">&quot;time&quot;</span> <span class="p">;</span>
+    <span class="n">time</span><span class="p">:</span><span class="n">units</span> <span class="o">=</span> <span class="s">&quot;seconds since 2016-01-03T23:30:16&quot;</span> <span class="p">;</span>
+    <span class="n">time</span><span class="p">:</span><span class="n">long_name</span> <span class="o">=</span> <span class="s">&quot;Time&quot;</span> <span class="p">;</span>
+    <span class="n">time</span><span class="p">:</span><span class="n">g_format_type</span> <span class="o">=</span> <span class="s">&quot;FLT&quot;</span> <span class="p">;</span>
+    <span class="n">time</span><span class="p">:</span><span class="n">g_format_format</span> <span class="o">=</span> <span class="s">&quot;F8.1&quot;</span> <span class="p">;</span>
+    <span class="n">time</span><span class="p">:</span><span class="n">g_format_width</span> <span class="o">=</span> <span class="s">&quot;8&quot;</span> <span class="p">;</span>
+    <span class="n">time</span><span class="p">:</span><span class="n">g_format_nan</span> <span class="o">=</span> <span class="s">&quot;NaN&quot;</span> <span class="p">;</span>
+    <span class="n">time</span><span class="p">:</span><span class="n">g_source_desc</span> <span class="o">=</span> <span class="s">&quot;FRAWPTU&quot;</span> <span class="p">;</span>
+    <span class="n">time</span><span class="p">:</span><span class="n">g_column_type</span> <span class="o">=</span> <span class="s">&quot;original data&quot;</span> <span class="p">;</span>
+    <span class="n">time</span><span class="p">:</span><span class="n">g_resolution</span> <span class="o">=</span> <span class="s">&quot;1.0 s (time)&quot;</span> <span class="p">;</span>
+    <span class="n">time</span><span class="p">:</span><span class="n">axis</span> <span class="o">=</span> <span class="s">&quot;T&quot;</span> <span class="p">;</span>
+    <span class="n">time</span><span class="p">:</span><span class="n">calendar</span> <span class="o">=</span> <span class="s">&quot;gregorian&quot;</span> <span class="p">;</span>
+  <span class="nb">float</span> <span class="n">press</span><span class="p">(</span><span class="n">time</span><span class="p">)</span> <span class="p">;</span>
+    <span class="n">press</span><span class="p">:</span><span class="n">standard_name</span> <span class="o">=</span> <span class="s">&quot;air_pressure&quot;</span> <span class="p">;</span>
+    <span class="n">press</span><span class="p">:</span><span class="n">units</span> <span class="o">=</span> <span class="s">&quot;hPa&quot;</span> <span class="p">;</span>
+    <span class="n">press</span><span class="p">:</span><span class="n">long_name</span> <span class="o">=</span> <span class="s">&quot;Pressure&quot;</span> <span class="p">;</span>
+    <span class="n">press</span><span class="p">:</span><span class="n">g_format_type</span> <span class="o">=</span> <span class="s">&quot;FLT&quot;</span> <span class="p">;</span>
+    <span class="n">press</span><span class="p">:</span><span class="n">g_format_format</span> <span class="o">=</span> <span class="s">&quot;F8.3&quot;</span> <span class="p">;</span>
+    <span class="n">press</span><span class="p">:</span><span class="n">g_format_width</span> <span class="o">=</span> <span class="s">&quot;8&quot;</span> <span class="p">;</span>
+    <span class="n">press</span><span class="p">:</span><span class="n">g_format_nan</span> <span class="o">=</span> <span class="s">&quot;NaN&quot;</span> <span class="p">;</span>
+    <span class="n">press</span><span class="p">:</span><span class="n">g_processing_flag</span> <span class="o">=</span> <span class="s">&quot;raw, smoothed, internal QC passed, additional QC passed&quot;</span> <span class="p">;</span>
+    <span class="n">press</span><span class="p">:</span><span class="n">g_source_desc</span> <span class="o">=</span> <span class="s">&quot;FRAWPTU&quot;</span> <span class="p">;</span>
+    <span class="n">press</span><span class="p">:</span><span class="n">g_column_type</span> <span class="o">=</span> <span class="s">&quot;original data&quot;</span> <span class="p">;</span>
+    <span class="n">press</span><span class="p">:</span><span class="n">g_resolution</span> <span class="o">=</span> <span class="s">&quot;15.0 s (time)&quot;</span> <span class="p">;</span>
+    <span class="n">press</span><span class="p">:</span><span class="n">comment</span> <span class="o">=</span> <span class="s">&quot;Barometric air pressure using silicon sensor up to 13.1 km, derived from GPS-altitude above&quot;</span> <span class="p">;</span>
+    <span class="n">press</span><span class="p">:</span><span class="n">related_columns</span> <span class="o">=</span> <span class="s">&quot;u_press &quot;</span> <span class="p">;</span>
+    <span class="n">press</span><span class="p">:</span><span class="n">coordinates</span> <span class="o">=</span> <span class="s">&quot;lon lat alt&quot;</span> <span class="p">;</span>
+</pre></div>
+
+<p>You can see the unit used for time (in seconds) and that the time variable is related
+to the launch time. And pressure is using hPa. Both variables are mapped against
+the time dimension - you can see that by looking at the parenthesis that follow the variable name.</p>
+<p>Another advantage of using GRUAN data, is that you get a lot of metadata for your analysis.
+As in the following example, from the same file.</p>
+<div class="highlight"><pre><span class="o">//</span> <span class="k">global</span> <span class="n">attributes</span><span class="p">:</span>
+    <span class="p">:</span><span class="n">Conventions</span> <span class="o">=</span> <span class="s">&quot;CF-1.4&quot;</span> <span class="p">;</span>
+    <span class="p">:</span><span class="n">title</span> <span class="o">=</span> <span class="s">&quot;RS92 GRUAN Data Product (Version 2)&quot;</span> <span class="p">;</span>
+    <span class="p">:</span><span class="n">institution</span> <span class="o">=</span> <span class="s">&quot;JMA - Japan Meteorological Agency&quot;</span> <span class="p">;</span>
+    <span class="p">:</span><span class="n">source</span> <span class="o">=</span> <span class="s">&quot;RS92-SGP&quot;</span> <span class="p">;</span>
+    <span class="p">:</span><span class="n">history</span> <span class="o">=</span> <span class="s">&quot;2016-01-04 13:10:41.000Z RS92-GDP: RS92 GRUAN Data Product with gruan_DP_calcRsDataProduct.pro (GRUAN IDL Library, 2012-08)&quot;</span> <span class="p">;</span>
+    <span class="p">:</span><span class="n">references</span> <span class="o">=</span> <span class="s">&quot;Currently no references&quot;</span> <span class="p">;</span>
+    <span class="p">:</span><span class="n">comment</span> <span class="o">=</span> <span class="s">&quot;RS92 GRUAN Data Product&quot;</span> <span class="p">;</span>
+    <span class="p">:</span><span class="n">g</span><span class="o">.</span><span class="n">Product</span><span class="o">.</span><span class="n">ID</span> <span class="o">=</span> <span class="s">&quot;180821&quot;</span> <span class="p">;</span>
+    <span class="p">:</span><span class="n">g</span><span class="o">.</span><span class="n">Product</span><span class="o">.</span><span class="n">Code</span> <span class="o">=</span> <span class="s">&quot;RS92-GDP&quot;</span> <span class="p">;</span>
+    <span class="p">:</span><span class="n">g</span><span class="o">.</span><span class="n">Product</span><span class="o">.</span><span class="n">Name</span> <span class="o">=</span> <span class="s">&quot;RS92 GRUAN Data Product&quot;</span> <span class="p">;</span>
+    <span class="p">:</span><span class="n">g</span><span class="o">.</span><span class="n">Product</span><span class="o">.</span><span class="n">Version</span> <span class="o">=</span> <span class="s">&quot;2&quot;</span> <span class="p">;</span>
+    <span class="p">:</span><span class="n">g</span><span class="o">.</span><span class="n">Product</span><span class="o">.</span><span class="n">Level</span> <span class="o">=</span> <span class="s">&quot;2&quot;</span> <span class="p">;</span>
+    <span class="p">:</span><span class="n">g</span><span class="o">.</span><span class="n">Product</span><span class="o">.</span><span class="n">LevelDescription</span> <span class="o">=</span> <span class="s">&quot;Data read from original data file&quot;</span> <span class="p">;</span>
+    <span class="p">:</span><span class="n">g</span><span class="o">.</span><span class="n">Product</span><span class="o">.</span><span class="n">History</span> <span class="o">=</span> <span class="s">&quot;2016-01-04 13:10:41.000Z RS92-GDP: RS92 GRUAN Data Product with gruan_DP_calcRsDataProduct.pro (GRUAN IDL Library, 2012-08)&quot;</span> <span class="p">;</span>
+    <span class="p">:</span><span class="n">g</span><span class="o">.</span><span class="n">Product</span><span class="o">.</span><span class="n">References</span> <span class="o">=</span> <span class="s">&quot;Currently no references&quot;</span> <span class="p">;</span>
+    <span class="p">:</span><span class="n">g</span><span class="o">.</span><span class="n">Product</span><span class="o">.</span><span class="n">Producer</span> <span class="o">=</span> <span class="s">&quot;GRUAN Lead Centre (Lindenberg, DWD, Germany)&quot;</span> <span class="p">;</span>
+</pre></div>
+
+<p>For my work, the pccora Python library handled the binary data. I created a local variable,
+<strong>hires_data</strong> that holds the high resolution data from the radiosonde. Then created a new
+dataset, which is the NetCDF file.</p>
+<p>It might be easier to explain the rest after looking at some code.</p>
+<div class="highlight"><pre><span class="n">hires_data</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s">&#39;hires_data&#39;</span><span class="p">]</span>
+
+<span class="n">dataset</span> <span class="o">=</span> <span class="n">Dataset</span><span class="p">(</span><span class="nb">file</span><span class="p">,</span> <span class="s">&quot;w&quot;</span><span class="p">,</span> <span class="n">format</span><span class="o">=</span><span class="s">&quot;NETCDF4_CLASSIC&quot;</span><span class="p">)</span>
+
+<span class="c"># Dimensions</span>
+<span class="n">dataset</span><span class="o">.</span><span class="n">createDimension</span><span class="p">(</span><span class="s">&quot;time&quot;</span><span class="p">)</span>
+
+<span class="n">dataset</span><span class="o">.</span><span class="n">setncattr</span><span class="p">(</span><span class="s">&#39;g.General.SiteWmoId&#39;</span><span class="p">,</span> <span class="n">ident</span><span class="p">[</span><span class="s">&#39;wmo_block_number&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="n">ident</span><span class="p">[</span><span class="s">&#39;wmo_station_number&#39;</span><span class="p">])</span>
+<span class="n">dataset</span><span class="o">.</span><span class="n">setncattr</span><span class="p">(</span><span class="s">&#39;g.MeasuringSystem.Longitude&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="s">&#39;N/A&#39;</span> <span class="k">if</span> <span class="bp">None</span> <span class="o">==</span> <span class="n">ident</span><span class="p">[</span><span class="s">&#39;station_longitude&#39;</span><span class="p">]</span> <span class="k">else</span> <span class="n">ident</span><span class="p">[</span><span class="s">&#39;station_longitude&#39;</span><span class="p">])</span> <span class="o">+</span> <span class="s">&#39; degree east&#39;</span><span class="p">)</span>
+<span class="n">dataset</span><span class="o">.</span><span class="n">setncattr</span><span class="p">(</span><span class="s">&#39;g.MeasuringSystem.Latitude&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">ident</span><span class="p">[</span><span class="s">&#39;station_latitude&#39;</span><span class="p">])</span> <span class="o">+</span> <span class="s">&#39; degree north&#39;</span><span class="p">)</span>
+</pre></div>
+
+<p>A <strong>time</strong> dimension is added to our dataset, as well as some global attributes - or
+simply metadata.</p>
+<p>In another part of the code, we have to populate arrays with the values for the data
+logged during the time, and then create variables to persist this data in the NetCDF
+file.</p>
+<div class="highlight"><pre><span class="c"># elapsed_time</span>
+<span class="n">elapsed_time_variable</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">createVariable</span><span class="p">(</span><span class="s">&#39;elapsed_time&#39;</span><span class="p">,</span> <span class="s">&#39;f4&#39;</span><span class="p">,</span> <span class="p">(</span><span class="s">&quot;time&quot;</span><span class="p">,</span> <span class="p">),</span> <span class="n">zlib</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">fill_value</span><span class="o">=-</span><span class="mi">32768</span><span class="p">)</span>
+<span class="n">elapsed_time_variable</span><span class="o">.</span><span class="n">standard_name</span> <span class="o">=</span> <span class="s">&#39;elapsed_time&#39;</span>
+<span class="n">elapsed_time_variable</span><span class="o">.</span><span class="n">units</span> <span class="o">=</span> <span class="s">&#39;s&#39;</span>
+<span class="n">elapsed_time_variable</span><span class="o">.</span><span class="n">long_name</span> <span class="o">=</span> <span class="s">&#39;Elapsed time since sonde release&#39;</span>
+<span class="n">elapsed_time_variable</span><span class="o">.</span><span class="n">g_format_type</span> <span class="o">=</span> <span class="s">&#39;FLT&#39;</span>
+<span class="n">elapsed_time_variable</span><span class="p">[:]</span> <span class="o">=</span> <span class="n">elapsed_time</span>
+</pre></div>
+
+<p>In this example, <strong>elapsed_time</strong> is a simple Python array, with float values.</p>
+<p>The complete code is available <a href="https://github.com/kinow/pccora/blob/5a47fa47c2d9009feb4c56e8daf1b8b5ca7ce7cf/scripts/convert2netcdf4.py">on GitHub</a>.</p>
+<p>And once we have parsed the binary data, created the right structures in Python,
+persisted the new data as NetCDF, we can use it with other tools and
+programming languages.</p>
+<p>The following plot was created for the temperature found in one of these files,
+during the whole profiling of a radiosonde.</p>
+<p><img class="ui centered large bordered image" src="/2016/07/12/processing-vaisala-radiosonde-data-with-python-and-creating-gruan-like-netcdf-files/radiosonde_plot.png" alt="Radiosonde temperature NetCDF" /></p>
+<p>That&#8217;s all for today!</p>
+    </div>
+    <p class="postmetadata">
+        
+        <small>tags 
+         [&nbsp;<a
+            href="/tag/python"
+            rel="tag">python</a>&nbsp;]&nbsp;
+        
+         [&nbsp;<a
+            href="/tag/netcdf"
+            rel="tag">netcdf</a>&nbsp;]&nbsp;
+        
+         [&nbsp;<a
+            href="/tag/climate"
+            rel="tag">climate</a>&nbsp;]&nbsp;
+        
+         [&nbsp;<a
+            href="/tag/radiosonde"
+            rel="tag">radiosonde</a>&nbsp;]&nbsp;
+        
+         [&nbsp;<a
+            href="/tag/gruan"
+            rel="tag">gruan</a>&nbsp;]&nbsp;
+        
+        </small>
+        
+        
+        <br/>
+        <small>posted in 
+        [&nbsp;<a
+            href="/blog"
+            title="View all posts in blog"
+            rel="category tag">blog</a>&nbsp;]&nbsp;
+        category </small>
+        
+    </p>
+</div>
+
+                </div>
+            </div>
+        </div>
+        <div class="ui vertical footer segment">
+            <div class="ui center aligned container">
+                           <div id="copy" class="">
+                <p>&copy; <a href="/about"><span
+                            class="b">Bru</span><span
+                            class="r">no de</span> <span
+                            class="a">Paula</span> <span
+                            class="s"></span><span
+                            class="i">Kinos</span><span
+                            class="l">hita</span></a>
+                </p>
+            </div>
+            </div>
+         </div>
+    </div>
+</body>
+</html>
+<script src="/js/jquery-2.2.3.min.js"  type="text/javascript"></script>
+    <script src="/css/semantic/dist/semantic.min.js"  type="text/javascript"></script>
+    <script src="/js/jquery.prettyPhoto.js"></script>
+<script type="text/javascript" charset="utf-8">
+  $(document).ready(function(){
+    $("a[rel^='prettyPhoto']").prettyPhoto({
+        social_tools: false,
+        autoplay_slideshow: false, 
+        hideflash: true, 
+        autoplay: false, 
+        overlay_gallery: false
+    });
+
+    $("#toc")
+        .sidebar({
+          dimPage          : true,
+          transition       : 'overlay',
+          mobileTransition : 'uncover'
+        })
+    ;
+
+    $("#toc")
+        .sidebar('attach events', '.launch.button, .view-ui, .launch.item')
+    ;
+  });
+</script>
+
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-32767310-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>

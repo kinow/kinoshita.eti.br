@@ -8,7 +8,7 @@
     <meta name="keywords"
         content="kinoshita, bruno de paula kinoshita, geek, geek stuff, java, python, c, c++, msn now playing, neural network, mackenzie, sao paulo, brasil, brazil, nerd, nerd stuff, cool, jenkins, illustration, quadrinhos, machine learning, linguistic, apache, open source, codigo livre, codigo aberto" />
     <meta name="author" content="" />
-    <meta name="generator" content="PieCrust 2.0.0rc1" />
+    <meta name="generator" content="PieCrust 2.0.0b5" />
     <meta name="template-engine" content="Twig" />
     <meta name="robots" content="all=index,follow" />
     <meta name="revisit-after" content="15 days" />
@@ -113,6 +113,96 @@
                     </div>
                     
                     <p>Posts in category &#8216;blog&#8217;</p>
+<div class="ui raised padded container segment">
+    <h2>How does the Jenkins Credentials Plug-in store passwords?</h2>
+    <p><small>kinow</small> @ <small>Sep 07, 2015&nbsp;01:25:03</small></p>
+
+
+
+
+
+
+
+<a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2015/09/07/how_does_the_jenkins_credentials_plugin_store_passwords" data-text="How does the Jenkins Credentials Plug-in store passwords?" data-via="kinow" data-hashtags="opensource">Tweet</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+
+
+    <p><a href="https://wiki.jenkins-ci.org/display/JENKINS/Credentials+Plugin">Jenkins Credentials Plug-in</a> manages credentials stored in Jenkins. These credentials can be used in many jobs and by plug-ins for executing SSH commands, authenticating to systems, or running other commands that need some sort of authentication or authorisation.</p>
+<p>I recently used its API for the first time in the <a href="https://github.com/biouno/figshare-plugin">BioUno figshare Plug-in</a> to store OAuth 1.0 credentials (consumer key, consumer secret, token key, token secret). This <a href="http://biouno.org/2015/09/05/using_jenkins_credentials_plugin_to_create_the_biouno_figshare_plugin/">blog post</a> has more details about how we used the plug-in, but this post is specifically on how the passwords are stored by Jenkins.</p>
+<h2>Secret and ciphers</h2>
+<p>Jenkins stores its configuration on disk as XML using the XStream library. Plug-in developers using the Credentials Plug-in API must use the <strong>Secret</strong> class to encrypt sensitive information.</p>
+<p>The <code>Secret.fromString</code> method is responsible for creating a cipher from a given String. As in the Secret Javadoc,  <em>&#8220;this is not meant as a protection against code running in the same VM, nor against an attacker who has local file system access on Jenkins master&#8221;</em>. But at least makes things more complicated :-)</p>
+<ul>
+<li><a href="http://javadoc.jenkins-ci.org/hudson/util/Secret.html">Secret Javadoc</a></li>
+<li><a href="https://github.com/jenkinsci/jenkins/blob/master/core/src/main/java/hudson/util/Secret.java">Secret source code</a></li>
+</ul>
+<div class="highlight"><pre><span class="kd">public</span> <span class="kd">static</span> <span class="n">Secret</span> <span class="nf">fromString</span><span class="o">(</span><span class="n">String</span> <span class="n">data</span><span class="o">)</span> <span class="o">{</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">Util</span><span class="o">.</span><span class="na">fixNull</span><span class="o">(</span><span class="n">data</span><span class="o">);</span>
+    <span class="n">Secret</span> <span class="n">s</span> <span class="o">=</span> <span class="n">decrypt</span><span class="o">(</span><span class="n">data</span><span class="o">);</span>
+    <span class="k">if</span><span class="o">(</span><span class="n">s</span><span class="o">==</span><span class="kc">null</span><span class="o">)</span> <span class="n">s</span><span class="o">=</span><span class="k">new</span> <span class="n">Secret</span><span class="o">(</span><span class="n">data</span><span class="o">);</span>
+    <span class="k">return</span> <span class="n">s</span><span class="o">;</span>
+<span class="o">}</span>
+</pre></div>
+
+<p>The first line simply replaces a null string by an empty &#8220;&#8221;, or keeps the current value of not null.</p>
+<p>After that, the decrypt method is called.</p>
+<div class="highlight"><pre><span class="kd">public</span> <span class="kd">static</span> <span class="n">Secret</span> <span class="nf">decrypt</span><span class="o">(</span><span class="n">String</span> <span class="n">data</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">if</span><span class="o">(</span><span class="n">data</span><span class="o">==</span><span class="kc">null</span><span class="o">)</span>      <span class="k">return</span> <span class="kc">null</span><span class="o">;</span>
+    <span class="k">try</span> <span class="o">{</span>
+        <span class="kt">byte</span><span class="o">[]</span> <span class="n">in</span> <span class="o">=</span> <span class="n">Base64</span><span class="o">.</span><span class="na">decode</span><span class="o">(</span><span class="n">data</span><span class="o">.</span><span class="na">toCharArray</span><span class="o">());</span>
+        <span class="n">Secret</span> <span class="n">s</span> <span class="o">=</span> <span class="n">tryDecrypt</span><span class="o">(</span><span class="n">KEY</span><span class="o">.</span><span class="na">decrypt</span><span class="o">(),</span> <span class="n">in</span><span class="o">);</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">s</span><span class="o">!=</span><span class="kc">null</span><span class="o">)</span>    <span class="k">return</span> <span class="n">s</span><span class="o">;</span>
+
+        <span class="c1">// try our historical key for backward compatibility</span>
+        <span class="n">Cipher</span> <span class="n">cipher</span> <span class="o">=</span> <span class="n">getCipher</span><span class="o">(</span><span class="s">&quot;AES&quot;</span><span class="o">);</span>
+        <span class="n">cipher</span><span class="o">.</span><span class="na">init</span><span class="o">(</span><span class="n">Cipher</span><span class="o">.</span><span class="na">DECRYPT_MODE</span><span class="o">,</span> <span class="n">getLegacyKey</span><span class="o">());</span>
+        <span class="k">return</span> <span class="n">tryDecrypt</span><span class="o">(</span><span class="n">cipher</span><span class="o">,</span> <span class="n">in</span><span class="o">);</span>
+    <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">GeneralSecurityException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="kc">null</span><span class="o">;</span>
+    <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">UnsupportedEncodingException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">throw</span> <span class="k">new</span> <span class="n">Error</span><span class="o">(</span><span class="n">e</span><span class="o">);</span> <span class="c1">// impossible</span>
+    <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">IOException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="kc">null</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</pre></div>
+
+<p>The <code>KEY.decrypt()</code> call will return a <a href="http://docs.oracle.com/javase/8/docs/api/javax/crypto/Cipher.html"><code>javax.crypto.Cipher</code></a>. The Cipher class is handled in <a href="https://github.com/jenkinsci/jenkins/blob/93dfe3377ec8d430818f5b9073f16c677343adb4/core/src/main/java/jenkins/security/CryptoConfidentialKey.java">CryptoConfidentialKey</a> in Jenkins API, where it defines the algorithm used to create the cipher: <a href="https://en.wikipedia.org/wiki/Advanced_Encryption_Standard">AES</a>.</p>
+
+<p>Jenkins has also a <a href="https://github.com/jenkinsci/jenkins/blob/93dfe3377ec8d430818f5b9073f16c677343adb4/core/src/main/java/jenkins/security/ConfidentialStore.java#L63">ConfidentialStore</a>, that is required to create the cipher. This class must be initialized before someone tries to create or read a cipher. This extra step also increases security, though access to the JVM is still a problem.</p>
+
+<p>It is a bit late, so it is all for today. In summary: the credentials plug-in gives you a central place to manage credentials, but it is up to plug-in developers to use it. Sensitive values can be encrypted with AES on disk. So it is important that your file permissions, ACL and system auditing processes are in place and well maintained and monitored.</p>
+
+<p>Happy hacking!</p>
+
+<!-- html -->
+
+<pre><code>&lt;p class="postmetadata"&gt;
+
+    &lt;small&gt;tags 
+     [&amp;nbsp;&lt;a
+        href="/tag/jenkins"
+        rel="tag"&gt;jenkins&lt;/a&gt;&amp;nbsp;]&amp;nbsp;
+
+     [&amp;nbsp;&lt;a
+        href="/tag/security"
+        rel="tag"&gt;security&lt;/a&gt;&amp;nbsp;]&amp;nbsp;
+
+    &lt;/small&gt;
+
+
+    &lt;br/&gt;
+    &lt;small&gt;posted in 
+    [&amp;nbsp;&lt;a
+        href="/blog"
+        title="View all posts in blog"
+        rel="category tag"&gt;blog&lt;/a&gt;&amp;nbsp;]&amp;nbsp;
+    category &lt;/small&gt;
+
+&lt;/p&gt;
+</code></pre>
+</div>
+
 <div class="ui raised padded container segment">
     <h2>Modeling observation data in SOS (Sensor Observation Service)</h2>
     <p><small>kinow</small> @ <small>Jun 23, 2015&nbsp;13:40:03</small></p>
@@ -431,190 +521,6 @@ updated version of this graph soon.</p>
         category </small>
 
     </p>
-</div>
-
-<div class="ui raised padded container segment">
-    <h2>Cypher, Gremlin and SPARQL: Graph dialects</h2>
-    <p><small>kinow</small> @ <small>Sep 09, 2014&nbsp;10:14:33</small></p>
-
-
-
-
-
-
-
-<a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2014/09/09/cypher-gremlin-and-sparql-graph-dialects" data-text="Cypher, Gremlin and SPARQL: Graph dialects" data-via="kinow" data-hashtags="opensource">Tweet</a>
-<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-
-
-    <p>When I was younger and my older brother was living in Germany, I asked him if he 
-had learned German. He said that he did, and explained that there are several 
-dialects, and he was quite proud for some people told him that he was using the 
-Bavarian dialect correctly.</p>
-<p>Even though <a href="http://www.neo4j.org/learn/cypher">Cypher</a>, 
-<a href="http://gremlindocs.com/">Gremlin</a> and <a href="http://en.wikipedia.org/wiki/SPARQL">SPARQL</a> 
-are all query languages, I think we can consider them dialects of a common graph language. 
-Cypher is the query language used in <a href="http://www.neo4j.org/">neo4j</a>, a graph database. 
-Gremlin is part of the <a href="http://www.tinkerpop.com/">Tinkerpop</a>, an open source project 
-that contains graph server, graph algorithms, graph language, among other sub-projects. 
-And last but not least, SPARQL is used to query <a href="http://en.wikipedia.org/wiki/Resource_Description_Framework">RDF documents</a>.</p>
-<p>Let&#8217;s use the example of the Matrix movie provided by neo4j to take a look at the 
-three languages.</p>
-<h2>Cypher</h2>
-<p>First we create the graph.</p>
-<div class="highlight"><pre><span class="k">create</span> <span class="p">(</span><span class="n">matrix1</span><span class="p">:</span><span class="n">Movie</span> <span class="err">{</span><span class="n">id</span> <span class="p">:</span> <span class="s1">&#39;603&#39;</span><span class="p">,</span> <span class="n">title</span> <span class="p">:</span> <span class="s1">&#39;The Matrix&#39;</span><span class="p">,</span> <span class="k">year</span> <span class="p">:</span> <span class="s1">&#39;1999-03-31&#39;</span><span class="err">}</span><span class="p">),</span>
- <span class="p">(</span><span class="n">matrix2</span><span class="p">:</span><span class="n">Movie</span> <span class="err">{</span><span class="n">id</span> <span class="p">:</span> <span class="s1">&#39;604&#39;</span><span class="p">,</span> <span class="n">title</span> <span class="p">:</span> <span class="s1">&#39;The Matrix Reloaded&#39;</span><span class="p">,</span> <span class="k">year</span> <span class="p">:</span> <span class="s1">&#39;2003-05-07&#39;</span><span class="err">}</span><span class="p">),</span>
- <span class="p">(</span><span class="n">matrix3</span><span class="p">:</span><span class="n">Movie</span> <span class="err">{</span><span class="n">id</span> <span class="p">:</span> <span class="s1">&#39;605&#39;</span><span class="p">,</span> <span class="n">title</span> <span class="p">:</span> <span class="s1">&#39;The Matrix Revolutions&#39;</span><span class="p">,</span> <span class="k">year</span> <span class="p">:</span> <span class="s1">&#39;2003-10-27&#39;</span><span class="err">}</span><span class="p">),</span>
-
- <span class="p">(</span><span class="n">neo</span><span class="p">:</span><span class="n">Actor</span> <span class="err">{</span><span class="n">name</span><span class="p">:</span><span class="s1">&#39;Keanu Reeves&#39;</span><span class="err">}</span><span class="p">),</span>
- <span class="p">(</span><span class="n">morpheus</span><span class="p">:</span><span class="n">Actor</span> <span class="err">{</span><span class="n">name</span><span class="p">:</span><span class="s1">&#39;Laurence Fishburne&#39;</span><span class="err">}</span><span class="p">),</span>
- <span class="p">(</span><span class="n">trinity</span><span class="p">:</span><span class="n">Actor</span> <span class="err">{</span><span class="n">name</span><span class="p">:</span><span class="s1">&#39;Carrie-Anne Moss&#39;</span><span class="err">}</span><span class="p">),</span>
-
- <span class="p">(</span><span class="n">matrix1</span><span class="p">)</span><span class="o">&lt;-</span><span class="p">[:</span><span class="n">ACTS_IN</span> <span class="err">{</span><span class="k">role</span> <span class="p">:</span> <span class="s1">&#39;Neo&#39;</span><span class="err">}</span><span class="p">]</span><span class="o">-</span><span class="p">(</span><span class="n">neo</span><span class="p">),</span>
- <span class="p">(</span><span class="n">matrix2</span><span class="p">)</span><span class="o">&lt;-</span><span class="p">[:</span><span class="n">ACTS_IN</span> <span class="err">{</span><span class="k">role</span> <span class="p">:</span> <span class="s1">&#39;Neo&#39;</span><span class="err">}</span><span class="p">]</span><span class="o">-</span><span class="p">(</span><span class="n">neo</span><span class="p">),</span>
- <span class="p">(</span><span class="n">matrix3</span><span class="p">)</span><span class="o">&lt;-</span><span class="p">[:</span><span class="n">ACTS_IN</span> <span class="err">{</span><span class="k">role</span> <span class="p">:</span> <span class="s1">&#39;Neo&#39;</span><span class="err">}</span><span class="p">]</span><span class="o">-</span><span class="p">(</span><span class="n">neo</span><span class="p">),</span>
- <span class="p">(</span><span class="n">matrix1</span><span class="p">)</span><span class="o">&lt;-</span><span class="p">[:</span><span class="n">ACTS_IN</span> <span class="err">{</span><span class="k">role</span> <span class="p">:</span> <span class="s1">&#39;Morpheus&#39;</span><span class="err">}</span><span class="p">]</span><span class="o">-</span><span class="p">(</span><span class="n">morpheus</span><span class="p">),</span>
- <span class="p">(</span><span class="n">matrix2</span><span class="p">)</span><span class="o">&lt;-</span><span class="p">[:</span><span class="n">ACTS_IN</span> <span class="err">{</span><span class="k">role</span> <span class="p">:</span> <span class="s1">&#39;Morpheus&#39;</span><span class="err">}</span><span class="p">]</span><span class="o">-</span><span class="p">(</span><span class="n">morpheus</span><span class="p">),</span>
- <span class="p">(</span><span class="n">matrix3</span><span class="p">)</span><span class="o">&lt;-</span><span class="p">[:</span><span class="n">ACTS_IN</span> <span class="err">{</span><span class="k">role</span> <span class="p">:</span> <span class="s1">&#39;Morpheus&#39;</span><span class="err">}</span><span class="p">]</span><span class="o">-</span><span class="p">(</span><span class="n">morpheus</span><span class="p">),</span>
- <span class="p">(</span><span class="n">matrix1</span><span class="p">)</span><span class="o">&lt;-</span><span class="p">[:</span><span class="n">ACTS_IN</span> <span class="err">{</span><span class="k">role</span> <span class="p">:</span> <span class="s1">&#39;Trinity&#39;</span><span class="err">}</span><span class="p">]</span><span class="o">-</span><span class="p">(</span><span class="n">trinity</span><span class="p">),</span>
- <span class="p">(</span><span class="n">matrix2</span><span class="p">)</span><span class="o">&lt;-</span><span class="p">[:</span><span class="n">ACTS_IN</span> <span class="err">{</span><span class="k">role</span> <span class="p">:</span> <span class="s1">&#39;Trinity&#39;</span><span class="err">}</span><span class="p">]</span><span class="o">-</span><span class="p">(</span><span class="n">trinity</span><span class="p">),</span>
- <span class="p">(</span><span class="n">matrix3</span><span class="p">)</span><span class="o">&lt;-</span><span class="p">[:</span><span class="n">ACTS_IN</span> <span class="err">{</span><span class="k">role</span> <span class="p">:</span> <span class="s1">&#39;Trinity&#39;</span><span class="err">}</span><span class="p">]</span><span class="o">-</span><span class="p">(</span><span class="n">trinity</span><span class="p">)</span>
-</pre></div>
-
-<p><code>Added 6 labels, created 6 nodes, set 21 properties, created 9 relationships, returned 0 rows in 2791 ms</code></p>
-
-<p>And execute a simple query.</p>
-
-<div class="highlight"><pre><span class="k">MATCH</span> <span class="p">(</span><span class="n">a</span><span class="p">:</span><span class="n">Actor</span> <span class="err">{</span> <span class="n">name</span><span class="p">:</span><span class="ss">&quot;Keanu Reeves&quot;</span> <span class="err">}</span><span class="p">)</span>
-<span class="k">RETURN</span> <span class="n">a</span>
-</pre></div>
-
-<p><code>(9:Actor {name:"Keanu Reeves"})</code></p>
-
-<h2>Gremlin</h2>
-
-<p>Again, let&#8217;s start by creating our graph.</p>
-
-<div class="highlight"><pre><span class="k">g</span> <span class="o">=</span> <span class="k">new</span> <span class="n">TinkerGraph</span><span class="p">();</span>
-<span class="n">matrix1</span> <span class="o">=</span> <span class="k">g</span><span class="p">.</span><span class="n">addVertex</span><span class="p">([</span><span class="ss">&quot;_id&quot;</span><span class="p">:</span><span class="mi">603</span><span class="p">,</span><span class="ss">&quot;title&quot;</span><span class="p">:</span><span class="ss">&quot;The Matrix&quot;</span><span class="p">,</span> <span class="ss">&quot;year&quot;</span><span class="p">:</span> <span class="ss">&quot;1999-03-31&quot;</span><span class="p">]);</span>
-<span class="n">matrix2</span> <span class="o">=</span> <span class="k">g</span><span class="p">.</span><span class="n">addVertex</span><span class="p">([</span><span class="ss">&quot;_id&quot;</span><span class="p">:</span><span class="mi">604</span><span class="p">,</span><span class="ss">&quot;title&quot;</span><span class="p">:</span><span class="ss">&quot;The Matrix Reloaded&quot;</span><span class="p">,</span> <span class="ss">&quot;year&quot;</span><span class="p">:</span> <span class="ss">&quot;2003-05-07&quot;</span><span class="p">]);</span>
-<span class="n">matrix3</span> <span class="o">=</span> <span class="k">g</span><span class="p">.</span><span class="n">addVertex</span><span class="p">([</span><span class="ss">&quot;_id&quot;</span><span class="p">:</span><span class="mi">605</span><span class="p">,</span><span class="ss">&quot;title&quot;</span><span class="p">:</span><span class="ss">&quot;The Matrix Revolutions&quot;</span><span class="p">,</span> <span class="ss">&quot;year&quot;</span><span class="p">:</span> <span class="ss">&quot;2003-10-27&quot;</span><span class="p">]);</span>
-
-<span class="n">neo</span> <span class="o">=</span> <span class="k">g</span><span class="p">.</span><span class="n">addVertex</span><span class="p">([</span><span class="ss">&quot;name&quot;</span><span class="p">:</span> <span class="ss">&quot;Keanu Reeves&quot;</span><span class="p">]);</span>
-<span class="n">morpheus</span> <span class="o">=</span> <span class="k">g</span><span class="p">.</span><span class="n">addVertex</span><span class="p">([</span><span class="ss">&quot;name&quot;</span><span class="p">:</span> <span class="ss">&quot;Laurence Fishburne&quot;</span><span class="p">]);</span>
-<span class="n">trinity</span> <span class="o">=</span> <span class="k">g</span><span class="p">.</span><span class="n">addVertex</span><span class="p">([</span><span class="ss">&quot;name&quot;</span><span class="p">:</span> <span class="ss">&quot;Carrie-Anne Moss&quot;</span><span class="p">]);</span>
-
-<span class="n">neo</span><span class="p">.</span><span class="n">addEdge</span><span class="p">(</span><span class="ss">&quot;actsIn&quot;</span><span class="p">,</span> <span class="n">matrix1</span><span class="p">);</span> 
-<span class="n">neo</span><span class="p">.</span><span class="n">addEdge</span><span class="p">(</span><span class="ss">&quot;actsIn&quot;</span><span class="p">,</span> <span class="n">matrix2</span><span class="p">);</span> 
-<span class="n">neo</span><span class="p">.</span><span class="n">addEdge</span><span class="p">(</span><span class="ss">&quot;actsIn&quot;</span><span class="p">,</span> <span class="n">matrix3</span><span class="p">);</span> 
-<span class="n">morpheus</span><span class="p">.</span><span class="n">addEdge</span><span class="p">(</span><span class="ss">&quot;actsIn&quot;</span><span class="p">,</span> <span class="n">matrix1</span><span class="p">);</span> 
-<span class="n">morpheus</span><span class="p">.</span><span class="n">addEdge</span><span class="p">(</span><span class="ss">&quot;actsIn&quot;</span><span class="p">,</span> <span class="n">matrix2</span><span class="p">);</span> 
-<span class="n">morpheus</span><span class="p">.</span><span class="n">addEdge</span><span class="p">(</span><span class="ss">&quot;actsIn&quot;</span><span class="p">,</span> <span class="n">matrix3</span><span class="p">);</span> 
-<span class="n">trinity</span><span class="p">.</span><span class="n">addEdge</span><span class="p">(</span><span class="ss">&quot;actsIn&quot;</span><span class="p">,</span> <span class="n">matrix1</span><span class="p">);</span> 
-<span class="n">trinity</span><span class="p">.</span><span class="n">addEdge</span><span class="p">(</span><span class="ss">&quot;actsIn&quot;</span><span class="p">,</span> <span class="n">matrix2</span><span class="p">);</span> 
-<span class="n">trinity</span><span class="p">.</span><span class="n">addEdge</span><span class="p">(</span><span class="ss">&quot;actsIn&quot;</span><span class="p">,</span> <span class="n">matrix3</span><span class="p">);</span>
-</pre></div>
-
-<p>And execute a simple query.</p>
-
-<div class="highlight"><pre><span class="k">g</span><span class="p">.</span><span class="n">V</span><span class="p">.</span><span class="n">has</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;Keanu Reeves&#39;</span><span class="p">).</span><span class="k">map</span>
-</pre></div>
-
-<p><code>gremlin&gt; g.V.has('name', 'Keanu Reeves').map
-==&gt;{name=Keanu Reeves}
-gremlin&gt;</code></p>
-
-<p>Quite similar to neo4j.</p>
-
-<h2>SPARQL</h2>
-
-<p>Let&#8217;s load our example (thanks to <a href="https://twitter.com/kendall">Kendall G. Clark</a>). I used 
-<a href="http://jena.apache.org/documentation/serving_data/">Fuseki</a> to run these queries.</p>
-
-<div class="highlight"><pre>@prefix :          <span class="nt">&lt;http:</span><span class="err">//example.org/matrix</span><span class="nt">/&gt;</span> .
-
- :m1 a :Movie; :title &quot;The Matrix&quot;; :year &quot;1999-03-31&quot;.
- :m2 a :Movie; :title &quot;The Matrix Reloaded&quot;; :year &quot;2003-05-07&quot;.
- :m3 a :Movie; :title &quot;The Matrix Revolutions&quot;; :year &quot;2003-10-27&quot;.
-
- :neo a :Actor; :name &quot;Keanu Reeves&quot;.
- :morpheus a :Actor; :name &quot;Laurence Fishburne&quot;.
- :trinity a :Actor; :name &quot;Carrie-Anne Moss&quot;.
-
- :neo :hasRole [:as &quot;Neo&quot;; :in :m1].
- :neo :hasRole [:as &quot;Neo&quot;; :in :m2].
- :neo :hasRole [:as &quot;Neo&quot;; :in :m2].
- :morpheus :hasRole [:as &quot;Morpheus&quot;; :in :m1].
- :morpheus :hasRole [:as &quot;Morpheus&quot;; :in :m2].
- :morpheus :hasRole [:as &quot;Morpheus&quot;; :in :m2].
- :trinity :hasRole [:as &quot;Trinity&quot;; :in :m1].
- :trinity :hasRole [:as &quot;Trinity&quot;; :in :m2].
- :trinity :hasRole [:as &quot;Trinity&quot;; :in :m2].
-</pre></div>
-
-<p>And finally the SPARQL query.</p>
-
-<div class="highlight"><pre><span class="k">SELECT</span> <span class="o">?</span><span class="n">a</span> <span class="k">WHERE</span> <span class="err">{</span>
-   <span class="o">?</span><span class="n">a</span> <span class="n">a</span> <span class="o">&lt;</span><span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">example</span><span class="p">.</span><span class="n">org</span><span class="o">/</span><span class="n">matrix</span><span class="o">/</span><span class="n">Actor</span><span class="o">&gt;</span> <span class="p">.</span>
-   <span class="o">?</span><span class="n">a</span> <span class="o">&lt;</span><span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">example</span><span class="p">.</span><span class="n">org</span><span class="o">/</span><span class="n">matrix</span><span class="o">/</span><span class="n">name</span><span class="o">&gt;</span> <span class="o">?</span><span class="n">name</span> <span class="p">.</span>
-   <span class="n">FILTER</span><span class="p">(</span><span class="o">?</span><span class="n">name</span>  <span class="o">=</span> <span class="ss">&quot;Keanu Reeves&quot;</span><span class="p">)</span>
-<span class="err">}</span>
-</pre></div>
-
-<p>Returning the Keanu Reeves actor instance.</p>
-
-<pre>-----------------------------------
-| a                               |
-===================================
-| &lt;http://example.org/matrix/neo&gt; |
------------------------------------</pre>
-
-<p>SPARQL supports inference (or I must say that OWL, RDFS and the reasoners do), 
-but it is easier to define the depth of a search in the graph using neo4j. As for 
-Gremlin, it has native support to Groovy and Java. There is a common denominator 
-for these three languages, but what makes them really powerful are their unique features. </p>
-
-<p>I hope you enjoyed, and that this post gave you a quick overview of some of the existing 
-graph languages. Make sure you ponder the pros and cons of each server/language, and 
-make the best decision for your project. Take a look at <a href="http://en.wikipedia.org/wiki/Graph_database#APIs_and_Graph_Query.2FProgramming_Languages">other graph query languages</a> too.</p>
-
-<p>Happy hacking!</p>
-
-<p><hr />
-<p>This post has been updated as suggested by <a href="https://twitter.com/kendall">@kendall</a> (Thank you!).
-You can check the diff at <a href="https://github.com/kinow/kinoshita.eti.br/commits/master/site/_content/posts/2014-09-09_cypher-gremlin-and-sparql-graph-dialects.html">GitHub</a></p><!-- html --></p>
-<pre><code>&lt;p class="postmetadata"&gt;
-
-    &lt;small&gt;tags 
-     [&amp;nbsp;&lt;a
-        href="/tag/graphs"
-        rel="tag"&gt;graphs&lt;/a&gt;&amp;nbsp;]&amp;nbsp;
-
-     [&amp;nbsp;&lt;a
-        href="/tag/neo4j"
-        rel="tag"&gt;neo4j&lt;/a&gt;&amp;nbsp;]&amp;nbsp;
-
-     [&amp;nbsp;&lt;a
-        href="/tag/gremlin"
-        rel="tag"&gt;gremlin&lt;/a&gt;&amp;nbsp;]&amp;nbsp;
-
-     [&amp;nbsp;&lt;a
-        href="/tag/sparql"
-        rel="tag"&gt;sparql&lt;/a&gt;&amp;nbsp;]&amp;nbsp;
-
-    &lt;/small&gt;
-
-
-    &lt;br/&gt;
-    &lt;small&gt;posted in 
-    [&amp;nbsp;&lt;a
-        href="/blog"
-        title="View all posts in blog"
-        rel="category tag"&gt;blog&lt;/a&gt;&amp;nbsp;]&amp;nbsp;
-    category &lt;/small&gt;
-
-&lt;/p&gt;
-</code></pre>
 </div>
 
 <div id="navigation">

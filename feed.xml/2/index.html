@@ -13,10 +13,61 @@
     <atom:link href="/blog/feed.xml" rel="self" type="application/rss+xml" />
     <link>/</link>
     <description></description>
-    <lastBuildDate>1468290542.6380317</lastBuildDate>
+    <lastBuildDate>1468331345.0587804</lastBuildDate>
     <language>en-US</language>
-    <generator>PieCrust 2.0.0rc1</generator>
+    <generator>PieCrust 2.0.0b5</generator>
  
+
+<item>
+    <title>How does the Jenkins Credentials Plug-in store passwords?</title>
+    <pubDate>Sep 07, 2015</pubDate>
+    <link>/2015/09/07/how_does_the_jenkins_credentials_plugin_store_passwords</link>
+    <dc:creator></dc:creator>
+    <description><p><a href="https://wiki.jenkins-ci.org/display/JENKINS/Credentials+Plugin">Jenkins Credentials Plug-in</a> manages credentials stored in Jenkins. These credentials can be used in many jobs and by plug-ins for executing SSH commands, authenticating to systems, or running other commands that need some sort of authentication or authorisation.</p>
+<p>I recently used its API for the first time in the <a href="https://github.com/biouno/figshare-plugin">BioUno figshare Plug-in</a> to store OAuth 1.0 credentials (consumer key, consumer secret, token key, token secret). This <a href="http://biouno.org/2015/09/05/using_jenkins_credentials_plugin_to_create_the_biouno_figshare_plugin/">blog post</a> has more details about how we used the plug-in, but this post is specifically on how the passwords are stored by Jenkins.</p>
+<h2>Secret and ciphers</h2>
+<p>Jenkins stores its configuration on disk as XML using the XStream library. Plug-in developers using the Credentials Plug-in API must use the <strong>Secret</strong> class to encrypt sensitive information.</p>
+<p>The <code>Secret.fromString</code> method is responsible for creating a cipher from a given String. As in the Secret Javadoc,  <em>&#8220;this is not meant as a protection against code running in the same VM, nor against an attacker who has local file system access on Jenkins master&#8221;</em>. But at least makes things more complicated :-)</p>
+<ul>
+<li><a href="http://javadoc.jenkins-ci.org/hudson/util/Secret.html">Secret Javadoc</a></li>
+<li><a href="https://github.com/jenkinsci/jenkins/blob/master/core/src/main/java/hudson/util/Secret.java">Secret source code</a></li>
+</ul>
+<div class="highlight"><pre><span class="kd">public</span> <span class="kd">static</span> <span class="n">Secret</span> <span class="nf">fromString</span><span class="o">(</span><span class="n">String</span> <span class="n">data</span><span class="o">)</span> <span class="o">{</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">Util</span><span class="o">.</span><span class="na">fixNull</span><span class="o">(</span><span class="n">data</span><span class="o">);</span>
+    <span class="n">Secret</span> <span class="n">s</span> <span class="o">=</span> <span class="n">decrypt</span><span class="o">(</span><span class="n">data</span><span class="o">);</span>
+    <span class="k">if</span><span class="o">(</span><span class="n">s</span><span class="o">==</span><span class="kc">null</span><span class="o">)</span> <span class="n">s</span><span class="o">=</span><span class="k">new</span> <span class="n">Secret</span><span class="o">(</span><span class="n">data</span><span class="o">);</span>
+    <span class="k">return</span> <span class="n">s</span><span class="o">;</span>
+<span class="o">}</span>
+</pre></div>
+
+<p>The first line simply replaces a null string by an empty &#8220;&#8221;, or keeps the current value of not null.</p>
+<p>After that, the decrypt method is called.</p>
+<div class="highlight"><pre><span class="kd">public</span> <span class="kd">static</span> <span class="n">Secret</span> <span class="nf">decrypt</span><span class="o">(</span><span class="n">String</span> <span class="n">data</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">if</span><span class="o">(</span><span class="n">data</span><span class="o">==</span><span class="kc">null</span><span class="o">)</span>      <span class="k">return</span> <span class="kc">null</span><span class="o">;</span>
+    <span class="k">try</span> <span class="o">{</span>
+        <span class="kt">byte</span><span class="o">[]</span> <span class="n">in</span> <span class="o">=</span> <span class="n">Base64</span><span class="o">.</span><span class="na">decode</span><span class="o">(</span><span class="n">data</span><span class="o">.</span><span class="na">toCharArray</span><span class="o">());</span>
+        <span class="n">Secret</span> <span class="n">s</span> <span class="o">=</span> <span class="n">tryDecrypt</span><span class="o">(</span><span class="n">KEY</span><span class="o">.</span><span class="na">decrypt</span><span class="o">(),</span> <span class="n">in</span><span class="o">);</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">s</span><span class="o">!=</span><span class="kc">null</span><span class="o">)</span>    <span class="k">return</span> <span class="n">s</span><span class="o">;</span>
+
+        <span class="c1">// try our historical key for backward compatibility</span>
+        <span class="n">Cipher</span> <span class="n">cipher</span> <span class="o">=</span> <span class="n">getCipher</span><span class="o">(</span><span class="s">&quot;AES&quot;</span><span class="o">);</span>
+        <span class="n">cipher</span><span class="o">.</span><span class="na">init</span><span class="o">(</span><span class="n">Cipher</span><span class="o">.</span><span class="na">DECRYPT_MODE</span><span class="o">,</span> <span class="n">getLegacyKey</span><span class="o">());</span>
+        <span class="k">return</span> <span class="n">tryDecrypt</span><span class="o">(</span><span class="n">cipher</span><span class="o">,</span> <span class="n">in</span><span class="o">);</span>
+    <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">GeneralSecurityException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="kc">null</span><span class="o">;</span>
+    <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">UnsupportedEncodingException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">throw</span> <span class="k">new</span> <span class="n">Error</span><span class="o">(</span><span class="n">e</span><span class="o">);</span> <span class="c1">// impossible</span>
+    <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">IOException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="kc">null</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</pre></div>
+
+<p>The <code>KEY.decrypt()</code> call will return a <a href="http://docs.oracle.com/javase/8/docs/api/javax/crypto/Cipher.html"><code>javax.crypto.Cipher</code></a>. The Cipher class is handled in <a href="https://github.com/jenkinsci/jenkins/blob/93dfe3377ec8d430818f5b9073f16c677343adb4/core/src/main/java/jenkins/security/CryptoConfidentialKey.java">CryptoConfidentialKey</a> in Jenkins API, where it defines the algorithm used to create the cipher: <a href="https://en.wikipedia.org/wiki/Advanced_Encryption_Standard">AES</a>.</p>
+<p>Jenkins has also a <a href="https://github.com/jenkinsci/jenkins/blob/93dfe3377ec8d430818f5b9073f16c677343adb4/core/src/main/java/jenkins/security/ConfidentialStore.java#L63">ConfidentialStore</a>, that is required to create the cipher. This class must be initialized before someone tries to create or read a cipher. This extra step also increases security, though access to the JVM is still a problem.</p>
+<p>It is a bit late, so it is all for today. In summary: the credentials plug-in gives you a central place to manage credentials, but it is up to plug-in developers to use it. Sensitive values can be encrypted with AES on disk. So it is important that your file permissions, ACL and system auditing processes are in place and well maintained and monitored.</p>
+<p>Happy hacking!</p></description>
+</item>
 
 <item>
     <title>Modeling observation data in SOS (Sensor Observation Service)</title>
@@ -480,72 +531,6 @@ cleaning the templates cache directory (<code>$TESTLINK_HOME/gui/templates_c/*</
 fixed the issue for me.</p>
 <p>Hope that helps.
 Happy testing!</p></description>
-</item>
-
-<item>
-    <title>The Apache Way and on writing software reviews</title>
-    <pubDate>Sep 29, 2013</pubDate>
-    <link>/2013/09/29/the-apache-way-and-on-writing-software-reviews</link>
-    <dc:creator></dc:creator>
-    <description><p>The <a href="http://www.apache.org/foundation/how-it-works.html">Apache Way</a> is the philosophy behind 
-Apache Software Foundation and is shared by all of its projects. It is composed by a set of principles:</p>
-<ul>
-<li>Collaborative software development</li>
-<li>Commercial-friendly standard license</li>
-<li>Consistently high quality software</li>
-<li><strong>Respectful, honest, technical-based interaction</strong></li>
-<li>Faithful implementation of standards</li>
-<li>Security as a mandatory feature</li>
-</ul>
-<p>I have been part of <a href="http://commons.apache.org">Apache Commons</a> for a while, and haven&#8217;t 
-really contributed much yet. Maybe because I had lots of projects related to 
-<a href="http://tupilabs.com">TupiLabs</a> as well as my own wedding this year. But I can 
-assure that <em>respectful, honest, technical-based interaction</em> is quite right (not to discredit the 
-other items, of course).</p>
-<p>Even though there are critics of the Apache Way (<a href="/2013/09/29/the-apache-way-and-on-writing-software-reviews%231">1</a>, <a href="/2013/09/29/the-apache-way-and-on-writing-software-reviews%232">2</a>, <a href="/2013/09/29/the-apache-way-and-on-writing-software-reviews%233">3</a>), it still stands as an important 
-pillar for the Apache Software Foundation, and its principles help to create stable and 
-production ready software, such as <a href="http://hadoop.apache.org">Apache Hadoop</a>, 
-<a href="http://httpd.apache.org">Apache Httpd</a>, <a href="http://commons.apache.org/lang">Apache Commons Lang</a>, 
-among <a href="http://projects.apache.org">others</a>.</p>
-<p>There are many reviews and comparisons on Apache software (as well as on 
-other software, like JavaScript libraries, Java Web Frameworks, Ruby Web servers and so on). 
-Sometimes, though, these reviews or comparisons can be biased or not well founded. In 
-cases like this, the developers of the tools may be frustrated, or users can be 
-misled and choose the software based on wrong assertions.</p>
-<p>I have just returned from honey moon, ready to start writing code again, but 
-first I had to read all the unread messages in my inbox. Some were e-mails from <a href="https://www.apache.org/foundation/mailinglists.html">Apache 
-mailing lists</a>. <a href="http://markmail.org/thread/uoh5m55mh4qjybaw">One of these e-mails</a> 
-had Phil Steitz comments on a post by Daniel Wu. </p>
-<p>Instead of publishing his performance benchmark results of 
-<a href="http://commons.apache.org/pool">Apache Commons Pool</a>, Daniel posted his 
-code to the commons-dev mailing list. Phil Steitz, one of Apache Commons Pool 
-committers replied with questions and a few points that Daniel could use to 
-enrich his bechmark tests.</p>
-<p>This kind of behavior happens a lot within Apache (at least in the mailing lists that 
-I follow), and it produces a lot of benefits for different parts. </p>
-<ul>
-<li>The person writing a review or comparison can get the programmer opinion before actually 
-publishing anything. </li>
-<li>The programmer can see how other people were testing his/her code.</li>
-<li>All other commons-pool committers and maintainers, the mailing list readers, and 
-people that found the mailing list archives will be able to read the conversation 
-history.</li>
-<li>No misguided benchmark results were published (and lots of wrong decisions were avoided).</li>
-</ul>
-<p>I keep loving the Apache Way and the resulting community and code around it. There are 
-always lots of things to learn, the Open Source projects communities are healthy and you will always find 
-people willing to share their experience and time teaching you.</p>
-<p>♥ Open Source</p>
-<hr />
-<p><sup><a name="1">1</a> 
-<a href="http://www.infoworld.com/d/open-source-software/has-apache-lost-its-way-225267?page=0,2">
-http://www.infoworld.com/d/open-source-software/has-apache-lost-its-way-225267?page=0,2</a></sup></p>
-<p><sup><a name="2">2</a> 
-<a href="http://www.futurealoof.com/posts/apache-considered-harmful.html">
-http://www.futurealoof.com/posts/apache-considered-harmful.html</a></sup></p>
-<p><sup><a name="3">3</a> 
-<a href="http://www.itworld.com/it-managementstrategy/227477/has-open-source-outgrown-apache-way">
-http://www.itworld.com/it-managementstrategy/227477/has-open-source-outgrown-apache-way</a></sup></p></description>
 </item>
 
 </channel>

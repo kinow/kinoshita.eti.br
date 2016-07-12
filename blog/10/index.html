@@ -8,7 +8,7 @@
     <meta name="keywords"
         content="kinoshita, bruno de paula kinoshita, geek, geek stuff, java, python, c, c++, msn now playing, neural network, mackenzie, sao paulo, brasil, brazil, nerd, nerd stuff, cool, jenkins, illustration, quadrinhos, machine learning, linguistic, apache, open source, codigo livre, codigo aberto" />
     <meta name="author" content="" />
-    <meta name="generator" content="PieCrust 2.0.0rc1" />
+    <meta name="generator" content="PieCrust 2.0.0b5" />
     <meta name="template-engine" content="Twig" />
     <meta name="robots" content="all=index,follow" />
     <meta name="revisit-after" content="15 days" />
@@ -113,6 +113,104 @@
                     </div>
                     
                     <p>Posts in category &#8216;blog&#8217;</p>
+<div class="ui raised padded container segment">
+    <h2>Code to change your message in MSN messenger</h2>
+    <p><small>kinow</small> @ <small>Mar 22, 2009&nbsp;14:31:18</small></p>
+
+
+
+
+
+
+
+<a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2009/03/22/code-to-change-your-message-in-msn-messenger" data-text="Code to change your message in MSN messenger" data-via="kinow" data-hashtags="opensource">Tweet</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+
+
+    <p>I&#8217;ve always wanted to know how does the code to show what was I listening to looked like. I found it after installing XMPlay and XMPlay MSN Plug-in. The plug-in zip had the plug-in itself and its source code. And what a neat source code (-:.</p>
+<p>Basically, you just send a message to the MSN UI API with a defined data structure. And to remove the message, just send again with an empty string.</p>
+<div class="highlight"><pre><span class="cm">/*</span>
+<span class="cm">Bruno de Paula Kinoshita</span>
+<span class="cm">original src code:</span>
+<span class="cm">XMPlay MSN Plugin (c) 2005-2006 Elliott Sales de Andrade</span>
+<span class="cm">*/</span>
+
+<span class="cp">#include &lt;cstdlib&gt;</span>
+<span class="cp">#include &lt;iostream&gt;</span>
+<span class="cp">#include &lt;windows.h&gt;</span>
+
+<span class="n">using</span> <span class="n">namespace</span> <span class="n">std</span><span class="p">;</span>
+
+<span class="k">typedef</span> <span class="k">struct</span> <span class="p">{</span>
+<span class="n">BOOL</span> <span class="n">showCues</span><span class="p">;</span>
+<span class="n">BOOL</span> <span class="n">keepOnClose</span><span class="p">;</span>
+<span class="p">}</span> <span class="n">MSNStuff</span><span class="p">;</span>
+<span class="k">static</span> <span class="n">MSNStuff</span> <span class="n">msnConf</span><span class="p">;</span>
+
+<span class="kt">void</span> <span class="nf">setNowPlaying</span><span class="p">(</span> <span class="kt">char</span> <span class="o">*</span><span class="n">title</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="kt">wchar_t</span> <span class="o">*</span><span class="n">lpMsn</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">strLen</span> <span class="o">=</span> <span class="mi">20</span><span class="p">;</span>
+    <span class="n">HWND</span> <span class="n">xmpwin</span><span class="p">;</span>
+    <span class="n">HWND</span> <span class="n">msnui</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
+
+    <span class="n">lpMsn</span> <span class="o">=</span> <span class="p">(</span><span class="kt">wchar_t</span><span class="o">*</span><span class="p">)</span><span class="n">calloc</span><span class="p">(</span><span class="mi">1024</span><span class="p">,</span><span class="mi">1024</span><span class="p">);</span>
+    <span class="c1">// stuff for MSN before...</span>
+    <span class="n">memcpy</span><span class="p">(</span><span class="n">lpMsn</span><span class="p">,</span> <span class="s">L&quot;</span><span class="se">\\</span><span class="s">0Music</span><span class="se">\\</span><span class="s">01</span><span class="se">\\</span><span class="s">0{0}</span><span class="se">\\</span><span class="s">0&quot;</span><span class="p">,</span> <span class="mi">17</span><span class="o">*</span><span class="mi">2</span><span class="p">);</span>
+    <span class="c1">// actual title...</span>
+    <span class="n">strLen</span><span class="o">=</span><span class="n">MultiByteToWideChar</span><span class="p">(</span><span class="nb">false</span><span class="o">?</span><span class="nl">CP_UTF8</span><span class="p">:</span><span class="n">CP_ACP</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="n">title</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="n">lpMsn</span><span class="o">+</span><span class="mi">17</span><span class="p">,</span><span class="mi">492</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">;</span><span class="err">Â</span>  <span class="cm">/* 1024/2 - 20 */</span>
+    <span class="c1">// stuff for MSN after...</span>
+    <span class="n">memcpy</span><span class="p">(</span><span class="n">lpMsn</span> <span class="o">+</span> <span class="mi">17</span> <span class="o">+</span> <span class="n">strLen</span><span class="p">,</span> <span class="s">L&quot;</span><span class="se">\\</span><span class="s">0&quot;</span><span class="p">,</span> <span class="mi">3</span><span class="o">*</span><span class="mi">2</span><span class="p">);</span>
+    <span class="n">strLen</span> <span class="o">+=</span> <span class="mi">20</span><span class="p">;</span>
+
+    <span class="n">COPYDATASTRUCT</span> <span class="n">msndata</span><span class="p">;</span>
+    <span class="n">msndata</span><span class="p">.</span><span class="n">dwData</span> <span class="o">=</span> <span class="mh">0x547</span><span class="p">;</span>
+    <span class="n">msndata</span><span class="p">.</span><span class="n">lpData</span> <span class="o">=</span> <span class="p">(</span><span class="kt">void</span><span class="o">*</span><span class="p">)</span><span class="n">lpMsn</span><span class="p">;</span>
+    <span class="n">msndata</span><span class="p">.</span><span class="n">cbData</span> <span class="o">=</span> <span class="n">strLen</span> <span class="o">*</span> <span class="mi">2</span><span class="p">;</span>
+
+    <span class="k">while</span> <span class="p">(</span> <span class="n">msnui</span> <span class="o">=</span> <span class="n">FindWindowEx</span><span class="p">(</span><span class="nb">NULL</span><span class="p">,</span> <span class="n">msnui</span><span class="p">,</span> <span class="s">&quot;MsnMsgrUIManager&quot;</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">)</span> <span class="p">)</span>
+        <span class="n">SendMessage</span><span class="p">(</span><span class="n">msnui</span><span class="p">,</span> <span class="n">WM_COPYDATA</span><span class="p">,</span> <span class="p">(</span><span class="n">WPARAM</span><span class="p">)</span><span class="n">xmpwin</span><span class="p">,</span> <span class="p">(</span><span class="n">LPARAM</span><span class="p">)</span><span class="o">&amp;</span><span class="n">msndata</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span><span class="n">argv</span><span class="p">[])</span>
+<span class="p">{</span>
+    <span class="kt">char</span> <span class="o">*</span><span class="n">title</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">argc</span> <span class="o">==</span> <span class="mi">1</span> <span class="p">)</span>
+        <span class="n">title</span> <span class="o">=</span> <span class="s">&quot;&quot;</span><span class="p">;</span>
+    <span class="k">else</span>
+        <span class="n">title</span> <span class="o">=</span> <span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span>
+
+    <span class="n">setNowPlaying</span> <span class="p">(</span> <span class="n">title</span> <span class="p">);</span>
+
+    <span class="k">return</span> <span class="n">EXIT_SUCCESS</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+
+<!-- html -->
+
+<pre><code>&lt;p class="postmetadata"&gt;
+
+    &lt;small&gt;tags 
+     [&amp;nbsp;&lt;a
+        href="/tag/c%2B%2B"
+        rel="tag"&gt;c++&lt;/a&gt;&amp;nbsp;]&amp;nbsp;
+
+    &lt;/small&gt;
+
+
+    &lt;br/&gt;
+    &lt;small&gt;posted in 
+    [&amp;nbsp;&lt;a
+        href="/blog"
+        title="View all posts in blog"
+        rel="category tag"&gt;blog&lt;/a&gt;&amp;nbsp;]&amp;nbsp;
+    category &lt;/small&gt;
+
+&lt;/p&gt;
+</code></pre>
+</div>
+
 <div class="ui raised padded container segment">
     <h2>Displaying Japanese characters in Java Swing</h2>
     <p><small>kinow</small> @ <small>Mar 06, 2009&nbsp;12:10:07</small></p>
