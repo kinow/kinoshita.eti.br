@@ -32,20 +32,21 @@ version of this equipment.
 
 <img class="ui centered large bordered image" src="{{assets['balloon-launch']}}" alt="Radiosonde balloon launch" />
 
-The balloon may carries equipments for measuring different things, like pressure,
-altitude, temperature, latitude, longitude, humidity, among others. And it sends
-the data back to a station via radio, in a short interval.
+The balloon can carry equipments for measuring different things, like air pressure,
+altitude, temperature, latitude, longitude, relative humidity, among others. Equipments
+like the radiosonde send the data back to a ground-level station via radio,
+normally in a short and constant interval.
 
 <!-- more -->
 
-But the data that I had to parse was in an older format. The documentation for the format
+The data that I had to parse was Vaisala radiosonde data. But in an older format. The documentation for the format
 can be found online at [http://badc.nerc.ac.uk/data/ukmo-rad-hires/pc-coradata.html](http://badc.nerc.ac.uk/data/ukmo-rad-hires/pc-coradata.html).
 
 There are four different sections. And one field in the identification section defines the
 number of entries found in another field (high resolution). Each section has multiple fields,
 with different data types.
 
-Not so easy...
+Not so easy to parse...
 
 ### Parsing binary data with Python and construct
 
@@ -73,24 +74,25 @@ pccora_header = Struct("pccora_header",
 )
 {% endgeshi %}
 
-This sample code parses the Header section of the binary file. You define each field,
+This sample code parses the **Header** section of the Vaisala binary file. You define each field,
 with a short name, a data type and a length. You can also have expressions to encode
-or decode.
+or decode. And you can control how fields relate to each other, and how they repeat
+in the data format.
 
 A complete parser for the binary format was written with Construct, and is available
 via pip as well, as a package called [pccora](https://github.com/kinow/pccora). You can
 install it via `pip install pccora`, and use it to parse any data in this old binary
 format.
 
-There are also scripts in the GitHub project. One of the scripts in the, **convert2netcdf.py**,
-converts the data into a NetCDF that is close to what GRUAN produces.
+There are utility scripts in the pccora GitHub project. One of the scripts, **convert2netcdf.py**,
+converts the Vaisala binary data into a NetCDF that is close to what GRUAN produces.
 
 ### What is GRUAN, and why should I care?
 
 <img class="ui centered large bordered image" src="{{assets['sherlock1']}}" alt="OG Sherlock Kush" />
 
-This part of the post is more research oriented. So if you are more geek-savvy, feel free
-to skip it.
+This part of the post is more climate and research-oriented. So if you are more geek-savvy, feel free
+to jump to the next section.
 
 [GRUAN](http://www.dwd.de/EN/research/international_programme/gruan/home.html) stands for
 *Global Climate Observing System (GCOS) Reference Upper-Air Network (GRUAN)*.
@@ -99,10 +101,9 @@ It is a group of professionals and researchers that work together to create a re
 network for climate records. They provide data in a standardised way, and with a uniform
 quality control process.
 
-This makes it much easier for researchers and groups to adopt and use the data. It also means
-that if you write scripts or programs to work with certain data that came from a certified
-GRUAN site, it should also work with data coming from other organisations that are also certified
-by GRUAN.
+This makes it much easier for researchers to use and share data in their work, since they can
+write tools and scripts once for GRUAN data. Also, there is a quality control process, and
+every data is annotated with metadata.
 
 ### Producing NetCDF files with Python
 
@@ -160,8 +161,8 @@ You can see the unit used for time (in seconds) and that the time variable is re
 to the launch time. And pressure is using hPa. Both variables are mapped against
 the time dimension - you can see that by looking at the parenthesis that follow the variable name.
 
-Another advantage of using GRUAN data, is that you get a lot of metadata for your analysis.
-As in the following example, from the same file.
+The following snippet contains an example of the metadata that is added to data
+uploaded to GRUAN.
 
 {% geshi 'python' %}
 // global attributes:
@@ -202,8 +203,7 @@ dataset.setncattr('g.MeasuringSystem.Longitude', str('N/A' if None == ident['sta
 dataset.setncattr('g.MeasuringSystem.Latitude', str(ident['station_latitude']) + ' degree north')
 {% endgeshi %}
 
-A **time** dimension is added to our dataset, as well as some global attributes - or
-simply metadata.
+In this example, a **time** dimension is added to our dataset, as well as some global attributes (metadata).
 
 In another part of the code, we have to populate arrays with the values for the data
 logged during the time, and then create variables to persist this data in the NetCDF
@@ -228,7 +228,9 @@ persisted the new data as NetCDF, we can use it with other tools and
 programming languages.
 
 The following plot was created for the temperature found in one of these files,
-during the whole profiling of a radiosonde.
+during the whole profiling of a radiosonde. You can see that as the radiosonde
+goes up in the atmosphere, the temperature decreases, but then increases again.
+Which is [normal when you move beyond the tropopause](http://www.windows2universe.org/kids_space/temp_profile.html).
 
 <img class="ui centered large bordered image" src="{{assets['radiosonde_plot']}}" alt="Radiosonde temperature NetCDF" />
 
