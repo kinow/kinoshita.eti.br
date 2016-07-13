@@ -8,7 +8,7 @@
     <meta name="keywords"
         content="kinoshita, bruno de paula kinoshita, geek, geek stuff, java, python, c, c++, msn now playing, neural network, mackenzie, sao paulo, brasil, brazil, nerd, nerd stuff, cool, jenkins, illustration, quadrinhos, machine learning, linguistic, apache, open source, codigo livre, codigo aberto" />
     <meta name="author" content="" />
-    <meta name="generator" content="PieCrust 2.0.0b5" />
+    <meta name="generator" content="PieCrust 2.0.0rc1" />
     <meta name="template-engine" content="Twig" />
     <meta name="robots" content="all=index,follow" />
     <meta name="revisit-after" content="15 days" />
@@ -135,17 +135,18 @@ mobile phone, that is launched with a balloon into the atmosphere.</p>
 <p>I was lucky to be given the chance to release one of these balloons carrying a newer
 version of this equipment.</p>
 <p><img class="ui centered large bordered image" src="/2016/07/12/processing-vaisala-radiosonde-data-with-python-and-creating-gruan-like-netcdf-files/balloon-launch.jpg" alt="Radiosonde balloon launch" /></p>
-<p>The balloon may carries equipments for measuring different things, like pressure,
-altitude, temperature, latitude, longitude, humidity, among others. And it sends
-the data back to a station via radio, in a short interval.</p>
+<p>The balloon can carry equipments for measuring different things, like air pressure,
+altitude, temperature, latitude, longitude, relative humidity, among others. Equipments
+like the radiosonde send the data back to a ground-level station via radio,
+normally in a short and constant interval.</p>
 <!-- more -->
 
-<p>But the data that I had to parse was in an older format. The documentation for the format
+<p>The data that I had to parse was Vaisala radiosonde data. But in an older format. The documentation for the format
 can be found online at <a href="http://badc.nerc.ac.uk/data/ukmo-rad-hires/pc-coradata.html">http://badc.nerc.ac.uk/data/ukmo-rad-hires/pc-coradata.html</a>.</p>
 <p>There are four different sections. And one field in the identification section defines the
 number of entries found in another field (high resolution). Each section has multiple fields,
 with different data types.</p>
-<p>Not so easy&#8230;</p>
+<p>Not so easy to parse&#8230;</p>
 <h3>Parsing binary data with Python and construct</h3>
 <p><a href="https://construct.readthedocs.io/">Construct</a> is a declarative parser for binary data.
 You can build a parser by simply saying what you expect to be in each field. For example.</p>
@@ -169,28 +170,28 @@ You can build a parser by simply saying what you expect to be in each field. For
 <span class="p">)</span>
 </pre></div>
 
-<p>This sample code parses the Header section of the binary file. You define each field,
+<p>This sample code parses the <strong>Header</strong> section of the Vaisala binary file. You define each field,
 with a short name, a data type and a length. You can also have expressions to encode
-or decode.</p>
+or decode. And you can control how fields relate to each other, and how they repeat
+in the data format.</p>
 <p>A complete parser for the binary format was written with Construct, and is available
 via pip as well, as a package called <a href="https://github.com/kinow/pccora">pccora</a>. You can
 install it via <code>pip install pccora</code>, and use it to parse any data in this old binary
 format.</p>
-<p>There are also scripts in the GitHub project. One of the scripts in the, <strong>convert2netcdf.py</strong>,
-converts the data into a NetCDF that is close to what GRUAN produces.</p>
+<p>There are utility scripts in the pccora GitHub project. One of the scripts, <strong>convert2netcdf.py</strong>,
+converts the Vaisala binary data into a NetCDF that is close to what GRUAN produces.</p>
 <h3>What is GRUAN, and why should I care?</h3>
 <p><img class="ui centered large bordered image" src="/2016/07/12/processing-vaisala-radiosonde-data-with-python-and-creating-gruan-like-netcdf-files/sherlock1.jpg" alt="OG Sherlock Kush" /></p>
-<p>This part of the post is more research oriented. So if you are more geek-savvy, feel free
-to skip it.</p>
+<p>This part of the post is more climate and research-oriented. So if you are more geek-savvy, feel free
+to jump to the next section.</p>
 <p><a href="http://www.dwd.de/EN/research/international_programme/gruan/home.html">GRUAN</a> stands for
 <em>Global Climate Observing System (GCOS) Reference Upper-Air Network (GRUAN)</em>.</p>
 <p>It is a group of professionals and researchers that work together to create a reference
 network for climate records. They provide data in a standardised way, and with a uniform
 quality control process.</p>
-<p>This makes it much easier for researchers and groups to adopt and use the data. It also means
-that if you write scripts or programs to work with certain data that came from a certified
-GRUAN site, it should also work with data coming from other organisations that are also certified
-by GRUAN.</p>
+<p>This makes it much easier for researchers to use and share data in their work, since they can
+write tools and scripts once for GRUAN data. Also, there is a quality control process, and
+every data is annotated with metadata.</p>
 <h3>Producing NetCDF files with Python</h3>
 <p><a href="https://en.wikipedia.org/wiki/NetCDF">NetCDF</a>, the Network Common Data Form, is
 a data format that supports arrays with dimensions. Version 4 of NetCDF supports
@@ -240,8 +241,8 @@ for example, the <strong>time</strong> and <strong>pressure</strong> variables a
 <p>You can see the unit used for time (in seconds) and that the time variable is related
 to the launch time. And pressure is using hPa. Both variables are mapped against
 the time dimension - you can see that by looking at the parenthesis that follow the variable name.</p>
-<p>Another advantage of using GRUAN data, is that you get a lot of metadata for your analysis.
-As in the following example, from the same file.</p>
+<p>The following snippet contains an example of the metadata that is added to data
+uploaded to GRUAN.</p>
 <div class="highlight"><pre><span class="o">//</span> <span class="k">global</span> <span class="n">attributes</span><span class="p">:</span>
     <span class="p">:</span><span class="n">Conventions</span> <span class="o">=</span> <span class="s">&quot;CF-1.4&quot;</span> <span class="p">;</span>
     <span class="p">:</span><span class="n">title</span> <span class="o">=</span> <span class="s">&quot;RS92 GRUAN Data Product (Version 2)&quot;</span> <span class="p">;</span>
@@ -277,8 +278,7 @@ dataset, which is the NetCDF file.</p>
 <span class="n">dataset</span><span class="o">.</span><span class="n">setncattr</span><span class="p">(</span><span class="s">&#39;g.MeasuringSystem.Latitude&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">ident</span><span class="p">[</span><span class="s">&#39;station_latitude&#39;</span><span class="p">])</span> <span class="o">+</span> <span class="s">&#39; degree north&#39;</span><span class="p">)</span>
 </pre></div>
 
-<p>A <strong>time</strong> dimension is added to our dataset, as well as some global attributes - or
-simply metadata.</p>
+<p>In this example, a <strong>time</strong> dimension is added to our dataset, as well as some global attributes (metadata).</p>
 <p>In another part of the code, we have to populate arrays with the values for the data
 logged during the time, and then create variables to persist this data in the NetCDF
 file.</p>
@@ -297,7 +297,9 @@ file.</p>
 persisted the new data as NetCDF, we can use it with other tools and
 programming languages.</p>
 <p>The following plot was created for the temperature found in one of these files,
-during the whole profiling of a radiosonde.</p>
+during the whole profiling of a radiosonde. You can see that as the radiosonde
+goes up in the atmosphere, the temperature decreases, but then increases again.
+Which is <a href="http://www.windows2universe.org/kids_space/temp_profile.html">normal when you move beyond the tropopause</a>.</p>
 <p><img class="ui centered large bordered image" src="/2016/07/12/processing-vaisala-radiosonde-data-with-python-and-creating-gruan-like-netcdf-files/radiosonde_plot.png" alt="Radiosonde temperature NetCDF" /></p>
 <p>That&#8217;s all for today!</p>
     </div>
