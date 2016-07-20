@@ -151,6 +151,191 @@
                     
                     <div class="ui raised padded container segment">
                         <h2>
+                            <a href="/2016/04/24/using-active-choices-with-role-strategy-plugin" title="Permanent link">Using Active Choices with Role Strategy Plug-in</a>
+                        </h2>
+                        <small>kinow</small> @ <small>Apr 24, 2016&nbsp;16:05:03</small>
+                        <div class="entry">
+                            
+
+
+
+
+
+<a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2016/04/24/using-active-choices-with-role-strategy-plugin" data-text="Using Active Choices with Role Strategy Plug-in" data-via="kinow" data-hashtags="opensource">Tweet</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+                            
+                            <p>Having worked in Open Source for a few years, one of my favorite things is when you can
+share experience with other people that you meet. <a href="https://github.com/agray">Andrew Gray</a>
+has worked with .NET and Jenkins for years, and we met through Open Source. He has helped me
+in the past with Jenkins and .NET, and also maintains the blog
+<a href="http://jenkinsheaven.blogspot.co.nz/">Jenkins.NET</a>.</p>
+<p>A couple of days ago he sent me an interesting question. He asked me if that would be possible
+to use Active Choices Plug-in with the <a href="https://wiki.jenkins-ci.org/display/JENKINS/Role+Strategy+Plugin">Role Strategy Plug-in</a>. This plug-in lets you define roles, define which permissions a role has, and then assign users to the roles.</p>
+<p>The idea was to show a set of parameters that would vary according to the user roles. So, say that the user
+is a tester. Then s/he would see certain parameters. But if s/he was a manager, other parameters would be
+displayed.</p>
+<h2>To the code</h2>
+<div class="highlight"><pre><span class="kn">import</span> <span class="nn">hudson.model.User</span>
+<span class="kn">import</span> <span class="nn">hudson.model.Hudson</span>
+<span class="kn">import</span> <span class="nn">hudson.security.AuthorizationStrategy</span>
+<span class="kn">import</span> <span class="nn">hudson.security.Permission</span>
+<span class="kn">import</span> <span class="nn">com.michelin.cio.hudson.plugins.rolestrategy.RoleBasedAuthorizationStrategy</span>
+<span class="kn">import</span> <span class="nn">com.michelin.cio.hudson.plugins.rolestrategy.RoleMap</span>
+
+<span class="n">AuthorizationStrategy</span> <span class="n">strategy</span> <span class="o">=</span> <span class="n">Hudson</span><span class="o">.</span><span class="na">getInstance</span><span class="o">().</span><span class="na">getAuthorizationStrategy</span><span class="o">();</span>
+
+<span class="n">jobs</span> <span class="o">=</span> <span class="o">[]</span>
+<span class="n">user</span> <span class="o">=</span> <span class="n">User</span><span class="o">.</span><span class="na">current</span><span class="o">()</span>
+<span class="n">userId</span> <span class="o">=</span> <span class="n">user</span><span class="o">.</span><span class="na">getId</span><span class="o">()</span>
+
+<span class="k">if</span> <span class="o">(</span><span class="n">strategy</span> <span class="o">!=</span> <span class="kc">null</span> 
+    <span class="c1">// not very straightforward to get the groups for a given user</span>
+    <span class="n">roles</span> <span class="o">=</span> <span class="n">roleStrategy</span><span class="o">.</span><span class="na">getGrantedRoles</span><span class="o">(</span><span class="s">&quot;globalRoles&quot;</span><span class="o">)</span>
+    <span class="k">for</span> <span class="o">(</span><span class="n">entry</span> <span class="n">in</span> <span class="n">roles</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">role</span> <span class="o">=</span> <span class="n">entry</span><span class="o">.</span><span class="na">key</span>
+        <span class="n">users</span> <span class="o">=</span> <span class="n">entry</span><span class="o">.</span><span class="na">value</span>
+        <span class="nf">if</span> <span class="o">(</span><span class="n">role</span><span class="o">.</span><span class="na">getName</span><span class="o">().</span><span class="na">equals</span><span class="o">(</span><span class="s">&quot;tester&quot;</span><span class="o">))</span> <span class="o">{</span>
+            <span class="k">if</span> <span class="o">(</span><span class="n">userId</span> <span class="n">in</span> <span class="n">users</span><span class="o">)</span> <span class="o">{</span>
+                <span class="n">jobs</span> <span class="o">=</span> <span class="o">[</span><span class="s">&quot;PROJECT_FOR_TESTERS1&quot;</span><span class="o">,</span> <span class="s">&quot;PROJECT_FOR_TESTERS2&quot;</span><span class="o">]</span>
+                <span class="k">break</span>
+            <span class="o">}</span>
+        <span class="o">}</span> <span class="k">else</span> <span class="k">if</span> <span class="o">(</span><span class="n">role</span><span class="o">.</span><span class="na">getName</span><span class="o">().</span><span class="na">equals</span><span class="o">(</span><span class="s">&quot;admin&quot;</span><span class="o">))</span> <span class="o">{</span>
+            <span class="k">if</span> <span class="o">(</span><span class="n">userId</span> <span class="n">in</span> <span class="n">users</span><span class="o">)</span> <span class="o">{</span>
+                <span class="n">jobs</span> <span class="o">=</span> <span class="o">[</span><span class="s">&quot;PROJECT_FOR_ADMINS1&quot;</span><span class="o">,</span> <span class="s">&quot;PROJECT_FOR_ADMINS2&quot;</span><span class="o">]</span>
+                <span class="k">break</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+
+<span class="k">return</span> <span class="n">jobs</span>
+<span class="c1">// TODO: handle anonymous user ;-)</span>
+</pre></div>
+
+<p>And now let&#8217;s dissect the code.</p>
+<div class="highlight"><pre><span class="kn">import</span> <span class="nn">hudson.model.User</span>
+<span class="kn">import</span> <span class="nn">hudson.model.Hudson</span>
+<span class="kn">import</span> <span class="nn">hudson.security.AuthorizationStrategy</span>
+<span class="kn">import</span> <span class="nn">hudson.security.Permission</span>
+<span class="kn">import</span> <span class="nn">com.michelin.cio.hudson.plugins.rolestrategy.RoleBasedAuthorizationStrategy</span>
+<span class="kn">import</span> <span class="nn">com.michelin.cio.hudson.plugins.rolestrategy.RoleMap</span>
+</pre></div>
+
+<p>You start by importing the classes that you need.</p>
+<div class="highlight"><pre><span class="n">AuthorizationStrategy</span> <span class="n">strategy</span> <span class="o">=</span> <span class="n">Hudson</span><span class="o">.</span><span class="na">getInstance</span><span class="o">().</span><span class="na">getAuthorizationStrategy</span><span class="o">();</span>
+
+<span class="n">jobs</span> <span class="o">=</span> <span class="o">[]</span>
+<span class="n">user</span> <span class="o">=</span> <span class="n">User</span><span class="o">.</span><span class="na">current</span><span class="o">()</span>
+<span class="n">userId</span> <span class="o">=</span> <span class="n">user</span><span class="o">.</span><span class="na">getId</span><span class="o">()</span>
+</pre></div>
+
+<p>The first line gets the current <a href="https://github.com/jenkinsci/jenkins/blob/f6e431b80c4d162560419fa51633224a9724bb0d/core/src/main/java/hudson/security/AuthorizationStrategy.java">AuthorizationStrategy</a>
+used in Jenkins.</p>
+<p>Then we create an empty array of jobs, which is the value returned by default. And get the current
+logged in user ID.</p>
+<div class="highlight"><pre><span class="k">if</span> <span class="o">(</span><span class="n">strategy</span> <span class="o">!=</span> <span class="kc">null</span> 
+    <span class="c1">// not very straightforward to get the groups for a given user</span>
+    <span class="n">roles</span> <span class="o">=</span> <span class="n">roleStrategy</span><span class="o">.</span><span class="na">getGrantedRoles</span><span class="o">(</span><span class="s">&quot;globalRoles&quot;</span><span class="o">)</span>
+    <span class="k">for</span> <span class="o">(</span><span class="n">entry</span> <span class="n">in</span> <span class="n">roles</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">role</span> <span class="o">=</span> <span class="n">entry</span><span class="o">.</span><span class="na">key</span>
+        <span class="n">users</span> <span class="o">=</span> <span class="n">entry</span><span class="o">.</span><span class="na">value</span>
+        <span class="nf">if</span> <span class="o">(</span><span class="n">role</span><span class="o">.</span><span class="na">getName</span><span class="o">().</span><span class="na">equals</span><span class="o">(</span><span class="s">&quot;tester&quot;</span><span class="o">))</span> <span class="o">{</span>
+            <span class="k">if</span> <span class="o">(</span><span class="n">userId</span> <span class="n">in</span> <span class="n">users</span><span class="o">)</span> <span class="o">{</span>
+                <span class="n">jobs</span> <span class="o">=</span> <span class="o">[</span><span class="s">&quot;PROJECT_FOR_TESTERS1&quot;</span><span class="o">,</span> <span class="s">&quot;PROJECT_FOR_TESTERS2&quot;</span><span class="o">]</span>
+                <span class="k">break</span>
+            <span class="o">}</span>
+        <span class="o">}</span> <span class="k">else</span> <span class="k">if</span> <span class="o">(</span><span class="n">role</span><span class="o">.</span><span class="na">getName</span><span class="o">().</span><span class="na">equals</span><span class="o">(</span><span class="s">&quot;admin&quot;</span><span class="o">))</span> <span class="o">{</span>
+            <span class="k">if</span> <span class="o">(</span><span class="n">userId</span> <span class="n">in</span> <span class="n">users</span><span class="o">)</span> <span class="o">{</span>
+                <span class="n">jobs</span> <span class="o">=</span> <span class="o">[</span><span class="s">&quot;PROJECT_FOR_ADMINS1&quot;</span><span class="o">,</span> <span class="s">&quot;PROJECT_FOR_ADMINS2&quot;</span><span class="o">]</span>
+                <span class="k">break</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+
+<span class="k">return</span> <span class="n">jobs</span>
+<span class="c1">// TODO: handle anonymous user ;-)</span>
+</pre></div>
+
+<p>The final part simply iterates through each existing role, and then through the
+users in that role. I could not find a more ellegant way of doing that, but in case
+you would like to maybe optimize the code, here are the main classes that I
+used from Jenkins to write the script.</p>
+<ul>
+<li><a href="https://github.com/jenkinsci/role-strategy-plugin/blob/b6dca7904ce1c83b3afef0995ef5f42823171b0b/src/main/java/com/michelin/cio/hudson/plugins/rolestrategy/RoleBasedAuthorizationStrategy.java">RoleBasedAuthorizationStrategy.java</a></li>
+<li><a href="https://github.com/jenkinsci/role-strategy-plugin/blob/master/src/main/java/com/michelin/cio/hudson/plugins/rolestrategy/Role.java">Role.java</a></li>
+<li><a href="https://github.com/jenkinsci/role-strategy-plugin/blob/b6dca7904ce1c83b3afef0995ef5f42823171b0b/src/main/java/com/michelin/cio/hudson/plugins/rolestrategy/RoleMap.java">RoleMap</a></li>
+<li><a href="https://github.com/jenkinsci/jenkins/blob/f6e431b80c4d162560419fa51633224a9724bb0d/core/src/main/java/hudson/model/User.java">User.java</a></li>
+</ul>
+<p>Normally I either use my local working copy of Jenkins project imported in Eclipse, or use the
+&#8220;Find File&#8221; feature in GitHub. Then remember a little bit about Jenkins Java API to walk
+through the classes and write the Groovy code (I made a
+<a href="https://www.youtube.com/watch?v=jmPJvJGEFb4">video</a> about writing Groovy with Auto Complete in
+Eclipse, but that&#8217;s in Portuguese only).</p>
+<h2>What the result looks like in Jenkins</h2>
+<p>In this section we have just simple screenshots, showing the script in the job configuration.</p>
+<div class='row'>
+<div class="ui container" style='text-align: center;'>
+<figure>
+<a href="/2016/04/24/using-active-choices-with-role-strategy-plugin/screenshot01.png" rel="prettyPhoto" class="thumbnail" title="Screenshot 01">
+<img class="ui fluid image" src="/2016/04/24/using-active-choices-with-role-strategy-plugin/screenshot01.png" alt="Screenshot 01" />
+</a>
+<figcaption>Screenshot 01</figcaption>
+</figure>
+</div>
+</div>
+
+<p>And the resulting screen. The parameter <strong>DeployAPP</strong> will be available during the build,
+and can be used to trigger other jobs or pipelines.</p>
+<div class='row'>
+<div class="ui container" style='text-align: center;'>
+<figure>
+<a href="/2016/04/24/using-active-choices-with-role-strategy-plugin/screenshot02.png" rel="prettyPhoto" class="thumbnail" title="Screenshot 02">
+<img class="ui fluid image" src="/2016/04/24/using-active-choices-with-role-strategy-plugin/screenshot02.png" alt="Screenshot 02" />
+</a>
+<figcaption>Screenshot 02</figcaption>
+</figure>
+</div>
+</div>
+
+<h2>Where can you find this script?</h2>
+<p>This blog post has a copy of the script, but I have also submitted
+a pull request to a <a href="https://github.com/imoutsatsos/jenkins-scriptlets">repository</a>
+maintained by another friend, <a href="https://github.com/imoutsatsos">Ioannis Moutsatsos</a>. Ioannis
+maintains a Jenkins installation in Novartis, and is probably the most skillful user
+of the Active Choices Plug-in.</p>
+<p>Another advantage of this other copy, is that it may be updated with time, in case there are
+bugs or improvements. So watch Ioannis&#8217; repository for updates!</p>
+<p>ps: I&#8217;ve also met Ioannis through Open Source code, and have learned a lot by working with him. </p>
+<p>♥ Open Source!</p>
+                            
+                            
+                            
+                        </div>
+                        <p class="postmetadata">
+                            
+                            <small>tags 
+                             [&nbsp;<a
+                                href="/tag/jenkins"
+                                rel="tag">jenkins</a>&nbsp;]&nbsp;
+                            
+                            </small>
+                            
+                            
+                            <br/>
+                            <small>posted in 
+                            [&nbsp;<a
+                                href="/blog"
+                                title="View all posts in blog"
+                                rel="category tag">blog</a>&nbsp;]
+                                &nbsp;category
+                            </small>
+                            
+                        </p>
+                    </div>
+                    
+                    <div class="ui raised padded container segment">
+                        <h2>
                             <a href="/2016/04/19/drawing-kumamoto-kenjinkai-mascot" title="Permanent link">Drawing vector art: Kumamoto Kenjinkai mascot</a>
                         </h2>
                         <small>kinow</small> @ <small>Apr 19, 2016&nbsp;21:39:03</small>
@@ -453,59 +638,6 @@ OK - Deployed application at context path /spring-petclinic
                              [&nbsp;<a
                                 href="/tag/docker"
                                 rel="tag">docker</a>&nbsp;]&nbsp;
-                            
-                            </small>
-                            
-                            
-                            <br/>
-                            <small>posted in 
-                            [&nbsp;<a
-                                href="/blog"
-                                title="View all posts in blog"
-                                rel="category tag">blog</a>&nbsp;]
-                                &nbsp;category
-                            </small>
-                            
-                        </p>
-                    </div>
-                    
-                    <div class="ui raised padded container segment">
-                        <h2>
-                            <a href="/2016/03/20/drawing-sketch-cheese" title="Permanent link">Drawing sketch: Cheese</a>
-                        </h2>
-                        <small>kinow</small> @ <small>Mar 20, 2016&nbsp;11:13:03</small>
-                        <div class="entry">
-                            
-
-
-
-
-
-<a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2016/03/20/drawing-sketch-cheese" data-text="Drawing sketch: Cheese" data-via="kinow" data-hashtags="opensource">Tweet</a>
-<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-                            
-                            <div class='row'>
-<div class="ui container" style='text-align: center;'>
-<figure>
-<a href="/2016/03/20/drawing-sketch-cheese/cheese.png" rel="prettyPhoto" class="thumbnail" title="Cheese">
-<img class="ui fluid image" src="/2016/03/20/drawing-sketch-cheese/cheese.png" alt="Cheese" />
-</a>
-<figcaption>Cheese</figcaption>
-</figure>
-</div>
-</div>
-
-<p>For <a href="https://www.reddit.com/r/redditgetsdrawn/comments/42izou/this_is_me_with_my_favourite_food_its_cheese/">redditgetsdrawn</a></p>
-                            
-                            
-                            
-                        </div>
-                        <p class="postmetadata">
-                            
-                            <small>tags 
-                             [&nbsp;<a
-                                href="/tag/illustrations"
-                                rel="tag">illustrations</a>&nbsp;]&nbsp;
                             
                             </small>
                             
