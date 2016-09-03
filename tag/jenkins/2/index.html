@@ -110,6 +110,69 @@
                     
                     <p>Posts tagged with &#8216;jenkins&#8217;</p>
 <div class="ui raised padded container segment">
+    <h2>Groovy Hooks in Jenkins for increasing logging level</h2>
+    <p><small>kinow</small> @ <small>Apr 12, 2015&nbsp;11:30:03</small></p>
+
+
+
+
+
+
+
+<a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2015/04/12/groovy-hooks-in-jenkins-for-increasing-logging-level" data-text="Groovy Hooks in Jenkins for increasing logging level" data-via="kinow" data-hashtags="opensource">Tweet</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+
+
+    <p>Yesterday, while debugging a problem we had in the <a href="http://biouno.org">BioUno</a> update center, 
+I realized that after <a href="https://wiki.jenkins-ci.org/display/JENKINS/Logging">increasing the logging level in the WEB interface</a>, 
+the messages that I needed weren&#8217;t being displayed in the logs.</p>
+<p>It happened because some of the logging happened during Jenkins initialization, and before I could adjust the log level.</p>
+<p>The solution was to use a <a href="https://wiki.jenkins-ci.org/display/JENKINS/Groovy+Hook+Script">Groovy Hook Script</a>. 
+If you are familiar with Linux init scripts, the idea is quite similar. </p>
+<p>A Groovy script in the <code>$JENKINS_ROOT_DIR/init.groovy.d/</code> directory is executed during
+Jenkins initialization. This way you can increase the global logger level with a script
+as the following below.</p>
+<div class="highlight"><pre><span class="kn">import</span> <span class="nn">java.util.logging.ConsoleHandler</span>
+<span class="kn">import</span> <span class="nn">java.util.logging.LogManager</span>
+<span class="kn">import</span> <span class="nn">java.util.logging.Logger</span>
+<span class="kn">import</span> <span class="nn">java.util.logging.Level</span>
+
+<span class="n">def</span> <span class="n">logger</span> <span class="o">=</span> <span class="n">Logger</span><span class="o">.</span><span class="na">getLogger</span><span class="o">(</span><span class="s">&quot;&quot;</span><span class="o">)</span>
+<span class="n">logger</span><span class="o">.</span><span class="na">setLevel</span><span class="o">(</span><span class="n">Level</span><span class="o">.</span><span class="na">FINEST</span><span class="o">)</span>
+<span class="n">logger</span><span class="o">.</span><span class="na">addHandler</span> <span class="o">(</span><span class="k">new</span> <span class="n">ConsoleHandler</span><span class="o">())</span>
+</pre></div>
+
+<p>Happy logging!</p>
+
+<!-- html -->
+
+<pre><code>&lt;p class="postmetadata"&gt;
+
+    &lt;small&gt;tags 
+     [&amp;nbsp;&lt;a
+        href="/tag/jenkins"
+        rel="tag"&gt;jenkins&lt;/a&gt;&amp;nbsp;]&amp;nbsp;
+
+     [&amp;nbsp;&lt;a
+        href="/tag/groovy"
+        rel="tag"&gt;groovy&lt;/a&gt;&amp;nbsp;]&amp;nbsp;
+
+    &lt;/small&gt;
+
+
+    &lt;br/&gt;
+    &lt;small&gt;posted in 
+    [&amp;nbsp;&lt;a
+        href="/blog"
+        title="View all posts in blog"
+        rel="category tag"&gt;blog&lt;/a&gt;&amp;nbsp;]&amp;nbsp;
+    category &lt;/small&gt;
+
+&lt;/p&gt;
+</code></pre>
+</div>
+
+<div class="ui raised padded container segment">
     <h2>Treemapping Jenkins Extension Points with R</h2>
     <p><small>kinow</small> @ <small>May 19, 2014&nbsp;00:51:33</small></p>
 
@@ -358,67 +421,6 @@ dev.off<span class="p">()</span>
          [&nbsp;<a
             href="/tag/test%20anything%20protocol"
             rel="tag">test anything protocol</a>&nbsp;]&nbsp;
-
-        </small>
-
-
-        <br/>
-        <small>posted in 
-        [&nbsp;<a
-            href="/jenkins"
-            title="View all posts in jenkins"
-            rel="category tag">jenkins</a>&nbsp;]&nbsp;
-        category </small>
-
-    </p>
-</div>
-
-<div class="ui raised padded container segment">
-    <h2>Jenkins, TestLink and GTest in 5 minutes (or so)</h2>
-    <p><small>kinow</small> @ <small>Oct 11, 2012&nbsp;23:44:59</small></p>
-
-
-
-
-
-
-
-<a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2012/10/11/jenkins-testlink-and-gtest-in-5-minutes-or-so" data-text="Jenkins, TestLink and GTest in 5 minutes (or so)" data-via="kinow" data-hashtags="opensource">Tweet</a>
-<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-
-
-    <p>This is a 5 minutes guide on creating a job for a C++ project in <a href="http://www.jenkins-ci.org" title="Jenkins CI">Jenkins</a> with <a href="http://code.google.com/p/googletest" title="GoogleTest">GoogleTest</a> and reporting the test results back to <a href="http://www.teamst.org" title="TestLink">TestLink</a>, with <a href="https://wiki.jenkins-ci.org/display/JENKINS/TestLink+Plugin" title="Jenkins TestLink Plug-in">testlink-plugin</a>. </p>
-
-<h2>The test project with GoogleTest</h2>
-
-<p>For this simple guide we will use the samples that come with <a href="https://github.com/kinow/gtest-tap-listener" title="GTest TAP Listener">GTest TAP Listener</a>. You can get the code from GitHub with <code>git clone git://github.com/kinow/gtest-tap-listener.git</code>. Take a look at <em>gtest-tap-listener/samples/src/</em>, there you will find two C++ files: <em>gtest_main.cc</em> and <em>gtest_testHelloWorld.cc</em>.</p>
-
-<p><em>gtest_main.cc</em> has the <a href="http://code.google.com/p/googletest/wiki/Primer#Writing_the_main()_Function" title="GTest main function">main function</a>, and executes the test suite. And <em>gtest_testHelloWorld.cc</em> has the test cases and tests. Take note of the test case and tests names.</p>
-
-<p><a href="/2012/10/11/jenkins-testlink-and-gtest-in-5-minutes-or-so/screenshot_001.png"><img src="/2012/10/11/jenkins-testlink-and-gtest-in-5-minutes-or-so/screenshot_001.png" alt="" title="gtest_testHelloWorld.cc" width="546" height="482" class="aligncenter size-full wp-image-1083" /></a></p>
-
-<!-- html -->
-
-    <p>( <a href="/2012/10/11/jenkins-testlink-and-gtest-in-5-minutes-or-so" >Read more &#8230;</a> )</p>
-
-    <p class="postmetadata">
-
-        <small>tags 
-         [&nbsp;<a
-            href="/tag/jenkins"
-            rel="tag">jenkins</a>&nbsp;]&nbsp;
-
-         [&nbsp;<a
-            href="/tag/testlink"
-            rel="tag">testlink</a>&nbsp;]&nbsp;
-
-         [&nbsp;<a
-            href="/tag/c%2B%2B"
-            rel="tag">c++</a>&nbsp;]&nbsp;
-
-         [&nbsp;<a
-            href="/tag/software%20quality"
-            rel="tag">software quality</a>&nbsp;]&nbsp;
 
         </small>
 

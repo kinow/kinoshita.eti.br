@@ -127,13 +127,13 @@
                               
                               <span style="font-size: 17.0pt"><a href="/tag/java">java</a></span>&nbsp;(14)
                               
-                              <span style="font-size: 20.5pt"><a href="/tag/jenkins">jenkins</a></span>&nbsp;(21)
+                              <span style="font-size: 21.0pt"><a href="/tag/jenkins">jenkins</a></span>&nbsp;(22)
                               
-                              <span style="font-size: 11.5pt"><a href="/tag/programming">programming</a></span>&nbsp;(3)
+                              <span style="font-size: 12.0pt"><a href="/tag/programming">programming</a></span>&nbsp;(4)
                               
                               <span style="font-size: 11.5pt"><a href="/tag/python">python</a></span>&nbsp;(3)
                               
-                              <span style="font-size: 23.5pt"><a href="/tag/software%20quality">software quality</a></span>&nbsp;(27)
+                              <span style="font-size: 24.0pt"><a href="/tag/software%20quality">software quality</a></span>&nbsp;(28)
                               
                               <span style="font-size: 13.5pt"><a href="/tag/test%20anything%20protocol">test anything protocol</a></span>&nbsp;(7)
                               
@@ -150,6 +150,180 @@
                         <h1 class='topic'>Home</h1>
                     </div>
                     
+                    
+                    <div class="ui raised padded container segment">
+                        <h2>
+                            <a href="/2014/09/09/cypher-gremlin-and-sparql-graph-dialects" title="Permanent link">Cypher, Gremlin and SPARQL: Graph dialects</a>
+                        </h2>
+                        <small>kinow</small> @ <small>Sep 09, 2014&nbsp;10:14:33</small>
+                        <div class="entry">
+                            
+
+
+
+
+
+<a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2014/09/09/cypher-gremlin-and-sparql-graph-dialects" data-text="Cypher, Gremlin and SPARQL: Graph dialects" data-via="kinow" data-hashtags="opensource">Tweet</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+                            
+                            <p>When I was younger and my older brother was living in Germany, I asked him if he 
+had learned German. He said that he did, and explained that there are several 
+dialects, and he was quite proud for some people told him that he was using the 
+Bavarian dialect correctly.</p>
+<p>Even though <a href="http://www.neo4j.org/learn/cypher">Cypher</a>, 
+<a href="http://gremlindocs.com/">Gremlin</a> and <a href="http://en.wikipedia.org/wiki/SPARQL">SPARQL</a> 
+are all query languages, I think we can consider them dialects of a common graph language. 
+Cypher is the query language used in <a href="http://www.neo4j.org/">neo4j</a>, a graph database. 
+Gremlin is part of the <a href="http://www.tinkerpop.com/">Tinkerpop</a>, an open source project 
+that contains graph server, graph algorithms, graph language, among other sub-projects. 
+And last but not least, SPARQL is used to query <a href="http://en.wikipedia.org/wiki/Resource_Description_Framework">RDF documents</a>.</p>
+<p>Let&#8217;s use the example of the Matrix movie provided by neo4j to take a look at the 
+three languages.</p>
+<h2>Cypher</h2>
+<p>First we create the graph.</p>
+<div class="highlight"><pre><span class="k">create</span> <span class="p">(</span><span class="n">matrix1</span><span class="p">:</span><span class="n">Movie</span> <span class="err">{</span><span class="n">id</span> <span class="p">:</span> <span class="s1">&#39;603&#39;</span><span class="p">,</span> <span class="n">title</span> <span class="p">:</span> <span class="s1">&#39;The Matrix&#39;</span><span class="p">,</span> <span class="k">year</span> <span class="p">:</span> <span class="s1">&#39;1999-03-31&#39;</span><span class="err">}</span><span class="p">),</span>
+ <span class="p">(</span><span class="n">matrix2</span><span class="p">:</span><span class="n">Movie</span> <span class="err">{</span><span class="n">id</span> <span class="p">:</span> <span class="s1">&#39;604&#39;</span><span class="p">,</span> <span class="n">title</span> <span class="p">:</span> <span class="s1">&#39;The Matrix Reloaded&#39;</span><span class="p">,</span> <span class="k">year</span> <span class="p">:</span> <span class="s1">&#39;2003-05-07&#39;</span><span class="err">}</span><span class="p">),</span>
+ <span class="p">(</span><span class="n">matrix3</span><span class="p">:</span><span class="n">Movie</span> <span class="err">{</span><span class="n">id</span> <span class="p">:</span> <span class="s1">&#39;605&#39;</span><span class="p">,</span> <span class="n">title</span> <span class="p">:</span> <span class="s1">&#39;The Matrix Revolutions&#39;</span><span class="p">,</span> <span class="k">year</span> <span class="p">:</span> <span class="s1">&#39;2003-10-27&#39;</span><span class="err">}</span><span class="p">),</span>
+
+ <span class="p">(</span><span class="n">neo</span><span class="p">:</span><span class="n">Actor</span> <span class="err">{</span><span class="n">name</span><span class="p">:</span><span class="s1">&#39;Keanu Reeves&#39;</span><span class="err">}</span><span class="p">),</span>
+ <span class="p">(</span><span class="n">morpheus</span><span class="p">:</span><span class="n">Actor</span> <span class="err">{</span><span class="n">name</span><span class="p">:</span><span class="s1">&#39;Laurence Fishburne&#39;</span><span class="err">}</span><span class="p">),</span>
+ <span class="p">(</span><span class="n">trinity</span><span class="p">:</span><span class="n">Actor</span> <span class="err">{</span><span class="n">name</span><span class="p">:</span><span class="s1">&#39;Carrie-Anne Moss&#39;</span><span class="err">}</span><span class="p">),</span>
+
+ <span class="p">(</span><span class="n">matrix1</span><span class="p">)</span><span class="o">&lt;-</span><span class="p">[:</span><span class="n">ACTS_IN</span> <span class="err">{</span><span class="k">role</span> <span class="p">:</span> <span class="s1">&#39;Neo&#39;</span><span class="err">}</span><span class="p">]</span><span class="o">-</span><span class="p">(</span><span class="n">neo</span><span class="p">),</span>
+ <span class="p">(</span><span class="n">matrix2</span><span class="p">)</span><span class="o">&lt;-</span><span class="p">[:</span><span class="n">ACTS_IN</span> <span class="err">{</span><span class="k">role</span> <span class="p">:</span> <span class="s1">&#39;Neo&#39;</span><span class="err">}</span><span class="p">]</span><span class="o">-</span><span class="p">(</span><span class="n">neo</span><span class="p">),</span>
+ <span class="p">(</span><span class="n">matrix3</span><span class="p">)</span><span class="o">&lt;-</span><span class="p">[:</span><span class="n">ACTS_IN</span> <span class="err">{</span><span class="k">role</span> <span class="p">:</span> <span class="s1">&#39;Neo&#39;</span><span class="err">}</span><span class="p">]</span><span class="o">-</span><span class="p">(</span><span class="n">neo</span><span class="p">),</span>
+ <span class="p">(</span><span class="n">matrix1</span><span class="p">)</span><span class="o">&lt;-</span><span class="p">[:</span><span class="n">ACTS_IN</span> <span class="err">{</span><span class="k">role</span> <span class="p">:</span> <span class="s1">&#39;Morpheus&#39;</span><span class="err">}</span><span class="p">]</span><span class="o">-</span><span class="p">(</span><span class="n">morpheus</span><span class="p">),</span>
+ <span class="p">(</span><span class="n">matrix2</span><span class="p">)</span><span class="o">&lt;-</span><span class="p">[:</span><span class="n">ACTS_IN</span> <span class="err">{</span><span class="k">role</span> <span class="p">:</span> <span class="s1">&#39;Morpheus&#39;</span><span class="err">}</span><span class="p">]</span><span class="o">-</span><span class="p">(</span><span class="n">morpheus</span><span class="p">),</span>
+ <span class="p">(</span><span class="n">matrix3</span><span class="p">)</span><span class="o">&lt;-</span><span class="p">[:</span><span class="n">ACTS_IN</span> <span class="err">{</span><span class="k">role</span> <span class="p">:</span> <span class="s1">&#39;Morpheus&#39;</span><span class="err">}</span><span class="p">]</span><span class="o">-</span><span class="p">(</span><span class="n">morpheus</span><span class="p">),</span>
+ <span class="p">(</span><span class="n">matrix1</span><span class="p">)</span><span class="o">&lt;-</span><span class="p">[:</span><span class="n">ACTS_IN</span> <span class="err">{</span><span class="k">role</span> <span class="p">:</span> <span class="s1">&#39;Trinity&#39;</span><span class="err">}</span><span class="p">]</span><span class="o">-</span><span class="p">(</span><span class="n">trinity</span><span class="p">),</span>
+ <span class="p">(</span><span class="n">matrix2</span><span class="p">)</span><span class="o">&lt;-</span><span class="p">[:</span><span class="n">ACTS_IN</span> <span class="err">{</span><span class="k">role</span> <span class="p">:</span> <span class="s1">&#39;Trinity&#39;</span><span class="err">}</span><span class="p">]</span><span class="o">-</span><span class="p">(</span><span class="n">trinity</span><span class="p">),</span>
+ <span class="p">(</span><span class="n">matrix3</span><span class="p">)</span><span class="o">&lt;-</span><span class="p">[:</span><span class="n">ACTS_IN</span> <span class="err">{</span><span class="k">role</span> <span class="p">:</span> <span class="s1">&#39;Trinity&#39;</span><span class="err">}</span><span class="p">]</span><span class="o">-</span><span class="p">(</span><span class="n">trinity</span><span class="p">)</span>
+</pre></div>
+
+<p><code>Added 6 labels, created 6 nodes, set 21 properties, created 9 relationships, returned 0 rows in 2791 ms</code></p>
+<p>And execute a simple query.</p>
+<div class="highlight"><pre><span class="k">MATCH</span> <span class="p">(</span><span class="n">a</span><span class="p">:</span><span class="n">Actor</span> <span class="err">{</span> <span class="n">name</span><span class="p">:</span><span class="ss">&quot;Keanu Reeves&quot;</span> <span class="err">}</span><span class="p">)</span>
+<span class="k">RETURN</span> <span class="n">a</span>
+</pre></div>
+
+<p><code>(9:Actor {name:"Keanu Reeves"})</code></p>
+<h2>Gremlin</h2>
+<p>Again, let&#8217;s start by creating our graph.</p>
+<div class="highlight"><pre><span class="k">g</span> <span class="o">=</span> <span class="k">new</span> <span class="n">TinkerGraph</span><span class="p">();</span>
+<span class="n">matrix1</span> <span class="o">=</span> <span class="k">g</span><span class="p">.</span><span class="n">addVertex</span><span class="p">([</span><span class="ss">&quot;_id&quot;</span><span class="p">:</span><span class="mi">603</span><span class="p">,</span><span class="ss">&quot;title&quot;</span><span class="p">:</span><span class="ss">&quot;The Matrix&quot;</span><span class="p">,</span> <span class="ss">&quot;year&quot;</span><span class="p">:</span> <span class="ss">&quot;1999-03-31&quot;</span><span class="p">]);</span>
+<span class="n">matrix2</span> <span class="o">=</span> <span class="k">g</span><span class="p">.</span><span class="n">addVertex</span><span class="p">([</span><span class="ss">&quot;_id&quot;</span><span class="p">:</span><span class="mi">604</span><span class="p">,</span><span class="ss">&quot;title&quot;</span><span class="p">:</span><span class="ss">&quot;The Matrix Reloaded&quot;</span><span class="p">,</span> <span class="ss">&quot;year&quot;</span><span class="p">:</span> <span class="ss">&quot;2003-05-07&quot;</span><span class="p">]);</span>
+<span class="n">matrix3</span> <span class="o">=</span> <span class="k">g</span><span class="p">.</span><span class="n">addVertex</span><span class="p">([</span><span class="ss">&quot;_id&quot;</span><span class="p">:</span><span class="mi">605</span><span class="p">,</span><span class="ss">&quot;title&quot;</span><span class="p">:</span><span class="ss">&quot;The Matrix Revolutions&quot;</span><span class="p">,</span> <span class="ss">&quot;year&quot;</span><span class="p">:</span> <span class="ss">&quot;2003-10-27&quot;</span><span class="p">]);</span>
+
+<span class="n">neo</span> <span class="o">=</span> <span class="k">g</span><span class="p">.</span><span class="n">addVertex</span><span class="p">([</span><span class="ss">&quot;name&quot;</span><span class="p">:</span> <span class="ss">&quot;Keanu Reeves&quot;</span><span class="p">]);</span>
+<span class="n">morpheus</span> <span class="o">=</span> <span class="k">g</span><span class="p">.</span><span class="n">addVertex</span><span class="p">([</span><span class="ss">&quot;name&quot;</span><span class="p">:</span> <span class="ss">&quot;Laurence Fishburne&quot;</span><span class="p">]);</span>
+<span class="n">trinity</span> <span class="o">=</span> <span class="k">g</span><span class="p">.</span><span class="n">addVertex</span><span class="p">([</span><span class="ss">&quot;name&quot;</span><span class="p">:</span> <span class="ss">&quot;Carrie-Anne Moss&quot;</span><span class="p">]);</span>
+
+<span class="n">neo</span><span class="p">.</span><span class="n">addEdge</span><span class="p">(</span><span class="ss">&quot;actsIn&quot;</span><span class="p">,</span> <span class="n">matrix1</span><span class="p">);</span> 
+<span class="n">neo</span><span class="p">.</span><span class="n">addEdge</span><span class="p">(</span><span class="ss">&quot;actsIn&quot;</span><span class="p">,</span> <span class="n">matrix2</span><span class="p">);</span> 
+<span class="n">neo</span><span class="p">.</span><span class="n">addEdge</span><span class="p">(</span><span class="ss">&quot;actsIn&quot;</span><span class="p">,</span> <span class="n">matrix3</span><span class="p">);</span> 
+<span class="n">morpheus</span><span class="p">.</span><span class="n">addEdge</span><span class="p">(</span><span class="ss">&quot;actsIn&quot;</span><span class="p">,</span> <span class="n">matrix1</span><span class="p">);</span> 
+<span class="n">morpheus</span><span class="p">.</span><span class="n">addEdge</span><span class="p">(</span><span class="ss">&quot;actsIn&quot;</span><span class="p">,</span> <span class="n">matrix2</span><span class="p">);</span> 
+<span class="n">morpheus</span><span class="p">.</span><span class="n">addEdge</span><span class="p">(</span><span class="ss">&quot;actsIn&quot;</span><span class="p">,</span> <span class="n">matrix3</span><span class="p">);</span> 
+<span class="n">trinity</span><span class="p">.</span><span class="n">addEdge</span><span class="p">(</span><span class="ss">&quot;actsIn&quot;</span><span class="p">,</span> <span class="n">matrix1</span><span class="p">);</span> 
+<span class="n">trinity</span><span class="p">.</span><span class="n">addEdge</span><span class="p">(</span><span class="ss">&quot;actsIn&quot;</span><span class="p">,</span> <span class="n">matrix2</span><span class="p">);</span> 
+<span class="n">trinity</span><span class="p">.</span><span class="n">addEdge</span><span class="p">(</span><span class="ss">&quot;actsIn&quot;</span><span class="p">,</span> <span class="n">matrix3</span><span class="p">);</span>
+</pre></div>
+
+<p>And execute a simple query.</p>
+<div class="highlight"><pre><span class="k">g</span><span class="p">.</span><span class="n">V</span><span class="p">.</span><span class="n">has</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;Keanu Reeves&#39;</span><span class="p">).</span><span class="k">map</span>
+</pre></div>
+
+<p><code>gremlin&gt; g.V.has('name', 'Keanu Reeves').map
+==&gt;{name=Keanu Reeves}
+gremlin&gt;</code></p>
+<p>Quite similar to neo4j.</p>
+<h2>SPARQL</h2>
+<p>Let&#8217;s load our example (thanks to <a href="https://twitter.com/kendall">Kendall G. Clark</a>). I used 
+<a href="http://jena.apache.org/documentation/serving_data/">Fuseki</a> to run these queries.</p>
+<div class="highlight"><pre>@prefix :          <span class="nt">&lt;http:</span><span class="err">//example.org/matrix</span><span class="nt">/&gt;</span> .
+
+ :m1 a :Movie; :title &quot;The Matrix&quot;; :year &quot;1999-03-31&quot;.
+ :m2 a :Movie; :title &quot;The Matrix Reloaded&quot;; :year &quot;2003-05-07&quot;.
+ :m3 a :Movie; :title &quot;The Matrix Revolutions&quot;; :year &quot;2003-10-27&quot;.
+
+ :neo a :Actor; :name &quot;Keanu Reeves&quot;.
+ :morpheus a :Actor; :name &quot;Laurence Fishburne&quot;.
+ :trinity a :Actor; :name &quot;Carrie-Anne Moss&quot;.
+
+ :neo :hasRole [:as &quot;Neo&quot;; :in :m1].
+ :neo :hasRole [:as &quot;Neo&quot;; :in :m2].
+ :neo :hasRole [:as &quot;Neo&quot;; :in :m2].
+ :morpheus :hasRole [:as &quot;Morpheus&quot;; :in :m1].
+ :morpheus :hasRole [:as &quot;Morpheus&quot;; :in :m2].
+ :morpheus :hasRole [:as &quot;Morpheus&quot;; :in :m2].
+ :trinity :hasRole [:as &quot;Trinity&quot;; :in :m1].
+ :trinity :hasRole [:as &quot;Trinity&quot;; :in :m2].
+ :trinity :hasRole [:as &quot;Trinity&quot;; :in :m2].
+</pre></div>
+
+<p>And finally the SPARQL query.</p>
+<div class="highlight"><pre><span class="k">SELECT</span> <span class="o">?</span><span class="n">a</span> <span class="k">WHERE</span> <span class="err">{</span>
+   <span class="o">?</span><span class="n">a</span> <span class="n">a</span> <span class="o">&lt;</span><span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">example</span><span class="p">.</span><span class="n">org</span><span class="o">/</span><span class="n">matrix</span><span class="o">/</span><span class="n">Actor</span><span class="o">&gt;</span> <span class="p">.</span>
+   <span class="o">?</span><span class="n">a</span> <span class="o">&lt;</span><span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">example</span><span class="p">.</span><span class="n">org</span><span class="o">/</span><span class="n">matrix</span><span class="o">/</span><span class="n">name</span><span class="o">&gt;</span> <span class="o">?</span><span class="n">name</span> <span class="p">.</span>
+   <span class="n">FILTER</span><span class="p">(</span><span class="o">?</span><span class="n">name</span>  <span class="o">=</span> <span class="ss">&quot;Keanu Reeves&quot;</span><span class="p">)</span>
+<span class="err">}</span>
+</pre></div>
+
+<p>Returning the Keanu Reeves actor instance.</p>
+<pre>-----------------------------------
+| a                               |
+===================================
+| &lt;http://example.org/matrix/neo&gt; |
+-----------------------------------</pre>
+
+<p>SPARQL supports inference (or I must say that OWL, RDFS and the reasoners do), 
+but it is easier to define the depth of a search in the graph using neo4j. As for 
+Gremlin, it has native support to Groovy and Java. There is a common denominator 
+for these three languages, but what makes them really powerful are their unique features. </p>
+<p>I hope you enjoyed, and that this post gave you a quick overview of some of the existing 
+graph languages. Make sure you ponder the pros and cons of each server/language, and 
+make the best decision for your project. Take a look at <a href="http://en.wikipedia.org/wiki/Graph_database#APIs_and_Graph_Query.2FProgramming_Languages">other graph query languages</a> too.</p>
+<p>Happy hacking!</p>
+<hr />
+<p>This post has been updated as suggested by <a href="https://twitter.com/kendall">@kendall</a> (Thank you!).
+You can check the diff at <a href="https://github.com/kinow/kinoshita.eti.br/commits/master/site/_content/posts/2014-09-09_cypher-gremlin-and-sparql-graph-dialects.html">GitHub</a></p>
+                            
+                            
+                            
+                        </div>
+                        <p class="postmetadata">
+                            
+                            <small>tags 
+                             [&nbsp;<a
+                                href="/tag/graphs"
+                                rel="tag">graphs</a>&nbsp;]&nbsp;
+                            
+                             [&nbsp;<a
+                                href="/tag/neo4j"
+                                rel="tag">neo4j</a>&nbsp;]&nbsp;
+                            
+                             [&nbsp;<a
+                                href="/tag/gremlin"
+                                rel="tag">gremlin</a>&nbsp;]&nbsp;
+                            
+                             [&nbsp;<a
+                                href="/tag/sparql"
+                                rel="tag">sparql</a>&nbsp;]&nbsp;
+                            
+                            </small>
+                            
+                            
+                            <br/>
+                            <small>posted in 
+                            [&nbsp;<a
+                                href="/blog"
+                                title="View all posts in blog"
+                                rel="category tag">blog</a>&nbsp;]
+                                &nbsp;category
+                            </small>
+                            
+                        </p>
+                    </div>
                     
                     <div class="ui raised padded container segment">
                         <h2>
@@ -430,106 +604,6 @@ Happy testing!</p>
                              [&nbsp;<a
                                 href="/tag/testlink"
                                 rel="tag">testlink</a>&nbsp;]&nbsp;
-                            
-                            </small>
-                            
-                            
-                            <br/>
-                            <small>posted in 
-                            [&nbsp;<a
-                                href="/blog"
-                                title="View all posts in blog"
-                                rel="category tag">blog</a>&nbsp;]
-                                &nbsp;category
-                            </small>
-                            
-                        </p>
-                    </div>
-                    
-                    <div class="ui raised padded container segment">
-                        <h2>
-                            <a href="/2013/09/29/the-apache-way-and-on-writing-software-reviews" title="Permanent link">The Apache Way and on writing software reviews</a>
-                        </h2>
-                        <small>kinow</small> @ <small>Sep 29, 2013&nbsp;14:53:53</small>
-                        <div class="entry">
-                            
-
-
-
-
-
-<a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2013/09/29/the-apache-way-and-on-writing-software-reviews" data-text="The Apache Way and on writing software reviews" data-via="kinow" data-hashtags="opensource">Tweet</a>
-<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-                            
-                            <p>The <a href="http://www.apache.org/foundation/how-it-works.html">Apache Way</a> is the philosophy behind 
-Apache Software Foundation and is shared by all of its projects. It is composed by a set of principles:</p>
-<ul>
-<li>Collaborative software development</li>
-<li>Commercial-friendly standard license</li>
-<li>Consistently high quality software</li>
-<li><strong>Respectful, honest, technical-based interaction</strong></li>
-<li>Faithful implementation of standards</li>
-<li>Security as a mandatory feature</li>
-</ul>
-<p>I have been part of <a href="http://commons.apache.org">Apache Commons</a> for a while, and haven&#8217;t 
-really contributed much yet. Maybe because I had lots of projects related to 
-<a href="http://tupilabs.com">TupiLabs</a> as well as my own wedding this year. But I can 
-assure that <em>respectful, honest, technical-based interaction</em> is quite right (not to discredit the 
-other items, of course).</p>
-<p>Even though there are critics of the Apache Way (<a href="/2013/09/29/the-apache-way-and-on-writing-software-reviews%231">1</a>, <a href="/2013/09/29/the-apache-way-and-on-writing-software-reviews%232">2</a>, <a href="/2013/09/29/the-apache-way-and-on-writing-software-reviews%233">3</a>), it still stands as an important 
-pillar for the Apache Software Foundation, and its principles help to create stable and 
-production ready software, such as <a href="http://hadoop.apache.org">Apache Hadoop</a>, 
-<a href="http://httpd.apache.org">Apache Httpd</a>, <a href="http://commons.apache.org/lang">Apache Commons Lang</a>, 
-among <a href="http://projects.apache.org">others</a>.</p>
-<p>There are many reviews and comparisons on Apache software (as well as on 
-other software, like JavaScript libraries, Java Web Frameworks, Ruby Web servers and so on). 
-Sometimes, though, these reviews or comparisons can be biased or not well founded. In 
-cases like this, the developers of the tools may be frustrated, or users can be 
-misled and choose the software based on wrong assertions.</p>
-<p>I have just returned from honey moon, ready to start writing code again, but 
-first I had to read all the unread messages in my inbox. Some were e-mails from <a href="https://www.apache.org/foundation/mailinglists.html">Apache 
-mailing lists</a>. <a href="http://markmail.org/thread/uoh5m55mh4qjybaw">One of these e-mails</a> 
-had Phil Steitz comments on a post by Daniel Wu. </p>
-<p>Instead of publishing his performance benchmark results of 
-<a href="http://commons.apache.org/pool">Apache Commons Pool</a>, Daniel posted his 
-code to the commons-dev mailing list. Phil Steitz, one of Apache Commons Pool 
-committers replied with questions and a few points that Daniel could use to 
-enrich his bechmark tests.</p>
-<p>This kind of behavior happens a lot within Apache (at least in the mailing lists that 
-I follow), and it produces a lot of benefits for different parts. </p>
-<ul>
-<li>The person writing a review or comparison can get the programmer opinion before actually 
-publishing anything. </li>
-<li>The programmer can see how other people were testing his/her code.</li>
-<li>All other commons-pool committers and maintainers, the mailing list readers, and 
-people that found the mailing list archives will be able to read the conversation 
-history.</li>
-<li>No misguided benchmark results were published (and lots of wrong decisions were avoided).</li>
-</ul>
-<p>I keep loving the Apache Way and the resulting community and code around it. There are 
-always lots of things to learn, the Open Source projects communities are healthy and you will always find 
-people willing to share their experience and time teaching you.</p>
-<p>♥ Open Source</p>
-<hr />
-<p><sup><a name="1">1</a> 
-<a href="http://www.infoworld.com/d/open-source-software/has-apache-lost-its-way-225267?page=0,2">
-http://www.infoworld.com/d/open-source-software/has-apache-lost-its-way-225267?page=0,2</a></sup></p>
-<p><sup><a name="2">2</a> 
-<a href="http://www.futurealoof.com/posts/apache-considered-harmful.html">
-http://www.futurealoof.com/posts/apache-considered-harmful.html</a></sup></p>
-<p><sup><a name="3">3</a> 
-<a href="http://www.itworld.com/it-managementstrategy/227477/has-open-source-outgrown-apache-way">
-http://www.itworld.com/it-managementstrategy/227477/has-open-source-outgrown-apache-way</a></sup></p>
-                            
-                            
-                            
-                        </div>
-                        <p class="postmetadata">
-                            
-                            <small>tags 
-                             [&nbsp;<a
-                                href="/tag/apache%20software%20foundation"
-                                rel="tag">apache software foundation</a>&nbsp;]&nbsp;
                             
                             </small>
                             
