@@ -22,21 +22,17 @@ I followed the tutorials, but got all sorts of different issues. Then after debu
 
 {% geshi 'shell' %}
 # File: config
-[default]
+[profile default]
 region = ap-southeast-2
-
-[profile mainprofile]
-region = ap-southeast-2
-source_profile = default
 
 [profile profile1]
 region = ap-southeast-2
-source_profile = mainprofile
+source_profile = default
 role_arn = arn:aws:iam::123:role/Developer
 
 [profile profile2]
 region = ap-southeast-2
-source_profile = mainprofile
+source_profile = default
 role_arn = arn:aws:iam::456:role/Sysops
 mfa_serial = arn:aws:iam::789:mfa/user@domain.blabla
 {% endgeshi %}
@@ -46,10 +42,6 @@ and
 {% geshi 'shell' %}
 # File: credentials
 [default]
-aws_access_key_id = YOU_KEY_ID
-aws_secret_access_key = YOUR_SECRET
-
-[mainprofile]
 aws_access_key_id = YOU_KEY_ID
 aws_secret_access_key = YOUR_SECRET
 {% endgeshi %}
