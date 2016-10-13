@@ -8,7 +8,7 @@
     <meta name="keywords"
         content="kinoshita, bruno de paula kinoshita, geek, geek stuff, java, python, c, c++, msn now playing, neural network, mackenzie, sao paulo, brasil, brazil, nerd, nerd stuff, cool, jenkins, illustration, quadrinhos, machine learning, linguistic, apache, open source, codigo livre, codigo aberto" />
     <meta name="author" content="" />
-    <meta name="generator" content="PieCrust 2.0.0rc1" />
+    <meta name="generator" content="PieCrust 2.0.0rc2" />
     <meta name="template-engine" content="Twig" />
     <meta name="robots" content="all=index,follow" />
     <meta name="revisit-after" content="15 days" />
@@ -130,21 +130,17 @@
 <p>The awscli is a dependency for using boto3. After you install it, you need to run <code>aws configure</code>. It will create the <em>~/.aws/config</em> and <em>~/.aws/credentials</em> files. You can tweak these files to support multiple roles.</p>
 <p>I followed the tutorials, but got all sorts of different issues. Then after debugging some locally installed dependencies, in special awscli files, I found that the following settings work for my environment.</p>
 <div class="highlight"><pre><span class="c"># File: config</span>
-<span class="o">[</span>default<span class="o">]</span>
+<span class="o">[</span>profile default<span class="o">]</span>
 <span class="nv">region</span> <span class="o">=</span> ap-southeast-2
-
-<span class="o">[</span>profile mainprofile<span class="o">]</span>
-<span class="nv">region</span> <span class="o">=</span> ap-southeast-2
-<span class="nv">source_profile</span> <span class="o">=</span> default
 
 <span class="o">[</span>profile profile1<span class="o">]</span>
 <span class="nv">region</span> <span class="o">=</span> ap-southeast-2
-<span class="nv">source_profile</span> <span class="o">=</span> mainprofile
+<span class="nv">source_profile</span> <span class="o">=</span> default
 <span class="nv">role_arn</span> <span class="o">=</span> arn:aws:iam::123:role/Developer
 
 <span class="o">[</span>profile profile2<span class="o">]</span>
 <span class="nv">region</span> <span class="o">=</span> ap-southeast-2
-<span class="nv">source_profile</span> <span class="o">=</span> mainprofile
+<span class="nv">source_profile</span> <span class="o">=</span> default
 <span class="nv">role_arn</span> <span class="o">=</span> arn:aws:iam::456:role/Sysops
 <span class="nv">mfa_serial</span> <span class="o">=</span> arn:aws:iam::789:mfa/user@domain.blabla
 </pre></div>
@@ -153,10 +149,6 @@
 
 <div class="highlight"><pre><span class="c"># File: credentials</span>
 <span class="o">[</span>default<span class="o">]</span>
-<span class="nv">aws_access_key_id</span> <span class="o">=</span> YOU_KEY_ID
-<span class="nv">aws_secret_access_key</span> <span class="o">=</span> YOUR_SECRET
-
-<span class="o">[</span>mainprofile<span class="o">]</span>
 <span class="nv">aws_access_key_id</span> <span class="o">=</span> YOU_KEY_ID
 <span class="nv">aws_secret_access_key</span> <span class="o">=</span> YOUR_SECRET
 </pre></div>
