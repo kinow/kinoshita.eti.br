@@ -125,7 +125,7 @@
                               
                               <span style="font-size: 12.5pt"><a href="/tag/illustrations">illustrations</a></span>&nbsp;(5)
                               
-                              <span style="font-size: 17.0pt"><a href="/tag/java">java</a></span>&nbsp;(14)
+                              <span style="font-size: 17.5pt"><a href="/tag/java">java</a></span>&nbsp;(15)
                               
                               <span style="font-size: 21.0pt"><a href="/tag/jenkins">jenkins</a></span>&nbsp;(22)
                               
@@ -150,6 +150,69 @@
                         <h1 class='topic'>Home</h1>
                     </div>
                     
+                    
+                    <div class="ui raised padded container segment">
+                        <h2>
+                            <a href="/2016/11/07/content-negotiation-with-spring-boot-and-react" title="Permanent link">Content negotiation with Spring Boot and React</a>
+                        </h2>
+                        <small>kinow</small> @ <small>Nov 07, 2016&nbsp;20:07:03</small>
+                        <div class="entry">
+                            
+
+
+
+
+
+<a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2016/11/07/content-negotiation-with-spring-boot-and-react" data-text="Content negotiation with Spring Boot and React" data-via="kinow" data-hashtags="opensource">Tweet</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+                            
+                            <p>A few days ago I had a bug in a system built with Spring Boot and React. The frontend application
+was using a REST client in React, built in a similar way to what is found in the documentation, and
+also in blogs.</p>
+<div class="highlight"><pre><span class="kr">import</span> <span class="nx">rest</span> <span class="nx">from</span> <span class="s1">&#39;rest&#39;</span><span class="p">;</span>
+<span class="kr">const</span> <span class="nx">Rest</span> <span class="o">=</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="nx">rest</span><span class="p">.</span><span class="nx">wrap</span><span class="p">(</span><span class="nx">mime</span><span class="p">);</span>
+</pre></div>
+
+<p>However, for one of the Spring Boot application endpoints, the React component was not working. The
+response seemed to be OK in the Network tab, of the browser developer tools. But the component was
+failing and complaining when parsing the response.</p>
+<p>Turns out that the frontend was sending the request with the header <code>Accept: text/plain, application/json</code>.
+And Spring Boot was just using its <a href="https://spring.io/blog/2013/05/11/content-negotiation-using-spring-mvc">default content negotiation</a>
+and returning what the frontend requested: a text plain version of, what looked like, JSON.</p>
+<p>The quick fix was to request the content as JSON in React.</p>
+<div class="highlight"><pre><span class="kr">import</span> <span class="nx">rest</span> <span class="nx">from</span> <span class="s1">&#39;rest&#39;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="nx">mime</span> <span class="nx">from</span> <span class="s1">&#39;rest/interceptor/mime&#39;</span><span class="p">;</span>
+<span class="kr">const</span> <span class="nx">Rest</span> <span class="o">=</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="nx">rest</span><span class="p">.</span><span class="nx">wrap</span><span class="p">(</span><span class="nx">mime</span> <span class="p">,</span> <span class="p">{</span> <span class="nx">mime</span><span class="o">:</span> <span class="s1">&#39;application/json&#39;</span> <span class="p">}</span> <span class="p">);</span>
+</pre></div>
+
+<p>Now we will revist the backend to return the JSON content, as content, regardless of what
+the user asks :-)</p>
+<p>Happy hacking!</p>
+                            
+                            
+                            
+                        </div>
+                        <p class="postmetadata">
+                            
+                            <small>tags 
+                             [&nbsp;<a
+                                href="/tag/java"
+                                rel="tag">java</a>&nbsp;]&nbsp;
+                            
+                            </small>
+                            
+                            
+                            <br/>
+                            <small>posted in 
+                            [&nbsp;<a
+                                href="/blog"
+                                title="View all posts in blog"
+                                rel="category tag">blog</a>&nbsp;]
+                                &nbsp;category
+                            </small>
+                            
+                        </p>
+                    </div>
                     
                     <div class="ui raised padded container segment">
                         <h2>
@@ -440,81 +503,6 @@ Result: PASS
                              [&nbsp;<a
                                 href="/tag/software%20quality"
                                 rel="tag">software quality</a>&nbsp;]&nbsp;
-                            
-                            </small>
-                            
-                            
-                            <br/>
-                            <small>posted in 
-                            [&nbsp;<a
-                                href="/blog"
-                                title="View all posts in blog"
-                                rel="category tag">blog</a>&nbsp;]
-                                &nbsp;category
-                            </small>
-                            
-                        </p>
-                    </div>
-                    
-                    <div class="ui raised padded container segment">
-                        <h2>
-                            <a href="/2016/08/24/revamping-frege-logo-part-2" title="Permanent link">Revamping Frege logo &mdash; part 2</a>
-                        </h2>
-                        <small>kinow</small> @ <small>Aug 24, 2016&nbsp;23:54:03</small>
-                        <div class="entry">
-                            
-
-
-
-
-
-<a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2016/08/24/revamping-frege-logo-part-2" data-text="Revamping Frege logo &amp;mdash; part 2" data-via="kinow" data-hashtags="opensource">Tweet</a>
-<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-                            
-                            <p>Last time I used Blender was around 2007 I think, in University. But the bad weather in
-Auckland gives me plenty of time to have fun checking out Blender again :-)</p>
-<p>Followed the following tutorials:</p>
-<ul>
-<li><a href="https://www.youtube.com/watch?v=GeKhH1aaXuM">How to create a 3D Logo in Blender</a></li>
-<li><a href="https://www.youtube.com/watch?v=LArn4TFNnmk">Blender Tutorial Spinning Logo</a></li>
-</ul>
-<p>Here are the work in progress, created only with the b&eacute;zier curve.</p>
-<p><img class="ui centered large image" src="/2016/08/24/revamping-frege-logo-part-2/Frege_logo_flat_colours.png" alt="Frege updated logo" /></p>
-<p><img class="ui centered large image" src="/2016/08/24/revamping-frege-logo-part-2/Screenshot_2016-08-14_20-19-35.png" alt="Frege 3D #1" /></p>
-<p><img class="ui centered large image" src="/2016/08/24/revamping-frege-logo-part-2/Screenshot_2016-08-14_20-39-46.png" alt="Frege 3D #2" /></p>
-<p><img class="ui centered large image" src="/2016/08/24/revamping-frege-logo-part-2/Screenshot_2016-08-14_20-41-15.png" alt="Frege 3D #3" /></p>
-<p><img class="ui centered large image" src="/2016/08/24/revamping-frege-logo-part-2/Screenshot_2016-08-14_20-41-34.png" alt="Frege 3D #4" /></p>
-<p><img class="ui centered large image" src="/2016/08/24/revamping-frege-logo-part-2/Screenshot_2016-08-14_20-57-02.png" alt="Frege 3D #5" /></p>
-<p><img class="ui centered large image" src="/2016/08/24/revamping-frege-logo-part-2/Screenshot_2016-08-23_22-07-54.png" alt="Frege 3D #6" /></p>
-<p><img class="ui centered large image" src="/2016/08/24/revamping-frege-logo-part-2/Screenshot_2016-08-23_22-30-24.png" alt="Frege 3D #7" /></p>
-<p>Here&#8217;s the result after the mesh was created, and some material applied.</p>
-<p><img class="ui centered large image" src="/2016/08/24/revamping-frege-logo-part-2/Frege3d1.png" alt="Frege 3D #8" /></p>
-<p>Then using a plane as background, replacing the lamp by a sun, and tweaking a few parameters.</p>
-<p><img class="ui centered image" src="/2016/08/24/revamping-frege-logo-part-2/Frege3d2.png" alt="Frege 3D #9" /></p>
-<p>And finally playing with animation. Not sure if there was a time line and animation controls in
-Blender the last time I used it, but the controls are not really complex.</p>
-<p>I had to combine both meshes into a single object, in order to add a bone and rotate it. That
-is why the logo got back to a single material. The angle of the camera could probably do with
-some tweaking as well.</p>
-<p><img class="ui centered image" src="/2016/08/24/revamping-frege-logo-part-2/ezgif.com-resize.gif" alt="Frege 3D #10" /></p>
-<p>But it was my very first time animating in Blender. Some day if I get access to one of those
-3D printers, I will check what are the requirements for printing this logo.</p>
-<p>Blender models can be downloaded <a href="https://github.com/kinow/kinoshita.eti.br/tree/master/posts/2016-08-24_revamping-frege-logo-part-2-assets">here</a>.</p>
-<p>Now back to programming :-)</p>
-                            
-                            
-                            
-                        </div>
-                        <p class="postmetadata">
-                            
-                            <small>tags 
-                             [&nbsp;<a
-                                href="/tag/programming"
-                                rel="tag">programming</a>&nbsp;]&nbsp;
-                            
-                             [&nbsp;<a
-                                href="/tag/illustrations"
-                                rel="tag">illustrations</a>&nbsp;]&nbsp;
                             
                             </small>
                             

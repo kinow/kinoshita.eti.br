@@ -125,7 +125,7 @@
                               
                               <span style="font-size: 12.5pt"><a href="/tag/illustrations">illustrations</a></span>&nbsp;(5)
                               
-                              <span style="font-size: 17.0pt"><a href="/tag/java">java</a></span>&nbsp;(14)
+                              <span style="font-size: 17.5pt"><a href="/tag/java">java</a></span>&nbsp;(15)
                               
                               <span style="font-size: 21.0pt"><a href="/tag/jenkins">jenkins</a></span>&nbsp;(22)
                               
@@ -150,6 +150,88 @@
                         <h1 class='topic'>Home</h1>
                     </div>
                     
+                    
+                    <div class="ui raised padded container segment">
+                        <h2>
+                            <a href="/2013/07/04/too_many_sql_variables_in_graphite_with_sqlite3" title="Permanent link">Too many SQL variables exception in Graphite with SQLite3</a>
+                        </h2>
+                        <small>kinow</small> @ <small>Jul 04, 2013&nbsp;13:54:53</small>
+                        <div class="entry">
+                            
+
+
+
+
+
+<a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2013/07/04/too_many_sql_variables_in_graphite_with_sqlite3" data-text="Too many SQL variables exception in Graphite with SQLite3" data-via="kinow" data-hashtags="opensource">Tweet</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+                            
+                            <p>Having run <a href="http://graphite.wikidot.com/">Graphite</a> for a while, today I found a rather annoying issue. We were using 
+<a href="https://code.launchpad.net/~lucio.torre/graphite/add-events/+merge/69142">events</a>, and everything was working perfectly fine so far. But for the 24 last hours, 
+the graph was blank. </p>
+<p>Actually, in the dashboard, the graph was <em>missing</em>, being displayed as a gray box. 
+Enabling the web inspector in Google Chrome I got the graph URL. Opening the link in 
+a new tab gave me the exception message: <strong>too many SQL variables</strong> (<sup>1</sup>).</p>
+<p>After some research, I found out this was a bug in SQLite. After trying to hack the code, 
+and being concerned about using a patched version of Graphite and having to update it 
+later, I decided to switch database. </p>
+<p>But to avoid losing the graphs, users and other settings, including the events, I 
+migrated the SQLite database to a MySQL server. This MySQL server was already installed in 
+the server machine, since this machine hosted a <a href="http://www.zabbix.com/">Zabbix</a> server too.</p>
+<p>Here are the steps required to migrate your database from SQLite to MySQL (<sup>2</sup>).</p>
+<ul>
+<li>Download <strong>sqlite3_mysql</strong> python script from <a href="http://www.redmine.org/boards/2/topics/12793">http://www.redmine.org/boards/2/topics/12793</a></li>
+<li>Stop Apache/Nginx</li>
+<li>mysql -u user -p -e &#8220;create database redmine graphite set utf8;&#8221; </li>
+<li>sqlite3 graphite.db .dump | sqlite3-to-mysql.py | mysql -uroot -pyourpass graphite</li>
+<li>Start Apache again</li>
+</ul>
+<p>After tail&#8217;ing the Graphite webapp log file, </p>
+<div class="highlight"><pre>tail f- storage/log/webapp/error.log
+</pre></div>
+
+<p>I noticed the Python MySQLdb wasn&#8217;t installed.</p>
+<div class="highlight"><pre><span class="n">ImproperlyConfigured</span><span class="p">:</span> <span class="n">Error</span> <span class="n">loading</span> <span class="n">MySQLdb</span> <span class="n">module</span><span class="p">:</span> <span class="n">No</span> <span class="n">module</span> <span class="n">named</span> <span class="n">MySQLdb</span>
+</pre></div>
+
+<p>My server was an Ubuntu 13.04, so I installed the module simply with the following 
+command.</p>
+<div class="highlight"><pre>apt-get install python-mysqldb
+</pre></div>
+
+<p>Hope that helps!</p>
+<p><small><sup>1</sup> You may have to enable *DEBUG* in your Django settings for seeing the exception in your browser</small></p>
+
+<p><small><sup>2</sup> Zabbix needed some minor tweaks in order to use [MariaDB](https://mariadb.org/), but probably you can give it a try too</small></p>
+                            
+                            
+                            
+                        </div>
+                        <p class="postmetadata">
+                            
+                            <small>tags 
+                             [&nbsp;<a
+                                href="/tag/monitoring"
+                                rel="tag">monitoring</a>&nbsp;]&nbsp;
+                            
+                             [&nbsp;<a
+                                href="/tag/python"
+                                rel="tag">python</a>&nbsp;]&nbsp;
+                            
+                            </small>
+                            
+                            
+                            <br/>
+                            <small>posted in 
+                            [&nbsp;<a
+                                href="/blog"
+                                title="View all posts in blog"
+                                rel="category tag">blog</a>&nbsp;]
+                                &nbsp;category
+                            </small>
+                            
+                        </p>
+                    </div>
                     
                     <div class="ui raised padded container segment">
                         <h2>
@@ -360,64 +442,6 @@
                             
                             </small>
                             
-                            
-                        </p>
-                    </div>
-                    
-                    <div class="ui raised padded container segment">
-                        <h2>
-                            <a href="/2012/12/21/using-apache-commons-functor-functional-interfaces-with-java-8-lambdas" title="Permanent link">Using Apache Commons Functor functional interfaces with Java 8 lambdas</a>
-                        </h2>
-                        <small>kinow</small> @ <small>Dec 21, 2012&nbsp;15:08:14</small>
-                        <div class="entry">
-                            
-
-
-
-
-
-<a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2012/12/21/using-apache-commons-functor-functional-interfaces-with-java-8-lambdas" data-text="Using Apache Commons Functor functional interfaces with Java 8 lambdas" data-via="kinow" data-hashtags="opensource">Tweet</a>
-<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-                            
-                            <p><a href='http://commons.apache.org/sandbox/functor/'>Apache Commons Functor</a> (hereon [functor]) is an <a href='http://commons.apache.org/'>Apache Commons</a> component that provides a functional programming API and several patterns implemented (visitor, generator, aggregator, etc). <a href="http://openjdk.java.net/projects/lambda/" title="Java 8 lambda">Java 8</a> has several nice new features, including lambda expressions and <a href="http://datumedge.blogspot.com.br/2012/06/java-8-lambdas.html">functional interfaces</a>. In Java 8, lambdas or lambdas expressions are <a href="http://tronicek.blogspot.com.br/2007/12/closures-closure-is-form-of-anonymous_28.html">closures</a> that can be evaluated and behave like anonymous methods.</p>
-
-<p>Functional interfaces are interfaces with only one method. These interfaces can be used in lambdas and save you a lot of time from writing anonymous classes or even implementing the interfaces. [functor] provides several functional interfaces (thanks to <a href="https://issues.apache.org/jira/browse/FUNCTOR-20">Matt Benson</a>). It hasn&#8217;t been released yet, but there are some new examples in the project site, in the <a href="http://svn.apache.org/viewvc/commons/proper/functor/trunk/" title="[functor] SVN trunk">trunk of the SVN</a>. I will use one of these examples to show how [functor] functional interfaces can be used in conjunction with Java 8 lambdas.</p>
-
-<p>After the example with [functor] in Java 8, I will explain how I am running Java 8 in Eclipse (it&#8217;s kind of a <a href="http://www.speaklikeabrazilian.com/expression/define?e=Gambiarra" title="Gambiarra">gambiarra</a>, but works well).</p>
-
-
-                            
-                            
-                            <p>( <a href="/2012/12/21/using-apache-commons-functor-functional-interfaces-with-java-8-lambdas" >Read more ...</a> )</p>
-                            
-                            
-                        </div>
-                        <p class="postmetadata">
-                            
-                            <small>tags 
-                             [&nbsp;<a
-                                href="/tag/apache%20software%20foundation"
-                                rel="tag">apache software foundation</a>&nbsp;]&nbsp;
-                            
-                             [&nbsp;<a
-                                href="/tag/java"
-                                rel="tag">java</a>&nbsp;]&nbsp;
-                            
-                             [&nbsp;<a
-                                href="/tag/functional%20programming"
-                                rel="tag">functional programming</a>&nbsp;]&nbsp;
-                            
-                            </small>
-                            
-                            
-                            <br/>
-                            <small>posted in 
-                            [&nbsp;<a
-                                href="/functional%20programming"
-                                title="View all posts in functional programming"
-                                rel="category tag">functional programming</a>&nbsp;]
-                                &nbsp;category
-                            </small>
                             
                         </p>
                     </div>
