@@ -114,6 +114,59 @@
                     
                     <p>Posts in category &#8216;blog&#8217;</p>
 <div class="ui raised padded container segment">
+    <h2>Add a header to a file with Shell script (sed)</h2>
+    <p><small>kinow</small> @ <small>Nov 12, 2016&nbsp;01:55:03</small></p>
+
+
+
+
+
+
+
+<a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2016/11/12/add-a-header-to-a-file-with-shell-script-sed" data-text="Add a header to a file with Shell script (sed)" data-via="kinow" data-hashtags="opensource">Tweet</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+
+
+    <p>Today I was re-generating the documentation for a REST API written in PHP, with
+Laravel. To generate the documentation, one would have to call a Laravel command first.
+That command would create a Markdown page. And since in this project I am using Jekyll
+for the project site, the final step was adding a header to the file, so that Jekyll
+can recognize that content as a blog post.</p>
+<p>Laravel allows you to add custom commands to your project, so I decided to write a command
+that would call the other command that generates the documentation, and add an extra step
+of adding the header to the Markdown file.</p>
+<p>Here&#8217;s the shell script part, that allows you to add a header to a file, in place (i.e.
+it will alter and save the change your file).</p>
+<div class="highlight"><pre>sed -i 1i<span class="s2">&quot;----\nlayout: page\ntitle: API Installation\n----\n\n&quot;</span> ./docs/documentation/api/api.md
+</pre></div>
+
+<p>Here the first argument to sed, <em>-i</em> is for in place. Then that strange <em>1i</em>
+means that it will insert something before the first line, once. Then we have our header,
+and finally the file.</p>
+<p>Happy hacking!</p><!-- html -->
+
+    <p class="postmetadata">
+
+        <small>tags 
+         [&nbsp;<a
+            href="/tag/shellscript"
+            rel="tag">shellscript</a>&nbsp;]&nbsp;
+
+        </small>
+
+
+        <br/>
+        <small>posted in 
+        [&nbsp;<a
+            href="/blog"
+            title="View all posts in blog"
+            rel="category tag">blog</a>&nbsp;]&nbsp;
+        category </small>
+
+    </p>
+</div>
+
+<div class="ui raised padded container segment">
     <h2>Content negotiation with Spring Boot and React</h2>
     <p><small>kinow</small> @ <small>Nov 07, 2016&nbsp;20:07:03</small></p>
 
@@ -396,92 +449,6 @@ found by ShellCheck.</p>
         category </small>
 
     </p>
-</div>
-
-<div class="ui raised padded container segment">
-    <h2>Performance problems in Jenkins TAP Plug-in &mdash; part 1</h2>
-    <p><small>kinow</small> @ <small>Sep 03, 2016&nbsp;23:28:03</small></p>
-
-
-
-
-
-
-
-<a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2016/09/03/performance-problems-in-jenkins-tap-plugin-part-1" data-text="Performance problems in Jenkins TAP Plug-in &amp;mdash; part 1" data-via="kinow" data-hashtags="opensource">Tweet</a>
-<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-
-
-    <p><a href="https://issues.jenkins-ci.org/browse/JENKINS-17887">JENKINS-17887</a> reports performance problems in the <a href="https://wiki.jenkins-ci.org/display/JENKINS/TAP+Plugin">Jenkins TAP Plug-in</a>. It also lists a series of suggestions on how to improve the Jenkins TAP Plug-in performance. On this initial post, we will get a general idea of how the plug-in performs for large projects.</p>
-<p><a href="http://bioperl.org/">BioPerl</a> has over 21K tests. That should be enough for giving an initial idea of CPU, memory and disk usage for the plug-in.</p>
-<div class="highlight"><pre>git clone https://github.com/bioperl/bioperl-live.git
-<span class="nb">cd </span>bioperl-live
-sudo cpanm  -vv --installdeps --notest .
-sudo cpanm Set::Scalar Graph::Directed XML::LibXML XML::SAX <span class="se">\</span>
-    SVG XML::Parser::PerlSAX Convert::Binary::C XML::SAX::Writer <span class="se">\</span>
-    XML::DOM::XPath Spreadsheet::ParseExcel XML::SAX::Writer <span class="se">\</span>
-    XML::DOM HTML::TableExtract XML::Simple Test::Pod DBI
-prove -r t/ -a tests.tar.gz
-
-All tests successful.
-<span class="nv">Files</span><span class="o">=</span>325, <span class="nv">Tests</span><span class="o">=</span>21095, <span class="m">94</span> wallclock secs <span class="o">(</span> 2.47 usr  0.55 sys + 88.29 cusr  3.85 <span class="nv">csys</span> <span class="o">=</span> 95.16 CPU<span class="o">)</span>
-Result: PASS
-</pre></div>
-
-<p>When the test results are parsed, the plug-in also copies TAP files over to the master, in a folder called <em>tap-master-files</em>.</p>
-
-<p>The BioPerl tests are not really big, just <strong>1.7M</strong>. It gets doubled as there will be the workspace copy, and the tap-master-files directory copy, so <strong>3.4M</strong>.</p>
-
-<p>But several objects get created in memory, and persisted into the build.xml job file. BioPerl generates a build.xml file with <strong>11M</strong>. So <strong>less than 15M</strong>. But the build.xml contains objects that are read via XStream by Jenkins and into the memory.</p>
-
-<p>The build page with the graph, and the other two test result pages are rendering in more than 10 seconds in my computer. But the CPU load is OK, so a closer look at the memory use would probably be more interesting.</p>
-
-<p><img class="ui centered image" src="/2016/09/03/performance-problems-in-jenkins-tap-plugin-part-1/JENKINS-17887-yourkit1.png" alt="JENKINS-17887 YourKit profiler" /></p>
-
-<p>The image shows one of the screens in YourKit profiler, where it is possible to see that <strong>org.tap4j.plugin.model.TapTestResultResult</strong> has over 6 million objects.</p>
-
-<p>One build.xml for the BioPerl project gets over 80K entries for the TestResult object.</p>
-
-<div class="highlight"><pre>grep <span class="s2">&quot;org.tap4j.model.TestResult&quot;</span> builds/1/build.xml -o <span class="p">|</span> wc -l
-84522
-</pre></div>
-
-<p>This happens because each TAP file may contain multiple test results (lines with test results). Each of these test results gets turned into a Java object and loaded by the plug-in. So when loading the test result pages, Jenkins needs to wait until all these objects have been parsed, deserialized and read into the memory.</p>
-
-<p>The next post will continue on code improvements, and another benchmark.</p>
-
-<p>Happy profiling!</p>
-
-<!-- html -->
-
-<pre><code>&lt;p class="postmetadata"&gt;
-
-    &lt;small&gt;tags 
-     [&amp;nbsp;&lt;a
-        href="/tag/programming"
-        rel="tag"&gt;programming&lt;/a&gt;&amp;nbsp;]&amp;nbsp;
-
-     [&amp;nbsp;&lt;a
-        href="/tag/jenkins"
-        rel="tag"&gt;jenkins&lt;/a&gt;&amp;nbsp;]&amp;nbsp;
-
-     [&amp;nbsp;&lt;a
-        href="/tag/software%20quality"
-        rel="tag"&gt;software quality&lt;/a&gt;&amp;nbsp;]&amp;nbsp;
-
-    &lt;/small&gt;
-
-
-    &lt;br/&gt;
-    &lt;small&gt;posted in 
-    [&amp;nbsp;&lt;a
-        href="/blog"
-        title="View all posts in blog"
-        rel="category tag"&gt;blog&lt;/a&gt;&amp;nbsp;]&amp;nbsp;
-    category &lt;/small&gt;
-
-&lt;/p&gt;
-</code></pre>
 </div>
 
 <div id="navigation">
