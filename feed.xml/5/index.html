@@ -13,10 +13,58 @@
     <atom:link href="/blog/feed.xml" rel="self" type="application/rss+xml" />
     <link>/</link>
     <description></description>
-    <lastBuildDate>1479705686.5662746</lastBuildDate>
+    <lastBuildDate>1479716822.6634817</lastBuildDate>
     <language>en-US</language>
     <generator>PieCrust 2.0.0rc1</generator>
  
+
+<item>
+    <title>Replacing a HashSet with a BitSet</title>
+    <pubDate>Oct 20, 2012</pubDate>
+    <link>/2012/10/20/replacing-a-hashset-with-a-bitset</link>
+    <dc:creator></dc:creator>
+    <description><p>I always read the messages in the <a href="http://www.apache.org/foundation/mailinglists.html" title="Apache mailing lists">Apache dev mailing lists</a>, including Apache Commons <a href="http://commons.apache.org/mail-lists.html" title="Apache Commons mailing lists">dev mailing list</a>. And you should too. There are always interesting discussions. Sometimes you participate, other times you only watch what&#8217;s happening, but in the end <strong>you always learn something new</strong>.</p>
+
+<p>A few days ago, I found <a href="https://issues.apache.org/jira/browse/LANG-839" title="LANG-839">an issue</a> where it was being proposed to replace an unnecessary <a href="http://docs.oracle.com/javase/6/docs/api/java/util/HashSet.html" title="HashSet">HashSet</a> in <a href="http://commons.apache.org/lang/api-release/org/apache/commons/lang3/ArrayUtils.html" title="ArrayUtils">ArrayUtils</a>#removeElements() by a <a href="http://docs.oracle.com/javase/6/docs/api/java/util/BitSet.html" title="BitSet">BitSet</a>. Here&#8217;s how the code looked like: </p>
+
+<div class="highlight"><pre><span class="n">HashSet</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">&gt;</span> <span class="n">toRemove</span> <span class="o">=</span> <span class="k">new</span> <span class="n">HashSet</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">&gt;();</span>
+<span class="k">for</span> <span class="o">(</span><span class="n">Map</span><span class="o">.</span><span class="na">Entry</span><span class="o">&lt;</span><span class="n">Character</span><span class="o">,</span> <span class="n">MutableInt</span><span class="o">&gt;</span> <span class="n">e</span> <span class="o">:</span> <span class="n">occurrences</span><span class="o">.</span><span class="na">entrySet</span><span class="o">())</span> <span class="o">{</span>
+    <span class="n">Character</span> <span class="n">v</span> <span class="o">=</span> <span class="n">e</span><span class="o">.</span><span class="na">getKey</span><span class="o">();</span>
+    <span class="kt">int</span> <span class="n">found</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
+    <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">,</span> <span class="n">ct</span> <span class="o">=</span> <span class="n">e</span><span class="o">.</span><span class="na">getValue</span><span class="o">().</span><span class="na">intValue</span><span class="o">();</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">ct</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+        <span class="n">found</span> <span class="o">=</span> <span class="n">indexOf</span><span class="o">(</span><span class="n">array</span><span class="o">,</span> <span class="n">v</span><span class="o">.</span><span class="na">charValue</span><span class="o">(),</span> <span class="n">found</span><span class="o">);</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">found</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">break</span><span class="o">;</span>
+        <span class="o">}</span>
+        <span class="n">toRemove</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">found</span><span class="o">++);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+<span class="k">return</span> <span class="o">(</span><span class="kt">char</span><span class="o">[])</span> <span class="n">removeAll</span><span class="o">((</span><span class="n">Object</span><span class="o">)</span><span class="n">array</span><span class="o">,</span> <span class="n">extractIndices</span><span class="o">(</span><span class="n">toRemove</span><span class="o">));</span>
+</pre></div>
+
+<p style="text-align: center"><a href="/2012/10/20/replacing-a-hashset-with-a-bitset/feather_small.gif"><img src="/2012/10/20/replacing-a-hashset-with-a-bitset/feather_small.gif" alt="" title="Apache Software Foundation" width="203" height="61" class="aligncenter size-full wp-image-1125" /></a></p>
+
+<p>The HashSet created at line 1, in the code above, was used to store the array index of the elements that should be removed. And at line 13 there is a call to removeAll method, passing the indexes to be removed. And here&#8217;s how the new code looks like: </p>
+
+<div class="highlight"><pre><span class="n">BitSet</span> <span class="n">toRemove</span> <span class="o">=</span> <span class="k">new</span> <span class="n">BitSet</span><span class="o">();</span>
+<span class="k">for</span> <span class="o">(</span><span class="n">Map</span><span class="o">.</span><span class="na">Entry</span><span class="o">&lt;</span><span class="n">Character</span><span class="o">,</span> <span class="n">MutableInt</span><span class="o">&gt;</span> <span class="n">e</span> <span class="o">:</span> <span class="n">occurrences</span><span class="o">.</span><span class="na">entrySet</span><span class="o">())</span> <span class="o">{</span>
+    <span class="n">Character</span> <span class="n">v</span> <span class="o">=</span> <span class="n">e</span><span class="o">.</span><span class="na">getKey</span><span class="o">();</span>
+    <span class="kt">int</span> <span class="n">found</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
+    <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">,</span> <span class="n">ct</span> <span class="o">=</span> <span class="n">e</span><span class="o">.</span><span class="na">getValue</span><span class="o">().</span><span class="na">intValue</span><span class="o">();</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">ct</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+        <span class="n">found</span> <span class="o">=</span> <span class="n">indexOf</span><span class="o">(</span><span class="n">array</span><span class="o">,</span> <span class="n">v</span><span class="o">.</span><span class="na">charValue</span><span class="o">(),</span> <span class="n">found</span><span class="o">);</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">found</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">break</span><span class="o">;</span>
+        <span class="o">}</span>
+        <span class="n">toRemove</span><span class="o">.</span><span class="na">set</span><span class="o">(</span><span class="n">found</span><span class="o">++);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+<span class="k">return</span> <span class="o">(</span><span class="kt">char</span><span class="o">[])</span> <span class="n">removeAll</span><span class="o">(</span><span class="n">array</span><span class="o">,</span> <span class="n">toRemove</span><span class="o">);</span>
+</pre></div>
+
+<p>The first difference is at line 1. Instead of a HashSet, it is now using a BitSet. And at line 10, instead of adding a new element to the HashSet, now it &#8220;sets&#8221; a bit in the set (the bit at the specified position is now true). But there are important changes at line 13. The method removeAll was changed, and now the array doesn&#8217;t require a cast anymore. And the it is not necessary to cast the elements from HashSet anymore, as now the bit in the index position of the set is set to true. So the extractIndices method could be removed.</p>
+
+<p>The code got simpler. But that&#8217;s not all. At <a href="http://www.apache.org" title="Apache Software Foundation">Apache Software Foundation</a> you can find a lot of talented developers - that&#8217;s why I got so excited after joining them. Besides simplifying the code, the developer responsible for these changes (<strong>sebb</strong>) also pointed out that the new code <strong>consumes less memory and is faster</strong>. Ah! And he also wrote <strong>unit tests</strong></description>
+</item>
 
 <item>
     <title>Adding coverage reports in Jenkins to GoogleTest with gcovr</title>
@@ -175,27 +223,6 @@ I simply love when these things happen, it was great work with Guerra, and even 
 <p>If you are interested in using Java and Testopia, here&#8217;s the link for the java project with Maven support: <a href="https://github.com/kinow/testopia-java-driver" title="https://github.com/kinow/testopia-java-driver">https://github.com/kinow/testopia-java-driver</a>. I will update the project with examples, more tests and will try to clean up the code. Probably I will use either GitHub pages or a Wiki somewhere to document how to use Testopia and Java. </p>
 <p>Stay tuned!</p>
 <p>Cheers,</p></description>
-</item>
-
-<item>
-    <title>Maven site tips: Maven Fluido Skin and Javadoc class diagrams</title>
-    <pubDate>Apr 06, 2012</pubDate>
-    <link>/2012/04/06/maven-site-tips-maven-fluido-skin-and-javadoc-class-diagrams</link>
-    <dc:creator></dc:creator>
-    <description><p>I have been using Maven sites for a while, and am very happy with it. I didn&#8217;t like to have to update my projects after Maven 3, but that was all right, Maven 3 brought many new cool things. However, there were two things that annoyed me: lack of a nice and modern skin, and browsing Javadoc of complex code. The thought of creating a custom Maven skin even crossed my mind, but I never had time to read about it.</p>
-
-<p>But the world is full of good and talented people! Like the guys from <a title="99soft" href="http://www.99soft.org/">99soft</a>. They created <a title="Maven Fluido Skin" href="http://maven.apache.org/skins/maven-fluido-skin/">Maven Fluido Skin</a>, and donated it to <a title="Apache Software Foundation" href="http://apache.org/">Apache Software Foundation</a>. It&#8217;s built on top of <a title="Twitter Bootstrap" href="http://twitter.github.com/bootstrap/">Twitter&#8217;s Bootstrap</a> and available from Maven central repository. In order to use it in your Maven project, all that you have to do is add the following settings into your src/site/site.xml:</p>
-
-<div class="highlight"><pre><span class="nt">&lt;skin&gt;</span>
-    <span class="nt">&lt;groupId&gt;</span>org.apache.maven.skins<span class="nt">&lt;/groupId&gt;</span>
-    <span class="nt">&lt;artifactId&gt;</span>maven-fluido-skin<span class="nt">&lt;/artifactId&gt;</span>
-    <span class="nt">&lt;version&gt;</span>1.2.1<span class="nt">&lt;/version&gt;</span>
-<span class="nt">&lt;/skin&gt;</span>
-</pre></div>
-
-<p>Here&#8217;s a list of some projects using Maven Fluido Skin (hopefully, in the near future <a title="Apache Commons" href="http://commons.apache.org/">Apache Commons</a> and other projects will adopt this skin as default too :-)):</p>
-
-</description>
 </item>
 
 </channel>
