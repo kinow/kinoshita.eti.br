@@ -1,11 +1,11 @@
 {% extends "section.md" %}
 
 {% block body %}
-<table class="table table-hover">
+<table class="ui celled table">
 {% for i in items %}
 <tr>
-  <td class='col-md-3'>{{ i.dates }}</td>
   <td><strong>{{ i.place }}</strong>, {{ i.title }}</td>
+  <td>{{ i.dates }}</td>
 </tr>
 {% endfor %}
 </table>
