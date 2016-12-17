@@ -37,9 +37,11 @@ $(PDF): $(TEX)
 	latexmk -verbose -f -pdf -cd- -jobname=$(BUILD_DIR)/cv $(BUILD_DIR)/cv || /bin/true
 	latexmk -verbose -f -c -cd $(BUILD_DIR)/cv || /bin/true
 
-serve: all
+deploy: all
 	cp $(PDF) $(WEBSITE_PDF)
 	cp $(MD) $(WEBSITE_MD)
+
+serve: deploy
 	cd $(WEBSITE_DIR) && ./run.sh
 
 clean:
