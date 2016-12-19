@@ -127,7 +127,7 @@
                               
                               <span style="font-size: 18.0pt"><a href="/tag/java">java</a></span>&nbsp;(16)
                               
-                              <span style="font-size: 21.0pt"><a href="/tag/jenkins">jenkins</a></span>&nbsp;(22)
+                              <span style="font-size: 21.5pt"><a href="/tag/jenkins">jenkins</a></span>&nbsp;(23)
                               
                               <span style="font-size: 12.0pt"><a href="/tag/programming">programming</a></span>&nbsp;(4)
                               
@@ -135,7 +135,7 @@
                               
                               <span style="font-size: 11.5pt"><a href="/tag/shellscript">shellscript</a></span>&nbsp;(3)
                               
-                              <span style="font-size: 24.0pt"><a href="/tag/software%20quality">software quality</a></span>&nbsp;(28)
+                              <span style="font-size: 24.5pt"><a href="/tag/software%20quality">software quality</a></span>&nbsp;(29)
                               
                               <span style="font-size: 13.5pt"><a href="/tag/test%20anything%20protocol">test anything protocol</a></span>&nbsp;(7)
                               
@@ -152,6 +152,71 @@
                         <h1 class='topic'>Home</h1>
                     </div>
                     
+                    
+                    <div class="ui raised padded container segment">
+                        <h2>
+                            <a href="/2015/04/12/groovy-hooks-in-jenkins-for-increasing-logging-level" title="Permanent link">Groovy Hooks in Jenkins for increasing logging level</a>
+                        </h2>
+                        <small>kinow</small> @ <small>Apr 12, 2015&nbsp;11:30:03</small>
+                        <div class="entry">
+                            
+
+
+
+
+
+<a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2015/04/12/groovy-hooks-in-jenkins-for-increasing-logging-level" data-text="Groovy Hooks in Jenkins for increasing logging level" data-via="kinow" data-hashtags="opensource">Tweet</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+                            
+                            <p>Yesterday, while debugging a problem we had in the <a href="http://biouno.org">BioUno</a> update center, 
+I realized that after <a href="https://wiki.jenkins-ci.org/display/JENKINS/Logging">increasing the logging level in the WEB interface</a>, 
+the messages that I needed weren&#8217;t being displayed in the logs.</p>
+<p>It happened because some of the logging happened during Jenkins initialization, and before I could adjust the log level.</p>
+<p>The solution was to use a <a href="https://wiki.jenkins-ci.org/display/JENKINS/Groovy+Hook+Script">Groovy Hook Script</a>. 
+If you are familiar with Linux init scripts, the idea is quite similar. </p>
+<p>A Groovy script in the <code>$JENKINS_ROOT_DIR/init.groovy.d/</code> directory is executed during
+Jenkins initialization. This way you can increase the global logger level with a script
+as the following below.</p>
+<div class="highlight"><pre><span class="kn">import</span> <span class="nn">java.util.logging.ConsoleHandler</span>
+<span class="kn">import</span> <span class="nn">java.util.logging.LogManager</span>
+<span class="kn">import</span> <span class="nn">java.util.logging.Logger</span>
+<span class="kn">import</span> <span class="nn">java.util.logging.Level</span>
+
+<span class="n">def</span> <span class="n">logger</span> <span class="o">=</span> <span class="n">Logger</span><span class="o">.</span><span class="na">getLogger</span><span class="o">(</span><span class="s">&quot;&quot;</span><span class="o">)</span>
+<span class="n">logger</span><span class="o">.</span><span class="na">setLevel</span><span class="o">(</span><span class="n">Level</span><span class="o">.</span><span class="na">FINEST</span><span class="o">)</span>
+<span class="n">logger</span><span class="o">.</span><span class="na">addHandler</span> <span class="o">(</span><span class="k">new</span> <span class="n">ConsoleHandler</span><span class="o">())</span>
+</pre></div>
+
+<p>Happy logging!</p>
+                            
+                            
+                            
+                        </div>
+                        <p class="postmetadata">
+                            
+                            <small>tags 
+                             [&nbsp;<a
+                                href="/tag/jenkins"
+                                rel="tag">jenkins</a>&nbsp;]&nbsp;
+                            
+                             [&nbsp;<a
+                                href="/tag/groovy"
+                                rel="tag">groovy</a>&nbsp;]&nbsp;
+                            
+                            </small>
+                            
+                            
+                            <br/>
+                            <small>posted in 
+                            [&nbsp;<a
+                                href="/blog"
+                                title="View all posts in blog"
+                                rel="category tag">blog</a>&nbsp;]
+                                &nbsp;category
+                            </small>
+                            
+                        </p>
+                    </div>
                     
                     <div class="ui raised padded container segment">
                         <h2>
@@ -556,106 +621,6 @@ special characters, spaces by _, and so it goes.</p>
                              [&nbsp;<a
                                 href="/tag/bioinformatics"
                                 rel="tag">bioinformatics</a>&nbsp;]&nbsp;
-                            
-                            </small>
-                            
-                            
-                            <br/>
-                            <small>posted in 
-                            [&nbsp;<a
-                                href="/blog"
-                                title="View all posts in blog"
-                                rel="category tag">blog</a>&nbsp;]
-                                &nbsp;category
-                            </small>
-                            
-                        </p>
-                    </div>
-                    
-                    <div class="ui raised padded container segment">
-                        <h2>
-                            <a href="/2014/05/19/treemapping-jenkins-extension-points-with-r" title="Permanent link">Treemapping Jenkins Extension Points with R</a>
-                        </h2>
-                        <small>kinow</small> @ <small>May 19, 2014&nbsp;00:51:33</small>
-                        <div class="entry">
-                            
-
-
-
-
-
-<a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2014/05/19/treemapping-jenkins-extension-points-with-r" data-text="Treemapping Jenkins Extension Points with R" data-via="kinow" data-hashtags="opensource">Tweet</a>
-<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-                            
-                            <p>I have been playing with R and its packages for some time, and decided to study it a 
-bit harder. Last week I started reading the <a href="http://adv-r.had.co.nz/">Advanced R Programming</a> 
-by Hadley Wickham. </p>
-<p>One of the first chapters talks about the basic data structures in R. In order to 
-get my feet wet I thought about a simple example: <a href="http://en.wikipedia.org/wiki/Treemapping">treemapping</a> 
-Jenkins extension points. </p>
-<p style="text-align: center;"><a href="/2014/05/19/treemapping-jenkins-extension-points-with-r/extension_points.png"><img src="/2014/05/19/treemapping-jenkins-extension-points-with-r/extension_points.png" width="600px" alt="Treemap graph" /></a></p>
-
-<p>There is a <a href="https://wiki.jenkins-ci.org/display/JENKINS/Extension+points">Wiki page with the extension points in Jenkins</a> (what parts of Jenkins can be customized) 
-and its implementations. That page is generated by a <a href="https://ci.jenkins-ci.org/view/Infrastructure/job/infra_extension-indexer/">Jenkins job</a>. </p>
-<p>That job outputs a JSON file that contains each available extension points, as well as 
-an array with its implementations. The R code below will produce two vectors, one with the 
-count of implementations of each extension point, and the other with the class name.</p>
-<div class="highlight"><pre>nExtensionPoints <span class="o">&lt;-</span> <span class="kp">length</span><span class="p">(</span>extensionPointsJson<span class="o">$</span>extensionPoints<span class="p">)</span>
-numberOfImplementations <span class="o">&lt;-</span> <span class="kt">vector</span><span class="p">(</span>length <span class="o">=</span> nExtensionPoints<span class="p">)</span>
-namesOfTheExtensionPoints <span class="o">&lt;-</span> <span class="kt">vector</span><span class="p">(</span>length <span class="o">=</span> nExtensionPoints<span class="p">)</span>
-<span class="kr">for</span> <span class="p">(</span>i <span class="kr">in</span> <span class="kp">seq_along</span><span class="p">(</span>extensionPoints<span class="p">))</span> <span class="p">{</span>
-  extensionName <span class="o">=</span> extensionPoints<span class="p">[[</span>i<span class="p">]]</span><span class="o">$</span>className
-  lastIndexOfDot <span class="o">=</span> <span class="kp">regexpr</span><span class="p">(</span><span class="s">&quot;\\.[^\\.]*$&quot;</span><span class="p">,</span> extensionName<span class="p">)</span>
-  namesOfTheExtensionPoints<span class="p">[[</span>i<span class="p">]]</span> <span class="o">=</span> <span class="kp">substr</span><span class="p">(</span>extensionName<span class="p">,</span> lastIndexOfDot<span class="p">[</span><span class="m">1</span><span class="p">]</span><span class="m">+1</span><span class="p">,</span> <span class="kp">nchar</span><span class="p">(</span>extensionName<span class="p">))</span>
-  numberOfImplementations<span class="p">[[</span>i<span class="p">]]</span> <span class="o">=</span> <span class="kp">length</span><span class="p">(</span>extensionPoints<span class="p">[[</span>i<span class="p">]]</span><span class="o">$</span>implementations<span class="p">)</span>
-  <span class="kp">print</span><span class="p">(</span><span class="kp">paste</span><span class="p">(</span>namesOfTheExtensionPoints<span class="p">[[</span>i<span class="p">]],</span> <span class="s">&quot; -&gt; &quot;</span><span class="p">,</span> numberOfImplementations<span class="p">[[</span>i<span class="p">]]))</span>
-<span class="p">}</span>
-</pre></div>
-
-<p>For creating the treemap I used the <strong><a href="http://flowingdata.com/2010/02/11/an-easy-way-to-make-a-treemap/">portfolio package</a></strong>, and the <code>map.market</code> 
-function. The structures previously created and the next snippet of code are all that is 
-needed to create the treemap of the Jenkins extension points.</p>
-<div class="highlight"><pre>map.market<span class="p">(</span>id<span class="o">=</span><span class="kp">seq_along</span><span class="p">(</span>extensionPoints<span class="p">),</span> area<span class="o">=</span>numberOfImplementations<span class="p">,</span> group<span class="o">=</span>namesOfTheExtensionPoints<span class="p">,</span> color<span class="o">=</span>numberOfImplementations<span class="p">,</span> main<span class="o">=</span><span class="s">&quot;Jenkins Extension Points&quot;</span><span class="p">)</span>
-</pre></div>
-
-<p>You can also use the <a href="https://wiki.jenkins-ci.org/display/JENKINS/R+Plugin">Jenkins R Plug-in</a> to produce this graph, 
-as in this <a href="http://builds.tupilabs.com/job/backend-extension-points-treemap/2/">sample job</a>. 
-You can get the complete script in this <a href="https://gist.github.com/kinow/d5a2221c32dce3aa1076">gist</a>, or just 
-copy it here.</p>
-<div class="highlight"><pre><span class="kn">library</span><span class="p">(</span><span class="s">&#39;rjson&#39;</span><span class="p">)</span>
-<span class="kn">library</span><span class="p">(</span><span class="s">&#39;portfolio&#39;</span><span class="p">)</span>
-
-download.file<span class="p">(</span>url<span class="o">=</span><span class="s">&quot;https://ci.jenkins-ci.org/view/Infrastructure/job/infra_extension-indexer/ws/extension-points.json&quot;</span><span class="p">,</span> destfile<span class="o">=</span><span class="s">&quot;extension-points.json&quot;</span><span class="p">,</span> method<span class="o">=</span><span class="s">&quot;wget&quot;</span><span class="p">)</span>
-extensionPointsJson <span class="o">&lt;-</span> fromJSON<span class="p">(</span><span class="kp">paste</span><span class="p">(</span><span class="kp">readLines</span><span class="p">(</span><span class="s">&quot;extension-points.json&quot;</span><span class="p">),</span> collapse<span class="o">=</span><span class="s">&quot;&quot;</span><span class="p">))</span>
-extensionPoints <span class="o">&lt;-</span> extensionPointsJson<span class="o">$</span>extensionPoints
-nExtensionPoints <span class="o">&lt;-</span> <span class="kp">length</span><span class="p">(</span>extensionPointsJson<span class="o">$</span>extensionPoints<span class="p">)</span>
-numberOfImplementations <span class="o">&lt;-</span> <span class="kt">vector</span><span class="p">(</span>length <span class="o">=</span> nExtensionPoints<span class="p">)</span>
-namesOfTheExtensionPoints <span class="o">&lt;-</span> <span class="kt">vector</span><span class="p">(</span>length <span class="o">=</span> nExtensionPoints<span class="p">)</span>
-<span class="kr">for</span> <span class="p">(</span>i <span class="kr">in</span> <span class="kp">seq_along</span><span class="p">(</span>extensionPoints<span class="p">))</span> <span class="p">{</span>
-  extensionName <span class="o">=</span> extensionPoints<span class="p">[[</span>i<span class="p">]]</span><span class="o">$</span>className
-  lastIndexOfDot <span class="o">=</span> <span class="kp">regexpr</span><span class="p">(</span><span class="s">&quot;\\.[^\\.]*$&quot;</span><span class="p">,</span> extensionName<span class="p">)</span>
-  namesOfTheExtensionPoints<span class="p">[[</span>i<span class="p">]]</span> <span class="o">=</span> <span class="kp">substr</span><span class="p">(</span>extensionName<span class="p">,</span> lastIndexOfDot<span class="p">[</span><span class="m">1</span><span class="p">]</span><span class="m">+1</span><span class="p">,</span> <span class="kp">nchar</span><span class="p">(</span>extensionName<span class="p">))</span>
-  numberOfImplementations<span class="p">[[</span>i<span class="p">]]</span> <span class="o">=</span> <span class="kp">length</span><span class="p">(</span>extensionPoints<span class="p">[[</span>i<span class="p">]]</span><span class="o">$</span>implementations<span class="p">)</span>
-  <span class="kp">print</span><span class="p">(</span><span class="kp">paste</span><span class="p">(</span>namesOfTheExtensionPoints<span class="p">[[</span>i<span class="p">]],</span> <span class="s">&quot; -&gt; &quot;</span><span class="p">,</span> numberOfImplementations<span class="p">[[</span>i<span class="p">]]))</span>
-<span class="p">}</span>
-png<span class="p">(</span>filename<span class="o">=</span><span class="s">&quot;extension-points.png&quot;</span><span class="p">,</span> width<span class="o">=</span><span class="m">2048</span><span class="p">,</span> height<span class="o">=</span><span class="m">1536</span><span class="p">,</span> units<span class="o">=</span><span class="s">&quot;px&quot;</span><span class="p">,</span> bg<span class="o">=</span><span class="s">&quot;white&quot;</span><span class="p">)</span>
-map.market<span class="p">(</span>id<span class="o">=</span><span class="kp">seq_along</span><span class="p">(</span>extensionPoints<span class="p">),</span> area<span class="o">=</span>numberOfImplementations<span class="p">,</span> group<span class="o">=</span>namesOfTheExtensionPoints<span class="p">,</span> color<span class="o">=</span>numberOfImplementations<span class="p">,</span> main<span class="o">=</span><span class="s">&quot;Jenkins Extension Points&quot;</span><span class="p">)</span>
-dev.off<span class="p">()</span>
-</pre></div>
-                            
-                            
-                            
-                        </div>
-                        <p class="postmetadata">
-                            
-                            <small>tags 
-                             [&nbsp;<a
-                                href="/tag/jenkins"
-                                rel="tag">jenkins</a>&nbsp;]&nbsp;
-                            
-                             [&nbsp;<a
-                                href="/tag/r"
-                                rel="tag">r</a>&nbsp;]&nbsp;
                             
                             </small>
                             

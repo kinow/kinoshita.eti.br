@@ -110,6 +110,86 @@
                     
                     <p>Posts tagged with &#8216;jenkins&#8217;</p>
 <div class="ui raised padded container segment">
+    <h2>PermGen errors and java.lang.ClassCastException: com.sun.crypto.provider.AESCipher cannot be cast to javax.crypto.CipherSpi running Jenkins plug-in tests with PowerMock</h2>
+    <p><small>kinow</small> @ <small>Dec 19, 2016&nbsp;19:20:03</small></p>
+
+
+
+
+
+
+
+<a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2016/12/19/permgen-errors-and-java-lang-classcastexception-com-sun-crypto-provider-aescipher-cannot-be-cast-to-javax-crypto-cipherspi-running-jenkins-plug-in-tests-with-powermock" data-text="PermGen errors and java.lang.ClassCastException: com.sun.crypto.provider.AESCipher cannot be cast to javax.crypto.CipherSpi running Jenkins plug-in tests with PowerMock" data-via="kinow" data-hashtags="opensource">Tweet</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+
+
+    <p>Recently while working on a Jenkins plugin some tests were failing with PermGen errors.
+Even though it worked in my notebook at home (with Java 8, thus no Permgen), it failed
+in a CloudBees hosted Jenkins job, and also on my Mac (with Java 7) at work.</p>
+<p>As I could not change the settings in the CloudBees hosted Jenkins, I decided to spent some
+time investigating why these tests would require so much memory. Then I found
+<a href="https://angus.nyc/2015/fixing-common-powermock-problems/">this blog post about PowerMock</a>.</p>
+<p>I was not using the <em>@PrepareForTest</em> annotation, but after adding it the issue was gone. So I
+assume it either prevents PowerMock from trying to dynamically load several classes, or instructs
+it to unload classes after the tests. But in anyway after adding it the issue was gone.</p>
+<p>Then I got the following exception.</p>
+<div class="highlight"><pre>WARNING: Failed to instantiate Key<span class="o">[</span><span class="nb">type</span><span class="o">=</span>hudson.security.csrf.DefaultCrumbIssuer<span class="nv">$DescriptorImpl</span>, <span class="nv">annotation</span><span class="o">=[</span>none<span class="o">]]</span><span class="p">;</span> skipping this component
+com.google.inject.ProvisionException: Guice provision errors:
+
+1<span class="o">)</span> Error injecting constructor, java.lang.ClassCastException: com.sun.crypto.provider.AESCipher cannot be cast to javax.crypto.CipherSpi
+  at hudson.security.csrf.DefaultCrumbIssuer<span class="nv">$DescriptorImpl</span>.&lt;init&gt;<span class="o">(</span>DefaultCrumbIssuer.java:127<span class="o">)</span>
+
+<span class="m">1</span> error
+    at com.google.inject.internal.ProviderToInternalFactoryAdapter.get<span class="o">(</span>ProviderToInternalFactoryAdapter.java:52<span class="o">)</span>
+</pre></div>
+
+<p>And then thanks to <a href="https://github.com/powermock/powermock/issues/294">this issue</a> I understood
+that PowerMock was mocking <em>javax.crypto</em> classes. Turns out it is quite easy to tell
+PowerMock to ignore certain classes from being mocked, with the <em>@PowerMockIgnore</em> annotation.</p>
+
+<div class="highlight"><pre><span class="c1">// snip</span>
+<span class="nd">@RunWith</span><span class="o">(</span><span class="n">PowerMockRunner</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+<span class="nd">@PowerMockIgnore</span><span class="o">({</span><span class="s">&quot;javax.crypto.*&quot;</span> <span class="o">})</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">TestAbstractUnoChoiceParameter</span> <span class="o">{</span>
+<span class="c1">//</span>
+<span class="o">}</span>
+<span class="c1">// snip</span>
+</pre></div>
+
+<p>Added a couple of notes to this <a href="https://wiki.jenkins-ci.org/display/JENKINS/Mocking+in+Unit+Tests">Jenkins Wiki page</a>
+so that users facing similar issues can try these possible workarounds.</p>
+
+<p>Hope that helps someone!</p>
+
+<!-- html -->
+
+<pre><code>&lt;p class="postmetadata"&gt;
+
+    &lt;small&gt;tags 
+     [&amp;nbsp;&lt;a
+        href="/tag/jenkins"
+        rel="tag"&gt;jenkins&lt;/a&gt;&amp;nbsp;]&amp;nbsp;
+
+     [&amp;nbsp;&lt;a
+        href="/tag/software%20quality"
+        rel="tag"&gt;software quality&lt;/a&gt;&amp;nbsp;]&amp;nbsp;
+
+    &lt;/small&gt;
+
+
+    &lt;br/&gt;
+    &lt;small&gt;posted in 
+    [&amp;nbsp;&lt;a
+        href="/blog"
+        title="View all posts in blog"
+        rel="category tag"&gt;blog&lt;/a&gt;&amp;nbsp;]&amp;nbsp;
+    category &lt;/small&gt;
+
+&lt;/p&gt;
+</code></pre>
+</div>
+
+<div class="ui raised padded container segment">
     <h2>Performance problems in Jenkins TAP Plug-in &mdash; part 1</h2>
     <p><small>kinow</small> @ <small>Sep 03, 2016&nbsp;23:28:03</small></p>
 
@@ -569,96 +649,6 @@ OK - Deployed application at context path /spring-petclinic
         category </small>
 
     </p>
-</div>
-
-<div class="ui raised padded container segment">
-    <h2>How does the Jenkins Credentials Plug-in store passwords?</h2>
-    <p><small>kinow</small> @ <small>Sep 07, 2015&nbsp;01:25:03</small></p>
-
-
-
-
-
-
-
-<a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2015/09/07/how_does_the_jenkins_credentials_plugin_store_passwords" data-text="How does the Jenkins Credentials Plug-in store passwords?" data-via="kinow" data-hashtags="opensource">Tweet</a>
-<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-
-
-    <p><a href="https://wiki.jenkins-ci.org/display/JENKINS/Credentials+Plugin">Jenkins Credentials Plug-in</a> manages credentials stored in Jenkins. These credentials can be used in many jobs and by plug-ins for executing SSH commands, authenticating to systems, or running other commands that need some sort of authentication or authorisation.</p>
-<p>I recently used its API for the first time in the <a href="https://github.com/biouno/figshare-plugin">BioUno figshare Plug-in</a> to store OAuth 1.0 credentials (consumer key, consumer secret, token key, token secret). This <a href="http://biouno.org/2015/09/05/using_jenkins_credentials_plugin_to_create_the_biouno_figshare_plugin/">blog post</a> has more details about how we used the plug-in, but this post is specifically on how the passwords are stored by Jenkins.</p>
-<h2>Secret and ciphers</h2>
-<p>Jenkins stores its configuration on disk as XML using the XStream library. Plug-in developers using the Credentials Plug-in API must use the <strong>Secret</strong> class to encrypt sensitive information.</p>
-<p>The <code>Secret.fromString</code> method is responsible for creating a cipher from a given String. As in the Secret Javadoc,  <em>&#8220;this is not meant as a protection against code running in the same VM, nor against an attacker who has local file system access on Jenkins master&#8221;</em>. But at least makes things more complicated :-)</p>
-<ul>
-<li><a href="http://javadoc.jenkins-ci.org/hudson/util/Secret.html">Secret Javadoc</a></li>
-<li><a href="https://github.com/jenkinsci/jenkins/blob/master/core/src/main/java/hudson/util/Secret.java">Secret source code</a></li>
-</ul>
-<div class="highlight"><pre><span class="kd">public</span> <span class="kd">static</span> <span class="n">Secret</span> <span class="nf">fromString</span><span class="o">(</span><span class="n">String</span> <span class="n">data</span><span class="o">)</span> <span class="o">{</span>
-    <span class="n">data</span> <span class="o">=</span> <span class="n">Util</span><span class="o">.</span><span class="na">fixNull</span><span class="o">(</span><span class="n">data</span><span class="o">);</span>
-    <span class="n">Secret</span> <span class="n">s</span> <span class="o">=</span> <span class="n">decrypt</span><span class="o">(</span><span class="n">data</span><span class="o">);</span>
-    <span class="k">if</span><span class="o">(</span><span class="n">s</span><span class="o">==</span><span class="kc">null</span><span class="o">)</span> <span class="n">s</span><span class="o">=</span><span class="k">new</span> <span class="n">Secret</span><span class="o">(</span><span class="n">data</span><span class="o">);</span>
-    <span class="k">return</span> <span class="n">s</span><span class="o">;</span>
-<span class="o">}</span>
-</pre></div>
-
-<p>The first line simply replaces a null string by an empty &#8220;&#8221;, or keeps the current value of not null.</p>
-<p>After that, the decrypt method is called.</p>
-<div class="highlight"><pre><span class="kd">public</span> <span class="kd">static</span> <span class="n">Secret</span> <span class="nf">decrypt</span><span class="o">(</span><span class="n">String</span> <span class="n">data</span><span class="o">)</span> <span class="o">{</span>
-    <span class="k">if</span><span class="o">(</span><span class="n">data</span><span class="o">==</span><span class="kc">null</span><span class="o">)</span>      <span class="k">return</span> <span class="kc">null</span><span class="o">;</span>
-    <span class="k">try</span> <span class="o">{</span>
-        <span class="kt">byte</span><span class="o">[]</span> <span class="n">in</span> <span class="o">=</span> <span class="n">Base64</span><span class="o">.</span><span class="na">decode</span><span class="o">(</span><span class="n">data</span><span class="o">.</span><span class="na">toCharArray</span><span class="o">());</span>
-        <span class="n">Secret</span> <span class="n">s</span> <span class="o">=</span> <span class="n">tryDecrypt</span><span class="o">(</span><span class="n">KEY</span><span class="o">.</span><span class="na">decrypt</span><span class="o">(),</span> <span class="n">in</span><span class="o">);</span>
-        <span class="k">if</span> <span class="o">(</span><span class="n">s</span><span class="o">!=</span><span class="kc">null</span><span class="o">)</span>    <span class="k">return</span> <span class="n">s</span><span class="o">;</span>
-
-        <span class="c1">// try our historical key for backward compatibility</span>
-        <span class="n">Cipher</span> <span class="n">cipher</span> <span class="o">=</span> <span class="n">getCipher</span><span class="o">(</span><span class="s">&quot;AES&quot;</span><span class="o">);</span>
-        <span class="n">cipher</span><span class="o">.</span><span class="na">init</span><span class="o">(</span><span class="n">Cipher</span><span class="o">.</span><span class="na">DECRYPT_MODE</span><span class="o">,</span> <span class="n">getLegacyKey</span><span class="o">());</span>
-        <span class="k">return</span> <span class="n">tryDecrypt</span><span class="o">(</span><span class="n">cipher</span><span class="o">,</span> <span class="n">in</span><span class="o">);</span>
-    <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">GeneralSecurityException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
-        <span class="k">return</span> <span class="kc">null</span><span class="o">;</span>
-    <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">UnsupportedEncodingException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
-        <span class="k">throw</span> <span class="k">new</span> <span class="n">Error</span><span class="o">(</span><span class="n">e</span><span class="o">);</span> <span class="c1">// impossible</span>
-    <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">IOException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
-        <span class="k">return</span> <span class="kc">null</span><span class="o">;</span>
-    <span class="o">}</span>
-<span class="o">}</span>
-</pre></div>
-
-<p>The <code>KEY.decrypt()</code> call will return a <a href="http://docs.oracle.com/javase/8/docs/api/javax/crypto/Cipher.html"><code>javax.crypto.Cipher</code></a>. The Cipher class is handled in <a href="https://github.com/jenkinsci/jenkins/blob/93dfe3377ec8d430818f5b9073f16c677343adb4/core/src/main/java/jenkins/security/CryptoConfidentialKey.java">CryptoConfidentialKey</a> in Jenkins API, where it defines the algorithm used to create the cipher: <a href="https://en.wikipedia.org/wiki/Advanced_Encryption_Standard">AES</a>.</p>
-
-<p>Jenkins has also a <a href="https://github.com/jenkinsci/jenkins/blob/93dfe3377ec8d430818f5b9073f16c677343adb4/core/src/main/java/jenkins/security/ConfidentialStore.java#L63">ConfidentialStore</a>, that is required to create the cipher. This class must be initialized before someone tries to create or read a cipher. This extra step also increases security, though access to the JVM is still a problem.</p>
-
-<p>It is a bit late, so it is all for today. In summary: the credentials plug-in gives you a central place to manage credentials, but it is up to plug-in developers to use it. Sensitive values can be encrypted with AES on disk. So it is important that your file permissions, ACL and system auditing processes are in place and well maintained and monitored.</p>
-
-<p>Happy hacking!</p>
-
-<!-- html -->
-
-<pre><code>&lt;p class="postmetadata"&gt;
-
-    &lt;small&gt;tags 
-     [&amp;nbsp;&lt;a
-        href="/tag/jenkins"
-        rel="tag"&gt;jenkins&lt;/a&gt;&amp;nbsp;]&amp;nbsp;
-
-     [&amp;nbsp;&lt;a
-        href="/tag/security"
-        rel="tag"&gt;security&lt;/a&gt;&amp;nbsp;]&amp;nbsp;
-
-    &lt;/small&gt;
-
-
-    &lt;br/&gt;
-    &lt;small&gt;posted in 
-    [&amp;nbsp;&lt;a
-        href="/blog"
-        title="View all posts in blog"
-        rel="category tag"&gt;blog&lt;/a&gt;&amp;nbsp;]&amp;nbsp;
-    category &lt;/small&gt;
-
-&lt;/p&gt;
-</code></pre>
 </div>
 
 <div id="navigation">

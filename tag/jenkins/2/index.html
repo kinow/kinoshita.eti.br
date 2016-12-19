@@ -110,6 +110,96 @@
                     
                     <p>Posts tagged with &#8216;jenkins&#8217;</p>
 <div class="ui raised padded container segment">
+    <h2>How does the Jenkins Credentials Plug-in store passwords?</h2>
+    <p><small>kinow</small> @ <small>Sep 07, 2015&nbsp;01:25:03</small></p>
+
+
+
+
+
+
+
+<a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2015/09/07/how_does_the_jenkins_credentials_plugin_store_passwords" data-text="How does the Jenkins Credentials Plug-in store passwords?" data-via="kinow" data-hashtags="opensource">Tweet</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+
+
+    <p><a href="https://wiki.jenkins-ci.org/display/JENKINS/Credentials+Plugin">Jenkins Credentials Plug-in</a> manages credentials stored in Jenkins. These credentials can be used in many jobs and by plug-ins for executing SSH commands, authenticating to systems, or running other commands that need some sort of authentication or authorisation.</p>
+<p>I recently used its API for the first time in the <a href="https://github.com/biouno/figshare-plugin">BioUno figshare Plug-in</a> to store OAuth 1.0 credentials (consumer key, consumer secret, token key, token secret). This <a href="http://biouno.org/2015/09/05/using_jenkins_credentials_plugin_to_create_the_biouno_figshare_plugin/">blog post</a> has more details about how we used the plug-in, but this post is specifically on how the passwords are stored by Jenkins.</p>
+<h2>Secret and ciphers</h2>
+<p>Jenkins stores its configuration on disk as XML using the XStream library. Plug-in developers using the Credentials Plug-in API must use the <strong>Secret</strong> class to encrypt sensitive information.</p>
+<p>The <code>Secret.fromString</code> method is responsible for creating a cipher from a given String. As in the Secret Javadoc,  <em>&#8220;this is not meant as a protection against code running in the same VM, nor against an attacker who has local file system access on Jenkins master&#8221;</em>. But at least makes things more complicated :-)</p>
+<ul>
+<li><a href="http://javadoc.jenkins-ci.org/hudson/util/Secret.html">Secret Javadoc</a></li>
+<li><a href="https://github.com/jenkinsci/jenkins/blob/master/core/src/main/java/hudson/util/Secret.java">Secret source code</a></li>
+</ul>
+<div class="highlight"><pre><span class="kd">public</span> <span class="kd">static</span> <span class="n">Secret</span> <span class="nf">fromString</span><span class="o">(</span><span class="n">String</span> <span class="n">data</span><span class="o">)</span> <span class="o">{</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">Util</span><span class="o">.</span><span class="na">fixNull</span><span class="o">(</span><span class="n">data</span><span class="o">);</span>
+    <span class="n">Secret</span> <span class="n">s</span> <span class="o">=</span> <span class="n">decrypt</span><span class="o">(</span><span class="n">data</span><span class="o">);</span>
+    <span class="k">if</span><span class="o">(</span><span class="n">s</span><span class="o">==</span><span class="kc">null</span><span class="o">)</span> <span class="n">s</span><span class="o">=</span><span class="k">new</span> <span class="n">Secret</span><span class="o">(</span><span class="n">data</span><span class="o">);</span>
+    <span class="k">return</span> <span class="n">s</span><span class="o">;</span>
+<span class="o">}</span>
+</pre></div>
+
+<p>The first line simply replaces a null string by an empty &#8220;&#8221;, or keeps the current value of not null.</p>
+<p>After that, the decrypt method is called.</p>
+<div class="highlight"><pre><span class="kd">public</span> <span class="kd">static</span> <span class="n">Secret</span> <span class="nf">decrypt</span><span class="o">(</span><span class="n">String</span> <span class="n">data</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">if</span><span class="o">(</span><span class="n">data</span><span class="o">==</span><span class="kc">null</span><span class="o">)</span>      <span class="k">return</span> <span class="kc">null</span><span class="o">;</span>
+    <span class="k">try</span> <span class="o">{</span>
+        <span class="kt">byte</span><span class="o">[]</span> <span class="n">in</span> <span class="o">=</span> <span class="n">Base64</span><span class="o">.</span><span class="na">decode</span><span class="o">(</span><span class="n">data</span><span class="o">.</span><span class="na">toCharArray</span><span class="o">());</span>
+        <span class="n">Secret</span> <span class="n">s</span> <span class="o">=</span> <span class="n">tryDecrypt</span><span class="o">(</span><span class="n">KEY</span><span class="o">.</span><span class="na">decrypt</span><span class="o">(),</span> <span class="n">in</span><span class="o">);</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">s</span><span class="o">!=</span><span class="kc">null</span><span class="o">)</span>    <span class="k">return</span> <span class="n">s</span><span class="o">;</span>
+
+        <span class="c1">// try our historical key for backward compatibility</span>
+        <span class="n">Cipher</span> <span class="n">cipher</span> <span class="o">=</span> <span class="n">getCipher</span><span class="o">(</span><span class="s">&quot;AES&quot;</span><span class="o">);</span>
+        <span class="n">cipher</span><span class="o">.</span><span class="na">init</span><span class="o">(</span><span class="n">Cipher</span><span class="o">.</span><span class="na">DECRYPT_MODE</span><span class="o">,</span> <span class="n">getLegacyKey</span><span class="o">());</span>
+        <span class="k">return</span> <span class="n">tryDecrypt</span><span class="o">(</span><span class="n">cipher</span><span class="o">,</span> <span class="n">in</span><span class="o">);</span>
+    <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">GeneralSecurityException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="kc">null</span><span class="o">;</span>
+    <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">UnsupportedEncodingException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">throw</span> <span class="k">new</span> <span class="n">Error</span><span class="o">(</span><span class="n">e</span><span class="o">);</span> <span class="c1">// impossible</span>
+    <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">IOException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="kc">null</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</pre></div>
+
+<p>The <code>KEY.decrypt()</code> call will return a <a href="http://docs.oracle.com/javase/8/docs/api/javax/crypto/Cipher.html"><code>javax.crypto.Cipher</code></a>. The Cipher class is handled in <a href="https://github.com/jenkinsci/jenkins/blob/93dfe3377ec8d430818f5b9073f16c677343adb4/core/src/main/java/jenkins/security/CryptoConfidentialKey.java">CryptoConfidentialKey</a> in Jenkins API, where it defines the algorithm used to create the cipher: <a href="https://en.wikipedia.org/wiki/Advanced_Encryption_Standard">AES</a>.</p>
+
+<p>Jenkins has also a <a href="https://github.com/jenkinsci/jenkins/blob/93dfe3377ec8d430818f5b9073f16c677343adb4/core/src/main/java/jenkins/security/ConfidentialStore.java#L63">ConfidentialStore</a>, that is required to create the cipher. This class must be initialized before someone tries to create or read a cipher. This extra step also increases security, though access to the JVM is still a problem.</p>
+
+<p>It is a bit late, so it is all for today. In summary: the credentials plug-in gives you a central place to manage credentials, but it is up to plug-in developers to use it. Sensitive values can be encrypted with AES on disk. So it is important that your file permissions, ACL and system auditing processes are in place and well maintained and monitored.</p>
+
+<p>Happy hacking!</p>
+
+<!-- html -->
+
+<pre><code>&lt;p class="postmetadata"&gt;
+
+    &lt;small&gt;tags 
+     [&amp;nbsp;&lt;a
+        href="/tag/jenkins"
+        rel="tag"&gt;jenkins&lt;/a&gt;&amp;nbsp;]&amp;nbsp;
+
+     [&amp;nbsp;&lt;a
+        href="/tag/security"
+        rel="tag"&gt;security&lt;/a&gt;&amp;nbsp;]&amp;nbsp;
+
+    &lt;/small&gt;
+
+
+    &lt;br/&gt;
+    &lt;small&gt;posted in 
+    [&amp;nbsp;&lt;a
+        href="/blog"
+        title="View all posts in blog"
+        rel="category tag"&gt;blog&lt;/a&gt;&amp;nbsp;]&amp;nbsp;
+    category &lt;/small&gt;
+
+&lt;/p&gt;
+</code></pre>
+</div>
+
+<div class="ui raised padded container segment">
     <h2>Groovy Hooks in Jenkins for increasing logging level</h2>
     <p><small>kinow</small> @ <small>Apr 12, 2015&nbsp;11:30:03</small></p>
 
@@ -378,59 +468,6 @@ dev.off<span class="p">()</span>
             href="/blog"
             title="View all posts in blog"
             rel="category tag">blog</a>&nbsp;]&nbsp;
-        category </small>
-
-    </p>
-</div>
-
-<div class="ui raised padded container segment">
-    <h2>Adding coverage reports in Jenkins to GoogleTest with gcovr</h2>
-    <p><small>kinow</small> @ <small>Oct 16, 2012&nbsp;16:09:33</small></p>
-
-
-
-
-
-
-
-<a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2012/10/16/adding-coverage-reports-in-jenkins-to-googletest-with-gcovr" data-text="Adding coverage reports in Jenkins to GoogleTest with gcovr" data-via="kinow" data-hashtags="opensource">Tweet</a>
-<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-
-
-    <p>After the <a href="//2012/10/11/jenkins-testlink-and-gtest-in-5-minutes-or-so" title="Jenkins, TestLink and GTest in 5 minutes (or so)">last post</a> about <a href="http://code.google.com/p/googletest/" title="GoogleTest">GoogleTest</a> and <a href="http://www.teamst.org" title="TestLink">TestLink</a> using <a href="https://wiki.jenkins-ci.org/display/JENKINS/TestLink+Plugin" title="Jenkins TestLink Plug-in">Jenkins TestLink Plug-in</a>, I received an e-mail asking about <a href="http://en.wikipedia.org/wiki/Code_coverage" title="Code Coverage">coverage</a> with GoogleTest and <a href="http://www.jenkins-ci.org" title="Jenkins CI">Jenkins</a>. I&#8217;ve just updated the <a href="https://github.com/kinow/gtest-tap-listener/blob/master/samples/Makefile">Makefile</a> in the samples directory, of the <a href="https://github.com/kinow/gtest-tap-listener" title="GTest TAP Listener">GoogleTest TAP listener project</a>, to output coverage data.</p>
-
-<p>Basically, you have to add the compiler flags <em>-fprofile-arcs -ftest-coverage</em> and link the executable with -lgcov. Take a look at the project&#8217;s Makefile and you&#8217;ll notice how simple it is. In order to have Jenkins interpreting your coverage report, you&#8217;ll have to convert it to <a href="http://cobertura.sourceforge.net" title="Cobertura">cobertura</a> XML. There is a Python utility that can be used for this: <a href="https://software.sandia.gov/trac/fast/wiki/gcovr" title="gcovr">gcovr</a>. Download it and copy it to somewhere where Jenkins can execute it (e.g.: <em>/usr/local/bin</em>).</p>
-
-<p>Now, if you&#8217;ve followed the instructions from the previous post, you should have a job that reports your GoogleTest tests from Jenkins to TestLink using the plug-in, and is downloading the source code from GitHub. Add an extra build step  (Shell) to execute <em>gcovr</em>.</p>
-
-<!-- html -->
-
-    <p>( <a href="/2012/10/16/adding-coverage-reports-in-jenkins-to-googletest-with-gcovr" >Read more &#8230;</a> )</p>
-
-    <p class="postmetadata">
-
-        <small>tags 
-         [&nbsp;<a
-            href="/tag/jenkins"
-            rel="tag">jenkins</a>&nbsp;]&nbsp;
-
-         [&nbsp;<a
-            href="/tag/c%2B%2B"
-            rel="tag">c++</a>&nbsp;]&nbsp;
-
-         [&nbsp;<a
-            href="/tag/test%20anything%20protocol"
-            rel="tag">test anything protocol</a>&nbsp;]&nbsp;
-
-        </small>
-
-
-        <br/>
-        <small>posted in 
-        [&nbsp;<a
-            href="/jenkins"
-            title="View all posts in jenkins"
-            rel="category tag">jenkins</a>&nbsp;]&nbsp;
         category </small>
 
     </p>
