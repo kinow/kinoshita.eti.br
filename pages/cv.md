@@ -6,7 +6,7 @@ date: '2016-12-18'
 time: '09:56:33'
 ---
 
- I am an honest, and focused Software Engineer that is always trying to deliver solutions with quality. I am very calm and easy-going, and enjoy a challenging work environment, learning and applying new technologies, Open Source, and learning about different cultures. 
+ I am an honest, and focused Software Engineer that is always trying to deliver solutions with quality. I am very calm and easy-going, and enjoy a challenging work environment, Open Source, and learning about different cultures. 
 
 I have worked in many different projects for the past ten years, in fields such as telecommunications, banking, credit, retail, insurance, and start-ups. Occupied different positions including programmer, quality engineer, devops, architect, full stack developer, and big data engineer. 
 
