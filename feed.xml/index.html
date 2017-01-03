@@ -13,10 +13,35 @@
     <atom:link href="/blog/feed.xml" rel="self" type="application/rss+xml" />
     <link>/</link>
     <description></description>
-    <lastBuildDate>1483398322.172924</lastBuildDate>
+    <lastBuildDate>1483484873.7793763</lastBuildDate>
     <language>en-US</language>
     <generator>PieCrust 2.0.0rc2</generator>
  
+
+<item>
+    <title>Drawing Terra Celta vocal Elcio</title>
+    <pubDate>Jan 04, 2017</pubDate>
+    <link>/2017/01/04/drawing-terra-celta-vocal-elcio</link>
+    <dc:creator></dc:creator>
+    <description><p><a href="http://www.terracelta.com.br/">Terra Celta band</a>&#8216;s vocal, Elcio.</p>
+<p>Brazil is not only Samba, there is (good) celtic music in there too :-)</p>
+<blockquote cite="https://en.wikipedia.org/wiki/Terra_Celta">Terra Celta (&#8220;Celtic Land&#8221;) is a Brazilian Celtic comedy rock band formed in 2005, and based in Londrina, Paran&aacute;. They are noted for making Celtic rock in Portuguese language (initially English), with often humorous lyrics. The group performs live with traditional Celtic/Irish clothing. Besides performing Irish music, the members also research the subject, by attending Celtic music festivals in Europe.</blockquote>
+
+<div class='row'>
+<div class="ui fluid container">
+<figure>
+Terra Celta vocal Elcio<img style="height: 400px;" class="ui image" src="/2017/01/04/drawing-terra-celta-vocal-elcio/terra-celta-elcio.png" alt="Terra Celta vocal Elcio" />
+</a>
+<figcaption>Terra Celta vocal Elcio</figcaption>
+</figure>
+</div>
+</div>
+
+<p><a href="http://kinow.deviantart.com/art/Terra-Celta-s-vocal-Elcio-655240481">http://kinow.deviantart.com/art/Terra-Celta-s-vocal-Elcio-655240481</a></p>
+<iframe id="player" type="text/html" width="640" height="390"
+  src="http://www.youtube.com/embed/EOMEAzUBftA?enablejsapi=1&origin=http://kinoshita.eti.br"
+  frameborder="0"></iframe></description>
+</item>
 
 <item>
     <title>Contributing to Krita</title>
@@ -335,70 +360,6 @@ how other projects do the same thing. And the best example I could find was
 <p>I will spend some time during the next days working on a proposal to replace the <code>OSTYPE</code>
 from Apache Jena scripts, but then may have to submit more changes for the other issues
 found by ShellCheck.</p>
-<p>Happy hacking!</p></description>
-</item>
-
-<item>
-    <title>Using the AWS API with Python</title>
-    <pubDate>Oct 04, 2016</pubDate>
-    <link>/2016/10/04/using-the-aws-api-with-python</link>
-    <dc:creator></dc:creator>
-    <description><p>Amazon Web Services provides a series of cloud services. When you access the web interface, most - if not all - of the actions you do there are actually translated into API calls.</p>
-<p>They also provide SDK&#8217;s in several programming languages. With these SDK&#8217;s you are able to call the same API used by the web interface. Python has <a href="https://github.com/boto/boto3">boto</a> (or boto3) which lets you to automate several tasks in AWS.</p>
-<p>But before you start using the API, you will need to <a href="https://web.archive.org/web/20160818112016/http://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSGettingStartedGuide/AWSCredentials.html">set up your access key</a>.</p>
-<p>It is likely that with time you will have different roles, and may have different permissions with each role. You have to configure your local environment so that you can either use the command line Python utility (installed via <code>pip install awscli</code>) or with boto.</p>
-<p>The awscli is a dependency for using boto3. After you install it, you need to run <code>aws configure</code>. It will create the <em>~/.aws/config</em> and <em>~/.aws/credentials</em> files. You can tweak these files to support multiple roles.</p>
-<p>I followed the tutorials, but got all sorts of different issues. Then after debugging some locally installed dependencies, in special awscli files, I found that the following settings work for my environment.</p>
-<div class="highlight"><pre><span class="c"># File: config</span>
-<span class="o">[</span>profile default<span class="o">]</span>
-<span class="nv">region</span> <span class="o">=</span> ap-southeast-2
-
-<span class="o">[</span>profile profile1<span class="o">]</span>
-<span class="nv">region</span> <span class="o">=</span> ap-southeast-2
-<span class="nv">source_profile</span> <span class="o">=</span> default
-<span class="nv">role_arn</span> <span class="o">=</span> arn:aws:iam::123:role/Developer
-
-<span class="o">[</span>profile profile2<span class="o">]</span>
-<span class="nv">region</span> <span class="o">=</span> ap-southeast-2
-<span class="nv">source_profile</span> <span class="o">=</span> default
-<span class="nv">role_arn</span> <span class="o">=</span> arn:aws:iam::456:role/Sysops
-<span class="nv">mfa_serial</span> <span class="o">=</span> arn:aws:iam::789:mfa/user@domain.blabla
-</pre></div>
-
-<p>and</p>
-<div class="highlight"><pre><span class="c"># File: credentials</span>
-<span class="o">[</span>default<span class="o">]</span>
-<span class="nv">aws_access_key_id</span> <span class="o">=</span> YOU_KEY_ID
-<span class="nv">aws_secret_access_key</span> <span class="o">=</span> YOUR_SECRET
-</pre></div>
-
-<p>And once it is done you can, for example, confirm it is working with some S3 commands in Python.</p>
-<div class="highlight"><pre><span class="c">#!/usr/bin/env python3</span>
-
-<span class="kn">import</span> <span class="nn">os</span>
-<span class="kn">import</span> <span class="nn">boto3</span>
-
-<span class="n">session</span> <span class="o">=</span> <span class="n">boto3</span><span class="o">.</span><span class="n">Session</span><span class="p">(</span><span class="n">profile_name</span><span class="o">=</span><span class="s">&#39;profile2&#39;</span><span class="p">)</span>
-<span class="n">s3</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">resource</span><span class="p">(</span><span class="s">&#39;s3&#39;</span><span class="p">)</span>
-
-<span class="n">found</span> <span class="o">=</span> <span class="bp">False</span>
-
-<span class="n">name</span> <span class="o">=</span> <span class="s">&#39;mysuperduperbucket&#39;</span>
-
-<span class="k">for</span> <span class="n">bucket</span> <span class="ow">in</span> <span class="n">s3</span><span class="o">.</span><span class="n">buckets</span><span class="o">.</span><span class="n">all</span><span class="p">():</span>
-    <span class="k">if</span> <span class="n">bucket</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="n">name</span><span class="p">:</span>
-        <span class="n">found</span> <span class="o">=</span> <span class="bp">True</span>
-
-<span class="k">if</span> <span class="ow">not</span> <span class="n">found</span><span class="p">:</span>
-    <span class="k">print</span><span class="p">(</span><span class="s">&quot;Creating bucket...&quot;</span><span class="p">)</span>
-    <span class="n">s3</span><span class="o">.</span><span class="n">create_bucket</span><span class="p">(</span><span class="n">Bucket</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
-
-<span class="n">file_location</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">realpath</span><span class="p">(</span><span class="n">__file__</span><span class="p">))</span> <span class="o">+</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">sep</span> <span class="o">+</span> <span class="s">&#39;samplefile.txt&#39;</span>
-<span class="n">s3</span><span class="o">.</span><span class="n">meta</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">upload_file</span><span class="p">(</span><span class="n">Filename</span><span class="o">=</span><span class="n">file_location</span><span class="p">,</span> <span class="n">Bucket</span><span class="o">=</span><span class="n">name</span><span class="p">,</span> <span class="n">Key</span><span class="o">=</span><span class="s">&#39;book.txt&#39;</span><span class="p">)</span>
-</pre></div>
-
-<p>The AWS files in this example are using MFA too, the multi-factor authentication. So the first time you run this code you may be asked to generate a token, which will be cached for a short time.</p>
-<p>That&#8217;s it for today.</p>
 <p>Happy hacking!</p></description>
 </item>
 
