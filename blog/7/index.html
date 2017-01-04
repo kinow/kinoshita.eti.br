@@ -114,6 +114,238 @@
                     
                     <p>Posts in category &#8216;blog&#8217;</p>
 <div class="ui raised padded container segment">
+    <h2>Groovy Hooks in Jenkins for increasing logging level</h2>
+    <p><small>kinow</small> @ <small>Apr 12, 2015&nbsp;11:30:03</small></p>
+
+
+
+
+
+
+
+<a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2015/04/12/groovy-hooks-in-jenkins-for-increasing-logging-level" data-text="Groovy Hooks in Jenkins for increasing logging level" data-via="kinow" data-hashtags="opensource">Tweet</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+
+
+    <p>Yesterday, while debugging a problem we had in the <a href="http://biouno.org">BioUno</a> update center, 
+I realized that after <a href="https://wiki.jenkins-ci.org/display/JENKINS/Logging">increasing the logging level in the WEB interface</a>, 
+the messages that I needed weren&#8217;t being displayed in the logs.</p>
+<p>It happened because some of the logging happened during Jenkins initialization, and before I could adjust the log level.</p>
+<p>The solution was to use a <a href="https://wiki.jenkins-ci.org/display/JENKINS/Groovy+Hook+Script">Groovy Hook Script</a>. 
+If you are familiar with Linux init scripts, the idea is quite similar. </p>
+<p>A Groovy script in the <code>$JENKINS_ROOT_DIR/init.groovy.d/</code> directory is executed during
+Jenkins initialization. This way you can increase the global logger level with a script
+as the following below.</p>
+<div class="highlight"><pre><span class="kn">import</span> <span class="nn">java.util.logging.ConsoleHandler</span>
+<span class="kn">import</span> <span class="nn">java.util.logging.LogManager</span>
+<span class="kn">import</span> <span class="nn">java.util.logging.Logger</span>
+<span class="kn">import</span> <span class="nn">java.util.logging.Level</span>
+
+<span class="n">def</span> <span class="n">logger</span> <span class="o">=</span> <span class="n">Logger</span><span class="o">.</span><span class="na">getLogger</span><span class="o">(</span><span class="s">&quot;&quot;</span><span class="o">)</span>
+<span class="n">logger</span><span class="o">.</span><span class="na">setLevel</span><span class="o">(</span><span class="n">Level</span><span class="o">.</span><span class="na">FINEST</span><span class="o">)</span>
+<span class="n">logger</span><span class="o">.</span><span class="na">addHandler</span> <span class="o">(</span><span class="k">new</span> <span class="n">ConsoleHandler</span><span class="o">())</span>
+</pre></div>
+
+<p>Happy logging!</p>
+
+<!-- html -->
+
+<pre><code>&lt;p class="postmetadata"&gt;
+
+    &lt;small&gt;tags 
+     [&amp;nbsp;&lt;a
+        href="/tag/jenkins"
+        rel="tag"&gt;jenkins&lt;/a&gt;&amp;nbsp;]&amp;nbsp;
+
+     [&amp;nbsp;&lt;a
+        href="/tag/groovy"
+        rel="tag"&gt;groovy&lt;/a&gt;&amp;nbsp;]&amp;nbsp;
+
+    &lt;/small&gt;
+
+
+    &lt;br/&gt;
+    &lt;small&gt;posted in 
+    [&amp;nbsp;&lt;a
+        href="/blog"
+        title="View all posts in blog"
+        rel="category tag"&gt;blog&lt;/a&gt;&amp;nbsp;]&amp;nbsp;
+    category &lt;/small&gt;
+
+&lt;/p&gt;
+</code></pre>
+</div>
+
+<div class="ui raised padded container segment">
+    <h2>Contributing to Apache Jena</h2>
+    <p><small>kinow</small> @ <small>Jan 01, 2015&nbsp;18:49:03</small></p>
+
+
+
+
+
+
+
+<a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2015/01/01/contributing-to-apache-jena" data-text="Contributing to Apache Jena" data-via="kinow" data-hashtags="opensource">Tweet</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+
+
+    <p>As I mentioned in my <a href="2014/10/11/basic-workflow-of-a-sparql-query-in-fuseki.html">previous post</a>, 
+I am using <a href="http://jena.apache.org">Apache Jena</a> for a project of a customer. I had never used 
+any triple store, nor a SPARQL Endpoint server before. But for being involved with the Apache 
+Software Foundation, and since the company itself is using several Apache components, it was only 
+natural Jena to be our first choice.</p>
+<p>It has served us very well so far. At the moment we have less than 100 queries per day, but the 
+project is still under development and we expect 1000 queries per day by the first quarter of 
+2015 and 1000000 near the end of 2015. We also have few entries in TDB, but expect to grow this 
+number to a few million before 2016.</p>
+<p>When I work for companies and we use Open Source Software (OSS) in a project, I always 
+prepare assessment reports to include in the deliveries. In this report I justify the choice 
+of Open Source Software (as well as commercial software). Sometimes I 
+am lucky to work for a company that asks me to include hours to work on OSS :-)</p>
+<p>I use <a href="http://trello.com">Trello</a> to triage issues in OSS projects (and for several other 
+things). I have a board with several cards for Open Source. About a month ago I set up one 
+for Jena and listed the issues that I thought I could contribute to. </p>
+<div class='row'>
+<div class="span6 offset3" style='text-align: center;'>
+<figure>
+<a href="/2015/01/01/contributing-to-apache-jena/jena_trello.png" rel="prettyPhoto" class="thumbnail" title="Jena Trello card">
+<img src="/2015/01/01/contributing-to-apache-jena/jena_trello.png" alt="Jena Trello card" />
+</a>
+<figcaption>Jena Trello card</i></figcaption>
+</figure>
+</div>
+</div>
+
+<p>I annotate easy issues with a &#8220;lhf&#8221; suffix for Low Hanging Fruit issues, and delete issues from 
+the card once I submit a patch or update it (and include it in another card for the 
+<a href="http://tupilabs.com/tag/tupilabs-report.html">TupiLabs reports</a>).</p>
+<p>Most of the issues I included in the card for Jena had been created over two years ago, and hadn&#8217;t 
+been updated in a while. When you test these issues against the current code, usually you find that 
+some of them have already been fixed. Other issues included documentation problems, and minor features. I didn&#8217;t find any blocker issue that would impede us to use Jena in production.</p>
+<div class='row'>
+<div class="span6 offset3" style='text-align: center;'>
+<figure>
+<a href="/2015/01/01/contributing-to-apache-jena/jena_jira.png" rel="prettyPhoto" class="thumbnail" title="Jena JIRA activity summary">
+<img src="/2015/01/01/contributing-to-apache-jena/jena_jira.png" alt="Jena JIRA activity summary" />
+</a>
+<figcaption>Jena JIRA activity summary</figcaption>
+</figure>
+</div>
+</div>
+
+<p>The picture above shows the past 30 days activity summary in JIRA for Jena. The red line shows 
+issues created, and the green line issues resolved. <a href="https://github.com/afs">Andy Seaborne</a> 
+was very active in the past days and fixed several issues that were too old and had already been fixed in the trunk, and kindly merged patches and pull requests.</p>
+<p>Some issues like <a href="https://issues.apache.org/jira/browse/JENA-632">JENA-632</a> will take a 
+longer time to fix, but I&#8217;m getting used to Jena&#8217;s source code, and at the same getting more 
+confident to use it in production - especially with a supportive OSS community. We are using 
+Jena for RDF with Hadoop, and I learned that I can replace some custom Writables by others 
+in the Jena Hadoop submodule.</p>
+<p>By the way, even though this project ends in April, I intend to continue contributing to Jena. 
+There is a lot of parts of the code that I would love to be able to understand and contribute, 
+in special the Graph database, optimization techniques for SPARQL queries, the grammars used 
+in the project, Fuseki v2 and enhance its testing harness (as well as the test coverage).</p>
+<p><strong>If you are looking for a interesting project to get you started with semantics, linked data, 
+RDF, and even graphs and database querying, try contributing to Jena. I bet you&#8217;ll have a lot 
+of fun!</strong></p>
+<p>Happy hacking and happy 2015!</p><!-- html -->
+
+    <p class="postmetadata">
+
+        <small>tags 
+         [&nbsp;<a
+            href="/tag/jena"
+            rel="tag">jena</a>&nbsp;]&nbsp;
+
+         [&nbsp;<a
+            href="/tag/apache%20software%20foundation"
+            rel="tag">apache software foundation</a>&nbsp;]&nbsp;
+
+        </small>
+
+
+        <br/>
+        <small>posted in 
+        [&nbsp;<a
+            href="/blog"
+            title="View all posts in blog"
+            rel="category tag">blog</a>&nbsp;]&nbsp;
+        category </small>
+
+    </p>
+</div>
+
+<div class="ui raised padded container segment">
+    <h2>Basic workflow of a SPARQL query in Fuseki</h2>
+    <p><small>kinow</small> @ <small>Oct 11, 2014&nbsp;20:36:33</small></p>
+
+
+
+
+
+
+
+<a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2014/10/11/basic-workflow-of-a-sparql-query-in-fuseki" data-text="Basic workflow of a SPARQL query in Fuseki" data-via="kinow" data-hashtags="opensource">Tweet</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+
+
+    <p>Before using any library or tool in a customer project, specially when it is an Open Source one, 
+there are many things that I like to look at before deploying it. Basically, I look at the 
+features, documentation, community, open issues (in special blockers or criticals), the time 
+to release fixes and new features and, obviously, the license.</p>
+<p>At the moment I&#8217;m using <a href="http://jena.apache.org">Apache Jena</a> to work with ontologies, SPARQL 
+and data matching and enrichment for a customer. </p>
+<p>Jena is fantastic, and similar tools include <a href="http://www.w3.org/wiki/VirtuosoUniversalServer">Virtuoso</a>, 
+<a href="http://stardog.com/">StarDog</a>, <a href="http://www.ontotext.com/products/ontotext-graphdb-owlim/">GraphDB</a>, 
+<a href="http://4store.org/">4Store</a> and others. From looking at the code and its community and documentation, 
+Jena seems like a great choice. </p>
+<p>I&#8217;m still investigating if/how we gonna need to use inference and reasoners, looking 
+at the issues, and learning my way through its code base. The following is my initial mapping 
+of what happens when you submit a SPARQL query to Fuseki.</p>
+<div class='row'>
+<div class="span6 offset3" style='text-align: center;'>
+<figure>
+<a href="/2014/10/11/basic-workflow-of-a-sparql-query-in-fuseki/drawing1.png" rel="prettyPhoto" class="thumbnail" title="Fuseki SPARQL query work flow">
+<img src="/2014/10/11/basic-workflow-of-a-sparql-query-in-fuseki/drawing1.png" alt="Fuseki SPARQL query work flow" />
+</a>
+<figcaption>Jena JDBC</figcaption>
+</figure>
+</div>
+</div>
+
+<p>My understanding is that Fuseki is just a web layer, handling a bunch of validations, logging, 
+error handling, and relying on the ARQ module, that is who actually handles the requests. 
+I also think a new Fuseki server is baking in the project git repo, so stay tuned for an 
+updated version of this graph soon.</p>
+<p>Happy hacking!</p><!-- html -->
+
+    <p class="postmetadata">
+
+        <small>tags 
+         [&nbsp;<a
+            href="/tag/sparql"
+            rel="tag">sparql</a>&nbsp;]&nbsp;
+
+         [&nbsp;<a
+            href="/tag/jena"
+            rel="tag">jena</a>&nbsp;]&nbsp;
+
+        </small>
+
+
+        <br/>
+        <small>posted in 
+        [&nbsp;<a
+            href="/blog"
+            title="View all posts in blog"
+            rel="category tag">blog</a>&nbsp;]&nbsp;
+        category </small>
+
+    </p>
+</div>
+
+<div class="ui raised padded container segment">
     <h2>Cypher, Gremlin and SPARQL: Graph dialects</h2>
     <p><small>kinow</small> @ <small>Sep 09, 2014&nbsp;10:14:33</small></p>
 
@@ -343,223 +575,6 @@ special characters, spaces by _, and so it goes.</p>
          [&nbsp;<a
             href="/tag/bioinformatics"
             rel="tag">bioinformatics</a>&nbsp;]&nbsp;
-
-        </small>
-
-
-        <br/>
-        <small>posted in 
-        [&nbsp;<a
-            href="/blog"
-            title="View all posts in blog"
-            rel="category tag">blog</a>&nbsp;]&nbsp;
-        category </small>
-
-    </p>
-</div>
-
-<div class="ui raised padded container segment">
-    <h2>Treemapping Jenkins Extension Points with R</h2>
-    <p><small>kinow</small> @ <small>May 19, 2014&nbsp;00:51:33</small></p>
-
-
-
-
-
-
-
-<a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2014/05/19/treemapping-jenkins-extension-points-with-r" data-text="Treemapping Jenkins Extension Points with R" data-via="kinow" data-hashtags="opensource">Tweet</a>
-<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-
-
-    <p>I have been playing with R and its packages for some time, and decided to study it a 
-bit harder. Last week I started reading the <a href="http://adv-r.had.co.nz/">Advanced R Programming</a> 
-by Hadley Wickham. </p>
-<p>One of the first chapters talks about the basic data structures in R. In order to 
-get my feet wet I thought about a simple example: <a href="http://en.wikipedia.org/wiki/Treemapping">treemapping</a> 
-Jenkins extension points. </p>
-<p style="text-align: center;"><a href="/2014/05/19/treemapping-jenkins-extension-points-with-r/extension_points.png"><img src="/2014/05/19/treemapping-jenkins-extension-points-with-r/extension_points.png" width="600px" alt="Treemap graph" /></a></p>
-
-<p>There is a <a href="https://wiki.jenkins-ci.org/display/JENKINS/Extension+points">Wiki page with the extension points in Jenkins</a> (what parts of Jenkins can be customized) 
-and its implementations. That page is generated by a <a href="https://ci.jenkins-ci.org/view/Infrastructure/job/infra_extension-indexer/">Jenkins job</a>. </p>
-<p>That job outputs a JSON file that contains each available extension points, as well as 
-an array with its implementations. The R code below will produce two vectors, one with the 
-count of implementations of each extension point, and the other with the class name.</p>
-<div class="highlight"><pre>nExtensionPoints <span class="o">&lt;-</span> <span class="kp">length</span><span class="p">(</span>extensionPointsJson<span class="o">$</span>extensionPoints<span class="p">)</span>
-numberOfImplementations <span class="o">&lt;-</span> <span class="kt">vector</span><span class="p">(</span>length <span class="o">=</span> nExtensionPoints<span class="p">)</span>
-namesOfTheExtensionPoints <span class="o">&lt;-</span> <span class="kt">vector</span><span class="p">(</span>length <span class="o">=</span> nExtensionPoints<span class="p">)</span>
-<span class="kr">for</span> <span class="p">(</span>i <span class="kr">in</span> <span class="kp">seq_along</span><span class="p">(</span>extensionPoints<span class="p">))</span> <span class="p">{</span>
-  extensionName <span class="o">=</span> extensionPoints<span class="p">[[</span>i<span class="p">]]</span><span class="o">$</span>className
-  lastIndexOfDot <span class="o">=</span> <span class="kp">regexpr</span><span class="p">(</span><span class="s">&quot;\\.[^\\.]*$&quot;</span><span class="p">,</span> extensionName<span class="p">)</span>
-  namesOfTheExtensionPoints<span class="p">[[</span>i<span class="p">]]</span> <span class="o">=</span> <span class="kp">substr</span><span class="p">(</span>extensionName<span class="p">,</span> lastIndexOfDot<span class="p">[</span><span class="m">1</span><span class="p">]</span><span class="m">+1</span><span class="p">,</span> <span class="kp">nchar</span><span class="p">(</span>extensionName<span class="p">))</span>
-  numberOfImplementations<span class="p">[[</span>i<span class="p">]]</span> <span class="o">=</span> <span class="kp">length</span><span class="p">(</span>extensionPoints<span class="p">[[</span>i<span class="p">]]</span><span class="o">$</span>implementations<span class="p">)</span>
-  <span class="kp">print</span><span class="p">(</span><span class="kp">paste</span><span class="p">(</span>namesOfTheExtensionPoints<span class="p">[[</span>i<span class="p">]],</span> <span class="s">&quot; -&gt; &quot;</span><span class="p">,</span> numberOfImplementations<span class="p">[[</span>i<span class="p">]]))</span>
-<span class="p">}</span>
-</pre></div>
-
-<p>For creating the treemap I used the <strong><a href="http://flowingdata.com/2010/02/11/an-easy-way-to-make-a-treemap/">portfolio package</a></strong>, and the <code>map.market</code> 
-function. The structures previously created and the next snippet of code are all that is 
-needed to create the treemap of the Jenkins extension points.</p>
-<div class="highlight"><pre>map.market<span class="p">(</span>id<span class="o">=</span><span class="kp">seq_along</span><span class="p">(</span>extensionPoints<span class="p">),</span> area<span class="o">=</span>numberOfImplementations<span class="p">,</span> group<span class="o">=</span>namesOfTheExtensionPoints<span class="p">,</span> color<span class="o">=</span>numberOfImplementations<span class="p">,</span> main<span class="o">=</span><span class="s">&quot;Jenkins Extension Points&quot;</span><span class="p">)</span>
-</pre></div>
-
-<p>You can also use the <a href="https://wiki.jenkins-ci.org/display/JENKINS/R+Plugin">Jenkins R Plug-in</a> to produce this graph, 
-as in this <a href="http://builds.tupilabs.com/job/backend-extension-points-treemap/2/">sample job</a>. 
-You can get the complete script in this <a href="https://gist.github.com/kinow/d5a2221c32dce3aa1076">gist</a>, or just 
-copy it here.</p>
-<div class="highlight"><pre><span class="kn">library</span><span class="p">(</span><span class="s">&#39;rjson&#39;</span><span class="p">)</span>
-<span class="kn">library</span><span class="p">(</span><span class="s">&#39;portfolio&#39;</span><span class="p">)</span>
-
-download.file<span class="p">(</span>url<span class="o">=</span><span class="s">&quot;https://ci.jenkins-ci.org/view/Infrastructure/job/infra_extension-indexer/ws/extension-points.json&quot;</span><span class="p">,</span> destfile<span class="o">=</span><span class="s">&quot;extension-points.json&quot;</span><span class="p">,</span> method<span class="o">=</span><span class="s">&quot;wget&quot;</span><span class="p">)</span>
-extensionPointsJson <span class="o">&lt;-</span> fromJSON<span class="p">(</span><span class="kp">paste</span><span class="p">(</span><span class="kp">readLines</span><span class="p">(</span><span class="s">&quot;extension-points.json&quot;</span><span class="p">),</span> collapse<span class="o">=</span><span class="s">&quot;&quot;</span><span class="p">))</span>
-extensionPoints <span class="o">&lt;-</span> extensionPointsJson<span class="o">$</span>extensionPoints
-nExtensionPoints <span class="o">&lt;-</span> <span class="kp">length</span><span class="p">(</span>extensionPointsJson<span class="o">$</span>extensionPoints<span class="p">)</span>
-numberOfImplementations <span class="o">&lt;-</span> <span class="kt">vector</span><span class="p">(</span>length <span class="o">=</span> nExtensionPoints<span class="p">)</span>
-namesOfTheExtensionPoints <span class="o">&lt;-</span> <span class="kt">vector</span><span class="p">(</span>length <span class="o">=</span> nExtensionPoints<span class="p">)</span>
-<span class="kr">for</span> <span class="p">(</span>i <span class="kr">in</span> <span class="kp">seq_along</span><span class="p">(</span>extensionPoints<span class="p">))</span> <span class="p">{</span>
-  extensionName <span class="o">=</span> extensionPoints<span class="p">[[</span>i<span class="p">]]</span><span class="o">$</span>className
-  lastIndexOfDot <span class="o">=</span> <span class="kp">regexpr</span><span class="p">(</span><span class="s">&quot;\\.[^\\.]*$&quot;</span><span class="p">,</span> extensionName<span class="p">)</span>
-  namesOfTheExtensionPoints<span class="p">[[</span>i<span class="p">]]</span> <span class="o">=</span> <span class="kp">substr</span><span class="p">(</span>extensionName<span class="p">,</span> lastIndexOfDot<span class="p">[</span><span class="m">1</span><span class="p">]</span><span class="m">+1</span><span class="p">,</span> <span class="kp">nchar</span><span class="p">(</span>extensionName<span class="p">))</span>
-  numberOfImplementations<span class="p">[[</span>i<span class="p">]]</span> <span class="o">=</span> <span class="kp">length</span><span class="p">(</span>extensionPoints<span class="p">[[</span>i<span class="p">]]</span><span class="o">$</span>implementations<span class="p">)</span>
-  <span class="kp">print</span><span class="p">(</span><span class="kp">paste</span><span class="p">(</span>namesOfTheExtensionPoints<span class="p">[[</span>i<span class="p">]],</span> <span class="s">&quot; -&gt; &quot;</span><span class="p">,</span> numberOfImplementations<span class="p">[[</span>i<span class="p">]]))</span>
-<span class="p">}</span>
-png<span class="p">(</span>filename<span class="o">=</span><span class="s">&quot;extension-points.png&quot;</span><span class="p">,</span> width<span class="o">=</span><span class="m">2048</span><span class="p">,</span> height<span class="o">=</span><span class="m">1536</span><span class="p">,</span> units<span class="o">=</span><span class="s">&quot;px&quot;</span><span class="p">,</span> bg<span class="o">=</span><span class="s">&quot;white&quot;</span><span class="p">)</span>
-map.market<span class="p">(</span>id<span class="o">=</span><span class="kp">seq_along</span><span class="p">(</span>extensionPoints<span class="p">),</span> area<span class="o">=</span>numberOfImplementations<span class="p">,</span> group<span class="o">=</span>namesOfTheExtensionPoints<span class="p">,</span> color<span class="o">=</span>numberOfImplementations<span class="p">,</span> main<span class="o">=</span><span class="s">&quot;Jenkins Extension Points&quot;</span><span class="p">)</span>
-dev.off<span class="p">()</span>
-</pre></div>
-
-<!-- html -->
-
-<pre><code>&lt;p class="postmetadata"&gt;
-
-    &lt;small&gt;tags 
-     [&amp;nbsp;&lt;a
-        href="/tag/jenkins"
-        rel="tag"&gt;jenkins&lt;/a&gt;&amp;nbsp;]&amp;nbsp;
-
-     [&amp;nbsp;&lt;a
-        href="/tag/r"
-        rel="tag"&gt;r&lt;/a&gt;&amp;nbsp;]&amp;nbsp;
-
-    &lt;/small&gt;
-
-
-    &lt;br/&gt;
-    &lt;small&gt;posted in 
-    [&amp;nbsp;&lt;a
-        href="/blog"
-        title="View all posts in blog"
-        rel="category tag"&gt;blog&lt;/a&gt;&amp;nbsp;]&amp;nbsp;
-    category &lt;/small&gt;
-
-&lt;/p&gt;
-</code></pre>
-</div>
-
-<div class="ui raised padded container segment">
-    <h2>Writing a custom SchemaSpy command for Laravel 4</h2>
-    <p><small>kinow</small> @ <small>Feb 11, 2014&nbsp;13:15:33</small></p>
-
-
-
-
-
-
-
-<a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2014/02/11/writing-a-custom-schemaspy-command-for-laravel-4" data-text="Writing a custom SchemaSpy command for Laravel 4" data-via="kinow" data-hashtags="opensource">Tweet</a>
-<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-
-
-    <p>This week I had to write my first custom command for <a href="http://laravel.com/">Laravel 4</a>. 
-In <a href="http://nestor-qa.org/">Nestor-QA</a>, <a href="https://github.com/tooh">Peter</a> and I thought it would be useful to have 
-the database schema being automatically generated with 
-<a href="http://schemaspy.sourceforge.net/">SchemaSpy</a> in our <a href="http://builds.tupilabs.com/view/Nestor-QA/">Jenkins box</a>.</p>
-<p>Thanks to <a href="http://laravel.com/docs/artisan">Artisan</a> this task is much simpler than I thought. 
-The following command creates the <code>schemaspy</code> command.</p>
-<pre><code>php artisan command:make SchemaSpyCommand --command=schemaspy
-</code></pre>
-<p>This will create the file <code>app/commands/SchemaSpyCommand.php</code>. And all I had to do was 
-just fill in the options and write the exec command as the <a href="http://laravel.com/docs/commands">Laravel 4 docs</a> explain. </p>
-<pre><code>$this-&gt;info('Creating SchemaSpy');
-
-$jar = $this-&gt;option("jar");
-$dbtype = $this-&gt;option("dbtype");
-$output = $this-&gt;option("output");
-
-$commandLine = sprintf("java -jar %s -u none -t %s -o %s", $jar, $dbtype, $output);
-
-$this-&gt;info(sprintf("Command line: [%s]", $commandLine));
-
-exec($commandLine);
-</code></pre>
-<p>That&#8217;s how my final command looks. Now the final step is integrate it into the application by adding the line below to 
-<code>app/start/artisan.php</code>.</p>
-<pre><code>Artisan::add(new SchemaSpyCommand);
-</code></pre>
-<p>And that&#8217;s it, running <code>php artisan schemaspy --jar=/opt/schemaspy/schemaSpy_5.0.0.jar 
---dbtype=app/database/sqlite.properties --output=database-schema</code> 
-creates the database schema docs in the <code>database-schema</code> directory. </p>
-<p>Check this <a href="https://gist.github.com/kinow/8936667">gist</a> for the final code.</p>
-<p>Happy coding!</p><!-- html -->
-
-    <p class="postmetadata">
-
-        <small>tags 
-         [&nbsp;<a
-            href="/tag/php"
-            rel="tag">php</a>&nbsp;]&nbsp;
-
-        </small>
-
-
-        <br/>
-        <small>posted in 
-        [&nbsp;<a
-            href="/blog"
-            title="View all posts in blog"
-            rel="category tag">blog</a>&nbsp;]&nbsp;
-        category </small>
-
-    </p>
-</div>
-
-<div class="ui raised padded container segment">
-    <h2>Missing menus in new installation of TestLink 1.9.8</h2>
-    <p><small>kinow</small> @ <small>Oct 27, 2013&nbsp;12:42:33</small></p>
-
-
-
-
-
-
-
-<a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2013/10/27/missing-menus-in-new-installation-of-testlink" data-text="Missing menus in new installation of TestLink 1.9.8" data-via="kinow" data-hashtags="opensource">Tweet</a>
-<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-
-
-    <p>I recently installed TestLink 1.9.8 and noticed that the menus and some other parts 
-of the UI we missing. Looking at <code>/var/log/testlink/userlog1.log</code> (the location 
-may change depending on your settings) I realized that there was something wrong 
-with my PHP installation. There were log messages like the below.</p>
-<pre><code>include_once(ADORecordSet_ext_empty.class.php): failed to open stream: No such file or directory - in /home/kinow/php/workspace/testlink-1.9.8/lib/functions/common.php - Line 92
-[13/Sep/18 12:51:09][WARNING][2o0h173pdgg5fjqh1pukr83og2][GUI]
-E_WARNING
-include_once(): Failed opening 'ADORecordSet_ext_empty.class.php' for inclusion (include_path='.:/usr/share/php:/usr/share/pear:.:/home/kinow/php/workspace/testlink-1.9.8/lib/functions/:/home/kinow/php/workspace/testlink-1.9.8/lib/issuet
-...
-</code></pre>
-<p>I found a post in a forum (but unfortunately I forgot to save the link) that suggested 
-these ADORecordSet were being caused by the module <strong>php5-adodb</strong>. Removing the module, and 
-cleaning the templates cache directory (<code>$TESTLINK_HOME/gui/templates_c/*</code>) 
-fixed the issue for me.</p>
-<p>Hope that helps.
-Happy testing!</p><!-- html -->
-
-    <p class="postmetadata">
-
-        <small>tags 
-         [&nbsp;<a
-            href="/tag/testlink"
-            rel="tag">testlink</a>&nbsp;]&nbsp;
 
         </small>
 

@@ -155,6 +155,78 @@
                     
                     <div class="ui raised padded container segment">
                         <h2>
+                            <a href="/2016/11/05/checking-the-operating-system-type-in-shell-script" title="Permanent link">Checking the operating system type in shell script</a>
+                        </h2>
+                        <small>kinow</small> @ <small>Nov 05, 2016&nbsp;23:27:03</small>
+                        <div class="entry">
+                            
+
+
+
+
+
+<a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2016/11/05/checking-the-operating-system-type-in-shell-script" data-text="Checking the operating system type in shell script" data-via="kinow" data-hashtags="opensource">Tweet</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+                            
+                            <p>Last week I learned about a tool called <a href="https://github.com/koalaman/shellcheck">ShellCheck</a>, a tool
+for static analysis of shell scripts. It reports errors like missing double quotes, use of deprecated
+syntax, etc.</p>
+<p>I decided to check some projects I contribute to, and the first issue I found was in
+<a href="https://jena.apache.org">Apache Jena</a>:</p>
+<div class="highlight"><pre>kinow@localhost:~/Development/java/jena/jena/apache-jena/bin<span class="nv">$ </span>shellcheck arq
+
+In arq line 8:
+    <span class="k">case</span> <span class="s2">&quot;</span><span class="nv">$OSTYPE</span><span class="s2">&quot;</span> in
+          ^-- SC2039: In POSIX sh, OSTYPE is not supported.
+</pre></div>
+
+<p>So, in summary, the <code>OSTYPE</code> variable should not be available in POSIX shell. The case in question, where
+<code>OSTYPE</code> is being used, checks for the Darwin OS type (i.e. Mac OS). Knowing how things get weird when you
+use different operating systems, I decided to check and learn how <code>OSTYPE</code> works. Here&#8217;s what I found.</p>
+<ul>
+<li>In Ubuntu, with /bin/bash, OSTYPE works fine (linux-gnu)</li>
+<li>In Ubuntu, with /bin/sh, OSTYPE is not set</li>
+<li>In Mac OS, with /bin/sh, OSTYPE is set (darwin15)</li>
+</ul>
+<p>I checked the shells to make sure they were not pointing to symbolic links - some distributions
+use a different default shell, and replace /bin/bash and/or /bin/sh by a link to another
+shell. Looks like Mac OS has a POSIX shell that behaves different than Ubuntu&#8217;s.</p>
+<p>Instead of trying to find a way to use <code>OSTYPE</code>, I decided to spend some time looking at
+how other projects do the same thing. And the best example I could find was
+<a href="https://git.kernel.org/cgit/git/git.git/tree/config.mak.uname">git</a>.</p>
+<p>Instead of relying on <code>OSTYPE</code>, git uses <code>uname</code>.</p>
+<p>I will spend some time during the next days working on a proposal to replace the <code>OSTYPE</code>
+from Apache Jena scripts, but then may have to submit more changes for the other issues
+found by ShellCheck.</p>
+<p>Happy hacking!</p>
+                            
+                            
+                            
+                        </div>
+                        <p class="postmetadata">
+                            
+                            <small>tags 
+                             [&nbsp;<a
+                                href="/tag/shellscript"
+                                rel="tag">shellscript</a>&nbsp;]&nbsp;
+                            
+                            </small>
+                            
+                            
+                            <br/>
+                            <small>posted in 
+                            [&nbsp;<a
+                                href="/blog"
+                                title="View all posts in blog"
+                                rel="category tag">blog</a>&nbsp;]
+                                &nbsp;category
+                            </small>
+                            
+                        </p>
+                    </div>
+                    
+                    <div class="ui raised padded container segment">
+                        <h2>
                             <a href="/2016/10/04/using-the-aws-api-with-python" title="Permanent link">Using the AWS API with Python</a>
                         </h2>
                         <small>kinow</small> @ <small>Oct 04, 2016&nbsp;21:15:03</small>
@@ -431,62 +503,6 @@ some tweaking as well.</p>
 3D printers, I will check what are the requirements for printing this logo.</p>
 <p>Blender models can be downloaded <a href="https://github.com/kinow/kinoshita.eti.br/tree/master/posts/2016-08-24_revamping-frege-logo-part-2-assets">here</a>.</p>
 <p>Now back to programming :-)</p>
-                            
-                            
-                            
-                        </div>
-                        <p class="postmetadata">
-                            
-                            <small>tags 
-                             [&nbsp;<a
-                                href="/tag/programming"
-                                rel="tag">programming</a>&nbsp;]&nbsp;
-                            
-                             [&nbsp;<a
-                                href="/tag/illustrations"
-                                rel="tag">illustrations</a>&nbsp;]&nbsp;
-                            
-                            </small>
-                            
-                            
-                            <br/>
-                            <small>posted in 
-                            [&nbsp;<a
-                                href="/blog"
-                                title="View all posts in blog"
-                                rel="category tag">blog</a>&nbsp;]
-                                &nbsp;category
-                            </small>
-                            
-                        </p>
-                    </div>
-                    
-                    <div class="ui raised padded container segment">
-                        <h2>
-                            <a href="/2016/08/16/revamping-frege-logo" title="Permanent link">Revamping Frege logo</a>
-                        </h2>
-                        <small>kinow</small> @ <small>Aug 16, 2016&nbsp;23:54:03</small>
-                        <div class="entry">
-                            
-
-
-
-
-
-<a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2016/08/16/revamping-frege-logo" data-text="Revamping Frege logo" data-via="kinow" data-hashtags="opensource">Tweet</a>
-<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-                            
-                            <p>For a while I had been wanting to try adding a flat colour to the Frege
-logo. This weekend had some bit of spare time, and here is the result.</p>
-<p>Submitted to the project as <a href="https://github.com/Frege/frege/pull/299/files">pull request #299</a>.</p>
-<p>Current logo.</p>
-<p><img class="ui centered large image" src="/2016/08/16/revamping-frege-logo/Frege_logo.png" alt="Frege current logo" /></p>
-<p>And the updated logo.</p>
-<p><img class="ui centered large image" src="/2016/08/16/revamping-frege-logo/Frege_logo_flat_colours.png" alt="Frege updated logo" /></p>
-<p>The colour used was Flamingo (#EF4836), found in <a href="http://www.flatuicolorpicker.com/">Flat UI Color Picker</a>.</p>
-<p>Perhaps not exactly revamping, since all I did was just change a colour. There were
-adjustments to the b&eacute;zier curves as well, to better align them, but I updated both
-logos, not just the new one :-)</p>
                             
                             
                             

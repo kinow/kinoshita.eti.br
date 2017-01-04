@@ -2,7 +2,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en">
 <head profile="http://gmpg.org/xfn/11">
-    <title>Bruno P. Kinoshita &mdash; Drawing Terra Celta vocal Elcio</title> 
+    <title>Bruno P. Kinoshita &mdash; Plotting Auckland with OSMnx</title> 
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="description" content="Bruno de Paula Kinoshita personal web site" />
     <meta name="keywords"
@@ -72,7 +72,7 @@
                 <i class="content icon"></i>
             </a>
             <div class="item">
-                Drawing Terra Celta vocal Elcio
+                Plotting Auckland with OSMnx
             </div>
         </div>
     </div>
@@ -108,9 +108,9 @@
 
                 
 <div class="ui raised padded container segment">
-    <h1 class='post-topic'>Drawing Terra Celta vocal Elcio</h1>
+    <h1 class='post-topic'>Plotting Auckland with OSMnx</h1>
     <small>kinow</small> @
-	<small>Jan 04, 2017&nbsp;19:40:03</small>
+	<small>Jan 05, 2017&nbsp;10:39:03</small>
     <div class="entry">
        
 
@@ -118,35 +118,54 @@
 
 
 
-<a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2017/01/04/drawing-terra-celta-vocal-elcio" data-text="Drawing Terra Celta vocal Elcio" data-via="kinow" data-hashtags="opensource">Tweet</a>
+<a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2017/01/05/plotting-auckland-with-osmnx" data-text="Plotting Auckland with OSMnx" data-via="kinow" data-hashtags="opensource">Tweet</a>
 <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
 
-	   <p><a href="http://www.terracelta.com.br/">Terra Celta band</a>&#8216;s vocal, Elcio.</p>
-<p>Brazil is not only Samba, there is (good) celtic music in there too :-)</p>
-<blockquote cite="https://en.wikipedia.org/wiki/Terra_Celta">Terra Celta (&#8220;Celtic Land&#8221;) is a Brazilian Celtic comedy rock band formed in 2005, and based in Londrina, Paran&aacute;. They are noted for making Celtic rock in Portuguese language (initially English), with often humorous lyrics. The group performs live with traditional Celtic/Irish clothing. Besides performing Irish music, the members also research the subject, by attending Celtic music festivals in Europe.</blockquote>
-
-<div class='row'>
+	   <div class='row'>
 <div class="ui fluid container">
 <figure>
-<a  href="/2017/01/04/drawing-terra-celta-vocal-elcio/terra-celta-elcio.png" rel="prettyPhoto" class="thumbnail" title="Terra Celta vocal Elcio">
-<img style="height: 400px;" class="ui image" src="/2017/01/04/drawing-terra-celta-vocal-elcio/terra-celta-elcio.png" alt="Terra Celta vocal Elcio" />
+<a  href="/2017/01/05/plotting-auckland-with-osmnx/figure_1.png" rel="prettyPhoto" class="thumbnail" title="Auckland">
+<img style="height: 400px;" class="ui image" src="/2017/01/05/plotting-auckland-with-osmnx/figure_1.png" alt="Auckland" />
 </a>
-<figcaption>Terra Celta vocal Elcio</figcaption>
+<figcaption>Auckland</figcaption>
 </figure>
 </div>
 </div>
 
-<p><a href="http://kinow.deviantart.com/art/Terra-Celta-s-vocal-Elcio-655240481">http://kinow.deviantart.com/art/Terra-Celta-s-vocal-Elcio-655240481</a></p>
-<iframe id="player" type="text/html" width="640" height="390"
-  src="http://www.youtube.com/embed/EOMEAzUBftA?enablejsapi=1&origin=http://kinoshita.eti.br"
-  frameborder="0"></iframe>
+<p>A couple of days ago I saw <a href="https://www.reddit.com/r/gis/comments/5lnjxs/creating_squaremile_figureground_diagrams_of/">a thread in reddit</a>
+about OSMnx. It is a utilty for interacting with the OpenStreeMap (OSM)
+API, manipulate it in pure Python and using libraries like NetworkX (a Python graph package).</p>
+<p>With it you can do things like <q>visualize cul-de-sacs or one-way streets, plot shortest-path routes, or calculate stats like intersection density, average node connectivity, or betweenness centrality</q>. Or simply
+plot the OSM data as in the graph above.</p>
+<p>The source code is hosted at GitHub: <a href="https://github.com/gboeing/osmnx">https://github.com/gboeing/osmnx</a>.</p>
+<blockquote cite="https://github.com/gboeing/osmnx">OSMnx is a Python 2+3 package that lets you download spatial geometries and construct, project, visualize, and analyze street networks from OpenStreetMap&#8217;s APIs. Users can download and construct walkable, drivable, or bikable urban networks with a single line of Python code, and then easily analyze and visualize them.</blockquote>
+
+<p>The only issue I found while creating the map for Auckland using the example from the project
+README, was that the script would exit with the following error: <strong>&#8220;ValueError: Geometry must be a shapely Polygon or MultiPolygon&#8221;</strong>.</p>
+<p>After looking at the list of dependencies and finding that everything seemed to be OK,
+I started looking at the project issues. And thankfully someone else had found the
+<a href="https://github.com/gboeing/osmnx/issues/16">same issue</a>
+and the maintainer of the project answered how to fix it.</p>
+<p>The issue was that the OSM API returns two <a href="https://nominatim.openstreetmap.org/search?format=json&amp;limit=10&amp;dedupe=0&amp;polygon_geojson=1&amp;q=Auckland,%20New%20Zealand">entries for Auckland</a>
+, where the first one is a Point, and the
+second is the one that we want (a Polygon). The application defaults to using the first element,
+so in order to change it you have to give a <em>which_result</em> argument.</p>
+<div class="highlight"><pre><span class="c">#!/usr/bin/env python3</span>
+
+<span class="kn">import</span> <span class="nn">osmnx</span> <span class="kn">as</span> <span class="nn">ox</span>
+<span class="n">G</span> <span class="o">=</span> <span class="n">ox</span><span class="o">.</span><span class="n">graph_from_place</span><span class="p">(</span><span class="s">&#39;Auckland, NZ&#39;</span><span class="p">,</span> <span class="n">network_type</span><span class="o">=</span><span class="s">&#39;drive&#39;</span><span class="p">,</span> <span class="n">which_result</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">ox</span><span class="o">.</span><span class="n">plot_graph</span><span class="p">(</span><span class="n">ox</span><span class="o">.</span><span class="n">project_graph</span><span class="p">(</span><span class="n">G</span><span class="p">))</span>
+</pre></div>
+
+<p>And after that, and after waiting a few minutes, you should get your map :-)</p>
+<p>Happy hacking!</p>
     </div>
     <p class="postmetadata">
         
         <small>tags 
          [&nbsp;<a
-            href="/tag/illustrations"
-            rel="tag">illustrations</a>&nbsp;]&nbsp;
+            href="/tag/gis"
+            rel="tag">gis</a>&nbsp;]&nbsp;
         
         </small>
         

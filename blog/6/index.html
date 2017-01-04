@@ -114,6 +114,187 @@
                     
                     <p>Posts in category &#8216;blog&#8217;</p>
 <div class="ui raised padded container segment">
+    <h2>Deploying WAR files to Tomcat with Jenkins</h2>
+    <p><small>kinow</small> @ <small>Mar 20, 2016&nbsp;15:29:03</small></p>
+
+
+
+
+
+
+
+<a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2016/03/20/deploying-war-files-to-tomcat-with-jenkins" data-text="Deploying WAR files to Tomcat with Jenkins" data-via="kinow" data-hashtags="opensource">Tweet</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+
+
+    <p><strong>Table of Contents</strong></p>
+<ul>
+<li><a href="#1-deploying-with-custom-scripts">Deploying with custom scripts</a></li>
+<li><a href="#2-deploying-with-a-build-tool">Deploying with a build tool</a></li>
+<li><a href="#3-deploying-with-a-build-server">Deploying with a build server</a></li>
+<li><a href="#final-thoughts">Final thoughts</a></li>
+</ul>
+<p>A co-worker asked me this week about how to deploy a WAR file to Tomcat with Jenkins. In my team we are
+currently maintaining and deploying about 10 Java web systems, but we have no consistent way of deploying
+the applications to Tomcat yet. In the past I used Ant, Maven, Cargo, Grunt, and Jenkins, so I
+decided to write this short post to show a few different ways it can be achieved, &agrave; la
+<a href="https://en.wikipedia.org/wiki/There's_more_than_one_way_to_do_it">Perl&#8217;s TMTOWTDI</a> motto.</p>
+<h2><a name="1-deploying-with-custom-scripts" style="color: #222222;">#1 Deploying with custom scripts</a></h2>
+
+<p>At first you may be tempted to write your own script to deploy to Tomcat with some Shell, Perl, Python
+or Java. But I think I would choose this option only because either I needed some feature that is not
+available in the other options, or in order to call other tasks or debug some problem.</p>
+<p>Example:</p>
+<div class="highlight"><pre><span class="nv">$ </span>docker run -d -p 8888:8080 jeanblanchard/tomcat:8
+<span class="nv">$ </span>git clone https://github.com/spring-projects/spring-petclinic.git <span class="o">&amp;&amp;</span> <span class="nb">cd </span>spring-petclinic <span class="o">&amp;&amp;</span> mvn package
+<span class="nv">$ </span>curl --upload-file target/petclinic.war <span class="s2">&quot;http://admin:admin@localhost:8888/manager/text/deploy?path=/spring-petclinic&amp;update=true&quot;</span>
+OK - Deployed application at context path /spring-petclinic
+</pre></div>
+
+<!-- html -->
+
+    <p>( <a href="/2016/03/20/deploying-war-files-to-tomcat-with-jenkins" >Read more &#8230;</a> )</p>
+
+    <p class="postmetadata">
+
+        <small>tags 
+         [&nbsp;<a
+            href="/tag/jenkins"
+            rel="tag">jenkins</a>&nbsp;]&nbsp;
+
+         [&nbsp;<a
+            href="/tag/tomcat"
+            rel="tag">tomcat</a>&nbsp;]&nbsp;
+
+         [&nbsp;<a
+            href="/tag/docker"
+            rel="tag">docker</a>&nbsp;]&nbsp;
+
+        </small>
+
+
+        <br/>
+        <small>posted in 
+        [&nbsp;<a
+            href="/blog"
+            title="View all posts in blog"
+            rel="category tag">blog</a>&nbsp;]&nbsp;
+        category </small>
+
+    </p>
+</div>
+
+<div class="ui raised padded container segment">
+    <h2>Drawing sketch: Cheese</h2>
+    <p><small>kinow</small> @ <small>Mar 20, 2016&nbsp;11:13:03</small></p>
+
+
+
+
+
+
+
+<a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2016/03/20/drawing-sketch-cheese" data-text="Drawing sketch: Cheese" data-via="kinow" data-hashtags="opensource">Tweet</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+
+
+    <div class='row'>
+<div class="ui container" style='text-align: center;'>
+<figure>
+<a href="/2016/03/20/drawing-sketch-cheese/cheese.png" rel="prettyPhoto" class="thumbnail" title="Cheese">
+<img class="ui fluid image" src="/2016/03/20/drawing-sketch-cheese/cheese.png" alt="Cheese" />
+</a>
+<figcaption>Cheese</figcaption>
+</figure>
+</div>
+</div>
+
+<p>For <a href="https://www.reddit.com/r/redditgetsdrawn/comments/42izou/this_is_me_with_my_favourite_food_its_cheese/">redditgetsdrawn</a></p><!-- html -->
+
+    <p class="postmetadata">
+
+        <small>tags 
+         [&nbsp;<a
+            href="/tag/illustrations"
+            rel="tag">illustrations</a>&nbsp;]&nbsp;
+
+        </small>
+
+
+        <br/>
+        <small>posted in 
+        [&nbsp;<a
+            href="/blog"
+            title="View all posts in blog"
+            rel="category tag">blog</a>&nbsp;]&nbsp;
+        category </small>
+
+    </p>
+</div>
+
+<div class="ui raised padded container segment">
+    <h2>Learning afl and testing MapServer</h2>
+    <p><small>kinow</small> @ <small>Feb 27, 2016&nbsp;23:21:03</small></p>
+
+
+
+
+
+
+
+<a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2016/02/27/learning-afl-and-testing-mapserver" data-text="Learning afl and testing MapServer" data-via="kinow" data-hashtags="opensource">Tweet</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+
+
+    <p><a href="http://lcamtuf.coredump.cx/afl/">afl</a> is a fuzzer, an application that combines a series of algorithms
+in order to try invoking programs with several different input values. It then analyses the application
+execution flow given different test case scenarios. 
+You can read more about fuzzing at <a href="https://www.owasp.org/index.php/Fuzzing">this OWASP page</a>, or in other
+blogs that I also used while learning about afl
+<a href="/2016/02/27/using-afl-to-test-mapserver%231">1</a>
+<a href="/2016/02/27/using-afl-to-test-mapserver%232">2</a></p>
+<p>At work we are using MapServer for serving WFS and WMS. And I am using it for the
+<a href="http://maps.nzoss.org.nz">NZ OpenStreetMap maps</a> too. MapServer is written in C++ and is normally
+exposed as a CGI script, so I thought it was worth learning about afl and trying it on MapServer,
+as in case it finds any interesting bug I can submit it to the MapServer project.</p>
+<!-- html -->
+
+    <p>( <a href="/2016/02/27/learning-afl-and-testing-mapserver" >Read more &#8230;</a> )</p>
+
+    <p class="postmetadata">
+
+        <small>tags 
+         [&nbsp;<a
+            href="/tag/software%20quality"
+            rel="tag">software quality</a>&nbsp;]&nbsp;
+
+         [&nbsp;<a
+            href="/tag/fuzzers"
+            rel="tag">fuzzers</a>&nbsp;]&nbsp;
+
+         [&nbsp;<a
+            href="/tag/security"
+            rel="tag">security</a>&nbsp;]&nbsp;
+
+         [&nbsp;<a
+            href="/tag/software%20quality"
+            rel="tag">software quality</a>&nbsp;]&nbsp;
+
+        </small>
+
+
+        <br/>
+        <small>posted in 
+        [&nbsp;<a
+            href="/blog"
+            title="View all posts in blog"
+            rel="category tag">blog</a>&nbsp;]&nbsp;
+        category </small>
+
+    </p>
+</div>
+
+<div class="ui raised padded container segment">
     <h2>How does the Jenkins Credentials Plug-in store passwords?</h2>
     <p><small>kinow</small> @ <small>Sep 07, 2015&nbsp;01:25:03</small></p>
 
@@ -276,238 +457,6 @@ how to model your observation data for SOS starts by defining <em>procedure</em>
          [&nbsp;<a
             href="/tag/sensor%20web"
             rel="tag">sensor web</a>&nbsp;]&nbsp;
-
-        </small>
-
-
-        <br/>
-        <small>posted in 
-        [&nbsp;<a
-            href="/blog"
-            title="View all posts in blog"
-            rel="category tag">blog</a>&nbsp;]&nbsp;
-        category </small>
-
-    </p>
-</div>
-
-<div class="ui raised padded container segment">
-    <h2>Groovy Hooks in Jenkins for increasing logging level</h2>
-    <p><small>kinow</small> @ <small>Apr 12, 2015&nbsp;11:30:03</small></p>
-
-
-
-
-
-
-
-<a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2015/04/12/groovy-hooks-in-jenkins-for-increasing-logging-level" data-text="Groovy Hooks in Jenkins for increasing logging level" data-via="kinow" data-hashtags="opensource">Tweet</a>
-<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-
-
-    <p>Yesterday, while debugging a problem we had in the <a href="http://biouno.org">BioUno</a> update center, 
-I realized that after <a href="https://wiki.jenkins-ci.org/display/JENKINS/Logging">increasing the logging level in the WEB interface</a>, 
-the messages that I needed weren&#8217;t being displayed in the logs.</p>
-<p>It happened because some of the logging happened during Jenkins initialization, and before I could adjust the log level.</p>
-<p>The solution was to use a <a href="https://wiki.jenkins-ci.org/display/JENKINS/Groovy+Hook+Script">Groovy Hook Script</a>. 
-If you are familiar with Linux init scripts, the idea is quite similar. </p>
-<p>A Groovy script in the <code>$JENKINS_ROOT_DIR/init.groovy.d/</code> directory is executed during
-Jenkins initialization. This way you can increase the global logger level with a script
-as the following below.</p>
-<div class="highlight"><pre><span class="kn">import</span> <span class="nn">java.util.logging.ConsoleHandler</span>
-<span class="kn">import</span> <span class="nn">java.util.logging.LogManager</span>
-<span class="kn">import</span> <span class="nn">java.util.logging.Logger</span>
-<span class="kn">import</span> <span class="nn">java.util.logging.Level</span>
-
-<span class="n">def</span> <span class="n">logger</span> <span class="o">=</span> <span class="n">Logger</span><span class="o">.</span><span class="na">getLogger</span><span class="o">(</span><span class="s">&quot;&quot;</span><span class="o">)</span>
-<span class="n">logger</span><span class="o">.</span><span class="na">setLevel</span><span class="o">(</span><span class="n">Level</span><span class="o">.</span><span class="na">FINEST</span><span class="o">)</span>
-<span class="n">logger</span><span class="o">.</span><span class="na">addHandler</span> <span class="o">(</span><span class="k">new</span> <span class="n">ConsoleHandler</span><span class="o">())</span>
-</pre></div>
-
-<p>Happy logging!</p>
-
-<!-- html -->
-
-<pre><code>&lt;p class="postmetadata"&gt;
-
-    &lt;small&gt;tags 
-     [&amp;nbsp;&lt;a
-        href="/tag/jenkins"
-        rel="tag"&gt;jenkins&lt;/a&gt;&amp;nbsp;]&amp;nbsp;
-
-     [&amp;nbsp;&lt;a
-        href="/tag/groovy"
-        rel="tag"&gt;groovy&lt;/a&gt;&amp;nbsp;]&amp;nbsp;
-
-    &lt;/small&gt;
-
-
-    &lt;br/&gt;
-    &lt;small&gt;posted in 
-    [&amp;nbsp;&lt;a
-        href="/blog"
-        title="View all posts in blog"
-        rel="category tag"&gt;blog&lt;/a&gt;&amp;nbsp;]&amp;nbsp;
-    category &lt;/small&gt;
-
-&lt;/p&gt;
-</code></pre>
-</div>
-
-<div class="ui raised padded container segment">
-    <h2>Contributing to Apache Jena</h2>
-    <p><small>kinow</small> @ <small>Jan 01, 2015&nbsp;18:49:03</small></p>
-
-
-
-
-
-
-
-<a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2015/01/01/contributing-to-apache-jena" data-text="Contributing to Apache Jena" data-via="kinow" data-hashtags="opensource">Tweet</a>
-<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-
-
-    <p>As I mentioned in my <a href="2014/10/11/basic-workflow-of-a-sparql-query-in-fuseki.html">previous post</a>, 
-I am using <a href="http://jena.apache.org">Apache Jena</a> for a project of a customer. I had never used 
-any triple store, nor a SPARQL Endpoint server before. But for being involved with the Apache 
-Software Foundation, and since the company itself is using several Apache components, it was only 
-natural Jena to be our first choice.</p>
-<p>It has served us very well so far. At the moment we have less than 100 queries per day, but the 
-project is still under development and we expect 1000 queries per day by the first quarter of 
-2015 and 1000000 near the end of 2015. We also have few entries in TDB, but expect to grow this 
-number to a few million before 2016.</p>
-<p>When I work for companies and we use Open Source Software (OSS) in a project, I always 
-prepare assessment reports to include in the deliveries. In this report I justify the choice 
-of Open Source Software (as well as commercial software). Sometimes I 
-am lucky to work for a company that asks me to include hours to work on OSS :-)</p>
-<p>I use <a href="http://trello.com">Trello</a> to triage issues in OSS projects (and for several other 
-things). I have a board with several cards for Open Source. About a month ago I set up one 
-for Jena and listed the issues that I thought I could contribute to. </p>
-<div class='row'>
-<div class="span6 offset3" style='text-align: center;'>
-<figure>
-<a href="/2015/01/01/contributing-to-apache-jena/jena_trello.png" rel="prettyPhoto" class="thumbnail" title="Jena Trello card">
-<img src="/2015/01/01/contributing-to-apache-jena/jena_trello.png" alt="Jena Trello card" />
-</a>
-<figcaption>Jena Trello card</i></figcaption>
-</figure>
-</div>
-</div>
-
-<p>I annotate easy issues with a &#8220;lhf&#8221; suffix for Low Hanging Fruit issues, and delete issues from 
-the card once I submit a patch or update it (and include it in another card for the 
-<a href="http://tupilabs.com/tag/tupilabs-report.html">TupiLabs reports</a>).</p>
-<p>Most of the issues I included in the card for Jena had been created over two years ago, and hadn&#8217;t 
-been updated in a while. When you test these issues against the current code, usually you find that 
-some of them have already been fixed. Other issues included documentation problems, and minor features. I didn&#8217;t find any blocker issue that would impede us to use Jena in production.</p>
-<div class='row'>
-<div class="span6 offset3" style='text-align: center;'>
-<figure>
-<a href="/2015/01/01/contributing-to-apache-jena/jena_jira.png" rel="prettyPhoto" class="thumbnail" title="Jena JIRA activity summary">
-<img src="/2015/01/01/contributing-to-apache-jena/jena_jira.png" alt="Jena JIRA activity summary" />
-</a>
-<figcaption>Jena JIRA activity summary</figcaption>
-</figure>
-</div>
-</div>
-
-<p>The picture above shows the past 30 days activity summary in JIRA for Jena. The red line shows 
-issues created, and the green line issues resolved. <a href="https://github.com/afs">Andy Seaborne</a> 
-was very active in the past days and fixed several issues that were too old and had already been fixed in the trunk, and kindly merged patches and pull requests.</p>
-<p>Some issues like <a href="https://issues.apache.org/jira/browse/JENA-632">JENA-632</a> will take a 
-longer time to fix, but I&#8217;m getting used to Jena&#8217;s source code, and at the same getting more 
-confident to use it in production - especially with a supportive OSS community. We are using 
-Jena for RDF with Hadoop, and I learned that I can replace some custom Writables by others 
-in the Jena Hadoop submodule.</p>
-<p>By the way, even though this project ends in April, I intend to continue contributing to Jena. 
-There is a lot of parts of the code that I would love to be able to understand and contribute, 
-in special the Graph database, optimization techniques for SPARQL queries, the grammars used 
-in the project, Fuseki v2 and enhance its testing harness (as well as the test coverage).</p>
-<p><strong>If you are looking for a interesting project to get you started with semantics, linked data, 
-RDF, and even graphs and database querying, try contributing to Jena. I bet you&#8217;ll have a lot 
-of fun!</strong></p>
-<p>Happy hacking and happy 2015!</p><!-- html -->
-
-    <p class="postmetadata">
-
-        <small>tags 
-         [&nbsp;<a
-            href="/tag/jena"
-            rel="tag">jena</a>&nbsp;]&nbsp;
-
-         [&nbsp;<a
-            href="/tag/apache%20software%20foundation"
-            rel="tag">apache software foundation</a>&nbsp;]&nbsp;
-
-        </small>
-
-
-        <br/>
-        <small>posted in 
-        [&nbsp;<a
-            href="/blog"
-            title="View all posts in blog"
-            rel="category tag">blog</a>&nbsp;]&nbsp;
-        category </small>
-
-    </p>
-</div>
-
-<div class="ui raised padded container segment">
-    <h2>Basic workflow of a SPARQL query in Fuseki</h2>
-    <p><small>kinow</small> @ <small>Oct 11, 2014&nbsp;20:36:33</small></p>
-
-
-
-
-
-
-
-<a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2014/10/11/basic-workflow-of-a-sparql-query-in-fuseki" data-text="Basic workflow of a SPARQL query in Fuseki" data-via="kinow" data-hashtags="opensource">Tweet</a>
-<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-
-
-    <p>Before using any library or tool in a customer project, specially when it is an Open Source one, 
-there are many things that I like to look at before deploying it. Basically, I look at the 
-features, documentation, community, open issues (in special blockers or criticals), the time 
-to release fixes and new features and, obviously, the license.</p>
-<p>At the moment I&#8217;m using <a href="http://jena.apache.org">Apache Jena</a> to work with ontologies, SPARQL 
-and data matching and enrichment for a customer. </p>
-<p>Jena is fantastic, and similar tools include <a href="http://www.w3.org/wiki/VirtuosoUniversalServer">Virtuoso</a>, 
-<a href="http://stardog.com/">StarDog</a>, <a href="http://www.ontotext.com/products/ontotext-graphdb-owlim/">GraphDB</a>, 
-<a href="http://4store.org/">4Store</a> and others. From looking at the code and its community and documentation, 
-Jena seems like a great choice. </p>
-<p>I&#8217;m still investigating if/how we gonna need to use inference and reasoners, looking 
-at the issues, and learning my way through its code base. The following is my initial mapping 
-of what happens when you submit a SPARQL query to Fuseki.</p>
-<div class='row'>
-<div class="span6 offset3" style='text-align: center;'>
-<figure>
-<a href="/2014/10/11/basic-workflow-of-a-sparql-query-in-fuseki/drawing1.png" rel="prettyPhoto" class="thumbnail" title="Fuseki SPARQL query work flow">
-<img src="/2014/10/11/basic-workflow-of-a-sparql-query-in-fuseki/drawing1.png" alt="Fuseki SPARQL query work flow" />
-</a>
-<figcaption>Jena JDBC</figcaption>
-</figure>
-</div>
-</div>
-
-<p>My understanding is that Fuseki is just a web layer, handling a bunch of validations, logging, 
-error handling, and relying on the ARQ module, that is who actually handles the requests. 
-I also think a new Fuseki server is baking in the project git repo, so stay tuned for an 
-updated version of this graph soon.</p>
-<p>Happy hacking!</p><!-- html -->
-
-    <p class="postmetadata">
-
-        <small>tags 
-         [&nbsp;<a
-            href="/tag/sparql"
-            rel="tag">sparql</a>&nbsp;]&nbsp;
-
-         [&nbsp;<a
-            href="/tag/jena"
-            rel="tag">jena</a>&nbsp;]&nbsp;
 
         </small>
 

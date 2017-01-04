@@ -114,6 +114,233 @@
                     
                     <p>Posts in category &#8216;blog&#8217;</p>
 <div class="ui raised padded container segment">
+    <h2>Checking the operating system type in shell script</h2>
+    <p><small>kinow</small> @ <small>Nov 05, 2016&nbsp;23:27:03</small></p>
+
+
+
+
+
+
+
+<a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2016/11/05/checking-the-operating-system-type-in-shell-script" data-text="Checking the operating system type in shell script" data-via="kinow" data-hashtags="opensource">Tweet</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+
+
+    <p>Last week I learned about a tool called <a href="https://github.com/koalaman/shellcheck">ShellCheck</a>, a tool
+for static analysis of shell scripts. It reports errors like missing double quotes, use of deprecated
+syntax, etc.</p>
+<p>I decided to check some projects I contribute to, and the first issue I found was in
+<a href="https://jena.apache.org">Apache Jena</a>:</p>
+<div class="highlight"><pre>kinow@localhost:~/Development/java/jena/jena/apache-jena/bin<span class="nv">$ </span>shellcheck arq
+
+In arq line 8:
+    <span class="k">case</span> <span class="s2">&quot;</span><span class="nv">$OSTYPE</span><span class="s2">&quot;</span> in
+          ^-- SC2039: In POSIX sh, OSTYPE is not supported.
+</pre></div>
+
+<p>So, in summary, the <code>OSTYPE</code> variable should not be available in POSIX shell. The case in question, where
+<code>OSTYPE</code> is being used, checks for the Darwin OS type (i.e. Mac OS). Knowing how things get weird when you
+use different operating systems, I decided to check and learn how <code>OSTYPE</code> works. Here&#8217;s what I found.</p>
+
+<ul>
+<li>In Ubuntu, with /bin/bash, OSTYPE works fine (linux-gnu)</li>
+<li>In Ubuntu, with /bin/sh, OSTYPE is not set</li>
+<li>In Mac OS, with /bin/sh, OSTYPE is set (darwin15)</li>
+</ul>
+
+<p>I checked the shells to make sure they were not pointing to symbolic links - some distributions
+use a different default shell, and replace /bin/bash and/or /bin/sh by a link to another
+shell. Looks like Mac OS has a POSIX shell that behaves different than Ubuntu&#8217;s.</p>
+
+<p>Instead of trying to find a way to use <code>OSTYPE</code>, I decided to spend some time looking at
+how other projects do the same thing. And the best example I could find was
+<a href="https://git.kernel.org/cgit/git/git.git/tree/config.mak.uname">git</a>.</p>
+
+<p>Instead of relying on <code>OSTYPE</code>, git uses <code>uname</code>.</p>
+
+<p>I will spend some time during the next days working on a proposal to replace the <code>OSTYPE</code>
+from Apache Jena scripts, but then may have to submit more changes for the other issues
+found by ShellCheck.</p>
+
+<p>Happy hacking!</p>
+
+<!-- html -->
+
+<pre><code>&lt;p class="postmetadata"&gt;
+
+    &lt;small&gt;tags 
+     [&amp;nbsp;&lt;a
+        href="/tag/shellscript"
+        rel="tag"&gt;shellscript&lt;/a&gt;&amp;nbsp;]&amp;nbsp;
+
+    &lt;/small&gt;
+
+
+    &lt;br/&gt;
+    &lt;small&gt;posted in 
+    [&amp;nbsp;&lt;a
+        href="/blog"
+        title="View all posts in blog"
+        rel="category tag"&gt;blog&lt;/a&gt;&amp;nbsp;]&amp;nbsp;
+    category &lt;/small&gt;
+
+&lt;/p&gt;
+</code></pre>
+</div>
+
+<div class="ui raised padded container segment">
+    <h2>Using the AWS API with Python</h2>
+    <p><small>kinow</small> @ <small>Oct 04, 2016&nbsp;21:15:03</small></p>
+
+
+
+
+
+
+
+<a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2016/10/04/using-the-aws-api-with-python" data-text="Using the AWS API with Python" data-via="kinow" data-hashtags="opensource">Tweet</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+
+
+    <p>Amazon Web Services provides a series of cloud services. When you access the web interface, most - if not all - of the actions you do there are actually translated into API calls.</p>
+<p>They also provide SDK&#8217;s in several programming languages. With these SDK&#8217;s you are able to call the same API used by the web interface. Python has <a href="https://github.com/boto/boto3">boto</a> (or boto3) which lets you to automate several tasks in AWS.</p>
+<p>But before you start using the API, you will need to <a href="https://web.archive.org/web/20160818112016/http://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSGettingStartedGuide/AWSCredentials.html">set up your access key</a>.</p>
+<p>It is likely that with time you will have different roles, and may have different permissions with each role. You have to configure your local environment so that you can either use the command line Python utility (installed via <code>pip install awscli</code>) or with boto.</p>
+<p>The awscli is a dependency for using boto3. After you install it, you need to run <code>aws configure</code>. It will create the <em>~/.aws/config</em> and <em>~/.aws/credentials</em> files. You can tweak these files to support multiple roles.</p>
+<p>I followed the tutorials, but got all sorts of different issues. Then after debugging some locally installed dependencies, in special awscli files, I found that the following settings work for my environment.</p>
+<div class="highlight"><pre><span class="c"># File: config</span>
+<span class="o">[</span>profile default<span class="o">]</span>
+<span class="nv">region</span> <span class="o">=</span> ap-southeast-2
+
+<span class="o">[</span>profile profile1<span class="o">]</span>
+<span class="nv">region</span> <span class="o">=</span> ap-southeast-2
+<span class="nv">source_profile</span> <span class="o">=</span> default
+<span class="nv">role_arn</span> <span class="o">=</span> arn:aws:iam::123:role/Developer
+
+<span class="o">[</span>profile profile2<span class="o">]</span>
+<span class="nv">region</span> <span class="o">=</span> ap-southeast-2
+<span class="nv">source_profile</span> <span class="o">=</span> default
+<span class="nv">role_arn</span> <span class="o">=</span> arn:aws:iam::456:role/Sysops
+<span class="nv">mfa_serial</span> <span class="o">=</span> arn:aws:iam::789:mfa/user@domain.blabla
+</pre></div>
+
+<p>and</p>
+
+<div class="highlight"><pre><span class="c"># File: credentials</span>
+<span class="o">[</span>default<span class="o">]</span>
+<span class="nv">aws_access_key_id</span> <span class="o">=</span> YOU_KEY_ID
+<span class="nv">aws_secret_access_key</span> <span class="o">=</span> YOUR_SECRET
+</pre></div>
+
+<p>And once it is done you can, for example, confirm it is working with some S3 commands in Python.</p>
+
+<div class="highlight"><pre><span class="c">#!/usr/bin/env python3</span>
+
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">boto3</span>
+
+<span class="n">session</span> <span class="o">=</span> <span class="n">boto3</span><span class="o">.</span><span class="n">Session</span><span class="p">(</span><span class="n">profile_name</span><span class="o">=</span><span class="s">&#39;profile2&#39;</span><span class="p">)</span>
+<span class="n">s3</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">resource</span><span class="p">(</span><span class="s">&#39;s3&#39;</span><span class="p">)</span>
+
+<span class="n">found</span> <span class="o">=</span> <span class="bp">False</span>
+
+<span class="n">name</span> <span class="o">=</span> <span class="s">&#39;mysuperduperbucket&#39;</span>
+
+<span class="k">for</span> <span class="n">bucket</span> <span class="ow">in</span> <span class="n">s3</span><span class="o">.</span><span class="n">buckets</span><span class="o">.</span><span class="n">all</span><span class="p">():</span>
+    <span class="k">if</span> <span class="n">bucket</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="n">name</span><span class="p">:</span>
+        <span class="n">found</span> <span class="o">=</span> <span class="bp">True</span>
+
+<span class="k">if</span> <span class="ow">not</span> <span class="n">found</span><span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">&quot;Creating bucket...&quot;</span><span class="p">)</span>
+    <span class="n">s3</span><span class="o">.</span><span class="n">create_bucket</span><span class="p">(</span><span class="n">Bucket</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
+
+<span class="n">file_location</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">realpath</span><span class="p">(</span><span class="n">__file__</span><span class="p">))</span> <span class="o">+</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">sep</span> <span class="o">+</span> <span class="s">&#39;samplefile.txt&#39;</span>
+<span class="n">s3</span><span class="o">.</span><span class="n">meta</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">upload_file</span><span class="p">(</span><span class="n">Filename</span><span class="o">=</span><span class="n">file_location</span><span class="p">,</span> <span class="n">Bucket</span><span class="o">=</span><span class="n">name</span><span class="p">,</span> <span class="n">Key</span><span class="o">=</span><span class="s">&#39;book.txt&#39;</span><span class="p">)</span>
+</pre></div>
+
+<p>The AWS files in this example are using MFA too, the multi-factor authentication. So the first time you run this code you may be asked to generate a token, which will be cached for a short time.</p>
+
+<p>That&#8217;s it for today.</p>
+
+<p>Happy hacking!</p>
+
+<!-- html -->
+
+<pre><code>&lt;p class="postmetadata"&gt;
+
+    &lt;small&gt;tags 
+     [&amp;nbsp;&lt;a
+        href="/tag/python"
+        rel="tag"&gt;python&lt;/a&gt;&amp;nbsp;]&amp;nbsp;
+
+     [&amp;nbsp;&lt;a
+        href="/tag/aws"
+        rel="tag"&gt;aws&lt;/a&gt;&amp;nbsp;]&amp;nbsp;
+
+    &lt;/small&gt;
+
+
+    &lt;br/&gt;
+    &lt;small&gt;posted in 
+    [&amp;nbsp;&lt;a
+        href="/blog"
+        title="View all posts in blog"
+        rel="category tag"&gt;blog&lt;/a&gt;&amp;nbsp;]&amp;nbsp;
+    category &lt;/small&gt;
+
+&lt;/p&gt;
+</code></pre>
+</div>
+
+<div class="ui raised padded container segment">
+    <h2>Best place to find science fiction books in New Zealand</h2>
+    <p><small>kinow</small> @ <small>Oct 02, 2016&nbsp;21:57:03</small></p>
+
+
+
+
+
+
+
+<a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2016/10/02/best-place-to-find-science-fiction-books-in-new-zealand" data-text="Best place to find science fiction books in New Zealand" data-via="kinow" data-hashtags="opensource">Tweet</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+
+
+    <p>Since I moved to New Zealand it has been hard to find good science fiction sections in the local book stores. I really miss the Livraria Cultura at Avenida Paulista, or the Saraiva Megastores. Whitcoulls and Paper Plus do a good job, but they have very few series, only recent releases, and you do not feel that cool environment while you browse the books.</p>
+<p>I found that small secondhand bookstores are the best places to find good books - not only science fiction - in New Zealand. Devonport has one, near the waterfront. Auckland has Jason books too, right in the CBD. Wellington, Dunedin and Queenstown too (the Queenstown one is on the second level in a small mall, you have to check it out!).</p>
+<p>But last week I remembered my wife telling me about this web site, <a href="https://www.hardtofind.co.nz/">https://www.hardtofind.co.nz/</a>. I found several books from <a href="http://kinoshita.eti.br/books/#my-wish-list">my Wish List</a> there, and also other Stephen King books recommended by the bookstore clerk from Queenstown.</p>
+<p><img class="ui centered image" src="/2016/10/02/best-place-to-find-science-fiction-books-in-new-zealand/books-hard-to-find-store.jpg" alt="Books from Hard To Find bookstore" /></p>
+<p>If you are into science fiction, Asimov, Neal Stephenson, Peter H. Hamilton, Piers Anthony, Arthur C. Clarke, Stephen King, etc, I am sure you will enjoy going to the Hard To Find store in Onehunga. It is near the Dress Smart. So during week if you stop by Dress Smart, you can hop on their free bus from the city centre and later enjoy checking out the store too.</p>
+<p>It is a two story house, with lots of rooms, with science fiction, New Zealand, maritime sports, arts, poetry, health, etc.</p>
+<p>Happy reading!</p><!-- html -->
+
+    <p class="postmetadata">
+
+        <small>tags 
+         [&nbsp;<a
+            href="/tag/science-fiction"
+            rel="tag">science-fiction</a>&nbsp;]&nbsp;
+
+         [&nbsp;<a
+            href="/tag/books"
+            rel="tag">books</a>&nbsp;]&nbsp;
+
+        </small>
+
+
+        <br/>
+        <small>posted in 
+        [&nbsp;<a
+            href="/blog"
+            title="View all posts in blog"
+            rel="category tag">blog</a>&nbsp;]&nbsp;
+        category </small>
+
+    </p>
+</div>
+
+<div class="ui raised padded container segment">
     <h2>Performance problems in Jenkins TAP Plug-in &mdash; part 1</h2>
     <p><small>kinow</small> @ <small>Sep 03, 2016&nbsp;23:28:03</small></p>
 
@@ -254,164 +481,6 @@ some tweaking as well.</p>
          [&nbsp;<a
             href="/tag/illustrations"
             rel="tag">illustrations</a>&nbsp;]&nbsp;
-
-        </small>
-
-
-        <br/>
-        <small>posted in 
-        [&nbsp;<a
-            href="/blog"
-            title="View all posts in blog"
-            rel="category tag">blog</a>&nbsp;]&nbsp;
-        category </small>
-
-    </p>
-</div>
-
-<div class="ui raised padded container segment">
-    <h2>Revamping Frege logo</h2>
-    <p><small>kinow</small> @ <small>Aug 16, 2016&nbsp;23:54:03</small></p>
-
-
-
-
-
-
-
-<a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2016/08/16/revamping-frege-logo" data-text="Revamping Frege logo" data-via="kinow" data-hashtags="opensource">Tweet</a>
-<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-
-
-    <p>For a while I had been wanting to try adding a flat colour to the Frege
-logo. This weekend had some bit of spare time, and here is the result.</p>
-<p>Submitted to the project as <a href="https://github.com/Frege/frege/pull/299/files">pull request #299</a>.</p>
-<p>Current logo.</p>
-<p><img class="ui centered large image" src="/2016/08/16/revamping-frege-logo/Frege_logo.png" alt="Frege current logo" /></p>
-<p>And the updated logo.</p>
-<p><img class="ui centered large image" src="/2016/08/16/revamping-frege-logo/Frege_logo_flat_colours.png" alt="Frege updated logo" /></p>
-<p>The colour used was Flamingo (#EF4836), found in <a href="http://www.flatuicolorpicker.com/">Flat UI Color Picker</a>.</p>
-<p>Perhaps not exactly revamping, since all I did was just change a colour. There were
-adjustments to the b&eacute;zier curves as well, to better align them, but I updated both
-logos, not just the new one :-)</p><!-- html -->
-
-    <p class="postmetadata">
-
-        <small>tags 
-         [&nbsp;<a
-            href="/tag/programming"
-            rel="tag">programming</a>&nbsp;]&nbsp;
-
-         [&nbsp;<a
-            href="/tag/illustrations"
-            rel="tag">illustrations</a>&nbsp;]&nbsp;
-
-        </small>
-
-
-        <br/>
-        <small>posted in 
-        [&nbsp;<a
-            href="/blog"
-            title="View all posts in blog"
-            rel="category tag">blog</a>&nbsp;]&nbsp;
-        category </small>
-
-    </p>
-</div>
-
-<div class="ui raised padded container segment">
-    <h2>Reading notes about DRMAA v2</h2>
-    <p><small>kinow</small> @ <small>Jul 20, 2016&nbsp;19:59:03</small></p>
-
-
-
-
-
-
-
-<a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2016/07/20/reading-notes-about-drmaa-v2" data-text="Reading notes about DRMAA v2" data-via="kinow" data-hashtags="opensource">Tweet</a>
-<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-
-
-    <p>The DRMAA v2 specification draft is ready to be published, and is in <a href="https://redmine.ogf.org/boards/36/topics/494">public
-comment</a> until 31st July this year.
-I used DRMAA v1 to integrate Jenkins and PBS some time ago, but it was not a
-very elegant solution.</p>
-<p>And in the end integrating other grid computing implementations like SGE would
-not be very simple.</p>
-<p>This post contains my reading notes for DRMAA v2, and a short analysis of how
-this new specification could be used in a new tentative to integrate
-Jenkins and several grid computing implementations in a single plug-in.</p>
-<!-- html -->
-
-    <p>( <a href="/2016/07/20/reading-notes-about-drmaa-v2" >Read more &#8230;</a> )</p>
-
-    <p class="postmetadata">
-
-        <small>tags 
-         [&nbsp;<a
-            href="/tag/programming"
-            rel="tag">programming</a>&nbsp;]&nbsp;
-
-         [&nbsp;<a
-            href="/tag/grid%20computing"
-            rel="tag">grid computing</a>&nbsp;]&nbsp;
-
-        </small>
-
-
-        <br/>
-        <small>posted in 
-        [&nbsp;<a
-            href="/blog"
-            title="View all posts in blog"
-            rel="category tag">blog</a>&nbsp;]&nbsp;
-        category </small>
-
-    </p>
-</div>
-
-<div class="ui raised padded container segment">
-    <h2>Reasons for having pt and pt-BR in a software</h2>
-    <p><small>kinow</small> @ <small>Jul 17, 2016&nbsp;14:14:03</small></p>
-
-
-
-
-
-
-
-<a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2016/07/17/reasons-for-having-pt-and-ptbr-in-a-software" data-text="Reasons for having pt and pt-BR in a software" data-via="kinow" data-hashtags="opensource">Tweet</a>
-<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-
-
-    <p>Some time ago I found some spare time to work on a different Open Source project:
-<a href="http://skosmos.org/">SKOSMOS</a>. SKOSMOS is a web based SKOS browser and publishing
-tool, used to create vocabularies using the SKOS ontology.</p>
-<p>I decided to help with translation, but there was no Brazilian Portuguese option,
-only Portuguese. I used a few arguments to suggest that having Brazilian Portuguese
-would be a good thing.</p>
-<p>Another Open Source project that I use in a side project is
-<a href="https://www.languagetool.org/">LanguageTool</a>. LanguageTool is used for
-proof-reading, and uses rules to find spelling and grammar errors.</p>
-<p>Today I saw a message in the LanguageTool mailing list discussing whether having a Brazilian
-Portuguese page would make sense, or if it would be better to have just Portuguese, and then
-add rules for special cases.</p>
-<!-- html -->
-
-    <p>( <a href="/2016/07/17/reasons-for-having-pt-and-ptbr-in-a-software" >Read more &#8230;</a> )</p>
-
-    <p class="postmetadata">
-
-        <small>tags 
-         [&nbsp;<a
-            href="/tag/languages"
-            rel="tag">languages</a>&nbsp;]&nbsp;
-
-         [&nbsp;<a
-            href="/tag/portuguese"
-            rel="tag">portuguese</a>&nbsp;]&nbsp;
 
         </small>
 
