@@ -2,9 +2,9 @@
 DIR=`dirname "$0"`
 
 # Generate CV
-pushd cv
-make deploy
-popd
+# pushd cv
+# make deploy
+# popd
 
 chef --root=$DIR purge
 chef --root=$DIR bake --output=blog --force
