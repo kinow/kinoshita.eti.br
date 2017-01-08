@@ -1,6 +1,9 @@
 #!/bin/bash
 DIR=`dirname "$0"`
 
-chef --root=$DIR serve --use-reloader
+# Generate CV
+pushd cv
+make deploy
+popd
 
 exit 0

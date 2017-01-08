@@ -1,11 +1,6 @@
 #!/bin/bash
 DIR=`dirname "$0"`
 
-# Generate CV
-# pushd cv
-# make deploy
-# popd
-
 chef --root=$DIR purge
 chef --root=$DIR bake --output=blog --force
 cp $DIR/CNAME blog/
