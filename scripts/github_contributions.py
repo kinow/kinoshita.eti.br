@@ -11,6 +11,8 @@ Original Perl script:
 http://stackoverflow.com/questions/21322778/how-do-i-get-a-list-of-all-the-github-projects-ive-contributed-to-in-the-last-y
 """
 
+# Returns only the 90 last days
+
 USER_NAME="kinow"
 FROM=2010
 now = datetime.datetime.now()
