@@ -2,7 +2,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en">
 <head profile="http://gmpg.org/xfn/11">
-    <title>Bruno P. Kinoshita</title> 
+    <title>Bruno P. Kinoshita &mdash; Using AWS MFA without a mobile phone</title> 
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="description" content="Bruno de Paula Kinoshita personal web site" />
     <meta name="keywords"
@@ -72,7 +72,7 @@
                 <i class="content icon"></i>
             </a>
             <div class="item">
-                None
+                Using AWS MFA without a mobile phone
             </div>
         </div>
     </div>
@@ -107,13 +107,12 @@
                 <div class="main container">
 
                 
-                    
-                    <p>Posts tagged with &#8216;aws&#8217;</p>
 <div class="ui raised padded container segment">
-    <h2>Using AWS MFA without a mobile phone</h2>
-    <p><small>kinow</small> @ <small>Feb 28, 2017&nbsp;00:47:03</small></p>
-
-
+    <h1 class='post-topic'>Using AWS MFA without a mobile phone</h1>
+    <small>kinow</small> @
+	<small>Feb 28, 2017&nbsp;00:47:03</small>
+    <div class="entry">
+       
 
 
 
@@ -122,8 +121,7 @@
 <a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2017/02/28/using-aws-mfa-without-a-mobile-phone" data-text="Using AWS MFA without a mobile phone" data-via="kinow" data-hashtags="opensource">Tweet</a>
 <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
 
-
-    <p>If you use AWS, the chances are that you use MFA - Multi-factor Authentication - to authenticate.
+	   <p>If you use AWS, the chances are that you use MFA - Multi-factor Authentication - to authenticate.
 I don&#8217;t like to install apps in my mobile phone, unless I need to, so having bought a new phone
 recently, I decided to find a replacement for Google Authenticator.</p>
 <p>There are several command line utilities, browser extensions, libraries, and tools (free and paid)
@@ -169,26 +167,26 @@ clipboard. Then just paste into my browser, and that&#8217;s that!</p>
 <li><a href="http://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_mfa_enable_virtual.html">Enabling a Virtual Multi-factor Authentication (MFA) Device</a></li>
 <li><a href="http://tecadmin.net/install-go-on-ubuntu/">How to Install Go 1.7 on Ubuntu 16.04 &amp; 14.04</a></li>
 <li><a href="http://garywoodfine.com/use-pbcopy-on-ubuntu/">Use pbcopy on Ubuntu</a></li>
-</ul><!-- html -->
-
+</ul>
+    </div>
     <p class="postmetadata">
-
+        
         <small>tags 
          [&nbsp;<a
             href="/tag/go"
             rel="tag">go</a>&nbsp;]&nbsp;
-
+        
          [&nbsp;<a
             href="/tag/aws"
             rel="tag">aws</a>&nbsp;]&nbsp;
-
+        
          [&nbsp;<a
             href="/tag/security"
             rel="tag">security</a>&nbsp;]&nbsp;
-
+        
         </small>
-
-
+        
+        
         <br/>
         <small>posted in 
         [&nbsp;<a
@@ -196,118 +194,10 @@ clipboard. Then just paste into my browser, and that&#8217;s that!</p>
             title="View all posts in blog"
             rel="category tag">blog</a>&nbsp;]&nbsp;
         category </small>
-
+        
     </p>
 </div>
 
-<div class="ui raised padded container segment">
-    <h2>Using the AWS API with Python</h2>
-    <p><small>kinow</small> @ <small>Oct 04, 2016&nbsp;21:15:03</small></p>
-
-
-
-
-
-
-
-<a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2016/10/04/using-the-aws-api-with-python" data-text="Using the AWS API with Python" data-via="kinow" data-hashtags="opensource">Tweet</a>
-<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-
-
-    <p>Amazon Web Services provides a series of cloud services. When you access the web interface, most - if not all - of the actions you do there are actually translated into API calls.</p>
-<p>They also provide SDK&#8217;s in several programming languages. With these SDK&#8217;s you are able to call the same API used by the web interface. Python has <a href="https://github.com/boto/boto3">boto</a> (or boto3) which lets you to automate several tasks in AWS.</p>
-<p>But before you start using the API, you will need to <a href="https://web.archive.org/web/20160818112016/http://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSGettingStartedGuide/AWSCredentials.html">set up your access key</a>.</p>
-<p>It is likely that with time you will have different roles, and may have different permissions with each role. You have to configure your local environment so that you can either use the command line Python utility (installed via <code>pip install awscli</code>) or with boto.</p>
-<p>The awscli is a dependency for using boto3. After you install it, you need to run <code>aws configure</code>. It will create the <em>~/.aws/config</em> and <em>~/.aws/credentials</em> files. You can tweak these files to support multiple roles.</p>
-<p>I followed the tutorials, but got all sorts of different issues. Then after debugging some locally installed dependencies, in special awscli files, I found that the following settings work for my environment.</p>
-<div class="highlight"><pre><span class="c"># File: config</span>
-<span class="o">[</span>profile default<span class="o">]</span>
-<span class="nv">region</span> <span class="o">=</span> ap-southeast-2
-
-<span class="o">[</span>profile profile1<span class="o">]</span>
-<span class="nv">region</span> <span class="o">=</span> ap-southeast-2
-<span class="nv">source_profile</span> <span class="o">=</span> default
-<span class="nv">role_arn</span> <span class="o">=</span> arn:aws:iam::123:role/Developer
-
-<span class="o">[</span>profile profile2<span class="o">]</span>
-<span class="nv">region</span> <span class="o">=</span> ap-southeast-2
-<span class="nv">source_profile</span> <span class="o">=</span> default
-<span class="nv">role_arn</span> <span class="o">=</span> arn:aws:iam::456:role/Sysops
-<span class="nv">mfa_serial</span> <span class="o">=</span> arn:aws:iam::789:mfa/user@domain.blabla
-</pre></div>
-
-<p>and</p>
-
-<div class="highlight"><pre><span class="c"># File: credentials</span>
-<span class="o">[</span>default<span class="o">]</span>
-<span class="nv">aws_access_key_id</span> <span class="o">=</span> YOU_KEY_ID
-<span class="nv">aws_secret_access_key</span> <span class="o">=</span> YOUR_SECRET
-</pre></div>
-
-<p>And once it is done you can, for example, confirm it is working with some S3 commands in Python.</p>
-
-<div class="highlight"><pre><span class="c">#!/usr/bin/env python3</span>
-
-<span class="kn">import</span> <span class="nn">os</span>
-<span class="kn">import</span> <span class="nn">boto3</span>
-
-<span class="n">session</span> <span class="o">=</span> <span class="n">boto3</span><span class="o">.</span><span class="n">Session</span><span class="p">(</span><span class="n">profile_name</span><span class="o">=</span><span class="s">&#39;profile2&#39;</span><span class="p">)</span>
-<span class="n">s3</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">resource</span><span class="p">(</span><span class="s">&#39;s3&#39;</span><span class="p">)</span>
-
-<span class="n">found</span> <span class="o">=</span> <span class="bp">False</span>
-
-<span class="n">name</span> <span class="o">=</span> <span class="s">&#39;mysuperduperbucket&#39;</span>
-
-<span class="k">for</span> <span class="n">bucket</span> <span class="ow">in</span> <span class="n">s3</span><span class="o">.</span><span class="n">buckets</span><span class="o">.</span><span class="n">all</span><span class="p">():</span>
-    <span class="k">if</span> <span class="n">bucket</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="n">name</span><span class="p">:</span>
-        <span class="n">found</span> <span class="o">=</span> <span class="bp">True</span>
-
-<span class="k">if</span> <span class="ow">not</span> <span class="n">found</span><span class="p">:</span>
-    <span class="k">print</span><span class="p">(</span><span class="s">&quot;Creating bucket...&quot;</span><span class="p">)</span>
-    <span class="n">s3</span><span class="o">.</span><span class="n">create_bucket</span><span class="p">(</span><span class="n">Bucket</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
-
-<span class="n">file_location</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">realpath</span><span class="p">(</span><span class="n">__file__</span><span class="p">))</span> <span class="o">+</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">sep</span> <span class="o">+</span> <span class="s">&#39;samplefile.txt&#39;</span>
-<span class="n">s3</span><span class="o">.</span><span class="n">meta</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">upload_file</span><span class="p">(</span><span class="n">Filename</span><span class="o">=</span><span class="n">file_location</span><span class="p">,</span> <span class="n">Bucket</span><span class="o">=</span><span class="n">name</span><span class="p">,</span> <span class="n">Key</span><span class="o">=</span><span class="s">&#39;book.txt&#39;</span><span class="p">)</span>
-</pre></div>
-
-<p>The AWS files in this example are using MFA too, the multi-factor authentication. So the first time you run this code you may be asked to generate a token, which will be cached for a short time.</p>
-
-<p>That&#8217;s it for today.</p>
-
-<p>Happy hacking!</p>
-
-<!-- html -->
-
-<pre><code>&lt;p class="postmetadata"&gt;
-
-    &lt;small&gt;tags 
-     [&amp;nbsp;&lt;a
-        href="/tag/python"
-        rel="tag"&gt;python&lt;/a&gt;&amp;nbsp;]&amp;nbsp;
-
-     [&amp;nbsp;&lt;a
-        href="/tag/aws"
-        rel="tag"&gt;aws&lt;/a&gt;&amp;nbsp;]&amp;nbsp;
-
-    &lt;/small&gt;
-
-
-    &lt;br/&gt;
-    &lt;small&gt;posted in 
-    [&amp;nbsp;&lt;a
-        href="/blog"
-        title="View all posts in blog"
-        rel="category tag"&gt;blog&lt;/a&gt;&amp;nbsp;]&amp;nbsp;
-    category &lt;/small&gt;
-
-&lt;/p&gt;
-</code></pre>
-</div>
-                    <p class="postmetadata">
-                        
-                        
-                    </p>
-                
                 </div>
             </div>
         </div>
