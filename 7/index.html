@@ -8,7 +8,7 @@
     <meta name="keywords"
         content="kinoshita, bruno de paula kinoshita, geek, geek stuff, java, python, c, c++, msn now playing, neural network, mackenzie, sao paulo, brasil, brazil, nerd, nerd stuff, cool, jenkins, illustration, quadrinhos, machine learning, linguistic, apache, open source, codigo livre, codigo aberto" />
     <meta name="author" content="" />
-    <meta name="generator" content="PieCrust 2.0.0rc2" />
+    <meta name="generator" content="PieCrust 2.0.0" />
     <meta name="template-engine" content="Twig" />
     <meta name="robots" content="all=index,follow" />
     <meta name="revisit-after" content="15 days" />
@@ -117,6 +117,8 @@
                               
                               <span style="font-size: 12.5pt"><a href="/tag/articles">articles</a></span>&nbsp;(5)
                               
+                              <span style="font-size: 11.5pt"><a href="/tag/aws">aws</a></span>&nbsp;(3)
+                              
                               <span style="font-size: 12.5pt"><a href="/tag/c%2B%2B">c++</a></span>&nbsp;(5)
                               
                               <span style="font-size: 11.5pt"><a href="/tag/docker">docker</a></span>&nbsp;(3)
@@ -156,6 +158,119 @@
                         <h1 class='topic'>Home</h1>
                     </div>
                     
+                    
+                    <div class="ui raised padded container segment">
+                        <h2>
+                            <a href="/2016/04/17/trying-saltstack-with-docker" title="Permanent link">Trying SaltStack with Docker</a>
+                        </h2>
+                        <small>kinow</small> @ <small>Apr 17, 2016&nbsp;22:06:03</small>
+                        <div class="entry">
+                            
+
+
+
+
+
+<a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2016/04/17/trying-saltstack-with-docker" data-text="Trying SaltStack with Docker" data-via="kinow" data-hashtags="opensource">Tweet</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+                            
+                            <p>Some weeks ago I started learning <a href="http://saltstack.com/">SaltStack</a> for a project at work. But I couldn&#8217;t
+find a good Docker image for that and I had to ask the Ops team for some VM&#8217;s. We
+are having a rainy weekend in Auckland, so I decided to have another look at the
+<a href="https://wiki.jenkins-ci.org/display/JENKINS/saltstack-plugin">Jenkins SaltStack Plug-in</a>.</p>
+<p>But now since I was at home, I couldn&#8217;t use the VM&#8217;s that I had access to at
+work. So decided to look again at Docker or Vagrant images. After playing
+with a few images, I found <a href="https://hub.docker.com/r/bbinet/salt-master/">bbinet/salt-master</a>.
+It not only sets up a master, but also provides an easy way to enable the cherrypy
+API (necessary for the Jenkins plug-in).</p>
+<p>This post describes the steps that I took to have a running Salt Master with the API
+enabled. First you need to create some directories and files to use with the image.</p>
+<div class="highlight"><pre>shell<span class="nv">$ </span>mkdir ~/master <span class="o">&amp;&amp;</span> <span class="nb">cd</span> ~/master
+shell<span class="nv">$ </span>mkdir -p config/master.d/
+shell<span class="nv">$ </span>vim config/master.d/api.conf
+</pre></div>
+
+<p>The api.conf contains the SaltStack API configuration. You can change port, user
+and other settings if necessary. Just remember to add a credential in Jenkins
+for the plug-in.</p>
+<div class="highlight"><pre><span class="c"># File: api.conf</span>
+external_auth:
+  pam:
+    saltapiuser:
+      - .*
+      - <span class="s1">&#39;@runner&#39;</span>
+      - <span class="s1">&#39;@wheel&#39;</span>
+      - <span class="s1">&#39;@jobs&#39;</span>
+rest_cherrypy:
+  port: 8000
+  host: 0.0.0.0
+  disable_ssl: True
+  static: /opt/molten
+  static_path: /assets
+  app: /opt/molten/index.html
+  app_path: /molten
+</pre></div>
+
+<p>The image also conveniently provides a script that is executed before the
+entry point (if provided). So we can also create a user for the API automatically
+when the image is created.</p>
+<div class="highlight"><pre>shell<span class="nv">$ </span>vim config/before-exec.sh
+</pre></div>
+
+<div class="highlight"><pre><span class="c">#!/bin/bash</span>
+<span class="c"># File: before-exec.sh</span>
+useradd saltapiuser
+<span class="nb">echo</span> -e <span class="s2">&quot;nosecret\nnosecret\n&quot;</span> <span class="p">|</span> passwd saltapiuser
+<span class="nb">exit </span>0
+</pre></div>
+
+<p>Also make the script executable.</p>
+<div class="highlight"><pre>chmod +x config/before-exec.sh
+</pre></div>
+
+<p>And finally start the container.</p>
+<div class="highlight"><pre>docker run --name salt-master -v <span class="nv">$PWD</span>/config:/config <span class="se">\</span>
+    -p 4505:4505 -p 4506:4506 -p 443:443 -p 8000:8000 <span class="se">\</span>
+    bbinet/salt-master
+</pre></div>
+
+<p>Once the container is running, you can go to http://localhost:8000 and
+log in as saltapiuser:nosecret, and also configure your plug-in
+in Jenkins.</p>
+<p>Happy hacking!</p>
+                            
+                            
+                            
+                        </div>
+                        <p class="postmetadata">
+                            
+                            <small>tags 
+                             [&nbsp;<a
+                                href="/tag/jenkins"
+                                rel="tag">jenkins</a>&nbsp;]&nbsp;
+                            
+                             [&nbsp;<a
+                                href="/tag/docker"
+                                rel="tag">docker</a>&nbsp;]&nbsp;
+                            
+                             [&nbsp;<a
+                                href="/tag/saltstack"
+                                rel="tag">saltstack</a>&nbsp;]&nbsp;
+                            
+                            </small>
+                            
+                            
+                            <br/>
+                            <small>posted in 
+                            [&nbsp;<a
+                                href="/blog"
+                                title="View all posts in blog"
+                                rel="category tag">blog</a>&nbsp;]
+                                &nbsp;category
+                            </small>
+                            
+                        </p>
+                    </div>
                     
                     <div class="ui raised padded container segment">
                         <h2>
@@ -415,95 +530,6 @@ as in case it finds any interesting bug I can submit it to the MapServer project
                              [&nbsp;<a
                                 href="/tag/software%20quality"
                                 rel="tag">software quality</a>&nbsp;]&nbsp;
-                            
-                            </small>
-                            
-                            
-                            <br/>
-                            <small>posted in 
-                            [&nbsp;<a
-                                href="/blog"
-                                title="View all posts in blog"
-                                rel="category tag">blog</a>&nbsp;]
-                                &nbsp;category
-                            </small>
-                            
-                        </p>
-                    </div>
-                    
-                    <div class="ui raised padded container segment">
-                        <h2>
-                            <a href="/2015/09/07/how_does_the_jenkins_credentials_plugin_store_passwords" title="Permanent link">How does the Jenkins Credentials Plug-in store passwords?</a>
-                        </h2>
-                        <small>kinow</small> @ <small>Sep 07, 2015&nbsp;01:25:03</small>
-                        <div class="entry">
-                            
-
-
-
-
-
-<a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2015/09/07/how_does_the_jenkins_credentials_plugin_store_passwords" data-text="How does the Jenkins Credentials Plug-in store passwords?" data-via="kinow" data-hashtags="opensource">Tweet</a>
-<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-                            
-                            <p><a href="https://wiki.jenkins-ci.org/display/JENKINS/Credentials+Plugin">Jenkins Credentials Plug-in</a> manages credentials stored in Jenkins. These credentials can be used in many jobs and by plug-ins for executing SSH commands, authenticating to systems, or running other commands that need some sort of authentication or authorisation.</p>
-<p>I recently used its API for the first time in the <a href="https://github.com/biouno/figshare-plugin">BioUno figshare Plug-in</a> to store OAuth 1.0 credentials (consumer key, consumer secret, token key, token secret). This <a href="http://biouno.org/2015/09/05/using_jenkins_credentials_plugin_to_create_the_biouno_figshare_plugin/">blog post</a> has more details about how we used the plug-in, but this post is specifically on how the passwords are stored by Jenkins.</p>
-<h2>Secret and ciphers</h2>
-<p>Jenkins stores its configuration on disk as XML using the XStream library. Plug-in developers using the Credentials Plug-in API must use the <strong>Secret</strong> class to encrypt sensitive information.</p>
-<p>The <code>Secret.fromString</code> method is responsible for creating a cipher from a given String. As in the Secret Javadoc,  <em>&#8220;this is not meant as a protection against code running in the same VM, nor against an attacker who has local file system access on Jenkins master&#8221;</em>. But at least makes things more complicated :-)</p>
-<ul>
-<li><a href="http://javadoc.jenkins-ci.org/hudson/util/Secret.html">Secret Javadoc</a></li>
-<li><a href="https://github.com/jenkinsci/jenkins/blob/master/core/src/main/java/hudson/util/Secret.java">Secret source code</a></li>
-</ul>
-<div class="highlight"><pre><span class="kd">public</span> <span class="kd">static</span> <span class="n">Secret</span> <span class="nf">fromString</span><span class="o">(</span><span class="n">String</span> <span class="n">data</span><span class="o">)</span> <span class="o">{</span>
-    <span class="n">data</span> <span class="o">=</span> <span class="n">Util</span><span class="o">.</span><span class="na">fixNull</span><span class="o">(</span><span class="n">data</span><span class="o">);</span>
-    <span class="n">Secret</span> <span class="n">s</span> <span class="o">=</span> <span class="n">decrypt</span><span class="o">(</span><span class="n">data</span><span class="o">);</span>
-    <span class="k">if</span><span class="o">(</span><span class="n">s</span><span class="o">==</span><span class="kc">null</span><span class="o">)</span> <span class="n">s</span><span class="o">=</span><span class="k">new</span> <span class="n">Secret</span><span class="o">(</span><span class="n">data</span><span class="o">);</span>
-    <span class="k">return</span> <span class="n">s</span><span class="o">;</span>
-<span class="o">}</span>
-</pre></div>
-
-<p>The first line simply replaces a null string by an empty &#8220;&#8221;, or keeps the current value of not null.</p>
-<p>After that, the decrypt method is called.</p>
-<div class="highlight"><pre><span class="kd">public</span> <span class="kd">static</span> <span class="n">Secret</span> <span class="nf">decrypt</span><span class="o">(</span><span class="n">String</span> <span class="n">data</span><span class="o">)</span> <span class="o">{</span>
-    <span class="k">if</span><span class="o">(</span><span class="n">data</span><span class="o">==</span><span class="kc">null</span><span class="o">)</span>      <span class="k">return</span> <span class="kc">null</span><span class="o">;</span>
-    <span class="k">try</span> <span class="o">{</span>
-        <span class="kt">byte</span><span class="o">[]</span> <span class="n">in</span> <span class="o">=</span> <span class="n">Base64</span><span class="o">.</span><span class="na">decode</span><span class="o">(</span><span class="n">data</span><span class="o">.</span><span class="na">toCharArray</span><span class="o">());</span>
-        <span class="n">Secret</span> <span class="n">s</span> <span class="o">=</span> <span class="n">tryDecrypt</span><span class="o">(</span><span class="n">KEY</span><span class="o">.</span><span class="na">decrypt</span><span class="o">(),</span> <span class="n">in</span><span class="o">);</span>
-        <span class="k">if</span> <span class="o">(</span><span class="n">s</span><span class="o">!=</span><span class="kc">null</span><span class="o">)</span>    <span class="k">return</span> <span class="n">s</span><span class="o">;</span>
-
-        <span class="c1">// try our historical key for backward compatibility</span>
-        <span class="n">Cipher</span> <span class="n">cipher</span> <span class="o">=</span> <span class="n">getCipher</span><span class="o">(</span><span class="s">&quot;AES&quot;</span><span class="o">);</span>
-        <span class="n">cipher</span><span class="o">.</span><span class="na">init</span><span class="o">(</span><span class="n">Cipher</span><span class="o">.</span><span class="na">DECRYPT_MODE</span><span class="o">,</span> <span class="n">getLegacyKey</span><span class="o">());</span>
-        <span class="k">return</span> <span class="n">tryDecrypt</span><span class="o">(</span><span class="n">cipher</span><span class="o">,</span> <span class="n">in</span><span class="o">);</span>
-    <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">GeneralSecurityException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
-        <span class="k">return</span> <span class="kc">null</span><span class="o">;</span>
-    <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">UnsupportedEncodingException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
-        <span class="k">throw</span> <span class="k">new</span> <span class="n">Error</span><span class="o">(</span><span class="n">e</span><span class="o">);</span> <span class="c1">// impossible</span>
-    <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">IOException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
-        <span class="k">return</span> <span class="kc">null</span><span class="o">;</span>
-    <span class="o">}</span>
-<span class="o">}</span>
-</pre></div>
-
-<p>The <code>KEY.decrypt()</code> call will return a <a href="http://docs.oracle.com/javase/8/docs/api/javax/crypto/Cipher.html"><code>javax.crypto.Cipher</code></a>. The Cipher class is handled in <a href="https://github.com/jenkinsci/jenkins/blob/93dfe3377ec8d430818f5b9073f16c677343adb4/core/src/main/java/jenkins/security/CryptoConfidentialKey.java">CryptoConfidentialKey</a> in Jenkins API, where it defines the algorithm used to create the cipher: <a href="https://en.wikipedia.org/wiki/Advanced_Encryption_Standard">AES</a>.</p>
-<p>Jenkins has also a <a href="https://github.com/jenkinsci/jenkins/blob/93dfe3377ec8d430818f5b9073f16c677343adb4/core/src/main/java/jenkins/security/ConfidentialStore.java#L63">ConfidentialStore</a>, that is required to create the cipher. This class must be initialized before someone tries to create or read a cipher. This extra step also increases security, though access to the JVM is still a problem.</p>
-<p>It is a bit late, so it is all for today. In summary: the credentials plug-in gives you a central place to manage credentials, but it is up to plug-in developers to use it. Sensitive values can be encrypted with AES on disk. So it is important that your file permissions, ACL and system auditing processes are in place and well maintained and monitored.</p>
-<p>Happy hacking!</p>
-                            
-                            
-                            
-                        </div>
-                        <p class="postmetadata">
-                            
-                            <small>tags 
-                             [&nbsp;<a
-                                href="/tag/jenkins"
-                                rel="tag">jenkins</a>&nbsp;]&nbsp;
-                            
-                             [&nbsp;<a
-                                href="/tag/security"
-                                rel="tag">security</a>&nbsp;]&nbsp;
                             
                             </small>
                             

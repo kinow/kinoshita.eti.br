@@ -13,10 +13,43 @@
     <atom:link href="/blog/feed.xml" rel="self" type="application/rss+xml" />
     <link>/</link>
     <description></description>
-    <lastBuildDate>1489482943.567134</lastBuildDate>
+    <lastBuildDate>1489538940.448268</lastBuildDate>
     <language>en-US</language>
-    <generator>PieCrust 2.0.0rc2</generator>
+    <generator>PieCrust 2.0.0</generator>
  
+
+<item>
+    <title>Debugging an application that freezes the X server</title>
+    <pubDate>Jan 02, 2017</pubDate>
+    <link>/2017/01/02/debugging-an-application-that-freezes-the-x-server</link>
+    <dc:creator></dc:creator>
+    <description><p>Some time ago, I decided to start writing C++ again, and picked Krita for that.
+Krita is written in C++ and Qt. The <a href="https://bugs.kde.org/show_bug.cgi?id=366741">bug I was working on</a>
+involved a memory issue when changing the UI.</p>
+<p>The problem was that this UI change would result in, not only Krita, but the whole
+X server freezing. My set up was basically Ubuntu 16.04.1 LTS, with Eclipse, Qt5,
+and the latest version of Krita checked out via git.</p>
+<p>Initially I spent some time looking at the logs, tracing the binary, even downloaded
+some Qt utility tools to look at the events and what was happening with the application
+when it froze.</p>
+<p>However, eventually I realized I was going to spend more time on this part of the
+issue, rather than on the memory bug. So decided to look for a work-around.</p>
+<p>Thankfully someone else blogged about a similar issue and saved me a lot of time :-)
+Here&#8217;s how I did it, following the instructions in
+<a href="http://www.geany.org/manual/gtk/gtk-faq/x462.html">this blog post</a>.</p>
+<div class="highlight"><pre><span class="nv">$ </span>sudo apt-get install xnest -y
+<span class="nv">$ </span><span class="nb">cd </span>krita_install/
+<span class="nv">$ </span>Xnest :10
+<span class="nv">$ </span>twm -display :10
+<span class="nv">$ </span><span class="nb">export </span><span class="nv">DISPLAY</span><span class="o">=</span>:10
+<span class="nv">$ </span>./krita
+</pre></div>
+
+<p>That&#8217;s it. You should have Krita running in a separate window, with Xnest, and within
+this window the twm window manager running. So when it freezes, at least you can still
+debug your application in Eclipse or whatever IDE you prefer.</p>
+<p>Happy hacking!</p></description>
+</item>
 
 <item>
     <title>Drawing sketch: Uh!</title>
@@ -343,43 +376,6 @@ found by ShellCheck.</p>
 <p>If you are into science fiction, Asimov, Neal Stephenson, Peter H. Hamilton, Piers Anthony, Arthur C. Clarke, Stephen King, etc, I am sure you will enjoy going to the Hard To Find store in Onehunga. It is near the Dress Smart. So during week if you stop by Dress Smart, you can hop on their free bus from the city centre and later enjoy checking out the store too.</p>
 <p>It is a two story house, with lots of rooms, with science fiction, New Zealand, maritime sports, arts, poetry, health, etc.</p>
 <p>Happy reading!</p></description>
-</item>
-
-<item>
-    <title>Performance problems in Jenkins TAP Plug-in &mdash; part 1</title>
-    <pubDate>Sep 03, 2016</pubDate>
-    <link>/2016/09/03/performance-problems-in-jenkins-tap-plugin-part-1</link>
-    <dc:creator></dc:creator>
-    <description><p><a href="https://issues.jenkins-ci.org/browse/JENKINS-17887">JENKINS-17887</a> reports performance problems in the <a href="https://wiki.jenkins-ci.org/display/JENKINS/TAP+Plugin">Jenkins TAP Plug-in</a>. It also lists a series of suggestions on how to improve the Jenkins TAP Plug-in performance. On this initial post, we will get a general idea of how the plug-in performs for large projects.</p>
-<p><a href="http://bioperl.org/">BioPerl</a> has over 21K tests. That should be enough for giving an initial idea of CPU, memory and disk usage for the plug-in.</p>
-<div class="highlight"><pre>git clone https://github.com/bioperl/bioperl-live.git
-<span class="nb">cd </span>bioperl-live
-sudo cpanm  -vv --installdeps --notest .
-sudo cpanm Set::Scalar Graph::Directed XML::LibXML XML::SAX <span class="se">\</span>
-    SVG XML::Parser::PerlSAX Convert::Binary::C XML::SAX::Writer <span class="se">\</span>
-    XML::DOM::XPath Spreadsheet::ParseExcel XML::SAX::Writer <span class="se">\</span>
-    XML::DOM HTML::TableExtract XML::Simple Test::Pod DBI
-prove -r t/ -a tests.tar.gz
-
-All tests successful.
-<span class="nv">Files</span><span class="o">=</span>325, <span class="nv">Tests</span><span class="o">=</span>21095, <span class="m">94</span> wallclock secs <span class="o">(</span> 2.47 usr  0.55 sys + 88.29 cusr  3.85 <span class="nv">csys</span> <span class="o">=</span> 95.16 CPU<span class="o">)</span>
-Result: PASS
-</pre></div>
-
-<p>When the test results are parsed, the plug-in also copies TAP files over to the master, in a folder called <em>tap-master-files</em>.</p>
-<p>The BioPerl tests are not really big, just <strong>1.7M</strong>. It gets doubled as there will be the workspace copy, and the tap-master-files directory copy, so <strong>3.4M</strong>.</p>
-<p>But several objects get created in memory, and persisted into the build.xml job file. BioPerl generates a build.xml file with <strong>11M</strong>. So <strong>less than 15M</strong>. But the build.xml contains objects that are read via XStream by Jenkins and into the memory.</p>
-<p>The build page with the graph, and the other two test result pages are rendering in more than 10 seconds in my computer. But the CPU load is OK, so a closer look at the memory use would probably be more interesting.</p>
-<p><img class="ui centered image" src="/2016/09/03/performance-problems-in-jenkins-tap-plugin-part-1/JENKINS-17887-yourkit1.png" alt="JENKINS-17887 YourKit profiler" /></p>
-<p>The image shows one of the screens in YourKit profiler, where it is possible to see that <strong>org.tap4j.plugin.model.TapTestResultResult</strong> has over 6 million objects.</p>
-<p>One build.xml for the BioPerl project gets over 80K entries for the TestResult object.</p>
-<div class="highlight"><pre>grep <span class="s2">&quot;org.tap4j.model.TestResult&quot;</span> builds/1/build.xml -o <span class="p">|</span> wc -l
-84522
-</pre></div>
-
-<p>This happens because each TAP file may contain multiple test results (lines with test results). Each of these test results gets turned into a Java object and loaded by the plug-in. So when loading the test result pages, Jenkins needs to wait until all these objects have been parsed, deserialized and read into the memory.</p>
-<p>The next post will continue on code improvements, and another benchmark.</p>
-<p>Happy profiling!</p></description>
 </item>
 
 </channel>
