@@ -8,7 +8,7 @@
     <meta name="keywords"
         content="kinoshita, bruno de paula kinoshita, geek, geek stuff, java, python, c, c++, msn now playing, neural network, mackenzie, sao paulo, brasil, brazil, nerd, nerd stuff, cool, jenkins, illustration, quadrinhos, machine learning, linguistic, apache, open source, codigo livre, codigo aberto" />
     <meta name="author" content="" />
-    <meta name="generator" content="PieCrust 2.0.0" />
+    <meta name="generator" content="PieCrust 2.0.0rc2" />
     <meta name="template-engine" content="Twig" />
     <meta name="robots" content="all=index,follow" />
     <meta name="revisit-after" content="15 days" />
@@ -113,121 +113,6 @@
                     </div>
                     
                     <p>Posts in category &#8216;blog&#8217;</p>
-<div class="ui raised padded container segment">
-    <h2>Add a header to a file with Shell script (sed)</h2>
-    <p><small>kinow</small> @ <small>Nov 12, 2016&nbsp;01:55:03</small></p>
-
-
-
-
-
-
-
-<a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2016/11/12/add-a-header-to-a-file-with-shell-script-sed" data-text="Add a header to a file with Shell script (sed)" data-via="kinow" data-hashtags="opensource">Tweet</a>
-<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-
-
-    <p>Today I was re-generating the documentation for a REST API written in PHP, with
-Laravel. To generate the documentation, one would have to call a Laravel command first.
-That command would create a Markdown page. And since in this project I am using Jekyll
-for the project site, the final step was adding a header to the file, so that Jekyll
-can recognize that content as a blog post.</p>
-<p>Laravel allows you to add custom commands to your project, so I decided to write a command
-that would call the other command that generates the documentation, and add an extra step
-of adding the header to the Markdown file.</p>
-<p>Here&#8217;s the shell script part, that allows you to add a header to a file, in place (i.e.
-it will alter and save the change your file).</p>
-<div class="highlight"><pre>sed -i 1i<span class="s2">&quot;----\nlayout: page\ntitle: API Installation\n----\n\n&quot;</span> ./docs/documentation/api/api.md
-</pre></div>
-
-<p>Here the first argument to sed, <em>-i</em> is for in place. Then that strange <em>1i</em>
-means that it will insert something before the first line, once. Then we have our header,
-and finally the file.</p>
-<p>Happy hacking!</p><!-- html -->
-
-    <p class="postmetadata">
-
-        <small>tags 
-         [&nbsp;<a
-            href="/tag/shellscript"
-            rel="tag">shellscript</a>&nbsp;]&nbsp;
-
-        </small>
-
-
-        <br/>
-        <small>posted in 
-        [&nbsp;<a
-            href="/blog"
-            title="View all posts in blog"
-            rel="category tag">blog</a>&nbsp;]&nbsp;
-        category </small>
-
-    </p>
-</div>
-
-<div class="ui raised padded container segment">
-    <h2>Content negotiation with Spring Boot and React</h2>
-    <p><small>kinow</small> @ <small>Nov 07, 2016&nbsp;20:07:03</small></p>
-
-
-
-
-
-
-
-<a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2016/11/07/content-negotiation-with-spring-boot-and-react" data-text="Content negotiation with Spring Boot and React" data-via="kinow" data-hashtags="opensource">Tweet</a>
-<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-
-
-    <p>A few days ago I had a bug in a system built with Spring Boot and React. The frontend application
-was using a REST client in React, built in a similar way to what is found in the documentation, and
-also in blogs.</p>
-<div class="highlight"><pre><span class="kr">import</span> <span class="nx">rest</span> <span class="nx">from</span> <span class="s1">&#39;rest&#39;</span><span class="p">;</span>
-<span class="kr">const</span> <span class="nx">Rest</span> <span class="o">=</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="nx">rest</span><span class="p">.</span><span class="nx">wrap</span><span class="p">(</span><span class="nx">mime</span><span class="p">);</span>
-</pre></div>
-
-<p>However, for one of the Spring Boot application endpoints, the React component was not working. The
-response seemed to be OK in the Network tab, of the browser developer tools. But the component was
-failing and complaining when parsing the response.</p>
-<p>Turns out that the frontend was sending the request with the header <code>Accept: text/plain, application/json</code>.
-And Spring Boot was just using its <a href="https://spring.io/blog/2013/05/11/content-negotiation-using-spring-mvc">default content negotiation</a>
-and returning what the frontend requested: a text plain version of, what looked like, JSON.</p>
-<p>The quick fix was to request the content as JSON in React.</p>
-<div class="highlight"><pre><span class="kr">import</span> <span class="nx">rest</span> <span class="nx">from</span> <span class="s1">&#39;rest&#39;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="nx">mime</span> <span class="nx">from</span> <span class="s1">&#39;rest/interceptor/mime&#39;</span><span class="p">;</span>
-<span class="kr">const</span> <span class="nx">Rest</span> <span class="o">=</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="nx">rest</span><span class="p">.</span><span class="nx">wrap</span><span class="p">(</span><span class="nx">mime</span> <span class="p">,</span> <span class="p">{</span> <span class="nx">mime</span><span class="o">:</span> <span class="s1">&#39;application/json&#39;</span> <span class="p">}</span> <span class="p">);</span>
-</pre></div>
-
-<p>Now we will revist the backend to return the JSON content, as content, regardless of what
-the user asks :-)</p>
-<p>Happy hacking!</p><!-- html -->
-
-    <p class="postmetadata">
-
-        <small>tags 
-         [&nbsp;<a
-            href="/tag/java"
-            rel="tag">java</a>&nbsp;]&nbsp;
-
-         [&nbsp;<a
-            href="/tag/spring"
-            rel="tag">spring</a>&nbsp;]&nbsp;
-
-        </small>
-
-
-        <br/>
-        <small>posted in 
-        [&nbsp;<a
-            href="/blog"
-            title="View all posts in blog"
-            rel="category tag">blog</a>&nbsp;]&nbsp;
-        category </small>
-
-    </p>
-</div>
-
 <div class="ui raised padded container segment">
     <h2>Checking the operating system type in shell script</h2>
     <p><small>kinow</small> @ <small>Nov 05, 2016&nbsp;23:27:03</small></p>
@@ -440,6 +325,162 @@ found by ShellCheck.</p>
          [&nbsp;<a
             href="/tag/books"
             rel="tag">books</a>&nbsp;]&nbsp;
+
+        </small>
+
+
+        <br/>
+        <small>posted in 
+        [&nbsp;<a
+            href="/blog"
+            title="View all posts in blog"
+            rel="category tag">blog</a>&nbsp;]&nbsp;
+        category </small>
+
+    </p>
+</div>
+
+<div class="ui raised padded container segment">
+    <h2>Performance problems in Jenkins TAP Plug-in &mdash; part 1</h2>
+    <p><small>kinow</small> @ <small>Sep 03, 2016&nbsp;23:28:03</small></p>
+
+
+
+
+
+
+
+<a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2016/09/03/performance-problems-in-jenkins-tap-plugin-part-1" data-text="Performance problems in Jenkins TAP Plug-in &amp;mdash; part 1" data-via="kinow" data-hashtags="opensource">Tweet</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+
+
+    <p><a href="https://issues.jenkins-ci.org/browse/JENKINS-17887">JENKINS-17887</a> reports performance problems in the <a href="https://wiki.jenkins-ci.org/display/JENKINS/TAP+Plugin">Jenkins TAP Plug-in</a>. It also lists a series of suggestions on how to improve the Jenkins TAP Plug-in performance. On this initial post, we will get a general idea of how the plug-in performs for large projects.</p>
+<p><a href="http://bioperl.org/">BioPerl</a> has over 21K tests. That should be enough for giving an initial idea of CPU, memory and disk usage for the plug-in.</p>
+<div class="highlight"><pre>git clone https://github.com/bioperl/bioperl-live.git
+<span class="nb">cd </span>bioperl-live
+sudo cpanm  -vv --installdeps --notest .
+sudo cpanm Set::Scalar Graph::Directed XML::LibXML XML::SAX <span class="se">\</span>
+    SVG XML::Parser::PerlSAX Convert::Binary::C XML::SAX::Writer <span class="se">\</span>
+    XML::DOM::XPath Spreadsheet::ParseExcel XML::SAX::Writer <span class="se">\</span>
+    XML::DOM HTML::TableExtract XML::Simple Test::Pod DBI
+prove -r t/ -a tests.tar.gz
+
+All tests successful.
+<span class="nv">Files</span><span class="o">=</span>325, <span class="nv">Tests</span><span class="o">=</span>21095, <span class="m">94</span> wallclock secs <span class="o">(</span> 2.47 usr  0.55 sys + 88.29 cusr  3.85 <span class="nv">csys</span> <span class="o">=</span> 95.16 CPU<span class="o">)</span>
+Result: PASS
+</pre></div>
+
+<p>When the test results are parsed, the plug-in also copies TAP files over to the master, in a folder called <em>tap-master-files</em>.</p>
+
+<p>The BioPerl tests are not really big, just <strong>1.7M</strong>. It gets doubled as there will be the workspace copy, and the tap-master-files directory copy, so <strong>3.4M</strong>.</p>
+
+<p>But several objects get created in memory, and persisted into the build.xml job file. BioPerl generates a build.xml file with <strong>11M</strong>. So <strong>less than 15M</strong>. But the build.xml contains objects that are read via XStream by Jenkins and into the memory.</p>
+
+<p>The build page with the graph, and the other two test result pages are rendering in more than 10 seconds in my computer. But the CPU load is OK, so a closer look at the memory use would probably be more interesting.</p>
+
+<p><img class="ui centered image" src="/2016/09/03/performance-problems-in-jenkins-tap-plugin-part-1/JENKINS-17887-yourkit1.png" alt="JENKINS-17887 YourKit profiler" /></p>
+
+<p>The image shows one of the screens in YourKit profiler, where it is possible to see that <strong>org.tap4j.plugin.model.TapTestResultResult</strong> has over 6 million objects.</p>
+
+<p>One build.xml for the BioPerl project gets over 80K entries for the TestResult object.</p>
+
+<div class="highlight"><pre>grep <span class="s2">&quot;org.tap4j.model.TestResult&quot;</span> builds/1/build.xml -o <span class="p">|</span> wc -l
+84522
+</pre></div>
+
+<p>This happens because each TAP file may contain multiple test results (lines with test results). Each of these test results gets turned into a Java object and loaded by the plug-in. So when loading the test result pages, Jenkins needs to wait until all these objects have been parsed, deserialized and read into the memory.</p>
+
+<p>The next post will continue on code improvements, and another benchmark.</p>
+
+<p>Happy profiling!</p>
+
+<!-- html -->
+
+<pre><code>&lt;p class="postmetadata"&gt;
+
+    &lt;small&gt;tags 
+     [&amp;nbsp;&lt;a
+        href="/tag/programming"
+        rel="tag"&gt;programming&lt;/a&gt;&amp;nbsp;]&amp;nbsp;
+
+     [&amp;nbsp;&lt;a
+        href="/tag/jenkins"
+        rel="tag"&gt;jenkins&lt;/a&gt;&amp;nbsp;]&amp;nbsp;
+
+     [&amp;nbsp;&lt;a
+        href="/tag/software%20quality"
+        rel="tag"&gt;software quality&lt;/a&gt;&amp;nbsp;]&amp;nbsp;
+
+    &lt;/small&gt;
+
+
+    &lt;br/&gt;
+    &lt;small&gt;posted in 
+    [&amp;nbsp;&lt;a
+        href="/blog"
+        title="View all posts in blog"
+        rel="category tag"&gt;blog&lt;/a&gt;&amp;nbsp;]&amp;nbsp;
+    category &lt;/small&gt;
+
+&lt;/p&gt;
+</code></pre>
+</div>
+
+<div class="ui raised padded container segment">
+    <h2>Revamping Frege logo &mdash; part 2</h2>
+    <p><small>kinow</small> @ <small>Aug 24, 2016&nbsp;23:54:03</small></p>
+
+
+
+
+
+
+
+<a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2016/08/24/revamping-frege-logo-part-2" data-text="Revamping Frege logo &amp;mdash; part 2" data-via="kinow" data-hashtags="opensource">Tweet</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+
+
+    <p>Last time I used Blender was around 2007 I think, in University. But the bad weather in
+Auckland gives me plenty of time to have fun checking out Blender again :-)</p>
+<p>Followed the following tutorials:</p>
+<ul>
+<li><a href="https://www.youtube.com/watch?v=GeKhH1aaXuM">How to create a 3D Logo in Blender</a></li>
+<li><a href="https://www.youtube.com/watch?v=LArn4TFNnmk">Blender Tutorial Spinning Logo</a></li>
+</ul>
+<p>Here are the work in progress, created only with the b&eacute;zier curve.</p>
+<p><img class="ui centered large image" src="/2016/08/24/revamping-frege-logo-part-2/Frege_logo_flat_colours.png" alt="Frege updated logo" /></p>
+<p><img class="ui centered large image" src="/2016/08/24/revamping-frege-logo-part-2/Screenshot_2016-08-14_20-19-35.png" alt="Frege 3D #1" /></p>
+<p><img class="ui centered large image" src="/2016/08/24/revamping-frege-logo-part-2/Screenshot_2016-08-14_20-39-46.png" alt="Frege 3D #2" /></p>
+<p><img class="ui centered large image" src="/2016/08/24/revamping-frege-logo-part-2/Screenshot_2016-08-14_20-41-15.png" alt="Frege 3D #3" /></p>
+<p><img class="ui centered large image" src="/2016/08/24/revamping-frege-logo-part-2/Screenshot_2016-08-14_20-41-34.png" alt="Frege 3D #4" /></p>
+<p><img class="ui centered large image" src="/2016/08/24/revamping-frege-logo-part-2/Screenshot_2016-08-14_20-57-02.png" alt="Frege 3D #5" /></p>
+<p><img class="ui centered large image" src="/2016/08/24/revamping-frege-logo-part-2/Screenshot_2016-08-23_22-07-54.png" alt="Frege 3D #6" /></p>
+<p><img class="ui centered large image" src="/2016/08/24/revamping-frege-logo-part-2/Screenshot_2016-08-23_22-30-24.png" alt="Frege 3D #7" /></p>
+<p>Here&#8217;s the result after the mesh was created, and some material applied.</p>
+<p><img class="ui centered large image" src="/2016/08/24/revamping-frege-logo-part-2/Frege3d1.png" alt="Frege 3D #8" /></p>
+<p>Then using a plane as background, replacing the lamp by a sun, and tweaking a few parameters.</p>
+<p><img class="ui centered image" src="/2016/08/24/revamping-frege-logo-part-2/Frege3d2.png" alt="Frege 3D #9" /></p>
+<p>And finally playing with animation. Not sure if there was a time line and animation controls in
+Blender the last time I used it, but the controls are not really complex.</p>
+<p>I had to combine both meshes into a single object, in order to add a bone and rotate it. That
+is why the logo got back to a single material. The angle of the camera could probably do with
+some tweaking as well.</p>
+<p><img class="ui centered image" src="/2016/08/24/revamping-frege-logo-part-2/ezgif.com-resize.gif" alt="Frege 3D #10" /></p>
+<p>But it was my very first time animating in Blender. Some day if I get access to one of those
+3D printers, I will check what are the requirements for printing this logo.</p>
+<p>Blender models can be downloaded <a href="https://github.com/kinow/kinoshita.eti.br/tree/master/posts/2016-08-24_revamping-frege-logo-part-2-assets">here</a>.</p>
+<p>Now back to programming :-)</p><!-- html -->
+
+    <p class="postmetadata">
+
+        <small>tags 
+         [&nbsp;<a
+            href="/tag/programming"
+            rel="tag">programming</a>&nbsp;]&nbsp;
+
+         [&nbsp;<a
+            href="/tag/illustrations"
+            rel="tag">illustrations</a>&nbsp;]&nbsp;
 
         </small>
 

@@ -8,7 +8,7 @@
     <meta name="keywords"
         content="kinoshita, bruno de paula kinoshita, geek, geek stuff, java, python, c, c++, msn now playing, neural network, mackenzie, sao paulo, brasil, brazil, nerd, nerd stuff, cool, jenkins, illustration, quadrinhos, machine learning, linguistic, apache, open source, codigo livre, codigo aberto" />
     <meta name="author" content="" />
-    <meta name="generator" content="PieCrust 2.0.0" />
+    <meta name="generator" content="PieCrust 2.0.0rc2" />
     <meta name="template-engine" content="Twig" />
     <meta name="robots" content="all=index,follow" />
     <meta name="revisit-after" content="15 days" />
@@ -113,189 +113,6 @@
                     </div>
                     
                     <p>Posts in category &#8216;blog&#8217;</p>
-<div class="ui raised padded container segment">
-    <h2>Apache Commons Lang: Memoizer</h2>
-    <p><small>kinow</small> @ <small>Jan 08, 2017&nbsp;18:34:03</small></p>
-
-
-
-
-
-
-
-<a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2017/01/08/apache-commons-lang-memoizer" data-text="Apache Commons Lang: Memoizer" data-via="kinow" data-hashtags="opensource">Tweet</a>
-<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-
-
-    <p>The current release of <a href="https://commons.apache.org/proper/commons-lang/">Apache Commons Lang</a>
-is <strong>3.5</strong>. The upcoming release, probably 3.6,
-will include a new feature, added in a
-<a href="https://github.com/apache/commons-lang/pull/203">pull request</a>:
-<strong>a Memoizer implementation</strong>. Check out the ticket <a href="https://issues.apache.org/jira/browse/LANG-740">LANG-740</a>
-for more about the implementation being added to [lang].</p>
-<p>The book <a href="http://jcip.net/">Java Concurrency in Practice</a> introduces readers to the Memoizer,
-and has also a <a href="http://jcip.net/listings/Memoizer.java">public domain implementation available for download</a>
-(besides that, the book has also lots of other interesting topics!).</p>
-<p>In summary, Memoizer is a simple cache, that will store the result of
-a computation. It receives a Computable object, responsible for doing something
-that will be stored by the Memoizer. Here&#8217;s a simple code to illustrate how that
-will work in your Java code.</p>
-<div class="highlight"><pre><span class="c1">// Computation to be stored in the cache</span>
-<span class="n">Computable</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">String</span><span class="o">&gt;</span> <span class="n">getFormattedCurrentDate</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Computable</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">String</span><span class="o">&gt;()</span> <span class="o">{</span>
-    <span class="nd">@Override</span>
-    <span class="kd">public</span> <span class="n">String</span> <span class="nf">compute</span><span class="o">(</span><span class="n">String</span> <span class="n">fmt</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">InterruptedException</span> <span class="o">{</span>
-        <span class="k">return</span> <span class="k">new</span> <span class="n">SimpleDateFormat</span><span class="o">(</span><span class="n">fmt</span><span class="o">).</span><span class="na">format</span><span class="o">(</span><span class="k">new</span> <span class="n">Date</span><span class="o">());</span>
-    <span class="o">}</span>
-<span class="o">};</span>
-
-<span class="c1">// Our memoizer</span>
-<span class="n">Memoizer</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">String</span><span class="o">&gt;</span> <span class="n">dateCache</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Memoizer</span><span class="o">&lt;&gt;(</span><span class="n">getFormattedCurrentDate</span><span class="o">);</span>
-
-<span class="c1">// To illustrate its use</span>
-<span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">10</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
-    <span class="k">try</span> <span class="o">{</span>
-        <span class="c1">// S -&gt; Millisecond</span>
-        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">dateCache</span><span class="o">.</span><span class="na">compute</span><span class="o">(</span><span class="s">&quot;HH:mm:ss:S Z dd/MM/YYYY&quot;</span><span class="o">));</span>
-        <span class="c1">// Regardless of this sleep call, we get the same result every iteration</span>
-        <span class="n">Thread</span><span class="o">.</span><span class="na">sleep</span><span class="o">(</span><span class="mi">1500</span><span class="o">);</span>
-    <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">InterruptedException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
-        <span class="n">e</span><span class="o">.</span><span class="na">printStackTrace</span><span class="o">();</span>
-    <span class="o">}</span>
-<span class="o">}</span>
-</pre></div>
-
-<p>The computable created (<em>getFormattedCurrentDate</em>) will be called only once, and stored in
-a map. The parameter passed in the <em>#compute()</em> method will be used as key in the map.
-So choose your parameter wisely :-) The output of the example will be similar to the following one.</p>
-
-<div class="highlight"><pre>19:15:57:854 +1300 08/01/2017
-19:15:57:854 +1300 08/01/2017
-19:15:57:854 +1300 08/01/2017
-19:15:57:854 +1300 08/01/2017
-19:15:57:854 +1300 08/01/2017
-19:15:57:854 +1300 08/01/2017
-19:15:57:854 +1300 08/01/2017
-19:15:57:854 +1300 08/01/2017
-19:15:57:854 +1300 08/01/2017
-19:15:57:854 +1300 08/01/2017
-</pre></div>
-
-<p>In the example above I used a <em>for-loop</em> to illustrate what will happen. Even though we call
-the memoizer <em>#compute()</em> method several times, followed by
-<em>Thread#sleep()</em>; only one result, the first to be computed, will be returned.</p>
-
-<p>So that&#8217;s all for today. Hope you learned something about this new class, that must
-be available in the next release of Apache Commons Lang.</p>
-
-<p>Happy hacking!</p>
-
-<p>ps: [lang] uses Java 7, so that is why we do not have a functional instead of the Comparable</p>
-
-<!-- html -->
-
-<pre><code>&lt;p class="postmetadata"&gt;
-
-    &lt;small&gt;tags 
-     [&amp;nbsp;&lt;a
-        href="/tag/java"
-        rel="tag"&gt;java&lt;/a&gt;&amp;nbsp;]&amp;nbsp;
-
-     [&amp;nbsp;&lt;a
-        href="/tag/programming"
-        rel="tag"&gt;programming&lt;/a&gt;&amp;nbsp;]&amp;nbsp;
-
-     [&amp;nbsp;&lt;a
-        href="/tag/apache%20software%20foundation"
-        rel="tag"&gt;apache software foundation&lt;/a&gt;&amp;nbsp;]&amp;nbsp;
-
-    &lt;/small&gt;
-
-
-    &lt;br/&gt;
-    &lt;small&gt;posted in 
-    [&amp;nbsp;&lt;a
-        href="/blog"
-        title="View all posts in blog"
-        rel="category tag"&gt;blog&lt;/a&gt;&amp;nbsp;]&amp;nbsp;
-    category &lt;/small&gt;
-
-&lt;/p&gt;
-</code></pre>
-</div>
-
-<div class="ui raised padded container segment">
-    <h2>Apache Commons Text</h2>
-    <p><small>kinow</small> @ <small>Jan 07, 2017&nbsp;20:39:03</small></p>
-
-
-
-
-
-
-
-<a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2017/01/07/apache-commons-text" data-text="Apache Commons Text" data-via="kinow" data-hashtags="opensource">Tweet</a>
-<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-
-
-    <p>There is a new component in Apache Commons: Apache Commons Text. The 1.0 release might be announced
-in the next weeks. The current site is still in the <a href="http://commons.apache.org/sandbox/commons-text/">Commons Sandbox</a>,
-but it will change with the 1.0 release. The promotion from the sandbox
-<a href="http://markmail.org/message/dm7xwv5wc6z7wme3">happened a few days ago</a> in
-the project mailing list.</p>
-<p>Here&#8217;s the project description: <strong>Apache Commons Text is a library focused on algorithms working on strings</strong>.</p>
-<p>There was <a href="http://markmail.org/message/3k7m2zrzboji333r">a thread on the mailing list</a>
-some time ago (Oct/2014) when we first discussed the component idea. Since then
-many people contributed porting code from
-<a href="http://commons.apache.org/proper/commons-lang/">Apache Commons Lang</a>,
-<a href="http://lucene.apache.org/">Apache Lucene</a>, donating code from existing projects, and with new ideas.</p>
-<p><strong>It is important to be aware that certain parts of Apache Commons Lang are
-being marked as deprecated, and will be removed in the future, after Apache Commons Text
-1.0 is out</strong>. For example: <a href="https://commons.apache.org/proper/commons-lang/apidocs/org/apache/commons/lang3/StringUtils.html">StringUtils</a>,
-and <a href="https://commons.apache.org/proper/commons-lang/apidocs/org/apache/commons/lang3/RandomStringUtils.html">RandomStringUtils</a>.</p>
-<p>That will happen probably in a 4.x release of Apache Commons Lang, if everything
-goes well with Apache Commons Text :-)</p>
-<p>And there are already future features in
-<a href="https://github.com/apache/commons-text/branches/all">branches too</a>.
-It was decided that these features
-needed further work, so they will probably be included in next releases.</p>
-<p>So that&#8217;s a little bit of background on the new component that will be released soon.
-If you have code using Apache Commons Lang, you might be interested in staying
-tuned to release announcements in the mailing list!</p>
-<p>And should you have suggestions and would like to contribute, feel free to join and start
-a thread in the <a href="https://commons.apache.org/mail-lists.html">mailing list</a>,
-open a <a href="https://issues.apache.org/jira/browse/TEXT">JIRA issue</a>, or submit a
-<a href="https://github.com/apache/commons-text/pulls">pull request</a>.</p>
-<p>Happy hacking!</p><!-- html -->
-
-    <p class="postmetadata">
-
-        <small>tags 
-         [&nbsp;<a
-            href="/tag/java"
-            rel="tag">java</a>&nbsp;]&nbsp;
-
-         [&nbsp;<a
-            href="/tag/programming"
-            rel="tag">programming</a>&nbsp;]&nbsp;
-
-         [&nbsp;<a
-            href="/tag/apache%20software%20foundation"
-            rel="tag">apache software foundation</a>&nbsp;]&nbsp;
-
-        </small>
-
-
-        <br/>
-        <small>posted in 
-        [&nbsp;<a
-            href="/blog"
-            title="View all posts in blog"
-            rel="category tag">blog</a>&nbsp;]&nbsp;
-        category </small>
-
-    </p>
-</div>
-
 <div class="ui raised padded container segment">
     <h2>Plotting Auckland with OSMnx</h2>
     <p><small>kinow</small> @ <small>Jan 05, 2017&nbsp;10:39:03</small></p>
@@ -481,6 +298,129 @@ in a good time, and are extremely easy to work with.</p>
          [&nbsp;<a
             href="/tag/c%2B%2B"
             rel="tag">c++</a>&nbsp;]&nbsp;
+
+        </small>
+
+
+        <br/>
+        <small>posted in 
+        [&nbsp;<a
+            href="/blog"
+            title="View all posts in blog"
+            rel="category tag">blog</a>&nbsp;]&nbsp;
+        category </small>
+
+    </p>
+</div>
+
+<div class="ui raised padded container segment">
+    <h2>Debugging an application that freezes the X server</h2>
+    <p><small>kinow</small> @ <small>Jan 02, 2017&nbsp;00:39:03</small></p>
+
+
+
+
+
+
+
+<a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2017/01/02/debugging-an-application-that-freezes-the-x-server" data-text="Debugging an application that freezes the X server" data-via="kinow" data-hashtags="opensource">Tweet</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+
+
+    <p>Some time ago, I decided to start writing C++ again, and picked Krita for that.
+Krita is written in C++ and Qt. The <a href="https://bugs.kde.org/show_bug.cgi?id=366741">bug I was working on</a>
+involved a memory issue when changing the UI.</p>
+<p>The problem was that this UI change would result in, not only Krita, but the whole
+X server freezing. My set up was basically Ubuntu 16.04.1 LTS, with Eclipse, Qt5,
+and the latest version of Krita checked out via git.</p>
+<p>Initially I spent some time looking at the logs, tracing the binary, even downloaded
+some Qt utility tools to look at the events and what was happening with the application
+when it froze.</p>
+<p>However, eventually I realized I was going to spend more time on this part of the
+issue, rather than on the memory bug. So decided to look for a work-around.</p>
+<p>Thankfully someone else blogged about a similar issue and saved me a lot of time :-)
+Here&#8217;s how I did it, following the instructions in
+<a href="http://www.geany.org/manual/gtk/gtk-faq/x462.html">this blog post</a>.</p>
+<div class="highlight"><pre><span class="nv">$ </span>sudo apt-get install xnest -y
+<span class="nv">$ </span><span class="nb">cd </span>krita_install/
+<span class="nv">$ </span>Xnest :10
+<span class="nv">$ </span>twm -display :10
+<span class="nv">$ </span><span class="nb">export </span><span class="nv">DISPLAY</span><span class="o">=</span>:10
+<span class="nv">$ </span>./krita
+</pre></div>
+
+<p>That&#8217;s it. You should have Krita running in a separate window, with Xnest, and within
+this window the twm window manager running. So when it freezes, at least you can still
+debug your application in Eclipse or whatever IDE you prefer.</p>
+<p>Happy hacking!</p><!-- html -->
+
+    <p class="postmetadata">
+
+        <small>tags 
+         [&nbsp;<a
+            href="/tag/c%2B%2B"
+            rel="tag">c++</a>&nbsp;]&nbsp;
+
+        </small>
+
+
+        <br/>
+        <small>posted in 
+        [&nbsp;<a
+            href="/blog"
+            title="View all posts in blog"
+            rel="category tag">blog</a>&nbsp;]&nbsp;
+        category </small>
+
+    </p>
+</div>
+
+<div class="ui raised padded container segment">
+    <h2>Drawing sketch: Uh!</h2>
+    <p><small>kinow</small> @ <small>Dec 19, 2016&nbsp;19:40:03</small></p>
+
+
+
+
+
+
+
+<a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2016/12/19/drawing-sketch-uh" data-text="Drawing sketch: Uh!" data-via="kinow" data-hashtags="opensource">Tweet</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+
+
+    <p>Sketch.</p>
+<div class='row'>
+<div class="ui container" style='text-align: center;'>
+<figure>
+<a href="/2016/12/19/drawing-sketch-uh/progress.jpg" rel="prettyPhoto" class="thumbnail" title="Uh! progress">
+<img class="ui fluid image" src="/2016/12/19/drawing-sketch-uh/progress.jpg" alt="Uh! progress" />
+</a>
+<figcaption>Uh! progress</figcaption>
+</figure>
+</div>
+</div>
+
+<p>And final work here.</p>
+<div class='row'>
+<div class="ui fluid container">
+<figure>
+<a  href="/2016/12/19/drawing-sketch-uh/uh.jpg" rel="prettyPhoto" class="thumbnail" title="Uh!">
+<img style="height: 400px;" class="ui image" src="/2016/12/19/drawing-sketch-uh/uh.jpg" alt="Uh!" />
+</a>
+<figcaption>Uh!</figcaption>
+</figure>
+</div>
+</div>
+
+<p>For <a href="http://kinow.deviantart.com/art/Uh-651490865">redditgetsdrawn</a></p><!-- html -->
+
+    <p class="postmetadata">
+
+        <small>tags 
+         [&nbsp;<a
+            href="/tag/illustrations"
+            rel="tag">illustrations</a>&nbsp;]&nbsp;
 
         </small>
 
