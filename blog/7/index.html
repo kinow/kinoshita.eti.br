@@ -114,6 +114,187 @@
                     
                     <p>Posts in category &#8216;blog&#8217;</p>
 <div class="ui raised padded container segment">
+    <h2>Trying SaltStack with Docker</h2>
+    <p><small>kinow</small> @ <small>Apr 17, 2016&nbsp;22:06:03</small></p>
+
+
+
+
+
+
+
+<a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2016/04/17/trying-saltstack-with-docker" data-text="Trying SaltStack with Docker" data-via="kinow" data-hashtags="opensource">Tweet</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+
+
+    <p>Some weeks ago I started learning <a href="http://saltstack.com/">SaltStack</a> for a project at work. But I couldn&#8217;t
+find a good Docker image for that and I had to ask the Ops team for some VM&#8217;s. We
+are having a rainy weekend in Auckland, so I decided to have another look at the
+<a href="https://wiki.jenkins-ci.org/display/JENKINS/saltstack-plugin">Jenkins SaltStack Plug-in</a>.</p>
+<p>But now since I was at home, I couldn&#8217;t use the VM&#8217;s that I had access to at
+work. So decided to look again at Docker or Vagrant images. After playing
+with a few images, I found <a href="https://hub.docker.com/r/bbinet/salt-master/">bbinet/salt-master</a>.
+It not only sets up a master, but also provides an easy way to enable the cherrypy
+API (necessary for the Jenkins plug-in).</p>
+<p>This post describes the steps that I took to have a running Salt Master with the API
+enabled. First you need to create some directories and files to use with the image.</p>
+<div class="highlight"><pre>shell<span class="nv">$ </span>mkdir ~/master <span class="o">&amp;&amp;</span> <span class="nb">cd</span> ~/master
+shell<span class="nv">$ </span>mkdir -p config/master.d/
+shell<span class="nv">$ </span>vim config/master.d/api.conf
+</pre></div>
+
+<p>The api.conf contains the SaltStack API configuration. You can change port, user
+and other settings if necessary. Just remember to add a credential in Jenkins
+for the plug-in.</p>
+<div class="highlight"><pre><span class="c"># File: api.conf</span>
+external_auth:
+  pam:
+    saltapiuser:
+      - .*
+      - <span class="s1">&#39;@runner&#39;</span>
+      - <span class="s1">&#39;@wheel&#39;</span>
+      - <span class="s1">&#39;@jobs&#39;</span>
+rest_cherrypy:
+  port: 8000
+  host: 0.0.0.0
+  disable_ssl: True
+  static: /opt/molten
+  static_path: /assets
+  app: /opt/molten/index.html
+  app_path: /molten
+</pre></div>
+
+<p>The image also conveniently provides a script that is executed before the
+entry point (if provided). So we can also create a user for the API automatically
+when the image is created.</p>
+<div class="highlight"><pre>shell<span class="nv">$ </span>vim config/before-exec.sh
+</pre></div>
+
+<div class="highlight"><pre><span class="c">#!/bin/bash</span>
+<span class="c"># File: before-exec.sh</span>
+useradd saltapiuser
+<span class="nb">echo</span> -e <span class="s2">&quot;nosecret\nnosecret\n&quot;</span> <span class="p">|</span> passwd saltapiuser
+<span class="nb">exit </span>0
+</pre></div>
+
+<p>Also make the script executable.</p>
+<div class="highlight"><pre>chmod +x config/before-exec.sh
+</pre></div>
+
+<p>And finally start the container.</p>
+<div class="highlight"><pre>docker run --name salt-master -v <span class="nv">$PWD</span>/config:/config <span class="se">\</span>
+    -p 4505:4505 -p 4506:4506 -p 443:443 -p 8000:8000 <span class="se">\</span>
+    bbinet/salt-master
+</pre></div>
+
+<p>Once the container is running, you can go to http://localhost:8000 and
+log in as saltapiuser:nosecret, and also configure your plug-in
+in Jenkins.</p>
+<p>Happy hacking!</p><!-- html -->
+
+    <p class="postmetadata">
+
+        <small>tags 
+         [&nbsp;<a
+            href="/tag/jenkins"
+            rel="tag">jenkins</a>&nbsp;]&nbsp;
+
+         [&nbsp;<a
+            href="/tag/docker"
+            rel="tag">docker</a>&nbsp;]&nbsp;
+
+         [&nbsp;<a
+            href="/tag/saltstack"
+            rel="tag">saltstack</a>&nbsp;]&nbsp;
+
+        </small>
+
+
+        <br/>
+        <small>posted in 
+        [&nbsp;<a
+            href="/blog"
+            title="View all posts in blog"
+            rel="category tag">blog</a>&nbsp;]&nbsp;
+        category </small>
+
+    </p>
+</div>
+
+<div class="ui raised padded container segment">
+    <h2>Geek Vacation 2016</h2>
+    <p><small>kinow</small> @ <small>Apr 08, 2016&nbsp;22:17:03</small></p>
+
+
+
+
+
+
+
+<a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2016/04/08/geek-vacation-2016" data-text="Geek Vacation 2016" data-via="kinow" data-hashtags="opensource">Tweet</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+
+
+    <p>I just had a two week vacation, and I tried to use my time to rest, play some music, and
+complete a geek todo-list. </p>
+<p>The list included things that I used some time ago but wanted to
+refresh my memory, things that I already used but never spent time reading the manuals, and
+other things that I saw somewhere but never actually used in any project.</p>
+<p>Here the complete list, with the items that were completed highlighted. Some links with
+pointers to what I used to study.</p>
+<ul>
+<li>gdb, strace, ptrace, etc, sysdig, dtrace (looked for links at <a href="https://news.ycombinator.com/">HackerNews</a> and <a href="https://www.reddit.com/">reddit</a>) ✔</li>
+<li>geodesy (<a href="https://en.wikipedia.org/wiki/Geodesy">Wikipedia</a>, some PDF&#8217;s) ✔</li>
+<li>QGIS (<a href="http://www.bostongis.com/?content_name=qgis">Boston GIS docs</a> and <a href="http://youtube.com">YouTube</a> videos) ✔</li>
+<li>SRS &amp; CRS (<a href="https://en.wikipedia.org/wiki/Spatial_reference_system">Wikipedia</a>) ✔</li>
+<li>BioPython (<a href="http://biopython.org/">project page</a>) ✔</li>
+<li>BioConda (<a href="https://bioconda.github.io/">project page</a>) ✔</li>
+<li>Weaver &amp; asm (<a href="https://commons.apache.org/proper/commons-weaver/">project page</a> and <a href="https://en.wikipedia.org/wiki/ObjectWeb_ASM">Wikipedia</a>) ✔</li>
+<li>afl (project page, and some <a href="http://kinoshita.eti.br/2016/02/27/learning-afl-and-testing-mapserver.html">tests with MapServer</a>) ✔</li>
+<li>WFS (<a href="https://en.wikipedia.org/wiki/Web_Feature_Service">Wikipedia</a>, <a href="http://docs.geoserver.org/latest/en/user/services/wfs/reference.html">GeoServer</a> and <a href="http://mapserver.org/ogc/wfs_server.html">MapServer</a>) ✔</li>
+<li>SaltStack (<a href="http://saltstack.com/">project page</a>, <a href="https://wiki.jenkins-ci.org/display/JENKINS/saltstack-plugin">Jenkins Plug-ins for SaltStack</a>, and a few tests with VM&#8217;s and Docker) ✔</li>
+<li>InfluxDB (<a href="https://influxdata.com/">project page</a>) ✔</li>
+<li>rr (<a href="http://rr-project.org/">project page</a> and some local tests) ✔</li>
+<li>ZeroMQ (<a href="http://zeromq.org/">project page</a>, <a href="https://github.com/saltstack/salt/blob/90b0a42a21dc11ca118ffbb679e0871f234c17bc/salt/transport/zeromq.py">SaltStack source code</a>) ✔</li>
+<li>netty (<a href="http://netty.io/">project page</a>) ✔</li>
+<li>RethinkDB (<a href="https://rethinkdb.com/">project page</a>, and a <a href="https://github.com/kinow/jira-rethinkdb">test project</a>) ✔</li>
+<li>C++ (templates, abstractions in C++, etc) (<a href="http://www.codeproject.com/Articles/257589/An-Idiots-Guide-to-Cplusplus-Templates-Part">just this article to remember syntax</a>) ✔</li>
+<li>Linear programming (<a href="http://benalexkeen.com/linear-programming-with-python-and-pulp/">PuLP docs</a>) ✔</li>
+<li>AKKA (<a href="http://akka.io/">project page</a>) ✔</li>
+<li>Frege (<a href="https://github.com/Frege/frege">project page</a> (reading their <a href="https://www.gitbook.com/book/dierk/fregegoodness/details">new book</a>))</li>
+<li>JVM internals (played a little with <a href="http://asm.ow2.org/">asm</a>, <a href="http://docs.oracle.com/javase/7/docs/technotes/tools/windows/javap.html">javap</a>)</li>
+<li>Java Concurrency (started re-reading <a href="http://jcip.net/">Java Concurrency in Practice</a>, but still in the initial chapters)</li>
+<li>PostGIS (<a href="postgis.net/">project page</a>)</li>
+<li>Krita (<a href="https://krita.org/">project page</a> and <a href="http://www.davidrevoy.com/article193/guide-building-krita-on-linux-for-cats">David Revoy&#8217;s tutorials</a>)</li>
+<li>Scala (<a href="http://www.scala-lang.org/">project page</a>)</li>
+<li>Minecraft Forge (<a href="http://www.minecraftforge.net/forum/">project forum</a>)</li>
+<li>Graphs in Jenkins, cylc, Spark, Jena and clue/graph (didn&#8217;t have time for this one)</li>
+</ul>
+<p>Going to have less spare time now for Open Source and learning the rest of the stuff on this list,
+but there&#8217;s always some books to read, and things to learn anyway right ¯\<em>(ツ)</em>/¯</p><!-- html -->
+
+    <p class="postmetadata">
+
+        <small>tags 
+         [&nbsp;<a
+            href="/tag/geek"
+            rel="tag">geek</a>&nbsp;]&nbsp;
+
+        </small>
+
+
+        <br/>
+        <small>posted in 
+        [&nbsp;<a
+            href="/blog"
+            title="View all posts in blog"
+            rel="category tag">blog</a>&nbsp;]&nbsp;
+        category </small>
+
+    </p>
+</div>
+
+<div class="ui raised padded container segment">
     <h2>Deploying WAR files to Tomcat with Jenkins</h2>
     <p><small>kinow</small> @ <small>Mar 20, 2016&nbsp;15:29:03</small></p>
 
@@ -279,184 +460,6 @@ as in case it finds any interesting bug I can submit it to the MapServer project
          [&nbsp;<a
             href="/tag/software%20quality"
             rel="tag">software quality</a>&nbsp;]&nbsp;
-
-        </small>
-
-
-        <br/>
-        <small>posted in 
-        [&nbsp;<a
-            href="/blog"
-            title="View all posts in blog"
-            rel="category tag">blog</a>&nbsp;]&nbsp;
-        category </small>
-
-    </p>
-</div>
-
-<div class="ui raised padded container segment">
-    <h2>How does the Jenkins Credentials Plug-in store passwords?</h2>
-    <p><small>kinow</small> @ <small>Sep 07, 2015&nbsp;01:25:03</small></p>
-
-
-
-
-
-
-
-<a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2015/09/07/how_does_the_jenkins_credentials_plugin_store_passwords" data-text="How does the Jenkins Credentials Plug-in store passwords?" data-via="kinow" data-hashtags="opensource">Tweet</a>
-<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-
-
-    <p><a href="https://wiki.jenkins-ci.org/display/JENKINS/Credentials+Plugin">Jenkins Credentials Plug-in</a> manages credentials stored in Jenkins. These credentials can be used in many jobs and by plug-ins for executing SSH commands, authenticating to systems, or running other commands that need some sort of authentication or authorisation.</p>
-<p>I recently used its API for the first time in the <a href="https://github.com/biouno/figshare-plugin">BioUno figshare Plug-in</a> to store OAuth 1.0 credentials (consumer key, consumer secret, token key, token secret). This <a href="http://biouno.org/2015/09/05/using_jenkins_credentials_plugin_to_create_the_biouno_figshare_plugin/">blog post</a> has more details about how we used the plug-in, but this post is specifically on how the passwords are stored by Jenkins.</p>
-<h2>Secret and ciphers</h2>
-<p>Jenkins stores its configuration on disk as XML using the XStream library. Plug-in developers using the Credentials Plug-in API must use the <strong>Secret</strong> class to encrypt sensitive information.</p>
-<p>The <code>Secret.fromString</code> method is responsible for creating a cipher from a given String. As in the Secret Javadoc,  <em>&#8220;this is not meant as a protection against code running in the same VM, nor against an attacker who has local file system access on Jenkins master&#8221;</em>. But at least makes things more complicated :-)</p>
-<ul>
-<li><a href="http://javadoc.jenkins-ci.org/hudson/util/Secret.html">Secret Javadoc</a></li>
-<li><a href="https://github.com/jenkinsci/jenkins/blob/master/core/src/main/java/hudson/util/Secret.java">Secret source code</a></li>
-</ul>
-<div class="highlight"><pre><span class="kd">public</span> <span class="kd">static</span> <span class="n">Secret</span> <span class="nf">fromString</span><span class="o">(</span><span class="n">String</span> <span class="n">data</span><span class="o">)</span> <span class="o">{</span>
-    <span class="n">data</span> <span class="o">=</span> <span class="n">Util</span><span class="o">.</span><span class="na">fixNull</span><span class="o">(</span><span class="n">data</span><span class="o">);</span>
-    <span class="n">Secret</span> <span class="n">s</span> <span class="o">=</span> <span class="n">decrypt</span><span class="o">(</span><span class="n">data</span><span class="o">);</span>
-    <span class="k">if</span><span class="o">(</span><span class="n">s</span><span class="o">==</span><span class="kc">null</span><span class="o">)</span> <span class="n">s</span><span class="o">=</span><span class="k">new</span> <span class="n">Secret</span><span class="o">(</span><span class="n">data</span><span class="o">);</span>
-    <span class="k">return</span> <span class="n">s</span><span class="o">;</span>
-<span class="o">}</span>
-</pre></div>
-
-<p>The first line simply replaces a null string by an empty &#8220;&#8221;, or keeps the current value of not null.</p>
-<p>After that, the decrypt method is called.</p>
-<div class="highlight"><pre><span class="kd">public</span> <span class="kd">static</span> <span class="n">Secret</span> <span class="nf">decrypt</span><span class="o">(</span><span class="n">String</span> <span class="n">data</span><span class="o">)</span> <span class="o">{</span>
-    <span class="k">if</span><span class="o">(</span><span class="n">data</span><span class="o">==</span><span class="kc">null</span><span class="o">)</span>      <span class="k">return</span> <span class="kc">null</span><span class="o">;</span>
-    <span class="k">try</span> <span class="o">{</span>
-        <span class="kt">byte</span><span class="o">[]</span> <span class="n">in</span> <span class="o">=</span> <span class="n">Base64</span><span class="o">.</span><span class="na">decode</span><span class="o">(</span><span class="n">data</span><span class="o">.</span><span class="na">toCharArray</span><span class="o">());</span>
-        <span class="n">Secret</span> <span class="n">s</span> <span class="o">=</span> <span class="n">tryDecrypt</span><span class="o">(</span><span class="n">KEY</span><span class="o">.</span><span class="na">decrypt</span><span class="o">(),</span> <span class="n">in</span><span class="o">);</span>
-        <span class="k">if</span> <span class="o">(</span><span class="n">s</span><span class="o">!=</span><span class="kc">null</span><span class="o">)</span>    <span class="k">return</span> <span class="n">s</span><span class="o">;</span>
-
-        <span class="c1">// try our historical key for backward compatibility</span>
-        <span class="n">Cipher</span> <span class="n">cipher</span> <span class="o">=</span> <span class="n">getCipher</span><span class="o">(</span><span class="s">&quot;AES&quot;</span><span class="o">);</span>
-        <span class="n">cipher</span><span class="o">.</span><span class="na">init</span><span class="o">(</span><span class="n">Cipher</span><span class="o">.</span><span class="na">DECRYPT_MODE</span><span class="o">,</span> <span class="n">getLegacyKey</span><span class="o">());</span>
-        <span class="k">return</span> <span class="n">tryDecrypt</span><span class="o">(</span><span class="n">cipher</span><span class="o">,</span> <span class="n">in</span><span class="o">);</span>
-    <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">GeneralSecurityException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
-        <span class="k">return</span> <span class="kc">null</span><span class="o">;</span>
-    <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">UnsupportedEncodingException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
-        <span class="k">throw</span> <span class="k">new</span> <span class="n">Error</span><span class="o">(</span><span class="n">e</span><span class="o">);</span> <span class="c1">// impossible</span>
-    <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">IOException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
-        <span class="k">return</span> <span class="kc">null</span><span class="o">;</span>
-    <span class="o">}</span>
-<span class="o">}</span>
-</pre></div>
-
-<p>The <code>KEY.decrypt()</code> call will return a <a href="http://docs.oracle.com/javase/8/docs/api/javax/crypto/Cipher.html"><code>javax.crypto.Cipher</code></a>. The Cipher class is handled in <a href="https://github.com/jenkinsci/jenkins/blob/93dfe3377ec8d430818f5b9073f16c677343adb4/core/src/main/java/jenkins/security/CryptoConfidentialKey.java">CryptoConfidentialKey</a> in Jenkins API, where it defines the algorithm used to create the cipher: <a href="https://en.wikipedia.org/wiki/Advanced_Encryption_Standard">AES</a>.</p>
-
-<p>Jenkins has also a <a href="https://github.com/jenkinsci/jenkins/blob/93dfe3377ec8d430818f5b9073f16c677343adb4/core/src/main/java/jenkins/security/ConfidentialStore.java#L63">ConfidentialStore</a>, that is required to create the cipher. This class must be initialized before someone tries to create or read a cipher. This extra step also increases security, though access to the JVM is still a problem.</p>
-
-<p>It is a bit late, so it is all for today. In summary: the credentials plug-in gives you a central place to manage credentials, but it is up to plug-in developers to use it. Sensitive values can be encrypted with AES on disk. So it is important that your file permissions, ACL and system auditing processes are in place and well maintained and monitored.</p>
-
-<p>Happy hacking!</p>
-
-<!-- html -->
-
-<pre><code>&lt;p class="postmetadata"&gt;
-
-    &lt;small&gt;tags 
-     [&amp;nbsp;&lt;a
-        href="/tag/jenkins"
-        rel="tag"&gt;jenkins&lt;/a&gt;&amp;nbsp;]&amp;nbsp;
-
-     [&amp;nbsp;&lt;a
-        href="/tag/security"
-        rel="tag"&gt;security&lt;/a&gt;&amp;nbsp;]&amp;nbsp;
-
-    &lt;/small&gt;
-
-
-    &lt;br/&gt;
-    &lt;small&gt;posted in 
-    [&amp;nbsp;&lt;a
-        href="/blog"
-        title="View all posts in blog"
-        rel="category tag"&gt;blog&lt;/a&gt;&amp;nbsp;]&amp;nbsp;
-    category &lt;/small&gt;
-
-&lt;/p&gt;
-</code></pre>
-</div>
-
-<div class="ui raised padded container segment">
-    <h2>Modeling observation data in SOS (Sensor Observation Service)</h2>
-    <p><small>kinow</small> @ <small>Jun 23, 2015&nbsp;13:40:03</small></p>
-
-
-
-
-
-
-
-<a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2015/06/23/modeling-observation-data-in-sos" data-text="Modeling observation data in SOS (Sensor Observation Service)" data-via="kinow" data-hashtags="opensource">Tweet</a>
-<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-
-
-    <p>This week NZ Herald published an <a href="http://www.nzherald.co.nz/technology/news/article.cfm?c_id=5&amp;objectid=11469418">article</a>
-about a device created by an Irish farmer enterpreneur that sends a message to a farmer when the cow is about to give birth.
-The device monitors &#8220;heightened tail moviment&#8221;.</p>
-<p>In this post I will try to apply what I am learning following the <a href="http://www.ogcnetwork.net/SOS_2_0/tutorial">SOS Tutorial</a>
-(the Open Geospatial Consortium standard for Sensor Observation Service). Feel free to drop me a message via
-<a href="https://twitter.com/kinow">@kinow</a> if you find any mistakes or have any suggestions.</p>
-<h2>Modeling the tail moviment observation data in SOS</h2>
-<p>SOS is a standard designed to provide access to observation data. There are several server implementations, such as Kisters KiWIS, 
-istSOS and 52North SOS.</p>
-<p>The standard mentions and utilises several other standards, such as SensorML, WFS, XML, WMS, etc. The SOS Tutorial on
-how to model your observation data for SOS starts by defining <em>procedure</em>, <em>observed property</em>, <em>feature of interest</em>,
-<em>phenomenon and result times</em>, and the <em>result value</em>.</p>
-<p>Let&#8217;s try to model the data from the tail moviment sensors in the following table.</p>
-<table class="table table-bordered">
-<thead>
-<tr>
-<th>Name</th>
-<th>Description</th>
-<th>Our example</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<th>Procedure</th>
-<td>The process that has generated the observation, such as a sensor, from the O&M specification. In our example that could be a sensor identification</td>
-<td>moocall_001</td>
-</tr>
-<tr>
-<th>Observed Property</th>
-<td>A property which is observed (look at NASA SWEET ontology for existing values)</td>
-<td>Heightned tail moviment</td>
-</tr>
-<tr>
-<th>Feature of Interest</th>
-<td>A feature that carries the property which is observed</td>
-<td>Pregnant cow</td>
-</tr>
-<tr>
-<th>Phenomenon and Result Times</th>
-<td>The phenomenon time is when the data has been taken, and the result time when it has been created. If both are the same, the resultTime can point to the phenomenonTime</td>
-<td>20150623142000</td>
-</tr>
-<tr>
-<th>Result value</th>
-<td>This is the result of the observation. Can be a OM_Measurement if numeric, OM_TruthObservation, etc (O&M)</td>
-<td>3 (supposing we have a scale from 1 to 5)</td>
-</tr>
-</tbody>
-</table>
-
-<p>In the next post I will try to show how to load this model and some dummy data into a fresh installation of
-52North SOS server.</p><!-- html -->
-
-    <p class="postmetadata">
-
-        <small>tags 
-         [&nbsp;<a
-            href="/tag/sensor%20web"
-            rel="tag">sensor web</a>&nbsp;]&nbsp;
 
         </small>
 

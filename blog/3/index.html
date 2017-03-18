@@ -114,6 +114,129 @@
                     
                     <p>Posts in category &#8216;blog&#8217;</p>
 <div class="ui raised padded container segment">
+    <h2>Debugging an application that freezes the X server</h2>
+    <p><small>kinow</small> @ <small>Jan 02, 2017&nbsp;00:39:03</small></p>
+
+
+
+
+
+
+
+<a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2017/01/02/debugging-an-application-that-freezes-the-x-server" data-text="Debugging an application that freezes the X server" data-via="kinow" data-hashtags="opensource">Tweet</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+
+
+    <p>Some time ago, I decided to start writing C++ again, and picked Krita for that.
+Krita is written in C++ and Qt. The <a href="https://bugs.kde.org/show_bug.cgi?id=366741">bug I was working on</a>
+involved a memory issue when changing the UI.</p>
+<p>The problem was that this UI change would result in, not only Krita, but the whole
+X server freezing. My set up was basically Ubuntu 16.04.1 LTS, with Eclipse, Qt5,
+and the latest version of Krita checked out via git.</p>
+<p>Initially I spent some time looking at the logs, tracing the binary, even downloaded
+some Qt utility tools to look at the events and what was happening with the application
+when it froze.</p>
+<p>However, eventually I realized I was going to spend more time on this part of the
+issue, rather than on the memory bug. So decided to look for a work-around.</p>
+<p>Thankfully someone else blogged about a similar issue and saved me a lot of time :-)
+Here&#8217;s how I did it, following the instructions in
+<a href="http://www.geany.org/manual/gtk/gtk-faq/x462.html">this blog post</a>.</p>
+<div class="highlight"><pre><span class="nv">$ </span>sudo apt-get install xnest -y
+<span class="nv">$ </span><span class="nb">cd </span>krita_install/
+<span class="nv">$ </span>Xnest :10
+<span class="nv">$ </span>twm -display :10
+<span class="nv">$ </span><span class="nb">export </span><span class="nv">DISPLAY</span><span class="o">=</span>:10
+<span class="nv">$ </span>./krita
+</pre></div>
+
+<p>That&#8217;s it. You should have Krita running in a separate window, with Xnest, and within
+this window the twm window manager running. So when it freezes, at least you can still
+debug your application in Eclipse or whatever IDE you prefer.</p>
+<p>Happy hacking!</p><!-- html -->
+
+    <p class="postmetadata">
+
+        <small>tags 
+         [&nbsp;<a
+            href="/tag/c%2B%2B"
+            rel="tag">c++</a>&nbsp;]&nbsp;
+
+        </small>
+
+
+        <br/>
+        <small>posted in 
+        [&nbsp;<a
+            href="/blog"
+            title="View all posts in blog"
+            rel="category tag">blog</a>&nbsp;]&nbsp;
+        category </small>
+
+    </p>
+</div>
+
+<div class="ui raised padded container segment">
+    <h2>Drawing sketch: Uh!</h2>
+    <p><small>kinow</small> @ <small>Dec 19, 2016&nbsp;19:40:03</small></p>
+
+
+
+
+
+
+
+<a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2016/12/19/drawing-sketch-uh" data-text="Drawing sketch: Uh!" data-via="kinow" data-hashtags="opensource">Tweet</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+
+
+    <p>Sketch.</p>
+<div class='row'>
+<div class="ui container" style='text-align: center;'>
+<figure>
+<a href="/2016/12/19/drawing-sketch-uh/progress.jpg" rel="prettyPhoto" class="thumbnail" title="Uh! progress">
+<img class="ui fluid image" src="/2016/12/19/drawing-sketch-uh/progress.jpg" alt="Uh! progress" />
+</a>
+<figcaption>Uh! progress</figcaption>
+</figure>
+</div>
+</div>
+
+<p>And final work here.</p>
+<div class='row'>
+<div class="ui fluid container">
+<figure>
+<a  href="/2016/12/19/drawing-sketch-uh/uh.jpg" rel="prettyPhoto" class="thumbnail" title="Uh!">
+<img style="height: 400px;" class="ui image" src="/2016/12/19/drawing-sketch-uh/uh.jpg" alt="Uh!" />
+</a>
+<figcaption>Uh!</figcaption>
+</figure>
+</div>
+</div>
+
+<p>For <a href="http://kinow.deviantart.com/art/Uh-651490865">redditgetsdrawn</a></p><!-- html -->
+
+    <p class="postmetadata">
+
+        <small>tags 
+         [&nbsp;<a
+            href="/tag/illustrations"
+            rel="tag">illustrations</a>&nbsp;]&nbsp;
+
+        </small>
+
+
+        <br/>
+        <small>posted in 
+        [&nbsp;<a
+            href="/blog"
+            title="View all posts in blog"
+            rel="category tag">blog</a>&nbsp;]&nbsp;
+        category </small>
+
+    </p>
+</div>
+
+<div class="ui raised padded container segment">
     <h2>PermGen errors and java.lang.ClassCastException: com.sun.crypto.provider.AESCipher cannot be cast to javax.crypto.CipherSpi running Jenkins plug-in tests with PowerMock</h2>
     <p><small>kinow</small> @ <small>Dec 19, 2016&nbsp;19:20:03</small></p>
 
@@ -325,121 +448,6 @@ without having to use the upper case syntax.</p>
             href="/tag/shellscript"
             rel="tag">shellscript</a>&nbsp;]&nbsp;
 
-         [&nbsp;<a
-            href="/tag/java"
-            rel="tag">java</a>&nbsp;]&nbsp;
-
-         [&nbsp;<a
-            href="/tag/spring"
-            rel="tag">spring</a>&nbsp;]&nbsp;
-
-        </small>
-
-
-        <br/>
-        <small>posted in 
-        [&nbsp;<a
-            href="/blog"
-            title="View all posts in blog"
-            rel="category tag">blog</a>&nbsp;]&nbsp;
-        category </small>
-
-    </p>
-</div>
-
-<div class="ui raised padded container segment">
-    <h2>Add a header to a file with Shell script (sed)</h2>
-    <p><small>kinow</small> @ <small>Nov 12, 2016&nbsp;01:55:03</small></p>
-
-
-
-
-
-
-
-<a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2016/11/12/add-a-header-to-a-file-with-shell-script-sed" data-text="Add a header to a file with Shell script (sed)" data-via="kinow" data-hashtags="opensource">Tweet</a>
-<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-
-
-    <p>Today I was re-generating the documentation for a REST API written in PHP, with
-Laravel. To generate the documentation, one would have to call a Laravel command first.
-That command would create a Markdown page. And since in this project I am using Jekyll
-for the project site, the final step was adding a header to the file, so that Jekyll
-can recognize that content as a blog post.</p>
-<p>Laravel allows you to add custom commands to your project, so I decided to write a command
-that would call the other command that generates the documentation, and add an extra step
-of adding the header to the Markdown file.</p>
-<p>Here&#8217;s the shell script part, that allows you to add a header to a file, in place (i.e.
-it will alter and save the change your file).</p>
-<div class="highlight"><pre>sed -i 1i<span class="s2">&quot;----\nlayout: page\ntitle: API Installation\n----\n\n&quot;</span> ./docs/documentation/api/api.md
-</pre></div>
-
-<p>Here the first argument to sed, <em>-i</em> is for in place. Then that strange <em>1i</em>
-means that it will insert something before the first line, once. Then we have our header,
-and finally the file.</p>
-<p>Happy hacking!</p><!-- html -->
-
-    <p class="postmetadata">
-
-        <small>tags 
-         [&nbsp;<a
-            href="/tag/shellscript"
-            rel="tag">shellscript</a>&nbsp;]&nbsp;
-
-        </small>
-
-
-        <br/>
-        <small>posted in 
-        [&nbsp;<a
-            href="/blog"
-            title="View all posts in blog"
-            rel="category tag">blog</a>&nbsp;]&nbsp;
-        category </small>
-
-    </p>
-</div>
-
-<div class="ui raised padded container segment">
-    <h2>Content negotiation with Spring Boot and React</h2>
-    <p><small>kinow</small> @ <small>Nov 07, 2016&nbsp;20:07:03</small></p>
-
-
-
-
-
-
-
-<a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2016/11/07/content-negotiation-with-spring-boot-and-react" data-text="Content negotiation with Spring Boot and React" data-via="kinow" data-hashtags="opensource">Tweet</a>
-<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-
-
-    <p>A few days ago I had a bug in a system built with Spring Boot and React. The frontend application
-was using a REST client in React, built in a similar way to what is found in the documentation, and
-also in blogs.</p>
-<div class="highlight"><pre><span class="kr">import</span> <span class="nx">rest</span> <span class="nx">from</span> <span class="s1">&#39;rest&#39;</span><span class="p">;</span>
-<span class="kr">const</span> <span class="nx">Rest</span> <span class="o">=</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="nx">rest</span><span class="p">.</span><span class="nx">wrap</span><span class="p">(</span><span class="nx">mime</span><span class="p">);</span>
-</pre></div>
-
-<p>However, for one of the Spring Boot application endpoints, the React component was not working. The
-response seemed to be OK in the Network tab, of the browser developer tools. But the component was
-failing and complaining when parsing the response.</p>
-<p>Turns out that the frontend was sending the request with the header <code>Accept: text/plain, application/json</code>.
-And Spring Boot was just using its <a href="https://spring.io/blog/2013/05/11/content-negotiation-using-spring-mvc">default content negotiation</a>
-and returning what the frontend requested: a text plain version of, what looked like, JSON.</p>
-<p>The quick fix was to request the content as JSON in React.</p>
-<div class="highlight"><pre><span class="kr">import</span> <span class="nx">rest</span> <span class="nx">from</span> <span class="s1">&#39;rest&#39;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="nx">mime</span> <span class="nx">from</span> <span class="s1">&#39;rest/interceptor/mime&#39;</span><span class="p">;</span>
-<span class="kr">const</span> <span class="nx">Rest</span> <span class="o">=</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="nx">rest</span><span class="p">.</span><span class="nx">wrap</span><span class="p">(</span><span class="nx">mime</span> <span class="p">,</span> <span class="p">{</span> <span class="nx">mime</span><span class="o">:</span> <span class="s1">&#39;application/json&#39;</span> <span class="p">}</span> <span class="p">);</span>
-</pre></div>
-
-<p>Now we will revist the backend to return the JSON content, as content, regardless of what
-the user asks :-)</p>
-<p>Happy hacking!</p><!-- html -->
-
-    <p class="postmetadata">
-
-        <small>tags 
          [&nbsp;<a
             href="/tag/java"
             rel="tag">java</a>&nbsp;]&nbsp;
