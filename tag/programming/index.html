@@ -110,6 +110,78 @@
                     
                     <p>Posts tagged with &#8216;programming&#8217;</p>
 <div class="ui raised padded container segment">
+    <h2>Simulating less memory with ulimit</h2>
+    <p><small>kinow</small> @ <small>Mar 26, 2017&nbsp;11:14:03</small></p>
+
+
+
+
+
+
+
+<a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2017/03/26/simulating-less-memory-with-ulimit" data-text="Simulating less memory with ulimit" data-via="kinow" data-hashtags="opensource">Tweet</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+
+
+    <p>These days I was trying to reproduce <a href="https://bugs.kde.org/show_bug.cgi?id=376382">a bug in Krita</a>
+where it would crash when a user copied group layers between windows. It appeared that the user was
+getting a segmentation fault due to the user&#8217;s computer running out of memory.</p>
+<p>I could not reproduce the issue, but my computer has 16 GB. The first thing that came to my mind was
+to create a virtual machine with less memory to reproduce the issue. But I decided to spend some time
+looking for a <a href="http://wiki.c2.com/?LazinessImpatienceHubris">simpler way</a> of doing it.</p>
+<p>Searching the web I found some suggestions that <code>ulimit</code> could work. After playing for a while with
+<code>ulimit</code> and <code>htop</code>, and verifying the amount of memory necessary to open two files in two windows
+in Krita, I came up with the following settings.</p>
+<div class="highlight"><pre><span class="c"># 2550 mb in kb</span>
+<span class="nb">ulimit</span> -v 2550000
+
+<span class="c"># 2 gb in kb</span>
+<span class="nb">ulimit</span> -m 2000000
+
+<span class="c"># Confirm limits</span>
+<span class="nb">ulimit</span> -a
+
+gdb <span class="nv">$HOME</span>/Development/cpp/workspace/krita_install/bin/krita
+</pre></div>
+
+<p>Then after copying a few layers from one window to another, I successfully reproduced the issue,
+and could include a backtrace in the Kritas issue tracking system.</p>
+
+<p>&hearts; Open Source</p>
+
+<!-- html -->
+
+<pre><code>&lt;p class="postmetadata"&gt;
+
+    &lt;small&gt;tags 
+     [&amp;nbsp;&lt;a
+        href="/tag/c%2B%2B"
+        rel="tag"&gt;c++&lt;/a&gt;&amp;nbsp;]&amp;nbsp;
+
+     [&amp;nbsp;&lt;a
+        href="/tag/krita"
+        rel="tag"&gt;krita&lt;/a&gt;&amp;nbsp;]&amp;nbsp;
+
+     [&amp;nbsp;&lt;a
+        href="/tag/programming"
+        rel="tag"&gt;programming&lt;/a&gt;&amp;nbsp;]&amp;nbsp;
+
+    &lt;/small&gt;
+
+
+    &lt;br/&gt;
+    &lt;small&gt;posted in 
+    [&amp;nbsp;&lt;a
+        href="/blog"
+        title="View all posts in blog"
+        rel="category tag"&gt;blog&lt;/a&gt;&amp;nbsp;]&amp;nbsp;
+    category &lt;/small&gt;
+
+&lt;/p&gt;
+</code></pre>
+</div>
+
+<div class="ui raised padded container segment">
     <h2>Apache Commons Lang: Memoizer</h2>
     <p><small>kinow</small> @ <small>Jan 08, 2017&nbsp;18:34:03</small></p>
 
@@ -422,57 +494,6 @@ some tweaking as well.</p>
 3D printers, I will check what are the requirements for printing this logo.</p>
 <p>Blender models can be downloaded <a href="https://github.com/kinow/kinoshita.eti.br/tree/master/posts/2016-08-24_revamping-frege-logo-part-2-assets">here</a>.</p>
 <p>Now back to programming :-)</p><!-- html -->
-
-    <p class="postmetadata">
-
-        <small>tags 
-         [&nbsp;<a
-            href="/tag/programming"
-            rel="tag">programming</a>&nbsp;]&nbsp;
-
-         [&nbsp;<a
-            href="/tag/illustrations"
-            rel="tag">illustrations</a>&nbsp;]&nbsp;
-
-        </small>
-
-
-        <br/>
-        <small>posted in 
-        [&nbsp;<a
-            href="/blog"
-            title="View all posts in blog"
-            rel="category tag">blog</a>&nbsp;]&nbsp;
-        category </small>
-
-    </p>
-</div>
-
-<div class="ui raised padded container segment">
-    <h2>Revamping Frege logo</h2>
-    <p><small>kinow</small> @ <small>Aug 16, 2016&nbsp;23:54:03</small></p>
-
-
-
-
-
-
-
-<a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2016/08/16/revamping-frege-logo" data-text="Revamping Frege logo" data-via="kinow" data-hashtags="opensource">Tweet</a>
-<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-
-
-    <p>For a while I had been wanting to try adding a flat colour to the Frege
-logo. This weekend had some bit of spare time, and here is the result.</p>
-<p>Submitted to the project as <a href="https://github.com/Frege/frege/pull/299/files">pull request #299</a>.</p>
-<p>Current logo.</p>
-<p><img class="ui centered large image" src="/2016/08/16/revamping-frege-logo/Frege_logo.png" alt="Frege current logo" /></p>
-<p>And the updated logo.</p>
-<p><img class="ui centered large image" src="/2016/08/16/revamping-frege-logo/Frege_logo_flat_colours.png" alt="Frege updated logo" /></p>
-<p>The colour used was Flamingo (#EF4836), found in <a href="http://www.flatuicolorpicker.com/">Flat UI Color Picker</a>.</p>
-<p>Perhaps not exactly revamping, since all I did was just change a colour. There were
-adjustments to the b&eacute;zier curves as well, to better align them, but I updated both
-logos, not just the new one :-)</p><!-- html -->
 
     <p class="postmetadata">
 
