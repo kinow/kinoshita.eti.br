@@ -114,6 +114,58 @@
                     
                     <p>Posts in category &#8216;blog&#8217;</p>
 <div class="ui raised padded container segment">
+    <h2>Missing menus in new installation of TestLink 1.9.8</h2>
+    <p><small>kinow</small> @ <small>Oct 27, 2013&nbsp;12:42:33</small></p>
+
+
+
+
+
+
+
+<a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2013/10/27/missing-menus-in-new-installation-of-testlink" data-text="Missing menus in new installation of TestLink 1.9.8" data-via="kinow" data-hashtags="opensource">Tweet</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+
+
+    <p>I recently installed TestLink 1.9.8 and noticed that the menus and some other parts 
+of the UI we missing. Looking at <code>/var/log/testlink/userlog1.log</code> (the location 
+may change depending on your settings) I realized that there was something wrong 
+with my PHP installation. There were log messages like the below.</p>
+<pre><code>include_once(ADORecordSet_ext_empty.class.php): failed to open stream: No such file or directory - in /home/kinow/php/workspace/testlink-1.9.8/lib/functions/common.php - Line 92
+[13/Sep/18 12:51:09][WARNING][2o0h173pdgg5fjqh1pukr83og2][GUI]
+E_WARNING
+include_once(): Failed opening 'ADORecordSet_ext_empty.class.php' for inclusion (include_path='.:/usr/share/php:/usr/share/pear:.:/home/kinow/php/workspace/testlink-1.9.8/lib/functions/:/home/kinow/php/workspace/testlink-1.9.8/lib/issuet
+...
+</code></pre>
+<p>I found a post in a forum (but unfortunately I forgot to save the link) that suggested 
+these ADORecordSet were being caused by the module <strong>php5-adodb</strong>. Removing the module, and 
+cleaning the templates cache directory (<code>$TESTLINK_HOME/gui/templates_c/*</code>) 
+fixed the issue for me.</p>
+<p>Hope that helps.
+Happy testing!</p><!-- html -->
+
+    <p class="postmetadata">
+
+        <small>tags 
+         [&nbsp;<a
+            href="/tag/testlink"
+            rel="tag">testlink</a>&nbsp;]&nbsp;
+
+        </small>
+
+
+        <br/>
+        <small>posted in 
+        [&nbsp;<a
+            href="/blog"
+            title="View all posts in blog"
+            rel="category tag">blog</a>&nbsp;]&nbsp;
+        category </small>
+
+    </p>
+</div>
+
+<div class="ui raised padded container segment">
     <h2>The Apache Way and on writing software reviews</h2>
     <p><small>kinow</small> @ <small>Sep 29, 2013&nbsp;14:53:53</small></p>
 
@@ -372,55 +424,6 @@ command.</p>
          [&nbsp;<a
             href="/tag/linux"
             rel="tag">linux</a>&nbsp;]&nbsp;
-
-        </small>
-
-
-        <br/>
-        <small>posted in 
-        [&nbsp;<a
-            href="/blog"
-            title="View all posts in blog"
-            rel="category tag">blog</a>&nbsp;]&nbsp;
-        category </small>
-
-    </p>
-</div>
-
-<div class="ui raised padded container segment">
-    <h2>A quick view on Wordpress, Mantis and Jenkins plug-in API</h2>
-    <p><small>kinow</small> @ <small>Oct 25, 2012&nbsp;08:49:36</small></p>
-
-
-
-
-
-
-
-<a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2012/10/25/a-quick-view-on-wordpress-mantis-and-jenkins-plug-in-api" data-text="A quick view on Wordpress, Mantis and Jenkins plug-in API" data-via="kinow" data-hashtags="opensource">Tweet</a>
-<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-
-
-    <p>I&#8217;m preparing a <em>plug-in API proposal for <a href="http://www.teamst.org" title="TestLink">TestLink</a></em>, and thought that the best way to learn how to write a good plug-in API would be by looking at other application&#8217;s plug-in API&#8217;s.</p>
-
-<p style="text-align: center"><img src="/2012/10/25/a-quick-view-on-wordpress-mantis-and-jenkins-plug-in-api/testlink_logo_2.jpg " alt="" title="TestLink" width="283" height="170" class="aligncenter size-full wp-image-1153" /></p>
-
-<p>This post contains information that I gathered for creating this new API, but that may also be useful for other programmers. I used <a href="#wp">Wordpress</a>, <a href="#mantis">Mantis</a> and <a href="#jenkins">Jenkins</a> in this study. Let me know if you find any mistakes or if you have any other suggestions.</p>
-
-<!-- html -->
-
-    <p>( <a href="/2012/10/25/a-quick-view-on-wordpress-mantis-and-jenkins-plug-in-api" >Read more &#8230;</a> )</p>
-
-    <p class="postmetadata">
-
-        <small>tags 
-         [&nbsp;<a
-            href="/tag/jenkins"
-            rel="tag">jenkins</a>&nbsp;]&nbsp;
-
-         [&nbsp;<a
-            href="/tag/testlink"
-            rel="tag">testlink</a>&nbsp;]&nbsp;
 
         </small>
 
