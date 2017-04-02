@@ -110,6 +110,118 @@
                     
                     <p>Posts tagged with &#8216;c++&#8217;</p>
 <div class="ui raised padded container segment">
+    <h2>Fixing Qt warning &#8220;QLayout: Attempting to add QLayout &#8220;&#8221; to QWidget &#8220;&#8221;, which already has a layout&#8221;</h2>
+    <p><small>kinow</small> @ <small>Apr 02, 2017&nbsp;12:01:03</small></p>
+
+
+
+
+
+
+
+<a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2017/04/02/fixing-qt-warning-qlayout-attempting-to-add-qlayout-to-qwidget-which-already-has-a-layout" data-text="Fixing Qt warning &#34;QLayout: Attempting to add QLayout &#34;&#34; to QWidget &#34;&#34;, which already has a layout&#34;" data-via="kinow" data-hashtags="opensource">Tweet</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+
+
+    <p>If you ever started Krita 3.x in your command line, and had a look at the console output,
+you may noticed the following warning.</p>
+<blockquote>
+<p>QLayout: Attempting to add QLayout &#8220;&#8221; to QWidget &#8220;&#8221;, which already has a layout</p>
+</blockquote>
+<p>Krita just announced the release of 3.1.1-alpha-2, and while testing I saw this warning and
+decided, as part of Qt learning, to investigate why this warning was happening.</p>
+<p>As normally happens, there was already
+<a href="http://stackoverflow.com/a/25451334">a similar question posted to StackOverflow</a>. And the
+best answer&#8217;s initial paragraph gave me a hint of what to look for.</p>
+<blockquote>
+<p>When you assign a widget as the parent of a QLayout by passing it into the constructor, the layout is automatically set as the layout for that widget. In your code you are not only doing this, but explicitly calling setlayout(). This is no problem when when the widget passed is the same. If they are different you will get an error because Qt tries to assign the second layout to your widget which has already had a layout set.</p>
+</blockquote>
+<p>So, somewhere in Krita code, there was a a QWidget that was created, and a layout
+was added to it more than once. To find that it was quite easy. A breakpoint at
+<a href="https://github.com/KDE/krita/blob/9e2b8c5b07deccd4a616ad7930a91e8cc784a85b/krita/main.cc#L141">main.cc</a>
+when the application is initialized, then step through a few times, until I saw that message in the
+console.</p>
+<p>Further investigation led me to the History docker (the one that shows undo steps)
+<a href="https://github.com/KDE/krita/blob/9e2b8c5b07deccd4a616ad7930a91e8cc784a85b/plugins/dockers/historydocker/HistoryDock.cpp#L33">constructor</a>.</p>
+<div class="highlight"><pre>    <span class="n">QVBoxLayout</span> <span class="o">*</span><span class="n">vl</span> <span class="o">=</span> <span class="k">new</span> <span class="n">QVBoxLayout</span><span class="p">(</span><span class="n">page</span><span class="p">);</span>
+    <span class="n">m_undoView</span> <span class="o">=</span> <span class="k">new</span> <span class="n">KisUndoView</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
+    <span class="n">vl</span><span class="o">-&gt;</span><span class="n">addWidget</span><span class="p">(</span><span class="n">m_undoView</span><span class="p">);</span>
+    <span class="n">QHBoxLayout</span> <span class="o">*</span><span class="n">hl</span> <span class="o">=</span> <span class="k">new</span> <span class="n">QHBoxLayout</span><span class="p">(</span><span class="n">page</span><span class="p">);</span>
+    <span class="n">hl</span><span class="o">-&gt;</span><span class="n">addSpacerItem</span><span class="p">(</span><span class="k">new</span> <span class="n">QSpacerItem</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span>  <span class="n">QSizePolicy</span><span class="o">::</span><span class="n">Expanding</span><span class="p">,</span> <span class="n">QSizePolicy</span><span class="o">::</span><span class="n">Fixed</span><span class="p">));</span>
+    <span class="n">m_bnConfigure</span> <span class="o">=</span> <span class="k">new</span> <span class="n">QToolButton</span><span class="p">(</span><span class="n">page</span><span class="p">);</span>
+    <span class="n">m_bnConfigure</span><span class="o">-&gt;</span><span class="n">setIcon</span><span class="p">(</span><span class="n">KisIconUtils</span><span class="o">::</span><span class="n">loadIcon</span><span class="p">(</span><span class="s">&quot;configure&quot;</span><span class="p">));</span>
+    <span class="n">connect</span><span class="p">(</span><span class="n">m_bnConfigure</span><span class="p">,</span> <span class="n">SIGNAL</span><span class="p">(</span><span class="n">clicked</span><span class="p">(</span><span class="kt">bool</span><span class="p">)),</span> <span class="n">SLOT</span><span class="p">(</span><span class="n">configure</span><span class="p">()));</span>
+    <span class="n">hl</span><span class="o">-&gt;</span><span class="n">addWidget</span><span class="p">(</span><span class="n">m_bnConfigure</span><span class="p">);</span>
+    <span class="n">vl</span><span class="o">-&gt;</span><span class="n">addItem</span><span class="p">(</span><span class="n">hl</span><span class="p">);</span>
+
+    <span class="n">setWidget</span><span class="p">(</span><span class="n">page</span><span class="p">);</span>
+    <span class="n">setWindowTitle</span><span class="p">(</span><span class="n">i18n</span><span class="p">(</span><span class="s">&quot;Undo History&quot;</span><span class="p">));</span>
+</pre></div>
+
+<p>Here the QWidget created receives both QHBoxLayout and QVBoxLayout. Again, searching the Internet
+a little bit, then came across this post with a good example of a QWidget with
+QHBoxLayout and QVBoxLayout. Here&#8217;s what the constructor looks after the
+<a href="https://bugs.kde.org/show_bug.cgi?id=378313">patch</a>
+has been <a href="https://github.com/KDE/krita/commit/1d2343c0cacfb0b105fbe86c2bcef975a09b1041">applied</a>.</p>
+
+<div class="highlight"><pre>    <span class="n">QVBoxLayout</span> <span class="o">*</span><span class="n">vl</span> <span class="o">=</span> <span class="k">new</span> <span class="n">QVBoxLayout</span><span class="p">(</span><span class="n">page</span><span class="p">);</span>
+    <span class="n">m_undoView</span> <span class="o">=</span> <span class="k">new</span> <span class="n">KisUndoView</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
+    <span class="n">vl</span><span class="o">-&gt;</span><span class="n">addWidget</span><span class="p">(</span><span class="n">m_undoView</span><span class="p">);</span>
+    <span class="n">QHBoxLayout</span> <span class="o">*</span><span class="n">hl</span> <span class="o">=</span> <span class="k">new</span> <span class="n">QHBoxLayout</span><span class="p">();</span>
+    <span class="n">hl</span><span class="o">-&gt;</span><span class="n">addSpacerItem</span><span class="p">(</span><span class="k">new</span> <span class="n">QSpacerItem</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span>  <span class="n">QSizePolicy</span><span class="o">::</span><span class="n">Expanding</span><span class="p">,</span> <span class="n">QSizePolicy</span><span class="o">::</span><span class="n">Fixed</span><span class="p">));</span>
+    <span class="n">m_bnConfigure</span> <span class="o">=</span> <span class="k">new</span> <span class="n">QToolButton</span><span class="p">(</span><span class="n">page</span><span class="p">);</span>
+    <span class="n">m_bnConfigure</span><span class="o">-&gt;</span><span class="n">setIcon</span><span class="p">(</span><span class="n">KisIconUtils</span><span class="o">::</span><span class="n">loadIcon</span><span class="p">(</span><span class="s">&quot;configure&quot;</span><span class="p">));</span>
+    <span class="n">connect</span><span class="p">(</span><span class="n">m_bnConfigure</span><span class="p">,</span> <span class="n">SIGNAL</span><span class="p">(</span><span class="n">clicked</span><span class="p">(</span><span class="kt">bool</span><span class="p">)),</span> <span class="n">SLOT</span><span class="p">(</span><span class="n">configure</span><span class="p">()));</span>
+    <span class="n">hl</span><span class="o">-&gt;</span><span class="n">addWidget</span><span class="p">(</span><span class="n">m_bnConfigure</span><span class="p">);</span>
+    <span class="n">vl</span><span class="o">-&gt;</span><span class="n">addItem</span><span class="p">(</span><span class="n">hl</span><span class="p">);</span>
+    <span class="n">vl</span><span class="o">-&gt;</span><span class="n">addLayout</span><span class="p">(</span><span class="n">hl</span><span class="p">);</span>
+
+    <span class="n">setWidget</span><span class="p">(</span><span class="n">page</span><span class="p">);</span>
+    <span class="n">setWindowTitle</span><span class="p">(</span><span class="n">i18n</span><span class="p">(</span><span class="s">&quot;Undo History&quot;</span><span class="p">));</span>
+</pre></div>
+
+<p>That&#8217;s it. Learned something new in Qt. Not as important and useful as learning about signals
+and slots, but now I can focus on other warnings in the console output of Krita ;)</p>
+
+<p>&hearts; Open Source</p>
+
+<!-- html -->
+
+<p class="postmetadata">
+
+    <small>tags 
+     [&nbsp;<a
+        href="/tag/c%2B%2B"
+        rel="tag">c++</a>&nbsp;]&nbsp;
+
+     [&nbsp;<a
+        href="/tag/krita"
+        rel="tag">krita</a>&nbsp;]&nbsp;
+
+     [&nbsp;<a
+        href="/tag/programming"
+        rel="tag">programming</a>&nbsp;]&nbsp;
+
+     [&nbsp;<a
+        href="/tag/opensource"
+        rel="tag">opensource</a>&nbsp;]&nbsp;
+
+    </small>
+
+
+    <br/>
+    <small>posted in 
+    [&nbsp;<a
+        href="/blog"
+        title="View all posts in blog"
+        rel="category tag">blog</a>&nbsp;]&nbsp;
+    category </small>
+
+</p>
+
+</div>
+
+<div class="ui raised padded container segment">
     <h2>Simulating less memory with ulimit</h2>
     <p><small>kinow</small> @ <small>Mar 26, 2017&nbsp;11:14:03</small></p>
 
@@ -376,67 +488,6 @@ debug your application in Eclipse or whatever IDE you prefer.</p>
      [&nbsp;<a
         href="/tag/test%20anything%20protocol"
         rel="tag">test anything protocol</a>&nbsp;]&nbsp;
-
-    </small>
-
-
-    <br/>
-    <small>posted in 
-    [&nbsp;<a
-        href="/jenkins"
-        title="View all posts in jenkins"
-        rel="category tag">jenkins</a>&nbsp;]&nbsp;
-    category </small>
-
-</p>
-</div>
-
-<div class="ui raised padded container segment">
-    <h2>Jenkins, TestLink and GTest in 5 minutes (or so)</h2>
-    <p><small>kinow</small> @ <small>Oct 11, 2012&nbsp;23:44:59</small></p>
-
-
-
-
-
-
-
-<a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2012/10/11/jenkins-testlink-and-gtest-in-5-minutes-or-so" data-text="Jenkins, TestLink and GTest in 5 minutes (or so)" data-via="kinow" data-hashtags="opensource">Tweet</a>
-<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-
-
-    <p>This is a 5 minutes guide on creating a job for a C++ project in <a href="http://www.jenkins-ci.org" title="Jenkins CI">Jenkins</a> with <a href="http://code.google.com/p/googletest" title="GoogleTest">GoogleTest</a> and reporting the test results back to <a href="http://www.teamst.org" title="TestLink">TestLink</a>, with <a href="https://wiki.jenkins-ci.org/display/JENKINS/TestLink+Plugin" title="Jenkins TestLink Plug-in">testlink-plugin</a>. </p>
-
-<h2>The test project with GoogleTest</h2>
-
-<p>For this simple guide we will use the samples that come with <a href="https://github.com/kinow/gtest-tap-listener" title="GTest TAP Listener">GTest TAP Listener</a>. You can get the code from GitHub with <code>git clone git://github.com/kinow/gtest-tap-listener.git</code>. Take a look at <em>gtest-tap-listener/samples/src/</em>, there you will find two C++ files: <em>gtest_main.cc</em> and <em>gtest_testHelloWorld.cc</em>.</p>
-
-<p><em>gtest_main.cc</em> has the <a href="http://code.google.com/p/googletest/wiki/Primer#Writing_the_main()_Function" title="GTest main function">main function</a>, and executes the test suite. And <em>gtest_testHelloWorld.cc</em> has the test cases and tests. Take note of the test case and tests names.</p>
-
-<p><a href="/2012/10/11/jenkins-testlink-and-gtest-in-5-minutes-or-so/screenshot_001.png"><img src="/2012/10/11/jenkins-testlink-and-gtest-in-5-minutes-or-so/screenshot_001.png" alt="" title="gtest_testHelloWorld.cc" width="546" height="482" class="aligncenter size-full wp-image-1083" /></a></p>
-
-<!-- html -->
-
-    <p>( <a href="/2012/10/11/jenkins-testlink-and-gtest-in-5-minutes-or-so" >Read more &#8230;</a> )</p>
-
-<p class="postmetadata">
-
-    <small>tags 
-     [&nbsp;<a
-        href="/tag/jenkins"
-        rel="tag">jenkins</a>&nbsp;]&nbsp;
-
-     [&nbsp;<a
-        href="/tag/testlink"
-        rel="tag">testlink</a>&nbsp;]&nbsp;
-
-     [&nbsp;<a
-        href="/tag/c%2B%2B"
-        rel="tag">c++</a>&nbsp;]&nbsp;
-
-     [&nbsp;<a
-        href="/tag/software%20quality"
-        rel="tag">software quality</a>&nbsp;]&nbsp;
 
     </small>
 
