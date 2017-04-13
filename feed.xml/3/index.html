@@ -13,10 +13,48 @@
     <atom:link href="/blog/feed.xml" rel="self" type="application/rss+xml" />
     <link>/</link>
     <description></description>
-    <lastBuildDate>1491990585.7170293</lastBuildDate>
+    <lastBuildDate>1492126792.2405045</lastBuildDate>
     <language>en-US</language>
     <generator>PieCrust 2.0.0</generator>
  
+
+<item>
+    <title>Checking the operating system type in shell script</title>
+    <pubDate>Nov 05, 2016</pubDate>
+    <link>/2016/11/05/checking-the-operating-system-type-in-shell-script</link>
+    <dc:creator></dc:creator>
+    <description><p>Last week I learned about a tool called <a href="https://github.com/koalaman/shellcheck">ShellCheck</a>, a tool
+for static analysis of shell scripts. It reports errors like missing double quotes, use of deprecated
+syntax, etc.</p>
+<p>I decided to check some projects I contribute to, and the first issue I found was in
+<a href="https://jena.apache.org">Apache Jena</a>:</p>
+<div class="highlight"><pre>kinow@localhost:~/Development/java/jena/jena/apache-jena/bin<span class="nv">$ </span>shellcheck arq
+
+In arq line 8:
+    <span class="k">case</span> <span class="s2">&quot;</span><span class="nv">$OSTYPE</span><span class="s2">&quot;</span> in
+          ^-- SC2039: In POSIX sh, OSTYPE is not supported.
+</pre></div>
+
+<p>So, in summary, the <code>OSTYPE</code> variable should not be available in POSIX shell. The case in question, where
+<code>OSTYPE</code> is being used, checks for the Darwin OS type (i.e. Mac OS). Knowing how things get weird when you
+use different operating systems, I decided to check and learn how <code>OSTYPE</code> works. Here&#8217;s what I found.</p>
+<ul>
+<li>In Ubuntu, with /bin/bash, OSTYPE works fine (linux-gnu)</li>
+<li>In Ubuntu, with /bin/sh, OSTYPE is not set</li>
+<li>In Mac OS, with /bin/sh, OSTYPE is set (darwin15)</li>
+</ul>
+<p>I checked the shells to make sure they were not pointing to symbolic links - some distributions
+use a different default shell, and replace /bin/bash and/or /bin/sh by a link to another
+shell. Looks like Mac OS has a POSIX shell that behaves different than Ubuntu&#8217;s.</p>
+<p>Instead of trying to find a way to use <code>OSTYPE</code>, I decided to spend some time looking at
+how other projects do the same thing. And the best example I could find was
+<a href="https://git.kernel.org/cgit/git/git.git/tree/config.mak.uname">git</a>.</p>
+<p>Instead of relying on <code>OSTYPE</code>, git uses <code>uname</code>.</p>
+<p>I will spend some time during the next days working on a proposal to replace the <code>OSTYPE</code>
+from Apache Jena scripts, but then may have to submit more changes for the other issues
+found by ShellCheck.</p>
+<p>Happy hacking!</p></description>
+</item>
 
 <item>
     <title>Using the AWS API with Python</title>
@@ -268,109 +306,6 @@ normally in a short and constant interval.</p>
 </div>
 
 <p>For <a href="https://www.reddit.com/r/redditgetsdrawn/comments/4jakp0/someone_told_me_to_post_here_with_my_new_hair/">redditgetsdrawn</a></p></description>
-</item>
-
-<item>
-    <title>Some Linux commands I used this week</title>
-    <pubDate>May 06, 2016</pubDate>
-    <link>/2016/05/06/some-linux-commands-i-used-this-week</link>
-    <dc:creator></dc:creator>
-    <description><p>These are some commands I used on Linux servers this week. Adding them here in case someone else
-find them interesting, and also due to my bad memory :-)</p>
-<h2>Listing latest installed packages in SLES</h2>
-<div class="highlight"><pre>rpm -qa --last
-</pre></div>
-
-<p>This will display the last packages installed. Useful when there are packages being updated, and you
-need to confirm what changed, and when.</p>
-<h2>Listing packages in SLES and origin repository</h2>
-<div class="highlight"><pre>rpm -qa --qf <span class="s1">&#39;%-30{DISTRIBUTION} %{NAME}\n&#39;</span><span class="p">|</span> sort
-</pre></div>
-
-<p>The output will have two columns. The first containing the repository name, and the second column with
-the package name. For example.</p>
-<div class="highlight"><pre>devel:languages:R:base / SLE_11_SP2 R-base
-devel:languages:R:base / SLE_11_SP2 R-base-devel
-home:flacco:sles / SLE_11_SP3 php53-phar
-home:happenpappen / SLE_11_SP2 nodejs
-</pre></div>
-
-<h2>Grep for content in XML tags</h2>
-<p>Be it for web services, or for finding things in Jenkins XML files. Being able to grep the tag attribute
-or tag name might be useful. Look at the following example that uses the 
-<a href="https://msdn.microsoft.com/en-us/library/ms762271%28v=vs.85%29.aspx">books XML provided by Microsoft for testing</a>.</p>
-<div class="highlight"><pre>grep -oP <span class="s2">&quot;(?&lt;=&lt;genre&gt;).*?(?=&lt;/genre&gt;)&quot;</span> books.xml <span class="p">|</span> sort <span class="p">|</span> uniq
-</pre></div>
-
-<p>Which will outputs the following.</p>
-<div class="highlight"><pre>Computer
-Fantasy
-Horror
-Romance
-Science Fiction
-</pre></div>
-
-<h2>Find Python site packages directory</h2>
-<p>Sometimes you have Anaconda, but also the system installation, and maybe even other Python distributions.
-Knowing where Python is looking for site packages can be helpful to confirm the package exists, and also
-to inspect its sources.</p>
-<div class="highlight"><pre>python -c <span class="s2">&quot;from distutils.sysconfig import get_python_lib; print(get_python_lib())&quot;</span>
-</pre></div>
-
-<p>An example of the output of the script.</p>
-<div class="highlight"><pre>/usr/lib/python2.7/dist-packages
-</pre></div>
-
-<h2>Force no-cache via curl for a list of files</h2>
-<p>Useful when you have a proxy like squid caching some requests from an application and you
-want to flush the cache and get the latest content (which will be cached again, but then
-you can fix it once confirmed).</p>
-<div class="highlight"><pre>curl --silent -H <span class="s1">&#39;Cache-Control: no-cache&#39;</span> http://systemcachingvalues.local/somedoc.html
-</pre></div>
-
-<h2>Find to which servers a Linux process is talking to</h2>
-<p>You have to find the pid of the process that you would like to investigate (e.g. 6364) and have
-<a href="http://linux.die.net/man/1/strace">strace</a> installed.</p>
-<div class="highlight"><pre>strace -p <span class="m">6364</span> -f -e <span class="nv">trace</span><span class="o">=</span>network -o output.txt
-</pre></div>
-
-<p>The command above creates output.txt with the trace information. Then you can grep for
-the IP addresses with the following regex.</p>
-<div class="highlight"><pre>grep -E -o <span class="s2">&quot;(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)&quot;</span> output.txt
-</pre></div>
-
-<p>Which will output something similar to the following example.</p>
-<div class="highlight"><pre>127.0.1.1
-127.0.1.1
-127.0.1.1
-192.168.20.4
-10.10.0.12
-...
-</pre></div>
-
-<p>And finally, you can call dig to get the server name, and also remove duplicates.</p>
-<div class="highlight"><pre>grep -E -o <span class="s2">&quot;(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)&quot;</span> output.txt <span class="p">|</span> xargs -l dig +noall +answer +nocmd -x <span class="p">|</span> awk <span class="s1">&#39;{ print $5}&#39;</span> <span class="p">|</span> sort <span class="p">|</span> uniq
-</pre></div>
-
-<p>Which gives you the following.</p>
-<div class="highlight"><pre>ec2-52-13-43-205.compute-1.amazonaws.com.
-ec2-52-32-244-147.compute-1.amazonaws.com.
-ec2-52-44-11-85.compute-1.amazonaws.com.
-ec2-52-55-36-20.us-west-2.compute.amazonaws.com.
-ec2-52-11-19-24.us-west-2.compute.amazonaws.com.
-ec2-52-2-21-13.compute-1.amazonaws.com.
-ec2-54-33-249-49.us-west-2.compute.amazonaws.com.
-ec2-54-180-165-17.us-west-2.compute.amazonaws.com.
-ec2-54-2-177-91.compute-1.amazonaws.com.
-ec2-54-8-163-15.compute-1.amazonaws.com.
-syd11s01-in-f124.1e110.net.
-syd11s02-in-f5.1e110.net.
-syd12s02-in-f3.1e110.net.
-...
-</pre></div>
-
-<p>That&#8217;s all for today.</p>
-<p>Happy hacking!</p></description>
 </item>
 
 </channel>

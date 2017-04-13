@@ -110,6 +110,112 @@
                     
                     <p>Posts tagged with &#8216;programming&#8217;</p>
 <div class="ui raised padded container segment">
+    <h2>Spring Cloud encrypted values and Spring PropertySources</h2>
+    <p><small>kinow</small> @ <small>Apr 14, 2017&nbsp;11:21:03</small></p>
+
+
+
+
+
+
+
+<a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2017/04/14/spring-cloud-encrypted-values-and-spring-propertysources" data-text="Spring Cloud encrypted values and Spring PropertySources" data-via="kinow" data-hashtags="opensource">Tweet</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+
+
+    <p>As I could not find any documentation for that, I decided to write it as a note to myself
+in case I use the
+<a href="https://cloud.spring.io/spring-cloud-config/spring-cloud-config.html#_encryption_and_decryption">encryption and decryption</a>
+with Spring Cloud again.</p>
+<p>In Spring and Spring Boot, you normally have multiple sources of properties, like multiple
+properties files, environment properties and variables, and so it goes. In the Spring API,
+these are represented as
+<a href="http://docs.spring.io/spring/docs/current/javadoc-api/org/springframework/context/annotation/PropertySource.html">PropertySource</a>&#8216;s.</p>
+<p>In a Spring Boot application, you would be used to overriding certain properties
+by defining environments and using an application-production.properties file, or
+overriding values with environment properties.</p>
+<p>This is common in
+<a href="https://aws.amazon.com/blogs/devops/deploying-a-spring-boot-application-on-aws-using-aws-elastic-beanstalk/">Spring Boot applications deployed to Amazon Elastic Beanstalk</a>.</p>
+<p>Some time ago another team at work found that overriding did not always work when you have
+encrypted values in your properties files. Even if you specified new values in the
+Amazon Elastic Beanstalk application configuration.</p>
+<p>Yesterday, while debugging the issue and reading Spring Cloud source code, I found its
+<a href="https://github.com/spring-cloud/spring-cloud-commons/blob/9675df02f6a2c01766711f7dee3c4d2818b7d716/spring-cloud-context/src/main/java/org/springframework/cloud/bootstrap/encrypt/EnvironmentDecryptApplicationInitializer.java#L44">EnvironmentDecryptApplicationInitializer</a>.</p>
+<p>It basically iterates through all loaded property sources, looking for values that start with
+{cipher}. Then it calls the
+<a href="http://docs.spring.io/spring-security/site/docs/current/apidocs/org/springframework/security/crypto/encrypt/TextEncryptor.html">Spring Security TextEncryptor</a>
+defined in the application.</p>
+<p>Finally, it creates a new property source, called decrypted, with the decrypted values. So when
+your application looks for a property called XPTO, and if it has been encrypted, it will
+find the value in the decrypted propery source, regardless of whether you tried to override it or
+not.</p>
+<div class="highlight"><pre><span class="c"># Property sources listed in Eclipse IDE</span>
+
+<span class="o">[</span>
+  servletConfigInitParams,
+  servletContextInitParams,
+  systemProperties,
+  systemEnvironment,
+  random,
+  applicationConfigurationProperties,
+  springCloudClientHostInfo,
+  defaultProperties
+<span class="o">]</span>
+
+<span class="c"># When using encrypted values</span>
+
+<span class="o">[</span>
+  decrypted, &lt;-------- created by Spring Cloud, with decrypted values. Prepended to the list of property sources
+  servletConfigInitParams,
+  servletContextInitParams,
+  systemProperties,
+  systemEnvironment,
+  random,
+  applicationConfigurationProperties,
+  springCloudClientHostInfo,
+  defaultProperties
+<span class="o">]</span>
+</pre></div>
+
+<p>So in case you have encrypted values in your Spring application (and you are using Spring Cloud, 
+of course) remember that these values will have higher priority, and can only be overriden by other
+encrypted values.</p>
+
+<p>&hearts; Open Source</p>
+
+<!-- html -->
+
+<p class="postmetadata">
+
+    <small>tags 
+     [&nbsp;<a
+        href="/tag/java"
+        rel="tag">java</a>&nbsp;]&nbsp;
+
+     [&nbsp;<a
+        href="/tag/programming"
+        rel="tag">programming</a>&nbsp;]&nbsp;
+
+     [&nbsp;<a
+        href="/tag/opensource"
+        rel="tag">opensource</a>&nbsp;]&nbsp;
+
+    </small>
+
+
+    <br/>
+    <small>posted in 
+    [&nbsp;<a
+        href="/blog"
+        title="View all posts in blog"
+        rel="category tag">blog</a>&nbsp;]&nbsp;
+    category </small>
+
+</p>
+
+</div>
+
+<div class="ui raised padded container segment">
     <h2>Fixing Qt warning &#8220;QLayout: Attempting to add QLayout &#8220;&#8221; to QWidget &#8220;&#8221;, which already has a layout&#8221;</h2>
     <p><small>kinow</small> @ <small>Apr 02, 2017&nbsp;12:01:03</small></p>
 
@@ -470,85 +576,6 @@ open a <a href="https://issues.apache.org/jira/browse/TEXT">JIRA issue</a>, or s
      [&nbsp;<a
         href="/tag/apache%20software%20foundation"
         rel="tag">apache software foundation</a>&nbsp;]&nbsp;
-
-    </small>
-
-
-    <br/>
-    <small>posted in 
-    [&nbsp;<a
-        href="/blog"
-        title="View all posts in blog"
-        rel="category tag">blog</a>&nbsp;]&nbsp;
-    category </small>
-
-</p>
-</div>
-
-<div class="ui raised padded container segment">
-    <h2>Contributing to Krita</h2>
-    <p><small>kinow</small> @ <small>Jan 03, 2017&nbsp;11:40:03</small></p>
-
-
-
-
-
-
-
-<a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2017/01/03/contributing-to-krita" data-text="Contributing to Krita" data-via="kinow" data-hashtags="opensource">Tweet</a>
-<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-
-
-    <p>As I mentioned in the <a href="/2017/01/02/debugging-an-application-that-freezes-the-x-server">last post</a>, I have been learning Qt and using C and C++ again.
-Since I used C and C++ more during university (about 10 years ago, phew), decided
-to read real code.</p>
-<p>I used Photoshop, Illustrator, and Fireworks a lot when I was younger and had more
-time to spend drawing. But some time ago I switched to Inkscape for vector graphics,
-which I use at work for presentations. So it was only natural to try Krita now.</p>
-<p>Since I was going to try Krita, I thought why not check out and build from source, and then
-in case I found any bugs, contribute back? Or maybe from time to time triage issues,
-find low hanging ones, and send a patch?</p>
-<p>Well, turns out the Krita project has a great community, and it is super easy to send
-contributions. So far I submitted three patches, some were included in 3.x releases.</p>
-<ul>
-<li><a href="https://bugs.kde.org/show_bug.cgi?id=366741">https://bugs.kde.org/show_bug.cgi?id=366741</a></li>
-<li><a href="https://bugs.kde.org/show_bug.cgi?id=364208">https://bugs.kde.org/show_bug.cgi?id=364208</a></li>
-<li><a href="https://bugs.kde.org/show_bug.cgi?id=374451">https://bugs.kde.org/show_bug.cgi?id=374451</a></li>
-</ul>
-<p>While the patches are rather small, they are suggestions on how to fix memory
-segmentation faults, or strange behaviours in the interface. For these issues,
-I had to learn more about Qt components, signals and emitting events, and,
-of course, work with pointers, arrays, Qt data structures, etc. In other words,
-lots of (geek) fun!</p>
-<p>In other words, by contributing to Krita, I am not only helping the project
-and giving a little back to the community, but also refreshing my memory on
-C and C++, and slowly learning Qt - which is not very hard if you worked with
-Swing/AWT, Delphi, Visual Basic, Gtk, etc.</p>
-<p>What are you waiting to contribute to Krita? The developers that maintain the
-project answer tickets and questions posted to <a href="https://reddit.com/r/krita">reddit</a>
-in a good time, and are extremely easy to work with.</p>
-<p>Read more <a href="http://www.davidrevoy.com/article193/guide-building-krita-on-linux-for-cats">here</a> how to build from source, and
-<a href="https://krita.org/en/get-involved/developers/">here</a> on how to submit patches.</p>
-<p>Happy hacking!</p><!-- html -->
-
-<p class="postmetadata">
-
-    <small>tags 
-     [&nbsp;<a
-        href="/tag/c%2B%2B"
-        rel="tag">c++</a>&nbsp;]&nbsp;
-
-     [&nbsp;<a
-        href="/tag/krita"
-        rel="tag">krita</a>&nbsp;]&nbsp;
-
-     [&nbsp;<a
-        href="/tag/programming"
-        rel="tag">programming</a>&nbsp;]&nbsp;
-
-     [&nbsp;<a
-        href="/tag/opensource"
-        rel="tag">opensource</a>&nbsp;]&nbsp;
 
     </small>
 
