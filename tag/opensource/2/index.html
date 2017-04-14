@@ -108,10 +108,10 @@
 
                 
                     
-                    <p>Posts tagged with &#8216;programming&#8217;</p>
+                    <p>Posts tagged with &#8216;opensource&#8217;</p>
 <div class="ui raised padded container segment">
-    <h2>Revamping Frege logo</h2>
-    <p><small>kinow</small> @ <small>Aug 16, 2016&nbsp;23:54:03</small></p>
+    <h2>Debugging an application that freezes the X server</h2>
+    <p><small>kinow</small> @ <small>Jan 02, 2017&nbsp;00:39:03</small></p>
 
 
 
@@ -119,84 +119,55 @@
 
 
 
-<a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2016/08/16/revamping-frege-logo" data-text="Revamping Frege logo" data-via="kinow" data-hashtags="opensource">Tweet</a>
+<a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2017/01/02/debugging-an-application-that-freezes-the-x-server" data-text="Debugging an application that freezes the X server" data-via="kinow" data-hashtags="opensource">Tweet</a>
 <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
 
 
-    <p>For a while I had been wanting to try adding a flat colour to the Frege
-logo. This weekend had some bit of spare time, and here is the result.</p>
-<p>Submitted to the project as <a href="https://github.com/Frege/frege/pull/299/files">pull request #299</a>.</p>
-<p>Current logo.</p>
-<p><img class="ui centered large image" src="/2016/08/16/revamping-frege-logo/Frege_logo.png" alt="Frege current logo" /></p>
-<p>And the updated logo.</p>
-<p><img class="ui centered large image" src="/2016/08/16/revamping-frege-logo/Frege_logo_flat_colours.png" alt="Frege updated logo" /></p>
-<p>The colour used was Flamingo (#EF4836), found in <a href="http://www.flatuicolorpicker.com/">Flat UI Color Picker</a>.</p>
-<p>Perhaps not exactly revamping, since all I did was just change a colour. There were
-adjustments to the b&eacute;zier curves as well, to better align them, but I updated both
-logos, not just the new one :-)</p><!-- html -->
+    <p>Some time ago, I decided to start writing C++ again, and picked Krita for that.
+Krita is written in C++ and Qt. The <a href="https://bugs.kde.org/show_bug.cgi?id=366741">bug I was working on</a>
+involved a memory issue when changing the UI.</p>
+<p>The problem was that this UI change would result in, not only Krita, but the whole
+X server freezing. My set up was basically Ubuntu 16.04.1 LTS, with Eclipse, Qt5,
+and the latest version of Krita checked out via git.</p>
+<p>Initially I spent some time looking at the logs, tracing the binary, even downloaded
+some Qt utility tools to look at the events and what was happening with the application
+when it froze.</p>
+<p>However, eventually I realized I was going to spend more time on this part of the
+issue, rather than on the memory bug. So decided to look for a work-around.</p>
+<p>Thankfully someone else blogged about a similar issue and saved me a lot of time :-)
+Here&#8217;s how I did it, following the instructions in
+<a href="http://www.geany.org/manual/gtk/gtk-faq/x462.html">this blog post</a>.</p>
+<div class="highlight"><pre><span class="nv">$ </span>sudo apt-get install xnest -y
+<span class="nv">$ </span><span class="nb">cd </span>krita_install/
+<span class="nv">$ </span>Xnest :10
+<span class="nv">$ </span>twm -display :10
+<span class="nv">$ </span><span class="nb">export </span><span class="nv">DISPLAY</span><span class="o">=</span>:10
+<span class="nv">$ </span>./krita
+</pre></div>
+
+<p>That&#8217;s it. You should have Krita running in a separate window, with Xnest, and within
+this window the twm window manager running. So when it freezes, at least you can still
+debug your application in Eclipse or whatever IDE you prefer.</p>
+<p>Happy hacking!</p><!-- html -->
 
 <p class="postmetadata">
 
     <small>tags 
      [&nbsp;<a
-        href="/tag/programming"
-        rel="tag">programming</a>&nbsp;]&nbsp;
+        href="/tag/c%2B%2B"
+        rel="tag">c++</a>&nbsp;]&nbsp;
 
      [&nbsp;<a
-        href="/tag/illustrations"
-        rel="tag">illustrations</a>&nbsp;]&nbsp;
+        href="/tag/krita"
+        rel="tag">krita</a>&nbsp;]&nbsp;
 
-    </small>
+     [&nbsp;<a
+        href="/tag/opensource"
+        rel="tag">opensource</a>&nbsp;]&nbsp;
 
-
-    <br/>
-    <small>posted in 
-    [&nbsp;<a
-        href="/blog"
-        title="View all posts in blog"
-        rel="category tag">blog</a>&nbsp;]&nbsp;
-    category </small>
-
-</p>
-</div>
-
-<div class="ui raised padded container segment">
-    <h2>Reading notes about DRMAA v2</h2>
-    <p><small>kinow</small> @ <small>Jul 20, 2016&nbsp;19:59:03</small></p>
-
-
-
-
-
-
-
-<a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2016/07/20/reading-notes-about-drmaa-v2" data-text="Reading notes about DRMAA v2" data-via="kinow" data-hashtags="opensource">Tweet</a>
-<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-
-
-    <p>The DRMAA v2 specification draft is ready to be published, and is in <a href="https://redmine.ogf.org/boards/36/topics/494">public
-comment</a> until 31st July this year.
-I used DRMAA v1 to integrate Jenkins and PBS some time ago, but it was not a
-very elegant solution.</p>
-<p>And in the end integrating other grid computing implementations like SGE would
-not be very simple.</p>
-<p>This post contains my reading notes for DRMAA v2, and a short analysis of how
-this new specification could be used in a new tentative to integrate
-Jenkins and several grid computing implementations in a single plug-in.</p>
-<!-- html -->
-
-    <p>( <a href="/2016/07/20/reading-notes-about-drmaa-v2" >Read more &#8230;</a> )</p>
-
-<p class="postmetadata">
-
-    <small>tags 
      [&nbsp;<a
         href="/tag/programming"
         rel="tag">programming</a>&nbsp;]&nbsp;
-
-     [&nbsp;<a
-        href="/tag/grid%20computing"
-        rel="tag">grid computing</a>&nbsp;]&nbsp;
 
     </small>
 
@@ -214,7 +185,7 @@ Jenkins and several grid computing implementations in a single plug-in.</p>
 
 <div id="navigation">
 
-        &mdash; <a href="/tag/programming/2" id="navigation-next">Newer Entries</a>&nbsp;&rarr;
+        &mdash; <a href="/tag/opensource" id="navigation-next">Newer Entries</a>&nbsp;&rarr;
 
 </div>
                     <p class="postmetadata">
