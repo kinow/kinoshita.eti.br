@@ -114,6 +114,186 @@
                     
                     <p>Posts in category &#8216;blog&#8217;</p>
 <div class="ui raised padded container segment">
+    <h2>Drawing sketch: Blue Hair</h2>
+    <p><small>kinow</small> @ <small>May 16, 2016&nbsp;11:13:03</small></p>
+
+
+
+
+
+
+
+<a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2016/05/16/drawing-sketch-bluehair" data-text="Drawing sketch: Blue Hair" data-via="kinow" data-hashtags="opensource">Tweet</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+
+
+    <div class='row'>
+<div class="ui container" style='text-align: center;'>
+<figure>
+<a href="/2016/05/16/drawing-sketch-bluehair/bluehair.jpg" rel="prettyPhoto" class="thumbnail" title="Blue Hair">
+<img class="ui fluid image" src="/2016/05/16/drawing-sketch-bluehair/bluehair.jpg" alt="Blue Hair" />
+</a>
+<figcaption>Blue Hair</figcaption>
+</figure>
+</div>
+</div>
+
+<p>For <a href="https://www.reddit.com/r/redditgetsdrawn/comments/4jakp0/someone_told_me_to_post_here_with_my_new_hair/">redditgetsdrawn</a></p><!-- html -->
+
+<p class="postmetadata">
+
+    <small>tags 
+     [&nbsp;<a
+        href="/tag/illustrations"
+        rel="tag">illustrations</a>&nbsp;]&nbsp;
+
+    </small>
+
+
+    <br/>
+    <small>posted in 
+    [&nbsp;<a
+        href="/blog"
+        title="View all posts in blog"
+        rel="category tag">blog</a>&nbsp;]&nbsp;
+    category </small>
+
+</p>
+</div>
+
+<div class="ui raised padded container segment">
+    <h2>Some Linux commands I used this week</h2>
+    <p><small>kinow</small> @ <small>May 06, 2016&nbsp;23:26:03</small></p>
+
+
+
+
+
+
+
+<a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2016/05/06/some-linux-commands-i-used-this-week" data-text="Some Linux commands I used this week" data-via="kinow" data-hashtags="opensource">Tweet</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+
+
+    <p>These are some commands I used on Linux servers this week. Adding them here in case someone else
+find them interesting, and also due to my bad memory :-)</p>
+<h2>Listing latest installed packages in SLES</h2>
+<div class="highlight"><pre>rpm -qa --last
+</pre></div>
+
+<p>This will display the last packages installed. Useful when there are packages being updated, and you
+need to confirm what changed, and when.</p>
+<h2>Listing packages in SLES and origin repository</h2>
+<div class="highlight"><pre>rpm -qa --qf <span class="s1">&#39;%-30{DISTRIBUTION} %{NAME}\n&#39;</span><span class="p">|</span> sort
+</pre></div>
+
+<p>The output will have two columns. The first containing the repository name, and the second column with
+the package name. For example.</p>
+<div class="highlight"><pre>devel:languages:R:base / SLE_11_SP2 R-base
+devel:languages:R:base / SLE_11_SP2 R-base-devel
+home:flacco:sles / SLE_11_SP3 php53-phar
+home:happenpappen / SLE_11_SP2 nodejs
+</pre></div>
+
+<h2>Grep for content in XML tags</h2>
+<p>Be it for web services, or for finding things in Jenkins XML files. Being able to grep the tag attribute
+or tag name might be useful. Look at the following example that uses the 
+<a href="https://msdn.microsoft.com/en-us/library/ms762271%28v=vs.85%29.aspx">books XML provided by Microsoft for testing</a>.</p>
+<div class="highlight"><pre>grep -oP <span class="s2">&quot;(?&lt;=&lt;genre&gt;).*?(?=&lt;/genre&gt;)&quot;</span> books.xml <span class="p">|</span> sort <span class="p">|</span> uniq
+</pre></div>
+
+<p>Which will outputs the following.</p>
+<div class="highlight"><pre>Computer
+Fantasy
+Horror
+Romance
+Science Fiction
+</pre></div>
+
+<h2>Find Python site packages directory</h2>
+<p>Sometimes you have Anaconda, but also the system installation, and maybe even other Python distributions.
+Knowing where Python is looking for site packages can be helpful to confirm the package exists, and also
+to inspect its sources.</p>
+<div class="highlight"><pre>python -c <span class="s2">&quot;from distutils.sysconfig import get_python_lib; print(get_python_lib())&quot;</span>
+</pre></div>
+
+<p>An example of the output of the script.</p>
+<div class="highlight"><pre>/usr/lib/python2.7/dist-packages
+</pre></div>
+
+<h2>Force no-cache via curl for a list of files</h2>
+<p>Useful when you have a proxy like squid caching some requests from an application and you
+want to flush the cache and get the latest content (which will be cached again, but then
+you can fix it once confirmed).</p>
+<div class="highlight"><pre>curl --silent -H <span class="s1">&#39;Cache-Control: no-cache&#39;</span> http://systemcachingvalues.local/somedoc.html
+</pre></div>
+
+<h2>Find to which servers a Linux process is talking to</h2>
+<p>You have to find the pid of the process that you would like to investigate (e.g. 6364) and have
+<a href="http://linux.die.net/man/1/strace">strace</a> installed.</p>
+<div class="highlight"><pre>strace -p <span class="m">6364</span> -f -e <span class="nv">trace</span><span class="o">=</span>network -o output.txt
+</pre></div>
+
+<p>The command above creates output.txt with the trace information. Then you can grep for
+the IP addresses with the following regex.</p>
+<div class="highlight"><pre>grep -E -o <span class="s2">&quot;(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)&quot;</span> output.txt
+</pre></div>
+
+<p>Which will output something similar to the following example.</p>
+<div class="highlight"><pre>127.0.1.1
+127.0.1.1
+127.0.1.1
+192.168.20.4
+10.10.0.12
+...
+</pre></div>
+
+<p>And finally, you can call dig to get the server name, and also remove duplicates.</p>
+<div class="highlight"><pre>grep -E -o <span class="s2">&quot;(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)&quot;</span> output.txt <span class="p">|</span> xargs -l dig +noall +answer +nocmd -x <span class="p">|</span> awk <span class="s1">&#39;{ print $5}&#39;</span> <span class="p">|</span> sort <span class="p">|</span> uniq
+</pre></div>
+
+<p>Which gives you the following.</p>
+<div class="highlight"><pre>ec2-52-13-43-205.compute-1.amazonaws.com.
+ec2-52-32-244-147.compute-1.amazonaws.com.
+ec2-52-44-11-85.compute-1.amazonaws.com.
+ec2-52-55-36-20.us-west-2.compute.amazonaws.com.
+ec2-52-11-19-24.us-west-2.compute.amazonaws.com.
+ec2-52-2-21-13.compute-1.amazonaws.com.
+ec2-54-33-249-49.us-west-2.compute.amazonaws.com.
+ec2-54-180-165-17.us-west-2.compute.amazonaws.com.
+ec2-54-2-177-91.compute-1.amazonaws.com.
+ec2-54-8-163-15.compute-1.amazonaws.com.
+syd11s01-in-f124.1e110.net.
+syd11s02-in-f5.1e110.net.
+syd12s02-in-f3.1e110.net.
+...
+</pre></div>
+
+<p>That&#8217;s all for today.</p>
+<p>Happy hacking!</p><!-- html -->
+
+<p class="postmetadata">
+
+    <small>tags 
+     [&nbsp;<a
+        href="/tag/linux"
+        rel="tag">linux</a>&nbsp;]&nbsp;
+
+    </small>
+
+
+    <br/>
+    <small>posted in 
+    [&nbsp;<a
+        href="/blog"
+        title="View all posts in blog"
+        rel="category tag">blog</a>&nbsp;]&nbsp;
+    category </small>
+
+</p>
+</div>
+
+<div class="ui raised padded container segment">
     <h2>Using Active Choices with Role Strategy Plug-in</h2>
     <p><small>kinow</small> @ <small>Apr 24, 2016&nbsp;16:05:03</small></p>
 
@@ -451,150 +631,6 @@ in Jenkins.</p>
      [&nbsp;<a
         href="/tag/saltstack"
         rel="tag">saltstack</a>&nbsp;]&nbsp;
-
-    </small>
-
-
-    <br/>
-    <small>posted in 
-    [&nbsp;<a
-        href="/blog"
-        title="View all posts in blog"
-        rel="category tag">blog</a>&nbsp;]&nbsp;
-    category </small>
-
-</p>
-</div>
-
-<div class="ui raised padded container segment">
-    <h2>Geek Vacation 2016</h2>
-    <p><small>kinow</small> @ <small>Apr 08, 2016&nbsp;22:17:03</small></p>
-
-
-
-
-
-
-
-<a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2016/04/08/geek-vacation-2016" data-text="Geek Vacation 2016" data-via="kinow" data-hashtags="opensource">Tweet</a>
-<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-
-
-    <p>I just had a two week vacation, and I tried to use my time to rest, play some music, and
-complete a geek todo-list. </p>
-<p>The list included things that I used some time ago but wanted to
-refresh my memory, things that I already used but never spent time reading the manuals, and
-other things that I saw somewhere but never actually used in any project.</p>
-<p>Here the complete list, with the items that were completed highlighted. Some links with
-pointers to what I used to study.</p>
-<ul>
-<li>gdb, strace, ptrace, etc, sysdig, dtrace (looked for links at <a href="https://news.ycombinator.com/">HackerNews</a> and <a href="https://www.reddit.com/">reddit</a>) ✔</li>
-<li>geodesy (<a href="https://en.wikipedia.org/wiki/Geodesy">Wikipedia</a>, some PDF&#8217;s) ✔</li>
-<li>QGIS (<a href="http://www.bostongis.com/?content_name=qgis">Boston GIS docs</a> and <a href="http://youtube.com">YouTube</a> videos) ✔</li>
-<li>SRS &amp; CRS (<a href="https://en.wikipedia.org/wiki/Spatial_reference_system">Wikipedia</a>) ✔</li>
-<li>BioPython (<a href="http://biopython.org/">project page</a>) ✔</li>
-<li>BioConda (<a href="https://bioconda.github.io/">project page</a>) ✔</li>
-<li>Weaver &amp; asm (<a href="https://commons.apache.org/proper/commons-weaver/">project page</a> and <a href="https://en.wikipedia.org/wiki/ObjectWeb_ASM">Wikipedia</a>) ✔</li>
-<li>afl (project page, and some <a href="http://kinoshita.eti.br/2016/02/27/learning-afl-and-testing-mapserver.html">tests with MapServer</a>) ✔</li>
-<li>WFS (<a href="https://en.wikipedia.org/wiki/Web_Feature_Service">Wikipedia</a>, <a href="http://docs.geoserver.org/latest/en/user/services/wfs/reference.html">GeoServer</a> and <a href="http://mapserver.org/ogc/wfs_server.html">MapServer</a>) ✔</li>
-<li>SaltStack (<a href="http://saltstack.com/">project page</a>, <a href="https://wiki.jenkins-ci.org/display/JENKINS/saltstack-plugin">Jenkins Plug-ins for SaltStack</a>, and a few tests with VM&#8217;s and Docker) ✔</li>
-<li>InfluxDB (<a href="https://influxdata.com/">project page</a>) ✔</li>
-<li>rr (<a href="http://rr-project.org/">project page</a> and some local tests) ✔</li>
-<li>ZeroMQ (<a href="http://zeromq.org/">project page</a>, <a href="https://github.com/saltstack/salt/blob/90b0a42a21dc11ca118ffbb679e0871f234c17bc/salt/transport/zeromq.py">SaltStack source code</a>) ✔</li>
-<li>netty (<a href="http://netty.io/">project page</a>) ✔</li>
-<li>RethinkDB (<a href="https://rethinkdb.com/">project page</a>, and a <a href="https://github.com/kinow/jira-rethinkdb">test project</a>) ✔</li>
-<li>C++ (templates, abstractions in C++, etc) (<a href="http://www.codeproject.com/Articles/257589/An-Idiots-Guide-to-Cplusplus-Templates-Part">just this article to remember syntax</a>) ✔</li>
-<li>Linear programming (<a href="http://benalexkeen.com/linear-programming-with-python-and-pulp/">PuLP docs</a>) ✔</li>
-<li>AKKA (<a href="http://akka.io/">project page</a>) ✔</li>
-<li>Frege (<a href="https://github.com/Frege/frege">project page</a> (reading their <a href="https://www.gitbook.com/book/dierk/fregegoodness/details">new book</a>))</li>
-<li>JVM internals (played a little with <a href="http://asm.ow2.org/">asm</a>, <a href="http://docs.oracle.com/javase/7/docs/technotes/tools/windows/javap.html">javap</a>)</li>
-<li>Java Concurrency (started re-reading <a href="http://jcip.net/">Java Concurrency in Practice</a>, but still in the initial chapters)</li>
-<li>PostGIS (<a href="postgis.net/">project page</a>)</li>
-<li>Krita (<a href="https://krita.org/">project page</a> and <a href="http://www.davidrevoy.com/article193/guide-building-krita-on-linux-for-cats">David Revoy&#8217;s tutorials</a>)</li>
-<li>Scala (<a href="http://www.scala-lang.org/">project page</a>)</li>
-<li>Minecraft Forge (<a href="http://www.minecraftforge.net/forum/">project forum</a>)</li>
-<li>Graphs in Jenkins, cylc, Spark, Jena and clue/graph (didn&#8217;t have time for this one)</li>
-</ul>
-<p>Going to have less spare time now for Open Source and learning the rest of the stuff on this list,
-but there&#8217;s always some books to read, and things to learn anyway right ¯\<em>(ツ)</em>/¯</p><!-- html -->
-
-<p class="postmetadata">
-
-    <small>tags 
-     [&nbsp;<a
-        href="/tag/geek"
-        rel="tag">geek</a>&nbsp;]&nbsp;
-
-    </small>
-
-
-    <br/>
-    <small>posted in 
-    [&nbsp;<a
-        href="/blog"
-        title="View all posts in blog"
-        rel="category tag">blog</a>&nbsp;]&nbsp;
-    category </small>
-
-</p>
-</div>
-
-<div class="ui raised padded container segment">
-    <h2>Deploying WAR files to Tomcat with Jenkins</h2>
-    <p><small>kinow</small> @ <small>Mar 20, 2016&nbsp;15:29:03</small></p>
-
-
-
-
-
-
-
-<a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2016/03/20/deploying-war-files-to-tomcat-with-jenkins" data-text="Deploying WAR files to Tomcat with Jenkins" data-via="kinow" data-hashtags="opensource">Tweet</a>
-<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-
-
-    <p><strong>Table of Contents</strong></p>
-<ul>
-<li><a href="#1-deploying-with-custom-scripts">Deploying with custom scripts</a></li>
-<li><a href="#2-deploying-with-a-build-tool">Deploying with a build tool</a></li>
-<li><a href="#3-deploying-with-a-build-server">Deploying with a build server</a></li>
-<li><a href="#final-thoughts">Final thoughts</a></li>
-</ul>
-<p>A co-worker asked me this week about how to deploy a WAR file to Tomcat with Jenkins. In my team we are
-currently maintaining and deploying about 10 Java web systems, but we have no consistent way of deploying
-the applications to Tomcat yet. In the past I used Ant, Maven, Cargo, Grunt, and Jenkins, so I
-decided to write this short post to show a few different ways it can be achieved, &agrave; la
-<a href="https://en.wikipedia.org/wiki/There's_more_than_one_way_to_do_it">Perl&#8217;s TMTOWTDI</a> motto.</p>
-<h2><a name="1-deploying-with-custom-scripts" style="color: #222222;">#1 Deploying with custom scripts</a></h2>
-
-<p>At first you may be tempted to write your own script to deploy to Tomcat with some Shell, Perl, Python
-or Java. But I think I would choose this option only because either I needed some feature that is not
-available in the other options, or in order to call other tasks or debug some problem.</p>
-<p>Example:</p>
-<div class="highlight"><pre><span class="nv">$ </span>docker run -d -p 8888:8080 jeanblanchard/tomcat:8
-<span class="nv">$ </span>git clone https://github.com/spring-projects/spring-petclinic.git <span class="o">&amp;&amp;</span> <span class="nb">cd </span>spring-petclinic <span class="o">&amp;&amp;</span> mvn package
-<span class="nv">$ </span>curl --upload-file target/petclinic.war <span class="s2">&quot;http://admin:admin@localhost:8888/manager/text/deploy?path=/spring-petclinic&amp;update=true&quot;</span>
-OK - Deployed application at context path /spring-petclinic
-</pre></div>
-
-<!-- html -->
-
-    <p>( <a href="/2016/03/20/deploying-war-files-to-tomcat-with-jenkins" >Read more &#8230;</a> )</p>
-
-<p class="postmetadata">
-
-    <small>tags 
-     [&nbsp;<a
-        href="/tag/jenkins"
-        rel="tag">jenkins</a>&nbsp;]&nbsp;
-
-     [&nbsp;<a
-        href="/tag/tomcat"
-        rel="tag">tomcat</a>&nbsp;]&nbsp;
-
-     [&nbsp;<a
-        href="/tag/docker"
-        rel="tag">docker</a>&nbsp;]&nbsp;
 
     </small>
 

@@ -114,6 +114,165 @@
                     
                     <p>Posts in category &#8216;blog&#8217;</p>
 <div class="ui raised padded container segment">
+    <h2>Strings transliteration in Java with Apache Commons Lang</h2>
+    <p><small>kinow</small> @ <small>Aug 09, 2014&nbsp;12:49:33</small></p>
+
+
+
+
+
+
+
+<a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2014/08/09/strings-transliteration-in-java-with-apache-commons-lang" data-text="Strings transliteration in Java with Apache Commons Lang" data-via="kinow" data-hashtags="opensource">Tweet</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+
+
+    <p><a href="http://rosalind.info">Rosalind</a> is a website with a curated set of exercices for bioinformatics, organized hierarchily. 
+In some of these examples you are required to replace characters (nucleotides) by other characters. It is a rather common 
+task for developers, like when you need to replace special characters in user&#8217;s names.</p>
+<p>There are different ways of describing it, such as translate, replace, or <strong><a href="http://en.wikipedia.org/wiki/Transliteration">transliterate</a></strong>. The latter being my favorite definition. </p>
+<p>In Python I know that there are several different ways of transliterating strings 
+[<a href="https://pypi.python.org/pypi/transliterate">1</a>][<a href="http://blog.lebowtech.com/blog/programming/python/transliterate-with-python.html">2</a>]. But in Java I always ended up using a Map or a Enum and writing my own method in some <em>Util</em> class for that.</p>
+<p>Turns out that <a href="http://commons.apache.org">Apache Commons Lang</a>, which I use in most of my projects, 
+provided this feature. What means that I will be able to reduce the length of my code, what also means 
+less code to be tested (and one less place to look for bugs).</p>
+<div class="highlight"><pre><span class="n">String</span> <span class="n">s</span> <span class="o">=</span> <span class="n">StringUtils</span><span class="o">.</span><span class="na">replaceChars</span><span class="o">(</span><span class="s">&quot;ATGCATGC&quot;</span><span class="o">,</span> <span class="s">&quot;GTCA&quot;</span><span class="o">,</span> <span class="s">&quot;CAGT&quot;</span><span class="o">);</span> <span class="c1">// &quot;TACGTACG&quot;</span>
+<span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">s</span><span class="o">);</span>
+</pre></div>
+
+<p>What the code above does, is replace G by C, T by A, C by G and A by T. This process is part of finding the 
+<a href="http://www.bioinformatics.org/sms/rev_comp.html">DNA reverse complement</a>. But you can also use this for replacing 
+special characters, spaces by _, and so it goes.</p>
+<p>Happy hacking!</p><!-- html -->
+
+<p class="postmetadata">
+
+    <small>tags 
+     [&nbsp;<a
+        href="/tag/java"
+        rel="tag">java</a>&nbsp;]&nbsp;
+
+     [&nbsp;<a
+        href="/tag/apache%20software%20foundation"
+        rel="tag">apache software foundation</a>&nbsp;]&nbsp;
+
+     [&nbsp;<a
+        href="/tag/bioinformatics"
+        rel="tag">bioinformatics</a>&nbsp;]&nbsp;
+
+    </small>
+
+
+    <br/>
+    <small>posted in 
+    [&nbsp;<a
+        href="/blog"
+        title="View all posts in blog"
+        rel="category tag">blog</a>&nbsp;]&nbsp;
+    category </small>
+
+</p>
+</div>
+
+<div class="ui raised padded container segment">
+    <h2>Treemapping Jenkins Extension Points with R</h2>
+    <p><small>kinow</small> @ <small>May 19, 2014&nbsp;00:51:33</small></p>
+
+
+
+
+
+
+
+<a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2014/05/19/treemapping-jenkins-extension-points-with-r" data-text="Treemapping Jenkins Extension Points with R" data-via="kinow" data-hashtags="opensource">Tweet</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+
+
+    <p>I have been playing with R and its packages for some time, and decided to study it a 
+bit harder. Last week I started reading the <a href="http://adv-r.had.co.nz/">Advanced R Programming</a> 
+by Hadley Wickham. </p>
+<p>One of the first chapters talks about the basic data structures in R. In order to 
+get my feet wet I thought about a simple example: <a href="http://en.wikipedia.org/wiki/Treemapping">treemapping</a> 
+Jenkins extension points. </p>
+<p style="text-align: center;"><a href="/2014/05/19/treemapping-jenkins-extension-points-with-r/extension_points.png"><img src="/2014/05/19/treemapping-jenkins-extension-points-with-r/extension_points.png" width="600px" alt="Treemap graph" /></a></p>
+
+<p>There is a <a href="https://wiki.jenkins-ci.org/display/JENKINS/Extension+points">Wiki page with the extension points in Jenkins</a> (what parts of Jenkins can be customized) 
+and its implementations. That page is generated by a <a href="https://ci.jenkins-ci.org/view/Infrastructure/job/infra_extension-indexer/">Jenkins job</a>. </p>
+<p>That job outputs a JSON file that contains each available extension points, as well as 
+an array with its implementations. The R code below will produce two vectors, one with the 
+count of implementations of each extension point, and the other with the class name.</p>
+<div class="highlight"><pre>nExtensionPoints <span class="o">&lt;-</span> <span class="kp">length</span><span class="p">(</span>extensionPointsJson<span class="o">$</span>extensionPoints<span class="p">)</span>
+numberOfImplementations <span class="o">&lt;-</span> <span class="kt">vector</span><span class="p">(</span>length <span class="o">=</span> nExtensionPoints<span class="p">)</span>
+namesOfTheExtensionPoints <span class="o">&lt;-</span> <span class="kt">vector</span><span class="p">(</span>length <span class="o">=</span> nExtensionPoints<span class="p">)</span>
+<span class="kr">for</span> <span class="p">(</span>i <span class="kr">in</span> <span class="kp">seq_along</span><span class="p">(</span>extensionPoints<span class="p">))</span> <span class="p">{</span>
+  extensionName <span class="o">=</span> extensionPoints<span class="p">[[</span>i<span class="p">]]</span><span class="o">$</span>className
+  lastIndexOfDot <span class="o">=</span> <span class="kp">regexpr</span><span class="p">(</span><span class="s">&quot;\\.[^\\.]*$&quot;</span><span class="p">,</span> extensionName<span class="p">)</span>
+  namesOfTheExtensionPoints<span class="p">[[</span>i<span class="p">]]</span> <span class="o">=</span> <span class="kp">substr</span><span class="p">(</span>extensionName<span class="p">,</span> lastIndexOfDot<span class="p">[</span><span class="m">1</span><span class="p">]</span><span class="m">+1</span><span class="p">,</span> <span class="kp">nchar</span><span class="p">(</span>extensionName<span class="p">))</span>
+  numberOfImplementations<span class="p">[[</span>i<span class="p">]]</span> <span class="o">=</span> <span class="kp">length</span><span class="p">(</span>extensionPoints<span class="p">[[</span>i<span class="p">]]</span><span class="o">$</span>implementations<span class="p">)</span>
+  <span class="kp">print</span><span class="p">(</span><span class="kp">paste</span><span class="p">(</span>namesOfTheExtensionPoints<span class="p">[[</span>i<span class="p">]],</span> <span class="s">&quot; -&gt; &quot;</span><span class="p">,</span> numberOfImplementations<span class="p">[[</span>i<span class="p">]]))</span>
+<span class="p">}</span>
+</pre></div>
+
+<p>For creating the treemap I used the <strong><a href="http://flowingdata.com/2010/02/11/an-easy-way-to-make-a-treemap/">portfolio package</a></strong>, and the <code>map.market</code> 
+function. The structures previously created and the next snippet of code are all that is 
+needed to create the treemap of the Jenkins extension points.</p>
+<div class="highlight"><pre>map.market<span class="p">(</span>id<span class="o">=</span><span class="kp">seq_along</span><span class="p">(</span>extensionPoints<span class="p">),</span> area<span class="o">=</span>numberOfImplementations<span class="p">,</span> group<span class="o">=</span>namesOfTheExtensionPoints<span class="p">,</span> color<span class="o">=</span>numberOfImplementations<span class="p">,</span> main<span class="o">=</span><span class="s">&quot;Jenkins Extension Points&quot;</span><span class="p">)</span>
+</pre></div>
+
+<p>You can also use the <a href="https://wiki.jenkins-ci.org/display/JENKINS/R+Plugin">Jenkins R Plug-in</a> to produce this graph, 
+as in this <a href="http://builds.tupilabs.com/job/backend-extension-points-treemap/2/">sample job</a>. 
+You can get the complete script in this <a href="https://gist.github.com/kinow/d5a2221c32dce3aa1076">gist</a>, or just 
+copy it here.</p>
+<div class="highlight"><pre><span class="kn">library</span><span class="p">(</span><span class="s">&#39;rjson&#39;</span><span class="p">)</span>
+<span class="kn">library</span><span class="p">(</span><span class="s">&#39;portfolio&#39;</span><span class="p">)</span>
+
+download.file<span class="p">(</span>url<span class="o">=</span><span class="s">&quot;https://ci.jenkins-ci.org/view/Infrastructure/job/infra_extension-indexer/ws/extension-points.json&quot;</span><span class="p">,</span> destfile<span class="o">=</span><span class="s">&quot;extension-points.json&quot;</span><span class="p">,</span> method<span class="o">=</span><span class="s">&quot;wget&quot;</span><span class="p">)</span>
+extensionPointsJson <span class="o">&lt;-</span> fromJSON<span class="p">(</span><span class="kp">paste</span><span class="p">(</span><span class="kp">readLines</span><span class="p">(</span><span class="s">&quot;extension-points.json&quot;</span><span class="p">),</span> collapse<span class="o">=</span><span class="s">&quot;&quot;</span><span class="p">))</span>
+extensionPoints <span class="o">&lt;-</span> extensionPointsJson<span class="o">$</span>extensionPoints
+nExtensionPoints <span class="o">&lt;-</span> <span class="kp">length</span><span class="p">(</span>extensionPointsJson<span class="o">$</span>extensionPoints<span class="p">)</span>
+numberOfImplementations <span class="o">&lt;-</span> <span class="kt">vector</span><span class="p">(</span>length <span class="o">=</span> nExtensionPoints<span class="p">)</span>
+namesOfTheExtensionPoints <span class="o">&lt;-</span> <span class="kt">vector</span><span class="p">(</span>length <span class="o">=</span> nExtensionPoints<span class="p">)</span>
+<span class="kr">for</span> <span class="p">(</span>i <span class="kr">in</span> <span class="kp">seq_along</span><span class="p">(</span>extensionPoints<span class="p">))</span> <span class="p">{</span>
+  extensionName <span class="o">=</span> extensionPoints<span class="p">[[</span>i<span class="p">]]</span><span class="o">$</span>className
+  lastIndexOfDot <span class="o">=</span> <span class="kp">regexpr</span><span class="p">(</span><span class="s">&quot;\\.[^\\.]*$&quot;</span><span class="p">,</span> extensionName<span class="p">)</span>
+  namesOfTheExtensionPoints<span class="p">[[</span>i<span class="p">]]</span> <span class="o">=</span> <span class="kp">substr</span><span class="p">(</span>extensionName<span class="p">,</span> lastIndexOfDot<span class="p">[</span><span class="m">1</span><span class="p">]</span><span class="m">+1</span><span class="p">,</span> <span class="kp">nchar</span><span class="p">(</span>extensionName<span class="p">))</span>
+  numberOfImplementations<span class="p">[[</span>i<span class="p">]]</span> <span class="o">=</span> <span class="kp">length</span><span class="p">(</span>extensionPoints<span class="p">[[</span>i<span class="p">]]</span><span class="o">$</span>implementations<span class="p">)</span>
+  <span class="kp">print</span><span class="p">(</span><span class="kp">paste</span><span class="p">(</span>namesOfTheExtensionPoints<span class="p">[[</span>i<span class="p">]],</span> <span class="s">&quot; -&gt; &quot;</span><span class="p">,</span> numberOfImplementations<span class="p">[[</span>i<span class="p">]]))</span>
+<span class="p">}</span>
+png<span class="p">(</span>filename<span class="o">=</span><span class="s">&quot;extension-points.png&quot;</span><span class="p">,</span> width<span class="o">=</span><span class="m">2048</span><span class="p">,</span> height<span class="o">=</span><span class="m">1536</span><span class="p">,</span> units<span class="o">=</span><span class="s">&quot;px&quot;</span><span class="p">,</span> bg<span class="o">=</span><span class="s">&quot;white&quot;</span><span class="p">)</span>
+map.market<span class="p">(</span>id<span class="o">=</span><span class="kp">seq_along</span><span class="p">(</span>extensionPoints<span class="p">),</span> area<span class="o">=</span>numberOfImplementations<span class="p">,</span> group<span class="o">=</span>namesOfTheExtensionPoints<span class="p">,</span> color<span class="o">=</span>numberOfImplementations<span class="p">,</span> main<span class="o">=</span><span class="s">&quot;Jenkins Extension Points&quot;</span><span class="p">)</span>
+dev.off<span class="p">()</span>
+</pre></div>
+
+<!-- html -->
+
+<p class="postmetadata">
+
+    <small>tags 
+     [&nbsp;<a
+        href="/tag/jenkins"
+        rel="tag">jenkins</a>&nbsp;]&nbsp;
+
+     [&nbsp;<a
+        href="/tag/r"
+        rel="tag">r</a>&nbsp;]&nbsp;
+
+    </small>
+
+
+    <br/>
+    <small>posted in 
+    [&nbsp;<a
+        href="/blog"
+        title="View all posts in blog"
+        rel="category tag">blog</a>&nbsp;]&nbsp;
+    category </small>
+
+</p>
+
+</div>
+
+<div class="ui raised padded container segment">
     <h2>Writing a custom SchemaSpy command for Laravel 4</h2>
     <p><small>kinow</small> @ <small>Feb 11, 2014&nbsp;13:15:33</small></p>
 
@@ -312,132 +471,6 @@ http://www.itworld.com/it-managementstrategy/227477/has-open-source-outgrown-apa
      [&nbsp;<a
         href="/tag/apache%20software%20foundation"
         rel="tag">apache software foundation</a>&nbsp;]&nbsp;
-
-    </small>
-
-
-    <br/>
-    <small>posted in 
-    [&nbsp;<a
-        href="/blog"
-        title="View all posts in blog"
-        rel="category tag">blog</a>&nbsp;]&nbsp;
-    category </small>
-
-</p>
-</div>
-
-<div class="ui raised padded container segment">
-    <h2>Too many SQL variables exception in Graphite with SQLite3</h2>
-    <p><small>kinow</small> @ <small>Jul 04, 2013&nbsp;13:54:53</small></p>
-
-
-
-
-
-
-
-<a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2013/07/04/too_many_sql_variables_in_graphite_with_sqlite3" data-text="Too many SQL variables exception in Graphite with SQLite3" data-via="kinow" data-hashtags="opensource">Tweet</a>
-<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-
-
-    <p>Having run <a href="http://graphite.wikidot.com/">Graphite</a> for a while, today I found a rather annoying issue. We were using 
-<a href="https://code.launchpad.net/~lucio.torre/graphite/add-events/+merge/69142">events</a>, and everything was working perfectly fine so far. But for the 24 last hours, 
-the graph was blank. </p>
-<p>Actually, in the dashboard, the graph was <em>missing</em>, being displayed as a gray box. 
-Enabling the web inspector in Google Chrome I got the graph URL. Opening the link in 
-a new tab gave me the exception message: <strong>too many SQL variables</strong> (<sup>1</sup>).</p>
-<p>After some research, I found out this was a bug in SQLite. After trying to hack the code, 
-and being concerned about using a patched version of Graphite and having to update it 
-later, I decided to switch database. </p>
-<p>But to avoid losing the graphs, users and other settings, including the events, I 
-migrated the SQLite database to a MySQL server. This MySQL server was already installed in 
-the server machine, since this machine hosted a <a href="http://www.zabbix.com/">Zabbix</a> server too.</p>
-<p>Here are the steps required to migrate your database from SQLite to MySQL (<sup>2</sup>).</p>
-<ul>
-<li>Download <strong>sqlite3_mysql</strong> python script from <a href="http://www.redmine.org/boards/2/topics/12793">http://www.redmine.org/boards/2/topics/12793</a></li>
-<li>Stop Apache/Nginx</li>
-<li>mysql -u user -p -e &#8220;create database redmine graphite set utf8;&#8221; </li>
-<li>sqlite3 graphite.db .dump | sqlite3-to-mysql.py | mysql -uroot -pyourpass graphite</li>
-<li>Start Apache again</li>
-</ul>
-<p>After tail&#8217;ing the Graphite webapp log file, </p>
-<div class="highlight"><pre>tail f- storage/log/webapp/error.log
-</pre></div>
-
-<p>I noticed the Python MySQLdb wasn&#8217;t installed.</p>
-<div class="highlight"><pre><span class="n">ImproperlyConfigured</span><span class="p">:</span> <span class="n">Error</span> <span class="n">loading</span> <span class="n">MySQLdb</span> <span class="n">module</span><span class="p">:</span> <span class="n">No</span> <span class="n">module</span> <span class="n">named</span> <span class="n">MySQLdb</span>
-</pre></div>
-
-<p>My server was an Ubuntu 13.04, so I installed the module simply with the following 
-command.</p>
-<div class="highlight"><pre>apt-get install python-mysqldb
-</pre></div>
-
-<p>Hope that helps!</p>
-<p><small><sup>1</sup> You may have to enable *DEBUG* in your Django settings for seeing the exception in your browser</small></p>
-
-<p><small><sup>2</sup> Zabbix needed some minor tweaks in order to use [MariaDB](https://mariadb.org/), but probably you can give it a try too</small></p><!-- html -->
-
-<p class="postmetadata">
-
-    <small>tags 
-     [&nbsp;<a
-        href="/tag/monitoring"
-        rel="tag">monitoring</a>&nbsp;]&nbsp;
-
-     [&nbsp;<a
-        href="/tag/python"
-        rel="tag">python</a>&nbsp;]&nbsp;
-
-    </small>
-
-
-    <br/>
-    <small>posted in 
-    [&nbsp;<a
-        href="/blog"
-        title="View all posts in blog"
-        rel="category tag">blog</a>&nbsp;]&nbsp;
-    category </small>
-
-</p>
-</div>
-
-<div class="ui raised padded container segment">
-    <h2>Graphite: Broken images</h2>
-    <p><small>kinow</small> @ <small>Apr 17, 2013&nbsp;11:36:38</small></p>
-
-
-
-
-
-
-
-<a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2013/04/17/graphite-broken-images" data-text="Graphite: Broken images" data-via="kinow" data-hashtags="opensource">Tweet</a>
-<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-
-
-    <p>This morning I was setting up a <a href="http://graphite.wikidot.com/" title="Graphite">Graphite </a>server to collect metrics with <a href="https://github.com/etsy/statsd/" title="statsd">statsd</a>, <a href="http://logstash.net/" title="LogStash">LogStash </a>and <a href="https://github.com/jmxtrans/jmxtrans" title="jmxtrans">jmxtrans</a>. After following the instructions from @jgeurst, I&#8217;ve successfully installed Graphite.</p>
-
-<p>I had previously installed another test box, so I decided to take a deeper look at the settings, write a <a href="https://puppetlabs.com/" title="Puppet">puppet</a> manifest and prepare this new box to become a production server. However, after browsing the webapp, all graphs were broken.</p>
-
-<p>After googling a while, reading forums and bugs, I decided to open the <em>$GRAPHITE_HOME/webapp/graphite/render/views.py</em>, adding <em>log.rendering(&#8230;)</em> statements (not the most elegant solution, I know).</p>
-
-<p>By following the program workflow I found out it was entering a block after checking if it should remotely render the image. This feature is turned on/off by <strong>REMOTE_RENDERING</strong> = True/False, in local_settings.py.</p>
-
-<p>After setting this to <em>False</em> the problem was solved.</p><!-- html -->
-
-<p class="postmetadata">
-
-    <small>tags 
-     [&nbsp;<a
-        href="/tag/monitoring"
-        rel="tag">monitoring</a>&nbsp;]&nbsp;
-
-     [&nbsp;<a
-        href="/tag/python"
-        rel="tag">python</a>&nbsp;]&nbsp;
 
     </small>
 
