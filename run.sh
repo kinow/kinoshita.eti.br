@@ -1,6 +1,6 @@
 #!/bin/bash
-DIR=`dirname "$0"`
+DIR=$(dirname "$0")
 
-chef --root=$DIR serve --use-reloader
+chef --root="$DIR" serve --use-reloader
 
 exit 0
