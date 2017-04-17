@@ -4,6 +4,7 @@ import requests
 import json
 from pprint import pprint as pp
 
+import os
 from os.path import join, dirname
 from dotenv import load_dotenv
 
@@ -58,10 +59,11 @@ class MovieLens(object):
         current_page = 1
 
         while True:
+            print("Downloading page %d" % (current_page))
             resp = self.explore(params={'hasRated': 'yes', 'sortBy': 'userRatedDate'}, cookies=cookies)
             movies.extend(self._get_movies(resp))
             last_page = self._get_last_page(resp)
-            if True or current_page >= last_page:
+            if current_page >= last_page:
                 break
             current_page += 1
 
@@ -71,7 +73,9 @@ def main():
     ml = MovieLens()
     cookies = ml.login(USER, PASS)
     movies = ml.list_all_rated_movies(cookies)
-    pp(movies)
+    with open('movies.json', 'w') as outfile:
+        json.dump(movies, outfile)
+        print("Done!")
 
 if __name__ == '__main__':
     main()
