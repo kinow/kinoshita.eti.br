@@ -60,7 +60,7 @@ class MovieLens(object):
 
         while True:
             print("Downloading page %d" % (current_page))
-            resp = self.explore(params={'hasRated': 'yes', 'sortBy': 'userRatedDate'}, cookies=cookies)
+            resp = self.explore(params={'hasRated': 'yes', 'sortBy': 'userRatedDate', 'page': current_page}, cookies=cookies)
             movies.extend(self._get_movies(resp))
             last_page = self._get_last_page(resp)
             if current_page >= last_page:
