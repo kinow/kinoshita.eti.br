@@ -110,6 +110,77 @@
                     
                     <p>Posts tagged with &#8216;jenkins&#8217;</p>
 <div class="ui raised padded container segment">
+    <h2>Deploying WAR files to Tomcat with Jenkins</h2>
+    <p><small>kinow</small> @ <small>Mar 20, 2016&nbsp;15:29:03</small></p>
+
+
+
+
+
+
+
+<a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2016/03/20/deploying-war-files-to-tomcat-with-jenkins" data-text="Deploying WAR files to Tomcat with Jenkins" data-via="kinow" data-hashtags="opensource">Tweet</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+
+
+    <p><strong>Table of Contents</strong></p>
+<ul>
+<li><a href="#1-deploying-with-custom-scripts">Deploying with custom scripts</a></li>
+<li><a href="#2-deploying-with-a-build-tool">Deploying with a build tool</a></li>
+<li><a href="#3-deploying-with-a-build-server">Deploying with a build server</a></li>
+<li><a href="#final-thoughts">Final thoughts</a></li>
+</ul>
+<p>A co-worker asked me this week about how to deploy a WAR file to Tomcat with Jenkins. In my team we are
+currently maintaining and deploying about 10 Java web systems, but we have no consistent way of deploying
+the applications to Tomcat yet. In the past I used Ant, Maven, Cargo, Grunt, and Jenkins, so I
+decided to write this short post to show a few different ways it can be achieved, &agrave; la
+<a href="https://en.wikipedia.org/wiki/There's_more_than_one_way_to_do_it">Perl&#8217;s TMTOWTDI</a> motto.</p>
+<h2><a name="1-deploying-with-custom-scripts" style="color: #222222;">#1 Deploying with custom scripts</a></h2>
+
+<p>At first you may be tempted to write your own script to deploy to Tomcat with some Shell, Perl, Python
+or Java. But I think I would choose this option only because either I needed some feature that is not
+available in the other options, or in order to call other tasks or debug some problem.</p>
+<p>Example:</p>
+<div class="highlight"><pre><span class="nv">$ </span>docker run -d -p 8888:8080 jeanblanchard/tomcat:8
+<span class="nv">$ </span>git clone https://github.com/spring-projects/spring-petclinic.git <span class="o">&amp;&amp;</span> <span class="nb">cd </span>spring-petclinic <span class="o">&amp;&amp;</span> mvn package
+<span class="nv">$ </span>curl --upload-file target/petclinic.war <span class="s2">&quot;http://admin:admin@localhost:8888/manager/text/deploy?path=/spring-petclinic&amp;update=true&quot;</span>
+OK - Deployed application at context path /spring-petclinic
+</pre></div>
+
+<!-- html -->
+
+    <p>( <a href="/2016/03/20/deploying-war-files-to-tomcat-with-jenkins" >Read more &#8230;</a> )</p>
+
+<p class="postmetadata">
+
+    <small>tags 
+     [&nbsp;<a
+        href="/tag/jenkins"
+        rel="tag">jenkins</a>&nbsp;]&nbsp;
+
+     [&nbsp;<a
+        href="/tag/tomcat"
+        rel="tag">tomcat</a>&nbsp;]&nbsp;
+
+     [&nbsp;<a
+        href="/tag/docker"
+        rel="tag">docker</a>&nbsp;]&nbsp;
+
+    </small>
+
+
+    <br/>
+    <small>posted in 
+    [&nbsp;<a
+        href="/blog"
+        title="View all posts in blog"
+        rel="category tag">blog</a>&nbsp;]&nbsp;
+    category </small>
+
+</p>
+</div>
+
+<div class="ui raised padded container segment">
     <h2>How does the Jenkins Credentials Plug-in store passwords?</h2>
     <p><small>kinow</small> @ <small>Sep 07, 2015&nbsp;01:25:03</small></p>
 
@@ -419,55 +490,6 @@ dev.off<span class="p">()</span>
         href="/jenkins"
         title="View all posts in jenkins"
         rel="category tag">jenkins</a>&nbsp;]&nbsp;
-    category </small>
-
-</p>
-</div>
-
-<div class="ui raised padded container segment">
-    <h2>A quick view on Wordpress, Mantis and Jenkins plug-in API</h2>
-    <p><small>kinow</small> @ <small>Oct 25, 2012&nbsp;08:49:36</small></p>
-
-
-
-
-
-
-
-<a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2012/10/25/a-quick-view-on-wordpress-mantis-and-jenkins-plug-in-api" data-text="A quick view on Wordpress, Mantis and Jenkins plug-in API" data-via="kinow" data-hashtags="opensource">Tweet</a>
-<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-
-
-    <p>I&#8217;m preparing a <em>plug-in API proposal for <a href="http://www.teamst.org" title="TestLink">TestLink</a></em>, and thought that the best way to learn how to write a good plug-in API would be by looking at other application&#8217;s plug-in API&#8217;s.</p>
-
-<p style="text-align: center"><img src="/2012/10/25/a-quick-view-on-wordpress-mantis-and-jenkins-plug-in-api/testlink_logo_2.jpg " alt="" title="TestLink" width="283" height="170" class="aligncenter size-full wp-image-1153" /></p>
-
-<p>This post contains information that I gathered for creating this new API, but that may also be useful for other programmers. I used <a href="#wp">Wordpress</a>, <a href="#mantis">Mantis</a> and <a href="#jenkins">Jenkins</a> in this study. Let me know if you find any mistakes or if you have any other suggestions.</p>
-
-<!-- html -->
-
-    <p>( <a href="/2012/10/25/a-quick-view-on-wordpress-mantis-and-jenkins-plug-in-api" >Read more &#8230;</a> )</p>
-
-<p class="postmetadata">
-
-    <small>tags 
-     [&nbsp;<a
-        href="/tag/jenkins"
-        rel="tag">jenkins</a>&nbsp;]&nbsp;
-
-     [&nbsp;<a
-        href="/tag/testlink"
-        rel="tag">testlink</a>&nbsp;]&nbsp;
-
-    </small>
-
-
-    <br/>
-    <small>posted in 
-    [&nbsp;<a
-        href="/blog"
-        title="View all posts in blog"
-        rel="category tag">blog</a>&nbsp;]&nbsp;
     category </small>
 
 </p>
