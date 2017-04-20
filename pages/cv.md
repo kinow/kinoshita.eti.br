@@ -167,6 +167,13 @@ Linux, OSX, Windows
 
 <table class="ui celled table">
   <tr>
+    <td>OWASP NZ Day Advanced Web Hacking and Secure Coding</td>
+    <td>University of Auckland</td>
+    <td>        Auckland, New Zealand
+    </td>
+    <td>2017</td>
+  </tr>
+  <tr>
     <td>AWS Concepts</td>
     <td>Linux Academy</td>
     <td>        Online
