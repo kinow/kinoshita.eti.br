@@ -127,7 +127,7 @@
                               
                               <span style="font-size: 11.5pt"><a href="/tag/functional%20programming">functional programming</a></span>&nbsp;(3)
                               
-                              <span style="font-size: 14.5pt"><a href="/tag/illustrations">illustrations</a></span>&nbsp;(9)
+                              <span style="font-size: 15.0pt"><a href="/tag/illustrations">illustrations</a></span>&nbsp;(10)
                               
                               <span style="font-size: 20.0pt"><a href="/tag/java">java</a></span>&nbsp;(20)
                               
@@ -162,6 +162,83 @@
                         <h1 class='topic'>Home</h1>
                     </div>
                     
+                    
+                    <div class="ui raised padded container segment">
+                        <h2>
+                            <a href="/2017/03/26/simulating-less-memory-with-ulimit" title="Permanent link">Simulating less memory with ulimit</a>
+                        </h2>
+                        <small>kinow</small> @ <small>Mar 26, 2017&nbsp;11:14:03</small>
+                        <div class="entry">
+                            
+
+
+
+
+
+<a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2017/03/26/simulating-less-memory-with-ulimit" data-text="Simulating less memory with ulimit" data-via="kinow" data-hashtags="opensource">Tweet</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+                            
+                            <p>These days I was trying to reproduce <a href="https://bugs.kde.org/show_bug.cgi?id=376382">a bug in Krita</a>
+where it would crash when a user copied group layers between windows. It appeared that the user was
+getting a segmentation fault due to the user&#8217;s computer running out of memory.</p>
+<p>I could not reproduce the issue, but my computer has 16 GB. The first thing that came to my mind was
+to create a virtual machine with less memory to reproduce the issue. But I decided to spend some time
+looking for a <a href="http://wiki.c2.com/?LazinessImpatienceHubris">simpler way</a> of doing it.</p>
+<p>Searching the web I found some suggestions that <code>ulimit</code> could work. After playing for a while with
+<code>ulimit</code> and <code>htop</code>, and verifying the amount of memory necessary to open two files in two windows
+in Krita, I came up with the following settings.</p>
+<div class="highlight"><pre><span class="c"># 2550 mb in kb</span>
+<span class="nb">ulimit</span> -v 2550000
+
+<span class="c"># 2 gb in kb</span>
+<span class="nb">ulimit</span> -m 2000000
+
+<span class="c"># Confirm limits</span>
+<span class="nb">ulimit</span> -a
+
+gdb <span class="nv">$HOME</span>/Development/cpp/workspace/krita_install/bin/krita
+</pre></div>
+
+<p>Then after copying a few layers from one window to another, I successfully reproduced the issue,
+and could include a backtrace in the Krita issue tracking system.</p>
+<p>&hearts; Open Source</p>
+                            
+                            
+                            
+                        </div>
+                        <p class="postmetadata">
+                            
+                            <small>tags 
+                             [&nbsp;<a
+                                href="/tag/c%2B%2B/"
+                                rel="tag">c++</a>&nbsp;]&nbsp;
+                            
+                             [&nbsp;<a
+                                href="/tag/krita/"
+                                rel="tag">krita</a>&nbsp;]&nbsp;
+                            
+                             [&nbsp;<a
+                                href="/tag/programming/"
+                                rel="tag">programming</a>&nbsp;]&nbsp;
+                            
+                             [&nbsp;<a
+                                href="/tag/opensource/"
+                                rel="tag">opensource</a>&nbsp;]&nbsp;
+                            
+                            </small>
+                            
+                            
+                            <br/>
+                            <small>posted in 
+                            [&nbsp;<a
+                                href="/blog"
+                                title="View all posts in blog"
+                                rel="category tag">blog</a>&nbsp;]
+                                &nbsp;category
+                            </small>
+                            
+                        </p>
+                    </div>
                     
                     <div class="ui raised padded container segment">
                         <h2>
@@ -517,57 +594,6 @@ clipboard. Then just paste into my browser, and that&#8217;s that!</p>
 </div>
 
 <p>For more, check out <a href="http://kinow.deviantart.com/art/Proposed-logos-for-Apache-OpenNLP-657512914">my DeviantArt page</a>.</p>
-                            
-                            
-                            
-                        </div>
-                        <p class="postmetadata">
-                            
-                            <small>tags 
-                             [&nbsp;<a
-                                href="/tag/illustrations/"
-                                rel="tag">illustrations</a>&nbsp;]&nbsp;
-                            
-                            </small>
-                            
-                            
-                            <br/>
-                            <small>posted in 
-                            [&nbsp;<a
-                                href="/blog"
-                                title="View all posts in blog"
-                                rel="category tag">blog</a>&nbsp;]
-                                &nbsp;category
-                            </small>
-                            
-                        </p>
-                    </div>
-                    
-                    <div class="ui raised padded container segment">
-                        <h2>
-                            <a href="/2017/01/13/drawing-cave" title="Permanent link">Drawing Cave</a>
-                        </h2>
-                        <small>kinow</small> @ <small>Jan 13, 2017&nbsp;02:11:03</small>
-                        <div class="entry">
-                            
-
-
-
-
-
-<a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2017/01/13/drawing-cave" data-text="Drawing Cave" data-via="kinow" data-hashtags="opensource">Tweet</a>
-<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-                            
-                            <div class='row'>
-<div class="ui fluid container">
-<figure>
-<a  href="/2017/01/13/drawing-cave/cave_by_kinow-daugn02.png" rel="prettyPhoto" class="thumbnail" title="Cave">
-<img style="height: 400px;" class="ui image" src="/2017/01/13/drawing-cave/cave_by_kinow-daugn02.png" alt="Cave" />
-</a>
-<figcaption>Cave</figcaption>
-</figure>
-</div>
-</div>
                             
                             
                             

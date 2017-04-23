@@ -13,10 +13,33 @@
     <atom:link href="/blog/feed.xml" rel="self" type="application/rss+xml" />
     <link>/</link>
     <description></description>
-    <lastBuildDate>1492847188.2221804</lastBuildDate>
+    <lastBuildDate>1492951692.171086</lastBuildDate>
     <language>en-US</language>
     <generator>PieCrust 2.0.0</generator>
  
+
+<item>
+    <title>Missing menus in new installation of TestLink 1.9.8</title>
+    <pubDate>Oct 27, 2013</pubDate>
+    <link>/2013/10/27/missing-menus-in-new-installation-of-testlink</link>
+    <dc:creator></dc:creator>
+    <description><p>I recently installed TestLink 1.9.8 and noticed that the menus and some other parts 
+of the UI we missing. Looking at <code>/var/log/testlink/userlog1.log</code> (the location 
+may change depending on your settings) I realized that there was something wrong 
+with my PHP installation. There were log messages like the below.</p>
+<pre><code>include_once(ADORecordSet_ext_empty.class.php): failed to open stream: No such file or directory - in /home/kinow/php/workspace/testlink-1.9.8/lib/functions/common.php - Line 92
+[13/Sep/18 12:51:09][WARNING][2o0h173pdgg5fjqh1pukr83og2][GUI]
+E_WARNING
+include_once(): Failed opening 'ADORecordSet_ext_empty.class.php' for inclusion (include_path='.:/usr/share/php:/usr/share/pear:.:/home/kinow/php/workspace/testlink-1.9.8/lib/functions/:/home/kinow/php/workspace/testlink-1.9.8/lib/issuet
+...
+</code></pre>
+<p>I found a post in a forum (but unfortunately I forgot to save the link) that suggested 
+these ADORecordSet were being caused by the module <strong>php5-adodb</strong>. Removing the module, and 
+cleaning the templates cache directory (<code>$TESTLINK_HOME/gui/templates_c/*</code>) 
+fixed the issue for me.</p>
+<p>Hope that helps.
+Happy testing!</p></description>
+</item>
 
 <item>
     <title>The Apache Way and on writing software reviews</title>
@@ -251,54 +274,6 @@ command.</p>
 <p>This post contains information that I gathered for creating this new API, but that may also be useful for other programmers. I used <a href="#wp">Wordpress</a>, <a href="#mantis">Mantis</a> and <a href="#jenkins">Jenkins</a> in this study. Let me know if you find any mistakes or if you have any other suggestions.</p>
 
 </description>
-</item>
-
-<item>
-    <title>Replacing a HashSet with a BitSet</title>
-    <pubDate>Oct 20, 2012</pubDate>
-    <link>/2012/10/20/replacing-a-hashset-with-a-bitset</link>
-    <dc:creator></dc:creator>
-    <description><p>I always read the messages in the <a href="http://www.apache.org/foundation/mailinglists.html" title="Apache mailing lists">Apache dev mailing lists</a>, including Apache Commons <a href="http://commons.apache.org/mail-lists.html" title="Apache Commons mailing lists">dev mailing list</a>. And you should too. There are always interesting discussions. Sometimes you participate, other times you only watch what&#8217;s happening, but in the end <strong>you always learn something new</strong>.</p>
-
-<p>A few days ago, I found <a href="https://issues.apache.org/jira/browse/LANG-839" title="LANG-839">an issue</a> where it was being proposed to replace an unnecessary <a href="http://docs.oracle.com/javase/6/docs/api/java/util/HashSet.html" title="HashSet">HashSet</a> in <a href="http://commons.apache.org/lang/api-release/org/apache/commons/lang3/ArrayUtils.html" title="ArrayUtils">ArrayUtils</a>#removeElements() by a <a href="http://docs.oracle.com/javase/6/docs/api/java/util/BitSet.html" title="BitSet">BitSet</a>. Here&#8217;s how the code looked like: </p>
-
-<div class="highlight"><pre><span class="n">HashSet</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">&gt;</span> <span class="n">toRemove</span> <span class="o">=</span> <span class="k">new</span> <span class="n">HashSet</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">&gt;();</span>
-<span class="k">for</span> <span class="o">(</span><span class="n">Map</span><span class="o">.</span><span class="na">Entry</span><span class="o">&lt;</span><span class="n">Character</span><span class="o">,</span> <span class="n">MutableInt</span><span class="o">&gt;</span> <span class="n">e</span> <span class="o">:</span> <span class="n">occurrences</span><span class="o">.</span><span class="na">entrySet</span><span class="o">())</span> <span class="o">{</span>
-    <span class="n">Character</span> <span class="n">v</span> <span class="o">=</span> <span class="n">e</span><span class="o">.</span><span class="na">getKey</span><span class="o">();</span>
-    <span class="kt">int</span> <span class="n">found</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
-    <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">,</span> <span class="n">ct</span> <span class="o">=</span> <span class="n">e</span><span class="o">.</span><span class="na">getValue</span><span class="o">().</span><span class="na">intValue</span><span class="o">();</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">ct</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
-        <span class="n">found</span> <span class="o">=</span> <span class="n">indexOf</span><span class="o">(</span><span class="n">array</span><span class="o">,</span> <span class="n">v</span><span class="o">.</span><span class="na">charValue</span><span class="o">(),</span> <span class="n">found</span><span class="o">);</span>
-        <span class="k">if</span> <span class="o">(</span><span class="n">found</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="o">)</span> <span class="o">{</span>
-            <span class="k">break</span><span class="o">;</span>
-        <span class="o">}</span>
-        <span class="n">toRemove</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">found</span><span class="o">++);</span>
-    <span class="o">}</span>
-<span class="o">}</span>
-<span class="k">return</span> <span class="o">(</span><span class="kt">char</span><span class="o">[])</span> <span class="n">removeAll</span><span class="o">((</span><span class="n">Object</span><span class="o">)</span><span class="n">array</span><span class="o">,</span> <span class="n">extractIndices</span><span class="o">(</span><span class="n">toRemove</span><span class="o">));</span>
-</pre></div>
-
-<p style="text-align: center"><a href="/2012/10/20/replacing-a-hashset-with-a-bitset/feather_small.gif"><img src="/2012/10/20/replacing-a-hashset-with-a-bitset/feather_small.gif" alt="" title="Apache Software Foundation" width="203" height="61" class="aligncenter size-full wp-image-1125" /></a></p>
-
-<p>The HashSet created at line 1, in the code above, was used to store the array index of the elements that should be removed. And at line 13 there is a call to removeAll method, passing the indexes to be removed. And here&#8217;s how the new code looks like: </p>
-
-<div class="highlight"><pre><span class="n">BitSet</span> <span class="n">toRemove</span> <span class="o">=</span> <span class="k">new</span> <span class="n">BitSet</span><span class="o">();</span>
-<span class="k">for</span> <span class="o">(</span><span class="n">Map</span><span class="o">.</span><span class="na">Entry</span><span class="o">&lt;</span><span class="n">Character</span><span class="o">,</span> <span class="n">MutableInt</span><span class="o">&gt;</span> <span class="n">e</span> <span class="o">:</span> <span class="n">occurrences</span><span class="o">.</span><span class="na">entrySet</span><span class="o">())</span> <span class="o">{</span>
-    <span class="n">Character</span> <span class="n">v</span> <span class="o">=</span> <span class="n">e</span><span class="o">.</span><span class="na">getKey</span><span class="o">();</span>
-    <span class="kt">int</span> <span class="n">found</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
-    <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">,</span> <span class="n">ct</span> <span class="o">=</span> <span class="n">e</span><span class="o">.</span><span class="na">getValue</span><span class="o">().</span><span class="na">intValue</span><span class="o">();</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">ct</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
-        <span class="n">found</span> <span class="o">=</span> <span class="n">indexOf</span><span class="o">(</span><span class="n">array</span><span class="o">,</span> <span class="n">v</span><span class="o">.</span><span class="na">charValue</span><span class="o">(),</span> <span class="n">found</span><span class="o">);</span>
-        <span class="k">if</span> <span class="o">(</span><span class="n">found</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="o">)</span> <span class="o">{</span>
-            <span class="k">break</span><span class="o">;</span>
-        <span class="o">}</span>
-        <span class="n">toRemove</span><span class="o">.</span><span class="na">set</span><span class="o">(</span><span class="n">found</span><span class="o">++);</span>
-    <span class="o">}</span>
-<span class="o">}</span>
-<span class="k">return</span> <span class="o">(</span><span class="kt">char</span><span class="o">[])</span> <span class="n">removeAll</span><span class="o">(</span><span class="n">array</span><span class="o">,</span> <span class="n">toRemove</span><span class="o">);</span>
-</pre></div>
-
-<p>The first difference is at line 1. Instead of a HashSet, it is now using a BitSet. And at line 10, instead of adding a new element to the HashSet, now it &#8220;sets&#8221; a bit in the set (the bit at the specified position is now true). But there are important changes at line 13. The method removeAll was changed, and now the array doesn&#8217;t require a cast anymore. And the it is not necessary to cast the elements from HashSet anymore, as now the bit in the index position of the set is set to true. So the extractIndices method could be removed.</p>
-
-<p>The code got simpler. But that&#8217;s not all. At <a href="http://www.apache.org" title="Apache Software Foundation">Apache Software Foundation</a> you can find a lot of talented developers - that&#8217;s why I got so excited after joining them. Besides simplifying the code, the developer responsible for these changes (<strong>sebb</strong>) also pointed out that the new code <strong>consumes less memory and is faster</strong>. Ah! And he also wrote <strong>unit tests</strong></description>
 </item>
 
 </channel>

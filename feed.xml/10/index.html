@@ -13,10 +13,23 @@
     <atom:link href="/blog/feed.xml" rel="self" type="application/rss+xml" />
     <link>/</link>
     <description></description>
-    <lastBuildDate>1492847188.2221804</lastBuildDate>
+    <lastBuildDate>1492951692.171086</lastBuildDate>
     <language>en-US</language>
     <generator>PieCrust 2.0.0</generator>
  
+
+<item>
+    <title>Automating tests with Hudson and TestLink (pt-BR only)</title>
+    <pubDate>Nov 28, 2010</pubDate>
+    <link>/2010/11/28/automating-tests-with-hudson-and-testlink-pt-br-only</link>
+    <dc:creator></dc:creator>
+    <description><p>Slides used at Encontro &Aacute;gil 2010. As soon as I finish the plug-in 2.0 version I&#8217;ll upload a video with a sample demo too.</p>
+<p  style=" margin: 12px auto 6px auto; font-family: Helvetica,Arial,Sans-serif; font-style: normal; font-variant: normal; font-weight: normal; font-size: 14px; line-height: normal; font-size-adjust: none; font-stretch: normal; -x-system-font: none; display: block;">   <a title="View Automatizando Testes Com Hudson e TestLink on Scribd" href="http://www.scribd.com/doc/43729582/Automatizando-Testes-Com-Hudson-e-TestLink"  style="text-decoration: underline;" >Automatizando Testes Com Hudson e TestLink</a> by <a title="View brunodepaulak's profile on Scribd" href="http://www.scribd.com/brunodepaulak"  style="text-decoration: underline;" >brunodepaulak</a></p>
+
+<iframe class="scribd_iframe_embed" src="http://www.scribd.com/embeds/43729582/content?start_page=1&view_mode=scroll&access_key=key-pt0mfwj6fzvdokv48t4" data-auto-height="false" data-aspect-ratio="1.33333333333333" scrolling="no" id="doc_39804" width="640" height="480" frameborder="0"></iframe>
+
+<p>Cheers</p></description>
+</item>
 
 <item>
     <title>Encontro Ágil 2010 - Lighting talk about Test Automation with TestLink and Hudson</title>
@@ -221,72 +234,6 @@ extensions:
 
 <p>I developed <a title="TestLink Hudson Plug-In" href="http://wiki.hudson-ci.org/display/HUDSON/TestLink+Plugin">TestLink Hudson Plug-in</a>, a <a href="http://www.hudson-ci.org">Hudson </a>Plug-in that lets you invoke CCM from hudson and have the results displayed in the console output. I chose CCM as CC tool for .NET instead of SourceMonitor after it gave me a CC value of 4 for a method I was sure was supposed to have 5.</p>
 <p>Cheers</p></description>
-</item>
-
-<item>
-    <title>Code to change your message in MSN messenger</title>
-    <pubDate>Mar 22, 2009</pubDate>
-    <link>/2009/03/22/code-to-change-your-message-in-msn-messenger</link>
-    <dc:creator></dc:creator>
-    <description><p>I&#8217;ve always wanted to know how does the code to show what was I listening to looked like. I found it after installing XMPlay and XMPlay MSN Plug-in. The plug-in zip had the plug-in itself and its source code. And what a neat source code (-:.</p>
-<p>Basically, you just send a message to the MSN UI API with a defined data structure. And to remove the message, just send again with an empty string.</p>
-<div class="highlight"><pre><span class="cm">/*</span>
-<span class="cm">Bruno de Paula Kinoshita</span>
-<span class="cm">original src code:</span>
-<span class="cm">XMPlay MSN Plugin (c) 2005-2006 Elliott Sales de Andrade</span>
-<span class="cm">*/</span>
-
-<span class="cp">#include &lt;cstdlib&gt;</span>
-<span class="cp">#include &lt;iostream&gt;</span>
-<span class="cp">#include &lt;windows.h&gt;</span>
-
-<span class="n">using</span> <span class="n">namespace</span> <span class="n">std</span><span class="p">;</span>
-
-<span class="k">typedef</span> <span class="k">struct</span> <span class="p">{</span>
-<span class="n">BOOL</span> <span class="n">showCues</span><span class="p">;</span>
-<span class="n">BOOL</span> <span class="n">keepOnClose</span><span class="p">;</span>
-<span class="p">}</span> <span class="n">MSNStuff</span><span class="p">;</span>
-<span class="k">static</span> <span class="n">MSNStuff</span> <span class="n">msnConf</span><span class="p">;</span>
-
-<span class="kt">void</span> <span class="nf">setNowPlaying</span><span class="p">(</span> <span class="kt">char</span> <span class="o">*</span><span class="n">title</span><span class="p">)</span>
-<span class="p">{</span>
-    <span class="kt">wchar_t</span> <span class="o">*</span><span class="n">lpMsn</span><span class="p">;</span>
-    <span class="kt">int</span> <span class="n">strLen</span> <span class="o">=</span> <span class="mi">20</span><span class="p">;</span>
-    <span class="n">HWND</span> <span class="n">xmpwin</span><span class="p">;</span>
-    <span class="n">HWND</span> <span class="n">msnui</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
-
-    <span class="n">lpMsn</span> <span class="o">=</span> <span class="p">(</span><span class="kt">wchar_t</span><span class="o">*</span><span class="p">)</span><span class="n">calloc</span><span class="p">(</span><span class="mi">1024</span><span class="p">,</span><span class="mi">1024</span><span class="p">);</span>
-    <span class="c1">// stuff for MSN before...</span>
-    <span class="n">memcpy</span><span class="p">(</span><span class="n">lpMsn</span><span class="p">,</span> <span class="s">L&quot;</span><span class="se">\\</span><span class="s">0Music</span><span class="se">\\</span><span class="s">01</span><span class="se">\\</span><span class="s">0{0}</span><span class="se">\\</span><span class="s">0&quot;</span><span class="p">,</span> <span class="mi">17</span><span class="o">*</span><span class="mi">2</span><span class="p">);</span>
-    <span class="c1">// actual title...</span>
-    <span class="n">strLen</span><span class="o">=</span><span class="n">MultiByteToWideChar</span><span class="p">(</span><span class="nb">false</span><span class="o">?</span><span class="nl">CP_UTF8</span><span class="p">:</span><span class="n">CP_ACP</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="n">title</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="n">lpMsn</span><span class="o">+</span><span class="mi">17</span><span class="p">,</span><span class="mi">492</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">;</span><span class="err">Â</span>  <span class="cm">/* 1024/2 - 20 */</span>
-    <span class="c1">// stuff for MSN after...</span>
-    <span class="n">memcpy</span><span class="p">(</span><span class="n">lpMsn</span> <span class="o">+</span> <span class="mi">17</span> <span class="o">+</span> <span class="n">strLen</span><span class="p">,</span> <span class="s">L&quot;</span><span class="se">\\</span><span class="s">0&quot;</span><span class="p">,</span> <span class="mi">3</span><span class="o">*</span><span class="mi">2</span><span class="p">);</span>
-    <span class="n">strLen</span> <span class="o">+=</span> <span class="mi">20</span><span class="p">;</span>
-
-    <span class="n">COPYDATASTRUCT</span> <span class="n">msndata</span><span class="p">;</span>
-    <span class="n">msndata</span><span class="p">.</span><span class="n">dwData</span> <span class="o">=</span> <span class="mh">0x547</span><span class="p">;</span>
-    <span class="n">msndata</span><span class="p">.</span><span class="n">lpData</span> <span class="o">=</span> <span class="p">(</span><span class="kt">void</span><span class="o">*</span><span class="p">)</span><span class="n">lpMsn</span><span class="p">;</span>
-    <span class="n">msndata</span><span class="p">.</span><span class="n">cbData</span> <span class="o">=</span> <span class="n">strLen</span> <span class="o">*</span> <span class="mi">2</span><span class="p">;</span>
-
-    <span class="k">while</span> <span class="p">(</span> <span class="n">msnui</span> <span class="o">=</span> <span class="n">FindWindowEx</span><span class="p">(</span><span class="nb">NULL</span><span class="p">,</span> <span class="n">msnui</span><span class="p">,</span> <span class="s">&quot;MsnMsgrUIManager&quot;</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">)</span> <span class="p">)</span>
-        <span class="n">SendMessage</span><span class="p">(</span><span class="n">msnui</span><span class="p">,</span> <span class="n">WM_COPYDATA</span><span class="p">,</span> <span class="p">(</span><span class="n">WPARAM</span><span class="p">)</span><span class="n">xmpwin</span><span class="p">,</span> <span class="p">(</span><span class="n">LPARAM</span><span class="p">)</span><span class="o">&amp;</span><span class="n">msndata</span><span class="p">);</span>
-<span class="p">}</span>
-
-<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span><span class="n">argv</span><span class="p">[])</span>
-<span class="p">{</span>
-    <span class="kt">char</span> <span class="o">*</span><span class="n">title</span><span class="p">;</span>
-
-    <span class="k">if</span> <span class="p">(</span> <span class="n">argc</span> <span class="o">==</span> <span class="mi">1</span> <span class="p">)</span>
-        <span class="n">title</span> <span class="o">=</span> <span class="s">&quot;&quot;</span><span class="p">;</span>
-    <span class="k">else</span>
-        <span class="n">title</span> <span class="o">=</span> <span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span>
-
-    <span class="n">setNowPlaying</span> <span class="p">(</span> <span class="n">title</span> <span class="p">);</span>
-
-    <span class="k">return</span> <span class="n">EXIT_SUCCESS</span><span class="p">;</span>
-<span class="p">}</span>
-</pre></div></description>
 </item>
 
 </channel>

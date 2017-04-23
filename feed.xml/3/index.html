@@ -13,10 +13,49 @@
     <atom:link href="/blog/feed.xml" rel="self" type="application/rss+xml" />
     <link>/</link>
     <description></description>
-    <lastBuildDate>1492847188.2221804</lastBuildDate>
+    <lastBuildDate>1492951692.171086</lastBuildDate>
     <language>en-US</language>
     <generator>PieCrust 2.0.0</generator>
  
+
+<item>
+    <title>Changing Spring Boot environment variables in the command line</title>
+    <pubDate>Nov 21, 2016</pubDate>
+    <link>/2016/11/21/changing-spring-boot-environment-variables-in-the-command-line-</link>
+    <dc:creator></dc:creator>
+    <description><p>This week while helping developers and testers to experiment with a backend application,
+some of them found useful to learn a simple trick to change Spring Boot properties
+when you can run the application locally (our testers build, compile, change the code, how cool
+is that?).</p>
+<p>Here&#8217;s how it works. Say you have the following settings in your application&#8217;s
+<strong>application.properties</strong>:</p>
+<div class="highlight"><pre>my.application.database.username<span class="o">=</span>sa
+my.application.database.password<span class="o">=</span>notasimplepassword
+</pre></div>
+
+<p>And that you want to change these parameters in order to, for instance, create an application
+error, so that you can code and test what happens to the frontend application in that situation.</p>
+<p>You replace <em>dots</em> by <em>underscores</em>, and put all your words in upper case. So the variables
+above would be: MY_APPLICATION_DATABASE_USERNAME and MY_APPLICATION_DATABASE_PASSWORD.</p>
+<p>Furthermore, you do not need to edit your application.properties file, if you are on Linux or
+Mac OS. You can start the application and override environment variables at the same time
+with the following syntax.</p>
+<div class="highlight"><pre><span class="nv">$ MY_APPLICATION_DATABASE_USERNAME</span><span class="o">=</span>olivei <span class="nv">MY_APPLICATION_DATABASE_PASSWORD</span><span class="o">=</span>7655432222a mvn clean spring-boot:run
+</pre></div>
+
+<p>This way your application will start with the new values.</p>
+<p>Happy hacking!</p>
+<p><strong>&#8212;EDIT&#8212;</strong></p>
+<p>As pointed by Stéphane Nicoll (thanks!), you could change the property values
+without having to use the upper case syntax.</p>
+<div class="highlight"><pre>mvn -Dmy.application.database.username<span class="o">=</span>anotheruser clean spring-boot:run
+</pre></div>
+
+<p>And he even included a link to <a href="http://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#boot-features-external-config">docs</a>! ♥ the Internet and Open Source!</p>
+<blockquote class="twitter-tweet" data-lang="en"><p lang="en" dir="ltr"><a href="https://twitter.com/kinow">@kinow</a> you can also specify them as command-line arguments (no need for the upper case thing)<a href="https://t.co/zBKpgcXN1C">https://t.co/zBKpgcXN1C</a><br><br>or `-Drun.arguments`</p>&mdash; Stéphane Nicoll (@snicoll) <a href="https://twitter.com/snicoll/status/800965565120708608">November 22, 2016</a></blockquote>
+
+<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script></description>
+</item>
 
 <item>
     <title>Add a header to a file with Shell script (sed)</title>
@@ -293,26 +332,6 @@ not be very simple.</p>
 <p>This post contains my reading notes for DRMAA v2, and a short analysis of how
 this new specification could be used in a new tentative to integrate
 Jenkins and several grid computing implementations in a single plug-in.</p>
-</description>
-</item>
-
-<item>
-    <title>Reasons for having pt and pt-BR in a software</title>
-    <pubDate>Jul 17, 2016</pubDate>
-    <link>/2016/07/17/reasons-for-having-pt-and-ptbr-in-a-software</link>
-    <dc:creator></dc:creator>
-    <description><p>Some time ago I found some spare time to work on a different Open Source project:
-<a href="http://skosmos.org/">SKOSMOS</a>. SKOSMOS is a web based SKOS browser and publishing
-tool, used to create vocabularies using the SKOS ontology.</p>
-<p>I decided to help with translation, but there was no Brazilian Portuguese option,
-only Portuguese. I used a few arguments to suggest that having Brazilian Portuguese
-would be a good thing.</p>
-<p>Another Open Source project that I use in a side project is
-<a href="https://www.languagetool.org/">LanguageTool</a>. LanguageTool is used for
-proof-reading, and uses rules to find spelling and grammar errors.</p>
-<p>Today I saw a message in the LanguageTool mailing list discussing whether having a Brazilian
-Portuguese page would make sense, or if it would be better to have just Portuguese, and then
-add rules for special cases.</p>
 </description>
 </item>
 
