@@ -110,6 +110,81 @@
                     
                     <p>Posts tagged with &#8216;java&#8217;</p>
 <div class="ui raised padded container segment">
+    <h2>When you can&#8217;t see you need a Comparable</h2>
+    <p><small>kinow</small> @ <small>May 15, 2017&nbsp;23:07:39</small></p>
+
+
+
+
+
+
+
+<a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2017/05/15/when-you-cant-see-you-need-a-comparable" data-text="When you can&#39;t see you need a Comparable" data-via="kinow" data-hashtags="opensource">Tweet</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+
+
+    <p><a href="/2012/10/20/replacing-a-hashset-with-a-bitset">In 2012, I wrote</a> about how you always learn something new by following the <a href="http://www.apache.org/foundation/mailinglists.html">Apache dev mailing lists</a>.</p>
+<p>After about five years, I am still learning, and still getting impressed by the knowledge of other
+developers. Days ago I was massaging some code in <a href="https://github.com/apache/jena/pull/237">a pull request</a>
+and a developer suggested me to simplify my code.</p>
+<p>The suggestion was to make a class a <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Comparable.html">Comparable type</a>
+to both simplify the code, and also have a better design. I immediately agreed, and looking back in hindsight,
+it was the most logical choice. Yet, I simply did not think about that.</p>
+<div class="highlight"><pre><span class="c1">// What the code was</span>
+<span class="k">case</span> <span class="n">VSPACE_SORTKEY</span> <span class="o">:</span>
+    <span class="kt">int</span> <span class="n">cmp</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
+    <span class="n">String</span> <span class="n">c1</span> <span class="o">=</span> <span class="n">nv1</span><span class="o">.</span><span class="na">getCollation</span><span class="o">();</span>
+    <span class="n">String</span> <span class="n">c2</span> <span class="o">=</span> <span class="n">nv2</span><span class="o">.</span><span class="na">getCollation</span><span class="o">();</span>
+    <span class="k">if</span> <span class="o">(</span><span class="n">c1</span> <span class="o">!=</span> <span class="kc">null</span> 
+        <span class="n">Collator</span> <span class="n">collator</span> <span class="o">=</span> <span class="n">Collator</span><span class="o">.</span><span class="na">getInstance</span><span class="o">(</span><span class="n">desiredLocale</span><span class="o">);</span>
+        <span class="n">cmp</span> <span class="o">=</span> <span class="n">collator</span><span class="o">.</span><span class="na">compare</span><span class="o">(</span><span class="n">nv1</span><span class="o">.</span><span class="na">getString</span><span class="o">(),</span> <span class="n">nv2</span><span class="o">.</span><span class="na">getString</span><span class="o">());</span>
+    <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+        <span class="n">cmp</span> <span class="o">=</span> <span class="n">XSDFuncOp</span><span class="o">.</span><span class="na">compareString</span><span class="o">(</span><span class="n">nv1</span><span class="o">,</span> <span class="n">nv2</span><span class="o">)</span> <span class="o">;</span>
+    <span class="o">}</span>
+    <span class="k">return</span> <span class="n">cmp</span><span class="o">;</span>
+<span class="o">}</span>
+</pre></div>
+
+<div class="highlight"><pre><span class="c1">// What the code is now</span>
+<span class="k">case</span> <span class="n">VSPACE_SORTKEY</span> <span class="o">:</span>
+    <span class="k">return</span> <span class="o">((</span><span class="n">NodeValueSortKey</span><span class="o">)</span> <span class="n">nv1</span><span class="o">).</span><span class="na">compareTo</span><span class="o">((</span><span class="n">NodeValueSortKey</span><span class="o">)</span> <span class="n">nv2</span><span class="o">);</span>
+<span class="o">}</span>
+</pre></div>
+
+<p>This moved the logic to a method in the <code>NodeValueSortKey</code> class. This reduced the complexity
+of the class with the <code>switch</code> statement. And it also made it easier to write unit tests.</p>
+<p>If you are not involved in Open Source projects yet, I keep my suggestion from five years ago.
+Find a project related to something you like, and start reading the code, lurk in the
+mailing list or watch GitHub repositories.</p>
+<p>You can always learn more!</p>
+<p>&hearts; Open Source</p><!-- html -->
+
+<p class="postmetadata">
+
+    <small>tags 
+     [&nbsp;<a
+        href="/tag/apache%20software%20foundation"
+        rel="tag">apache software foundation</a>&nbsp;]&nbsp;
+
+     [&nbsp;<a
+        href="/tag/java"
+        rel="tag">java</a>&nbsp;]&nbsp;
+
+     [&nbsp;<a
+        href="/tag/opensource"
+        rel="tag">opensource</a>&nbsp;]&nbsp;
+
+     [&nbsp;<a
+        href="/tag/programming"
+        rel="tag">programming</a>&nbsp;]&nbsp;
+
+    </small>
+
+
+</p>
+</div>
+
+<div class="ui raised padded container segment">
     <h2>Troubleshooting a Jenkins Plug-in compatibility issue</h2>
     <p><small>kinow</small> @ <small>Apr 17, 2017&nbsp;21:01:03</small></p>
 
@@ -502,82 +577,6 @@ open a <a href="https://issues.apache.org/jira/browse/TEXT">JIRA issue</a>, or s
      [&nbsp;<a
         href="/tag/apache%20software%20foundation"
         rel="tag">apache software foundation</a>&nbsp;]&nbsp;
-
-    </small>
-
-
-    <br/>
-    <small>posted in 
-    [&nbsp;<a
-        href="/blog"
-        title="View all posts in blog"
-        rel="category tag">blog</a>&nbsp;]&nbsp;
-    category </small>
-
-</p>
-</div>
-
-<div class="ui raised padded container segment">
-    <h2>Changing Spring Boot environment variables in the command line</h2>
-    <p><small>kinow</small> @ <small>Nov 21, 2016&nbsp;21:26:03</small></p>
-
-
-
-
-
-
-
-<a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2016/11/21/changing-spring-boot-environment-variables-in-the-command-line-" data-text="Changing Spring Boot environment variables in the command line" data-via="kinow" data-hashtags="opensource">Tweet</a>
-<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-
-
-    <p>This week while helping developers and testers to experiment with a backend application,
-some of them found useful to learn a simple trick to change Spring Boot properties
-when you can run the application locally (our testers build, compile, change the code, how cool
-is that?).</p>
-<p>Here&#8217;s how it works. Say you have the following settings in your application&#8217;s
-<strong>application.properties</strong>:</p>
-<div class="highlight"><pre>my.application.database.username<span class="o">=</span>sa
-my.application.database.password<span class="o">=</span>notasimplepassword
-</pre></div>
-
-<p>And that you want to change these parameters in order to, for instance, create an application
-error, so that you can code and test what happens to the frontend application in that situation.</p>
-<p>You replace <em>dots</em> by <em>underscores</em>, and put all your words in upper case. So the variables
-above would be: MY_APPLICATION_DATABASE_USERNAME and MY_APPLICATION_DATABASE_PASSWORD.</p>
-<p>Furthermore, you do not need to edit your application.properties file, if you are on Linux or
-Mac OS. You can start the application and override environment variables at the same time
-with the following syntax.</p>
-<div class="highlight"><pre><span class="nv">$ MY_APPLICATION_DATABASE_USERNAME</span><span class="o">=</span>olivei <span class="nv">MY_APPLICATION_DATABASE_PASSWORD</span><span class="o">=</span>7655432222a mvn clean spring-boot:run
-</pre></div>
-
-<p>This way your application will start with the new values.</p>
-<p>Happy hacking!</p>
-<p><strong>&#8212;EDIT&#8212;</strong></p>
-<p>As pointed by Stéphane Nicoll (thanks!), you could change the property values
-without having to use the upper case syntax.</p>
-<div class="highlight"><pre>mvn -Dmy.application.database.username<span class="o">=</span>anotheruser clean spring-boot:run
-</pre></div>
-
-<p>And he even included a link to <a href="http://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#boot-features-external-config">docs</a>! ♥ the Internet and Open Source!</p>
-<blockquote class="twitter-tweet" data-lang="en"><p lang="en" dir="ltr"><a href="https://twitter.com/kinow">@kinow</a> you can also specify them as command-line arguments (no need for the upper case thing)<a href="https://t.co/zBKpgcXN1C">https://t.co/zBKpgcXN1C</a><br><br>or `-Drun.arguments`</p>&mdash; Stéphane Nicoll (@snicoll) <a href="https://twitter.com/snicoll/status/800965565120708608">November 22, 2016</a></blockquote>
-
-<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script><!-- html -->
-
-<p class="postmetadata">
-
-    <small>tags 
-     [&nbsp;<a
-        href="/tag/shellscript"
-        rel="tag">shellscript</a>&nbsp;]&nbsp;
-
-     [&nbsp;<a
-        href="/tag/java"
-        rel="tag">java</a>&nbsp;]&nbsp;
-
-     [&nbsp;<a
-        href="/tag/spring"
-        rel="tag">spring</a>&nbsp;]&nbsp;
 
     </small>
 
