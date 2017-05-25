@@ -3,7 +3,8 @@
 import requests
 import json
 from pprint import pprint as pp
-
+import locale
+from functools import cmp_to_key
 import os
 from os.path import join, dirname
 from dotenv import load_dotenv
@@ -75,12 +76,27 @@ class MovieLens(object):
         return movies
 
 def main():
+    locale.setlocale(locale.LC_ALL, 'pt_BR.UTF-8')
     ml = MovieLens()
     cookies = ml.login(USER, PASS)
     movies = ml.list_all_rated_movies(cookies)
-    with open('movies.json', 'w') as outfile:
-        json.dump(movies, outfile)
-        print("Done!")
+    movies = sorted(movies, key=cmp_to_key(locale.strcoll))  # locale-aware sort order
+    movies_html_file = dotenv_path = join(dirname(__file__), '../pages/movies.html')
+    header = """---
+title: 'Movies'
+author: kinow
+tags: {  }
+date: '2017-04-17'
+time: '23:30:33'
+---
+
+Feel free to suggest me some good movies that may be missing from my list!
+
+"""
+    with open(movies_html_file, 'w+') as outfile:
+        outfile.write(header)
+        for movie in movies:
+            outfile.write("* {}\n".format(movie))
 
 if __name__ == '__main__':
     main()
