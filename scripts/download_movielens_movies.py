@@ -11,8 +11,13 @@ from dotenv import load_dotenv
 dotenv_path = join(dirname(__file__), '.env')
 load_dotenv(dotenv_path)
 
+import getpass
+
 USER = os.environ.get("movielens_user")
 PASS = os.environ.get("movielens_pass")
+
+if PASS == None or PASS == '':
+    PASS = getpass.getpass("Enter password:")
 
 class MovieLens(object):
 
