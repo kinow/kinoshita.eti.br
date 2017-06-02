@@ -118,6 +118,63 @@
                     
                     <p>Posts tagged with &#8216;apache software foundation&#8217;</p>
 <div class="ui raised padded container segment">
+    <h2>Apache Commons Text LookupTranslator</h2>
+    <p><small>kinow</small> @ <small>Jun 02, 2017&nbsp;22:50:39</small></p>
+
+
+
+
+
+
+
+<a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2017/06/02/apache-commons-text-lookuptranslator" data-text="Apache Commons Text LookupTranslator" data-via="kinow" data-hashtags="opensource">Tweet</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+
+
+    <p><a href="http://commons.apache.org/proper/commons-text/">Apache Commons Text</a> includes several algorithms for text processing. Today&#8217;s post is about one of the classes available since the 1.0 release, the <a href="http://commons.apache.org/proper/commons-text/apidocs/org/apache/commons/text/translate/LookupTranslator.html">LookupTranslator</a>.</p>
+<p>It is used to translate text using a lookup table. Most users won&#8217;t necessarily be - knowingly - using this class. Most likely, they will use the <a href="http://commons.apache.org/proper/commons-text/apidocs/org/apache/commons/text/StringEscapeUtils.html">StringEscapeUtils</a>, which contains methods to escape and unescape CSV, JSON, XML, Java, and EcmaScript.</p>
+<div class="highlight"><pre><span class="n">String</span> <span class="n">original</span> <span class="o">=</span> <span class="s">&quot;He didn&#39;t say, \&quot;stop!\&quot;&quot;</span><span class="o">;</span>
+<span class="n">String</span> <span class="n">expected</span> <span class="o">=</span> <span class="s">&quot;He didn&#39;t say, \\\&quot;stop!\\\&quot;&quot;</span><span class="o">;</span>
+<span class="n">String</span> <span class="n">result</span>   <span class="o">=</span> <span class="n">StringEscapeUtils</span><span class="o">.</span><span class="na">escapeJava</span><span class="o">(</span><span class="n">original</span><span class="o">);</span>
+</pre></div>
+
+<p>StringEscapeUtils uses CharSequenceTranslator&#8217;s, including LookupTranslator. You can use it directly too, to escape other data your text may contain, special characters not supported by some third party library or system, or even a simpler case.</p>
+<p>In other words, you would be creating your own StringEscapeUtils. Let&#8217;s say you have some text where numbers must never start with the zero digital, due to some restriction in the way you use that data later.</p>
+<div class="highlight"><pre><span class="n">Map</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">String</span><span class="o">&gt;</span> <span class="n">lookupTable</span> <span class="o">=</span> <span class="k">new</span> <span class="n">HashMap</span><span class="o">&lt;&gt;();</span>
+<span class="n">lookupTable</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">&quot;a&quot;</span><span class="o">,</span> <span class="s">&quot;&quot;</span><span class="o">);</span>
+<span class="kd">final</span> <span class="n">LookupTranslator</span> <span class="n">escapeNumber0</span> <span class="o">=</span> <span class="k">new</span> <span class="n">LookupTranslator</span><span class="o">(</span><span class="k">new</span> <span class="n">String</span><span class="o">[][]</span> <span class="o">{</span> <span class="o">{</span><span class="s">&quot;0&quot;</span><span class="o">,</span> <span class="s">&quot;&quot;</span><span class="o">}</span> <span class="o">});</span>
+<span class="n">String</span> <span class="n">escaped</span> <span class="o">=</span> <span class="n">escapeNumber0</span><span class="o">.</span><span class="na">translate</span><span class="o">(</span><span class="s">&quot;There are 02 texts waiting for analysis today...&quot;</span><span class="o">);</span>
+</pre></div>
+
+<p>That way the resulting text would be &#8220;There are 2 texts waiting for analysis today&#8221;, allowing you to proceed with the rest of your analysis. This is a very simple example, but hopefully you grokked how LookupTranslator works.</p>
+<p>&hearts; Open Source</p><!-- html -->
+
+<p class="postmetadata">
+
+    <small>tags 
+     [&nbsp;<a
+        href="/tag/apache%20software%20foundation"
+        rel="tag">apache software foundation</a>&nbsp;]&nbsp;
+
+     [&nbsp;<a
+        href="/tag/java"
+        rel="tag">java</a>&nbsp;]&nbsp;
+
+     [&nbsp;<a
+        href="/tag/opensource"
+        rel="tag">opensource</a>&nbsp;]&nbsp;
+
+     [&nbsp;<a
+        href="/tag/programming"
+        rel="tag">programming</a>&nbsp;]&nbsp;
+
+    </small>
+
+
+</p>
+</div>
+
+<div class="ui raised padded container segment">
     <h2>Some links related to Apache Commons Text</h2>
     <p><small>kinow</small> @ <small>May 28, 2017&nbsp;19:50:39</small></p>
 
@@ -434,106 +491,6 @@ open a <a href="https://issues.apache.org/jira/browse/TEXT">JIRA issue</a>, or s
      [&nbsp;<a
         href="/tag/programming"
         rel="tag">programming</a>&nbsp;]&nbsp;
-
-     [&nbsp;<a
-        href="/tag/apache%20software%20foundation"
-        rel="tag">apache software foundation</a>&nbsp;]&nbsp;
-
-    </small>
-
-
-    <br/>
-    <small>posted in 
-    [&nbsp;<a
-        href="/blog"
-        title="View all posts in blog"
-        rel="category tag">blog</a>&nbsp;]&nbsp;
-    category </small>
-
-</p>
-</div>
-
-<div class="ui raised padded container segment">
-    <h2>Contributing to Apache Jena</h2>
-    <p><small>kinow</small> @ <small>Jan 01, 2015&nbsp;18:49:03</small></p>
-
-
-
-
-
-
-
-<a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2015/01/01/contributing-to-apache-jena" data-text="Contributing to Apache Jena" data-via="kinow" data-hashtags="opensource">Tweet</a>
-<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-
-
-    <p>As I mentioned in my <a href="/2014/10/11/basic-workflow-of-a-sparql-query-in-fuseki">previous post</a>, 
-I am using <a href="http://jena.apache.org">Apache Jena</a> for a project of a customer. I had never used 
-any triple store, nor a SPARQL Endpoint server before. But for being involved with the Apache 
-Software Foundation, and since the company itself is using several Apache components, it was only 
-natural Jena to be our first choice.</p>
-<p>It has served us very well so far. At the moment we have less than 100 queries per day, but the 
-project is still under development and we expect 1000 queries per day by the first quarter of 
-2015 and 1000000 near the end of 2015. We also have few entries in TDB, but expect to grow this 
-number to a few million before 2016.</p>
-<p>When I work for companies and we use Open Source Software (OSS) in a project, I always 
-prepare assessment reports to include in the deliveries. In this report I justify the choice 
-of Open Source Software (as well as commercial software). Sometimes I 
-am lucky to work for a company that asks me to include hours to work on OSS :-)</p>
-<p>I use <a href="https://trello.com">Trello</a> to triage issues in OSS projects (and for several other 
-things). I have a board with several cards for Open Source. About a month ago I set up one 
-for Jena and listed the issues that I thought I could contribute to. </p>
-<div class='row'>
-<div class="span6 offset3" style='text-align: center;'>
-<figure>
-<a href="/2015/01/01/contributing-to-apache-jena/jena_trello.png" rel="prettyPhoto" class="thumbnail" title="Jena Trello card">
-<img src="/2015/01/01/contributing-to-apache-jena/jena_trello.png" alt="Jena Trello card" />
-</a>
-<figcaption>Jena Trello card</i></figcaption>
-</figure>
-</div>
-</div>
-
-<p>I annotate easy issues with a &#8220;lhf&#8221; suffix for Low Hanging Fruit issues, and delete issues from 
-the card once I submit a patch or update it (and include it in another card for the 
-<a href="https://tupilabs.github.io/tag/tupilabs-report/">TupiLabs reports</a>).</p>
-<p>Most of the issues I included in the card for Jena had been created over two years ago, and hadn&#8217;t 
-been updated in a while. When you test these issues against the current code, usually you find that 
-some of them have already been fixed. Other issues included documentation problems, and minor features. I didn&#8217;t find any blocker issue that would impede us to use Jena in production.</p>
-<div class='row'>
-<div class="span6 offset3" style='text-align: center;'>
-<figure>
-<a href="/2015/01/01/contributing-to-apache-jena/jena_jira.png" rel="prettyPhoto" class="thumbnail" title="Jena JIRA activity summary">
-<img src="/2015/01/01/contributing-to-apache-jena/jena_jira.png" alt="Jena JIRA activity summary" />
-</a>
-<figcaption>Jena JIRA activity summary</figcaption>
-</figure>
-</div>
-</div>
-
-<p>The picture above shows the past 30 days activity summary in JIRA for Jena. The red line shows 
-issues created, and the green line issues resolved. <a href="https://github.com/afs">Andy Seaborne</a> 
-was very active in the past days and fixed several issues that were too old and had already been fixed in the trunk, and kindly merged patches and pull requests.</p>
-<p>Some issues like <a href="https://issues.apache.org/jira/browse/JENA-632">JENA-632</a> will take a 
-longer time to fix, but I&#8217;m getting used to Jena&#8217;s source code, and at the same getting more 
-confident to use it in production - especially with a supportive OSS community. We are using 
-Jena for RDF with Hadoop, and I learned that I can replace some custom Writables by others 
-in the Jena Hadoop submodule.</p>
-<p>By the way, even though this project ends in April, I intend to continue contributing to Jena. 
-There is a lot of parts of the code that I would love to be able to understand and contribute, 
-in special the Graph database, optimization techniques for SPARQL queries, the grammars used 
-in the project, Fuseki v2 and enhance its testing harness (as well as the test coverage).</p>
-<p><strong>If you are looking for a interesting project to get you started with semantics, linked data, 
-RDF, and even graphs and database querying, try contributing to Jena. I bet you&#8217;ll have a lot 
-of fun!</strong></p>
-<p>Happy hacking and happy 2015!</p><!-- html -->
-
-<p class="postmetadata">
-
-    <small>tags 
-     [&nbsp;<a
-        href="/tag/jena"
-        rel="tag">jena</a>&nbsp;]&nbsp;
 
      [&nbsp;<a
         href="/tag/apache%20software%20foundation"
