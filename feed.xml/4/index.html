@@ -13,10 +13,47 @@
     <atom:link href="/blog/feed.xml" rel="self" type="application/rss+xml" />
     <link>/</link>
     <description></description>
-    <lastBuildDate>1496446991.3183815</lastBuildDate>
+    <lastBuildDate>1496452520.7050397</lastBuildDate>
     <language>en-US</language>
     <generator>PieCrust 2.0.0</generator>
  
+
+<item>
+    <title>Performance problems in Jenkins TAP Plug-in &mdash; part 1</title>
+    <pubDate>Sep 03, 2016</pubDate>
+    <link>/2016/09/03/performance-problems-in-jenkins-tap-plugin-part-1</link>
+    <dc:creator></dc:creator>
+    <description><p><a href="https://issues.jenkins-ci.org/browse/JENKINS-17887">JENKINS-17887</a> reports performance problems in the <a href="https://wiki.jenkins-ci.org/display/JENKINS/TAP+Plugin">Jenkins TAP Plug-in</a>. It also lists a series of suggestions on how to improve the Jenkins TAP Plug-in performance. On this initial post, we will get a general idea of how the plug-in performs for large projects.</p>
+<p><a href="http://bioperl.org/">BioPerl</a> has over 21K tests. That should be enough for giving an initial idea of CPU, memory and disk usage for the plug-in.</p>
+<div class="highlight"><pre>git clone https://github.com/bioperl/bioperl-live.git
+<span class="nb">cd </span>bioperl-live
+sudo cpanm  -vv --installdeps --notest .
+sudo cpanm Set::Scalar Graph::Directed XML::LibXML XML::SAX <span class="se">\</span>
+    SVG XML::Parser::PerlSAX Convert::Binary::C XML::SAX::Writer <span class="se">\</span>
+    XML::DOM::XPath Spreadsheet::ParseExcel XML::SAX::Writer <span class="se">\</span>
+    XML::DOM HTML::TableExtract XML::Simple Test::Pod DBI
+prove -r t/ -a tests.tar.gz
+
+All tests successful.
+<span class="nv">Files</span><span class="o">=</span>325, <span class="nv">Tests</span><span class="o">=</span>21095, <span class="m">94</span> wallclock secs <span class="o">(</span> 2.47 usr  0.55 sys + 88.29 cusr  3.85 <span class="nv">csys</span> <span class="o">=</span> 95.16 CPU<span class="o">)</span>
+Result: PASS
+</pre></div>
+
+<p>When the test results are parsed, the plug-in also copies TAP files over to the master, in a folder called <em>tap-master-files</em>.</p>
+<p>The BioPerl tests are not really big, just <strong>1.7M</strong>. It gets doubled as there will be the workspace copy, and the tap-master-files directory copy, so <strong>3.4M</strong>.</p>
+<p>But several objects get created in memory, and persisted into the build.xml job file. BioPerl generates a build.xml file with <strong>11M</strong>. So <strong>less than 15M</strong>. But the build.xml contains objects that are read via XStream by Jenkins and into the memory.</p>
+<p>The build page with the graph, and the other two test result pages are rendering in more than 10 seconds in my computer. But the CPU load is OK, so a closer look at the memory use would probably be more interesting.</p>
+<p><img class="ui centered image" src="/2016/09/03/performance-problems-in-jenkins-tap-plugin-part-1/JENKINS-17887-yourkit1.png" alt="JENKINS-17887 YourKit profiler" /></p>
+<p>The image shows one of the screens in YourKit profiler, where it is possible to see that <strong>org.tap4j.plugin.model.TapTestResultResult</strong> has over 6 million objects.</p>
+<p>One build.xml for the BioPerl project gets over 80K entries for the TestResult object.</p>
+<div class="highlight"><pre>grep <span class="s2">&quot;org.tap4j.model.TestResult&quot;</span> builds/1/build.xml -o <span class="p">|</span> wc -l
+84522
+</pre></div>
+
+<p>This happens because each TAP file may contain multiple test results (lines with test results). Each of these test results gets turned into a Java object and loaded by the plug-in. So when loading the test result pages, Jenkins needs to wait until all these objects have been parsed, deserialized and read into the memory.</p>
+<p>The next post will continue on code improvements, and another benchmark.</p>
+<p>Happy profiling!</p></description>
+</item>
 
 <item>
     <title>Revamping Frege logo &mdash; part 2</title>
@@ -426,77 +463,6 @@ bugs or improvements. So watch Ioannis&#8217; repository for updates!</p>
 </div>
 
 <p>For Brazilian Kumamoto Kenjinkai. Done with Macromedia Freehand MX, some long time ago.</p></description>
-</item>
-
-<item>
-    <title>Trying SaltStack with Docker</title>
-    <pubDate>Apr 17, 2016</pubDate>
-    <link>/2016/04/17/trying-saltstack-with-docker</link>
-    <dc:creator></dc:creator>
-    <description><p>Some weeks ago I started learning <a href="http://saltstack.com/">SaltStack</a> for a project at work. But I couldn&#8217;t
-find a good Docker image for that and I had to ask the Ops team for some VM&#8217;s. We
-are having a rainy weekend in Auckland, so I decided to have another look at the
-<a href="https://wiki.jenkins-ci.org/display/JENKINS/saltstack-plugin">Jenkins SaltStack Plug-in</a>.</p>
-<p>But now since I was at home, I couldn&#8217;t use the VM&#8217;s that I had access to at
-work. So decided to look again at Docker or Vagrant images. After playing
-with a few images, I found <a href="https://hub.docker.com/r/bbinet/salt-master/">bbinet/salt-master</a>.
-It not only sets up a master, but also provides an easy way to enable the cherrypy
-API (necessary for the Jenkins plug-in).</p>
-<p>This post describes the steps that I took to have a running Salt Master with the API
-enabled. First you need to create some directories and files to use with the image.</p>
-<div class="highlight"><pre>shell<span class="nv">$ </span>mkdir ~/master <span class="o">&amp;&amp;</span> <span class="nb">cd</span> ~/master
-shell<span class="nv">$ </span>mkdir -p config/master.d/
-shell<span class="nv">$ </span>vim config/master.d/api.conf
-</pre></div>
-
-<p>The api.conf contains the SaltStack API configuration. You can change port, user
-and other settings if necessary. Just remember to add a credential in Jenkins
-for the plug-in.</p>
-<div class="highlight"><pre><span class="c"># File: api.conf</span>
-external_auth:
-  pam:
-    saltapiuser:
-      - .*
-      - <span class="s1">&#39;@runner&#39;</span>
-      - <span class="s1">&#39;@wheel&#39;</span>
-      - <span class="s1">&#39;@jobs&#39;</span>
-rest_cherrypy:
-  port: 8000
-  host: 0.0.0.0
-  disable_ssl: True
-  static: /opt/molten
-  static_path: /assets
-  app: /opt/molten/index.html
-  app_path: /molten
-</pre></div>
-
-<p>The image also conveniently provides a script that is executed before the
-entry point (if provided). So we can also create a user for the API automatically
-when the image is created.</p>
-<div class="highlight"><pre>shell<span class="nv">$ </span>vim config/before-exec.sh
-</pre></div>
-
-<div class="highlight"><pre><span class="c">#!/bin/bash</span>
-<span class="c"># File: before-exec.sh</span>
-useradd saltapiuser
-<span class="nb">echo</span> -e <span class="s2">&quot;nosecret\nnosecret\n&quot;</span> <span class="p">|</span> passwd saltapiuser
-<span class="nb">exit </span>0
-</pre></div>
-
-<p>Also make the script executable.</p>
-<div class="highlight"><pre>chmod +x config/before-exec.sh
-</pre></div>
-
-<p>And finally start the container.</p>
-<div class="highlight"><pre>docker run --name salt-master -v <span class="nv">$PWD</span>/config:/config <span class="se">\</span>
-    -p 4505:4505 -p 4506:4506 -p 443:443 -p 8000:8000 <span class="se">\</span>
-    bbinet/salt-master
-</pre></div>
-
-<p>Once the container is running, you can go to http://localhost:8000 and
-log in as saltapiuser:nosecret, and also configure your plug-in
-in Jenkins.</p>
-<p>Happy hacking!</p></description>
 </item>
 
 </channel>
