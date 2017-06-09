@@ -13,7 +13,7 @@
     <atom:link href="/blog/feed.xml" rel="self" type="application/rss+xml" />
     <link>/</link>
     <description></description>
-    <lastBuildDate>1496927723.2719543</lastBuildDate>
+    <lastBuildDate>1496989266.1440864</lastBuildDate>
     <language>en-US</language>
     <generator>PieCrust 2.1.1</generator>
  
@@ -31,18 +31,18 @@
 <li>Put <a href="https://github.com/ropensci/fishbaseapi/blob/80393023a958aee54e2daa58c337458db5480b84/config_template.yaml">credentials</a> in your source code</li>
 <li>Put credentials in a file in your project, but do not share this file (<em>#3</em>, <em>#4</em>, and <em>#5</em> are similar to this one)</li>
 <li>Put credentials in a <a href="https://csgillespie.github.io/efficientR/3-3-r-startup.html#rprofile">.Rprofile</a> file</li>
-<li><strong>Put credentials in a <a href="https://csgillespie.github.io/efficientR/3-3-r-startup.html#renviron">.REnviron</a> file</strong></li>
+<li><strong>Put credentials in a <a href="https://csgillespie.github.io/efficientR/3-3-r-startup.html#renviron">.Renviron</a> file</strong></li>
 <li>Put <a href="https://github.com/ropensci/fishbaseapi/blob/80393023a958aee54e2daa58c337458db5480b84/config_template.yaml">credentials</a> in a JSON or YAML file</li>
 <li>Put credentials in a secure store that you can access from R</li>
 <li>Ask the user for the credentials when the script is executed (possibly not useful for R Shiny applications)</li>
 </ol>
-<p><strong>My preferred way for R is the .REnviron (or a <a href="https://github.com/gaborcsardi/dotenv">dotEnv</a>) file</strong>. You basically store your password in this file, make sure you do not share this (a global gitignore could be helpful to prevent any accident) and read the variables when you start your code.</p>
+<p><strong>My preferred way for R is the .Renviron (or a <a href="https://github.com/gaborcsardi/dotenv">dotEnv</a>) file</strong>. You basically store your password in this file, make sure you do not share this (a global gitignore could be helpful to prevent any accident) and read the variables when you start your code.</p>
 <div class="highlight"><pre><span class="c1">## Secrets</span>
 MYSQL_PASSWORD<span class="o">=</span>secret
 </pre></div>
 
-<p>If you would like to increase the security, you can combine it with a variation of <em>#6</em>. You use a .REnviron file, and use an encryption service like <a href="https://aws.amazon.com/kms/">Amazon KMS</a> (KMS stands for Key Management Service).</p>
-<p>With <a href="https://github.com/cardcorp/AWR.KMS">AWS KMS in R</a>, you can encrypt your values, put them encrypted in your .REnviron, and even if someone gets hold of your .REnviron file, you have an extra layer of protection, as the attacker would require access to your cloud environment to decrypt it too.</p>
+<p>If you would like to increase the security, you can combine it with a variation of <em>#6</em>. You use a .Renviron file, and use an encryption service like <a href="https://aws.amazon.com/kms/">Amazon KMS</a> (KMS stands for Key Management Service).</p>
+<p>With <a href="https://github.com/cardcorp/AWR.KMS">AWS KMS in R</a>, you can encrypt your values, put them encrypted in your .Renviron, and even if someone gets hold of your .Renviron file, you have an extra layer of protection, as the attacker would require access to your cloud environment to decrypt it too.</p>
 <div class="highlight"><pre><span class="c1">## Secrets</span>
 MYSQL_PASSWORD<span class="o">=</span>AQECAHga320J8WadplGCqqVAr4HNvDaFSQ<span class="o">+</span>NaiwIBhmm6qDSFwAAAGIwYAYJKoZIhvcNAQcGoFMwUQIBADBMBgkqhkiG9w0BBwEwHgYJYIZIAWUDBAEuMBEE99<span class="o">+</span>LoLdvYv8l41OhAAIBEIAfx49FFJCLeYrkfMfAw6XlnxP23MmDBdqP8dPp28OoAQ<span class="o">==</span>
 </pre></div>
