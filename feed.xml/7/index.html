@@ -13,10 +13,26 @@
     <atom:link href="/blog/feed.xml" rel="self" type="application/rss+xml" />
     <link>/</link>
     <description></description>
-    <lastBuildDate>1497259140.3634381</lastBuildDate>
+    <lastBuildDate>1497430692.7031994</lastBuildDate>
     <language>en-US</language>
     <generator>PieCrust 2.1.1</generator>
  
+
+<item>
+    <title>Graphite: Broken images</title>
+    <pubDate>Apr 17, 2013</pubDate>
+    <link>/2013/04/17/graphite-broken-images</link>
+    <dc:creator></dc:creator>
+    <description><p>This morning I was setting up a <a href="http://graphite.wikidot.com/" title="Graphite">Graphite </a>server to collect metrics with <a href="https://github.com/etsy/statsd/" title="statsd">statsd</a>, <a href="http://logstash.net/" title="LogStash">LogStash </a>and <a href="https://github.com/jmxtrans/jmxtrans" title="jmxtrans">jmxtrans</a>. After following the instructions from @jgeurst, I&#8217;ve successfully installed Graphite.</p>
+
+<p>I had previously installed another test box, so I decided to take a deeper look at the settings, write a <a href="https://puppetlabs.com/" title="Puppet">puppet</a> manifest and prepare this new box to become a production server. However, after browsing the webapp, all graphs were broken.</p>
+
+<p>After googling a while, reading forums and bugs, I decided to open the <em>$GRAPHITE_HOME/webapp/graphite/render/views.py</em>, adding <em>log.rendering(&#8230;)</em> statements (not the most elegant solution, I know).</p>
+
+<p>By following the program workflow I found out it was entering a block after checking if it should remotely render the image. This feature is turned on/off by <strong>REMOTE_RENDERING</strong> = True/False, in local_settings.py.</p>
+
+<p>After setting this to <em>False</em> the problem was solved.</p></description>
+</item>
 
 <item>
     <title>Fix laggy Flash (Pepper) in Chrome</title>
@@ -205,20 +221,6 @@
 <p><a href="/2012/10/11/jenkins-testlink-and-gtest-in-5-minutes-or-so/screenshot_001.png"><img src="/2012/10/11/jenkins-testlink-and-gtest-in-5-minutes-or-so/screenshot_001.png" alt="" title="gtest_testHelloWorld.cc" width="546" height="482" class="aligncenter size-full wp-image-1083" /></a></p>
 
 </description>
-</item>
-
-<item>
-    <title>Paper: Patterns for Introducing a Superclass for Test Classes</title>
-    <pubDate>Sep 25, 2012</pubDate>
-    <link>/2012/09/25/paper-patterns-for-introducing-a-superclass-for-test-classes</link>
-    <dc:creator></dc:creator>
-    <description><p>Few days ago we had <a href="http://www.dimap.ufrn.br/sugarloafplop2012/">SugarLoafPlop 2012</a> in <a href="http://maps.google.com.br/maps?q=natal+-+rn&amp;hl=en&amp;sll=-23.682803,-46.595546&amp;sspn=0.653971,1.352692&amp;hnear=Natal+-+Rio+Grande+do+Norte&amp;t=m&amp;z=11">Natal - RN</a> </p>
-<p>It is a conference on <a href="http://en.wikipedia.org/wiki/Pattern_language" title="Pattern Language">pattern languages</a> of programming. About six months ago I saw a tweet by <a href="https://twitter.com/emguerra" title="Eduardo Guerra">Eduardo Guerra</a> asking if anyone had some cases where certain patterns were applied. It was a big coincidence, since I was working on <a href="http://commons.apache.org/sandbox/functor/" title="Apache Commons Functor">Apache Commons Functor</a> and some <a href="http://www.jenkins-ci.org" title="Jenkins-CI">Jenkins plugins</a>, both projects with cases that could be used in his paper.</p>
-<p style="text-align: center"><a href="http://www.dimap.ufrn.br/sugarloafplop2012/"><img src="/2012/09/25/paper-patterns-for-introducing-a-superclass-for-test-classes/sugarloaf2012_300_146.jpg" alt="" title="SugarLoaf Plop 2012" width="300" height="146" class="aligncenter size-medium wp-image-1071" /></a>
-
-So I joined Guerra and gave my small contribution to the paper that <a href="http://www.dimap.ufrn.br/sugarloafplop2012/pages/acceptedpapers.html" title="accepted papers">has been accepted</a> for this edition of SugarLoafPlop. Guerra also went there to give a talk and participate in an open discussion about several papers, including ours.
-
-I simply love when these things happen, it was great work with Guerra, and even better for being able to use Open Source examples in our paper.</description>
 </item>
 
 </channel>
