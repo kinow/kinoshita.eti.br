@@ -186,15 +186,15 @@
 
     <p>I&#8217;ve always wanted to know how does the code to show what was I listening to looked like. I found it after installing XMPlay and XMPlay MSN Plug-in. The plug-in zip had the plug-in itself and its source code. And what a neat source code (-:.</p>
 <p>Basically, you just send a message to the MSN UI API with a defined data structure. And to remove the message, just send again with an empty string.</p>
-<div class="highlight"><pre><span class="cm">/*</span>
+<div class="highlight"><pre><span></span><span class="cm">/*</span>
 <span class="cm">Bruno de Paula Kinoshita</span>
 <span class="cm">original src code:</span>
 <span class="cm">XMPlay MSN Plugin (c) 2005-2006 Elliott Sales de Andrade</span>
 <span class="cm">*/</span>
 
-<span class="cp">#include &lt;cstdlib&gt;</span>
-<span class="cp">#include &lt;iostream&gt;</span>
-<span class="cp">#include &lt;windows.h&gt;</span>
+<span class="cp">#include</span> <span class="cpf">&lt;cstdlib&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;windows.h&gt;</span><span class="cp"></span>
 
 <span class="n">using</span> <span class="n">namespace</span> <span class="n">std</span><span class="p">;</span>
 
@@ -213,11 +213,11 @@
 
     <span class="n">lpMsn</span> <span class="o">=</span> <span class="p">(</span><span class="kt">wchar_t</span><span class="o">*</span><span class="p">)</span><span class="n">calloc</span><span class="p">(</span><span class="mi">1024</span><span class="p">,</span><span class="mi">1024</span><span class="p">);</span>
     <span class="c1">// stuff for MSN before...</span>
-    <span class="n">memcpy</span><span class="p">(</span><span class="n">lpMsn</span><span class="p">,</span> <span class="s">L&quot;</span><span class="se">\\</span><span class="s">0Music</span><span class="se">\\</span><span class="s">01</span><span class="se">\\</span><span class="s">0{0}</span><span class="se">\\</span><span class="s">0&quot;</span><span class="p">,</span> <span class="mi">17</span><span class="o">*</span><span class="mi">2</span><span class="p">);</span>
+    <span class="n">memcpy</span><span class="p">(</span><span class="n">lpMsn</span><span class="p">,</span> <span class="sa">L</span><span class="s">&quot;</span><span class="se">\\</span><span class="s">0Music</span><span class="se">\\</span><span class="s">01</span><span class="se">\\</span><span class="s">0{0}</span><span class="se">\\</span><span class="s">0&quot;</span><span class="p">,</span> <span class="mi">17</span><span class="o">*</span><span class="mi">2</span><span class="p">);</span>
     <span class="c1">// actual title...</span>
     <span class="n">strLen</span><span class="o">=</span><span class="n">MultiByteToWideChar</span><span class="p">(</span><span class="nb">false</span><span class="o">?</span><span class="nl">CP_UTF8</span><span class="p">:</span><span class="n">CP_ACP</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="n">title</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="n">lpMsn</span><span class="o">+</span><span class="mi">17</span><span class="p">,</span><span class="mi">492</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">;</span><span class="err">Â</span>  <span class="cm">/* 1024/2 - 20 */</span>
     <span class="c1">// stuff for MSN after...</span>
-    <span class="n">memcpy</span><span class="p">(</span><span class="n">lpMsn</span> <span class="o">+</span> <span class="mi">17</span> <span class="o">+</span> <span class="n">strLen</span><span class="p">,</span> <span class="s">L&quot;</span><span class="se">\\</span><span class="s">0&quot;</span><span class="p">,</span> <span class="mi">3</span><span class="o">*</span><span class="mi">2</span><span class="p">);</span>
+    <span class="n">memcpy</span><span class="p">(</span><span class="n">lpMsn</span> <span class="o">+</span> <span class="mi">17</span> <span class="o">+</span> <span class="n">strLen</span><span class="p">,</span> <span class="sa">L</span><span class="s">&quot;</span><span class="se">\\</span><span class="s">0&quot;</span><span class="p">,</span> <span class="mi">3</span><span class="o">*</span><span class="mi">2</span><span class="p">);</span>
     <span class="n">strLen</span> <span class="o">+=</span> <span class="mi">20</span><span class="p">;</span>
 
     <span class="n">COPYDATASTRUCT</span> <span class="n">msndata</span><span class="p">;</span>
@@ -284,7 +284,7 @@
 
     <p>It&#8217;s not as complicated as I first thought.</p>
 <p>Had to use this technique to develop an Swing application for the JLPT certification exam.</p>
-<div class="highlight"><pre><span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+<div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
     <span class="n">JFrame</span> <span class="n">frame</span> <span class="o">=</span> <span class="k">new</span> <span class="n">JFrame</span><span class="o">();</span>
     <span class="n">frame</span><span class="o">.</span><span class="na">setDefaultCloseOperation</span><span class="o">(</span><span class="n">JFrame</span><span class="o">.</span><span class="na">EXIT_ON_CLOSE</span><span class="o">);</span>
     <span class="n">Container</span> <span class="n">container</span> <span class="o">=</span> <span class="n">frame</span><span class="o">.</span><span class="na">getContentPane</span><span class="o">();</span>

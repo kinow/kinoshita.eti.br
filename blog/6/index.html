@@ -184,8 +184,8 @@
 
     <p><a href="https://issues.jenkins-ci.org/browse/JENKINS-17887">JENKINS-17887</a> reports performance problems in the <a href="https://wiki.jenkins-ci.org/display/JENKINS/TAP+Plugin">Jenkins TAP Plug-in</a>. It also lists a series of suggestions on how to improve the Jenkins TAP Plug-in performance. On this initial post, we will get a general idea of how the plug-in performs for large projects.</p>
 <p><a href="http://bioperl.org/">BioPerl</a> has over 21K tests. That should be enough for giving an initial idea of CPU, memory and disk usage for the plug-in.</p>
-<div class="highlight"><pre>git clone https://github.com/bioperl/bioperl-live.git
-<span class="nb">cd </span>bioperl-live
+<div class="highlight"><pre><span></span>git clone https://github.com/bioperl/bioperl-live.git
+<span class="nb">cd</span> bioperl-live
 sudo cpanm  -vv --installdeps --notest .
 sudo cpanm Set::Scalar Graph::Directed XML::LibXML XML::SAX <span class="se">\</span>
     SVG XML::Parser::PerlSAX Convert::Binary::C XML::SAX::Writer <span class="se">\</span>
@@ -194,7 +194,7 @@ sudo cpanm Set::Scalar Graph::Directed XML::LibXML XML::SAX <span class="se">\</
 prove -r t/ -a tests.tar.gz
 
 All tests successful.
-<span class="nv">Files</span><span class="o">=</span>325, <span class="nv">Tests</span><span class="o">=</span>21095, <span class="m">94</span> wallclock secs <span class="o">(</span> 2.47 usr  0.55 sys + 88.29 cusr  3.85 <span class="nv">csys</span> <span class="o">=</span> 95.16 CPU<span class="o">)</span>
+<span class="nv">Files</span><span class="o">=</span><span class="m">325</span>, <span class="nv">Tests</span><span class="o">=</span><span class="m">21095</span>, <span class="m">94</span> wallclock secs <span class="o">(</span> <span class="m">2</span>.47 usr  <span class="m">0</span>.55 sys + <span class="m">88</span>.29 cusr  <span class="m">3</span>.85 <span class="nv">csys</span> <span class="o">=</span> <span class="m">95</span>.16 CPU<span class="o">)</span>
 Result: PASS
 </pre></div>
 
@@ -212,8 +212,8 @@ Result: PASS
 
 <p>One build.xml for the BioPerl project gets over 80K entries for the TestResult object.</p>
 
-<div class="highlight"><pre>grep <span class="s2">&quot;org.tap4j.model.TestResult&quot;</span> builds/1/build.xml -o <span class="p">|</span> wc -l
-84522
+<div class="highlight"><pre><span></span>grep <span class="s2">&quot;org.tap4j.model.TestResult&quot;</span> builds/1/build.xml -o <span class="p">|</span> wc -l
+<span class="m">84522</span>
 </pre></div>
 
 <p>This happens because each TAP file may contain multiple test results (lines with test results). Each of these test results gets turned into a Java object and loaded by the plug-in. So when loading the test result pages, Jenkins needs to wait until all these objects have been parsed, deserialized and read into the memory.</p>

@@ -264,10 +264,10 @@ time investigating why these tests would require so much memory. Then I found
 assume it either prevents PowerMock from trying to dynamically load several classes, or instructs
 it to unload classes after the tests. But in anyway after adding it the issue was gone.</p>
 <p>Then I got the following exception.</p>
-<div class="highlight"><pre>WARNING: Failed to instantiate Key<span class="o">[</span><span class="nb">type</span><span class="o">=</span>hudson.security.csrf.DefaultCrumbIssuer<span class="nv">$DescriptorImpl</span>, <span class="nv">annotation</span><span class="o">=[</span>none<span class="o">]]</span><span class="p">;</span> skipping this component
+<div class="highlight"><pre><span></span>WARNING: Failed to instantiate Key<span class="o">[</span><span class="nv">type</span><span class="o">=</span>hudson.security.csrf.DefaultCrumbIssuer<span class="nv">$DescriptorImpl</span>, <span class="nv">annotation</span><span class="o">=[</span>none<span class="o">]]</span><span class="p">;</span> skipping this component
 com.google.inject.ProvisionException: Guice provision errors:
 
-1<span class="o">)</span> Error injecting constructor, java.lang.ClassCastException: com.sun.crypto.provider.AESCipher cannot be cast to javax.crypto.CipherSpi
+<span class="m">1</span><span class="o">)</span> Error injecting constructor, java.lang.ClassCastException: com.sun.crypto.provider.AESCipher cannot be cast to javax.crypto.CipherSpi
   at hudson.security.csrf.DefaultCrumbIssuer<span class="nv">$DescriptorImpl</span>.&lt;init&gt;<span class="o">(</span>DefaultCrumbIssuer.java:127<span class="o">)</span>
 
 <span class="m">1</span> error
@@ -278,7 +278,7 @@ com.google.inject.ProvisionException: Guice provision errors:
 that PowerMock was mocking <em>javax.crypto</em> classes. Turns out it is quite easy to tell
 PowerMock to ignore certain classes from being mocked, with the <em>@PowerMockIgnore</em> annotation.</p>
 
-<div class="highlight"><pre><span class="c1">// snip</span>
+<div class="highlight"><pre><span></span><span class="c1">// snip</span>
 <span class="nd">@RunWith</span><span class="o">(</span><span class="n">PowerMockRunner</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
 <span class="nd">@PowerMockIgnore</span><span class="o">({</span><span class="s">&quot;javax.crypto.*&quot;</span> <span class="o">})</span>
 <span class="kd">public</span> <span class="kd">class</span> <span class="nc">TestAbstractUnoChoiceParameter</span> <span class="o">{</span>
@@ -336,8 +336,8 @@ so that users facing similar issues can try these possible workarounds.</p>
 
     <p><a href="https://issues.jenkins-ci.org/browse/JENKINS-17887">JENKINS-17887</a> reports performance problems in the <a href="https://wiki.jenkins-ci.org/display/JENKINS/TAP+Plugin">Jenkins TAP Plug-in</a>. It also lists a series of suggestions on how to improve the Jenkins TAP Plug-in performance. On this initial post, we will get a general idea of how the plug-in performs for large projects.</p>
 <p><a href="http://bioperl.org/">BioPerl</a> has over 21K tests. That should be enough for giving an initial idea of CPU, memory and disk usage for the plug-in.</p>
-<div class="highlight"><pre>git clone https://github.com/bioperl/bioperl-live.git
-<span class="nb">cd </span>bioperl-live
+<div class="highlight"><pre><span></span>git clone https://github.com/bioperl/bioperl-live.git
+<span class="nb">cd</span> bioperl-live
 sudo cpanm  -vv --installdeps --notest .
 sudo cpanm Set::Scalar Graph::Directed XML::LibXML XML::SAX <span class="se">\</span>
     SVG XML::Parser::PerlSAX Convert::Binary::C XML::SAX::Writer <span class="se">\</span>
@@ -346,7 +346,7 @@ sudo cpanm Set::Scalar Graph::Directed XML::LibXML XML::SAX <span class="se">\</
 prove -r t/ -a tests.tar.gz
 
 All tests successful.
-<span class="nv">Files</span><span class="o">=</span>325, <span class="nv">Tests</span><span class="o">=</span>21095, <span class="m">94</span> wallclock secs <span class="o">(</span> 2.47 usr  0.55 sys + 88.29 cusr  3.85 <span class="nv">csys</span> <span class="o">=</span> 95.16 CPU<span class="o">)</span>
+<span class="nv">Files</span><span class="o">=</span><span class="m">325</span>, <span class="nv">Tests</span><span class="o">=</span><span class="m">21095</span>, <span class="m">94</span> wallclock secs <span class="o">(</span> <span class="m">2</span>.47 usr  <span class="m">0</span>.55 sys + <span class="m">88</span>.29 cusr  <span class="m">3</span>.85 <span class="nv">csys</span> <span class="o">=</span> <span class="m">95</span>.16 CPU<span class="o">)</span>
 Result: PASS
 </pre></div>
 
@@ -364,8 +364,8 @@ Result: PASS
 
 <p>One build.xml for the BioPerl project gets over 80K entries for the TestResult object.</p>
 
-<div class="highlight"><pre>grep <span class="s2">&quot;org.tap4j.model.TestResult&quot;</span> builds/1/build.xml -o <span class="p">|</span> wc -l
-84522
+<div class="highlight"><pre><span></span>grep <span class="s2">&quot;org.tap4j.model.TestResult&quot;</span> builds/1/build.xml -o <span class="p">|</span> wc -l
+<span class="m">84522</span>
 </pre></div>
 
 <p>This happens because each TAP file may contain multiple test results (lines with test results). Each of these test results gets turned into a Java object and loaded by the plug-in. So when loading the test result pages, Jenkins needs to wait until all these objects have been parsed, deserialized and read into the memory.</p>
@@ -431,7 +431,7 @@ to use Active Choices Plug-in with the <a href="https://wiki.jenkins-ci.org/disp
 is a tester. Then s/he would see certain parameters. But if s/he was a manager, other parameters would be
 displayed.</p>
 <h2>To the code</h2>
-<div class="highlight"><pre><span class="kn">import</span> <span class="nn">hudson.model.User</span>
+<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">hudson.model.User</span>
 <span class="kn">import</span> <span class="nn">hudson.model.Hudson</span>
 <span class="kn">import</span> <span class="nn">hudson.security.AuthorizationStrategy</span>
 <span class="kn">import</span> <span class="nn">hudson.security.Permission</span>
@@ -444,7 +444,8 @@ displayed.</p>
 <span class="n">user</span> <span class="o">=</span> <span class="n">User</span><span class="o">.</span><span class="na">current</span><span class="o">()</span>
 <span class="n">userId</span> <span class="o">=</span> <span class="n">user</span><span class="o">.</span><span class="na">getId</span><span class="o">()</span>
 
-<span class="k">if</span> <span class="o">(</span><span class="n">strategy</span> <span class="o">!=</span> <span class="kc">null</span> 
+<span class="k">if</span> <span class="o">(</span><span class="n">strategy</span> <span class="o">!=</span> <span class="kc">null</span> <span class="o">&amp;&amp;</span> <span class="n">strategy</span> <span class="k">instanceof</span> <span class="n">com</span><span class="o">.</span><span class="na">michelin</span><span class="o">.</span><span class="na">cio</span><span class="o">.</span><span class="na">hudson</span><span class="o">.</span><span class="na">plugins</span><span class="o">.</span><span class="na">rolestrategy</span><span class="o">.</span><span class="na">RoleBasedAuthorizationStrategy</span><span class="o">)</span> <span class="o">{</span>
+    <span class="n">roleStrategy</span> <span class="o">=</span> <span class="o">(</span><span class="n">RoleBasedAuthorizationStrategy</span><span class="o">)</span> <span class="n">strategy</span><span class="o">;</span>
     <span class="c1">// not very straightforward to get the groups for a given user</span>
     <span class="n">roles</span> <span class="o">=</span> <span class="n">roleStrategy</span><span class="o">.</span><span class="na">getGrantedRoles</span><span class="o">(</span><span class="s">&quot;globalRoles&quot;</span><span class="o">)</span>
     <span class="k">for</span> <span class="o">(</span><span class="n">entry</span> <span class="n">in</span> <span class="n">roles</span><span class="o">)</span> <span class="o">{</span>
@@ -470,7 +471,7 @@ displayed.</p>
 
 <p>And now let&#8217;s dissect the code.</p>
 
-<div class="highlight"><pre><span class="kn">import</span> <span class="nn">hudson.model.User</span>
+<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">hudson.model.User</span>
 <span class="kn">import</span> <span class="nn">hudson.model.Hudson</span>
 <span class="kn">import</span> <span class="nn">hudson.security.AuthorizationStrategy</span>
 <span class="kn">import</span> <span class="nn">hudson.security.Permission</span>
@@ -480,7 +481,7 @@ displayed.</p>
 
 <p>You start by importing the classes that you need.</p>
 
-<div class="highlight"><pre><span class="n">AuthorizationStrategy</span> <span class="n">strategy</span> <span class="o">=</span> <span class="n">Hudson</span><span class="o">.</span><span class="na">getInstance</span><span class="o">().</span><span class="na">getAuthorizationStrategy</span><span class="o">();</span>
+<div class="highlight"><pre><span></span><span class="n">AuthorizationStrategy</span> <span class="n">strategy</span> <span class="o">=</span> <span class="n">Hudson</span><span class="o">.</span><span class="na">getInstance</span><span class="o">().</span><span class="na">getAuthorizationStrategy</span><span class="o">();</span>
 
 <span class="n">jobs</span> <span class="o">=</span> <span class="o">[]</span>
 <span class="n">user</span> <span class="o">=</span> <span class="n">User</span><span class="o">.</span><span class="na">current</span><span class="o">()</span>
@@ -493,7 +494,8 @@ used in Jenkins.</p>
 <p>Then we create an empty array of jobs, which is the value returned by default. And get the current
 logged in user ID.</p>
 
-<div class="highlight"><pre><span class="k">if</span> <span class="o">(</span><span class="n">strategy</span> <span class="o">!=</span> <span class="kc">null</span> 
+<div class="highlight"><pre><span></span><span class="k">if</span> <span class="o">(</span><span class="n">strategy</span> <span class="o">!=</span> <span class="kc">null</span> <span class="o">&amp;&amp;</span> <span class="n">strategy</span> <span class="k">instanceof</span> <span class="n">com</span><span class="o">.</span><span class="na">michelin</span><span class="o">.</span><span class="na">cio</span><span class="o">.</span><span class="na">hudson</span><span class="o">.</span><span class="na">plugins</span><span class="o">.</span><span class="na">rolestrategy</span><span class="o">.</span><span class="na">RoleBasedAuthorizationStrategy</span><span class="o">)</span> <span class="o">{</span>
+    <span class="n">roleStrategy</span> <span class="o">=</span> <span class="o">(</span><span class="n">RoleBasedAuthorizationStrategy</span><span class="o">)</span> <span class="n">strategy</span><span class="o">;</span>
     <span class="c1">// not very straightforward to get the groups for a given user</span>
     <span class="n">roles</span> <span class="o">=</span> <span class="n">roleStrategy</span><span class="o">.</span><span class="na">getGrantedRoles</span><span class="o">(</span><span class="s">&quot;globalRoles&quot;</span><span class="o">)</span>
     <span class="k">for</span> <span class="o">(</span><span class="n">entry</span> <span class="n">in</span> <span class="n">roles</span><span class="o">)</span> <span class="o">{</span>
@@ -628,15 +630,15 @@ It not only sets up a master, but also provides an easy way to enable the cherry
 API (necessary for the Jenkins plug-in).</p>
 <p>This post describes the steps that I took to have a running Salt Master with the API
 enabled. First you need to create some directories and files to use with the image.</p>
-<div class="highlight"><pre>shell<span class="nv">$ </span>mkdir ~/master <span class="o">&amp;&amp;</span> <span class="nb">cd</span> ~/master
-shell<span class="nv">$ </span>mkdir -p config/master.d/
-shell<span class="nv">$ </span>vim config/master.d/api.conf
+<div class="highlight"><pre><span></span>shell$ mkdir ~/master <span class="o">&amp;&amp;</span> <span class="nb">cd</span> ~/master
+shell$ mkdir -p config/master.d/
+shell$ vim config/master.d/api.conf
 </pre></div>
 
 <p>The api.conf contains the SaltStack API configuration. You can change port, user
 and other settings if necessary. Just remember to add a credential in Jenkins
 for the plug-in.</p>
-<div class="highlight"><pre><span class="c"># File: api.conf</span>
+<div class="highlight"><pre><span></span><span class="c1"># File: api.conf</span>
 external_auth:
   pam:
     saltapiuser:
@@ -645,8 +647,8 @@ external_auth:
       - <span class="s1">&#39;@wheel&#39;</span>
       - <span class="s1">&#39;@jobs&#39;</span>
 rest_cherrypy:
-  port: 8000
-  host: 0.0.0.0
+  port: <span class="m">8000</span>
+  host: <span class="m">0</span>.0.0.0
   disable_ssl: True
   static: /opt/molten
   static_path: /assets
@@ -657,23 +659,23 @@ rest_cherrypy:
 <p>The image also conveniently provides a script that is executed before the
 entry point (if provided). So we can also create a user for the API automatically
 when the image is created.</p>
-<div class="highlight"><pre>shell<span class="nv">$ </span>vim config/before-exec.sh
+<div class="highlight"><pre><span></span>shell$ vim config/before-exec.sh
 </pre></div>
 
-<div class="highlight"><pre><span class="c">#!/bin/bash</span>
-<span class="c"># File: before-exec.sh</span>
+<div class="highlight"><pre><span></span><span class="ch">#!/bin/bash</span>
+<span class="c1"># File: before-exec.sh</span>
 useradd saltapiuser
 <span class="nb">echo</span> -e <span class="s2">&quot;nosecret\nnosecret\n&quot;</span> <span class="p">|</span> passwd saltapiuser
-<span class="nb">exit </span>0
+<span class="nb">exit</span> <span class="m">0</span>
 </pre></div>
 
 <p>Also make the script executable.</p>
-<div class="highlight"><pre>chmod +x config/before-exec.sh
+<div class="highlight"><pre><span></span>chmod +x config/before-exec.sh
 </pre></div>
 
 <p>And finally start the container.</p>
-<div class="highlight"><pre>docker run --name salt-master -v <span class="nv">$PWD</span>/config:/config <span class="se">\</span>
-    -p 4505:4505 -p 4506:4506 -p 443:443 -p 8000:8000 <span class="se">\</span>
+<div class="highlight"><pre><span></span>docker run --name salt-master -v <span class="nv">$PWD</span>/config:/config <span class="se">\</span>
+    -p <span class="m">4505</span>:4505 -p <span class="m">4506</span>:4506 -p <span class="m">443</span>:443 -p <span class="m">8000</span>:8000 <span class="se">\</span>
     bbinet/salt-master
 </pre></div>
 

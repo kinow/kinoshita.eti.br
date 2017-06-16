@@ -147,9 +147,9 @@ decided to write this short post to show a few different ways it can be achieved
 or Java. But I think I would choose this option only because either I needed some feature that is not
 available in the other options, or in order to call other tasks or debug some problem.</p>
 <p>Example:</p>
-<div class="highlight"><pre><span class="nv">$ </span>docker run -d -p 8888:8080 jeanblanchard/tomcat:8
-<span class="nv">$ </span>git clone https://github.com/spring-projects/spring-petclinic.git <span class="o">&amp;&amp;</span> <span class="nb">cd </span>spring-petclinic <span class="o">&amp;&amp;</span> mvn package
-<span class="nv">$ </span>curl --upload-file target/petclinic.war <span class="s2">&quot;http://admin:admin@localhost:8888/manager/text/deploy?path=/spring-petclinic&amp;update=true&quot;</span>
+<div class="highlight"><pre><span></span>$ docker run -d -p <span class="m">8888</span>:8080 jeanblanchard/tomcat:8
+$ git clone https://github.com/spring-projects/spring-petclinic.git <span class="o">&amp;&amp;</span> <span class="nb">cd</span> spring-petclinic <span class="o">&amp;&amp;</span> mvn package
+$ curl --upload-file target/petclinic.war <span class="s2">&quot;http://admin:admin@localhost:8888/manager/text/deploy?path=/spring-petclinic&amp;update=true&quot;</span>
 OK - Deployed application at context path /spring-petclinic
 </pre></div>
 
@@ -184,11 +184,11 @@ via SSH in the server, copying the file and stop/starting the services</li>
 <li>You can even write your own plug-in, where it wouldn&#8217;t be much different than option #1</li>
 </ul>
 <p>Example:</p>
-<div class="highlight"><pre><span class="nv">$ </span>git clone https://github.com/spring-projects/spring-petclinic.git <span class="o">&amp;&amp;</span> <span class="nb">cd </span>spring-petclinic
+<div class="highlight"><pre><span></span>$ git clone https://github.com/spring-projects/spring-petclinic.git <span class="o">&amp;&amp;</span> <span class="nb">cd</span> spring-petclinic
 </pre></div>
 
 <p>Add the following to the pom.xml file, under the right XML tags, of course.</p>
-<div class="highlight"><pre><span class="c">&lt;!-- from https://gist.github.com/mdread/5900034 --&gt;</span>
+<div class="highlight"><pre><span></span><span class="c">&lt;!-- from https://gist.github.com/mdread/5900034 --&gt;</span>
 <span class="nt">&lt;plugins&gt;</span>
     <span class="nt">&lt;plugin&gt;</span>
         <span class="nt">&lt;groupId&gt;</span>org.codehaus.cargo<span class="nt">&lt;/groupId&gt;</span>
@@ -250,8 +250,8 @@ via SSH in the server, copying the file and stop/starting the services</li>
 </pre></div>
 
 <p>And finally start Tomcat and call the Cargo Maven plug-in.</p>
-<div class="highlight"><pre><span class="nv">$ </span>docker run -d -p 8888:8080 jeanblanchard/tomcat:8
-<span class="nv">$ </span>mvn package org.codehaus.cargo:cargo-maven2-plugin:deploy -Ptest -Dcargo.hostname<span class="o">=</span>localhost -Dcargo.servlet.port<span class="o">=</span><span class="m">8888</span> -Dcargo.tomcat.manager.url<span class="o">=</span>http://localhost:8888/manager/text -Dcargo.remote.username<span class="o">=</span>admin -Dcargo.remote.password<span class="o">=</span>admin
+<div class="highlight"><pre><span></span>$ docker run -d -p <span class="m">8888</span>:8080 jeanblanchard/tomcat:8
+$ mvn package org.codehaus.cargo:cargo-maven2-plugin:deploy -Ptest -Dcargo.hostname<span class="o">=</span>localhost -Dcargo.servlet.port<span class="o">=</span><span class="m">8888</span> -Dcargo.tomcat.manager.url<span class="o">=</span>http://localhost:8888/manager/text -Dcargo.remote.username<span class="o">=</span>admin -Dcargo.remote.password<span class="o">=</span>admin
 </pre></div>
 
 <p>What I like about this approach is that using profiles and environments with Maven, you can have pre-defined
@@ -307,7 +307,7 @@ settings.</p>
 </ul>
 <p>Instead of a screenshot, here is the config.xml file for my example job - easier to diff your job
 configuration.</p>
-<div class="highlight"><pre><span class="cp">&lt;?xml version=&#39;1.0&#39; encoding=&#39;UTF-8&#39;?&gt;</span>
+<div class="highlight"><pre><span></span><span class="cp">&lt;?xml version=&#39;1.0&#39; encoding=&#39;UTF-8&#39;?&gt;</span>
 <span class="nt">&lt;project&gt;</span>
   <span class="nt">&lt;actions/&gt;</span>
   <span class="nt">&lt;description&gt;&lt;/description&gt;</span>
@@ -362,15 +362,15 @@ configuration.</p>
 </pre></div>
 
 <p>When running this job, you should see in the end of the console output, something similar to this.</p>
-<div class="highlight"><pre><span class="o">[</span>INFO<span class="o">]</span> Building war: /tmp/1/jobs/deploy01/workspace/target/petclinic.war
+<div class="highlight"><pre><span></span><span class="o">[</span>INFO<span class="o">]</span> Building war: /tmp/1/jobs/deploy01/workspace/target/petclinic.war
 <span class="o">[</span>INFO<span class="o">]</span> ------------------------------------------------------------------------
 <span class="o">[</span>INFO<span class="o">]</span> BUILD SUCCESS
 <span class="o">[</span>INFO<span class="o">]</span> ------------------------------------------------------------------------
-<span class="o">[</span>INFO<span class="o">]</span> Total <span class="nb">time</span>: 20.590 s
-<span class="o">[</span>INFO<span class="o">]</span> Finished at: 2016-03-20T19:13:51+13:00
+<span class="o">[</span>INFO<span class="o">]</span> Total time: <span class="m">20</span>.590 s
+<span class="o">[</span>INFO<span class="o">]</span> Finished at: <span class="m">2016</span>-03-20T19:13:51+13:00
 <span class="o">[</span>INFO<span class="o">]</span> Final Memory: 36M/359M
 <span class="o">[</span>INFO<span class="o">]</span> ------------------------------------------------------------------------
-Deploying /tmp/1/jobs/deploy01/workspace/target/petclinic.war to container Tomcat 7.x Remote
+Deploying /tmp/1/jobs/deploy01/workspace/target/petclinic.war to container Tomcat <span class="m">7</span>.x Remote
   <span class="o">[</span>/tmp/1/jobs/deploy01/workspace/target/petclinic.war<span class="o">]</span> is not deployed. Doing a fresh deployment.
   Deploying <span class="o">[</span>/tmp/1/jobs/deploy01/workspace/target/petclinic.war<span class="o">]</span>
 Finished: SUCCESS

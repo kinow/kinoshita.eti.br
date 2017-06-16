@@ -136,7 +136,7 @@
 
 
     <p>Some time ago I stumbled across <a href="https://github.com/mynameisvinn/EmailParser">EmailParser</a>, a Python utility to remove e-mail signatures. Here&#8217;s a sample input e-mail from the project documentation.</p>
-<div class="highlight"><pre>Wendy – thanks for the intro! Moving you to bcc.
+<div class="highlight"><pre><span></span>Wendy – thanks for the intro! Moving you to bcc.
 
 Hi Vincent – nice to meet you over email. Apologize for the late reply, I was on PTO for a couple weeks and this is my first week back in office. As Wendy mentioned, I am leading an AR/VR taskforce at Foobar Retail Solutions. The goal of the taskforce is to better understand how AR/VR can apply to retail/commerce and if/what is the role of a shopping center in AR/VR applications for retail.
 
@@ -152,7 +152,7 @@ M: 111.111.1111| joe@foobar.com
 
 <p>And here&#8217;s what it looks like afterwards.</p>
 
-<div class="highlight"><pre>Wendy – thanks for the intro! Moving you to bcc.
+<div class="highlight"><pre><span></span>Wendy – thanks for the intro! Moving you to bcc.
 
 Hi Vincent – nice to meet you over email. Apologize for the late reply, I was on PTO for a couple weeks and this is my first week back in office. As Wendy mentioned, I am leading an AR/VR taskforce at Foobar Retail Solutions. The goal of the taskforce is to better understand how AR/VR can apply to retail/commerce and if/what is the role of a shopping center in AR/VR applications for retail.
 
@@ -161,15 +161,15 @@ Wendy mentioned that you would be a great person to speak to since you are close
 
 <p>As you can see, it removed all the lines after the main part of the message (i.e. after the three paragraphs). Here&#8217;s what the Python code looks like.</p>
 
-<div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">Parser</span> <span class="kn">import</span> <span class="n">read_email</span><span class="p">,</span> <span class="n">strip</span><span class="p">,</span> <span class="n">prob_block</span>
+<div class="highlight"><pre><span></span><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">Parser</span> <span class="kn">import</span> <span class="n">read_email</span><span class="p">,</span> <span class="n">strip</span><span class="p">,</span> <span class="n">prob_block</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">spacy.en</span> <span class="kn">import</span> <span class="n">English</span>
 
-<span class="o">&gt;&gt;&gt;</span> <span class="n">pos</span> <span class="o">=</span> <span class="n">English</span><span class="p">()</span>  <span class="c"># part-of-speech tagger</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">msg_raw</span> <span class="o">=</span> <span class="n">read_email</span><span class="p">(</span><span class="s">&#39;emails/test1.txt&#39;</span><span class="p">)</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">msg_stripped</span> <span class="o">=</span> <span class="n">strip</span><span class="p">(</span><span class="n">msg_raw</span><span class="p">)</span>  <span class="c"># preprocessing text before POS tagging</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">pos</span> <span class="o">=</span> <span class="n">English</span><span class="p">()</span>  <span class="c1"># part-of-speech tagger</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">msg_raw</span> <span class="o">=</span> <span class="n">read_email</span><span class="p">(</span><span class="s1">&#39;emails/test1.txt&#39;</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">msg_stripped</span> <span class="o">=</span> <span class="n">strip</span><span class="p">(</span><span class="n">msg_raw</span><span class="p">)</span>  <span class="c1"># preprocessing text before POS tagging</span>
 
-<span class="c"># iterate through lines, write to file if not signature block</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">generate_text</span><span class="p">(</span><span class="n">msg_stripped</span><span class="p">,</span> <span class="o">.</span><span class="mi">9</span><span class="p">,</span> <span class="n">pos_tagger</span><span class="p">,</span> <span class="s">&#39;emails/test1_clean.txt&#39;</span><span class="p">)</span>
+<span class="c1"># iterate through lines, write to file if not signature block</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">generate_text</span><span class="p">(</span><span class="n">msg_stripped</span><span class="p">,</span> <span class="o">.</span><span class="mi">9</span><span class="p">,</span> <span class="n">pos_tagger</span><span class="p">,</span> <span class="s1">&#39;emails/test1_clean.txt&#39;</span><span class="p">)</span>
 </pre></div>
 
 <p>What got me interested about this utility was the use of NLP. I couldn&#8217;t imagine how someone could use NLP for that. And I liked the simplicity of the approach, which is not perfect, but can be useful someday.</p>
@@ -178,14 +178,14 @@ Wendy mentioned that you would be a great person to speak to since you are close
 
 <p>The magic happens in the <code>generate_text</code> function, which receives the <strong>array of paragraphs</strong>, a <strong>threshold</strong>, the <strong>POS tagger</strong>, and the <strong>output destination</strong>. Here&#8217;s what the function does.</p>
 
-<div class="highlight"><pre>for each message
+<div class="highlight"><pre><span></span>for each message
     if probability ( signature block | message ) &lt; threshold
         write to output file
 </pre></div>
 
 <p>And the formula for calculating the probability is quite simple too.</p>
 
-<div class="highlight"><pre>1. For a given paragraph (message block), find all the sentences in it.
+<div class="highlight"><pre><span></span>1. For a given paragraph (message block), find all the sentences in it.
 2. Then for each word (token) in the sentence, count the number of times a non-verb appears.
 3. Return the proportion of non-verbs per sentence, i.e. number of non-verbs / number of sentences.
 </pre></div>
@@ -244,13 +244,13 @@ was generated by device (radiosonde) using the vendor (Vaisala) specific binary 
 on GitHub. To be honest, that was my first time parsing data in binary with Python. Did
 that before with C, C++, Perl, and Java, but never with Python.</p>
 <p>The code on GitHub used <a href="http://www.numpy.org/">NumPy</a> and looked similar to this one.</p>
-<div class="highlight"><pre><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
 
-<span class="n">parse_header</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dtype</span><span class="p">(</span> <span class="p">[</span> <span class="p">((</span><span class="s">&#39;field_a&#39;</span><span class="p">,</span> <span class="s">&#39;b1&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s">&#39;field_b&#39;</span><span class="p">,</span> <span class="s">&#39;17b1&#39;</span><span class="p">)</span> <span class="p">]</span> <span class="p">)</span>
+<span class="n">parse_header</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dtype</span><span class="p">(</span> <span class="p">[</span> <span class="p">((</span><span class="s1">&#39;field_a&#39;</span><span class="p">,</span> <span class="s1">&#39;b1&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;field_b&#39;</span><span class="p">,</span> <span class="s1">&#39;17b1&#39;</span><span class="p">)</span> <span class="p">]</span> <span class="p">)</span>
 
-<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s">&#39;input.dat&#39;</span><span class="p">,</span> <span class="s">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;input.dat&#39;</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
     <span class="n">header</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">fromfile</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">parse_header</span><span class="p">,</span> <span class="n">count</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-    <span class="c"># ...</span>
+    <span class="c1"># ...</span>
 </pre></div>
 
 <p>And it indeed worked fine. But in the end I used the code - after contacting the author and letting
@@ -265,28 +265,28 @@ for the format, and created a parser with <a href="https://construct.readthedocs
 
 <p>This is what the code with construct looked like.</p>
 
-<div class="highlight"><pre><span class="kn">from</span> <span class="nn">construct</span> <span class="kn">import</span> <span class="o">*</span>
+<div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">construct</span> <span class="kn">import</span> <span class="o">*</span>
 
-<span class="n">parse_header</span> <span class="o">=</span> <span class="n">Struct</span><span class="p">(</span><span class="s">&quot;parse_header&quot;</span><span class="p">,</span>
-    <span class="n">Enum</span><span class="p">(</span><span class="n">Byte</span><span class="p">(</span><span class="s">&quot;file_ready&quot;</span><span class="p">),</span>
+<span class="n">parse_header</span> <span class="o">=</span> <span class="n">Struct</span><span class="p">(</span><span class="s2">&quot;parse_header&quot;</span><span class="p">,</span>
+    <span class="n">Enum</span><span class="p">(</span><span class="n">Byte</span><span class="p">(</span><span class="s2">&quot;file_ready&quot;</span><span class="p">),</span>
         <span class="n">READY</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
         <span class="n">NOT_READY</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
-        <span class="n">_default_</span> <span class="o">=</span> <span class="s">&quot;UNKNOWN&quot;</span><span class="p">,</span>
+        <span class="n">_default_</span> <span class="o">=</span> <span class="s2">&quot;UNKNOWN&quot;</span><span class="p">,</span>
     <span class="p">),</span>
-    <span class="n">Bytes</span><span class="p">(</span><span class="s">&quot;reserved&quot;</span><span class="p">,</span> <span class="mi">17</span><span class="p">)</span>
+    <span class="n">Bytes</span><span class="p">(</span><span class="s2">&quot;reserved&quot;</span><span class="p">,</span> <span class="mi">17</span><span class="p">)</span>
 <span class="p">)</span>
 
-<span class="c"># ...</span>
+<span class="c1"># ...</span>
 
-<span class="n">parse_contents</span> <span class="o">=</span> <span class="n">Struct</span><span class="p">(</span><span class="s">&quot;parse_contents&quot;</span><span class="p">,</span>
+<span class="n">parse_contents</span> <span class="o">=</span> <span class="n">Struct</span><span class="p">(</span><span class="s2">&quot;parse_contents&quot;</span><span class="p">,</span>
     <span class="n">parse_header</span><span class="p">,</span>
     <span class="n">Range</span><span class="p">(</span><span class="n">mincount</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">maxcout</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">subcon</span><span class="o">=</span><span class="n">pre_data</span><span class="p">),</span>
     <span class="n">OptionalGreedyRange</span><span class="p">(</span><span class="n">detailed_data</span><span class="p">)</span>
 <span class="p">)</span>
 
-<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s">&#39;input.dat&#39;</span><span class="p">,</span> <span class="s">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;input.dat&#39;</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
     <span class="n">parse_results</span> <span class="o">=</span> <span class="n">parse_contents</span><span class="o">.</span><span class="n">parse_stream</span><span class="p">(</span><span class="n">fid</span><span class="p">)</span>
-    <span class="c"># ...</span>
+    <span class="c1"># ...</span>
 </pre></div>
 
 <p>Writing the parser with NumPy or Construct would achieve the same result. However, in the end
@@ -371,7 +371,7 @@ time out, and also pass certain headers. I started customizing each call, until
 I learned about the Requests <a href="http://docs.python-requests.org/en/master/user/advanced/">Session Objects</a>.</p>
 <p>You create a session, as in ORM/JPA, where you can define a context, with certain properties
 and control an orthogonal behavior.</p>
-<div class="highlight"><pre><span class="kn">import</span> <span class="nn">requests</span>
+<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">requests</span>
 
 <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="n">session</span><span class="p">,</span> <span class="n">url</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Utility method to HTTP GET a URL&quot;&quot;&quot;</span>
@@ -386,13 +386,13 @@ and control an orthogonal behavior.</p>
     <span class="k">return</span> <span class="n">response</span>
 
 <span class="k">with</span> <span class="n">requests</span><span class="o">.</span><span class="n">Session</span><span class="p">()</span> <span class="k">as</span> <span class="n">s</span><span class="p">:</span>
-    <span class="c"># x-test header will be sent with every request</span>
-    <span class="n">s</span><span class="o">.</span><span class="n">headers</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s">&#39;x-test&#39;</span><span class="p">:</span> <span class="s">&#39;true&#39;</span><span class="p">})</span>
+    <span class="c1"># x-test header will be sent with every request</span>
+    <span class="n">s</span><span class="o">.</span><span class="n">headers</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s1">&#39;x-test&#39;</span><span class="p">:</span> <span class="s1">&#39;true&#39;</span><span class="p">})</span>
 
-    <span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;user&#39;</span><span class="p">:</span> <span class="n">user</span><span class="p">,</span> <span class="s">&#39;password&#39;</span><span class="p">:</span> <span class="n">password</span><span class="p">,</span> <span class="s">&#39;rememberne&#39;</span><span class="p">:</span> <span class="s">&#39;false&#39;</span><span class="p">}</span>
-    <span class="n">r</span> <span class="o">=</span> <span class="n">post</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="s">&#39;https://portal.login.url&#39;</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;user&#39;</span><span class="p">:</span> <span class="n">user</span><span class="p">,</span> <span class="s1">&#39;password&#39;</span><span class="p">:</span> <span class="n">password</span><span class="p">,</span> <span class="s1">&#39;rememberne&#39;</span><span class="p">:</span> <span class="s1">&#39;false&#39;</span><span class="p">}</span>
+    <span class="n">r</span> <span class="o">=</span> <span class="n">post</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="s1">&#39;https://portal.login.url&#39;</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
 
-    <span class="n">r</span> <span class="o">=</span> <span class="n">get</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="s">&#39;https://portal.home.url&#39;</span><span class="p">)</span>
+    <span class="n">r</span> <span class="o">=</span> <span class="n">get</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="s1">&#39;https://portal.home.url&#39;</span><span class="p">)</span>
 </pre></div>
 
 <p>Besides the session object, that gives you ability to add headers to all requests,
@@ -446,7 +446,7 @@ with a <a href="https://github.com/kennethreitz/requests/blob/dfad00a6e84bc75b12
 <p>It is likely that with time you will have different roles, and may have different permissions with each role. You have to configure your local environment so that you can either use the command line Python utility (installed via <code>pip install awscli</code>) or with boto.</p>
 <p>The awscli is a dependency for using boto3. After you install it, you need to run <code>aws configure</code>. It will create the <em>~/.aws/config</em> and <em>~/.aws/credentials</em> files. You can tweak these files to support multiple roles.</p>
 <p>I followed the tutorials, but got all sorts of different issues. Then after debugging some locally installed dependencies, in special awscli files, I found that the following settings work for my environment.</p>
-<div class="highlight"><pre><span class="c"># File: config</span>
+<div class="highlight"><pre><span></span><span class="c1"># File: config</span>
 <span class="o">[</span>profile default<span class="o">]</span>
 <span class="nv">region</span> <span class="o">=</span> ap-southeast-2
 
@@ -464,7 +464,7 @@ with a <a href="https://github.com/kennethreitz/requests/blob/dfad00a6e84bc75b12
 
 <p>and</p>
 
-<div class="highlight"><pre><span class="c"># File: credentials</span>
+<div class="highlight"><pre><span></span><span class="c1"># File: credentials</span>
 <span class="o">[</span>default<span class="o">]</span>
 <span class="nv">aws_access_key_id</span> <span class="o">=</span> YOU_KEY_ID
 <span class="nv">aws_secret_access_key</span> <span class="o">=</span> YOUR_SECRET
@@ -472,28 +472,28 @@ with a <a href="https://github.com/kennethreitz/requests/blob/dfad00a6e84bc75b12
 
 <p>And once it is done you can, for example, confirm it is working with some S3 commands in Python.</p>
 
-<div class="highlight"><pre><span class="c">#!/usr/bin/env python3</span>
+<div class="highlight"><pre><span></span><span class="ch">#!/usr/bin/env python3</span>
 
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">boto3</span>
 
-<span class="n">session</span> <span class="o">=</span> <span class="n">boto3</span><span class="o">.</span><span class="n">Session</span><span class="p">(</span><span class="n">profile_name</span><span class="o">=</span><span class="s">&#39;profile2&#39;</span><span class="p">)</span>
-<span class="n">s3</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">resource</span><span class="p">(</span><span class="s">&#39;s3&#39;</span><span class="p">)</span>
+<span class="n">session</span> <span class="o">=</span> <span class="n">boto3</span><span class="o">.</span><span class="n">Session</span><span class="p">(</span><span class="n">profile_name</span><span class="o">=</span><span class="s1">&#39;profile2&#39;</span><span class="p">)</span>
+<span class="n">s3</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">resource</span><span class="p">(</span><span class="s1">&#39;s3&#39;</span><span class="p">)</span>
 
 <span class="n">found</span> <span class="o">=</span> <span class="bp">False</span>
 
-<span class="n">name</span> <span class="o">=</span> <span class="s">&#39;mysuperduperbucket&#39;</span>
+<span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;mysuperduperbucket&#39;</span>
 
 <span class="k">for</span> <span class="n">bucket</span> <span class="ow">in</span> <span class="n">s3</span><span class="o">.</span><span class="n">buckets</span><span class="o">.</span><span class="n">all</span><span class="p">():</span>
     <span class="k">if</span> <span class="n">bucket</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="n">name</span><span class="p">:</span>
         <span class="n">found</span> <span class="o">=</span> <span class="bp">True</span>
 
 <span class="k">if</span> <span class="ow">not</span> <span class="n">found</span><span class="p">:</span>
-    <span class="k">print</span><span class="p">(</span><span class="s">&quot;Creating bucket...&quot;</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="s2">&quot;Creating bucket...&quot;</span><span class="p">)</span>
     <span class="n">s3</span><span class="o">.</span><span class="n">create_bucket</span><span class="p">(</span><span class="n">Bucket</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
 
-<span class="n">file_location</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">realpath</span><span class="p">(</span><span class="n">__file__</span><span class="p">))</span> <span class="o">+</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">sep</span> <span class="o">+</span> <span class="s">&#39;samplefile.txt&#39;</span>
-<span class="n">s3</span><span class="o">.</span><span class="n">meta</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">upload_file</span><span class="p">(</span><span class="n">Filename</span><span class="o">=</span><span class="n">file_location</span><span class="p">,</span> <span class="n">Bucket</span><span class="o">=</span><span class="n">name</span><span class="p">,</span> <span class="n">Key</span><span class="o">=</span><span class="s">&#39;book.txt&#39;</span><span class="p">)</span>
+<span class="n">file_location</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">realpath</span><span class="p">(</span><span class="vm">__file__</span><span class="p">))</span> <span class="o">+</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">sep</span> <span class="o">+</span> <span class="s1">&#39;samplefile.txt&#39;</span>
+<span class="n">s3</span><span class="o">.</span><span class="n">meta</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">upload_file</span><span class="p">(</span><span class="n">Filename</span><span class="o">=</span><span class="n">file_location</span><span class="p">,</span> <span class="n">Bucket</span><span class="o">=</span><span class="n">name</span><span class="p">,</span> <span class="n">Key</span><span class="o">=</span><span class="s1">&#39;book.txt&#39;</span><span class="p">)</span>
 </pre></div>
 
 <p>The AWS files in this example are using MFA too, the multi-factor authentication. So the first time you run this code you may be asked to generate a token, which will be cached for a short time.</p>
