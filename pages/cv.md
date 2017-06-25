@@ -1,8 +1,7 @@
 ---
 title: 'Bruno P. Kinoshita'
 author: kinow
-tags:
-    - curriculum vitae
+tags: {  }
 date: '2016-12-18'
 time: '09:56:33'
 ---
