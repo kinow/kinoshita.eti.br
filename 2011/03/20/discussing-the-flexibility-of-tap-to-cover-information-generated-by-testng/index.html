@@ -155,7 +155,7 @@
 
 <p>Particularly, I would like to have this information in TestException. Maybe it could have a constructor public TestException(String message, Throwable t, String expected, String got, long lineNumber) and TestNG could fill this information for me :-). I know I&#8217;m being lazy, but I like the description of laziness in <a title="Larry Wall's Wikipedia entry" href="http://en.wikipedia.org/wiki/Larry_Wall">Larry Wall&#8217;s WikiPedia entry</a>. The following test is expecting an exception that is never thrown, thus it raises an exception.</p>
 
-<div class="highlight"><pre><span></span><span class="kn">package</span> <span class="nn">example1</span><span class="o">;</span>
+<div class="highlight"><pre><span class="kn">package</span> <span class="nn">example1</span><span class="o">;</span>
 
 <span class="kn">import</span> <span class="nn">org.testng.Assert</span><span class="o">;</span>
 <span class="kn">import</span> <span class="nn">org.testng.annotations.Test</span><span class="o">;</span>
@@ -175,17 +175,17 @@
 
 <p>And the TAP Stream with the exception in the &#8216;backtrace&#8217; entry.</p>
 
-<div class="highlight"><pre><span></span><span class="m">1</span>..1
+<div class="highlight"><pre>1..1
 not ok <span class="m">1</span> - example1.TestFoo#test
  ---
  message: TestNG Test <span class="nb">test</span>
- severity: High
- source: example1.TestFoo#test
+<span class="nb"> </span>severity: High
+ <span class="nb">source</span>: example1.TestFoo#test
  datetime: <span class="s1">&#39;2011-03-20T03:45:30&#39;</span>
  file: example1.TestFoo
  line: <span class="s1">&#39;&#39;</span>
  name: <span class="nb">test</span>
- extensions: <span class="s1">&#39;~&#39;</span>
+<span class="nb"> </span>extensions: <span class="s1">&#39;~&#39;</span>
  got: <span class="s1">&#39;~&#39;</span>
  expected: <span class="s1">&#39;~&#39;</span>
  display: <span class="s1">&#39;~&#39;</span>
@@ -223,7 +223,7 @@ not ok <span class="m">1</span> - example1.TestFoo#test
 
 <p>In order to use a data provider with TestNG you have to add parameters to your method. Look at the code below.</p>
 
-<div class="highlight"><pre><span></span><span class="kn">package</span> <span class="nn">example1</span><span class="o">;</span>
+<div class="highlight"><pre><span class="kn">package</span> <span class="nn">example1</span><span class="o">;</span>
 
 <span class="kn">import</span> <span class="nn">org.testng.Assert</span><span class="o">;</span>
 <span class="kn">import</span> <span class="nn">org.testng.annotations.DataProvider</span><span class="o">;</span>
@@ -257,12 +257,12 @@ not ok <span class="m">1</span> - example1.TestFoo#test
 
 <p>Running the test above results in the following TAP Stream:</p>
 
-<div class="highlight"><pre><span></span><span class="m">1</span>..2
+<div class="highlight"><pre>1..2
 ok <span class="m">1</span> - example1.TestWithDataProvider#testName
  ---
  message: TestNG Test testName
  severity: <span class="s1">&#39;~&#39;</span>
- source: example1.TestWithDataProvider#testName
+ <span class="nb">source</span>: example1.TestWithDataProvider#testName
  datetime: <span class="s1">&#39;2011-03-20T03:09:50&#39;</span>
  file: example1.TestWithDataProvider
  line: <span class="s1">&#39;~&#39;</span>
@@ -279,7 +279,7 @@ ok <span class="m">2</span> - example1.TestWithDataProvider#testName
  ---
  message: TestNG Test testName
  severity: <span class="s1">&#39;~&#39;</span>
- source: example1.TestWithDataProvider#testName
+ <span class="nb">source</span>: example1.TestWithDataProvider#testName
  datetime: <span class="s1">&#39;2011-03-20T03:09:50&#39;</span>
  file: example1.TestWithDataProvider
  line: <span class="s1">&#39;~&#39;</span>
@@ -300,7 +300,7 @@ ok <span class="m">2</span> - example1.TestWithDataProvider#testName
 
 <p>The listener <a title="br.eti.kinoshita.tap4j.ext.testng.SuiteTAPReporter" href="https://github.com/kinow/tap4j/blob/master/src/main/java/org/tap4j/ext/testng/SuiteTAPReporter.java">br.eti.kinoshita.tap4j.ext.testng.SuiteTAPReporter</a> contains the logic to generate a TAP Stream for each TestNG group found in the test suite. There was a BUG in this listener that was fixed in tap4j version 1.4.5 (thanks again to Cesar). Let&#8217;s use the following code taken from TestNG documentation site.</p>
 
-<div class="highlight"><pre><span></span><span class="kn">package</span> <span class="nn">example1</span><span class="o">;</span>
+<div class="highlight"><pre><span class="kn">package</span> <span class="nn">example1</span><span class="o">;</span>
 
 <span class="kn">import</span> <span class="nn">org.testng.annotations.BeforeClass</span><span class="o">;</span>
 <span class="kn">import</span> <span class="nn">org.testng.annotations.Test</span><span class="o">;</span>
@@ -327,7 +327,7 @@ ok <span class="m">2</span> - example1.TestWithDataProvider#testName
 
 <p>And let&#8217;s create a XML suite for running this test with tap4j SuiteTAPReporter listener.</p>
 
-<div class="highlight"><pre><span></span><span class="cp">&lt;!DOCTYPE suite SYSTEM &quot;http://testng.org/testng-1.0.dtd&quot; &gt;</span>
+<div class="highlight"><pre><span class="cp">&lt;!DOCTYPE suite SYSTEM &quot;http://testng.org/testng-1.0.dtd&quot; &gt;</span>
 
 <span class="nt">&lt;suite</span> <span class="na">name=</span><span class="s">&quot;ExampleSuite&quot;</span> <span class="na">verbose=</span><span class="s">&quot;1&quot;</span> <span class="nt">&gt;</span>
   <span class="nt">&lt;listeners&gt;</span>
@@ -345,12 +345,12 @@ ok <span class="m">2</span> - example1.TestWithDataProvider#testName
 
 <p><pre><span style="text-decoration: underline;">ExampleSuite.tap</span></pre></p>
 
-<div class="highlight"><pre><span></span><span class="m">1</span>..2
+<div class="highlight"><pre>1..2
 ok <span class="m">1</span> - example1.SimpleTest#aFastTest
  ---
  message: TestNG Test aFastTest
  severity: <span class="s1">&#39;~&#39;</span>
- source: example1.SimpleTest#aFastTest
+ <span class="nb">source</span>: example1.SimpleTest#aFastTest
  datetime: <span class="s1">&#39;2011-03-20T01:47:11&#39;</span>
  file: example1.SimpleTest
  line: <span class="s1">&#39;~&#39;</span>
@@ -367,7 +367,7 @@ ok <span class="m">2</span> - example1.SimpleTest#aSlowTest
  ---
  message: TestNG Test aSlowTest
  severity: <span class="s1">&#39;~&#39;</span>
- source: example1.SimpleTest#aSlowTest
+ <span class="nb">source</span>: example1.SimpleTest#aSlowTest
  datetime: <span class="s1">&#39;2011-03-20T01:47:11&#39;</span>
  file: example1.SimpleTest
  line: <span class="s1">&#39;~&#39;</span>
@@ -384,12 +384,12 @@ ok <span class="m">2</span> - example1.SimpleTest#aSlowTest
 
 <p><pre><span style="text-decoration: underline;">fast.tap</span></pre></p>
 
-<div class="highlight"><pre><span></span><span class="m">1</span>..1
+<div class="highlight"><pre>1..1
 ok <span class="m">1</span> - example1.SimpleTest#aFastTest
  ---
  message: TestNG Test aFastTest
  severity: <span class="s1">&#39;~&#39;</span>
- source: example1.SimpleTest#aFastTest
+ <span class="nb">source</span>: example1.SimpleTest#aFastTest
  datetime: <span class="s1">&#39;2011-03-20T01:47:11&#39;</span>
  file: example1.SimpleTest
  line: <span class="s1">&#39;~&#39;</span>
@@ -406,12 +406,12 @@ ok <span class="m">1</span> - example1.SimpleTest#aFastTest
 
 <p><pre><span style="text-decoration: underline;">slow.tap</span></pre></p>
 
-<div class="highlight"><pre><span></span><span class="m">1</span>..1
+<div class="highlight"><pre>1..1
 ok <span class="m">1</span> - example1.SimpleTest#aSlowTest
  ---
  message: TestNG Test aSlowTest
  severity: <span class="s1">&#39;~&#39;</span>
- source: example1.SimpleTest#aSlowTest
+ <span class="nb">source</span>: example1.SimpleTest#aSlowTest
  datetime: <span class="s1">&#39;2011-03-20T01:47:11&#39;</span>
  file: example1.SimpleTest
  line: <span class="s1">&#39;~&#39;</span>
@@ -432,7 +432,7 @@ ok <span class="m">1</span> - example1.SimpleTest#aSlowTest
 
 <p>In TAP there are two directives: <strong>SKIP </strong>and <strong>TODO</strong>. SKIP is used to mark a test result as skipped, and TODO says that certain method is still not completely implemented. Tests that are skipped by TestNG are then marked as &#8216;not ok&#8217; with the SKIP directive. Let&#8217;s see some sample code.</p>
 
-<div class="highlight"><pre><span></span><span class="kn">package</span> <span class="nn">example1</span><span class="o">;</span>
+<div class="highlight"><pre><span class="kn">package</span> <span class="nn">example1</span><span class="o">;</span>
 
 <span class="kn">import</span> <span class="nn">org.testng.Assert</span><span class="o">;</span>
 <span class="kn">import</span> <span class="nn">org.testng.annotations.Listeners</span><span class="o">;</span>
@@ -461,12 +461,12 @@ ok <span class="m">1</span> - example1.SimpleTest#aSlowTest
 
 <p><pre><span style="text-decoration: underline;">example1.SkipTest.tap</span></pre></p>
 
-<div class="highlight"><pre><span></span><span class="m">1</span>..2
-not ok <span class="m">1</span> - example1.SkipTest#aDepedentMethod <span class="c1"># SKIP TestNG test was skipped</span>
+<div class="highlight"><pre>1..2
+not ok <span class="m">1</span> - example1.SkipTest#aDepedentMethod <span class="c"># SKIP TestNG test was skipped</span>
  ---
  message: TestNG Test aDepedentMethod
  severity: <span class="s1">&#39;~&#39;</span>
- source: example1.SkipTest#aDepedentMethod
+ <span class="nb">source</span>: example1.SkipTest#aDepedentMethod
  datetime: <span class="s1">&#39;2011-03-20T02:55:34&#39;</span>
  file: example1.SkipTest
  line: <span class="s1">&#39;~&#39;</span>
@@ -483,7 +483,7 @@ not ok <span class="m">2</span> - example1.SkipTest#aTestThatFails
  ---
  message: TestNG Test aTestThatFails
  severity: High
- source: example1.SkipTest#aTestThatFails
+ <span class="nb">source</span>: example1.SkipTest#aTestThatFails
  datetime: <span class="s1">&#39;2011-03-20T02:55:34&#39;</span>
  file: example1.SkipTest
  line: <span class="s1">&#39;&#39;</span>

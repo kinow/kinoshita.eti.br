@@ -140,7 +140,7 @@ to use Active Choices Plug-in with the <a href="https://wiki.jenkins-ci.org/disp
 is a tester. Then s/he would see certain parameters. But if s/he was a manager, other parameters would be
 displayed.</p>
 <h2>To the code</h2>
-<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">hudson.model.User</span>
+<div class="highlight"><pre><span class="kn">import</span> <span class="nn">hudson.model.User</span>
 <span class="kn">import</span> <span class="nn">hudson.model.Hudson</span>
 <span class="kn">import</span> <span class="nn">hudson.security.AuthorizationStrategy</span>
 <span class="kn">import</span> <span class="nn">hudson.security.Permission</span>
@@ -153,8 +153,7 @@ displayed.</p>
 <span class="n">user</span> <span class="o">=</span> <span class="n">User</span><span class="o">.</span><span class="na">current</span><span class="o">()</span>
 <span class="n">userId</span> <span class="o">=</span> <span class="n">user</span><span class="o">.</span><span class="na">getId</span><span class="o">()</span>
 
-<span class="k">if</span> <span class="o">(</span><span class="n">strategy</span> <span class="o">!=</span> <span class="kc">null</span> <span class="o">&amp;&amp;</span> <span class="n">strategy</span> <span class="k">instanceof</span> <span class="n">com</span><span class="o">.</span><span class="na">michelin</span><span class="o">.</span><span class="na">cio</span><span class="o">.</span><span class="na">hudson</span><span class="o">.</span><span class="na">plugins</span><span class="o">.</span><span class="na">rolestrategy</span><span class="o">.</span><span class="na">RoleBasedAuthorizationStrategy</span><span class="o">)</span> <span class="o">{</span>
-    <span class="n">roleStrategy</span> <span class="o">=</span> <span class="o">(</span><span class="n">RoleBasedAuthorizationStrategy</span><span class="o">)</span> <span class="n">strategy</span><span class="o">;</span>
+<span class="k">if</span> <span class="o">(</span><span class="n">strategy</span> <span class="o">!=</span> <span class="kc">null</span> 
     <span class="c1">// not very straightforward to get the groups for a given user</span>
     <span class="n">roles</span> <span class="o">=</span> <span class="n">roleStrategy</span><span class="o">.</span><span class="na">getGrantedRoles</span><span class="o">(</span><span class="s">&quot;globalRoles&quot;</span><span class="o">)</span>
     <span class="k">for</span> <span class="o">(</span><span class="n">entry</span> <span class="n">in</span> <span class="n">roles</span><span class="o">)</span> <span class="o">{</span>
@@ -179,7 +178,7 @@ displayed.</p>
 </pre></div>
 
 <p>And now let&#8217;s dissect the code.</p>
-<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">hudson.model.User</span>
+<div class="highlight"><pre><span class="kn">import</span> <span class="nn">hudson.model.User</span>
 <span class="kn">import</span> <span class="nn">hudson.model.Hudson</span>
 <span class="kn">import</span> <span class="nn">hudson.security.AuthorizationStrategy</span>
 <span class="kn">import</span> <span class="nn">hudson.security.Permission</span>
@@ -188,7 +187,7 @@ displayed.</p>
 </pre></div>
 
 <p>You start by importing the classes that you need.</p>
-<div class="highlight"><pre><span></span><span class="n">AuthorizationStrategy</span> <span class="n">strategy</span> <span class="o">=</span> <span class="n">Hudson</span><span class="o">.</span><span class="na">getInstance</span><span class="o">().</span><span class="na">getAuthorizationStrategy</span><span class="o">();</span>
+<div class="highlight"><pre><span class="n">AuthorizationStrategy</span> <span class="n">strategy</span> <span class="o">=</span> <span class="n">Hudson</span><span class="o">.</span><span class="na">getInstance</span><span class="o">().</span><span class="na">getAuthorizationStrategy</span><span class="o">();</span>
 
 <span class="n">jobs</span> <span class="o">=</span> <span class="o">[]</span>
 <span class="n">user</span> <span class="o">=</span> <span class="n">User</span><span class="o">.</span><span class="na">current</span><span class="o">()</span>
@@ -199,8 +198,7 @@ displayed.</p>
 used in Jenkins.</p>
 <p>Then we create an empty array of jobs, which is the value returned by default. And get the current
 logged in user ID.</p>
-<div class="highlight"><pre><span></span><span class="k">if</span> <span class="o">(</span><span class="n">strategy</span> <span class="o">!=</span> <span class="kc">null</span> <span class="o">&amp;&amp;</span> <span class="n">strategy</span> <span class="k">instanceof</span> <span class="n">com</span><span class="o">.</span><span class="na">michelin</span><span class="o">.</span><span class="na">cio</span><span class="o">.</span><span class="na">hudson</span><span class="o">.</span><span class="na">plugins</span><span class="o">.</span><span class="na">rolestrategy</span><span class="o">.</span><span class="na">RoleBasedAuthorizationStrategy</span><span class="o">)</span> <span class="o">{</span>
-    <span class="n">roleStrategy</span> <span class="o">=</span> <span class="o">(</span><span class="n">RoleBasedAuthorizationStrategy</span><span class="o">)</span> <span class="n">strategy</span><span class="o">;</span>
+<div class="highlight"><pre><span class="k">if</span> <span class="o">(</span><span class="n">strategy</span> <span class="o">!=</span> <span class="kc">null</span> 
     <span class="c1">// not very straightforward to get the groups for a given user</span>
     <span class="n">roles</span> <span class="o">=</span> <span class="n">roleStrategy</span><span class="o">.</span><span class="na">getGrantedRoles</span><span class="o">(</span><span class="s">&quot;globalRoles&quot;</span><span class="o">)</span>
     <span class="k">for</span> <span class="o">(</span><span class="n">entry</span> <span class="n">in</span> <span class="n">roles</span><span class="o">)</span> <span class="o">{</span>

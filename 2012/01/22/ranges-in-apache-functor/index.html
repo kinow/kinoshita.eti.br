@@ -145,11 +145,11 @@ Now, if you have some spare time or curiosity, keep reading :-)</p>
 <p>Yesterday I finished to port <a title="Matlab sigmf membership function" href="http://www.mathworks.com/help/toolbox/fuzzy/sigmf.html">sigmf</a> function to nebular, including some tests that compare nebular&#8217;s output to Matlab sigmf function. However, here comes the issue with ranges, sequences and generators. The idea is to plot a graph similar to the one below.
 <p style="text-align: center;"><a href="/2012/01/22/ranges-in-apache-functor/sigmf.gif"><img class="aligncenter size-medium wp-image-904" title="sigmf" src="/2012/01/22/ranges-in-apache-functor/sigmf_300_160.gif" alt="" width="300" height="160" /></a></p>
 The x axis contains values from 0 to 10, increasing by 0.1. In Matlab, I would execute the following command to produce the x vector.</p>
-<div class="highlight"><pre><span></span><span class="n">x</span> <span class="o">=</span> <span class="mi">0</span><span class="p">:</span><span class="mf">0.1</span><span class="p">:</span><span class="mi">10</span><span class="p">;</span>
+<div class="highlight"><pre><span class="n">x</span> <span class="o">=</span> <span class="mi">0</span><span class="p">:</span><span class="mf">0.1</span><span class="p">:</span><span class="mi">10</span><span class="p">;</span>
 </pre></div>
 
 <p>The : is the range operator in Matlab. It would create a vector with 101 elements. Yup, 101. That&#8217;s because in Matlab the low and high value used creating the range are inclusive. Now let&#8217;s look at how I create similar vector in Apache Commons Functor.</p>
-<div class="highlight"><pre><span></span><span class="n">IntegerRange</span> <span class="n">range</span> <span class="o">=</span> <span class="k">new</span> <span class="n">IntegerRange</span><span class="o">(</span><span class="mi">0</span><span class="o">,</span> <span class="mi">11</span><span class="o">,</span> <span class="mi">1</span> <span class="cm">/* step */</span><span class="o">);</span>
+<div class="highlight"><pre><span class="n">IntegerRange</span> <span class="n">range</span> <span class="o">=</span> <span class="k">new</span> <span class="n">IntegerRange</span><span class="o">(</span><span class="mi">0</span><span class="o">,</span> <span class="mi">11</span><span class="o">,</span> <span class="mi">1</span> <span class="cm">/* step */</span><span class="o">);</span>
 </pre></div>
 
 <p>So now one can realize two things: there is no Double or Float Range, and the high value in the range is exclusive. It means that in order to create an array (I will use vector and array interchangeably here for simplicity) with Functor from 0 to 10, including both values, you have to create a range using 0 and 11.
@@ -157,7 +157,7 @@ The x axis contains values from 0 to 10, increasing by 0.1. In Matlab, I would e
 There are other API&#8217;s to include functional programming features to Java code. In this comparison I will include <a title="Google Guava" href="http://code.google.com/p/guava-libraries/">Google Guava</a>, <a title="fun4J" href="http://www.fun4j.org/">fun4j</a>, <a title="Functional Java" href="http://functionaljava.org/">functionaljava</a>, <a title="lambdaj" href="http://code.google.com/p/lambdaj/">lambdaj</a> and <a title="op4j" href="http://www.op4j.org/">op4j</a> (got the list from the fun4f project page).
 <h3>Google Guava</h3>
 Google Guava provides the Range and Ranges classes. The Ranges contains several static methods for creating Range&#8217;s, that can be used as collections. The Ranges class contains methods for creating Range&#8217;s with open, closed, openClosed and closedOpen intervals.</p>
-<div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+<div class="highlight"><pre><span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
     <span class="n">Range</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">&gt;</span> <span class="n">values</span> <span class="o">=</span> <span class="n">Ranges</span><span class="o">.</span><span class="na">closed</span><span class="o">(</span><span class="mi">0</span><span class="o">,</span> <span class="mi">10</span><span class="o">);</span>
     <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">print</span><span class="o">(</span><span class="s">&quot;[ &quot;</span><span class="o">);</span>
     <span class="k">for</span><span class="o">(</span><span class="n">Integer</span> <span class="n">value</span> <span class="o">:</span> <span class="n">values</span><span class="o">.</span><span class="na">asSet</span><span class="o">(</span><span class="n">DiscreteDomains</span><span class="o">.</span><span class="na">integers</span><span class="o">()))</span> <span class="o">{</span>
@@ -167,7 +167,7 @@ Google Guava provides the Range and Ranges classes. The Ranges contains several 
 <span class="o">}</span>
 </pre></div>
 
-<div class="highlight"><pre><span></span><span class="p">[</span> <span class="mi">0</span> <span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span> <span class="mi">4</span> <span class="mi">5</span> <span class="mi">6</span> <span class="mi">7</span> <span class="mi">8</span> <span class="mi">9</span> <span class="mi">10</span> <span class="p">]</span>
+<div class="highlight"><pre><span class="p">[</span> <span class="mi">0</span> <span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span> <span class="mi">4</span> <span class="mi">5</span> <span class="mi">6</span> <span class="mi">7</span> <span class="mi">8</span> <span class="mi">9</span> <span class="mi">10</span> <span class="p">]</span>
 </pre></div>
 
 <p>The Google Guava API does not provide a way to create ranges of floats. And I will have to find some time to read about the asSet method and on discrete domains. I am much more comfortable putting Apache Commons Functor API in my code for creating ranges. Specially since it makes the code more readable and easy to understand, helping to receive contributions in nebular from newcomers.
@@ -183,42 +183,42 @@ Same as lambdaj, couldn&#8217;t find a way to create ranges with op4j. Not sure
 So let&#8217;s see how we could generate a similar array using other programming languages.
 <h3>Python</h3>
 Python is one of my favorite languages, and has some functional programming features [1]. However it has no built-in mechanism for ranges with floats, only with integers. The functions that I know in Python use low value as inclusive, and high value as exclusive. The built in range functions in 2.7 looks like the following.</p>
-<div class="highlight"><pre><span></span><span class="n">x</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="c1">#inclusive/exclusive</span>
+<div class="highlight"><pre><span class="n">x</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="c">#inclusive/exclusive</span>
 <span class="k">print</span> <span class="n">x</span><span class="p">;</span>
 </pre></div>
 
-<div class="highlight"><pre><span></span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">10</span><span class="p">]</span>
+<div class="highlight"><pre><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">10</span><span class="p">]</span>
 </pre></div>
 
 <p>Or you could write something like (remember Perl&#8217;s motto, TIMTOWTDI [2])</p>
-<div class="highlight"><pre><span></span><span class="n">x</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span> <span class="o">*</span> <span class="mf">0.1</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">101</span><span class="p">)];</span> <span class="c1">#inclusive/exclusive</span>
+<div class="highlight"><pre><span class="n">x</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span> <span class="o">*</span> <span class="mf">0.1</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">101</span><span class="p">)];</span> <span class="c">#inclusive/exclusive</span>
 
 <span class="k">print</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">);</span>
 <span class="k">print</span> <span class="n">x</span><span class="p">;</span>
 </pre></div>
 
-<div class="highlight"><pre><span></span><span class="mi">101</span>
+<div class="highlight"><pre><span class="mi">101</span>
 <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.30000000000000004</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="o">...</span><span class="p">,</span> <span class="mf">10.0</span><span class="p">]</span>
 </pre></div>
 
 <p>There are API&#8217;s in Python too, like numpy, that has arange. However it is complicated specify a range to give similar array as the one produced by Matlab.</p>
-<div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="n">arange</span><span class="p">;</span>
-<span class="n">x</span> <span class="o">=</span> <span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">10.1</span><span class="p">,</span> <span class="o">.</span><span class="mi">1</span><span class="p">);</span> <span class="c1">#inclusive/exclusive</span>
+<div class="highlight"><pre><span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="n">arange</span><span class="p">;</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">10.1</span><span class="p">,</span> <span class="o">.</span><span class="mi">1</span><span class="p">);</span> <span class="c">#inclusive/exclusive</span>
 <span class="k">print</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">);</span>
 <span class="k">print</span> <span class="n">x</span><span class="p">;</span>
 </pre></div>
 
-<div class="highlight"><pre><span></span><span class="mi">101</span>
+<div class="highlight"><pre><span class="mi">101</span>
 <span class="p">[</span> <span class="mf">0.</span> <span class="mf">0.1</span> <span class="mf">0.2</span> <span class="o">...</span> <span class="mf">10.0</span><span class="p">]</span>
 </pre></div>
 
 <h3>Perl</h3>
 
 <p>As we mentioned Perl in last section, let&#8217;s see how it works in Perl. First of all, I won&#8217;t use many modules here. Probably Perl is the language with more modules, or at least with a plethora of modules in <a title="CPAN" href="http://www.cpan.org">CPAN</a> (wait to see <a title="CJAN" href="http://www.cjan.org">CJAN</a> ;). There are books on Perl and Functional programming [3], and Perl has a built in mechanism for ranges. I used Perl 5 built in range operator and List::Gen range function. Both use the low and high value inclusive. It&#8217;s important to point out that Larry Wall and the programmers behind Perl are always keeping an eye on usability, ease of use, and Larry&#8217;s laziness. So that&#8217;s why Perl is a good language for comparisons of this type.</p>
-<div class="highlight"><pre><span></span><span class="ch">#!/usr/bin/perl</span>
-<span class="k">use</span> <span class="nn">strict</span><span class="p">;</span>
-<span class="k">use</span> <span class="nn">warnings</span><span class="p">;</span>
-<span class="k">use</span> <span class="nn">feature</span> <span class="s">&#39;say&#39;</span><span class="p">;</span>
+<div class="highlight"><pre><span class="c1">#!/usr/bin/perl</span>
+<span class="k">use</span> <span class="n">strict</span><span class="p">;</span>
+<span class="k">use</span> <span class="n">warnings</span><span class="p">;</span>
+<span class="k">use</span> <span class="n">feature</span> <span class="s">&#39;say&#39;</span><span class="p">;</span>
 
 <span class="k">print</span> <span class="s">&quot;[ &quot;</span><span class="p">;</span>
 <span class="k">for</span><span class="p">(</span><span class="mi">0</span><span class="o">..</span><span class="mi">10</span><span class="p">)</span> <span class="p">{</span> <span class="c1">#inclusive/inclusive</span>
@@ -227,16 +227,16 @@ Python is one of my favorite languages, and has some functional programming feat
 <span class="k">print</span> <span class="s">&quot; ]&quot;</span>
 </pre></div>
 
-<div class="highlight"><pre><span></span><span class="p">[</span> <span class="mi">0</span> <span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span> <span class="mi">4</span> <span class="mi">5</span> <span class="mi">6</span> <span class="mi">7</span> <span class="mi">8</span> <span class="mi">9</span> <span class="mi">10</span> <span class="p">]</span>
+<div class="highlight"><pre><span class="p">[</span> <span class="mi">0</span> <span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span> <span class="mi">4</span> <span class="mi">5</span> <span class="mi">6</span> <span class="mi">7</span> <span class="mi">8</span> <span class="mi">9</span> <span class="mi">10</span> <span class="p">]</span>
 </pre></div>
 
 <p>Or to use floats, we could use <a title="List::Gen" href="http://search.cpan.org/dist/List-Gen/">List::Gen</a> module.</p>
-<div class="highlight"><pre><span></span><span class="ch">#!/usr/bin/perl</span>
+<div class="highlight"><pre><span class="c1">#!/usr/bin/perl</span>
 
-<span class="k">use</span> <span class="nn">strict</span><span class="p">;</span>
-<span class="k">use</span> <span class="nn">warnings</span><span class="p">;</span>
-<span class="k">use</span> <span class="nn">feature</span> <span class="s">&#39;say&#39;</span><span class="p">;</span>
-<span class="k">use</span> <span class="nn">List::Gen</span><span class="p">;</span>
+<span class="k">use</span> <span class="n">strict</span><span class="p">;</span>
+<span class="k">use</span> <span class="n">warnings</span><span class="p">;</span>
+<span class="k">use</span> <span class="n">feature</span> <span class="s">&#39;say&#39;</span><span class="p">;</span>
+<span class="k">use</span> <span class="nn">List::</span><span class="n">Gen</span><span class="p">;</span>
 
 <span class="k">my</span> <span class="nv">$range</span> <span class="o">=</span> <span class="n">range</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">;</span> <span class="c1">#inclusive/inclusive</span>
 
@@ -245,17 +245,17 @@ Python is one of my favorite languages, and has some functional programming feat
 <span class="k">print</span> <span class="s">&quot; ]&quot;</span>
 </pre></div>
 
-<div class="highlight"><pre><span></span><span class="p">[</span> <span class="mi">0</span> <span class="mf">0.1</span> <span class="mf">0.2</span> <span class="mf">0.3</span> <span class="mf">0.4</span> <span class="o">...</span> <span class="mi">10</span> <span class="p">]</span>
+<div class="highlight"><pre><span class="p">[</span> <span class="mi">0</span> <span class="mf">0.1</span> <span class="mf">0.2</span> <span class="mf">0.3</span> <span class="mf">0.4</span> <span class="o">...</span> <span class="mi">10</span> <span class="p">]</span>
 </pre></div>
 
 <p>Perl also has support to range of characters. Look at the examples from Perldoc.</p>
-<div class="highlight"><pre><span></span><span class="nv">@alphabet</span> <span class="o">=</span> <span class="p">(</span><span class="s">&quot;A&quot;</span> <span class="o">..</span> <span class="s">&quot;Z&quot;</span><span class="p">);</span> <span class="c1"># inclusive/inclusive... how would it work if the last argument was not inclusive?</span>
+<div class="highlight"><pre><span class="nv">@alphabet</span> <span class="o">=</span> <span class="p">(</span><span class="s">&quot;A&quot;</span> <span class="o">..</span> <span class="s">&quot;Z&quot;</span><span class="p">);</span> <span class="c1"># inclusive/inclusive... how would it work if the last argument was not inclusive?</span>
 </pre></div>
 
 <p>That would be cool if Functor had this feature too ;-)
 <h3>Scala</h3>
 Scala is a language that runs on the Java Virtual Machine, it has some functional programming features as anonymous functions, higher order functions, among others. It has a built in mechanism for ranges with integers or floats. It uses the low value as inclusive, and the high value as exclusive, however when using floats you may have trouble if you don&#8217;t pay attention to float precision.</p>
-<div class="highlight"><pre><span></span><span class="n">object</span> <span class="n">Test</span> <span class="o">{</span>
+<div class="highlight"><pre><span class="n">object</span> <span class="n">Test</span> <span class="o">{</span>
     <span class="n">def</span> <span class="nf">main</span><span class="o">(</span><span class="n">args</span><span class="o">:</span> <span class="n">Array</span><span class="o">[</span><span class="n">String</span><span class="o">])</span> <span class="o">{</span>
         <span class="n">var</span> <span class="n">range</span> <span class="o">=</span> <span class="mf">0.0</span> <span class="n">until</span> <span class="mf">10.0</span> <span class="n">by</span> <span class="mf">0.1</span><span class="o">;</span>
         <span class="n">println</span><span class="o">(</span><span class="n">range</span><span class="o">);</span>
@@ -263,13 +263,13 @@ Scala is a language that runs on the Java Virtual Machine, it has some functiona
 <span class="o">}</span>
 </pre></div>
 
-<div class="highlight"><pre><span></span><span class="n">NumericRange</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="o">...</span><span class="p">,</span> <span class="mf">9.99999999999998</span><span class="p">)</span>
+<div class="highlight"><pre><span class="n">NumericRange</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="o">...</span><span class="p">,</span> <span class="mf">9.99999999999998</span><span class="p">)</span>
 </pre></div>
 
 <h3>Matlab</h3>
 
 <p>Why, yes sir, we will compare Matlab too. It has built in operator for ranges, and both values, low and high, are inclusive.</p>
-<div class="highlight"><pre><span></span><span class="n">x</span><span class="p">=</span><span class="mi">0</span><span class="p">:</span><span class="mf">0.1</span><span class="p">:</span><span class="mi">10</span><span class="p">;</span>
+<div class="highlight"><pre><span class="n">x</span><span class="p">=</span><span class="mi">0</span><span class="p">:</span><span class="mf">0.1</span><span class="p">:</span><span class="mi">10</span><span class="p">;</span>
 <span class="n">display</span><span class="p">(</span><span class="n">x</span><span class="p">);</span>
 <span class="n">x</span> <span class="p">=</span>
 <span class="n">Columns</span> <span class="mi">1</span> <span class="n">through</span> <span class="mi">9</span>
@@ -280,7 +280,7 @@ Scala is a language that runs on the Java Virtual Machine, it has some functiona
 <h3>PHP</h3>
 
 <p>Although famous for its web applications, PHP can be an interesting language for scripting or creating handy utilities. I may be wrong, but I believe the scm_bot in Jenkins project, that posts messages to JIRA when someone commits to a SCM with a special string, is written in PHP. It has a built in function for ranges in 5.3, and both values are inclusive.</p>
-<div class="highlight"><pre><span></span><span class="x">$range = range(0, 10, 0.1);</span>
+<div class="highlight"><pre><span class="x">$range = range(0, 10, 0.1);</span>
 <span class="x">echo &quot;[ &quot;;</span>
 <span class="x">foreach($range as $number) {</span>
 <span class="x">    echo $number . &quot; &quot;;</span>
@@ -288,50 +288,50 @@ Scala is a language that runs on the Java Virtual Machine, it has some functiona
 <span class="x">echo &quot;]&quot;;</span>
 </pre></div>
 
-<div class="highlight"><pre><span></span><span class="p">[</span> <span class="mi">0</span> <span class="mf">0.1</span> <span class="mf">0.2</span> <span class="mf">0.3</span> <span class="o">...</span> <span class="mf">9.9</span> <span class="mi">10</span> <span class="p">]</span>
+<div class="highlight"><pre><span class="p">[</span> <span class="mi">0</span> <span class="mf">0.1</span> <span class="mf">0.2</span> <span class="mf">0.3</span> <span class="o">...</span> <span class="mf">9.9</span> <span class="mi">10</span> <span class="p">]</span>
 </pre></div>
 
 <h3>Haskell</h3>
 
 <p>Haskell has gained more attention lately with web frameworks. It has features such as monads, functors and high order function. And also has a built-in range operator. Both, left and right values of the range are inclusive in Haskell&#8217;s range operator.</p>
-<div class="highlight"><pre><span></span><span class="p">[</span><span class="mi">0</span> <span class="o">..</span> <span class="mi">10</span><span class="p">]</span>
+<div class="highlight"><pre><span class="p">[</span><span class="mi">0</span> <span class="o">..</span> <span class="mi">10</span><span class="p">]</span>
 </pre></div>
 
-<div class="highlight"><pre><span></span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">8</span><span class="p">,</span><span class="mi">9</span><span class="p">,</span><span class="mi">10</span><span class="p">]</span>
+<div class="highlight"><pre><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">8</span><span class="p">,</span><span class="mi">9</span><span class="p">,</span><span class="mi">10</span><span class="p">]</span>
 </pre></div>
 
 <p>Unfortunately I don&#8217;t know Haskell so well, and couldn&#8217;t make it work with floats, nor find out whether it is possible or not :-(
 <h3>lua</h3>
 While lua has no built-in support to ranges, if you search for lua and range functions or operators, probably you will find an entry in lua&#8217;s Wiki with a range function, contributed by a user. The function implemented uses the low and high value inclusively and has support for both integer and floats.</p>
-<div class="highlight"><pre><span></span><span class="c1">-- http://lua-users.org/wiki/RangeIterator</span>
-<span class="kr">function</span> <span class="nf">range</span><span class="p">(</span><span class="n">from</span><span class="p">,</span> <span class="n">to</span><span class="p">,</span> <span class="n">step</span><span class="p">)</span>
+<div class="highlight"><pre><span class="c1">-- http://lua-users.org/wiki/RangeIterator</span>
+<span class="k">function</span> <span class="nf">range</span><span class="p">(</span><span class="n">from</span><span class="p">,</span> <span class="n">to</span><span class="p">,</span> <span class="n">step</span><span class="p">)</span>
     <span class="n">step</span> <span class="o">=</span> <span class="n">step</span> <span class="ow">or</span> <span class="mi">1</span>
-    <span class="kr">return</span> <span class="kr">function</span><span class="p">(</span><span class="n">_</span><span class="p">,</span> <span class="n">lastvalue</span><span class="p">)</span>
+    <span class="k">return</span> <span class="k">function</span><span class="p">(</span><span class="n">_</span><span class="p">,</span> <span class="n">lastvalue</span><span class="p">)</span>
     <span class="kd">local</span> <span class="n">nextvalue</span> <span class="o">=</span> <span class="n">lastvalue</span> <span class="o">+</span> <span class="n">step</span>
-    <span class="kr">if</span> <span class="n">step</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">nextvalue</span> <span class="o">&lt;=</span> <span class="n">to</span> <span class="ow">or</span> <span class="n">step</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">nextvalue</span> <span class="o">&gt;=</span> <span class="n">to</span> <span class="ow">or</span>
+    <span class="k">if</span> <span class="n">step</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">nextvalue</span> <span class="o">&lt;=</span> <span class="n">to</span> <span class="ow">or</span> <span class="n">step</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">nextvalue</span> <span class="o">&gt;=</span> <span class="n">to</span> <span class="ow">or</span>
         <span class="n">step</span> <span class="o">==</span> <span class="mi">0</span>
-    <span class="kr">then</span>
-        <span class="kr">return</span> <span class="n">nextvalue</span>
-    <span class="kr">end</span>
-    <span class="kr">end</span><span class="p">,</span> <span class="kc">nil</span><span class="p">,</span> <span class="n">from</span> <span class="o">-</span> <span class="n">step</span>
-<span class="kr">end</span>
+    <span class="k">then</span>
+        <span class="k">return</span> <span class="n">nextvalue</span>
+    <span class="k">end</span>
+    <span class="k">end</span><span class="p">,</span> <span class="kc">nil</span><span class="p">,</span> <span class="n">from</span> <span class="o">-</span> <span class="n">step</span>
+<span class="k">end</span>
 
-<span class="kr">function</span> <span class="nf">f</span><span class="p">()</span> <span class="kr">return</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mf">0.1</span> <span class="kr">end</span>
+<span class="k">function</span> <span class="nf">f</span><span class="p">()</span> <span class="k">return</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mf">0.1</span> <span class="k">end</span>
 
-<span class="nb">io.write</span><span class="p">(</span><span class="s2">&quot;[ &quot;</span><span class="p">);</span>
-<span class="kr">for</span> <span class="n">i</span> <span class="kr">in</span> <span class="n">range</span><span class="p">(</span><span class="n">f</span><span class="p">())</span> <span class="kr">do</span>
-    <span class="nb">io.write</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">)</span>
-<span class="kr">end</span>
-<span class="nb">io.write</span><span class="p">(</span><span class="s2">&quot;]&quot;</span><span class="p">);</span>
+<span class="nb">io.write</span><span class="p">(</span><span class="s2">&quot;</span><span class="s">[ &quot;</span><span class="p">);</span>
+<span class="k">for</span> <span class="n">i</span> <span class="k">in</span> <span class="n">range</span><span class="p">(</span><span class="n">f</span><span class="p">())</span> <span class="k">do</span>
+    <span class="nb">io.write</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="s2">&quot;</span><span class="s"> &quot;</span><span class="p">)</span>
+<span class="k">end</span>
+<span class="nb">io.write</span><span class="p">(</span><span class="s2">&quot;</span><span class="s">]&quot;</span><span class="p">);</span>
 </pre></div>
 
-<div class="highlight"><pre><span></span><span class="p">[</span> <span class="mi">0</span> <span class="mf">0.1</span> <span class="mf">0.2</span> <span class="mf">0.3</span> <span class="o">...</span>  <span class="mf">9.9</span> <span class="mi">10</span> <span class="p">]</span>
+<div class="highlight"><pre><span class="p">[</span> <span class="mi">0</span> <span class="mf">0.1</span> <span class="mf">0.2</span> <span class="mf">0.3</span> <span class="o">...</span>  <span class="mf">9.9</span> <span class="mi">10</span> <span class="p">]</span>
 </pre></div>
 
 <h3>LISP</h3>
 
 <p>Lisp is probably one of the oldest programming languages with functional features. Every time I read something about functional programming and collections it reminds me of Lisp recursion with lists. In Lisp you can use loop to iterate over a range of integers or floats, and both values are included for integers, for float, there is some precision problem that I couldn&#8217;t overcome. For integers the following code would do.</p>
-<div class="highlight"><pre><span></span><span class="nb">&gt;</span><span class="p">(</span><span class="nb">loop</span> <span class="nv">for</span> <span class="nv">i</span> <span class="nv">from</span> <span class="mi">0</span> <span class="nv">to</span> <span class="mi">10</span> <span class="nb">do</span> <span class="p">(</span><span class="nb">print</span> <span class="nv">i</span><span class="p">))</span>
+<div class="highlight"><pre><span class="nb">&gt;</span><span class="p">(</span><span class="nb">loop</span> <span class="nv">for</span> <span class="nv">i</span> <span class="nv">from</span> <span class="mi">0</span> <span class="nv">to</span> <span class="mi">10</span> <span class="nb">do</span> <span class="p">(</span><span class="nb">print</span> <span class="nv">i</span><span class="p">))</span>
 <span class="mi">0</span>
 <span class="mi">1</span>
 <span class="mi">2</span>
@@ -341,7 +341,7 @@ While lua has no built-in support to ranges, if you search for lua and range fun
 </pre></div>
 
 <p>And for floats.</p>
-<div class="highlight"><pre><span></span><span class="nb">&gt;</span><span class="p">(</span><span class="nb">loop</span> <span class="nv">for</span> <span class="nv">i</span> <span class="nv">from</span> <span class="mf">0.0</span> <span class="nv">to</span> <span class="mf">10.0</span> <span class="nv">by</span> <span class="mf">0.1</span> <span class="nb">do</span> <span class="p">(</span><span class="nb">print</span> <span class="nv">i</span><span class="p">))</span>
+<div class="highlight"><pre><span class="nb">&gt;</span><span class="p">(</span><span class="nb">loop</span> <span class="nv">for</span> <span class="nv">i</span> <span class="nv">from</span> <span class="mf">0.0</span> <span class="nv">to</span> <span class="mf">10.0</span> <span class="nv">by</span> <span class="mf">0.1</span> <span class="nb">do</span> <span class="p">(</span><span class="nb">print</span> <span class="nv">i</span><span class="p">))</span>
 <span class="mf">0.0</span>
 <span class="mf">0.1</span>
 <span class="mf">0.2</span>
@@ -354,7 +354,7 @@ While lua has no built-in support to ranges, if you search for lua and range fun
 <h3>Clojure</h3>
 
 <p>Although Clojure is quite similar to LISP, I had some trouble setting up an example for this. My first try was with loop, but as it didn&#8217;t work, I used dorun. It uses the low value as inclusive, and the high value as exclusive. Strange, I thought it would have similar behavior to the loop in LISP. But I only know the very basics of each language, and the explanation is beyond my knowledge. Anyway, it&#8217;s interesting I guess.</p>
-<div class="highlight"><pre><span></span><span class="p">(</span><span class="n">dorun</span> <span class="p">(</span><span class="k">for</span> <span class="p">[</span><span class="n">i</span> <span class="p">(</span><span class="nb">range</span> <span class="mi">0</span> <span class="mi">10</span> <span class="mi">1</span><span class="p">)]</span> <span class="p">(</span><span class="n">println</span> <span class="n">i</span><span class="p">)))</span>
+<div class="highlight"><pre><span class="p">(</span><span class="n">dorun</span> <span class="p">(</span><span class="k">for</span> <span class="p">[</span><span class="n">i</span> <span class="p">(</span><span class="nb">range</span> <span class="mi">0</span> <span class="mi">10</span> <span class="mi">1</span><span class="p">)]</span> <span class="p">(</span><span class="n">println</span> <span class="n">i</span><span class="p">)))</span>
 <span class="mi">0</span>
 <span class="mi">1</span>
 <span class="o">...</span>

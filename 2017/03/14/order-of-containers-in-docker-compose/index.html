@@ -135,7 +135,7 @@ the <em>depends_on</em> statement. This is documented in <a href="https://docs.d
 will initialize Tomcat before Postgres has fully booted. When that happens, you may receive 401, 404, or other
 application errors.</p>
 <p>You can fix it by combining <em>depends_on</em> with a <em>healthcheck</em>. For example:</p>
-<div class="highlight"><pre><span></span><span class="c1"># File: docker-compose.yml</span>
+<div class="highlight"><pre><span class="c"># File: docker-compose.yml</span>
 version: <span class="s1">&#39;2.1&#39;</span>
 services:
   db:
@@ -147,10 +147,10 @@ services:
     ports:
       - <span class="s2">&quot;5432:5432&quot;</span>
     healthcheck:
-      test: <span class="s2">&quot;pg_isready -h localhost -p 5432 -q -U postgres&quot;</span>
+      <span class="nb">test</span>: <span class="s2">&quot;pg_isready -h localhost -p 5432 -q -U postgres&quot;</span>
       interval: 10s
       timeout: 5s
-      retries: <span class="m">5</span>
+      retries: 5
 
   web:
     container_name: twtc

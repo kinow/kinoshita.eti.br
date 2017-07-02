@@ -13,7 +13,7 @@
     <atom:link href="/blog/feed.xml" rel="self" type="application/rss+xml" />
     <link>/</link>
     <description></description>
-    <lastBuildDate>1498966573.3000698</lastBuildDate>
+    <lastBuildDate>1498966604.512992</lastBuildDate>
     <language>en-US</language>
     <generator>PieCrust 2.1.1</generator>
  
@@ -26,8 +26,8 @@
     <description><p>A few days ago I had a bug in a system built with Spring Boot and React. The frontend application
 was using a REST client in React, built in a similar way to what is found in the documentation, and
 also in blogs.</p>
-<div class="highlight"><pre><span></span><span class="kr">import</span> <span class="nx">rest</span> <span class="nx">from</span> <span class="s1">&#39;rest&#39;</span><span class="p">;</span>
-<span class="kr">const</span> <span class="nx">Rest</span> <span class="o">=</span> <span class="p">()</span> <span class="p">=&gt;</span> <span class="nx">rest</span><span class="p">.</span><span class="nx">wrap</span><span class="p">(</span><span class="nx">mime</span><span class="p">);</span>
+<div class="highlight"><pre><span class="kr">import</span> <span class="nx">rest</span> <span class="nx">from</span> <span class="s1">&#39;rest&#39;</span><span class="p">;</span>
+<span class="kr">const</span> <span class="nx">Rest</span> <span class="o">=</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="nx">rest</span><span class="p">.</span><span class="nx">wrap</span><span class="p">(</span><span class="nx">mime</span><span class="p">);</span>
 </pre></div>
 
 <p>However, for one of the Spring Boot application endpoints, the React component was not working. The
@@ -37,9 +37,9 @@ failing and complaining when parsing the response.</p>
 And Spring Boot was just using its <a href="https://spring.io/blog/2013/05/11/content-negotiation-using-spring-mvc">default content negotiation</a>
 and returning what the frontend requested: a text plain version of, what looked like, JSON.</p>
 <p>The quick fix was to request the content as JSON in React.</p>
-<div class="highlight"><pre><span></span><span class="kr">import</span> <span class="nx">rest</span> <span class="nx">from</span> <span class="s1">&#39;rest&#39;</span><span class="p">;</span>
+<div class="highlight"><pre><span class="kr">import</span> <span class="nx">rest</span> <span class="nx">from</span> <span class="s1">&#39;rest&#39;</span><span class="p">;</span>
 <span class="kr">import</span> <span class="nx">mime</span> <span class="nx">from</span> <span class="s1">&#39;rest/interceptor/mime&#39;</span><span class="p">;</span>
-<span class="kr">const</span> <span class="nx">Rest</span> <span class="o">=</span> <span class="p">()</span> <span class="p">=&gt;</span> <span class="nx">rest</span><span class="p">.</span><span class="nx">wrap</span><span class="p">(</span><span class="nx">mime</span> <span class="p">,</span> <span class="p">{</span> <span class="nx">mime</span><span class="o">:</span> <span class="s1">&#39;application/json&#39;</span> <span class="p">}</span> <span class="p">);</span>
+<span class="kr">const</span> <span class="nx">Rest</span> <span class="o">=</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="nx">rest</span><span class="p">.</span><span class="nx">wrap</span><span class="p">(</span><span class="nx">mime</span> <span class="p">,</span> <span class="p">{</span> <span class="nx">mime</span><span class="o">:</span> <span class="s1">&#39;application/json&#39;</span> <span class="p">}</span> <span class="p">);</span>
 </pre></div>
 
 <p>Now we will revisit the backend to return the JSON content, as content, regardless of what
@@ -57,9 +57,9 @@ for static analysis of shell scripts. It reports errors like missing double quot
 syntax, etc.</p>
 <p>I decided to check some projects I contribute to, and the first issue I found was in
 <a href="https://jena.apache.org">Apache Jena</a>:</p>
-<div class="highlight"><pre><span></span>kinow@localhost:~/Development/java/jena/jena/apache-jena/bin$ shellcheck arq
+<div class="highlight"><pre>kinow@localhost:~/Development/java/jena/jena/apache-jena/bin<span class="nv">$ </span>shellcheck arq
 
-In arq line <span class="m">8</span>:
+In arq line 8:
     <span class="k">case</span> <span class="s2">&quot;</span><span class="nv">$OSTYPE</span><span class="s2">&quot;</span> in
           ^-- SC2039: In POSIX sh, OSTYPE is not supported.
 </pre></div>
@@ -96,7 +96,7 @@ found by ShellCheck.</p>
 <p>It is likely that with time you will have different roles, and may have different permissions with each role. You have to configure your local environment so that you can either use the command line Python utility (installed via <code>pip install awscli</code>) or with boto.</p>
 <p>The awscli is a dependency for using boto3. After you install it, you need to run <code>aws configure</code>. It will create the <em>~/.aws/config</em> and <em>~/.aws/credentials</em> files. You can tweak these files to support multiple roles.</p>
 <p>I followed the tutorials, but got all sorts of different issues. Then after debugging some locally installed dependencies, in special awscli files, I found that the following settings work for my environment.</p>
-<div class="highlight"><pre><span></span><span class="c1"># File: config</span>
+<div class="highlight"><pre><span class="c"># File: config</span>
 <span class="o">[</span>profile default<span class="o">]</span>
 <span class="nv">region</span> <span class="o">=</span> ap-southeast-2
 
@@ -113,35 +113,35 @@ found by ShellCheck.</p>
 </pre></div>
 
 <p>and</p>
-<div class="highlight"><pre><span></span><span class="c1"># File: credentials</span>
+<div class="highlight"><pre><span class="c"># File: credentials</span>
 <span class="o">[</span>default<span class="o">]</span>
 <span class="nv">aws_access_key_id</span> <span class="o">=</span> YOU_KEY_ID
 <span class="nv">aws_secret_access_key</span> <span class="o">=</span> YOUR_SECRET
 </pre></div>
 
 <p>And once it is done you can, for example, confirm it is working with some S3 commands in Python.</p>
-<div class="highlight"><pre><span></span><span class="ch">#!/usr/bin/env python3</span>
+<div class="highlight"><pre><span class="c">#!/usr/bin/env python3</span>
 
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">boto3</span>
 
-<span class="n">session</span> <span class="o">=</span> <span class="n">boto3</span><span class="o">.</span><span class="n">Session</span><span class="p">(</span><span class="n">profile_name</span><span class="o">=</span><span class="s1">&#39;profile2&#39;</span><span class="p">)</span>
-<span class="n">s3</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">resource</span><span class="p">(</span><span class="s1">&#39;s3&#39;</span><span class="p">)</span>
+<span class="n">session</span> <span class="o">=</span> <span class="n">boto3</span><span class="o">.</span><span class="n">Session</span><span class="p">(</span><span class="n">profile_name</span><span class="o">=</span><span class="s">&#39;profile2&#39;</span><span class="p">)</span>
+<span class="n">s3</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">resource</span><span class="p">(</span><span class="s">&#39;s3&#39;</span><span class="p">)</span>
 
 <span class="n">found</span> <span class="o">=</span> <span class="bp">False</span>
 
-<span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;mysuperduperbucket&#39;</span>
+<span class="n">name</span> <span class="o">=</span> <span class="s">&#39;mysuperduperbucket&#39;</span>
 
 <span class="k">for</span> <span class="n">bucket</span> <span class="ow">in</span> <span class="n">s3</span><span class="o">.</span><span class="n">buckets</span><span class="o">.</span><span class="n">all</span><span class="p">():</span>
     <span class="k">if</span> <span class="n">bucket</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="n">name</span><span class="p">:</span>
         <span class="n">found</span> <span class="o">=</span> <span class="bp">True</span>
 
 <span class="k">if</span> <span class="ow">not</span> <span class="n">found</span><span class="p">:</span>
-    <span class="k">print</span><span class="p">(</span><span class="s2">&quot;Creating bucket...&quot;</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">&quot;Creating bucket...&quot;</span><span class="p">)</span>
     <span class="n">s3</span><span class="o">.</span><span class="n">create_bucket</span><span class="p">(</span><span class="n">Bucket</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
 
-<span class="n">file_location</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">realpath</span><span class="p">(</span><span class="vm">__file__</span><span class="p">))</span> <span class="o">+</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">sep</span> <span class="o">+</span> <span class="s1">&#39;samplefile.txt&#39;</span>
-<span class="n">s3</span><span class="o">.</span><span class="n">meta</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">upload_file</span><span class="p">(</span><span class="n">Filename</span><span class="o">=</span><span class="n">file_location</span><span class="p">,</span> <span class="n">Bucket</span><span class="o">=</span><span class="n">name</span><span class="p">,</span> <span class="n">Key</span><span class="o">=</span><span class="s1">&#39;book.txt&#39;</span><span class="p">)</span>
+<span class="n">file_location</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">realpath</span><span class="p">(</span><span class="n">__file__</span><span class="p">))</span> <span class="o">+</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">sep</span> <span class="o">+</span> <span class="s">&#39;samplefile.txt&#39;</span>
+<span class="n">s3</span><span class="o">.</span><span class="n">meta</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">upload_file</span><span class="p">(</span><span class="n">Filename</span><span class="o">=</span><span class="n">file_location</span><span class="p">,</span> <span class="n">Bucket</span><span class="o">=</span><span class="n">name</span><span class="p">,</span> <span class="n">Key</span><span class="o">=</span><span class="s">&#39;book.txt&#39;</span><span class="p">)</span>
 </pre></div>
 
 <p>The AWS files in this example are using MFA too, the multi-factor authentication. So the first time you run this code you may be asked to generate a token, which will be cached for a short time.</p>
@@ -170,8 +170,8 @@ found by ShellCheck.</p>
     <dc:creator></dc:creator>
     <description><p><a href="https://issues.jenkins-ci.org/browse/JENKINS-17887">JENKINS-17887</a> reports performance problems in the <a href="https://wiki.jenkins-ci.org/display/JENKINS/TAP+Plugin">Jenkins TAP Plug-in</a>. It also lists a series of suggestions on how to improve the Jenkins TAP Plug-in performance. On this initial post, we will get a general idea of how the plug-in performs for large projects.</p>
 <p><a href="http://bioperl.org/">BioPerl</a> has over 21K tests. That should be enough for giving an initial idea of CPU, memory and disk usage for the plug-in.</p>
-<div class="highlight"><pre><span></span>git clone https://github.com/bioperl/bioperl-live.git
-<span class="nb">cd</span> bioperl-live
+<div class="highlight"><pre>git clone https://github.com/bioperl/bioperl-live.git
+<span class="nb">cd </span>bioperl-live
 sudo cpanm  -vv --installdeps --notest .
 sudo cpanm Set::Scalar Graph::Directed XML::LibXML XML::SAX <span class="se">\</span>
     SVG XML::Parser::PerlSAX Convert::Binary::C XML::SAX::Writer <span class="se">\</span>
@@ -180,7 +180,7 @@ sudo cpanm Set::Scalar Graph::Directed XML::LibXML XML::SAX <span class="se">\</
 prove -r t/ -a tests.tar.gz
 
 All tests successful.
-<span class="nv">Files</span><span class="o">=</span><span class="m">325</span>, <span class="nv">Tests</span><span class="o">=</span><span class="m">21095</span>, <span class="m">94</span> wallclock secs <span class="o">(</span> <span class="m">2</span>.47 usr  <span class="m">0</span>.55 sys + <span class="m">88</span>.29 cusr  <span class="m">3</span>.85 <span class="nv">csys</span> <span class="o">=</span> <span class="m">95</span>.16 CPU<span class="o">)</span>
+<span class="nv">Files</span><span class="o">=</span>325, <span class="nv">Tests</span><span class="o">=</span>21095, <span class="m">94</span> wallclock secs <span class="o">(</span> 2.47 usr  0.55 sys + 88.29 cusr  3.85 <span class="nv">csys</span> <span class="o">=</span> 95.16 CPU<span class="o">)</span>
 Result: PASS
 </pre></div>
 
@@ -191,8 +191,8 @@ Result: PASS
 <p><img class="ui centered image" src="/2016/09/03/performance-problems-in-jenkins-tap-plugin-part-1/JENKINS-17887-yourkit1.png" alt="JENKINS-17887 YourKit profiler" /></p>
 <p>The image shows one of the screens in YourKit profiler, where it is possible to see that <strong>org.tap4j.plugin.model.TapTestResultResult</strong> has over 6 million objects.</p>
 <p>One build.xml for the BioPerl project gets over 80K entries for the TestResult object.</p>
-<div class="highlight"><pre><span></span>grep <span class="s2">&quot;org.tap4j.model.TestResult&quot;</span> builds/1/build.xml -o <span class="p">|</span> wc -l
-<span class="m">84522</span>
+<div class="highlight"><pre>grep <span class="s2">&quot;org.tap4j.model.TestResult&quot;</span> builds/1/build.xml -o <span class="p">|</span> wc -l
+84522
 </pre></div>
 
 <p>This happens because each TAP file may contain multiple test results (lines with test results). Each of these test results gets turned into a Java object and loaded by the plug-in. So when loading the test result pages, Jenkins needs to wait until all these objects have been parsed, deserialized and read into the memory.</p>

@@ -146,7 +146,7 @@ to use Active Choices Plug-in with the <a href="https://wiki.jenkins-ci.org/disp
 is a tester. Then s/he would see certain parameters. But if s/he was a manager, other parameters would be
 displayed.</p>
 <h2>To the code</h2>
-<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">hudson.model.User</span>
+<div class="highlight"><pre><span class="kn">import</span> <span class="nn">hudson.model.User</span>
 <span class="kn">import</span> <span class="nn">hudson.model.Hudson</span>
 <span class="kn">import</span> <span class="nn">hudson.security.AuthorizationStrategy</span>
 <span class="kn">import</span> <span class="nn">hudson.security.Permission</span>
@@ -159,8 +159,7 @@ displayed.</p>
 <span class="n">user</span> <span class="o">=</span> <span class="n">User</span><span class="o">.</span><span class="na">current</span><span class="o">()</span>
 <span class="n">userId</span> <span class="o">=</span> <span class="n">user</span><span class="o">.</span><span class="na">getId</span><span class="o">()</span>
 
-<span class="k">if</span> <span class="o">(</span><span class="n">strategy</span> <span class="o">!=</span> <span class="kc">null</span> <span class="o">&amp;&amp;</span> <span class="n">strategy</span> <span class="k">instanceof</span> <span class="n">com</span><span class="o">.</span><span class="na">michelin</span><span class="o">.</span><span class="na">cio</span><span class="o">.</span><span class="na">hudson</span><span class="o">.</span><span class="na">plugins</span><span class="o">.</span><span class="na">rolestrategy</span><span class="o">.</span><span class="na">RoleBasedAuthorizationStrategy</span><span class="o">)</span> <span class="o">{</span>
-    <span class="n">roleStrategy</span> <span class="o">=</span> <span class="o">(</span><span class="n">RoleBasedAuthorizationStrategy</span><span class="o">)</span> <span class="n">strategy</span><span class="o">;</span>
+<span class="k">if</span> <span class="o">(</span><span class="n">strategy</span> <span class="o">!=</span> <span class="kc">null</span> 
     <span class="c1">// not very straightforward to get the groups for a given user</span>
     <span class="n">roles</span> <span class="o">=</span> <span class="n">roleStrategy</span><span class="o">.</span><span class="na">getGrantedRoles</span><span class="o">(</span><span class="s">&quot;globalRoles&quot;</span><span class="o">)</span>
     <span class="k">for</span> <span class="o">(</span><span class="n">entry</span> <span class="n">in</span> <span class="n">roles</span><span class="o">)</span> <span class="o">{</span>
@@ -186,7 +185,7 @@ displayed.</p>
 
 <p>And now let&#8217;s dissect the code.</p>
 
-<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">hudson.model.User</span>
+<div class="highlight"><pre><span class="kn">import</span> <span class="nn">hudson.model.User</span>
 <span class="kn">import</span> <span class="nn">hudson.model.Hudson</span>
 <span class="kn">import</span> <span class="nn">hudson.security.AuthorizationStrategy</span>
 <span class="kn">import</span> <span class="nn">hudson.security.Permission</span>
@@ -196,7 +195,7 @@ displayed.</p>
 
 <p>You start by importing the classes that you need.</p>
 
-<div class="highlight"><pre><span></span><span class="n">AuthorizationStrategy</span> <span class="n">strategy</span> <span class="o">=</span> <span class="n">Hudson</span><span class="o">.</span><span class="na">getInstance</span><span class="o">().</span><span class="na">getAuthorizationStrategy</span><span class="o">();</span>
+<div class="highlight"><pre><span class="n">AuthorizationStrategy</span> <span class="n">strategy</span> <span class="o">=</span> <span class="n">Hudson</span><span class="o">.</span><span class="na">getInstance</span><span class="o">().</span><span class="na">getAuthorizationStrategy</span><span class="o">();</span>
 
 <span class="n">jobs</span> <span class="o">=</span> <span class="o">[]</span>
 <span class="n">user</span> <span class="o">=</span> <span class="n">User</span><span class="o">.</span><span class="na">current</span><span class="o">()</span>
@@ -209,8 +208,7 @@ used in Jenkins.</p>
 <p>Then we create an empty array of jobs, which is the value returned by default. And get the current
 logged in user ID.</p>
 
-<div class="highlight"><pre><span></span><span class="k">if</span> <span class="o">(</span><span class="n">strategy</span> <span class="o">!=</span> <span class="kc">null</span> <span class="o">&amp;&amp;</span> <span class="n">strategy</span> <span class="k">instanceof</span> <span class="n">com</span><span class="o">.</span><span class="na">michelin</span><span class="o">.</span><span class="na">cio</span><span class="o">.</span><span class="na">hudson</span><span class="o">.</span><span class="na">plugins</span><span class="o">.</span><span class="na">rolestrategy</span><span class="o">.</span><span class="na">RoleBasedAuthorizationStrategy</span><span class="o">)</span> <span class="o">{</span>
-    <span class="n">roleStrategy</span> <span class="o">=</span> <span class="o">(</span><span class="n">RoleBasedAuthorizationStrategy</span><span class="o">)</span> <span class="n">strategy</span><span class="o">;</span>
+<div class="highlight"><pre><span class="k">if</span> <span class="o">(</span><span class="n">strategy</span> <span class="o">!=</span> <span class="kc">null</span> 
     <span class="c1">// not very straightforward to get the groups for a given user</span>
     <span class="n">roles</span> <span class="o">=</span> <span class="n">roleStrategy</span><span class="o">.</span><span class="na">getGrantedRoles</span><span class="o">(</span><span class="s">&quot;globalRoles&quot;</span><span class="o">)</span>
     <span class="k">for</span> <span class="o">(</span><span class="n">entry</span> <span class="n">in</span> <span class="n">roles</span><span class="o">)</span> <span class="o">{</span>
@@ -393,15 +391,15 @@ It not only sets up a master, but also provides an easy way to enable the cherry
 API (necessary for the Jenkins plug-in).</p>
 <p>This post describes the steps that I took to have a running Salt Master with the API
 enabled. First you need to create some directories and files to use with the image.</p>
-<div class="highlight"><pre><span></span>shell$ mkdir ~/master <span class="o">&amp;&amp;</span> <span class="nb">cd</span> ~/master
-shell$ mkdir -p config/master.d/
-shell$ vim config/master.d/api.conf
+<div class="highlight"><pre>shell<span class="nv">$ </span>mkdir ~/master <span class="o">&amp;&amp;</span> <span class="nb">cd</span> ~/master
+shell<span class="nv">$ </span>mkdir -p config/master.d/
+shell<span class="nv">$ </span>vim config/master.d/api.conf
 </pre></div>
 
 <p>The api.conf contains the SaltStack API configuration. You can change port, user
 and other settings if necessary. Just remember to add a credential in Jenkins
 for the plug-in.</p>
-<div class="highlight"><pre><span></span><span class="c1"># File: api.conf</span>
+<div class="highlight"><pre><span class="c"># File: api.conf</span>
 external_auth:
   pam:
     saltapiuser:
@@ -410,8 +408,8 @@ external_auth:
       - <span class="s1">&#39;@wheel&#39;</span>
       - <span class="s1">&#39;@jobs&#39;</span>
 rest_cherrypy:
-  port: <span class="m">8000</span>
-  host: <span class="m">0</span>.0.0.0
+  port: 8000
+  host: 0.0.0.0
   disable_ssl: True
   static: /opt/molten
   static_path: /assets
@@ -422,23 +420,23 @@ rest_cherrypy:
 <p>The image also conveniently provides a script that is executed before the
 entry point (if provided). So we can also create a user for the API automatically
 when the image is created.</p>
-<div class="highlight"><pre><span></span>shell$ vim config/before-exec.sh
+<div class="highlight"><pre>shell<span class="nv">$ </span>vim config/before-exec.sh
 </pre></div>
 
-<div class="highlight"><pre><span></span><span class="ch">#!/bin/bash</span>
-<span class="c1"># File: before-exec.sh</span>
+<div class="highlight"><pre><span class="c">#!/bin/bash</span>
+<span class="c"># File: before-exec.sh</span>
 useradd saltapiuser
 <span class="nb">echo</span> -e <span class="s2">&quot;nosecret\nnosecret\n&quot;</span> <span class="p">|</span> passwd saltapiuser
-<span class="nb">exit</span> <span class="m">0</span>
+<span class="nb">exit </span>0
 </pre></div>
 
 <p>Also make the script executable.</p>
-<div class="highlight"><pre><span></span>chmod +x config/before-exec.sh
+<div class="highlight"><pre>chmod +x config/before-exec.sh
 </pre></div>
 
 <p>And finally start the container.</p>
-<div class="highlight"><pre><span></span>docker run --name salt-master -v <span class="nv">$PWD</span>/config:/config <span class="se">\</span>
-    -p <span class="m">4505</span>:4505 -p <span class="m">4506</span>:4506 -p <span class="m">443</span>:443 -p <span class="m">8000</span>:8000 <span class="se">\</span>
+<div class="highlight"><pre>docker run --name salt-master -v <span class="nv">$PWD</span>/config:/config <span class="se">\</span>
+    -p 4505:4505 -p 4506:4506 -p 443:443 -p 8000:8000 <span class="se">\</span>
     bbinet/salt-master
 </pre></div>
 
@@ -581,9 +579,9 @@ decided to write this short post to show a few different ways it can be achieved
 or Java. But I think I would choose this option only because either I needed some feature that is not
 available in the other options, or in order to call other tasks or debug some problem.</p>
 <p>Example:</p>
-<div class="highlight"><pre><span></span>$ docker run -d -p <span class="m">8888</span>:8080 jeanblanchard/tomcat:8
-$ git clone https://github.com/spring-projects/spring-petclinic.git <span class="o">&amp;&amp;</span> <span class="nb">cd</span> spring-petclinic <span class="o">&amp;&amp;</span> mvn package
-$ curl --upload-file target/petclinic.war <span class="s2">&quot;http://admin:admin@localhost:8888/manager/text/deploy?path=/spring-petclinic&amp;update=true&quot;</span>
+<div class="highlight"><pre><span class="nv">$ </span>docker run -d -p 8888:8080 jeanblanchard/tomcat:8
+<span class="nv">$ </span>git clone https://github.com/spring-projects/spring-petclinic.git <span class="o">&amp;&amp;</span> <span class="nb">cd </span>spring-petclinic <span class="o">&amp;&amp;</span> mvn package
+<span class="nv">$ </span>curl --upload-file target/petclinic.war <span class="s2">&quot;http://admin:admin@localhost:8888/manager/text/deploy?path=/spring-petclinic&amp;update=true&quot;</span>
 OK - Deployed application at context path /spring-petclinic
 </pre></div>
 

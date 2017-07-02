@@ -130,7 +130,7 @@
 <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
 
 	   <p>Some time ago I stumbled across <a href="https://github.com/mynameisvinn/EmailParser">EmailParser</a>, a Python utility to remove e-mail signatures. Here&#8217;s a sample input e-mail from the project documentation.</p>
-<div class="highlight"><pre><span></span>Wendy – thanks for the intro! Moving you to bcc.
+<div class="highlight"><pre>Wendy – thanks for the intro! Moving you to bcc.
 
 Hi Vincent – nice to meet you over email. Apologize for the late reply, I was on PTO for a couple weeks and this is my first week back in office. As Wendy mentioned, I am leading an AR/VR taskforce at Foobar Retail Solutions. The goal of the taskforce is to better understand how AR/VR can apply to retail/commerce and if/what is the role of a shopping center in AR/VR applications for retail.
 
@@ -145,7 +145,7 @@ M: 111.111.1111| joe@foobar.com
 </pre></div>
 
 <p>And here&#8217;s what it looks like afterwards.</p>
-<div class="highlight"><pre><span></span>Wendy – thanks for the intro! Moving you to bcc.
+<div class="highlight"><pre>Wendy – thanks for the intro! Moving you to bcc.
 
 Hi Vincent – nice to meet you over email. Apologize for the late reply, I was on PTO for a couple weeks and this is my first week back in office. As Wendy mentioned, I am leading an AR/VR taskforce at Foobar Retail Solutions. The goal of the taskforce is to better understand how AR/VR can apply to retail/commerce and if/what is the role of a shopping center in AR/VR applications for retail.
 
@@ -153,27 +153,27 @@ Wendy mentioned that you would be a great person to speak to since you are close
 </pre></div>
 
 <p>As you can see, it removed all the lines after the main part of the message (i.e. after the three paragraphs). Here&#8217;s what the Python code looks like.</p>
-<div class="highlight"><pre><span></span><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">Parser</span> <span class="kn">import</span> <span class="n">read_email</span><span class="p">,</span> <span class="n">strip</span><span class="p">,</span> <span class="n">prob_block</span>
+<div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">Parser</span> <span class="kn">import</span> <span class="n">read_email</span><span class="p">,</span> <span class="n">strip</span><span class="p">,</span> <span class="n">prob_block</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">spacy.en</span> <span class="kn">import</span> <span class="n">English</span>
 
-<span class="o">&gt;&gt;&gt;</span> <span class="n">pos</span> <span class="o">=</span> <span class="n">English</span><span class="p">()</span>  <span class="c1"># part-of-speech tagger</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">msg_raw</span> <span class="o">=</span> <span class="n">read_email</span><span class="p">(</span><span class="s1">&#39;emails/test1.txt&#39;</span><span class="p">)</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">msg_stripped</span> <span class="o">=</span> <span class="n">strip</span><span class="p">(</span><span class="n">msg_raw</span><span class="p">)</span>  <span class="c1"># preprocessing text before POS tagging</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">pos</span> <span class="o">=</span> <span class="n">English</span><span class="p">()</span>  <span class="c"># part-of-speech tagger</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">msg_raw</span> <span class="o">=</span> <span class="n">read_email</span><span class="p">(</span><span class="s">&#39;emails/test1.txt&#39;</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">msg_stripped</span> <span class="o">=</span> <span class="n">strip</span><span class="p">(</span><span class="n">msg_raw</span><span class="p">)</span>  <span class="c"># preprocessing text before POS tagging</span>
 
-<span class="c1"># iterate through lines, write to file if not signature block</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">generate_text</span><span class="p">(</span><span class="n">msg_stripped</span><span class="p">,</span> <span class="o">.</span><span class="mi">9</span><span class="p">,</span> <span class="n">pos_tagger</span><span class="p">,</span> <span class="s1">&#39;emails/test1_clean.txt&#39;</span><span class="p">)</span>
+<span class="c"># iterate through lines, write to file if not signature block</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">generate_text</span><span class="p">(</span><span class="n">msg_stripped</span><span class="p">,</span> <span class="o">.</span><span class="mi">9</span><span class="p">,</span> <span class="n">pos_tagger</span><span class="p">,</span> <span class="s">&#39;emails/test1_clean.txt&#39;</span><span class="p">)</span>
 </pre></div>
 
 <p>What got me interested about this utility was the use of NLP. I couldn&#8217;t imagine how someone could use NLP for that. And I liked the simplicity of the approach, which is not perfect, but can be useful someday.</p>
 <p>After the imports in the code, it creates a <a href="https://en.wikipedia.org/wiki/Part_of_speech">Part of Speech</a> tagger using <a href="https://spacy.io/">spaCy</a> NLP library, reads the e-mail from a file, and sripts and creates an array with each paragraph of the message.</p>
 <p>The magic happens in the <code>generate_text</code> function, which receives the <strong>array of paragraphs</strong>, a <strong>threshold</strong>, the <strong>POS tagger</strong>, and the <strong>output destination</strong>. Here&#8217;s what the function does.</p>
-<div class="highlight"><pre><span></span>for each message
+<div class="highlight"><pre>for each message
     if probability ( signature block | message ) &lt; threshold
         write to output file
 </pre></div>
 
 <p>And the formula for calculating the probability is quite simple too.</p>
-<div class="highlight"><pre><span></span>1. For a given paragraph (message block), find all the sentences in it.
+<div class="highlight"><pre>1. For a given paragraph (message block), find all the sentences in it.
 2. Then for each word (token) in the sentence, count the number of times a non-verb appears.
 3. Return the proportion of non-verbs per sentence, i.e. number of non-verbs / number of sentences.
 </pre></div>

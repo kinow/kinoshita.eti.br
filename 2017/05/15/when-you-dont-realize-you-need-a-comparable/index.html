@@ -136,14 +136,12 @@ and a developer suggested me to simplify my code.</p>
 <p>The suggestion was to make a class a <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Comparable.html">Comparable type</a>
 to both simplify the code, and also have a better design. I immediately agreed, and looking back in hindsight,
 it was the most logical choice. Yet, I simply did not think about that.</p>
-<div class="highlight"><pre><span></span><span class="c1">// What the code was</span>
+<div class="highlight"><pre><span class="c1">// What the code was</span>
 <span class="k">case</span> <span class="n">VSPACE_SORTKEY</span> <span class="o">:</span>
     <span class="kt">int</span> <span class="n">cmp</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
     <span class="n">String</span> <span class="n">c1</span> <span class="o">=</span> <span class="n">nv1</span><span class="o">.</span><span class="na">getCollation</span><span class="o">();</span>
     <span class="n">String</span> <span class="n">c2</span> <span class="o">=</span> <span class="n">nv2</span><span class="o">.</span><span class="na">getCollation</span><span class="o">();</span>
-    <span class="k">if</span> <span class="o">(</span><span class="n">c1</span> <span class="o">!=</span> <span class="kc">null</span> <span class="o">&amp;&amp;</span> <span class="n">c2</span> <span class="o">!=</span> <span class="kc">null</span> <span class="o">&amp;&amp;</span> <span class="n">c1</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="n">c2</span><span class="o">))</span> <span class="o">{</span>
-        <span class="c1">// locales are parsed. Here we could think about caching if necessary</span>
-        <span class="n">Locale</span> <span class="n">desiredLocale</span> <span class="o">=</span> <span class="n">Locale</span><span class="o">.</span><span class="na">forLanguageTag</span><span class="o">(</span><span class="n">c1</span><span class="o">);</span>
+    <span class="k">if</span> <span class="o">(</span><span class="n">c1</span> <span class="o">!=</span> <span class="kc">null</span> 
         <span class="n">Collator</span> <span class="n">collator</span> <span class="o">=</span> <span class="n">Collator</span><span class="o">.</span><span class="na">getInstance</span><span class="o">(</span><span class="n">desiredLocale</span><span class="o">);</span>
         <span class="n">cmp</span> <span class="o">=</span> <span class="n">collator</span><span class="o">.</span><span class="na">compare</span><span class="o">(</span><span class="n">nv1</span><span class="o">.</span><span class="na">getString</span><span class="o">(),</span> <span class="n">nv2</span><span class="o">.</span><span class="na">getString</span><span class="o">());</span>
     <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
@@ -153,7 +151,7 @@ it was the most logical choice. Yet, I simply did not think about that.</p>
 <span class="o">}</span>
 </pre></div>
 
-<div class="highlight"><pre><span></span><span class="c1">// What the code is now</span>
+<div class="highlight"><pre><span class="c1">// What the code is now</span>
 <span class="k">case</span> <span class="n">VSPACE_SORTKEY</span> <span class="o">:</span>
     <span class="k">return</span> <span class="o">((</span><span class="n">NodeValueSortKey</span><span class="o">)</span> <span class="n">nv1</span><span class="o">).</span><span class="na">compareTo</span><span class="o">((</span><span class="n">NodeValueSortKey</span><span class="o">)</span> <span class="n">nv2</span><span class="o">);</span>
 <span class="o">}</span>
