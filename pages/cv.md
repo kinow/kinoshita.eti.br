@@ -47,6 +47,10 @@ Linux, OSX, Windows
 
 <table class="ui celled table">
   <tr>
+    <td>Invited to become an Apache OpenNLP PMC</td>
+    <td>July 2017</td>
+  </tr>
+  <tr>
     <td>Invited to become an Apache OpenNLP Committer</td>
     <td>April 2017</td>
   </tr>
