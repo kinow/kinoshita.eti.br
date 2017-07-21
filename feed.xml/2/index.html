@@ -13,10 +13,88 @@
     <atom:link href="/blog/feed.xml" rel="self" type="application/rss+xml" />
     <link>/</link>
     <description></description>
-    <lastBuildDate>1500382845.0334601</lastBuildDate>
+    <lastBuildDate>1500631516.2356448</lastBuildDate>
     <language>en-US</language>
     <generator>PieCrust 2.1.1</generator>
  
+
+<item>
+    <title>Troubleshooting a Jenkins Plug-in compatibility issue</title>
+    <pubDate>Apr 17, 2017</pubDate>
+    <link>/2017/04/17/troubleshooting-a-jenkins-plugin-compatibility-issue</link>
+    <dc:creator></dc:creator>
+    <description><p>This post is probably different from others. I will give a TL;DR, but will then
+give you a copy of
+<a href="https://issues.jenkins-ci.org/browse/JENKINS-42655?focusedCommentId=291470&amp;page=com.atlassian.jira.plugin.system.issuetabpanels%3Acomment-tabpanel#comment-291470">a comment of a Jenkins JIRA issue</a>.
+Hope you have fun reading it,
+specially if you maintain Jenkins servers or plug-ins.</p>
+<p>TL;DR: there was an issue in Jenkins Job DSL Plug-in, that caused jobs created to
+have an invalid script. The fix had not been released, but was already in the
+master branch in GitHub.</p>
+<p style="text-align: center; color: #DDDDDD;">&diams;</p>
+
+<p><em>Well, that was fun bug reproduced, I believe I know why that&#8217;s happening. Not so complicated to fix&#8230; but no fast way to fix it. Here&#8217;s the issue analysis (grab a coffee to read it).</em></p>
+<ul>
+<li><em>Downloaded jenkins.war (2.32.3.war)</em></li>
+<li><em>mkdir /tmp/123</em></li>
+<li><em>JENKINS_HOME=/tmp/123 java -jar jenkins.war</em></li>
+<li><em>Entered secret into form and submitted</em></li>
+<li><em>Installed suggested plugins (boy that takes a while)</em></li>
+<li><em>Created temp user</em></li>
+<li><em>Installed (without restart) active-choices-plugin 1.5.3</em></li>
+<li><em>Installed (without restart) job-dsl-plugin</em></li>
+<li><em>Manually stopped Jenkins, and started it again with same command #3</em></li>
+<li><em>Log in with user, all looking good</em></li>
+<li><em>Created Freestyle job JENKINS-42655 (see attached config.xml)</em></li>
+<li><em>Executed job, and found new job JENKINS-42655-1</em></li>
+<li><em>Never opened the job configuration, clicked on the &#8220;Generated Items link to JENKINS-42655-1&#8221; to open in a new tab</em></li>
+<li><em>Clicked on Build with Parameters</em></li>
+<li><em>Looked at logs, and noticed the security-script-plugin exceptions</em></li>
+<li><em>Went to &#8220;Manage Jenkins&#8221; / &#8220;In-process Script Approval&#8221; and approved scripts</em></li>
+<li><em>Went back to the JENKINS-42655-1 build with parameters screen, and everything worked as expected</em></li>
+</ul>
+<p>*<em>Hummm. Issue more or less reproduced. Let&#8217;s investigate more.</em></p>
+<ul>
+<li><em>Restarted Jenkins again</em></li>
+<li><em>Changed the JENKINS-42655 seed job configuration to use a different script</em></li>
+<li><em>Copied the config.xml file to another location</em></li>
+<li><em>Went to build with parameters, and now it was broken again</em></li>
+<li><em>Saved the job manually</em></li>
+<li><em>Copied the config.xml file to yet another location</em></li>
+<li><em>Went to build with parameters, and now it worked as reported in this issue</em></li>
+</ul>
+<p><em>Now comes the interesting part. Looking at the diff. Attaching a screen shot so that others can have fun looking at it too. I installed Kompare as it has some cool features such as disabling diff for white spaces, blank lines, etc. The whole file changes as you save it. But if you ignore the number of white spaces&#8230; Then you can see that the Job DSL Plug-in is creating a &lt;script&gt; tag, as we used to do before 1.5 I think.</em></p>
+<div class='row'>
+<div class="ui fluid container">
+<figure>
+<a  href="/2017/04/17/troubleshooting-a-jenkins-plugin-compatibility-issue/JENKINS-42655-diff.png" rel="prettyPhoto" class="thumbnail" title="Screen shot">
+<img style="height: 400px;" class="ui image" src="/2017/04/17/troubleshooting-a-jenkins-plugin-compatibility-issue/JENKINS-42655-diff.png" alt="Screen shot" />
+</a>
+<figcaption>Screen shot</figcaption>
+</figure>
+</div>
+</div>
+
+<p><em>Now we use the script-security-plugin. So we need to wrap that around the script-security-plugin&#8217;s tags. Will report an issue for job-dsl-plugin, and will probably submit a pull request in the next days too. There&#8217;s not much left we can change in the plug-in code for that Piotr Tempes, so I&#8217;m afraid you will have to:</em></p>
+<ul>
+<li><em>keep saving the job</em></li>
+<li><em>perhaps work on the fix for Job DSL if you feel like doing it (as you could probably be faster than me in submitting the PR)</em></li>
+<li><em>use an older version of the active-choices-plugin that doesn&#8217;t use security-script-plugin, though you could be bitten by other old bugs</em></li>
+<li><em>write some script to replace the &lt;script&gt; tag and wrap it by the secureScript (doing what the pull request will do automatically later)</em></li>
+</ul>
+<p><em>Sorry for not being able to quickly provide any workaround, nor to cut a quick bugfix release.</em></p>
+<p><em>Cheers</em>
+<em>Bruno</em></p>
+<p style="text-align: center; color: #DDDDDD;">&diams;</p>
+
+<p>ps: When I started getting involved in Open Source, I always felt extremely happy when
+people would spend their time troubleshooting my issues, or just educating me on how to
+behave in an Open Source community, or even how I should have troubleshooted initially
+the issue myself. So whenever I have time, I try to write detailed and polite replies. The
+person posting the comment is my past. The person posting the comment is my future :-)
+<a href="http://revistaepoca.globo.com/Revista/Epoca/0,,EMI96818-15230,00.html">Kindness begets kindness</a>.</p>
+<p>&hearts; Open Source</p></description>
+</item>
 
 <item>
     <title>Writing a binary parser in Python: NumPy vs. Construct</title>
@@ -501,72 +579,6 @@ clipboard. Then just paste into my browser, and that&#8217;s that!</p>
 </figure>
 </div>
 </div></description>
-</item>
-
-<item>
-    <title>Apache Commons Lang: Memoizer</title>
-    <pubDate>Jan 08, 2017</pubDate>
-    <link>/2017/01/08/apache-commons-lang-memoizer</link>
-    <dc:creator></dc:creator>
-    <description><p>The current release of <a href="https://commons.apache.org/proper/commons-lang/">Apache Commons Lang</a>
-is <strong>3.5</strong>. The upcoming release, probably 3.6,
-will include a new feature, added in a
-<a href="https://github.com/apache/commons-lang/pull/203">pull request</a>:
-<strong>a Memoizer implementation</strong>. Check out the ticket <a href="https://issues.apache.org/jira/browse/LANG-740">LANG-740</a>
-for more about the implementation being added to [lang].</p>
-<p>The book <a href="http://jcip.net/">Java Concurrency in Practice</a> introduces readers to the Memoizer,
-and has also a <a href="http://jcip.net/listings/Memoizer.java">public domain implementation available for download</a>
-(besides that, the book has also lots of other interesting topics!).</p>
-<p>In summary, Memoizer is a simple cache, that will store the result of
-a computation. It receives a Computable object, responsible for doing something
-that will be stored by the Memoizer. Here&#8217;s a simple code to illustrate how that
-will work in your Java code.</p>
-<div class="highlight"><pre><span class="c1">// Computation to be stored in the cache</span>
-<span class="n">Computable</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">String</span><span class="o">&gt;</span> <span class="n">getFormattedCurrentDate</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Computable</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">String</span><span class="o">&gt;()</span> <span class="o">{</span>
-    <span class="nd">@Override</span>
-    <span class="kd">public</span> <span class="n">String</span> <span class="nf">compute</span><span class="o">(</span><span class="n">String</span> <span class="n">fmt</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">InterruptedException</span> <span class="o">{</span>
-        <span class="k">return</span> <span class="k">new</span> <span class="n">SimpleDateFormat</span><span class="o">(</span><span class="n">fmt</span><span class="o">).</span><span class="na">format</span><span class="o">(</span><span class="k">new</span> <span class="n">Date</span><span class="o">());</span>
-    <span class="o">}</span>
-<span class="o">};</span>
-
-<span class="c1">// Our memoizer</span>
-<span class="n">Memoizer</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">String</span><span class="o">&gt;</span> <span class="n">dateCache</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Memoizer</span><span class="o">&lt;&gt;(</span><span class="n">getFormattedCurrentDate</span><span class="o">);</span>
-
-<span class="c1">// To illustrate its use</span>
-<span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">10</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
-    <span class="k">try</span> <span class="o">{</span>
-        <span class="c1">// S -&gt; Millisecond</span>
-        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">dateCache</span><span class="o">.</span><span class="na">compute</span><span class="o">(</span><span class="s">&quot;HH:mm:ss:S Z dd/MM/YYYY&quot;</span><span class="o">));</span>
-        <span class="c1">// Regardless of this sleep call, we get the same result every iteration</span>
-        <span class="n">Thread</span><span class="o">.</span><span class="na">sleep</span><span class="o">(</span><span class="mi">1500</span><span class="o">);</span>
-    <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">InterruptedException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
-        <span class="n">e</span><span class="o">.</span><span class="na">printStackTrace</span><span class="o">();</span>
-    <span class="o">}</span>
-<span class="o">}</span>
-</pre></div>
-
-<p>The computable created (<em>getFormattedCurrentDate</em>) will be called only once, and stored in
-a map. The parameter passed in the <em>#compute()</em> method will be used as key in the map.
-So choose your parameter wisely :-) The output of the example will be similar to the following one.</p>
-<div class="highlight"><pre>19:15:57:854 +1300 08/01/2017
-19:15:57:854 +1300 08/01/2017
-19:15:57:854 +1300 08/01/2017
-19:15:57:854 +1300 08/01/2017
-19:15:57:854 +1300 08/01/2017
-19:15:57:854 +1300 08/01/2017
-19:15:57:854 +1300 08/01/2017
-19:15:57:854 +1300 08/01/2017
-19:15:57:854 +1300 08/01/2017
-19:15:57:854 +1300 08/01/2017
-</pre></div>
-
-<p>In the example above I used a <em>for-loop</em> to illustrate what will happen. Even though we call
-the memoizer <em>#compute()</em> method several times, followed by
-<em>Thread#sleep()</em>; only one result, the first to be computed, will be returned.</p>
-<p>So that&#8217;s all for today. Hope you learned something about this new class, that must
-be available in the next release of Apache Commons Lang.</p>
-<p>Happy hacking!</p>
-<p>ps: [lang] uses Java 7, so that is why we do not have a functional instead of the Comparable</p></description>
 </item>
 
 </channel>

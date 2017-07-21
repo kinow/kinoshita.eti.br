@@ -13,10 +13,65 @@
     <atom:link href="/blog/feed.xml" rel="self" type="application/rss+xml" />
     <link>/</link>
     <description></description>
-    <lastBuildDate>1500382845.0334601</lastBuildDate>
+    <lastBuildDate>1500631516.2356448</lastBuildDate>
     <language>en-US</language>
     <generator>PieCrust 2.1.1</generator>
  
+
+<item>
+    <title>A comparison of TAP (Test Anything Protocol) and SubUnit</title>
+    <pubDate>Jun 04, 2011</pubDate>
+    <link>/2011/06/04/a-comparison-of-tap-test-anything-protocol-and-subunit</link>
+    <dc:creator></dc:creator>
+    <description><p>
+    I have been playing with <a href="http://www.testanything.org">TAP</a> for some time and even implemented a <a
+        href="http://www.tap4j.org">Java API</a> to let <a href="http://www.testng.org">TestNG</a>, <a
+        href="http://www.junit.org">JUnit</a> and other Test Frameworks to produce and consume TAP. TAP is a standard
+    format for test output that first appeared with Perl 1 in 1987. It is human and machine readable, easy to be
+    serialized, language independent and extensible<sup><a href="#1">1</a></sup> through the use of <a
+        href="http://www.yaml.org">YAML</a>.
+</p>
+
+<p>
+    Some days ago while I was designing a plug-in to show TAP test results in <a href="http://www.jenkins-ci.org">Jenkins</a>
+    I stumbled across a message in <a href="http://jenkins.361315.n4.nabble.com/Jenkins-dev-f387835.html">Jenkins
+        dev-list</a> where Max Magee and Nick Wiesmueller were discussing about a way of showing more details about the test
+    executions. I thought that the TAP Plug-in would fit perfectly, until one of the users, <a
+        href="https://launchpad.net/~lifeless">Robert Collins</a>, mentioned <a href="https://launchpad.net/subunit">SubUnit</a>.
+</p>
+
+<p>
+    Shame on me, but I hadn&#8217;t heard of SubUnit until that message. Max Magee and I exchanged some messages after that,
+    talking about a initial design and analysis for the TAP Plug-in<sup>
+
+<a href="#2">2</a></sup>. Here is the initial
+    idea:
+<p>
+<ul>
+    <li>The plug-in will be able to parse one or more test formats (maybe SubUnit, TAP and the formats available in
+        xUnit?).</li>
+    <li>The test results will be displayed the same way JUnit tests are displayed in Jenkins (I think Jenkins
+        supports JUnit format by default, but you can use objects and create test results data, independently of the
+        test framework that you are using).</li>
+    <li>There will be a table containing the Test Name, Description and Status and an expandable section.</li>
+    <li>Inside this expandable section will be available all the details about the test.</li>
+    <li>In case there are images within the test details, they should be displayed as a lightbox gallery.<sup><a
+            href="#3">3</a></sup></li>
+</ul>
+<p>
+    Although I have worked with TAP and spent some good time writing the tap4j port for Java, I am not convinced it is
+    the best solution for this issue yet. Hence I am posting this initial comparison between TAP and SubUnit hoping that
+    more people will contribute with the design of this solution. My goal is not only having a super cool plug-in for
+    Jenkins, but ease integration of test results in different tools and collaborate with both TAP and SubUnit. Another
+    objective that I have in mind is improving the way that test results are displayed in Jenkins and enabling it to be
+    an alternative for tools like <a href="http://sourceforge.net/projects/smolder/">Smolder</a>, <a
+        href="https://launchpad.net/testrepository">TestRepository</a> or <a href="https://launchpad.net/tribunal">Tribunal</a>.
+    Because I believe the tasks done by these tools could be all done in my favorite CI Server, and it would increase
+    the productivity of Build &amp; Release professionals :-))
+</p>
+
+</description>
+</item>
 
 <item>
     <title>Faça seus Testes Falarem TAP (Make your Tests Speak TAP) article published in MundoJ, issue 47, March/April 2011</title>
@@ -152,30 +207,6 @@ Since we wrote the article we changed only the way we parsed the test reports. 
 
 <iframe class="scribd_iframe_embed" src="http://www.scribd.com/embeds/43729582/content?start_page=1&view_mode=scroll&access_key=key-pt0mfwj6fzvdokv48t4" data-auto-height="false" data-aspect-ratio="1.33333333333333" scrolling="no" id="doc_39804" width="640" height="480" frameborder="0"></iframe>
 
-<p>Cheers</p></description>
-</item>
-
-<item>
-    <title>Encontro Ágil 2010 - Lighting talk about Test Automation with TestLink and Hudson</title>
-    <pubDate>Nov 02, 2010</pubDate>
-    <link>/2010/11/02/encontro-agil-2010-lighting-talk-about-test-automation-with-testlink-and-hudson</link>
-    <dc:creator></dc:creator>
-    <description><p>On November 6th (next Saturday) <a title="Anderson Santos" href="http://andersonxp.tumblr.com/">Anderson Santos</a> and I will present a Test Automation solution built on <a title="TestLink" href="http://www.teamst.org/">TestLink</a> and <a title="Hudson" href="http://www.hudson-ci.org">Hudson</a> at <a title="Encontro &Aacute;gil 2010" href="http://www.encontroagil.com.br/">Encontro &Aacute;gil 2010</a>. This meeting is for intended for the Agile community and will be hold at <a title="IME-USP" href="www.ime.usp.br">IME-USP</a> (Instituto de Matem&aacute;tica e Estat&iacute;stica - Universidade de S&aacute;o Paulo).</p>
-<p><hr class="space" />
-<div class='row'>
-<div class="ui container" style='text-align: center;'>
-<figure>
-<a href="/2010/11/02/encontro-agil-2010-lighting-talk-about-test-automation-with-testlink-and-hudson/header2.png" rel="prettyPhoto" class="thumbnail" title="">
-<img class="ui fluid image" src="/2010/11/02/encontro-agil-2010-lighting-talk-about-test-automation-with-testlink-and-hudson/header2.png" alt="=" />
-</a>
-<figcaption></figcaption>
-</figure>
-</div>
-</div></p>
-<p>In our demonstration we will be using TestLink 1.9 HEAD version, Hudson 1.366 and <a title="TestLink Hudson Plug-in" href="http://wiki.hudson-ci.org/display/HUDSON/TestLink+Plugin">TestLink Hudson Plug-in</a> 2.0-SNAPSHOT. This TestLink Hudson Plug-in version is still not released as we are finishing to code the integration between the plug-in and TAP through <a title="tap4j" href="http://tap4j.sourceforge.net/">tap4j</a>, an implementation of <a title="Test Anything Protocol" href="http://www.testanything.org">TAP - Test Anything Protocol</a>.</p>
-<p>What is nice about this solution is that we aren&#8217;t trying to use TestLink as an Automation Tool. But yes, as a Test Management Tool (what TestLink is by nature). And the choice of the Test Execution Tool is up to you, as long as you generate TAP Stream (basically, files containing a log of tests executed). We only enable you to have these tests updated on your TestLink installation, this way you can plan a Test Cycle with both Manual and Automated Tests in one single tool.
-<p style="text-align: center;"><a href="/2010/11/02/encontro-agil-2010-lighting-talk-about-test-automation-with-testlink-and-hudson/ta_w_tl_hudson2.png"><img class="size-medium wp-image-495  aligncenter" title="Test Automation with TestLink and Hudson" src="/2010/11/02/encontro-agil-2010-lighting-talk-about-test-automation-with-testlink-and-hudson/ta_w_tl_hudson2-300x225.png" alt="" width="300" height="225" /></a></p>
-And lastly but not less important, this week <a title="Testing Experience Magazine" href="http://www.testingexperience.com/">Testing Experience Magazine</a> accepted a proposal of article for the next issue on Open Source Tools about this solution. So we are working very hard to release TestLink Hudson Plug-in new version and spread this Test Automation Solution through the Testing/Quality community.</p>
 <p>Cheers</p></description>
 </item>
 

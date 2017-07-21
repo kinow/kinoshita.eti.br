@@ -13,10 +13,28 @@
     <atom:link href="/blog/feed.xml" rel="self" type="application/rss+xml" />
     <link>/</link>
     <description></description>
-    <lastBuildDate>1500382845.0334601</lastBuildDate>
+    <lastBuildDate>1500631516.2356448</lastBuildDate>
     <language>en-US</language>
     <generator>PieCrust 2.1.1</generator>
  
+
+<item>
+    <title>Ranges in Apache Commons Functor</title>
+    <pubDate>Jan 22, 2012</pubDate>
+    <link>/2012/01/22/ranges-in-apache-functor</link>
+    <dc:creator></dc:creator>
+    <description><p>This is a long post. So here is a <strong>TL;DR</strong>:
+<ul>
+    <li>Apache Commons Functor has no Double or Float Range (yet)</li>
+    <li>Apache Commons Functor IntegerRange and LongRange treat the low value as inclusive, and the high value as exclusive. How does that compare to other languages/APIs? (you will have to read to see some comparison)</li>
+    <li>Perl has support for characters ranges, perhaps we could implement it in Functor too?</li>
+    <li>In case we implemented a CharacterRange, it would have to be inclusive for both low and high limits. With &#8216;z&#8217; being the last character, there wouldn&#8217;t have a way to include Z with the current approach. Or we would have to make the CharacterRange a special one. What would go against <a title="Liskov Substitution Principle" href="http://en.wikipedia.org/wiki/Liskov_substitution_principle">Liskov Substitution Principle</a>.</li>
+    <li>You can see a comparison table with Apache Commons Functor, other Java API&#8217;s and other programming languages for ranges clicking <a href="#ctable" title="Comparison table">here</a>.</li>
+    <li>It would be nice to have a clear distinction in Functor documentation among a Sequence, a Generator and a Range. While I was gathering material for this post, I found places using range, others using sequence, and in Apache Commons Functor, an IntegerRange is a Generator.</li>
+</ul>
+Now, if you have some spare time or curiosity, keep reading :-)</p>
+</description>
+</item>
 
 <item>
     <title>Testing shell code and producing TAP using Jenkins?</title>
@@ -181,61 +199,6 @@ Cheers</description>
 <p>The first programming language that I had contact with was Perl. I was a 16 years old <a title="Slackware Linux" href="http://www.slackware.com">Slackware</a> aficionado at that time, and was dying to have a web site with a guestbook . We did not have any cheap hosting services in Brazil that offered a <a title="PHP" href="http://www.php.net">PHP</a> environment, but there were few companies that offered a free host with ads, and with Perl. I don&#8217;t remember which script I used, only that I found it in <a title="HotScripts.com" href="http://www.hotscripts.com">HotScripts.com</a> and that it stored the guestbook entries in disk. Now, ten years after, here I am playing with Perl again! :-D
 <p style="text-align: center;"><a href="/2011/06/15/why-am-i-learning-perl/larry_wall.jpg"><img class="aligncenter size-full wp-image-740" title="Bruno and Larry @ II Sao Paulo Perl Workshop" src="/2011/06/15/why-am-i-learning-perl/larry_wall.jpg" alt="" width="560" height="315" /></a></p>
 Well, what was my idea of Perl before the event? I thought it was an old programming language, very powerful, but over complicated. And what do I think of Perl now? I think it is an old programming language, very powerful, but may be complicated.</p>
-</description>
-</item>
-
-<item>
-    <title>A comparison of TAP (Test Anything Protocol) and SubUnit</title>
-    <pubDate>Jun 04, 2011</pubDate>
-    <link>/2011/06/04/a-comparison-of-tap-test-anything-protocol-and-subunit</link>
-    <dc:creator></dc:creator>
-    <description><p>
-    I have been playing with <a href="http://www.testanything.org">TAP</a> for some time and even implemented a <a
-        href="http://www.tap4j.org">Java API</a> to let <a href="http://www.testng.org">TestNG</a>, <a
-        href="http://www.junit.org">JUnit</a> and other Test Frameworks to produce and consume TAP. TAP is a standard
-    format for test output that first appeared with Perl 1 in 1987. It is human and machine readable, easy to be
-    serialized, language independent and extensible<sup><a href="#1">1</a></sup> through the use of <a
-        href="http://www.yaml.org">YAML</a>.
-</p>
-
-<p>
-    Some days ago while I was designing a plug-in to show TAP test results in <a href="http://www.jenkins-ci.org">Jenkins</a>
-    I stumbled across a message in <a href="http://jenkins.361315.n4.nabble.com/Jenkins-dev-f387835.html">Jenkins
-        dev-list</a> where Max Magee and Nick Wiesmueller were discussing about a way of showing more details about the test
-    executions. I thought that the TAP Plug-in would fit perfectly, until one of the users, <a
-        href="https://launchpad.net/~lifeless">Robert Collins</a>, mentioned <a href="https://launchpad.net/subunit">SubUnit</a>.
-</p>
-
-<p>
-    Shame on me, but I hadn&#8217;t heard of SubUnit until that message. Max Magee and I exchanged some messages after that,
-    talking about a initial design and analysis for the TAP Plug-in<sup>
-
-<a href="#2">2</a></sup>. Here is the initial
-    idea:
-<p>
-<ul>
-    <li>The plug-in will be able to parse one or more test formats (maybe SubUnit, TAP and the formats available in
-        xUnit?).</li>
-    <li>The test results will be displayed the same way JUnit tests are displayed in Jenkins (I think Jenkins
-        supports JUnit format by default, but you can use objects and create test results data, independently of the
-        test framework that you are using).</li>
-    <li>There will be a table containing the Test Name, Description and Status and an expandable section.</li>
-    <li>Inside this expandable section will be available all the details about the test.</li>
-    <li>In case there are images within the test details, they should be displayed as a lightbox gallery.<sup><a
-            href="#3">3</a></sup></li>
-</ul>
-<p>
-    Although I have worked with TAP and spent some good time writing the tap4j port for Java, I am not convinced it is
-    the best solution for this issue yet. Hence I am posting this initial comparison between TAP and SubUnit hoping that
-    more people will contribute with the design of this solution. My goal is not only having a super cool plug-in for
-    Jenkins, but ease integration of test results in different tools and collaborate with both TAP and SubUnit. Another
-    objective that I have in mind is improving the way that test results are displayed in Jenkins and enabling it to be
-    an alternative for tools like <a href="http://sourceforge.net/projects/smolder/">Smolder</a>, <a
-        href="https://launchpad.net/testrepository">TestRepository</a> or <a href="https://launchpad.net/tribunal">Tribunal</a>.
-    Because I believe the tasks done by these tools could be all done in my favorite CI Server, and it would increase
-    the productivity of Build &amp; Release professionals :-))
-</p>
-
 </description>
 </item>
 

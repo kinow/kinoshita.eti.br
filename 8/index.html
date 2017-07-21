@@ -53,7 +53,9 @@
     <div class="item">
         <a href="/books/">Books</a>
     </div>
-    
+    <div class="item">
+      <a href="/presentations/">Presentations</a>
+    </div>
     <div class="item">
         <a href="/software/">Software</a>
     </div>
@@ -97,7 +99,9 @@
     <div class="item">
         <a href="/books/">Books</a>
     </div>
-    
+    <div class="item">
+      <a href="/presentations/">Presentations</a>
+    </div>
     <div class="item">
         <a href="/software/">Software</a>
     </div>
@@ -172,6 +176,85 @@
                         <h1 class='topic'>Home</h1>
                     </div>
                     
+                    
+                    <div class="ui raised padded container segment">
+                        <h2>
+                            <a href="/2016/09/03/performance-problems-in-jenkins-tap-plugin-part-1" title="Permanent link">Performance problems in Jenkins TAP Plug-in &mdash; part 1</a>
+                        </h2>
+                        <small>kinow</small> @ <small>Sep 03, 2016&nbsp;23:28:03</small>
+                        <div class="entry">
+                            
+
+
+
+
+
+<a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2016/09/03/performance-problems-in-jenkins-tap-plugin-part-1" data-text="Performance problems in Jenkins TAP Plug-in &amp;mdash; part 1" data-via="kinow" data-hashtags="opensource">Tweet</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+                            
+                            <p><a href="https://issues.jenkins-ci.org/browse/JENKINS-17887">JENKINS-17887</a> reports performance problems in the <a href="https://wiki.jenkins-ci.org/display/JENKINS/TAP+Plugin">Jenkins TAP Plug-in</a>. It also lists a series of suggestions on how to improve the Jenkins TAP Plug-in performance. On this initial post, we will get a general idea of how the plug-in performs for large projects.</p>
+<p><a href="http://bioperl.org/">BioPerl</a> has over 21K tests. That should be enough for giving an initial idea of CPU, memory and disk usage for the plug-in.</p>
+<div class="highlight"><pre>git clone https://github.com/bioperl/bioperl-live.git
+<span class="nb">cd </span>bioperl-live
+sudo cpanm  -vv --installdeps --notest .
+sudo cpanm Set::Scalar Graph::Directed XML::LibXML XML::SAX <span class="se">\</span>
+    SVG XML::Parser::PerlSAX Convert::Binary::C XML::SAX::Writer <span class="se">\</span>
+    XML::DOM::XPath Spreadsheet::ParseExcel XML::SAX::Writer <span class="se">\</span>
+    XML::DOM HTML::TableExtract XML::Simple Test::Pod DBI
+prove -r t/ -a tests.tar.gz
+
+All tests successful.
+<span class="nv">Files</span><span class="o">=</span>325, <span class="nv">Tests</span><span class="o">=</span>21095, <span class="m">94</span> wallclock secs <span class="o">(</span> 2.47 usr  0.55 sys + 88.29 cusr  3.85 <span class="nv">csys</span> <span class="o">=</span> 95.16 CPU<span class="o">)</span>
+Result: PASS
+</pre></div>
+
+<p>When the test results are parsed, the plug-in also copies TAP files over to the master, in a folder called <em>tap-master-files</em>.</p>
+<p>The BioPerl tests are not really big, just <strong>1.7M</strong>. It gets doubled as there will be the workspace copy, and the tap-master-files directory copy, so <strong>3.4M</strong>.</p>
+<p>But several objects get created in memory, and persisted into the build.xml job file. BioPerl generates a build.xml file with <strong>11M</strong>. So <strong>less than 15M</strong>. But the build.xml contains objects that are read via XStream by Jenkins and into the memory.</p>
+<p>The build page with the graph, and the other two test result pages are rendering in more than 10 seconds in my computer. But the CPU load is OK, so a closer look at the memory use would probably be more interesting.</p>
+<p><img class="ui centered image" src="/2016/09/03/performance-problems-in-jenkins-tap-plugin-part-1/JENKINS-17887-yourkit1.png" alt="JENKINS-17887 YourKit profiler" /></p>
+<p>The image shows one of the screens in YourKit profiler, where it is possible to see that <strong>org.tap4j.plugin.model.TapTestResultResult</strong> has over 6 million objects.</p>
+<p>One build.xml for the BioPerl project gets over 80K entries for the TestResult object.</p>
+<div class="highlight"><pre>grep <span class="s2">&quot;org.tap4j.model.TestResult&quot;</span> builds/1/build.xml -o <span class="p">|</span> wc -l
+84522
+</pre></div>
+
+<p>This happens because each TAP file may contain multiple test results (lines with test results). Each of these test results gets turned into a Java object and loaded by the plug-in. So when loading the test result pages, Jenkins needs to wait until all these objects have been parsed, deserialized and read into the memory.</p>
+<p>The next post will continue on code improvements, and another benchmark.</p>
+<p>Happy profiling!</p>
+                            
+                            
+                            
+                        </div>
+                        <p class="postmetadata">
+                            
+                            <small>tags 
+                             [&nbsp;<a
+                                href="/tag/programming/"
+                                rel="tag">programming</a>&nbsp;]&nbsp;
+                            
+                             [&nbsp;<a
+                                href="/tag/jenkins/"
+                                rel="tag">jenkins</a>&nbsp;]&nbsp;
+                            
+                             [&nbsp;<a
+                                href="/tag/software%20quality/"
+                                rel="tag">software quality</a>&nbsp;]&nbsp;
+                            
+                            </small>
+                            
+                            
+                            <br/>
+                            <small>posted in 
+                            [&nbsp;<a
+                                href="/blog"
+                                title="View all posts in blog"
+                                rel="category tag">blog</a>&nbsp;]
+                                &nbsp;category
+                            </small>
+                            
+                        </p>
+                    </div>
                     
                     <div class="ui raised padded container segment">
                         <h2>
@@ -405,84 +488,6 @@ add rules for special cases.</p>
                              [&nbsp;<a
                                 href="/tag/portuguese/"
                                 rel="tag">portuguese</a>&nbsp;]&nbsp;
-                            
-                            </small>
-                            
-                            
-                            <br/>
-                            <small>posted in 
-                            [&nbsp;<a
-                                href="/blog"
-                                title="View all posts in blog"
-                                rel="category tag">blog</a>&nbsp;]
-                                &nbsp;category
-                            </small>
-                            
-                        </p>
-                    </div>
-                    
-                    <div class="ui raised padded container segment">
-                        <h2>
-                            <a href="/2016/07/12/processing-vaisala-radiosonde-data-with-python-and-creating-gruan-like-netcdf-files" title="Permanent link">Processing Vaisala Radiosonde data with Python, and creating GRUAN-like NetCDF files</a>
-                        </h2>
-                        <small>kinow</small> @ <small>Jul 12, 2016&nbsp;21:18:03</small>
-                        <div class="entry">
-                            
-
-
-
-
-
-<a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2016/07/12/processing-vaisala-radiosonde-data-with-python-and-creating-gruan-like-netcdf-files" data-text="Processing Vaisala Radiosonde data with Python, and creating GRUAN-like NetCDF files" data-via="kinow" data-hashtags="opensource">Tweet</a>
-<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-                            
-                            <p>One of my last projects involved parsing a few GB&#8217;s of data that was in a certain binary format,
-and convert it into NetCDF files. In this post I will describe what was done, what I learned about radiosonde,
-<a href="http://www.dwd.de/EN/research/international_programme/gruan/home.html">GRUAN</a> and other geek stuff. Ready?</p>
-<h3>Vaisala Radiosonde data</h3>
-<p>When I was told the data was in some binary format, I thought it would be similar to
-parsing a flat file. That this would contain a fixed length entry, with the same
-kind of item repeated multiple times.</p>
-<p>Well, not exactly.</p>
-<p>The files had been generated by an instrument made by <a href="http://www.vaisala.com">Vaisala</a>, a Finnish company. This
-instrument is called a <strong>radiosonde</strong>. It is an instrument about the size of an old
-mobile phone, that is launched with a balloon into the atmosphere.</p>
-<p>I was lucky to be given the chance to release one of these balloons carrying a newer
-version of this equipment.</p>
-<p><img class="ui centered large bordered image" src="/2016/07/12/processing-vaisala-radiosonde-data-with-python-and-creating-gruan-like-netcdf-files/balloon-launch.jpg" alt="Radiosonde balloon launch" /></p>
-<p>The balloon can carry equipments for measuring different things, like air pressure,
-altitude, temperature, latitude, longitude, relative humidity, among others. Equipments
-like the radiosonde send the data back to a ground-level station via radio,
-normally in a short and constant interval.</p>
-
-                            
-                            
-                            <p>( <a href="/2016/07/12/processing-vaisala-radiosonde-data-with-python-and-creating-gruan-like-netcdf-files" >Read more ...</a> )</p>
-                            
-                            
-                        </div>
-                        <p class="postmetadata">
-                            
-                            <small>tags 
-                             [&nbsp;<a
-                                href="/tag/python/"
-                                rel="tag">python</a>&nbsp;]&nbsp;
-                            
-                             [&nbsp;<a
-                                href="/tag/netcdf/"
-                                rel="tag">netcdf</a>&nbsp;]&nbsp;
-                            
-                             [&nbsp;<a
-                                href="/tag/climate/"
-                                rel="tag">climate</a>&nbsp;]&nbsp;
-                            
-                             [&nbsp;<a
-                                href="/tag/radiosonde/"
-                                rel="tag">radiosonde</a>&nbsp;]&nbsp;
-                            
-                             [&nbsp;<a
-                                href="/tag/gruan/"
-                                rel="tag">gruan</a>&nbsp;]&nbsp;
                             
                             </small>
                             
