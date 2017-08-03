@@ -126,6 +126,84 @@
                     
                     <p>Posts in category &#8216;blog&#8217;</p>
 <div class="ui raised padded container segment">
+    <h2><a href="/2017/01/05/plotting-auckland-with-osmnx" title="Permanent link">Plotting Auckland with OSMnx</a></h2>
+    <p><small>kinow</small> @ <small>Jan 05, 2017&nbsp;10:39:03</small></p>
+
+
+
+
+
+
+
+<a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2017/01/05/plotting-auckland-with-osmnx" data-text="Plotting Auckland with OSMnx" data-via="kinow" data-hashtags="opensource">Tweet</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+
+
+    <div class='row'>
+<div class="ui fluid container">
+<figure>
+<a  href="/2017/01/05/plotting-auckland-with-osmnx/figure_1.png" rel="prettyPhoto" class="thumbnail" title="Auckland">
+<img style="height: 400px;" class="ui image" src="/2017/01/05/plotting-auckland-with-osmnx/figure_1.png" alt="Auckland" />
+</a>
+<figcaption>Auckland</figcaption>
+</figure>
+</div>
+</div>
+
+<p>A couple of days ago I saw <a href="https://www.reddit.com/r/gis/comments/5lnjxs/creating_squaremile_figureground_diagrams_of/">a thread in reddit</a>
+about OSMnx. It is a utilty for interacting with the OpenStreeMap (OSM)
+API, manipulate it in pure Python and using libraries like NetworkX (a Python graph package).</p>
+<p>With it you can do things like <q>visualize cul-de-sacs or one-way streets, plot shortest-path routes, or calculate stats like intersection density, average node connectivity, or betweenness centrality</q>. Or simply
+plot the OSM data as in the graph above.</p>
+<p>The source code is hosted at GitHub: <a href="https://github.com/gboeing/osmnx">https://github.com/gboeing/osmnx</a>.</p>
+<blockquote cite="https://github.com/gboeing/osmnx">OSMnx is a Python 2+3 package that lets you download spatial geometries and construct, project, visualize, and analyze street networks from OpenStreetMap&#8217;s APIs. Users can download and construct walkable, drivable, or bikable urban networks with a single line of Python code, and then easily analyze and visualize them.</blockquote>
+
+<p>The only issue I found while creating the map for Auckland using the example from the project
+README, was that the script would exit with the following error: <strong>&#8220;ValueError: Geometry must be a shapely Polygon or MultiPolygon&#8221;</strong>.</p>
+<p>After looking at the list of dependencies and finding that everything seemed to be OK,
+I started looking at the project issues. And thankfully someone else had found the
+<a href="https://github.com/gboeing/osmnx/issues/16">same issue</a>
+and the maintainer of the project answered how to fix it.</p>
+<p>The issue was that the OSM API returns two <a href="https://nominatim.openstreetmap.org/search?format=json&amp;limit=10&amp;dedupe=0&amp;polygon_geojson=1&amp;q=Auckland,%20New%20Zealand">entries for Auckland</a>
+, where the first one is a Point, and the
+second is the one that we want (a Polygon). The application defaults to using the first element,
+so in order to change it you have to give a <em>which_result</em> argument.</p>
+<div class="highlight"><pre><span class="c">#!/usr/bin/env python3</span>
+
+<span class="kn">import</span> <span class="nn">osmnx</span> <span class="kn">as</span> <span class="nn">ox</span>
+<span class="n">G</span> <span class="o">=</span> <span class="n">ox</span><span class="o">.</span><span class="n">graph_from_place</span><span class="p">(</span><span class="s">&#39;Auckland, NZ&#39;</span><span class="p">,</span> <span class="n">network_type</span><span class="o">=</span><span class="s">&#39;drive&#39;</span><span class="p">,</span> <span class="n">which_result</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">ox</span><span class="o">.</span><span class="n">plot_graph</span><span class="p">(</span><span class="n">ox</span><span class="o">.</span><span class="n">project_graph</span><span class="p">(</span><span class="n">G</span><span class="p">))</span>
+</pre></div>
+
+<p>And after that, and after waiting a few minutes, you should get your map :-)</p>
+
+<p>Happy hacking!</p>
+
+<!-- html -->
+
+<p class="postmetadata">
+
+    <small>tags 
+     [&nbsp;<a
+        href="/tag/gis"
+        rel="tag">gis</a>&nbsp;]&nbsp;
+
+    </small>
+
+
+    <br/>
+    <small>posted in 
+    [&nbsp;<a
+        href="/blog"
+        title="View all posts in blog"
+        rel="category tag">blog</a>&nbsp;]&nbsp;
+    category </small>
+
+</p>
+
+</div>
+
+<div class="ui raised padded container segment">
     <h2><a href="/2017/01/04/drawing-terra-celta-vocal-elcio" title="Permanent link">Drawing Terra Celta vocal Elcio</a></h2>
     <p><small>kinow</small> @ <small>Jan 04, 2017&nbsp;19:40:03</small></p>
 
@@ -392,86 +470,6 @@ debug your application in Eclipse or whatever IDE you prefer.</p>
     category </small>
 
 </p>
-</div>
-
-<div class="ui raised padded container segment">
-    <h2><a href="/2016/12/19/permgen-errors-and-java-lang-classcastexception-com-sun-crypto-provider-aescipher-cannot-be-cast-to-javax-crypto-cipherspi-running-jenkins-plug-in-tests-with-powermock" title="Permanent link">PermGen errors and java.lang.ClassCastException: com.sun.crypto.provider.AESCipher cannot be cast to javax.crypto.CipherSpi running Jenkins plug-in tests with PowerMock</a></h2>
-    <p><small>kinow</small> @ <small>Dec 19, 2016&nbsp;19:20:03</small></p>
-
-
-
-
-
-
-
-<a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2016/12/19/permgen-errors-and-java-lang-classcastexception-com-sun-crypto-provider-aescipher-cannot-be-cast-to-javax-crypto-cipherspi-running-jenkins-plug-in-tests-with-powermock" data-text="PermGen errors and java.lang.ClassCastException: com.sun.crypto.provider.AESCipher cannot be cast to javax.crypto.CipherSpi running Jenkins plug-in tests with PowerMock" data-via="kinow" data-hashtags="opensource">Tweet</a>
-<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-
-
-    <p>Recently while working on a Jenkins plugin some tests were failing with PermGen errors.
-Even though it worked in my notebook at home (with Java 8, thus no Permgen), it failed
-in a CloudBees hosted Jenkins job, and also on my Mac (with Java 7) at work.</p>
-<p>As I could not change the settings in the CloudBees hosted Jenkins, I decided to spent some
-time investigating why these tests would require so much memory. Then I found
-<a href="https://angus.nyc/2015/fixing-common-powermock-problems/">this blog post about PowerMock</a>.</p>
-<p>I was not using the <em>@PrepareForTest</em> annotation, but after adding it the issue was gone. So I
-assume it either prevents PowerMock from trying to dynamically load several classes, or instructs
-it to unload classes after the tests. But in anyway after adding it the issue was gone.</p>
-<p>Then I got the following exception.</p>
-<div class="highlight"><pre>WARNING: Failed to instantiate Key<span class="o">[</span><span class="nb">type</span><span class="o">=</span>hudson.security.csrf.DefaultCrumbIssuer<span class="nv">$DescriptorImpl</span>, <span class="nv">annotation</span><span class="o">=[</span>none<span class="o">]]</span><span class="p">;</span> skipping this component
-com.google.inject.ProvisionException: Guice provision errors:
-
-1<span class="o">)</span> Error injecting constructor, java.lang.ClassCastException: com.sun.crypto.provider.AESCipher cannot be cast to javax.crypto.CipherSpi
-  at hudson.security.csrf.DefaultCrumbIssuer<span class="nv">$DescriptorImpl</span>.&lt;init&gt;<span class="o">(</span>DefaultCrumbIssuer.java:127<span class="o">)</span>
-
-<span class="m">1</span> error
-    at com.google.inject.internal.ProviderToInternalFactoryAdapter.get<span class="o">(</span>ProviderToInternalFactoryAdapter.java:52<span class="o">)</span>
-</pre></div>
-
-<p>And then thanks to <a href="https://github.com/powermock/powermock/issues/294">this issue</a> I understood
-that PowerMock was mocking <em>javax.crypto</em> classes. Turns out it is quite easy to tell
-PowerMock to ignore certain classes from being mocked, with the <em>@PowerMockIgnore</em> annotation.</p>
-
-<div class="highlight"><pre><span class="c1">// snip</span>
-<span class="nd">@RunWith</span><span class="o">(</span><span class="n">PowerMockRunner</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
-<span class="nd">@PowerMockIgnore</span><span class="o">({</span><span class="s">&quot;javax.crypto.*&quot;</span> <span class="o">})</span>
-<span class="kd">public</span> <span class="kd">class</span> <span class="nc">TestAbstractUnoChoiceParameter</span> <span class="o">{</span>
-<span class="c1">//</span>
-<span class="o">}</span>
-<span class="c1">// snip</span>
-</pre></div>
-
-<p>Added a couple of notes to this <a href="https://wiki.jenkins-ci.org/display/JENKINS/Mocking+in+Unit+Tests">Jenkins Wiki page</a>
-so that users facing similar issues can try these possible workarounds.</p>
-
-<p>Hope that helps someone!</p>
-
-<!-- html -->
-
-<p class="postmetadata">
-
-    <small>tags 
-     [&nbsp;<a
-        href="/tag/jenkins"
-        rel="tag">jenkins</a>&nbsp;]&nbsp;
-
-     [&nbsp;<a
-        href="/tag/software%20quality"
-        rel="tag">software quality</a>&nbsp;]&nbsp;
-
-    </small>
-
-
-    <br/>
-    <small>posted in 
-    [&nbsp;<a
-        href="/blog"
-        title="View all posts in blog"
-        rel="category tag">blog</a>&nbsp;]&nbsp;
-    category </small>
-
-</p>
-
 </div>
 
 <div id="navigation">

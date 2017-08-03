@@ -126,6 +126,55 @@
                     
                     <p>Posts in category &#8216;blog&#8217;</p>
 <div class="ui raised padded container segment">
+    <h2><a href="/2013/04/17/graphite-broken-images" title="Permanent link">Graphite: Broken images</a></h2>
+    <p><small>kinow</small> @ <small>Apr 17, 2013&nbsp;11:36:38</small></p>
+
+
+
+
+
+
+
+<a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2013/04/17/graphite-broken-images" data-text="Graphite: Broken images" data-via="kinow" data-hashtags="opensource">Tweet</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+
+
+    <p>This morning I was setting up a <a href="http://graphite.wikidot.com/" title="Graphite">Graphite </a>server to collect metrics with <a href="https://github.com/etsy/statsd/" title="statsd">statsd</a>, <a href="http://logstash.net/" title="LogStash">LogStash </a>and <a href="https://github.com/jmxtrans/jmxtrans" title="jmxtrans">jmxtrans</a>. After following the instructions from @jgeurst, I&#8217;ve successfully installed Graphite.</p>
+
+<p>I had previously installed another test box, so I decided to take a deeper look at the settings, write a <a href="https://puppetlabs.com/" title="Puppet">puppet</a> manifest and prepare this new box to become a production server. However, after browsing the webapp, all graphs were broken.</p>
+
+<p>After googling a while, reading forums and bugs, I decided to open the <em>$GRAPHITE_HOME/webapp/graphite/render/views.py</em>, adding <em>log.rendering(&#8230;)</em> statements (not the most elegant solution, I know).</p>
+
+<p>By following the program workflow I found out it was entering a block after checking if it should remotely render the image. This feature is turned on/off by <strong>REMOTE_RENDERING</strong> = True/False, in local_settings.py.</p>
+
+<p>After setting this to <em>False</em> the problem was solved.</p><!-- html -->
+
+<p class="postmetadata">
+
+    <small>tags 
+     [&nbsp;<a
+        href="/tag/monitoring"
+        rel="tag">monitoring</a>&nbsp;]&nbsp;
+
+     [&nbsp;<a
+        href="/tag/python"
+        rel="tag">python</a>&nbsp;]&nbsp;
+
+    </small>
+
+
+    <br/>
+    <small>posted in 
+    [&nbsp;<a
+        href="/blog"
+        title="View all posts in blog"
+        rel="category tag">blog</a>&nbsp;]&nbsp;
+    category </small>
+
+</p>
+</div>
+
+<div class="ui raised padded container segment">
     <h2><a href="/2013/03/31/fix-laggy-flash-pepper-in-chrome" title="Permanent link">Fix laggy Flash (Pepper) in Chrome</a></h2>
     <p><small>kinow</small> @ <small>Mar 31, 2013&nbsp;11:32:10</small></p>
 
@@ -304,59 +353,6 @@
      [&nbsp;<a
         href="/tag/java"
         rel="tag">java</a>&nbsp;]&nbsp;
-
-    </small>
-
-
-    <br/>
-    <small>posted in 
-    [&nbsp;<a
-        href="/blog"
-        title="View all posts in blog"
-        rel="category tag">blog</a>&nbsp;]&nbsp;
-    category </small>
-
-</p>
-</div>
-
-<div class="ui raised padded container segment">
-    <h2><a href="/2012/01/22/ranges-in-apache-functor" title="Permanent link">Ranges in Apache Commons Functor</a></h2>
-    <p><small>kinow</small> @ <small>Jan 22, 2012&nbsp;19:54:36</small></p>
-
-
-
-
-
-
-
-<a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2012/01/22/ranges-in-apache-functor" data-text="Ranges in Apache Commons Functor" data-via="kinow" data-hashtags="opensource">Tweet</a>
-<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-
-
-    <p>This is a long post. So here is a <strong>TL;DR</strong>:
-<ul>
-    <li>Apache Commons Functor has no Double or Float Range (yet)</li>
-    <li>Apache Commons Functor IntegerRange and LongRange treat the low value as inclusive, and the high value as exclusive. How does that compare to other languages/APIs? (you will have to read to see some comparison)</li>
-    <li>Perl has support for characters ranges, perhaps we could implement it in Functor too?</li>
-    <li>In case we implemented a CharacterRange, it would have to be inclusive for both low and high limits. With &#8216;z&#8217; being the last character, there wouldn&#8217;t have a way to include Z with the current approach. Or we would have to make the CharacterRange a special one. What would go against <a title="Liskov Substitution Principle" href="http://en.wikipedia.org/wiki/Liskov_substitution_principle">Liskov Substitution Principle</a>.</li>
-    <li>You can see a comparison table with Apache Commons Functor, other Java API&#8217;s and other programming languages for ranges clicking <a href="#ctable" title="Comparison table">here</a>.</li>
-    <li>It would be nice to have a clear distinction in Functor documentation among a Sequence, a Generator and a Range. While I was gathering material for this post, I found places using range, others using sequence, and in Apache Commons Functor, an IntegerRange is a Generator.</li>
-</ul>
-Now, if you have some spare time or curiosity, keep reading :-)</p>
-<!-- html -->
-
-    <p>( <a href="/2012/01/22/ranges-in-apache-functor" >Read more &#8230;</a> )</p>
-
-<p class="postmetadata">
-
-    <small>tags 
-     [&nbsp;<a
-        href="/tag/apache%20software%20foundation"
-        rel="tag">apache software foundation</a>&nbsp;]&nbsp;
-
-     [&nbsp;<a
-        href="/tag/functional%20programming"
-        rel="tag">functional programming</a>&nbsp;]&nbsp;
 
     </small>
 
