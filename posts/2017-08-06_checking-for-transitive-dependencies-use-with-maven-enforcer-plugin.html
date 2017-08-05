@@ -61,6 +61,8 @@ Running `mvn clean verify` will execute the Maven Enforcer Plug-in `enforce` goa
 
 And the build will fail if your code is using (i.e. importing) any class that is not available in your first-level dependencies. For example, if in your pom.xml you added `commons-lang3` and `commons-configuration`, the latter which includes `commons-lang` **2.x**, and you used `org.apache.commons.lang.StringUtils` instead of `org.apache.commons.lang3.StringUtils`, the build would fail.
 
+In order to fix the build, you have to either add the transitive dependency to your pom.xml file, or correct your import statements. This is specially useful to prevent future issues due to other dependencies being added or updated, and changing the version of the transitive dependency.
+
 Bonus points if you combine that with continuous integration and some service like Travis-CI.
 
 &hearts; Open Source
