@@ -126,8 +126,8 @@
                     
                     <p>Posts tagged with &#8216;java&#8217;</p>
 <div class="ui raised padded container segment">
-    <h2><a href="/2018/08/06/checking-for-transitive-dependencies-use-with-maven-enforcer-plugin" title="Permanent link">Checking for transitive dependencies use with Maven Enforcer Plug-in</a></h2>
-    <p><small>kinow</small> @ <small>Aug 06, 2018&nbsp;17:35:39</small></p>
+    <h2><a href="/2017/08/06/checking-for-transitive-dependencies-use-with-maven-enforcer-plugin" title="Permanent link">Checking for transitive dependencies use with Maven Enforcer Plug-in</a></h2>
+    <p><small>kinow</small> @ <small>Aug 06, 2017&nbsp;17:35:39</small></p>
 
 
 
@@ -135,7 +135,7 @@
 
 
 
-<a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2018/08/06/checking-for-transitive-dependencies-use-with-maven-enforcer-plugin" data-text="Checking for transitive dependencies use with Maven Enforcer Plug-in" data-via="kinow" data-hashtags="opensource">Tweet</a>
+<a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2017/08/06/checking-for-transitive-dependencies-use-with-maven-enforcer-plugin" data-text="Checking for transitive dependencies use with Maven Enforcer Plug-in" data-via="kinow" data-hashtags="opensource">Tweet</a>
 <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
 
 
@@ -185,6 +185,7 @@
 
 <p>Running <code>mvn clean verify</code> will execute the Maven Enforcer Plug-in <code>enforce</code> goal, which will call the illegal transitive dependency check.</p>
 <p>And the build will fail if your code is using (i.e. importing) any class that is not available in your first-level dependencies. For example, if in your pom.xml you added <code>commons-lang3</code> and <code>commons-configuration</code>, the latter which includes <code>commons-lang</code> <strong>2.x</strong>, and you used <code>org.apache.commons.lang.StringUtils</code> instead of <code>org.apache.commons.lang3.StringUtils</code>, the build would fail.</p>
+<p>In order to fix the build, you have to either add the transitive dependency to your pom.xml file, or correct your import statements. This is specially useful to prevent future issues due to other dependencies being added or updated, and changing the version of the transitive dependency.</p>
 <p>Bonus points if you combine that with continuous integration and some service like Travis-CI.</p>
 <p>&hearts; Open Source</p><!-- html -->
 

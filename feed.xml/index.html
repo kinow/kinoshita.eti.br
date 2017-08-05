@@ -13,15 +13,15 @@
     <atom:link href="/blog/feed.xml" rel="self" type="application/rss+xml" />
     <link>/</link>
     <description></description>
-    <lastBuildDate>1501973185.3934557</lastBuildDate>
+    <lastBuildDate>1501973558.8343353</lastBuildDate>
     <language>en-US</language>
     <generator>PieCrust 2.1.1</generator>
  
 
 <item>
     <title>Checking for transitive dependencies use with Maven Enforcer Plug-in</title>
-    <pubDate>Aug 06, 2018</pubDate>
-    <link>/2018/08/06/checking-for-transitive-dependencies-use-with-maven-enforcer-plugin</link>
+    <pubDate>Aug 06, 2017</pubDate>
+    <link>/2017/08/06/checking-for-transitive-dependencies-use-with-maven-enforcer-plugin</link>
     <dc:creator></dc:creator>
     <description><p><a href="http://maven.apache.org/enforcer/maven-enforcer-plugin/">Maven Enforcer Plug-in</a> &ldquo;provides goals to control certain environmental constraints such as Maven version, JDK version and OS family along with many more built-in rules and user created rules&rdquo;. There are several libraries that provide custom rules, or you can write your own.</p>
 <p>One of these libraries is <a href="https://github.com/ImmobilienScout24/illegal-transitive-dependency-check">ImmobilienScout24/illegal-transitive-dependency-check</a>, &ldquo;an additional rule for the maven-enforcer-plugin that checks for classes referenced via transitive Maven dependencies&rdquo;.</p>
@@ -69,6 +69,7 @@
 
 <p>Running <code>mvn clean verify</code> will execute the Maven Enforcer Plug-in <code>enforce</code> goal, which will call the illegal transitive dependency check.</p>
 <p>And the build will fail if your code is using (i.e. importing) any class that is not available in your first-level dependencies. For example, if in your pom.xml you added <code>commons-lang3</code> and <code>commons-configuration</code>, the latter which includes <code>commons-lang</code> <strong>2.x</strong>, and you used <code>org.apache.commons.lang.StringUtils</code> instead of <code>org.apache.commons.lang3.StringUtils</code>, the build would fail.</p>
+<p>In order to fix the build, you have to either add the transitive dependency to your pom.xml file, or correct your import statements. This is specially useful to prevent future issues due to other dependencies being added or updated, and changing the version of the transitive dependency.</p>
 <p>Bonus points if you combine that with continuous integration and some service like Travis-CI.</p>
 <p>&hearts; Open Source</p></description>
 </item>
