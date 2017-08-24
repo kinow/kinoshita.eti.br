@@ -13,66 +13,10 @@
     <atom:link href="/blog/feed.xml" rel="self" type="application/rss+xml" />
     <link>/</link>
     <description></description>
-    <lastBuildDate>1503569096.42863</lastBuildDate>
+    <lastBuildDate>1503569291.857189</lastBuildDate>
     <language>en-US</language>
     <generator>PieCrust 2.1.1</generator>
  
-
-<item>
-    <title>Order of containers in Docker Compose</title>
-    <pubDate>Mar 14, 2017</pubDate>
-    <link>/2017/03/14/order-of-containers-in-docker-compose</link>
-    <dc:creator></dc:creator>
-    <description><p>In Docker Compose you are able to control the startup order of the containers via
-the <em>depends_on</em> statement. This is documented in <a href="https://docs.docker.com/compose/startup-order/">Controlling startup order in Compose</a>.</p>
-<p>If you have a simple setup, with Tomcat and Postgres, sometimes Postgres will start first, but Compose
-will initialize Tomcat before Postgres has fully booted. When that happens, you may receive 401, 404, or other
-application errors.</p>
-<p>You can fix it by combining <em>depends_on</em> with a <em>healthcheck</em>. For example:</p>
-<div class="highlight"><pre><span class="c"># File: docker-compose.yml</span>
-version: <span class="s1">&#39;2.1&#39;</span>
-services:
-  db:
-    container_name: twpg
-    build:
-      context: .
-      dockerfile: Dockerfile.postgres
-    restart: always
-    ports:
-      - <span class="s2">&quot;5432:5432&quot;</span>
-    healthcheck:
-      <span class="nb">test</span>: <span class="s2">&quot;pg_isready -h localhost -p 5432 -q -U postgres&quot;</span>
-      interval: 10s
-      timeout: 5s
-      retries: 5
-
-  web:
-    container_name: twtc
-    build:
-      context: .
-      dockerfile: Dockerfile.tomcat
-    restart: always
-    depends_on:
-      db:
-        condition: service_healthy
-    links:
-      - db
-    ports:
-      - <span class="s2">&quot;80:8080&quot;</span>
-</pre></div>
-
-<p>In the example docker-compose.yml, there are two containers, <em>db</em> and <em>web</em>. web is running
-a Tomcat, and db is running Postgres. Web depends on db (see depends_on), and uses a condition
-<em>service_healthy</em>. Which indicates it depends that that container is healthy.</p>
-<p>The <em>healthcheck</em> entry under the db container settings define how to check whether Postgres
-is running or not. In this case, we are using <em>pg_isready</em>, which is available in the
-vanilla Postgres 9 container.</p>
-<p>It will try 5 times, with a 10 seconds interval, and will time out after 5 seconds. You may
-have to tune these parameters for your application.</p>
-<p>This code snippet is from a
-<a href="https://github.com/Foxoncz/docker-thingworx/pull/3/files">pull request submitted to Foxoncz/docker-thingworx</a>.</p>
-<p>&hearts; Open Source</p></description>
-</item>
 
 <item>
     <title>Using AWS MFA without a mobile phone</title>
@@ -407,6 +351,38 @@ Here&#8217;s how I did it, following the instructions in
 this window the twm window manager running. So when it freezes, at least you can still
 debug your application in Eclipse or whatever IDE you prefer.</p>
 <p>Happy hacking!</p></description>
+</item>
+
+<item>
+    <title>Drawing sketch: Uh!</title>
+    <pubDate>Dec 19, 2016</pubDate>
+    <link>/2016/12/19/drawing-sketch-uh</link>
+    <dc:creator></dc:creator>
+    <description><p>Sketch.</p>
+<div class='row'>
+<div class="ui container" style='text-align: center;'>
+<figure>
+<a href="/2016/12/19/drawing-sketch-uh/progress.jpg" rel="prettyPhoto" class="thumbnail" title="Uh! progress">
+<img class="ui fluid image" src="/2016/12/19/drawing-sketch-uh/progress.jpg" alt="Uh! progress" />
+</a>
+<figcaption>Uh! progress</figcaption>
+</figure>
+</div>
+</div>
+
+<p>And final work here.</p>
+<div class='row'>
+<div class="ui fluid container">
+<figure>
+<a  href="/2016/12/19/drawing-sketch-uh/uh.jpg" rel="prettyPhoto" class="thumbnail" title="Uh!">
+<img style="height: 400px;" class="ui image" src="/2016/12/19/drawing-sketch-uh/uh.jpg" alt="Uh!" />
+</a>
+<figcaption>Uh!</figcaption>
+</figure>
+</div>
+</div>
+
+<p>For <a href="http://kinow.deviantart.com/art/Uh-651490865">redditgetsdrawn</a></p></description>
 </item>
 
 </channel>
