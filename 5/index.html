@@ -125,7 +125,7 @@
                             <nav id="tag-cloud" class="sidebar-box">
                               
                               
-                              <span style="font-size: 17.5pt"><a href="/tag/apache%20software%20foundation">apache software foundation</a></span>&nbsp;(15)
+                              <span style="font-size: 18.0pt"><a href="/tag/apache%20software%20foundation">apache software foundation</a></span>&nbsp;(16)
                               
                               <span style="font-size: 12.5pt"><a href="/tag/articles">articles</a></span>&nbsp;(5)
                               
@@ -141,7 +141,7 @@
                               
                               <span style="font-size: 16.0pt"><a href="/tag/illustrations">illustrations</a></span>&nbsp;(12)
                               
-                              <span style="font-size: 23.0pt"><a href="/tag/java">java</a></span>&nbsp;(26)
+                              <span style="font-size: 23.5pt"><a href="/tag/java">java</a></span>&nbsp;(27)
                               
                               <span style="font-size: 22.0pt"><a href="/tag/jenkins">jenkins</a></span>&nbsp;(24)
                               
@@ -149,9 +149,9 @@
                               
                               <span style="font-size: 12.0pt"><a href="/tag/natural%20language%20processing">natural language processing</a></span>&nbsp;(4)
                               
-                              <span style="font-size: 17.5pt"><a href="/tag/opensource">opensource</a></span>&nbsp;(15)
+                              <span style="font-size: 18.0pt"><a href="/tag/opensource">opensource</a></span>&nbsp;(16)
                               
-                              <span style="font-size: 21.5pt"><a href="/tag/programming">programming</a></span>&nbsp;(23)
+                              <span style="font-size: 22.0pt"><a href="/tag/programming">programming</a></span>&nbsp;(24)
                               
                               <span style="font-size: 13.5pt"><a href="/tag/python">python</a></span>&nbsp;(7)
                               
@@ -176,6 +176,96 @@
                         <h1 class='topic'>Home</h1>
                     </div>
                     
+                    
+                    <div class="ui raised padded container segment">
+                        <h2>
+                            <a href="/2017/03/14/order-of-containers-in-docker-compose" title="Permanent link">Order of containers in Docker Compose</a>
+                        </h2>
+                        <small>kinow</small> @ <small>Mar 14, 2017&nbsp;21:22:03</small>
+                        <div class="entry">
+                            
+
+
+
+
+
+<a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2017/03/14/order-of-containers-in-docker-compose" data-text="Order of containers in Docker Compose" data-via="kinow" data-hashtags="opensource">Tweet</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+                            
+                            <p>In Docker Compose you are able to control the startup order of the containers via
+the <em>depends_on</em> statement. This is documented in <a href="https://docs.docker.com/compose/startup-order/">Controlling startup order in Compose</a>.</p>
+<p>If you have a simple setup, with Tomcat and Postgres, sometimes Postgres will start first, but Compose
+will initialize Tomcat before Postgres has fully booted. When that happens, you may receive 401, 404, or other
+application errors.</p>
+<p>You can fix it by combining <em>depends_on</em> with a <em>healthcheck</em>. For example:</p>
+<div class="highlight"><pre><span class="c"># File: docker-compose.yml</span>
+version: <span class="s1">&#39;2.1&#39;</span>
+services:
+  db:
+    container_name: twpg
+    build:
+      context: .
+      dockerfile: Dockerfile.postgres
+    restart: always
+    ports:
+      - <span class="s2">&quot;5432:5432&quot;</span>
+    healthcheck:
+      <span class="nb">test</span>: <span class="s2">&quot;pg_isready -h localhost -p 5432 -q -U postgres&quot;</span>
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  web:
+    container_name: twtc
+    build:
+      context: .
+      dockerfile: Dockerfile.tomcat
+    restart: always
+    depends_on:
+      db:
+        condition: service_healthy
+    links:
+      - db
+    ports:
+      - <span class="s2">&quot;80:8080&quot;</span>
+</pre></div>
+
+<p>In the example docker-compose.yml, there are two containers, <em>db</em> and <em>web</em>. web is running
+a Tomcat, and db is running Postgres. Web depends on db (see depends_on), and uses a condition
+<em>service_healthy</em>. Which indicates it depends that that container is healthy.</p>
+<p>The <em>healthcheck</em> entry under the db container settings define how to check whether Postgres
+is running or not. In this case, we are using <em>pg_isready</em>, which is available in the
+vanilla Postgres 9 container.</p>
+<p>It will try 5 times, with a 10 seconds interval, and will time out after 5 seconds. You may
+have to tune these parameters for your application.</p>
+<p>This code snippet is from a
+<a href="https://github.com/Foxoncz/docker-thingworx/pull/3/files">pull request submitted to Foxoncz/docker-thingworx</a>.</p>
+<p>&hearts; Open Source</p>
+                            
+                            
+                            
+                        </div>
+                        <p class="postmetadata">
+                            
+                            <small>tags 
+                             [&nbsp;<a
+                                href="/tag/docker/"
+                                rel="tag">docker</a>&nbsp;]&nbsp;
+                            
+                            </small>
+                            
+                            
+                            <br/>
+                            <small>posted in 
+                            [&nbsp;<a
+                                href="/blog"
+                                title="View all posts in blog"
+                                rel="category tag">blog</a>&nbsp;]
+                                &nbsp;category
+                            </small>
+                            
+                        </p>
+                    </div>
                     
                     <div class="ui raised padded container segment">
                         <h2>
@@ -456,84 +546,6 @@ the memoizer <em>#compute()</em> method several times, followed by
 be available in the next release of Apache Commons Lang.</p>
 <p>Happy hacking!</p>
 <p>ps: [lang] uses Java 7, so that is why we do not have a functional instead of the Comparable</p>
-                            
-                            
-                            
-                        </div>
-                        <p class="postmetadata">
-                            
-                            <small>tags 
-                             [&nbsp;<a
-                                href="/tag/java/"
-                                rel="tag">java</a>&nbsp;]&nbsp;
-                            
-                             [&nbsp;<a
-                                href="/tag/programming/"
-                                rel="tag">programming</a>&nbsp;]&nbsp;
-                            
-                             [&nbsp;<a
-                                href="/tag/apache%20software%20foundation/"
-                                rel="tag">apache software foundation</a>&nbsp;]&nbsp;
-                            
-                            </small>
-                            
-                            
-                            <br/>
-                            <small>posted in 
-                            [&nbsp;<a
-                                href="/blog"
-                                title="View all posts in blog"
-                                rel="category tag">blog</a>&nbsp;]
-                                &nbsp;category
-                            </small>
-                            
-                        </p>
-                    </div>
-                    
-                    <div class="ui raised padded container segment">
-                        <h2>
-                            <a href="/2017/01/07/apache-commons-text" title="Permanent link">Apache Commons Text</a>
-                        </h2>
-                        <small>kinow</small> @ <small>Jan 07, 2017&nbsp;20:39:03</small>
-                        <div class="entry">
-                            
-
-
-
-
-
-<a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2017/01/07/apache-commons-text" data-text="Apache Commons Text" data-via="kinow" data-hashtags="opensource">Tweet</a>
-<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-                            
-                            <p>There is a new component in Apache Commons: Apache Commons Text. The 1.0 release might be announced
-in the next weeks. The current site is still in the <a href="http://commons.apache.org/sandbox/commons-text/">Commons Sandbox</a>,
-but it will change with the 1.0 release. The promotion from the sandbox
-<a href="http://markmail.org/message/dm7xwv5wc6z7wme3">happened a few days ago</a> in
-the project mailing list.</p>
-<p>Here&#8217;s the project description: <strong>Apache Commons Text is a library focused on algorithms working on strings</strong>.</p>
-<p>There was <a href="http://markmail.org/message/3k7m2zrzboji333r">a thread on the mailing list</a>
-some time ago (Oct/2014) when we first discussed the component idea. Since then
-many people contributed porting code from
-<a href="http://commons.apache.org/proper/commons-lang/">Apache Commons Lang</a>,
-<a href="http://lucene.apache.org/">Apache Lucene</a>, donating code from existing projects, and with new ideas.</p>
-<p><strong>It is important to be aware that certain parts of Apache Commons Lang are
-being marked as deprecated, and will be removed in the future, after Apache Commons Text
-1.0 is out</strong>. For example: <a href="https://commons.apache.org/proper/commons-lang/apidocs/org/apache/commons/lang3/StringUtils.html">StringUtils</a>,
-and <a href="https://commons.apache.org/proper/commons-lang/apidocs/org/apache/commons/lang3/RandomStringUtils.html">RandomStringUtils</a>.</p>
-<p>That will happen probably in a 4.x release of Apache Commons Lang, if everything
-goes well with Apache Commons Text :-)</p>
-<p>And there are already future features in
-<a href="https://github.com/apache/commons-text/branches/all">branches too</a>.
-It was decided that these features
-needed further work, so they will probably be included in next releases.</p>
-<p>So that&#8217;s a little bit of background on the new component that will be released soon.
-If you have code using Apache Commons Lang, you might be interested in staying
-tuned to release announcements in the mailing list!</p>
-<p>And should you have suggestions and would like to contribute, feel free to join and start
-a thread in the <a href="https://commons.apache.org/mail-lists.html">mailing list</a>,
-open a <a href="https://issues.apache.org/jira/browse/TEXT">JIRA issue</a>, or submit a
-<a href="https://github.com/apache/commons-text/pulls">pull request</a>.</p>
-<p>Happy hacking!</p>
                             
                             
                             

@@ -13,10 +13,34 @@
     <atom:link href="/blog/feed.xml" rel="self" type="application/rss+xml" />
     <link>/</link>
     <description></description>
-    <lastBuildDate>1503311919.603327</lastBuildDate>
+    <lastBuildDate>1503569096.42863</lastBuildDate>
     <language>en-US</language>
     <generator>PieCrust 2.1.1</generator>
  
+
+<item>
+    <title>Strings transliteration in Java with Apache Commons Lang</title>
+    <pubDate>Aug 09, 2014</pubDate>
+    <link>/2014/08/09/strings-transliteration-in-java-with-apache-commons-lang</link>
+    <dc:creator></dc:creator>
+    <description><p><a href="http://rosalind.info">Rosalind</a> is a website with a curated set of exercices for bioinformatics, organized hierarchily. 
+In some of these examples you are required to replace characters (nucleotides) by other characters. It is a rather common 
+task for developers, like when you need to replace special characters in user&#8217;s names.</p>
+<p>There are different ways of describing it, such as translate, replace, or <strong><a href="http://en.wikipedia.org/wiki/Transliteration">transliterate</a></strong>. The latter being my favorite definition. </p>
+<p>In Python I know that there are several different ways of transliterating strings 
+[<a href="https://pypi.python.org/pypi/transliterate">1</a>][<a href="http://blog.lebowtech.com/blog/programming/python/transliterate-with-python.html">2</a>]. But in Java I always ended up using a Map or a Enum and writing my own method in some <em>Util</em> class for that.</p>
+<p>Turns out that <a href="http://commons.apache.org">Apache Commons Lang</a>, which I use in most of my projects, 
+provided this feature. What means that I will be able to reduce the length of my code, what also means 
+less code to be tested (and one less place to look for bugs).</p>
+<div class="highlight"><pre><span class="n">String</span> <span class="n">s</span> <span class="o">=</span> <span class="n">StringUtils</span><span class="o">.</span><span class="na">replaceChars</span><span class="o">(</span><span class="s">&quot;ATGCATGC&quot;</span><span class="o">,</span> <span class="s">&quot;GTCA&quot;</span><span class="o">,</span> <span class="s">&quot;CAGT&quot;</span><span class="o">);</span> <span class="c1">// &quot;TACGTACG&quot;</span>
+<span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">s</span><span class="o">);</span>
+</pre></div>
+
+<p>What the code above does, is replace G by C, T by A, C by G and A by T. This process is part of finding the 
+<a href="http://www.bioinformatics.org/sms/rev_comp.html">DNA reverse complement</a>. But you can also use this for replacing 
+special characters, spaces by _, and so it goes.</p>
+<p>Happy hacking!</p></description>
+</item>
 
 <item>
     <title>Treemapping Jenkins Extension Points with R</title>
@@ -321,20 +345,6 @@ command.</p>
 <p>Git was installed and ready to rock, but in my first <code>git clone https://</code> (SSH ports are blocked) I received: <strong>fatal: Unable to find remote helper for &#8216;https&#8217;</strong>.</p>
 
 <p>Turns out that I was missing libcurl-devel, though I did have curl. After installing libcurl-devel and installing from sources again all worked fine.</p></description>
-</item>
-
-<item>
-    <title>Using Apache Commons Functor functional interfaces with Java 8 lambdas</title>
-    <pubDate>Dec 21, 2012</pubDate>
-    <link>/2012/12/21/using-apache-commons-functor-functional-interfaces-with-java-8-lambdas</link>
-    <dc:creator></dc:creator>
-    <description><p><a href='http://commons.apache.org/sandbox/functor/'>Apache Commons Functor</a> (hereon [functor]) is an <a href='http://commons.apache.org/'>Apache Commons</a> component that provides a functional programming API and several patterns implemented (visitor, generator, aggregator, etc). <a href="http://openjdk.java.net/projects/lambda/" title="Java 8 lambda">Java 8</a> has several nice new features, including lambda expressions and <a href="http://datumedge.blogspot.com.br/2012/06/java-8-lambdas.html">functional interfaces</a>. In Java 8, lambdas or lambdas expressions are <a href="http://tronicek.blogspot.com.br/2007/12/closures-closure-is-form-of-anonymous_28.html">closures</a> that can be evaluated and behave like anonymous methods.</p>
-
-<p>Functional interfaces are interfaces with only one method. These interfaces can be used in lambdas and save you a lot of time from writing anonymous classes or even implementing the interfaces. [functor] provides several functional interfaces (thanks to <a href="https://issues.apache.org/jira/browse/FUNCTOR-20">Matt Benson</a>). It hasn&#8217;t been released yet, but there are some new examples in the project site, in the <a href="http://svn.apache.org/viewvc/commons/proper/functor/trunk/" title="[functor] SVN trunk">trunk of the SVN</a>. I will use one of these examples to show how [functor] functional interfaces can be used in conjunction with Java 8 lambdas.</p>
-
-<p>After the example with [functor] in Java 8, I will explain how I am running Java 8 in Eclipse (it&#8217;s kind of a <a href="http://www.speaklikeabrazilian.com/expression/define?e=Gambiarra" title="Gambiarra">gambiarra</a>, but works well).</p>
-
-</description>
 </item>
 
 </channel>

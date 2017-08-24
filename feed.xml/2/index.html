@@ -13,10 +13,34 @@
     <atom:link href="/blog/feed.xml" rel="self" type="application/rss+xml" />
     <link>/</link>
     <description></description>
-    <lastBuildDate>1503311919.603327</lastBuildDate>
+    <lastBuildDate>1503569096.42863</lastBuildDate>
     <language>en-US</language>
     <generator>PieCrust 2.1.1</generator>
  
+
+<item>
+    <title>Apache Commons Text LookupTranslator</title>
+    <pubDate>Jun 02, 2017</pubDate>
+    <link>/2017/06/02/apache-commons-text-lookuptranslator</link>
+    <dc:creator></dc:creator>
+    <description><p><a href="http://commons.apache.org/proper/commons-text/">Apache Commons Text</a> includes several algorithms for text processing. Today&#8217;s post is about one of the classes available since the 1.0 release, the <a href="http://commons.apache.org/proper/commons-text/apidocs/org/apache/commons/text/translate/LookupTranslator.html">LookupTranslator</a>.</p>
+<p>It is used to translate text using a lookup table. Most users won&#8217;t necessarily be - knowingly - using this class. Most likely, they will use the <a href="http://commons.apache.org/proper/commons-text/apidocs/org/apache/commons/text/StringEscapeUtils.html">StringEscapeUtils</a>, which contains methods to escape and unescape CSV, JSON, XML, Java, and EcmaScript.</p>
+<div class="highlight"><pre><span class="n">String</span> <span class="n">original</span> <span class="o">=</span> <span class="s">&quot;He didn&#39;t say, \&quot;stop!\&quot;&quot;</span><span class="o">;</span>
+<span class="n">String</span> <span class="n">expected</span> <span class="o">=</span> <span class="s">&quot;He didn&#39;t say, \\\&quot;stop!\\\&quot;&quot;</span><span class="o">;</span>
+<span class="n">String</span> <span class="n">result</span>   <span class="o">=</span> <span class="n">StringEscapeUtils</span><span class="o">.</span><span class="na">escapeJava</span><span class="o">(</span><span class="n">original</span><span class="o">);</span>
+</pre></div>
+
+<p>StringEscapeUtils uses CharSequenceTranslator&#8217;s, including LookupTranslator. You can use it directly too, to escape other data your text may contain, special characters not supported by some third party library or system, or even a simpler case.</p>
+<p>In other words, you would be creating your own StringEscapeUtils. Let&#8217;s say you have some text where numbers must never start with the zero digital, due to some restriction in the way you use that data later.</p>
+<div class="highlight"><pre><span class="n">Map</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">String</span><span class="o">&gt;</span> <span class="n">lookupTable</span> <span class="o">=</span> <span class="k">new</span> <span class="n">HashMap</span><span class="o">&lt;&gt;();</span>
+<span class="n">lookupTable</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">&quot;a&quot;</span><span class="o">,</span> <span class="s">&quot;&quot;</span><span class="o">);</span>
+<span class="kd">final</span> <span class="n">LookupTranslator</span> <span class="n">escapeNumber0</span> <span class="o">=</span> <span class="k">new</span> <span class="n">LookupTranslator</span><span class="o">(</span><span class="k">new</span> <span class="n">String</span><span class="o">[][]</span> <span class="o">{</span> <span class="o">{</span><span class="s">&quot;0&quot;</span><span class="o">,</span> <span class="s">&quot;&quot;</span><span class="o">}</span> <span class="o">});</span>
+<span class="n">String</span> <span class="n">escaped</span> <span class="o">=</span> <span class="n">escapeNumber0</span><span class="o">.</span><span class="na">translate</span><span class="o">(</span><span class="s">&quot;There are 02 texts waiting for analysis today...&quot;</span><span class="o">);</span>
+</pre></div>
+
+<p>That way the resulting text would be &#8220;There are 2 texts waiting for analysis today&#8221;, allowing you to proceed with the rest of your analysis. This is a very simple example, but hopefully you grokked how LookupTranslator works.</p>
+<p>&hearts; Open Source</p></description>
+</item>
 
 <item>
     <title>Some links related to Apache Commons Text</title>
@@ -544,62 +568,6 @@ environment variable.</p>
 <p>Note also that I included the @PostConstruct and @PreDestroy annotated methods. The
 API will start an executor thread pool, so if you do not want to risk to have problems
 re-deploying your application, then remember to close your streams.</p>
-<p>&hearts; Open Source</p></description>
-</item>
-
-<item>
-    <title>Order of containers in Docker Compose</title>
-    <pubDate>Mar 14, 2017</pubDate>
-    <link>/2017/03/14/order-of-containers-in-docker-compose</link>
-    <dc:creator></dc:creator>
-    <description><p>In Docker Compose you are able to control the startup order of the containers via
-the <em>depends_on</em> statement. This is documented in <a href="https://docs.docker.com/compose/startup-order/">Controlling startup order in Compose</a>.</p>
-<p>If you have a simple setup, with Tomcat and Postgres, sometimes Postgres will start first, but Compose
-will initialize Tomcat before Postgres has fully booted. When that happens, you may receive 401, 404, or other
-application errors.</p>
-<p>You can fix it by combining <em>depends_on</em> with a <em>healthcheck</em>. For example:</p>
-<div class="highlight"><pre><span class="c"># File: docker-compose.yml</span>
-version: <span class="s1">&#39;2.1&#39;</span>
-services:
-  db:
-    container_name: twpg
-    build:
-      context: .
-      dockerfile: Dockerfile.postgres
-    restart: always
-    ports:
-      - <span class="s2">&quot;5432:5432&quot;</span>
-    healthcheck:
-      <span class="nb">test</span>: <span class="s2">&quot;pg_isready -h localhost -p 5432 -q -U postgres&quot;</span>
-      interval: 10s
-      timeout: 5s
-      retries: 5
-
-  web:
-    container_name: twtc
-    build:
-      context: .
-      dockerfile: Dockerfile.tomcat
-    restart: always
-    depends_on:
-      db:
-        condition: service_healthy
-    links:
-      - db
-    ports:
-      - <span class="s2">&quot;80:8080&quot;</span>
-</pre></div>
-
-<p>In the example docker-compose.yml, there are two containers, <em>db</em> and <em>web</em>. web is running
-a Tomcat, and db is running Postgres. Web depends on db (see depends_on), and uses a condition
-<em>service_healthy</em>. Which indicates it depends that that container is healthy.</p>
-<p>The <em>healthcheck</em> entry under the db container settings define how to check whether Postgres
-is running or not. In this case, we are using <em>pg_isready</em>, which is available in the
-vanilla Postgres 9 container.</p>
-<p>It will try 5 times, with a 10 seconds interval, and will time out after 5 seconds. You may
-have to tune these parameters for your application.</p>
-<p>This code snippet is from a
-<a href="https://github.com/Foxoncz/docker-thingworx/pull/3/files">pull request submitted to Foxoncz/docker-thingworx</a>.</p>
 <p>&hearts; Open Source</p></description>
 </item>
 
