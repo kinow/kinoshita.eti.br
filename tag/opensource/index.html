@@ -126,6 +126,205 @@
                     
                     <p>Posts tagged with &#8216;opensource&#8217;</p>
 <div class="ui raised padded container segment">
+    <h2><a href="/2017/09/01/finding-base64-implementations-in-apache-software-foundation-projects" title="Permanent link">Finding Base64 implementations in Apache Software Foundation projects</a></h2>
+    <p><small>kinow</small> @ <small>Sep 01, 2017&nbsp;20:23:03</small></p>
+
+
+
+
+
+
+
+<a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2017/09/01/finding-base64-implementations-in-apache-software-foundation-projects" data-text="Finding Base64 implementations in Apache Software Foundation projects" data-via="kinow" data-hashtags="opensource">Tweet</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+
+
+    <p style='text-align: center;'>
+<a href="https://kinow.deviantart.com/art/Grey-Warbler-702099183?ga_submit_new=10%3A1504263729">
+<img style="display: inline" class="ui image" src="/2017/09/01/finding-base64-implementations-in-apache-software-foundation-projects/GreyWarbler.png" alt="NZ Grey Warbler (riroriro)" title="NZ Grey Warbler (riroriro)" />
+</a>
+<br/>
+<small><a href="http://nzbirdsonline.org.nz/species/grey-warbler">New Zealand Grey Warbler (riroriro)</a></small>
+</p>
+
+<p>Some time ago while working in one of the many projects in the Apache Software Foundation (Apache Commons FileUpload if I remember well), I noticed that it had a Base64 implementation. What called my attention was that the project not using the <a href="https://github.com/apache/commons-codec/blob/c18b1923b3c1f897c7935d94fb9e443eabfff897/src/main/java/org/apache/commons/codec/binary/Base64.java">Apache Commons Codec</a> Base64 implementation.</p>
+<p>While Apache Commons&#8217; mission is to create components that can be re-used across ASF projects, and also by other projects not necessarily under the ASF, it is understandable that some projects prefer to keep its dependencies to a minimum. It is normally a good software engineering practice to carefully manage your dependencies.</p>
+<p>But would Apache Commons FileUpload be the only project in the ASF with its own Base64 implementation?</p>
+<h3>What is Base64?</h3>
+<p>Simply put, Base64 is a way to encode bytes to strings. It utilises a table, to convert parts of the binary input to certain numbers. These numbers match an entry in the table used by the Base64 implementation. There are several Base64 implementations, though some are obsolete now.</p>
+<p>The input text &ldquo;<em>this is base64!</em>&rdquo; results in &ldquo;<em>dGhpcyBpcyBiYXNlNjQh</em>&rdquo;. It can be decoded and will result in the same input text. An image can also be encoded. Or a ZIP file. This is helpful for data transfer and storage.</p>
+<p>Apache Commons Codec is well known to provide a Bse64 implementation, and used in several projects, both Open Source and in the industry. Its implementation is based on the <a href="https://www.ietf.org/rfc/rfc2045.txt">RFC-2045</a>.</p>
+<p>Java 8 contains a Base64 implementation, so that may very well replace Apache Commons Coded use in some projects, though that may take some time. The Java 8 implementation supports the RFC-2045, RFC-4648, and <a href="https://docs.oracle.com/javase/8/docs/api/java/util/Base64.html">has also</a> support to the URL and MIME formats.</p>
+<h3>Searching for other Base64 implementations</h3>
+<p>Using GitHub search, I looked for other Base64 implementations in the ASF projects. Here&#8217;s the result table with only the custom implementations found after going through some 15 pages in more than 100 pages with hits for &ldquo;base64&rdquo;.</p>
+<table>
+<thead>
+<tr>
+<th>Project &amp; link to implementation</th>
+<th align="center">JVM</th>
+<th align="right">Base64 implementation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://github.com/apache/activemq-artemis/blob/master/artemis-commons/src/main/java/org/apache/activemq/artemis/utils/Base64.java">Apache ActiveMQ Artemis</a></td>
+<td align="center">8</td>
+<td align="right">RFC-3548, based on http://iharder.net/base64</td>
+</tr>
+<tr>
+<td><a href="https://github.com/apache/incubator-asterixdb-hyracks/blob/3f849969f01effc9b6e7f22462ceb4b2bedabdc4/hyracks/hyracks-util/src/main/java/org/apache/hyracks/util/bytes/Base64Parser.java">Apache AsterixDB Hyracks (Incubator)</a></td>
+<td align="center">8</td>
+<td align="right">?</td>
+</tr>
+<tr>
+<td><a href="https://github.com/apache/calcite-avatica/blob/4db1fb9c66db8ccebc9e96ce678154ec69c557f0/core/src/main/java/org/apache/calcite/avatica/util/Base64.java">Apache Calcite Avatica</a></td>
+<td align="center">7</td>
+<td align="right">RFC-3548, based on http://iharder.net/base64</td>
+</tr>
+<tr>
+<td><a href="https://github.com/apache/cayenne/blob/bd1b109a943307a83078399c7a4d6aa53631a065/cayenne-server/src/main/java/org/apache/cayenne/util/Base64Codec.java">Apache Cayenne</a></td>
+<td align="center">8</td>
+<td align="right">RFC-2045 (based on codec)</td>
+</tr>
+<tr>
+<td><a href="https://github.com/apache/chemistry-opencmis/blob/trunk/chemistry-opencmis-commons/chemistry-opencmis-commons-impl/src/main/java/org/apache/chemistry/opencmis/commons/impl/Base64.java">Apache Chemistry</a></td>
+<td align="center">7</td>
+<td align="right">RFC-3548, based on http://iharder.net/base64</td>
+</tr>
+<tr>
+<td><a href="https://github.com/apache/commons-fileupload/blob/422caf46e5b7a950c639b8ba9fe41e16279b3aa9/src/main/java/org/apache/commons/fileupload/util/mime/Base64Decoder.java">Apache Commons FileUpload</a></td>
+<td align="center">6</td>
+<td align="right">?</td>
+</tr>
+<tr>
+<td><a href="https://github.com/apache/commons-net/blob/trunk/src/main/java/org/apache/commons/net/util/Base64.java">Apache Commons Net</a></td>
+<td align="center">6</td>
+<td align="right">RFC-2045 (copy of codec?)</td>
+</tr>
+<tr>
+<td><a href="https://github.com/apache/directory-kerby/blob/b7da10e3815a8ab84ab7ff4fa3572c92bfa9aef5/kerby-common/kerby-util/src/main/java/org/apache/kerby/util/Base64.java">Apache Directory Kerby</a></td>
+<td align="center">7</td>
+<td align="right">RFC-2045 (copy of codec?)</td>
+</tr>
+<tr>
+<td><a href="https://github.com/apache/felix/blob/a4755e768329a29252b1d7d8e52537941768606d/webconsole-plugins/upnp/src/main/java/org/apache/felix/webconsole/plugins/upnp/internal/Base64.java">Apache Felix</a></td>
+<td align="center">5 (?)</td>
+<td align="right">RFC-2045 (copy of codec?)</td>
+</tr>
+<tr>
+<td><a href="https://github.com/apache/hbase/blob/a66d491892514fd4a188d6ca87d6260d8ae46184/hbase-common/src/main/java/org/apache/hadoop/hbase/util/Base64.java">Apache HBase</a></td>
+<td align="center">8</td>
+<td align="right">RFC-3548, based on http://iharder.net/base64</td>
+</tr>
+<tr>
+<td><a href="https://github.com/apache/jackrabbit/blob/adb1e79ae26aba5d068be56e5e9eb562344e5bb9/jackrabbit-jcr-commons/src/main/java/org/apache/jackrabbit/util/Base64.java">Apache Jackrabbit</a></td>
+<td align="center">8 (?)</td>
+<td align="right">?</td>
+</tr>
+<tr>
+<td><a href="https://github.com/apache/james-project/blob/bab5ff434c407b98432cdc9af00b0263184de26a/server/protocols/protocols-smtp/src/test/java/org/apache/james/smtpserver/Base64.java">Apache James</a></td>
+<td align="center">6</td>
+<td align="right">RFC-2045 via javax.mail.internet.MimeUtility</td>
+</tr>
+<tr>
+<td><a href="https://github.com/apache/james-mime4j/blob/cb48082fb7cbbfb111c926cc8ae953d7261c235c/core/src/main/java/org/apache/james/mime4j/codec/Base64OutputStream.java">Apache James Mime4J</a></td>
+<td align="center">5</td>
+<td align="right">RFC-2045 (based on codec)</td>
+</tr>
+<tr>
+<td><a href="https://github.com/apache/ofbiz-framework/blob/29b815f1b969653da96995fed25e2cc52f25879d/framework/base/src/main/java/org/apache/ofbiz/base/util/Base64.java">Apache OFBiz</a></td>
+<td align="center">8</td>
+<td align="right">RFC-2045</td>
+</tr>
+<tr>
+<td><a href="https://github.com/apache/pivot/blob/d9a21718f182d3c667b18b0f2c62f6ec1cd0e6dd/core/src/org/apache/pivot/util/Base64.java">Apache Pivot</a></td>
+<td align="center">6</td>
+<td align="right">RFC-2045</td>
+</tr>
+<tr>
+<td><a href="https://github.com/apache/qpid-broker-j/blob/1c20cc32b17c58391b0aefcd00f74bc1b4253db9/broker-core/src/main/java/org/apache/qpid/server/util/Strings.java#L132">Apache Qpid</a></td>
+<td align="center">8</td>
+<td align="right">? uses javax.xml.bind.DatatypeConverter#parseBase64Binary()</td>
+</tr>
+<tr>
+<td><a href="https://github.com/apache/shiro/blob/8acc82ab4775b3af546e3bbde928f299be62dc23/lang/src/main/java/org/apache/shiro/codec/Base64.java">Apache Shiro</a></td>
+<td align="center">6</td>
+<td align="right">RFC-2045 (based on commons)</td>
+</tr>
+<tr>
+<td><a href="https://github.com/apache/tomcat/blob/trunk/java/org/apache/tomcat/util/codec/binary/Base64.java">Apache Tomcat</a></td>
+<td align="center">8</td>
+<td align="right">RFC-2045 (copy of codec?)</td>
+</tr>
+<tr>
+<td><a href="https://github.com/apache/tomee/blob/8fc8d8011c5155e7f47ebc162cb88124bf4ca06e/container/openejb-core/src/main/java/org/apache/openejb/util/Base64.java">Apache TomEE</a></td>
+<td align="center">7</td>
+<td align="right">RFC-2045</td>
+</tr>
+<tr>
+<td><a href="https://github.com/apache/tomee-site-ng/blob/8dbf7c5a4bdc6cd5249e00ff85d78a24fd76c7af/container/openejb-core/src/main/java/org/apache/openejb/util/Base64.java">Apache TomEE (Site-NG)</a></td>
+<td align="center">6</td>
+<td align="right">RFC-2045</td>
+</tr>
+<tr>
+<td><a href="https://github.com/apache/incubator-trafodion/blob/b36003cf824bae6b0faf8b03c313f189991d5be1/core/rest/src/main/java/org/trafodion/rest/util/Base64.java">Apache Trafodion (Incubator)</a></td>
+<td align="center">7</td>
+<td align="right">RFC-3548, based on http://iharder.net/base64</td>
+</tr>
+<tr>
+<td><a href="https://github.com/apache/incubator-wave/blob/master/wave/src/main/java/org/waveprotocol/wave/model/util/CharBase64.java">Apache Wave (Incubator)</a></td>
+<td align="center">7</td>
+<td align="right">RFC-3548 (?), based on http://iharder.net/base64</td>
+</tr>
+</tbody>
+</table>
+<h3>Notes and conclusions</h3>
+<ul>
+<li><strong>Projects using Java 8 can likely remove its own implementation in favour of the new JVM 8 implementation</strong>.</li>
+<li>Some projects were already using <a href="https://docs.oracle.com/javase/8/docs/api/java/util/Base64.Decoder.html">Java 8 Base64 implementation</a>.</li>
+<li>Some projects were using Apache Commons Codec.</li>
+<li>Some projects were using the Base64 implementation from http://iharder.net/base64, which claims to be very fast. It could be interesting to further investigate it. Perhaps projects where Base64 is used a lot, there could be a significant performance increase by using this version.</li>
+<li>Even though most of these projects are not using Apache Commons Codec, some have either copied or based their implementations on Apache Commons Codec. Perhaps shading would be more effective? Or maybe adding it as a dependency&hellip;</li>
+<li>I guess the Base64 implementations could be hidden from external users with /*protected*/, private scope. As they are probably not part of Apache Commons Net, or Apache Cayenne public API. Which will be solved eventually after Java 9&hellip;</li>
+<li>Some implementations do not make it clear which RFC or standard they are following. Some derived the reference work (e.g. Apache Wave (Incubator) modified the iharder removing features&hellip;).</li>
+<li>It could be that some of these projects that contain many dependencies like Cayenne and Pivot may even have Commons Codec in the class path as a transitive dependency. If so, it could be interesting to add it as a dependency and remove its own implementation, or simply use Java 8&#8217;s.</li>
+<li>Some implementations like HBase and Trafodion were not using the latest version from http://iharder.net/base64. In the case of HBase and Trafodion, several invalid inputs have been fixed from 2.2.1 to 2.3.7.</li>
+</ul>
+<h3>Future work</h3>
+<ul>
+<li>I will try to investigate which of these projects that have a custom Base64 implementation and are using Java 8 can be updated to throw away its own version (時間があるときでしょう!).</li>
+<li>The implementation from <a href="http://iharder.net/base64">http://iharder.net/base64</a> promises to be very fast, and Apache ActiveMQ Artemis adopted it. We could consider adding a similar <em>fast</em> version to Apache Commons Codec. This could be a reason for keeping its own Base64 implementation.</li>
+<li>Java 8 Base64 provides Base64, MIME, and URL formats for encode and decoding. Perhaps we could add more formats to Apache Commons Codec too. Even <a href="https://github.com/apache/commons-codec/pull/3">custom formats</a>. This could be a reason for keeping Apache Commons Codec&#8217;s implementation.</li>
+</ul>
+<p>Happy encoding!</p>
+<p>&hearts; Open Source</p><!-- html -->
+
+<p class="postmetadata">
+
+    <small>tags 
+     [&nbsp;<a
+        href="/tag/java"
+        rel="tag">java</a>&nbsp;]&nbsp;
+
+     [&nbsp;<a
+        href="/tag/programming"
+        rel="tag">programming</a>&nbsp;]&nbsp;
+
+     [&nbsp;<a
+        href="/tag/opensource"
+        rel="tag">opensource</a>&nbsp;]&nbsp;
+
+     [&nbsp;<a
+        href="/tag/apache%20software%20foundation"
+        rel="tag">apache software foundation</a>&nbsp;]&nbsp;
+
+    </small>
+
+
+</p>
+</div>
+
+<div class="ui raised padded container segment">
     <h2><a href="/2017/08/12/two-other-maven-plugins-impsort-and-deptools" title="Permanent link">Two other Maven Plug-ins: impsort and deptools</a></h2>
     <p><small>kinow</small> @ <small>Aug 12, 2017&nbsp;22:16:03</small></p>
 
@@ -501,63 +700,6 @@ Wendy mentioned that you would be a great person to speak to since you are close
      [&nbsp;<a
         href="/tag/opensource"
         rel="tag">opensource</a>&nbsp;]&nbsp;
-
-    </small>
-
-
-</p>
-</div>
-
-<div class="ui raised padded container segment">
-    <h2><a href="/2017/06/02/apache-commons-text-lookuptranslator" title="Permanent link">Apache Commons Text LookupTranslator</a></h2>
-    <p><small>kinow</small> @ <small>Jun 02, 2017&nbsp;22:50:39</small></p>
-
-
-
-
-
-
-
-<a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2017/06/02/apache-commons-text-lookuptranslator" data-text="Apache Commons Text LookupTranslator" data-via="kinow" data-hashtags="opensource">Tweet</a>
-<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-
-
-    <p><a href="http://commons.apache.org/proper/commons-text/">Apache Commons Text</a> includes several algorithms for text processing. Today&#8217;s post is about one of the classes available since the 1.0 release, the <a href="http://commons.apache.org/proper/commons-text/apidocs/org/apache/commons/text/translate/LookupTranslator.html">LookupTranslator</a>.</p>
-<p>It is used to translate text using a lookup table. Most users won&#8217;t necessarily be - knowingly - using this class. Most likely, they will use the <a href="http://commons.apache.org/proper/commons-text/apidocs/org/apache/commons/text/StringEscapeUtils.html">StringEscapeUtils</a>, which contains methods to escape and unescape CSV, JSON, XML, Java, and EcmaScript.</p>
-<div class="highlight"><pre><span class="n">String</span> <span class="n">original</span> <span class="o">=</span> <span class="s">&quot;He didn&#39;t say, \&quot;stop!\&quot;&quot;</span><span class="o">;</span>
-<span class="n">String</span> <span class="n">expected</span> <span class="o">=</span> <span class="s">&quot;He didn&#39;t say, \\\&quot;stop!\\\&quot;&quot;</span><span class="o">;</span>
-<span class="n">String</span> <span class="n">result</span>   <span class="o">=</span> <span class="n">StringEscapeUtils</span><span class="o">.</span><span class="na">escapeJava</span><span class="o">(</span><span class="n">original</span><span class="o">);</span>
-</pre></div>
-
-<p>StringEscapeUtils uses CharSequenceTranslator&#8217;s, including LookupTranslator. You can use it directly too, to escape other data your text may contain, special characters not supported by some third party library or system, or even a simpler case.</p>
-<p>In other words, you would be creating your own StringEscapeUtils. Let&#8217;s say you have some text where numbers must never start with the zero digital, due to some restriction in the way you use that data later.</p>
-<div class="highlight"><pre><span class="n">Map</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">String</span><span class="o">&gt;</span> <span class="n">lookupTable</span> <span class="o">=</span> <span class="k">new</span> <span class="n">HashMap</span><span class="o">&lt;&gt;();</span>
-<span class="n">lookupTable</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">&quot;a&quot;</span><span class="o">,</span> <span class="s">&quot;&quot;</span><span class="o">);</span>
-<span class="kd">final</span> <span class="n">LookupTranslator</span> <span class="n">escapeNumber0</span> <span class="o">=</span> <span class="k">new</span> <span class="n">LookupTranslator</span><span class="o">(</span><span class="k">new</span> <span class="n">String</span><span class="o">[][]</span> <span class="o">{</span> <span class="o">{</span><span class="s">&quot;0&quot;</span><span class="o">,</span> <span class="s">&quot;&quot;</span><span class="o">}</span> <span class="o">});</span>
-<span class="n">String</span> <span class="n">escaped</span> <span class="o">=</span> <span class="n">escapeNumber0</span><span class="o">.</span><span class="na">translate</span><span class="o">(</span><span class="s">&quot;There are 02 texts waiting for analysis today...&quot;</span><span class="o">);</span>
-</pre></div>
-
-<p>That way the resulting text would be &#8220;There are 2 texts waiting for analysis today&#8221;, allowing you to proceed with the rest of your analysis. This is a very simple example, but hopefully you grokked how LookupTranslator works.</p>
-<p>&hearts; Open Source</p><!-- html -->
-
-<p class="postmetadata">
-
-    <small>tags 
-     [&nbsp;<a
-        href="/tag/apache%20software%20foundation"
-        rel="tag">apache software foundation</a>&nbsp;]&nbsp;
-
-     [&nbsp;<a
-        href="/tag/java"
-        rel="tag">java</a>&nbsp;]&nbsp;
-
-     [&nbsp;<a
-        href="/tag/opensource"
-        rel="tag">opensource</a>&nbsp;]&nbsp;
-
-     [&nbsp;<a
-        href="/tag/programming"
-        rel="tag">programming</a>&nbsp;]&nbsp;
 
     </small>
 
