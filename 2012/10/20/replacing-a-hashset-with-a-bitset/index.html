@@ -120,11 +120,11 @@
 
                 
 <div class="ui raised padded container segment">
-    <h1 class='post-topic'>Replacing a HashSet with a BitSet</h1>
-    <small>kinow</small> @
-	<small>Oct 20, 2012&nbsp;19:51:39</small>
-    <div class="entry">
-       
+  <h1 class='post-topic'>Replacing a HashSet with a BitSet</h1>
+  <small>kinow</small> @
+	<small>Oct 20, 2012&nbsp;19:51:39 (<span class='stardate' data-input-date='Oct 20, 2012'></span>)</small>
+  <div class="entry">
+    
 
 
 
@@ -133,7 +133,7 @@
 <a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2012/10/20/replacing-a-hashset-with-a-bitset" data-text="Replacing a HashSet with a BitSet" data-via="kinow" data-hashtags="opensource">Tweet</a>
 <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
 
-	   <p>I always read the messages in the <a href="http://www.apache.org/foundation/mailinglists.html" title="Apache mailing lists">Apache dev mailing lists</a>, including Apache Commons <a href="http://commons.apache.org/mail-lists.html" title="Apache Commons mailing lists">dev mailing list</a>. And you should too. There are always interesting discussions. Sometimes you participate, other times you only watch what&#8217;s happening, but in the end <strong>you always learn something new</strong>.</p>
+	  <p>I always read the messages in the <a href="http://www.apache.org/foundation/mailinglists.html" title="Apache mailing lists">Apache dev mailing lists</a>, including Apache Commons <a href="http://commons.apache.org/mail-lists.html" title="Apache Commons mailing lists">dev mailing list</a>. And you should too. There are always interesting discussions. Sometimes you participate, other times you only watch what&#8217;s happening, but in the end <strong>you always learn something new</strong>.</p>
 
 <p>A few days ago, I found <a href="https://issues.apache.org/jira/browse/LANG-839" title="LANG-839">an issue</a> where it was being proposed to replace an unnecessary <a href="http://docs.oracle.com/javase/6/docs/api/java/util/HashSet.html" title="HashSet">HashSet</a> in <a href="http://commons.apache.org/lang/api-release/org/apache/commons/lang3/ArrayUtils.html" title="ArrayUtils">ArrayUtils</a>#removeElements() by a <a href="http://docs.oracle.com/javase/6/docs/api/java/util/BitSet.html" title="BitSet">BitSet</a>. Here&#8217;s how the code looked like: </p>
 
@@ -174,30 +174,13 @@
 <p>The first difference is at line 1. Instead of a HashSet, it is now using a BitSet. And at line 10, instead of adding a new element to the HashSet, now it &#8220;sets&#8221; a bit in the set (the bit at the specified position is now true). But there are important changes at line 13. The method removeAll was changed, and now the array doesn&#8217;t require a cast anymore. And the it is not necessary to cast the elements from HashSet anymore, as now the bit in the index position of the set is set to true. So the extractIndices method could be removed.</p>
 
 <p>The code got simpler. But that&#8217;s not all. At <a href="http://www.apache.org" title="Apache Software Foundation">Apache Software Foundation</a> you can find a lot of talented developers - that&#8217;s why I got so excited after joining them. Besides simplifying the code, the developer responsible for these changes (<strong>sebb</strong>) also pointed out that the new code <strong>consumes less memory and is faster</strong>. Ah! And he also wrote <strong>unit tests</strong>
-    </div>
-<p class="postmetadata">
+  </div>
+  <p class="postmetadata">
     
-    <small>tags 
-     [&nbsp;<a
-        href="/tag/apache%20software%20foundation"
-        rel="tag">apache software foundation</a>&nbsp;]&nbsp;
-    
-     [&nbsp;<a
-        href="/tag/java"
-        rel="tag">java</a>&nbsp;]&nbsp;
-    
-     [&nbsp;<a
-        href="/tag/opensource"
-        rel="tag">opensource</a>&nbsp;]&nbsp;
-    
-     [&nbsp;<a
-        href="/tag/programming"
-        rel="tag">programming</a>&nbsp;]&nbsp;
-    
-    </small>
+    <small>tags [&nbsp;<a href="/tag/apache%20software%20foundation" rel="tag">apache software foundation</a>&nbsp;]&nbsp;[&nbsp;<a href="/tag/java" rel="tag">java</a>&nbsp;]&nbsp;[&nbsp;<a href="/tag/opensource" rel="tag">opensource</a>&nbsp;]&nbsp;[&nbsp;<a href="/tag/programming" rel="tag">programming</a>&nbsp;]&nbsp;</small>
     
     
-</p>
+  </p>
 </div>
 
                 </div>
@@ -221,42 +204,6 @@
 </body>
 </html>
 <script src="/js/jquery-2.2.3.min.js"  type="text/javascript"></script>
-    <script src="/css/semantic/dist/semantic.min.js"  type="text/javascript"></script>
-    <script src="/js/jquery.prettyPhoto.js"></script>
-<script type="text/javascript" charset="utf-8">
-  $(document).ready(function(){
-    $("a[rel^='prettyPhoto']").prettyPhoto({
-        social_tools: false,
-        autoplay_slideshow: false, 
-        hideflash: true, 
-        autoplay: false, 
-        overlay_gallery: false
-    });
-
-    $("#toc")
-        .sidebar({
-          dimPage          : true,
-          transition       : 'overlay',
-          mobileTransition : 'uncover'
-        })
-    ;
-
-    $("#toc")
-        .sidebar('attach events', '.launch.button, .view-ui, .launch.item')
-    ;
-  });
-</script>
-
-<script type="text/javascript">
-
-  var _gaq = _gaq || [];
-  _gaq.push(['_setAccount', 'UA-32767310-1']);
-  _gaq.push(['_trackPageview']);
-
-  (function() {
-    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-  })();
-
-</script>
+<script src="/css/semantic/dist/semantic.min.js"  type="text/javascript"></script>
+<script src="/js/jquery.prettyPhoto.js"></script>
+<script src="/js/site.js"></script>
