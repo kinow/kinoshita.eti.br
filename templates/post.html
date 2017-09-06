@@ -2,31 +2,21 @@
 {% import "macros_tweet.html" as tweet %}
 {% block content %}
 <div class="ui raised padded container segment">
-    <h1 class='post-topic'>{{ page.title }}</h1>
-    <small>{{ page.author }}</small> @
+  <h1 class='post-topic'>{{ page.title }}</h1>
+  <small>{{ page.author }}</small> @
 	<small>{{ page.date }}&nbsp;{{ page.time }}</small>
-    <div class="entry">
-       {{ tweet.button(site.root, page.url, page.url, page.title) }}
-	   {{ content }}
-    </div>
-<p class="postmetadata">
+  <div class="entry">
+    {{ tweet.button(site.root, page.url, page.url, page.title) }}
+	  {{ content }}
+  </div>
+  <p class="postmetadata">
     {% if page.tags %}
-    <small>tags {% for tag in page.tags %}
-     [&nbsp;<a
-        href="{{ pctagurl(tag) }}"
-        rel="tag">{{ tag }}</a>&nbsp;]&nbsp;
-    {% endfor %}
-    </small>
+    <small>tags {% for tag in page.tags %}[&nbsp;<a href="{{ pctagurl(tag) }}" rel="tag">{{ tag }}</a>&nbsp;]&nbsp;{% endfor %}</small>
     {% endif %}
     {% if page.category %}
     <br/>
-    <small>posted in 
-    [&nbsp;<a
-        href="{{ pccaturl(page.category) }}"
-        title="View all posts in {{ page.category }}"
-        rel="category tag">{{ page.category }}</a>&nbsp;]&nbsp;
-    category </small>
+    <small>posted in [&nbsp;<a href="{{ pccaturl(page.category) }}" title="View all posts in {{ page.category }}" rel="category tag">{{ page.category }}</a>&nbsp;]&nbsp; category </small>
     {% endif %}
-</p>
+  </p>
 </div>
 {% endblock %}
