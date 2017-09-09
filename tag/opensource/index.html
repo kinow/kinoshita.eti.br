@@ -126,6 +126,56 @@
                     
                     <p>Posts tagged with &#8216;opensource&#8217;</p>
 <div class="ui raised padded container segment">
+    <h2><a href="/2017/09/09/enabling-markdown-extension-tables-for-piecrust" title="Permanent link">Enabling Markdown Extension Tables For Piecrust</a></h2>
+    <p><small>kinow</small> @ <small>Sep 09, 2017&nbsp;20:35:01</small></p>
+
+
+
+
+
+
+
+<a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2017/09/09/enabling-markdown-extension-tables-for-piecrust" data-text="Enabling Markdown Extension Tables For Piecrust" data-via="kinow" data-hashtags="opensource">Tweet</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+
+
+    <p><a href="https://github.com/ludovicchabant/PieCrust2">PieCrust</a> is a Python static site generator.
+It allows users to write content in Markdown. But if you try adding a table, the content by
+default will be generated as plain text.</p>
+<p>You have to enable <a href="https://pythonhosted.org/Markdown/extensions/tables.html">Markdown extension tables</a>.
+PieCrust will <a href="https://github.com/ludovicchabant/PieCrust2/blob/6462e052045552d2ba164f4965370d84ddb54946/piecrust/formatting/markdownformatter.py#L29">load it</a>
+when creating the Markdown instance.</p>
+<div class="highlight"><pre><span class="c1"># config.yml</span>
+<span class="l-Scalar-Plain">markdown</span><span class="p-Indicator">:</span>
+  <span class="l-Scalar-Plain">extensions</span><span class="p-Indicator">:</span>
+    <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">tables</span>
+</pre></div>
+
+<p>Et, voil&agrave;! Happy blogging!</p>
+<p>&hearts; Open Source</p><!-- html -->
+
+<p class="postmetadata">
+
+    <small>tags 
+     [&nbsp;<a
+        href="/tag/programming"
+        rel="tag">programming</a>&nbsp;]&nbsp;
+
+     [&nbsp;<a
+        href="/tag/python"
+        rel="tag">python</a>&nbsp;]&nbsp;
+
+     [&nbsp;<a
+        href="/tag/opensource"
+        rel="tag">opensource</a>&nbsp;]&nbsp;
+
+    </small>
+
+
+</p>
+</div>
+
+<div class="ui raised padded container segment">
     <h2><a href="/2017/09/01/finding-base64-implementations-in-apache-software-foundation-projects" title="Permanent link">Finding Base64 implementations in Apache Software Foundation projects</a></h2>
     <p><small>kinow</small> @ <small>Sep 01, 2017&nbsp;20:23:03</small></p>
 
@@ -640,71 +690,6 @@ Wendy mentioned that you would be a great person to speak to since you are close
 
 </p>
 
-</div>
-
-<div class="ui raised padded container segment">
-    <h2><a href="/2017/06/10/backward-compatibility-and-switch-statements-with-constant-expressions" title="Permanent link">Backward compatibility and switch statement with constant expressions</a></h2>
-    <p><small>kinow</small> @ <small>Jun 10, 2017&nbsp;17:35:39</small></p>
-
-
-
-
-
-
-
-<a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2017/06/10/backward-compatibility-and-switch-statements-with-constant-expressions" data-text="Backward compatibility and switch statement with constant expressions" data-via="kinow" data-hashtags="opensource">Tweet</a>
-<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-
-
-    <p>Maintaining Open Source software can be challenging. Making sure you keep backward compatibility (not only binary) can be even more challenging. <a href="https://commons.apache.org/proper/commons-lang/">Apache Commons Lang</a> 3.6 release is happening right now thanks to <a href="http://www.benediktritter.de/">Benedikt Ritter</a>, and it is on its fourth Release Candidate (i.e. RC4).</p>
-<p>A previous RC2 was cancelled due to <a href="http://commons.markmail.org/thread/57sqt2hkusegda73#query:+page:1+mid:dnwo5tjqo2e5bwuo+state:results">IBM JDK 8 compatibility</a>, more specifically the lazy initialization of ArrayList&#8217;s seems to be different in Oracle JDK and IBM JDK.</p>
-<p>The RC3 was cancelled due to a <a href="https://github.com/apache/commons-lang/commit/18e692478dcf91fdceb9b9fdca7c61a1111d63aa">change</a> that could affect users using a switch statement.</p>
-<p>The change was in the <em>CharEncoding</em> class. The issue was that this class has some constants, that stopped being <a href="http://docs.oracle.com/javase/specs/jls/se8/html/jls-15.html#jls-15.28">constant expressions</a>.</p>
-<blockquote>A constant expression is an expression denoting a value of primitive type or a String that does not complete abruptly and is composed using only the following (&#8230;)</blockquote>
-
-<div class="highlight"><pre><span class="kd">public</span> <span class="kd">class</span> <span class="nc">CharEncoding</span> <span class="o">{</span>
-    <span class="c1">// ...</span>
-    <span class="kd">public</span> <span class="kd">static</span> <span class="kd">final</span> <span class="n">String</span> <span class="n">ISO_8859_1</span> <span class="o">=</span> <span class="s">&quot;ISO-8859-1&quot;</span><span class="o">;</span>
-    <span class="c1">// ...</span>
-<span class="o">}</span>
-</pre></div>
-
-<p>The code above contains a constant (<em>static final</em>) variable, that is a constant expression. So users can safely use it in switch statements, and the Java compiler won&#8217;t complain about it.</p>
-<div class="highlight"><pre><span class="kd">public</span> <span class="kd">class</span> <span class="nc">CharEncoding</span> <span class="o">{</span>
-    <span class="c1">// ...</span>
-    <span class="kd">public</span> <span class="kd">static</span> <span class="kd">final</span> <span class="n">String</span> <span class="n">ISO_8859_1</span> <span class="o">=</span> <span class="n">StandardCharsets</span><span class="o">.</span><span class="na">ISO_8859_1</span><span class="o">.</span><span class="na">name</span><span class="o">();</span>
-    <span class="c1">// ...</span>
-<span class="o">}</span>
-</pre></div>
-
-<p>The code above is from the change that caused the regression. Any user that was using the ISO_8859_1 constant variable in a switch statement would get a compilation error (e.g. <em>case expressions must be constant expressions</em>) when updating to Apache Commons Lang 3.6. That is because the constant variable is not a constant expression.</p>
-<p>I think I learned that some time ago, but if you asked me what was wrong with the change, and if it would break backward compatibility, I would probably fail to spot the issue. There are tools for that now (e.g. Clirr, japicmp) though they may miss some cases too.</p>
-<p>Luckily in this case a user subscribed to the Apache Commons development mailing list spotted the issue and quickly reported it. It gets easier maintaining an Open Source project with the constructive feedback of users, like this one.</p>
-<p>&hearts; Open Source</p><!-- html -->
-
-<p class="postmetadata">
-
-    <small>tags 
-     [&nbsp;<a
-        href="/tag/java"
-        rel="tag">java</a>&nbsp;]&nbsp;
-
-     [&nbsp;<a
-        href="/tag/programming"
-        rel="tag">programming</a>&nbsp;]&nbsp;
-
-     [&nbsp;<a
-        href="/tag/apache%20software%20foundation"
-        rel="tag">apache software foundation</a>&nbsp;]&nbsp;
-
-     [&nbsp;<a
-        href="/tag/opensource"
-        rel="tag">opensource</a>&nbsp;]&nbsp;
-
-    </small>
-
-
-</p>
 </div>
 
 <div id="navigation">
