@@ -13,10 +13,41 @@
     <atom:link href="/blog/feed.xml" rel="self" type="application/rss+xml" />
     <link>/</link>
     <description></description>
-    <lastBuildDate>1505045253.7544446</lastBuildDate>
+    <lastBuildDate>1505287615.0454817</lastBuildDate>
     <language>en-US</language>
     <generator>PieCrust 2.1.1</generator>
  
+
+<item>
+    <title>Simulating less memory with ulimit</title>
+    <pubDate>Mar 26, 2017</pubDate>
+    <link>/2017/03/26/simulating-less-memory-with-ulimit</link>
+    <dc:creator></dc:creator>
+    <description><p>These days I was trying to reproduce <a href="https://bugs.kde.org/show_bug.cgi?id=376382">a bug in Krita</a>
+where it would crash when a user copied group layers between windows. It appeared that the user was
+getting a segmentation fault due to the user&#8217;s computer running out of memory.</p>
+<p>I could not reproduce the issue, but my computer has 16 GB. The first thing that came to my mind was
+to create a virtual machine with less memory to reproduce the issue. But I decided to spend some time
+looking for a <a href="http://wiki.c2.com/?LazinessImpatienceHubris">simpler way</a> of doing it.</p>
+<p>Searching the web I found some suggestions that <code>ulimit</code> could work. After playing for a while with
+<code>ulimit</code> and <code>htop</code>, and verifying the amount of memory necessary to open two files in two windows
+in Krita, I came up with the following settings.</p>
+<div class="highlight"><pre><span class="c"># 2550 mb in kb</span>
+<span class="nb">ulimit</span> -v 2550000
+
+<span class="c"># 2 gb in kb</span>
+<span class="nb">ulimit</span> -m 2000000
+
+<span class="c"># Confirm limits</span>
+<span class="nb">ulimit</span> -a
+
+gdb <span class="nv">$HOME</span>/Development/cpp/workspace/krita_install/bin/krita
+</pre></div>
+
+<p>Then after copying a few layers from one window to another, I successfully reproduced the issue,
+and could include a backtrace in the Krita issue tracking system.</p>
+<p>&hearts; Open Source</p></description>
+</item>
 
 <item>
     <title>Using Google Natural Language API in an AWS Elastic Beanstalk application</title>
@@ -434,44 +465,6 @@ so in order to change it you have to give a <em>which_result</em> argument.</p>
 <iframe id="player" type="text/html" width="640" height="390"
   src="http://www.youtube.com/embed/EOMEAzUBftA?enablejsapi=1&origin=http://kinoshita.eti.br"
   frameborder="0"></iframe></description>
-</item>
-
-<item>
-    <title>Contributing to Krita</title>
-    <pubDate>Jan 03, 2017</pubDate>
-    <link>/2017/01/03/contributing-to-krita</link>
-    <dc:creator></dc:creator>
-    <description><p>As I mentioned in the <a href="/2017/01/02/debugging-an-application-that-freezes-the-x-server">last post</a>, I have been learning Qt and using C and C++ again.
-Since I used C and C++ more during university (about 10 years ago, phew), decided
-to read real code.</p>
-<p>I used Photoshop, Illustrator, and Fireworks a lot when I was younger and had more
-time to spend drawing. But some time ago I switched to Inkscape for vector graphics,
-which I use at work for presentations. So it was only natural to try Krita now.</p>
-<p>Since I was going to try Krita, I thought why not check out and build from source, and then
-in case I found any bugs, contribute back? Or maybe from time to time triage issues,
-find low hanging ones, and send a patch?</p>
-<p>Well, turns out the Krita project has a great community, and it is super easy to send
-contributions. So far I submitted three patches, some were included in 3.x releases.</p>
-<ul>
-<li><a href="https://bugs.kde.org/show_bug.cgi?id=366741">https://bugs.kde.org/show_bug.cgi?id=366741</a></li>
-<li><a href="https://bugs.kde.org/show_bug.cgi?id=364208">https://bugs.kde.org/show_bug.cgi?id=364208</a></li>
-<li><a href="https://bugs.kde.org/show_bug.cgi?id=374451">https://bugs.kde.org/show_bug.cgi?id=374451</a></li>
-</ul>
-<p>While the patches are rather small, they are suggestions on how to fix memory
-segmentation faults, or strange behaviours in the interface. For these issues,
-I had to learn more about Qt components, signals and emitting events, and,
-of course, work with pointers, arrays, Qt data structures, etc. In other words,
-lots of (geek) fun!</p>
-<p>In other words, by contributing to Krita, I am not only helping the project
-and giving a little back to the community, but also refreshing my memory on
-C and C++, and slowly learning Qt - which is not very hard if you worked with
-Swing/AWT, Delphi, Visual Basic, Gtk, etc.</p>
-<p>What are you waiting to contribute to Krita? The developers that maintain the
-project answer tickets and questions posted to <a href="https://reddit.com/r/krita">reddit</a>
-in a good time, and are extremely easy to work with.</p>
-<p>Read more <a href="http://www.davidrevoy.com/article193/guide-building-krita-on-linux-for-cats">here</a> how to build from source, and
-<a href="https://krita.org/en/get-involved/developers/">here</a> on how to submit patches.</p>
-<p>Happy hacking!</p></description>
 </item>
 
 </channel>
