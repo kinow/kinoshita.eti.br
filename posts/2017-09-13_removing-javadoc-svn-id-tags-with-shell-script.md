@@ -1,11 +1,11 @@
 ---
-title: Removing Javadoc SVN $Id$ Tags With Shell Script
+title: Removing Javadoc SVN Id Tags with Shell Script
 time: '16:49:26'
 ---
 
-Subversion supports [Keyword Substitution](http://svnbook.red-bean.com/en/1.4/svn.advanced.props.special.keywords.html), which performs substitution of some keywords such as Author, Date, and **Id**. The **Id** is the date time and user, showing when the file was last modified.
+Subversion supports [Keyword Substitution](http://svnbook.red-bean.com/en/1.4/svn.advanced.props.special.keywords.html), which performs substitution of some keywords such as _Author_, _Date_, and **_Id_**. The **_Id_** is the date, time, and user that last modified the file.
 
-It used to be common to all Apache Commons components to have a line as follows in the header of each file.
+It used to be common to all Apache Commons components to have a line as follows in the header of each Java class.
 
 {% geshi 'java' %}
 /**
@@ -18,14 +18,14 @@ public class SomeClass {
 }
 {% endgeshi %}
 
-Then the generated Javadoc would contain the date of when the class was altered. Although useful, with proper versioning, it becomes obsolete. It is much more important to know what is the version of the class, not the last time it was modified or by whom. In case you have a problem with the file, you can always check the history of the file (e.g. use `git log`, or `git bisect` &hellip;).
+Then the generated Javadoc would contain the date of when the class was altered. Although useful, with proper versioning, it becomes obsolete. It is much more important to know what is the version of the software, not the last time it was modified or by whom. In case you have a problem with that specific file, you can always check the history of the file using `git log`, or `git bisect`, or &hellip;
 
-Apache Commons components that are migrated to git need to have these lines removed, as git does not support these Subversion Keywords. And as every time I decide to remove these lines I come up with some sort of shell script snippet, I decided to document this last one, so that it can save me some time and, perhaps, also save some time for somebody else.
+Apache Commons components that are migrated to git need to have these lines removed. git does not support these Subversion Keywords so it is never properly rendered. And as every time I have to remove these lines I come up with some shell script snippet, I decided to document the last one I wrote, so that it can save me some time &dash; and perhaps for somebody else too?
 
-{% geshi 'shell' %}
+{% geshi 'shell' %}find . -name "*.java" -exec sed -i '/^.*\*\s*@version\s*\$Id\$.*$/d' {} \;{% endgeshi %}
 
-{% endgeshi %}
+And then [push a commit](https://github.com/apache/commons-collections/commit/29d2e93966e7fb99a888a58ab43480e485dcdfc6) with the change :-) In case you know some regex, you can change it and use the same command syntax to remove comments, specific configuration lines, etc.
 
 That's all. Happy scripting!
 
-&heats; Open Source
+&hearts; Open Source
