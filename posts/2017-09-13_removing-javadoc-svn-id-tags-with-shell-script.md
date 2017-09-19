@@ -1,6 +1,12 @@
 ---
 title: Removing Javadoc SVN Id Tags with Shell Script
 time: '16:49:26'
+author: kinow
+tags: 
+    - programming
+    - shell script
+    - opensource
+    - apache software foundation
 ---
 
 Subversion supports [Keyword Substitution](http://svnbook.red-bean.com/en/1.4/svn.advanced.props.special.keywords.html), which performs substitution of some keywords such as _Author_, _Date_, and **_Id_**. The **_Id_** is the date, time, and user that last modified the file.
