@@ -125,7 +125,7 @@
                             <nav id="tag-cloud" class="sidebar-box">
                               
                               
-                              <span style="font-size: 18.5pt"><a href="/tag/apache%20software%20foundation">apache software foundation</a></span>&nbsp;(17)
+                              <span style="font-size: 19.0pt"><a href="/tag/apache%20software%20foundation">apache software foundation</a></span>&nbsp;(18)
                               
                               <span style="font-size: 12.5pt"><a href="/tag/articles">articles</a></span>&nbsp;(5)
                               
@@ -149,15 +149,15 @@
                               
                               <span style="font-size: 12.0pt"><a href="/tag/natural%20language%20processing">natural language processing</a></span>&nbsp;(4)
                               
-                              <span style="font-size: 20.0pt"><a href="/tag/opensource">opensource</a></span>&nbsp;(20)
+                              <span style="font-size: 20.5pt"><a href="/tag/opensource">opensource</a></span>&nbsp;(21)
                               
-                              <span style="font-size: 23.0pt"><a href="/tag/programming">programming</a></span>&nbsp;(26)
+                              <span style="font-size: 23.5pt"><a href="/tag/programming">programming</a></span>&nbsp;(27)
                               
                               <span style="font-size: 14.0pt"><a href="/tag/python">python</a></span>&nbsp;(8)
                               
-                              <span style="font-size: 12.0pt"><a href="/tag/security">security</a></span>&nbsp;(4)
+                              <span style="font-size: 12.5pt"><a href="/tag/security">security</a></span>&nbsp;(5)
                               
-                              <span style="font-size: 12.0pt"><a href="/tag/shell%20script">shell script</a></span>&nbsp;(4)
+                              <span style="font-size: 12.5pt"><a href="/tag/shell%20script">shell script</a></span>&nbsp;(5)
                               
                               <span style="font-size: 24.5pt"><a href="/tag/software%20quality">software quality</a></span>&nbsp;(29)
                               
@@ -176,6 +176,78 @@
                         <h1 class='topic'>Home</h1>
                     </div>
                     
+                    
+                    <div class="ui raised padded container segment">
+                        <h2>
+                            <a href="/2014/02/11/writing-a-custom-schemaspy-command-for-laravel-4" title="Permanent link">Writing a custom SchemaSpy command for Laravel 4</a>
+                        </h2>
+                        <small>kinow</small> @ <small>Feb 11, 2014&nbsp;13:15:33 (<span class='stardate' data-input-date='Feb 11, 2014'></span>)</small>
+                        <div class="entry">
+                            
+
+
+
+
+
+<a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2014/02/11/writing-a-custom-schemaspy-command-for-laravel-4" data-text="Writing a custom SchemaSpy command for Laravel 4" data-via="kinow" data-hashtags="opensource">Tweet</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+                            
+                            <p>This week I had to write my first custom command for <a href="http://laravel.com/">Laravel 4</a>. 
+In <a href="http://nestor-qa.org/">Nestor-QA</a>, <a href="https://github.com/tooh">Peter</a> and I thought it would be useful to have 
+the database schema being automatically generated with 
+<a href="http://schemaspy.sourceforge.net/">SchemaSpy</a> in our <a href="http://builds.tupilabs.com/view/Nestor-QA/">Jenkins box</a>.</p>
+<p>Thanks to <a href="http://laravel.com/docs/artisan">Artisan</a> this task is much simpler than I thought. 
+The following command creates the <code>schemaspy</code> command.</p>
+<pre><code>php artisan command:make SchemaSpyCommand --command=schemaspy
+</code></pre>
+<p>This will create the file <code>app/commands/SchemaSpyCommand.php</code>. And all I had to do was 
+just fill in the options and write the exec command as the <a href="http://laravel.com/docs/commands">Laravel 4 docs</a> explain. </p>
+<pre><code>$this-&gt;info('Creating SchemaSpy');
+
+$jar = $this-&gt;option("jar");
+$dbtype = $this-&gt;option("dbtype");
+$output = $this-&gt;option("output");
+
+$commandLine = sprintf("java -jar %s -u none -t %s -o %s", $jar, $dbtype, $output);
+
+$this-&gt;info(sprintf("Command line: [%s]", $commandLine));
+
+exec($commandLine);
+</code></pre>
+<p>That&#8217;s how my final command looks. Now the final step is integrate it into the application by adding the line below to 
+<code>app/start/artisan.php</code>.</p>
+<pre><code>Artisan::add(new SchemaSpyCommand);
+</code></pre>
+<p>And that&#8217;s it, running <code>php artisan schemaspy --jar=/opt/schemaspy/schemaSpy_5.0.0.jar 
+--dbtype=app/database/sqlite.properties --output=database-schema</code> 
+creates the database schema docs in the <code>database-schema</code> directory. </p>
+<p>Check this <a href="https://gist.github.com/kinow/8936667">gist</a> for the final code.</p>
+<p>Happy coding!</p>
+                            
+                            
+                            
+                        </div>
+                        <p class="postmetadata">
+                            
+                            <small>tags 
+                             [&nbsp;<a
+                                href="/tag/php/"
+                                rel="tag">php</a>&nbsp;]&nbsp;
+                            
+                            </small>
+                            
+                            
+                            <br/>
+                            <small>posted in 
+                            [&nbsp;<a
+                                href="/blog"
+                                title="View all posts in blog"
+                                rel="category tag">blog</a>&nbsp;]
+                                &nbsp;category
+                            </small>
+                            
+                        </p>
+                    </div>
                     
                     <div class="ui raised padded container segment">
                         <h2>
@@ -454,64 +526,6 @@ command.</p>
                              [&nbsp;<a
                                 href="/tag/python/"
                                 rel="tag">python</a>&nbsp;]&nbsp;
-                            
-                            </small>
-                            
-                            
-                            <br/>
-                            <small>posted in 
-                            [&nbsp;<a
-                                href="/blog"
-                                title="View all posts in blog"
-                                rel="category tag">blog</a>&nbsp;]
-                                &nbsp;category
-                            </small>
-                            
-                        </p>
-                    </div>
-                    
-                    <div class="ui raised padded container segment">
-                        <h2>
-                            <a href="/2013/03/31/fix-laggy-flash-pepper-in-chrome" title="Permanent link">Fix laggy Flash (Pepper) in Chrome</a>
-                        </h2>
-                        <small>kinow</small> @ <small>Mar 31, 2013&nbsp;11:32:10 (<span class='stardate' data-input-date='Mar 31, 2013'></span>)</small>
-                        <div class="entry">
-                            
-
-
-
-
-
-<a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2013/03/31/fix-laggy-flash-pepper-in-chrome" data-text="Fix laggy Flash (Pepper) in Chrome" data-via="kinow" data-hashtags="opensource">Tweet</a>
-<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-                            
-                            <p>My chrome died twice this morning. Checking the system logs I found some segmentation errors. Since it was not so recent version, I updated to the latest version of Chrome. But after that my Flash player was laggy/slowly, and I couldn&#8217;t listen to <a href="http://tunein.com/radio/Live-Ireland-Channel-1-s17895/#" title="Live Ireland Channel 1">Live Ireland Channel 1</a> no more :-( (I listen to either this radio or r/electrohouse on reddit.tv while I&#8217;m programming&#8230; I know, I&#8217;m a bit weird).</p>
-
-<p>If you are having the same problem, here&#8217;s the list of actions that I did to fix it.</p>
-
-<p>TL;DR: Disable the Pepper Flash, as well as the Gnash or other flash libraries installed, download flash plug-in from <a href="http://get.adobe.com/flashplayer/" title="http://get.adobe.com/flashplayer/">http://get.adobe.com/flashplayer/</a> and enable it.</p>
-
-<ul>
-    <li>Went to chrome:plugins and disabled the Pepper Flash.</li>
-    <li>Now I was back at using the Gnash flash plug-in previously installed. Now, although I could watch to Youtube videos, my radio wasn&#8217;t playing yet.</li>
-    <li>Disabled all Flash plug-ins, went to <a href="http://get.adobe.com/flashplayer/" title="http://get.adobe.com/flashplayer/">http://get.adobe.com/flashplayer/</a> and got the latest version (tar.gz, since I&#8217;m using Debian).</li>
-    <li>Copied the libflashplayer.so to <em>/opt/google/chrome/plugins</em></li>
-    <li>Re-enabled the Shockwave Flash plug-in (you have to expand the details section, in order to be able to choose which version you want to enable</li>
-</ul>
-
-<p>And now I&#8217;m happily writing this blog and code, listening to Salonika - Dublin City Ramblers.</p>
-
-<p>Cheers</p>
-                            
-                            
-                            
-                        </div>
-                        <p class="postmetadata">
-                            
-                            <small>tags 
-                             [&nbsp;<a
-                                href="/tag/linux/"
-                                rel="tag">linux</a>&nbsp;]&nbsp;
                             
                             </small>
                             

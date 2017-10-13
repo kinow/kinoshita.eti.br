@@ -126,6 +126,131 @@
                     
                     <p>Posts tagged with &#8216;apache software foundation&#8217;</p>
 <div class="ui raised padded container segment">
+    <h2><a href="/2017/10/14/quickly-verifying-jar-signatures-for-asf-releases" title="Permanent link">Quickly Verifying jar Signatures For ASF Releases</a></h2>
+    <p><small>kinow</small> @ <small>Oct 14, 2017&nbsp;00:24:54</small></p>
+
+
+
+
+
+
+
+<a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2017/10/14/quickly-verifying-jar-signatures-for-asf-releases" data-text="Quickly Verifying jar Signatures For ASF Releases" data-via="kinow" data-hashtags="opensource">Tweet</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+
+
+    <p>The release process within the Apache Software Foundation includes a series of steps. Amongst these
+steps is the <a href="https://www.apache.org/foundation/voting.html">voting process</a>. In Apache Commons, the
+<a href="https://commons.apache.org/releases/prepare.html">release instructions</a> includes a note on artefact
+signatures.</p>
+<blockquote>
+<p>During the course of the VOTE, make sure that one or more of the reviewers have verified the signatures and hash files included with the release artifacts. If no one specifically mentions having done that during the VOTE, ask on the dev list and make sure someone does this before you proceed with the release. </p>
+</blockquote>
+<p>Tired of always having to manually check several artefacts, or having to come up with the correct
+shell commands to iterate through a list of files, the other day I wrote a simple script to download
+the KEYS file, import it, download all the artefacts, then iterate through them and verify the
+signature.</p>
+<p>Here&#8217;s the script. Licensed under the GPL licence.</p>
+<div class="highlight"><pre><span class="c">#!/usr/bin/env bash</span>
+
+<span class="nv">url</span><span class="o">=</span><span class="s2">&quot;&quot;</span>
+
+<span class="c"># From: https://blog.mafr.de/2007/08/05/cmdline-options-in-shell-scripts/</span>
+<span class="nv">USAGE</span><span class="o">=</span><span class="s2">&quot;Usage: `basename </span><span class="nv">$0</span><span class="s2">` [-hv] https://repository.apache.org/.../commons/commons-configuration/2.2/&quot;</span>
+
+<span class="c"># Parse command line options.</span>
+<span class="k">while</span> <span class="nb">getopts </span>hv: OPT<span class="p">;</span> <span class="k">do</span>
+    <span class="k">case</span> <span class="s2">&quot;</span><span class="nv">$OPT</span><span class="s2">&quot;</span> in
+        h<span class="o">)</span>
+            <span class="nb">echo</span> <span class="nv">$USAGE</span>
+            <span class="nb">exit </span>0
+            <span class="p">;;</span>
+        v<span class="o">)</span>
+            <span class="nb">echo</span> <span class="s2">&quot;`basename </span><span class="nv">$0</span><span class="s2">` version 0.0.1&quot;</span>
+            <span class="nb">exit </span>0
+            <span class="p">;;</span>
+        <span class="se">\?</span><span class="o">)</span>
+            <span class="c"># getopts issues an error message</span>
+            <span class="nb">echo</span> <span class="nv">$USAGE</span> &gt;<span class="p">;</span>
+    <span class="k">esac</span>
+<span class="k">done</span>
+
+<span class="c"># Remove the switches we parsed above.</span>
+<span class="nb">shift</span> <span class="sb">`</span>expr <span class="nv">$OPTIND</span> - 1<span class="sb">`</span>
+
+<span class="c"># We want at least one non-option argument. </span>
+<span class="c"># Remove this block if you don&#39;t need it.</span>
+<span class="k">if</span> <span class="o">[</span> <span class="nv">$# </span>-eq <span class="m">0</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+    <span class="nb">echo</span> <span class="nv">$USAGE</span> &gt;<span class="p">&amp;</span>2
+    <span class="nb">exit </span>1
+<span class="k">fi</span>
+
+<span class="c"># Access additional arguments as usual through </span>
+<span class="c"># variables $@, $*, $1, $2, etc. or using this loop:</span>
+<span class="nv">URL</span><span class="o">=</span><span class="nv">$1</span>
+
+<span class="nb">echo</span> <span class="s2">&quot;url: </span><span class="si">${</span><span class="nv">URL</span><span class="si">}</span><span class="s2">&quot;</span>
+
+<span class="c"># Use a local temporary directory</span>
+<span class="nv">BUILD_DIR</span><span class="o">=</span><span class="k">$(</span>mktemp -d<span class="k">)</span>
+<span class="nb">pushd</span> <span class="s2">&quot;</span><span class="nv">$BUILD_DIR</span><span class="s2">&quot;</span>
+
+<span class="nb">echo</span> <span class="s2">&quot;build dir: </span><span class="si">${</span><span class="nv">BUILD_DIR</span><span class="si">}</span><span class="s2">&quot;</span>
+
+<span class="c"># Download KEYS file</span>
+<span class="nv">KEYS_URL</span><span class="o">=</span>https://www.apache.org/dist/commons/KEYS
+
+<span class="nb">echo</span> <span class="s2">&quot;importing KEYS from: </span><span class="si">${</span><span class="nv">KEYS_URL</span><span class="si">}</span><span class="s2">&quot;</span>
+
+wget <span class="s2">&quot;</span><span class="nv">$KEYS_URL</span><span class="s2">&quot;</span>
+gpg --import KEYS
+
+<span class="c"># Download JARs and signature files</span>
+<span class="nb">echo</span> <span class="s2">&quot;downloading all jars and signature files...&quot;</span>
+
+wget -r -nd -np -e <span class="nv">robots</span><span class="o">=</span>off --wait <span class="m">1</span> -R <span class="s2">&quot;index.html*&quot;</span> <span class="s2">&quot;</span><span class="si">${</span><span class="nv">URL</span><span class="si">}</span><span class="s2">&quot;</span>
+
+<span class="c"># Check the files</span>
+<span class="k">for</span> x in *.jar<span class="p">;</span> <span class="k">do</span> gpg --verify <span class="s2">&quot;</span><span class="si">${</span><span class="nv">x</span><span class="si">}</span><span class="s2">&quot;</span>.asc<span class="p">;</span> <span class="k">done</span>
+
+<span class="c"># EOF</span>
+</pre></div>
+
+<p>The script can be found at GitHub too: <a href="https://github.com/kinow/dork-scripts/tree/3c519a74f28c08310ce2e65f8e860d61fd0c5c07/gpg/asf-sigs">https://github.com/kinow/dork-scripts/tree/3c519a74f28c08310ce2e65f8e860d61fd0c5c07/gpg/asf-sigs</a></p>
+
+<!-- html -->
+
+<p class="postmetadata">
+
+    <small>tags 
+     [&nbsp;<a
+        href="/tag/programming"
+        rel="tag">programming</a>&nbsp;]&nbsp;
+
+     [&nbsp;<a
+        href="/tag/shell%20script"
+        rel="tag">shell script</a>&nbsp;]&nbsp;
+
+     [&nbsp;<a
+        href="/tag/security"
+        rel="tag">security</a>&nbsp;]&nbsp;
+
+     [&nbsp;<a
+        href="/tag/opensource"
+        rel="tag">opensource</a>&nbsp;]&nbsp;
+
+     [&nbsp;<a
+        href="/tag/apache%20software%20foundation"
+        rel="tag">apache software foundation</a>&nbsp;]&nbsp;
+
+    </small>
+
+
+</p>
+
+</div>
+
+<div class="ui raised padded container segment">
     <h2><a href="/2017/09/13/removing-javadoc-svn-id-tags-with-shell-script" title="Permanent link">Removing Javadoc SVN Id Tags with Shell Script</a></h2>
     <p><small>kinow</small> @ <small>Sep 13, 2017&nbsp;16:49:26</small></p>
 
@@ -486,84 +611,6 @@
 </pre></div>
 
 <p>That way the resulting text would be &#8220;There are 2 texts waiting for analysis today&#8221;, allowing you to proceed with the rest of your analysis. This is a very simple example, but hopefully you grokked how LookupTranslator works.</p>
-<p>&hearts; Open Source</p><!-- html -->
-
-<p class="postmetadata">
-
-    <small>tags 
-     [&nbsp;<a
-        href="/tag/apache%20software%20foundation"
-        rel="tag">apache software foundation</a>&nbsp;]&nbsp;
-
-     [&nbsp;<a
-        href="/tag/java"
-        rel="tag">java</a>&nbsp;]&nbsp;
-
-     [&nbsp;<a
-        href="/tag/opensource"
-        rel="tag">opensource</a>&nbsp;]&nbsp;
-
-     [&nbsp;<a
-        href="/tag/programming"
-        rel="tag">programming</a>&nbsp;]&nbsp;
-
-    </small>
-
-
-</p>
-</div>
-
-<div class="ui raised padded container segment">
-    <h2><a href="/2017/05/28/some-links-related-to-apache-commons-text" title="Permanent link">Some links related to Apache Commons Text</a></h2>
-    <p><small>kinow</small> @ <small>May 28, 2017&nbsp;19:50:39</small></p>
-
-
-
-
-
-
-
-<a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2017/05/28/some-links-related-to-apache-commons-text" data-text="Some links related to Apache Commons Text" data-via="kinow" data-hashtags="opensource">Tweet</a>
-<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-
-
-    <p><a href="http://commons.apache.org/proper/commons-text/">Apache Commons Text</a> is one of the most recent new components in Apache Commons. It &#8220;is a library focused on algorithms working on strings&#8221;. I recently collected some links
-under a bookmark folder that are in some way related to the project. In case you are interested,
-check some of the links below.</p>
-<ul>
-<li><a href="https://www.youtube.com/watch?v=bx3NOoroV-M">Morgan Wahl Text is More Complicated Than You Think Comparing and Sorting Unicode PyCon 2017</a> <iframe width="560" height="315" src="https://www.youtube.com/embed/bx3NOoroV-M?rel=0" frameborder="0" allowfullscreen></iframe><ul>
-<li>Q: test [text] to check if our methods are OK with some examples in this talk)</li>
-<li>Q: Canonical Decomposition, and code points comparisons; are we doing it? Are we doing it right?</li>
-<li>Q: Do we have casefolding?</li>
-<li>Q: Do we have multi-level sort?</li>
-<li>Q: CLDR</li>
-</ul>
-</li>
-<li><a href="https://www.youtube.com/watch?v=7m5JA3XaZ4k">Łukasz Langa Unicode what is the big deal PyCon 2017</a> <iframe width="560" height="315" src="https://www.youtube.com/embed/7m5JA3XaZ4k?rel=0" frameborder="0" allowfullscreen></iframe><ul>
-<li>Q: Quite sure we have an issue to guess the encoding for a text&#8230;. there is a GPL library for that? Under Mozilla perhaps?</li>
-</ul>
-</li>
-<li><a href="https://www.youtube.com/watch?v=kTS2b6pGElE">Jiaqi Liu Fuzzy Search Algorithms How and When to Use Them PyCon 2017</a> <iframe width="560" height="315" src="https://www.youtube.com/embed/kTS2b6pGElE?rel=0" frameborder="0" allowfullscreen></iframe><ul>
-<li>Q: Does OpenNLP have N-GRAM&#8217;s? Would it make sense to have that in [text]?</li>
-<li>Q: Where can we find some tokenizers? OpenNLP?</li>
-</ul>
-</li>
-<li><a href="http://www-igm.univ-mlv.fr/~berstel/Lothaire/">Lothaire&#8217;s Books</a> like &#8220;Combinatorics on Words&#8221; and &#8220;Algebraic Combinatorics&#8221;.</li>
-<li>Java tutorial lesson <a href="https://docs.oracle.com/javase/tutorial/i18n/text/">&#8220;Working with Text&#8221;</a></li>
-<li>Mitzi Morris&#8217; <a href="https://www.amazon.com/Text-Processing-Java-Mitzi-Morris/dp/0988208725">Text Processing in Java book</a></li>
-<li><a href="http://johannburkard.de/software/stringsearch/">StringSearch</a> java library.<ul>
-<li><blockquote>&#8220;The Java language lacks fast string searching algorithms. StringSearch provides implementations of the Boyer-Moore and the Shift-Or (bit-parallel) algorithms. These algorithms are easily five to ten times faster than the na&iuml;ve implementation found in java.lang.String&#8221;.</blockquote></li>
-</ul>
-</li>
-<li><a href="https://jakarta.apache.org/oro/">Jakarta Oro</a> (attic)<ul>
-<li><blockquote>The Jakarta-ORO Java classes are a set of text-processing Java classes that provide Perl5 compatible regular expressions, AWK-like regular expressions, glob expressions, and utility classes for performing substitutions, splits, filtering filenames, etc. This library is the successor to the OROMatcher, AwkTools, PerlTools, and TextTools libraries originally from ORO, Inc. Despite little activity in the form of new development initiatives, issue reports, questions, and suggestions are responded to quickly.</blockquote></li>
-<li>Discontinued, but is there anything useful in there? The attic has always interesting things after all&#8230;</li>
-</ul>
-</li>
-<li><a href="http://textprocessing.org/">TextProcessing blog</a> - A Text Processing Portal for Humans</li>
-<li><a href="https://github.com/twitter/twitter-text">twitter-text</a>, the Twitter Java (multi-language actually&#8230;) text processing library.</li>
-<li>Python&#8217;s <a href="https://docs.python.org/3/library/text.html">text modules</a></li>
-</ul>
 <p>&hearts; Open Source</p><!-- html -->
 
 <p class="postmetadata">

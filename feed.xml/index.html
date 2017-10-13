@@ -13,10 +13,95 @@
     <atom:link href="/blog/feed.xml" rel="self" type="application/rss+xml" />
     <link>/</link>
     <description></description>
-    <lastBuildDate>1507893618.7916222</lastBuildDate>
+    <lastBuildDate>1507894731.8947372</lastBuildDate>
     <language>en-US</language>
     <generator>PieCrust 2.1.1</generator>
  
+
+<item>
+    <title>Quickly Verifying jar Signatures For ASF Releases</title>
+    <pubDate>Oct 14, 2017</pubDate>
+    <link>/2017/10/14/quickly-verifying-jar-signatures-for-asf-releases</link>
+    <dc:creator></dc:creator>
+    <description><p>The release process within the Apache Software Foundation includes a series of steps. Amongst these
+steps is the <a href="https://www.apache.org/foundation/voting.html">voting process</a>. In Apache Commons, the
+<a href="https://commons.apache.org/releases/prepare.html">release instructions</a> includes a note on artefact
+signatures.</p>
+<blockquote>
+<p>During the course of the VOTE, make sure that one or more of the reviewers have verified the signatures and hash files included with the release artifacts. If no one specifically mentions having done that during the VOTE, ask on the dev list and make sure someone does this before you proceed with the release. </p>
+</blockquote>
+<p>Tired of always having to manually check several artefacts, or having to come up with the correct
+shell commands to iterate through a list of files, the other day I wrote a simple script to download
+the KEYS file, import it, download all the artefacts, then iterate through them and verify the
+signature.</p>
+<p>Here&#8217;s the script. Licensed under the GPL licence.</p>
+<div class="highlight"><pre><span class="c">#!/usr/bin/env bash</span>
+
+<span class="nv">url</span><span class="o">=</span><span class="s2">&quot;&quot;</span>
+
+<span class="c"># From: https://blog.mafr.de/2007/08/05/cmdline-options-in-shell-scripts/</span>
+<span class="nv">USAGE</span><span class="o">=</span><span class="s2">&quot;Usage: `basename </span><span class="nv">$0</span><span class="s2">` [-hv] https://repository.apache.org/.../commons/commons-configuration/2.2/&quot;</span>
+
+<span class="c"># Parse command line options.</span>
+<span class="k">while</span> <span class="nb">getopts </span>hv: OPT<span class="p">;</span> <span class="k">do</span>
+    <span class="k">case</span> <span class="s2">&quot;</span><span class="nv">$OPT</span><span class="s2">&quot;</span> in
+        h<span class="o">)</span>
+            <span class="nb">echo</span> <span class="nv">$USAGE</span>
+            <span class="nb">exit </span>0
+            <span class="p">;;</span>
+        v<span class="o">)</span>
+            <span class="nb">echo</span> <span class="s2">&quot;`basename </span><span class="nv">$0</span><span class="s2">` version 0.0.1&quot;</span>
+            <span class="nb">exit </span>0
+            <span class="p">;;</span>
+        <span class="se">\?</span><span class="o">)</span>
+            <span class="c"># getopts issues an error message</span>
+            <span class="nb">echo</span> <span class="nv">$USAGE</span> &gt;<span class="p">;</span>
+    <span class="k">esac</span>
+<span class="k">done</span>
+
+<span class="c"># Remove the switches we parsed above.</span>
+<span class="nb">shift</span> <span class="sb">`</span>expr <span class="nv">$OPTIND</span> - 1<span class="sb">`</span>
+
+<span class="c"># We want at least one non-option argument. </span>
+<span class="c"># Remove this block if you don&#39;t need it.</span>
+<span class="k">if</span> <span class="o">[</span> <span class="nv">$# </span>-eq <span class="m">0</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+    <span class="nb">echo</span> <span class="nv">$USAGE</span> &gt;<span class="p">&amp;</span>2
+    <span class="nb">exit </span>1
+<span class="k">fi</span>
+
+<span class="c"># Access additional arguments as usual through </span>
+<span class="c"># variables $@, $*, $1, $2, etc. or using this loop:</span>
+<span class="nv">URL</span><span class="o">=</span><span class="nv">$1</span>
+
+<span class="nb">echo</span> <span class="s2">&quot;url: </span><span class="si">${</span><span class="nv">URL</span><span class="si">}</span><span class="s2">&quot;</span>
+
+<span class="c"># Use a local temporary directory</span>
+<span class="nv">BUILD_DIR</span><span class="o">=</span><span class="k">$(</span>mktemp -d<span class="k">)</span>
+<span class="nb">pushd</span> <span class="s2">&quot;</span><span class="nv">$BUILD_DIR</span><span class="s2">&quot;</span>
+
+<span class="nb">echo</span> <span class="s2">&quot;build dir: </span><span class="si">${</span><span class="nv">BUILD_DIR</span><span class="si">}</span><span class="s2">&quot;</span>
+
+<span class="c"># Download KEYS file</span>
+<span class="nv">KEYS_URL</span><span class="o">=</span>https://www.apache.org/dist/commons/KEYS
+
+<span class="nb">echo</span> <span class="s2">&quot;importing KEYS from: </span><span class="si">${</span><span class="nv">KEYS_URL</span><span class="si">}</span><span class="s2">&quot;</span>
+
+wget <span class="s2">&quot;</span><span class="nv">$KEYS_URL</span><span class="s2">&quot;</span>
+gpg --import KEYS
+
+<span class="c"># Download JARs and signature files</span>
+<span class="nb">echo</span> <span class="s2">&quot;downloading all jars and signature files...&quot;</span>
+
+wget -r -nd -np -e <span class="nv">robots</span><span class="o">=</span>off --wait <span class="m">1</span> -R <span class="s2">&quot;index.html*&quot;</span> <span class="s2">&quot;</span><span class="si">${</span><span class="nv">URL</span><span class="si">}</span><span class="s2">&quot;</span>
+
+<span class="c"># Check the files</span>
+<span class="k">for</span> x in *.jar<span class="p">;</span> <span class="k">do</span> gpg --verify <span class="s2">&quot;</span><span class="si">${</span><span class="nv">x</span><span class="si">}</span><span class="s2">&quot;</span>.asc<span class="p">;</span> <span class="k">done</span>
+
+<span class="c"># EOF</span>
+</pre></div>
+
+<p>The script can be found at GitHub too: <a href="https://github.com/kinow/dork-scripts/tree/3c519a74f28c08310ce2e65f8e860d61fd0c5c07/gpg/asf-sigs">https://github.com/kinow/dork-scripts/tree/3c519a74f28c08310ce2e65f8e860d61fd0c5c07/gpg/asf-sigs</a></p></description>
+</item>
 
 <item>
     <title>Removing Javadoc SVN Id Tags with Shell Script</title>
@@ -512,38 +597,6 @@ Wendy mentioned that you would be a great person to speak to since you are close
 
 <p>In summary, it discards blocks that do not contain enough verbs to be considered a message block, being treated as signature blocks instead.</p>
 <p>Never thought about using an approach like this. It may definitely be helpful when doing data analysis, information retrieval, or scraping data from the web. Not necessarily with e-mails and signatures, but you got the gist of it.</p>
-<p>&hearts; Open Source</p></description>
-</item>
-
-<item>
-    <title>Backward compatibility and switch statement with constant expressions</title>
-    <pubDate>Jun 10, 2017</pubDate>
-    <link>/2017/06/10/backward-compatibility-and-switch-statements-with-constant-expressions</link>
-    <dc:creator></dc:creator>
-    <description><p>Maintaining Open Source software can be challenging. Making sure you keep backward compatibility (not only binary) can be even more challenging. <a href="https://commons.apache.org/proper/commons-lang/">Apache Commons Lang</a> 3.6 release is happening right now thanks to <a href="http://www.benediktritter.de/">Benedikt Ritter</a>, and it is on its fourth Release Candidate (i.e. RC4).</p>
-<p>A previous RC2 was cancelled due to <a href="http://commons.markmail.org/thread/57sqt2hkusegda73#query:+page:1+mid:dnwo5tjqo2e5bwuo+state:results">IBM JDK 8 compatibility</a>, more specifically the lazy initialization of ArrayList&#8217;s seems to be different in Oracle JDK and IBM JDK.</p>
-<p>The RC3 was cancelled due to a <a href="https://github.com/apache/commons-lang/commit/18e692478dcf91fdceb9b9fdca7c61a1111d63aa">change</a> that could affect users using a switch statement.</p>
-<p>The change was in the <em>CharEncoding</em> class. The issue was that this class has some constants, that stopped being <a href="http://docs.oracle.com/javase/specs/jls/se8/html/jls-15.html#jls-15.28">constant expressions</a>.</p>
-<blockquote>A constant expression is an expression denoting a value of primitive type or a String that does not complete abruptly and is composed using only the following (&#8230;)</blockquote>
-
-<div class="highlight"><pre><span class="kd">public</span> <span class="kd">class</span> <span class="nc">CharEncoding</span> <span class="o">{</span>
-    <span class="c1">// ...</span>
-    <span class="kd">public</span> <span class="kd">static</span> <span class="kd">final</span> <span class="n">String</span> <span class="n">ISO_8859_1</span> <span class="o">=</span> <span class="s">&quot;ISO-8859-1&quot;</span><span class="o">;</span>
-    <span class="c1">// ...</span>
-<span class="o">}</span>
-</pre></div>
-
-<p>The code above contains a constant (<em>static final</em>) variable, that is a constant expression. So users can safely use it in switch statements, and the Java compiler won&#8217;t complain about it.</p>
-<div class="highlight"><pre><span class="kd">public</span> <span class="kd">class</span> <span class="nc">CharEncoding</span> <span class="o">{</span>
-    <span class="c1">// ...</span>
-    <span class="kd">public</span> <span class="kd">static</span> <span class="kd">final</span> <span class="n">String</span> <span class="n">ISO_8859_1</span> <span class="o">=</span> <span class="n">StandardCharsets</span><span class="o">.</span><span class="na">ISO_8859_1</span><span class="o">.</span><span class="na">name</span><span class="o">();</span>
-    <span class="c1">// ...</span>
-<span class="o">}</span>
-</pre></div>
-
-<p>The code above is from the change that caused the regression. Any user that was using the ISO_8859_1 constant variable in a switch statement would get a compilation error (e.g. <em>case expressions must be constant expressions</em>) when updating to Apache Commons Lang 3.6. That is because the constant variable is not a constant expression.</p>
-<p>I think I learned that some time ago, but if you asked me what was wrong with the change, and if it would break backward compatibility, I would probably fail to spot the issue. There are tools for that now (e.g. Clirr, japicmp) though they may miss some cases too.</p>
-<p>Luckily in this case a user subscribed to the Apache Commons development mailing list spotted the issue and quickly reported it. It gets easier maintaining an Open Source project with the constructive feedback of users, like this one.</p>
 <p>&hearts; Open Source</p></description>
 </item>
 

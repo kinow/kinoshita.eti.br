@@ -126,6 +126,131 @@
                     
                     <p>Posts tagged with &#8216;shell script&#8217;</p>
 <div class="ui raised padded container segment">
+    <h2><a href="/2017/10/14/quickly-verifying-jar-signatures-for-asf-releases" title="Permanent link">Quickly Verifying jar Signatures For ASF Releases</a></h2>
+    <p><small>kinow</small> @ <small>Oct 14, 2017&nbsp;00:24:54</small></p>
+
+
+
+
+
+
+
+<a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2017/10/14/quickly-verifying-jar-signatures-for-asf-releases" data-text="Quickly Verifying jar Signatures For ASF Releases" data-via="kinow" data-hashtags="opensource">Tweet</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+
+
+    <p>The release process within the Apache Software Foundation includes a series of steps. Amongst these
+steps is the <a href="https://www.apache.org/foundation/voting.html">voting process</a>. In Apache Commons, the
+<a href="https://commons.apache.org/releases/prepare.html">release instructions</a> includes a note on artefact
+signatures.</p>
+<blockquote>
+<p>During the course of the VOTE, make sure that one or more of the reviewers have verified the signatures and hash files included with the release artifacts. If no one specifically mentions having done that during the VOTE, ask on the dev list and make sure someone does this before you proceed with the release. </p>
+</blockquote>
+<p>Tired of always having to manually check several artefacts, or having to come up with the correct
+shell commands to iterate through a list of files, the other day I wrote a simple script to download
+the KEYS file, import it, download all the artefacts, then iterate through them and verify the
+signature.</p>
+<p>Here&#8217;s the script. Licensed under the GPL licence.</p>
+<div class="highlight"><pre><span class="c">#!/usr/bin/env bash</span>
+
+<span class="nv">url</span><span class="o">=</span><span class="s2">&quot;&quot;</span>
+
+<span class="c"># From: https://blog.mafr.de/2007/08/05/cmdline-options-in-shell-scripts/</span>
+<span class="nv">USAGE</span><span class="o">=</span><span class="s2">&quot;Usage: `basename </span><span class="nv">$0</span><span class="s2">` [-hv] https://repository.apache.org/.../commons/commons-configuration/2.2/&quot;</span>
+
+<span class="c"># Parse command line options.</span>
+<span class="k">while</span> <span class="nb">getopts </span>hv: OPT<span class="p">;</span> <span class="k">do</span>
+    <span class="k">case</span> <span class="s2">&quot;</span><span class="nv">$OPT</span><span class="s2">&quot;</span> in
+        h<span class="o">)</span>
+            <span class="nb">echo</span> <span class="nv">$USAGE</span>
+            <span class="nb">exit </span>0
+            <span class="p">;;</span>
+        v<span class="o">)</span>
+            <span class="nb">echo</span> <span class="s2">&quot;`basename </span><span class="nv">$0</span><span class="s2">` version 0.0.1&quot;</span>
+            <span class="nb">exit </span>0
+            <span class="p">;;</span>
+        <span class="se">\?</span><span class="o">)</span>
+            <span class="c"># getopts issues an error message</span>
+            <span class="nb">echo</span> <span class="nv">$USAGE</span> &gt;<span class="p">;</span>
+    <span class="k">esac</span>
+<span class="k">done</span>
+
+<span class="c"># Remove the switches we parsed above.</span>
+<span class="nb">shift</span> <span class="sb">`</span>expr <span class="nv">$OPTIND</span> - 1<span class="sb">`</span>
+
+<span class="c"># We want at least one non-option argument. </span>
+<span class="c"># Remove this block if you don&#39;t need it.</span>
+<span class="k">if</span> <span class="o">[</span> <span class="nv">$# </span>-eq <span class="m">0</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+    <span class="nb">echo</span> <span class="nv">$USAGE</span> &gt;<span class="p">&amp;</span>2
+    <span class="nb">exit </span>1
+<span class="k">fi</span>
+
+<span class="c"># Access additional arguments as usual through </span>
+<span class="c"># variables $@, $*, $1, $2, etc. or using this loop:</span>
+<span class="nv">URL</span><span class="o">=</span><span class="nv">$1</span>
+
+<span class="nb">echo</span> <span class="s2">&quot;url: </span><span class="si">${</span><span class="nv">URL</span><span class="si">}</span><span class="s2">&quot;</span>
+
+<span class="c"># Use a local temporary directory</span>
+<span class="nv">BUILD_DIR</span><span class="o">=</span><span class="k">$(</span>mktemp -d<span class="k">)</span>
+<span class="nb">pushd</span> <span class="s2">&quot;</span><span class="nv">$BUILD_DIR</span><span class="s2">&quot;</span>
+
+<span class="nb">echo</span> <span class="s2">&quot;build dir: </span><span class="si">${</span><span class="nv">BUILD_DIR</span><span class="si">}</span><span class="s2">&quot;</span>
+
+<span class="c"># Download KEYS file</span>
+<span class="nv">KEYS_URL</span><span class="o">=</span>https://www.apache.org/dist/commons/KEYS
+
+<span class="nb">echo</span> <span class="s2">&quot;importing KEYS from: </span><span class="si">${</span><span class="nv">KEYS_URL</span><span class="si">}</span><span class="s2">&quot;</span>
+
+wget <span class="s2">&quot;</span><span class="nv">$KEYS_URL</span><span class="s2">&quot;</span>
+gpg --import KEYS
+
+<span class="c"># Download JARs and signature files</span>
+<span class="nb">echo</span> <span class="s2">&quot;downloading all jars and signature files...&quot;</span>
+
+wget -r -nd -np -e <span class="nv">robots</span><span class="o">=</span>off --wait <span class="m">1</span> -R <span class="s2">&quot;index.html*&quot;</span> <span class="s2">&quot;</span><span class="si">${</span><span class="nv">URL</span><span class="si">}</span><span class="s2">&quot;</span>
+
+<span class="c"># Check the files</span>
+<span class="k">for</span> x in *.jar<span class="p">;</span> <span class="k">do</span> gpg --verify <span class="s2">&quot;</span><span class="si">${</span><span class="nv">x</span><span class="si">}</span><span class="s2">&quot;</span>.asc<span class="p">;</span> <span class="k">done</span>
+
+<span class="c"># EOF</span>
+</pre></div>
+
+<p>The script can be found at GitHub too: <a href="https://github.com/kinow/dork-scripts/tree/3c519a74f28c08310ce2e65f8e860d61fd0c5c07/gpg/asf-sigs">https://github.com/kinow/dork-scripts/tree/3c519a74f28c08310ce2e65f8e860d61fd0c5c07/gpg/asf-sigs</a></p>
+
+<!-- html -->
+
+<p class="postmetadata">
+
+    <small>tags 
+     [&nbsp;<a
+        href="/tag/programming"
+        rel="tag">programming</a>&nbsp;]&nbsp;
+
+     [&nbsp;<a
+        href="/tag/shell%20script"
+        rel="tag">shell script</a>&nbsp;]&nbsp;
+
+     [&nbsp;<a
+        href="/tag/security"
+        rel="tag">security</a>&nbsp;]&nbsp;
+
+     [&nbsp;<a
+        href="/tag/opensource"
+        rel="tag">opensource</a>&nbsp;]&nbsp;
+
+     [&nbsp;<a
+        href="/tag/apache%20software%20foundation"
+        rel="tag">apache software foundation</a>&nbsp;]&nbsp;
+
+    </small>
+
+
+</p>
+
+</div>
+
+<div class="ui raised padded container segment">
     <h2><a href="/2017/09/13/removing-javadoc-svn-id-tags-with-shell-script" title="Permanent link">Removing Javadoc SVN Id Tags with Shell Script</a></h2>
     <p><small>kinow</small> @ <small>Sep 13, 2017&nbsp;16:49:26</small></p>
 
