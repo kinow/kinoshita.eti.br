@@ -179,6 +179,60 @@
                     
                     <div class="ui raised padded container segment">
                         <h2>
+                            <a href="/2013/04/17/graphite-broken-images" title="Permanent link">Graphite: Broken images</a>
+                        </h2>
+                        <small>kinow</small> @ <small>Apr 17, 2013&nbsp;11:36:38 (<span class='stardate' data-input-date='Apr 17, 2013'></span>)</small>
+                        <div class="entry">
+                            
+
+
+
+
+
+<a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2013/04/17/graphite-broken-images" data-text="Graphite: Broken images" data-via="kinow" data-hashtags="opensource">Tweet</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+                            
+                            <p>This morning I was setting up a <a href="http://graphite.wikidot.com/" title="Graphite">Graphite </a>server to collect metrics with <a href="https://github.com/etsy/statsd/" title="statsd">statsd</a>, <a href="http://logstash.net/" title="LogStash">LogStash </a>and <a href="https://github.com/jmxtrans/jmxtrans" title="jmxtrans">jmxtrans</a>. After following the instructions from @jgeurst, I&#8217;ve successfully installed Graphite.</p>
+
+<p>I had previously installed another test box, so I decided to take a deeper look at the settings, write a <a href="https://puppetlabs.com/" title="Puppet">puppet</a> manifest and prepare this new box to become a production server. However, after browsing the webapp, all graphs were broken.</p>
+
+<p>After googling a while, reading forums and bugs, I decided to open the <em>$GRAPHITE_HOME/webapp/graphite/render/views.py</em>, adding <em>log.rendering(&#8230;)</em> statements (not the most elegant solution, I know).</p>
+
+<p>By following the program workflow I found out it was entering a block after checking if it should remotely render the image. This feature is turned on/off by <strong>REMOTE_RENDERING</strong> = True/False, in local_settings.py.</p>
+
+<p>After setting this to <em>False</em> the problem was solved.</p>
+                            
+                            
+                            
+                        </div>
+                        <p class="postmetadata">
+                            
+                            <small>tags 
+                             [&nbsp;<a
+                                href="/tag/monitoring/"
+                                rel="tag">monitoring</a>&nbsp;]&nbsp;
+                            
+                             [&nbsp;<a
+                                href="/tag/python/"
+                                rel="tag">python</a>&nbsp;]&nbsp;
+                            
+                            </small>
+                            
+                            
+                            <br/>
+                            <small>posted in 
+                            [&nbsp;<a
+                                href="/blog"
+                                title="View all posts in blog"
+                                rel="category tag">blog</a>&nbsp;]
+                                &nbsp;category
+                            </small>
+                            
+                        </p>
+                    </div>
+                    
+                    <div class="ui raised padded container segment">
+                        <h2>
                             <a href="/2013/03/31/fix-laggy-flash-pepper-in-chrome" title="Permanent link">Fix laggy Flash (Pepper) in Chrome</a>
                         </h2>
                         <small>kinow</small> @ <small>Mar 31, 2013&nbsp;11:32:10 (<span class='stardate' data-input-date='Mar 31, 2013'></span>)</small>
@@ -388,75 +442,6 @@
                                 href="/functional%20programming"
                                 title="View all posts in functional programming"
                                 rel="category tag">functional programming</a>&nbsp;]
-                                &nbsp;category
-                            </small>
-                            
-                        </p>
-                    </div>
-                    
-                    <div class="ui raised padded container segment">
-                        <h2>
-                            <a href="/2012/11/07/running-bdd-tests-from-testlink-in-jenkins" title="Permanent link">Running BDD tests from TestLink in Jenkins</a>
-                        </h2>
-                        <small>kinow</small> @ <small>Nov 07, 2012&nbsp;14:26:08 (<span class='stardate' data-input-date='Nov 07, 2012'></span>)</small>
-                        <div class="entry">
-                            
-
-
-
-
-
-<a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2012/11/07/running-bdd-tests-from-testlink-in-jenkins" data-text="Running BDD tests from TestLink in Jenkins" data-via="kinow" data-hashtags="opensource">Tweet</a>
-<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-                            
-                            <p>Last night and this morning I spent some time working on running <a href="http://en.wikipedia.org/wiki/Behavior-driven_development" title="BDD">BDD</a> tests that were created in <a href="http://www.teamst.org" title="TestLink">TestLink</a> in <a href="http://jenkins-ci.org" title="Jenkins CI">Jenkins</a>, using <a href="https://wiki.jenkins-ci.org/display/JENKINS/TestLink+Plugin" title="Jenkins TestLink Plugin">testlink-plugin</a>.</p>
-
-<p>Similar integration has already been proposed in <a href="http://www.sqaopen.net/blog/en/?tag=jinfeng" title="JinFeng - by Olivier Renault">JinFeng</a>, by Olivier Renault. Basically, you write BDD stories in TestLink (a story goes into the Test Case summary), Jenkins retrieves these stories and executes them using a skeleton project.</p>
-
-<div class='row'>
-<div class="ui container" style='text-align: center;'>
-<figure>
-<a href="/2012/11/07/running-bdd-tests-from-testlink-in-jenkins/tl_bdd.png" rel="prettyPhoto" class="thumbnail" title="TestLink BDD">
-<img class="ui fluid image" src="/2012/11/07/running-bdd-tests-from-testlink-in-jenkins/tl_bdd.png" alt="TestLink BDD" />
-</a>
-<figcaption>TestLink BDD</figcaption>
-</figure>
-</div>
-</div>
-
-<p>There are many ways to use BDD. In some of them you write code like Java, Ruby or Perl, and in others you write a DSL. I started working with JBehave, but for this integration, I preferred to use a <a href="http://en.wikipedia.org/wiki/Domain-specific_language" title="DSL">DSL</a> - as TestLink doesn&#8217;t maintain source code, only test cases -, so I switched to <a href="http://www.easyb.org" title="easyb">easyb</a>.</p>
-
-
-                            
-                            
-                            <p>( <a href="/2012/11/07/running-bdd-tests-from-testlink-in-jenkins" >Read more ...</a> )</p>
-                            
-                            
-                        </div>
-                        <p class="postmetadata">
-                            
-                            <small>tags 
-                             [&nbsp;<a
-                                href="/tag/testlink/"
-                                rel="tag">testlink</a>&nbsp;]&nbsp;
-                            
-                             [&nbsp;<a
-                                href="/tag/jenkins/"
-                                rel="tag">jenkins</a>&nbsp;]&nbsp;
-                            
-                             [&nbsp;<a
-                                href="/tag/software%20quality/"
-                                rel="tag">software quality</a>&nbsp;]&nbsp;
-                            
-                            </small>
-                            
-                            
-                            <br/>
-                            <small>posted in 
-                            [&nbsp;<a
-                                href="/jenkins"
-                                title="View all posts in jenkins"
-                                rel="category tag">jenkins</a>&nbsp;]
                                 &nbsp;category
                             </small>
                             

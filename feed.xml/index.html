@@ -13,10 +13,79 @@
     <atom:link href="/blog/feed.xml" rel="self" type="application/rss+xml" />
     <link>/</link>
     <description></description>
-    <lastBuildDate>1509948708.5161476</lastBuildDate>
+    <lastBuildDate>1509962230.666069</lastBuildDate>
     <language>en-US</language>
     <generator>PieCrust 2.1.1</generator>
  
+
+<item>
+    <title>Using formatter exclusions with Eclipse</title>
+    <pubDate>Nov 06, 2017</pubDate>
+    <link>/2017/11/06/using-formatter-exclusions-with-eclipse</link>
+    <dc:creator></dc:creator>
+    <description><p>Sometimes when you are formatting your code in Eclipse, you may want to prevent
+some parts of the code from being formatted. Especially when using Java 8 lambdas
+and optionals.</p>
+<p>Here&#8217;s some code before being formatted by Eclipse&#8217;s default formatter rules.</p>
+<p><small>Code adapted from: blog post <a href="http://javadeau.lawesson.se/2016/10/java-8-streams-in-hibernate-and-beyond.html"><i>Java d&#8217;eau &dash; Java 8: Streams in Hibernate and Beyond</i></a></small></p>
+<div class="highlight"><pre><span class="n">session</span><span class="o">.</span><span class="na">createQuery</span><span class="o">(</span><span class="s">&quot;SELECT h FROM Hare h&quot;</span><span class="o">,</span> <span class="n">Hare</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">stream</span><span class="o">()</span>
+    <span class="o">.</span><span class="na">filter</span><span class="o">(</span><span class="n">h</span> <span class="o">-&gt;</span> <span class="n">h</span><span class="o">.</span><span class="na">getId</span><span class="o">()</span> <span class="o">==</span> <span class="mi">1</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">map</span><span class="o">(</span><span class="n">Hare</span><span class="o">::</span><span class="n">getName</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">forEach</span><span class="o">(</span><span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">::</span><span class="n">println</span><span class="o">);</span>
+</pre></div>
+
+<p>Then after formatting.</p>
+<div class="highlight"><pre><span class="n">session</span><span class="o">.</span><span class="na">createQuery</span><span class="o">(</span><span class="s">&quot;SELECT h FROM Hare h&quot;</span><span class="o">,</span> <span class="n">Hare</span><span class="o">.</span><span class="na">class</span><span class="o">).</span><span class="na">stream</span><span class="o">().</span><span class="na">filter</span><span class="o">(</span><span class="n">h</span> <span class="o">-&gt;</span> <span class="n">h</span><span class="o">.</span><span class="na">getId</span><span class="o">()</span> <span class="o">==</span> <span class="mi">1</span><span class="o">).</span><span class="na">map</span><span class="o">(</span><span class="n">Hare</span><span class="o">::</span><span class="n">getName</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">forEach</span><span class="o">(</span><span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">::</span><span class="n">println</span><span class="o">);</span>
+</pre></div>
+
+<p>Which doesn&#8217;t look very appealing, ay? You can change this behaviour at least in two ways.
+The first by telling the formatter to ignore this block, through a special formatter tag in your code.</p>
+<p>First you need to enable this feature in Eclipse, as it is disabled by default. This setting is found in
+the preferences <em>Java</em> &rarr; <em>Code Style</em> &rarr; <em>Formatter</em> &rarr; <em>Edit</em> &rarr; <em>Off/On Tags</em>.</p>
+<p style='text-align: center;'>
+<img style="display: inline" class="ui image" src="/2017/11/06/using-formatter-exclusions-with-eclipse/formatter-tags.png" alt="A screen shot of Eclipse formatter settings" title="Enabling formatter tags in Eclipse" />
+<br/>
+<small>Enabling formatter tags in Eclipse</small>
+</p>
+
+<p>Then formatting the following code won&#8217;t change a thing in the block surrounded by the formatter tags.</p>
+<div class="highlight"><pre><span class="cm">/* @Formatter:off */</span>
+<span class="n">session</span><span class="o">.</span><span class="na">createQuery</span><span class="o">(</span><span class="s">&quot;SELECT h FROM Hare h&quot;</span><span class="o">,</span> <span class="n">Hare</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">stream</span><span class="o">()</span>
+    <span class="o">.</span><span class="na">filter</span><span class="o">(</span><span class="n">h</span> <span class="o">-&gt;</span> <span class="n">h</span><span class="o">.</span><span class="na">getId</span><span class="o">()</span> <span class="o">==</span> <span class="mi">1</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">map</span><span class="o">(</span><span class="n">Hare</span><span class="o">::</span><span class="n">getName</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">forEach</span><span class="o">(</span><span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">::</span><span class="n">println</span><span class="o">);</span>
+<span class="cm">/* @Formatter:on */</span>
+</pre></div>
+
+<p>But having to type these tags can become annoying, and cause more commits and pull requests to be
+unnecessarily created. So an alternative approach can be to change the formatter
+<a href="https://stackoverflow.com/a/34492247/1762101">behaviour globally</a>.</p>
+<p>This can be done in Eclipse in another option under the formatter options, <em>Java</em> &rarr; <em>Code Style</em>
+&rarr; <em>Formatter</em> &rarr; <em>Edit</em> &rarr; <em>Line Wrapping</em> &rarr; <em>Function Calls</em> &rarr;
+<em>Qualified invocations</em>.</p>
+<p>You will have to choose <em>&ldquo;Wrap all elements, except first element if not necessary&rdquo;</em>
+under <em>Line wrapping policy</em>. And also check <em>&ldquo;Force split, even if line shorter than
+maximum line width&rdquo;</em>.</p>
+<p style='text-align: center;'>
+<img style="display: inline" class="ui image" src="/2017/11/06/using-formatter-exclusions-with-eclipse/global-setting.png" alt="A screen shot of Eclipse formatter settings" title="Enabling custom formatter behaviour globally" />
+<br/>
+<small>Enabling custom formatter behaviour globally</small>
+</p>
+
+<p>Once it is done, your code will look like the following no matter what.</p>
+<div class="highlight"><pre><span class="n">session</span><span class="o">.</span><span class="na">createQuery</span><span class="o">(</span><span class="s">&quot;SELECT h FROM Hare h&quot;</span><span class="o">,</span> <span class="n">Hare</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">stream</span><span class="o">()</span>
+    <span class="o">.</span><span class="na">filter</span><span class="o">(</span><span class="n">h</span> <span class="o">-&gt;</span> <span class="n">h</span><span class="o">.</span><span class="na">getId</span><span class="o">()</span> <span class="o">==</span> <span class="mi">1</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">map</span><span class="o">(</span><span class="n">Hare</span><span class="o">::</span><span class="n">getName</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">forEach</span><span class="o">(</span><span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">::</span><span class="n">println</span><span class="o">);</span>
+</pre></div>
+
+<p>Happy coding!</p>
+<p>&hearts; Open Source</p></description>
+</item>
 
 <item>
     <title>Quickly Verifying jar Signatures For ASF Releases</title>
@@ -539,65 +608,6 @@ when creating the Markdown instance.</p>
 </div>
 
 <p>Simplified and changed her angle. On <a href="http://kinow.deviantart.com/art/Archer1-688782846">DeviantArt</a> too.</p></description>
-</item>
-
-<item>
-    <title>How to remove the signature from e-mails with NLP?</title>
-    <pubDate>Jun 14, 2017</pubDate>
-    <link>/2017/06/14/how-to-remove-the-signature-from-emails-with-nlp</link>
-    <dc:creator></dc:creator>
-    <description><p>Some time ago I stumbled across <a href="https://github.com/mynameisvinn/EmailParser">EmailParser</a>, a Python utility to remove e-mail signatures. Here&#8217;s a sample input e-mail from the project documentation.</p>
-<div class="highlight"><pre>Wendy – thanks for the intro! Moving you to bcc.
-
-Hi Vincent – nice to meet you over email. Apologize for the late reply, I was on PTO for a couple weeks and this is my first week back in office. As Wendy mentioned, I am leading an AR/VR taskforce at Foobar Retail Solutions. The goal of the taskforce is to better understand how AR/VR can apply to retail/commerce and if/what is the role of a shopping center in AR/VR applications for retail.
-
-Wendy mentioned that you would be a great person to speak to since you are close to what is going on in this space. Would love to set up some time to chat via phone next week. What does your availability look like on Monday or Wednesday?
-
-Best,
-Joe Smith
-
-Joe Smith | Strategy &amp; Business Development
-111 Market St. Suite 111| San Francisco, CA 94103
-M: 111.111.1111| joe@foobar.com
-</pre></div>
-
-<p>And here&#8217;s what it looks like afterwards.</p>
-<div class="highlight"><pre>Wendy – thanks for the intro! Moving you to bcc.
-
-Hi Vincent – nice to meet you over email. Apologize for the late reply, I was on PTO for a couple weeks and this is my first week back in office. As Wendy mentioned, I am leading an AR/VR taskforce at Foobar Retail Solutions. The goal of the taskforce is to better understand how AR/VR can apply to retail/commerce and if/what is the role of a shopping center in AR/VR applications for retail.
-
-Wendy mentioned that you would be a great person to speak to since you are close to what is going on in this space. Would love to set up some time to chat via phone next week. What does your availability look like on Monday or Wednesday?
-</pre></div>
-
-<p>As you can see, it removed all the lines after the main part of the message (i.e. after the three paragraphs). Here&#8217;s what the Python code looks like.</p>
-<div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">Parser</span> <span class="kn">import</span> <span class="n">read_email</span><span class="p">,</span> <span class="n">strip</span><span class="p">,</span> <span class="n">prob_block</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">spacy.en</span> <span class="kn">import</span> <span class="n">English</span>
-
-<span class="o">&gt;&gt;&gt;</span> <span class="n">pos</span> <span class="o">=</span> <span class="n">English</span><span class="p">()</span>  <span class="c"># part-of-speech tagger</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">msg_raw</span> <span class="o">=</span> <span class="n">read_email</span><span class="p">(</span><span class="s">&#39;emails/test1.txt&#39;</span><span class="p">)</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">msg_stripped</span> <span class="o">=</span> <span class="n">strip</span><span class="p">(</span><span class="n">msg_raw</span><span class="p">)</span>  <span class="c"># preprocessing text before POS tagging</span>
-
-<span class="c"># iterate through lines, write to file if not signature block</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">generate_text</span><span class="p">(</span><span class="n">msg_stripped</span><span class="p">,</span> <span class="o">.</span><span class="mi">9</span><span class="p">,</span> <span class="n">pos_tagger</span><span class="p">,</span> <span class="s">&#39;emails/test1_clean.txt&#39;</span><span class="p">)</span>
-</pre></div>
-
-<p>What got me interested about this utility was the use of NLP. I couldn&#8217;t imagine how someone could use NLP for that. And I liked the simplicity of the approach, which is not perfect, but can be useful someday.</p>
-<p>After the imports in the code, it creates a <a href="https://en.wikipedia.org/wiki/Part_of_speech">Part of Speech</a> tagger using <a href="https://spacy.io/">spaCy</a> NLP library, reads the e-mail from a file, and sripts and creates an array with each paragraph of the message.</p>
-<p>The magic happens in the <code>generate_text</code> function, which receives the <strong>array of paragraphs</strong>, a <strong>threshold</strong>, the <strong>POS tagger</strong>, and the <strong>output destination</strong>. Here&#8217;s what the function does.</p>
-<div class="highlight"><pre>for each message
-    if probability ( signature block | message ) &lt; threshold
-        write to output file
-</pre></div>
-
-<p>And the formula for calculating the probability is quite simple too.</p>
-<div class="highlight"><pre>1. For a given paragraph (message block), find all the sentences in it.
-2. Then for each word (token) in the sentence, count the number of times a non-verb appears.
-3. Return the proportion of non-verbs per sentence, i.e. number of non-verbs / number of sentences.
-</pre></div>
-
-<p>In summary, it discards blocks that do not contain enough verbs to be considered a message block, being treated as signature blocks instead.</p>
-<p>Never thought about using an approach like this. It may definitely be helpful when doing data analysis, information retrieval, or scraping data from the web. Not necessarily with e-mails and signatures, but you got the gist of it.</p>
-<p>&hearts; Open Source</p></description>
 </item>
 
 </channel>

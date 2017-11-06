@@ -13,10 +13,75 @@
     <atom:link href="/blog/feed.xml" rel="self" type="application/rss+xml" />
     <link>/</link>
     <description></description>
-    <lastBuildDate>1509948708.5161476</lastBuildDate>
+    <lastBuildDate>1509962230.666069</lastBuildDate>
     <language>en-US</language>
     <generator>PieCrust 2.1.1</generator>
  
+
+<item>
+    <title>Spring Cloud encrypted values and Spring PropertySources</title>
+    <pubDate>Apr 14, 2017</pubDate>
+    <link>/2017/04/14/spring-cloud-encrypted-values-and-spring-propertysources</link>
+    <dc:creator></dc:creator>
+    <description><p>As I could not find any documentation for that, I decided to write it as a note to myself
+in case I use the
+<a href="https://cloud.spring.io/spring-cloud-config/spring-cloud-config.html#_encryption_and_decryption">encryption and decryption</a>
+with Spring Cloud again.</p>
+<p>In Spring and Spring Boot, you normally have multiple sources of properties, like multiple
+properties files, environment properties and variables, and so it goes. In the Spring API,
+these are represented as
+<a href="http://docs.spring.io/spring/docs/current/javadoc-api/org/springframework/context/annotation/PropertySource.html">PropertySource</a>&#8216;s.</p>
+<p>In a Spring Boot application, you would be used to overriding certain properties
+by defining environments and using an application-production.properties file, or
+overriding values with environment properties.</p>
+<p>This is common in
+<a href="https://aws.amazon.com/blogs/devops/deploying-a-spring-boot-application-on-aws-using-aws-elastic-beanstalk/">Spring Boot applications deployed to Amazon Elastic Beanstalk</a>.</p>
+<p>Some time ago another team at work found that overriding did not always work when you have
+encrypted values in your properties files. Even if you specified new values in the
+Amazon Elastic Beanstalk application configuration.</p>
+<p>Yesterday, while debugging the issue and reading Spring Cloud source code, I found its
+<a href="https://github.com/spring-cloud/spring-cloud-commons/blob/9675df02f6a2c01766711f7dee3c4d2818b7d716/spring-cloud-context/src/main/java/org/springframework/cloud/bootstrap/encrypt/EnvironmentDecryptApplicationInitializer.java#L44">EnvironmentDecryptApplicationInitializer</a>.</p>
+<p>It basically iterates through all loaded property sources, looking for values that start with
+{cipher}. Then it calls the
+<a href="http://docs.spring.io/spring-security/site/docs/current/apidocs/org/springframework/security/crypto/encrypt/TextEncryptor.html">Spring Security TextEncryptor</a>
+defined in the application.</p>
+<p>Finally, it creates a new property source, called decrypted, with the decrypted values. So when
+your application looks for a property called XPTO, and if it has been encrypted, it will
+find the value in the decrypted propery source, regardless of whether you tried to override it or
+not.</p>
+<div class="highlight"><pre><span class="c"># Property sources listed in Eclipse IDE</span>
+
+<span class="o">[</span>
+  servletConfigInitParams,
+  servletContextInitParams,
+  systemProperties,
+  systemEnvironment,
+  random,
+  applicationConfigurationProperties,
+  springCloudClientHostInfo,
+  defaultProperties
+<span class="o">]</span>
+
+<span class="c"># When using encrypted values</span>
+
+<span class="o">[</span>
+  decrypted, &lt;-------- created by Spring Cloud, with decrypted values. Prepended to the list of property sources
+  servletConfigInitParams,
+  servletContextInitParams,
+  systemProperties,
+  systemEnvironment,
+  random,
+  applicationConfigurationProperties,
+  springCloudClientHostInfo,
+  defaultProperties
+<span class="o">]</span>
+</pre></div>
+
+<p>So in case you have encrypted values in your Spring application (and you are using Spring Cloud, 
+of course) remember that these values will have higher priority, and can only be overriden by other
+encrypted values.</p>
+<p>&hearts; Open Source</p></description>
+</item>
 
 <item>
     <title>Fixing Qt warning "QLayout: Attempting to add QLayout "" to QWidget "", which already has a layout"</title>
@@ -463,51 +528,6 @@ tuned to release announcements in the mailing list!</p>
 a thread in the <a href="https://commons.apache.org/mail-lists.html">mailing list</a>,
 open a <a href="https://issues.apache.org/jira/browse/TEXT">JIRA issue</a>, or submit a
 <a href="https://github.com/apache/commons-text/pulls">pull request</a>.</p>
-<p>Happy hacking!</p></description>
-</item>
-
-<item>
-    <title>Plotting Auckland with OSMnx</title>
-    <pubDate>Jan 05, 2017</pubDate>
-    <link>/2017/01/05/plotting-auckland-with-osmnx</link>
-    <dc:creator></dc:creator>
-    <description><div class='row'>
-<div class="ui fluid container">
-<figure>
-<a  href="/2017/01/05/plotting-auckland-with-osmnx/figure_1.png" rel="prettyPhoto" class="thumbnail" title="Auckland">
-<img style="height: 400px;" class="ui image" src="/2017/01/05/plotting-auckland-with-osmnx/figure_1.png" alt="Auckland" />
-</a>
-<figcaption>Auckland</figcaption>
-</figure>
-</div>
-</div>
-
-<p>A couple of days ago I saw <a href="https://www.reddit.com/r/gis/comments/5lnjxs/creating_squaremile_figureground_diagrams_of/">a thread in reddit</a>
-about OSMnx. It is a utilty for interacting with the OpenStreeMap (OSM)
-API, manipulate it in pure Python and using libraries like NetworkX (a Python graph package).</p>
-<p>With it you can do things like <q>visualize cul-de-sacs or one-way streets, plot shortest-path routes, or calculate stats like intersection density, average node connectivity, or betweenness centrality</q>. Or simply
-plot the OSM data as in the graph above.</p>
-<p>The source code is hosted at GitHub: <a href="https://github.com/gboeing/osmnx">https://github.com/gboeing/osmnx</a>.</p>
-<blockquote cite="https://github.com/gboeing/osmnx">OSMnx is a Python 2+3 package that lets you download spatial geometries and construct, project, visualize, and analyze street networks from OpenStreetMap&#8217;s APIs. Users can download and construct walkable, drivable, or bikable urban networks with a single line of Python code, and then easily analyze and visualize them.</blockquote>
-
-<p>The only issue I found while creating the map for Auckland using the example from the project
-README, was that the script would exit with the following error: <strong>&#8220;ValueError: Geometry must be a shapely Polygon or MultiPolygon&#8221;</strong>.</p>
-<p>After looking at the list of dependencies and finding that everything seemed to be OK,
-I started looking at the project issues. And thankfully someone else had found the
-<a href="https://github.com/gboeing/osmnx/issues/16">same issue</a>
-and the maintainer of the project answered how to fix it.</p>
-<p>The issue was that the OSM API returns two <a href="https://nominatim.openstreetmap.org/search?format=json&amp;limit=10&amp;dedupe=0&amp;polygon_geojson=1&amp;q=Auckland,%20New%20Zealand">entries for Auckland</a>
-, where the first one is a Point, and the
-second is the one that we want (a Polygon). The application defaults to using the first element,
-so in order to change it you have to give a <em>which_result</em> argument.</p>
-<div class="highlight"><pre><span class="c">#!/usr/bin/env python3</span>
-
-<span class="kn">import</span> <span class="nn">osmnx</span> <span class="kn">as</span> <span class="nn">ox</span>
-<span class="n">G</span> <span class="o">=</span> <span class="n">ox</span><span class="o">.</span><span class="n">graph_from_place</span><span class="p">(</span><span class="s">&#39;Auckland, NZ&#39;</span><span class="p">,</span> <span class="n">network_type</span><span class="o">=</span><span class="s">&#39;drive&#39;</span><span class="p">,</span> <span class="n">which_result</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
-<span class="n">ox</span><span class="o">.</span><span class="n">plot_graph</span><span class="p">(</span><span class="n">ox</span><span class="o">.</span><span class="n">project_graph</span><span class="p">(</span><span class="n">G</span><span class="p">))</span>
-</pre></div>
-
-<p>And after that, and after waiting a few minutes, you should get your map :-)</p>
 <p>Happy hacking!</p></description>
 </item>
 
