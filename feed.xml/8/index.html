@@ -13,10 +13,54 @@
     <atom:link href="/blog/feed.xml" rel="self" type="application/rss+xml" />
     <link>/</link>
     <description></description>
-    <lastBuildDate>1511945413.5585487</lastBuildDate>
+    <lastBuildDate>1512041197.6616573</lastBuildDate>
     <language>en-US</language>
     <generator>PieCrust 2.1.1</generator>
  
+
+<item>
+    <title>Too many SQL variables exception in Graphite with SQLite3</title>
+    <pubDate>Jul 04, 2013</pubDate>
+    <link>/2013/07/04/too_many_sql_variables_in_graphite_with_sqlite3</link>
+    <dc:creator></dc:creator>
+    <description><p>Having run <a href="http://graphite.wikidot.com/">Graphite</a> for a while, today I found a rather annoying issue. We were using 
+<a href="https://code.launchpad.net/~lucio.torre/graphite/add-events/+merge/69142">events</a>, and everything was working perfectly fine so far. But for the 24 last hours, 
+the graph was blank. </p>
+<p>Actually, in the dashboard, the graph was <em>missing</em>, being displayed as a gray box. 
+Enabling the web inspector in Google Chrome I got the graph URL. Opening the link in 
+a new tab gave me the exception message: <strong>too many SQL variables</strong> (<sup>1</sup>).</p>
+<p>After some research, I found out this was a bug in SQLite. After trying to hack the code, 
+and being concerned about using a patched version of Graphite and having to update it 
+later, I decided to switch database. </p>
+<p>But to avoid losing the graphs, users and other settings, including the events, I 
+migrated the SQLite database to a MySQL server. This MySQL server was already installed in 
+the server machine, since this machine hosted a <a href="http://www.zabbix.com/">Zabbix</a> server too.</p>
+<p>Here are the steps required to migrate your database from SQLite to MySQL (<sup>2</sup>).</p>
+<ul>
+<li>Download <strong>sqlite3_mysql</strong> python script from <a href="http://www.redmine.org/boards/2/topics/12793">http://www.redmine.org/boards/2/topics/12793</a></li>
+<li>Stop Apache/Nginx</li>
+<li>mysql -u user -p -e &#8220;create database redmine graphite set utf8;&#8221; </li>
+<li>sqlite3 graphite.db .dump | sqlite3-to-mysql.py | mysql -uroot -pyourpass graphite</li>
+<li>Start Apache again</li>
+</ul>
+<p>After tail&#8217;ing the Graphite webapp log file, </p>
+<div class="highlight"><pre>tail f- storage/log/webapp/error.log
+</pre></div>
+
+<p>I noticed the Python MySQLdb wasn&#8217;t installed.</p>
+<div class="highlight"><pre><span class="n">ImproperlyConfigured</span><span class="p">:</span> <span class="n">Error</span> <span class="n">loading</span> <span class="n">MySQLdb</span> <span class="n">module</span><span class="p">:</span> <span class="n">No</span> <span class="n">module</span> <span class="n">named</span> <span class="n">MySQLdb</span>
+</pre></div>
+
+<p>My server was an Ubuntu 13.04, so I installed the module simply with the following 
+command.</p>
+<div class="highlight"><pre>apt-get install python-mysqldb
+</pre></div>
+
+<p>Hope that helps!</p>
+<p><small><sup>1</sup> You may have to enable *DEBUG* in your Django settings for seeing the exception in your browser</small></p>
+
+<p><small><sup>2</sup> Zabbix needed some minor tweaks in order to use [MariaDB](https://mariadb.org/), but probably you can give it a try too</small></p></description>
+</item>
 
 <item>
     <title>Graphite: Broken images</title>
@@ -201,24 +245,6 @@
 <p>Basically, you have to add the compiler flags <em>-fprofile-arcs -ftest-coverage</em> and link the executable with -lgcov. Take a look at the project&#8217;s Makefile and you&#8217;ll notice how simple it is. In order to have Jenkins interpreting your coverage report, you&#8217;ll have to convert it to <a href="http://cobertura.sourceforge.net" title="Cobertura">cobertura</a> XML. There is a Python utility that can be used for this: <a href="https://software.sandia.gov/trac/fast/wiki/gcovr" title="gcovr">gcovr</a>. Download it and copy it to somewhere where Jenkins can execute it (e.g.: <em>/usr/local/bin</em>).</p>
 
 <p>Now, if you&#8217;ve followed the instructions from the previous post, you should have a job that reports your GoogleTest tests from Jenkins to TestLink using the plug-in, and is downloading the source code from GitHub. Add an extra build step  (Shell) to execute <em>gcovr</em>.</p>
-
-</description>
-</item>
-
-<item>
-    <title>Jenkins, TestLink and GTest in 5 minutes (or so)</title>
-    <pubDate>Oct 11, 2012</pubDate>
-    <link>/2012/10/11/jenkins-testlink-and-gtest-in-5-minutes-or-so</link>
-    <dc:creator></dc:creator>
-    <description><p>This is a 5 minutes guide on creating a job for a C++ project in <a href="http://www.jenkins-ci.org" title="Jenkins CI">Jenkins</a> with <a href="http://code.google.com/p/googletest" title="GoogleTest">GoogleTest</a> and reporting the test results back to <a href="http://www.teamst.org" title="TestLink">TestLink</a>, with <a href="https://wiki.jenkins-ci.org/display/JENKINS/TestLink+Plugin" title="Jenkins TestLink Plug-in">testlink-plugin</a>. </p>
-
-<h2>The test project with GoogleTest</h2>
-
-<p>For this simple guide we will use the samples that come with <a href="https://github.com/kinow/gtest-tap-listener" title="GTest TAP Listener">GTest TAP Listener</a>. You can get the code from GitHub with <code>git clone git://github.com/kinow/gtest-tap-listener.git</code>. Take a look at <em>gtest-tap-listener/samples/src/</em>, there you will find two C++ files: <em>gtest_main.cc</em> and <em>gtest_testHelloWorld.cc</em>.</p>
-
-<p><em>gtest_main.cc</em> has the <a href="http://code.google.com/p/googletest/wiki/Primer#Writing_the_main()_Function" title="GTest main function">main function</a>, and executes the test suite. And <em>gtest_testHelloWorld.cc</em> has the test cases and tests. Take note of the test case and tests names.</p>
-
-<p><a href="/2012/10/11/jenkins-testlink-and-gtest-in-5-minutes-or-so/screenshot_001.png"><img src="/2012/10/11/jenkins-testlink-and-gtest-in-5-minutes-or-so/screenshot_001.png" alt="" title="gtest_testHelloWorld.cc" width="546" height="482" class="aligncenter size-full wp-image-1083" /></a></p>
 
 </description>
 </item>

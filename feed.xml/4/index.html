@@ -13,10 +13,46 @@
     <atom:link href="/blog/feed.xml" rel="self" type="application/rss+xml" />
     <link>/</link>
     <description></description>
-    <lastBuildDate>1511945413.5585487</lastBuildDate>
+    <lastBuildDate>1512041197.6616573</lastBuildDate>
     <language>en-US</language>
     <generator>PieCrust 2.1.1</generator>
  
+
+<item>
+    <title>Apache Commons Text</title>
+    <pubDate>Jan 07, 2017</pubDate>
+    <link>/2017/01/07/apache-commons-text</link>
+    <dc:creator></dc:creator>
+    <description><p>There is a new component in Apache Commons: Apache Commons Text. The 1.0 release might be announced
+in the next weeks. The current site is still in the <a href="http://commons.apache.org/sandbox/commons-text/">Commons Sandbox</a>,
+but it will change with the 1.0 release. The promotion from the sandbox
+<a href="http://markmail.org/message/dm7xwv5wc6z7wme3">happened a few days ago</a> in
+the project mailing list.</p>
+<p>Here&#8217;s the project description: <strong>Apache Commons Text is a library focused on algorithms working on strings</strong>.</p>
+<p>There was <a href="http://markmail.org/message/3k7m2zrzboji333r">a thread on the mailing list</a>
+some time ago (Oct/2014) when we first discussed the component idea. Since then
+many people contributed porting code from
+<a href="http://commons.apache.org/proper/commons-lang/">Apache Commons Lang</a>,
+<a href="http://lucene.apache.org/">Apache Lucene</a>, donating code from existing projects, and with new ideas.</p>
+<p><strong>It is important to be aware that certain parts of Apache Commons Lang are
+being marked as deprecated, and will be removed in the future, after Apache Commons Text
+1.0 is out</strong>. For example: <a href="https://commons.apache.org/proper/commons-lang/apidocs/org/apache/commons/lang3/StringUtils.html">StringUtils</a>,
+and <a href="https://commons.apache.org/proper/commons-lang/apidocs/org/apache/commons/lang3/RandomStringUtils.html">RandomStringUtils</a>.</p>
+<p>That will happen probably in a 4.x release of Apache Commons Lang, if everything
+goes well with Apache Commons Text :-)</p>
+<p>And there are already future features in
+<a href="https://github.com/apache/commons-text/branches/all">branches too</a>.
+It was decided that these features
+needed further work, so they will probably be included in next releases.</p>
+<p>So that&#8217;s a little bit of background on the new component that will be released soon.
+If you have code using Apache Commons Lang, you might be interested in staying
+tuned to release announcements in the mailing list!</p>
+<p>And should you have suggestions and would like to contribute, feel free to join and start
+a thread in the <a href="https://commons.apache.org/mail-lists.html">mailing list</a>,
+open a <a href="https://issues.apache.org/jira/browse/TEXT">JIRA issue</a>, or submit a
+<a href="https://github.com/apache/commons-text/pulls">pull request</a>.</p>
+<p>Happy hacking!</p></description>
+</item>
 
 <item>
     <title>Plotting Auckland with OSMnx</title>
@@ -339,35 +375,6 @@ it will alter and save the change your file).</p>
 <p>Here the first argument to sed, <em>-i</em> is for in place. Then that strange <em>1i</em>
 means that it will insert something before the first line, once. Then we have our header,
 and finally the file.</p>
-<p>Happy hacking!</p></description>
-</item>
-
-<item>
-    <title>Content negotiation with Spring Boot and React</title>
-    <pubDate>Nov 07, 2016</pubDate>
-    <link>/2016/11/07/content-negotiation-with-spring-boot-and-react</link>
-    <dc:creator></dc:creator>
-    <description><p>A few days ago I had a bug in a system built with Spring Boot and React. The frontend application
-was using a REST client in React, built in a similar way to what is found in the documentation, and
-also in blogs.</p>
-<div class="highlight"><pre><span class="kr">import</span> <span class="nx">rest</span> <span class="nx">from</span> <span class="s1">&#39;rest&#39;</span><span class="p">;</span>
-<span class="kr">const</span> <span class="nx">Rest</span> <span class="o">=</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="nx">rest</span><span class="p">.</span><span class="nx">wrap</span><span class="p">(</span><span class="nx">mime</span><span class="p">);</span>
-</pre></div>
-
-<p>However, for one of the Spring Boot application endpoints, the React component was not working. The
-response seemed to be OK in the Network tab, of the browser developer tools. But the component was
-failing and complaining when parsing the response.</p>
-<p>Turns out that the frontend was sending the request with the header <code>Accept: text/plain, application/json</code>.
-And Spring Boot was just using its <a href="https://spring.io/blog/2013/05/11/content-negotiation-using-spring-mvc">default content negotiation</a>
-and returning what the frontend requested: a text plain version of, what looked like, JSON.</p>
-<p>The quick fix was to request the content as JSON in React.</p>
-<div class="highlight"><pre><span class="kr">import</span> <span class="nx">rest</span> <span class="nx">from</span> <span class="s1">&#39;rest&#39;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="nx">mime</span> <span class="nx">from</span> <span class="s1">&#39;rest/interceptor/mime&#39;</span><span class="p">;</span>
-<span class="kr">const</span> <span class="nx">Rest</span> <span class="o">=</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="nx">rest</span><span class="p">.</span><span class="nx">wrap</span><span class="p">(</span><span class="nx">mime</span> <span class="p">,</span> <span class="p">{</span> <span class="nx">mime</span><span class="o">:</span> <span class="s1">&#39;application/json&#39;</span> <span class="p">}</span> <span class="p">);</span>
-</pre></div>
-
-<p>Now we will revisit the backend to return the JSON content, as content, regardless of what
-the user asks :-)</p>
 <p>Happy hacking!</p></description>
 </item>
 

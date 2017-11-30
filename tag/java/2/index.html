@@ -126,6 +126,63 @@
                     
                     <p>Posts tagged with &#8216;java&#8217;</p>
 <div class="ui raised padded container segment">
+    <h2><a href="/2017/06/02/apache-commons-text-lookuptranslator" title="Permanent link">Apache Commons Text LookupTranslator</a></h2>
+    <p><small>kinow</small> @ <small>Jun 02, 2017&nbsp;22:50:39</small></p>
+
+
+
+
+
+
+
+<a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2017/06/02/apache-commons-text-lookuptranslator" data-text="Apache Commons Text LookupTranslator" data-via="kinow" data-hashtags="opensource">Tweet</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+
+
+    <p><a href="http://commons.apache.org/proper/commons-text/">Apache Commons Text</a> includes several algorithms for text processing. Today&#8217;s post is about one of the classes available since the 1.0 release, the <a href="http://commons.apache.org/proper/commons-text/apidocs/org/apache/commons/text/translate/LookupTranslator.html">LookupTranslator</a>.</p>
+<p>It is used to translate text using a lookup table. Most users won&#8217;t necessarily be - knowingly - using this class. Most likely, they will use the <a href="http://commons.apache.org/proper/commons-text/apidocs/org/apache/commons/text/StringEscapeUtils.html">StringEscapeUtils</a>, which contains methods to escape and unescape CSV, JSON, XML, Java, and EcmaScript.</p>
+<div class="highlight"><pre><span class="n">String</span> <span class="n">original</span> <span class="o">=</span> <span class="s">&quot;He didn&#39;t say, \&quot;stop!\&quot;&quot;</span><span class="o">;</span>
+<span class="n">String</span> <span class="n">expected</span> <span class="o">=</span> <span class="s">&quot;He didn&#39;t say, \\\&quot;stop!\\\&quot;&quot;</span><span class="o">;</span>
+<span class="n">String</span> <span class="n">result</span>   <span class="o">=</span> <span class="n">StringEscapeUtils</span><span class="o">.</span><span class="na">escapeJava</span><span class="o">(</span><span class="n">original</span><span class="o">);</span>
+</pre></div>
+
+<p>StringEscapeUtils uses CharSequenceTranslator&#8217;s, including LookupTranslator. You can use it directly too, to escape other data your text may contain, special characters not supported by some third party library or system, or even a simpler case.</p>
+<p>In other words, you would be creating your own StringEscapeUtils. Let&#8217;s say you have some text where numbers must never start with the zero digital, due to some restriction in the way you use that data later.</p>
+<div class="highlight"><pre><span class="n">Map</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">String</span><span class="o">&gt;</span> <span class="n">lookupTable</span> <span class="o">=</span> <span class="k">new</span> <span class="n">HashMap</span><span class="o">&lt;&gt;();</span>
+<span class="n">lookupTable</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">&quot;a&quot;</span><span class="o">,</span> <span class="s">&quot;&quot;</span><span class="o">);</span>
+<span class="kd">final</span> <span class="n">LookupTranslator</span> <span class="n">escapeNumber0</span> <span class="o">=</span> <span class="k">new</span> <span class="n">LookupTranslator</span><span class="o">(</span><span class="k">new</span> <span class="n">String</span><span class="o">[][]</span> <span class="o">{</span> <span class="o">{</span><span class="s">&quot;0&quot;</span><span class="o">,</span> <span class="s">&quot;&quot;</span><span class="o">}</span> <span class="o">});</span>
+<span class="n">String</span> <span class="n">escaped</span> <span class="o">=</span> <span class="n">escapeNumber0</span><span class="o">.</span><span class="na">translate</span><span class="o">(</span><span class="s">&quot;There are 02 texts waiting for analysis today...&quot;</span><span class="o">);</span>
+</pre></div>
+
+<p>That way the resulting text would be &#8220;There are 2 texts waiting for analysis today&#8221;, allowing you to proceed with the rest of your analysis. This is a very simple example, but hopefully you grokked how LookupTranslator works.</p>
+<p>&hearts; Open Source</p><!-- html -->
+
+<p class="postmetadata">
+
+    <small>tags 
+     [&nbsp;<a
+        href="/tag/apache%20software%20foundation"
+        rel="tag">apache software foundation</a>&nbsp;]&nbsp;
+
+     [&nbsp;<a
+        href="/tag/java"
+        rel="tag">java</a>&nbsp;]&nbsp;
+
+     [&nbsp;<a
+        href="/tag/opensource"
+        rel="tag">opensource</a>&nbsp;]&nbsp;
+
+     [&nbsp;<a
+        href="/tag/programming"
+        rel="tag">programming</a>&nbsp;]&nbsp;
+
+    </small>
+
+
+</p>
+</div>
+
+<div class="ui raised padded container segment">
     <h2><a href="/2017/05/28/some-links-related-to-apache-commons-text" title="Permanent link">Some links related to Apache Commons Text</a></h2>
     <p><small>kinow</small> @ <small>May 28, 2017&nbsp;19:50:39</small></p>
 
@@ -487,116 +544,6 @@ encrypted values.</p>
      [&nbsp;<a
         href="/tag/opensource"
         rel="tag">opensource</a>&nbsp;]&nbsp;
-
-    </small>
-
-
-    <br/>
-    <small>posted in 
-    [&nbsp;<a
-        href="/blog"
-        title="View all posts in blog"
-        rel="category tag">blog</a>&nbsp;]&nbsp;
-    category </small>
-
-</p>
-
-</div>
-
-<div class="ui raised padded container segment">
-    <h2><a href="/2017/01/08/apache-commons-lang-memoizer" title="Permanent link">Apache Commons Lang: Memoizer</a></h2>
-    <p><small>kinow</small> @ <small>Jan 08, 2017&nbsp;18:34:03</small></p>
-
-
-
-
-
-
-
-<a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2017/01/08/apache-commons-lang-memoizer" data-text="Apache Commons Lang: Memoizer" data-via="kinow" data-hashtags="opensource">Tweet</a>
-<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-
-
-    <p>The current release of <a href="https://commons.apache.org/proper/commons-lang/">Apache Commons Lang</a>
-is <strong>3.5</strong>. The upcoming release, probably 3.6,
-will include a new feature, added in a
-<a href="https://github.com/apache/commons-lang/pull/203">pull request</a>:
-<strong>a Memoizer implementation</strong>. Check out the ticket <a href="https://issues.apache.org/jira/browse/LANG-740">LANG-740</a>
-for more about the implementation being added to [lang].</p>
-<p>The book <a href="http://jcip.net/">Java Concurrency in Practice</a> introduces readers to the Memoizer,
-and has also a <a href="http://jcip.net/listings/Memoizer.java">public domain implementation available for download</a>
-(besides that, the book has also lots of other interesting topics!).</p>
-<p>In summary, Memoizer is a simple cache, that will store the result of
-a computation. It receives a Computable object, responsible for doing something
-that will be stored by the Memoizer. Here&#8217;s a simple code to illustrate how that
-will work in your Java code.</p>
-<div class="highlight"><pre><span class="c1">// Computation to be stored in the cache</span>
-<span class="n">Computable</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">String</span><span class="o">&gt;</span> <span class="n">getFormattedCurrentDate</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Computable</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">String</span><span class="o">&gt;()</span> <span class="o">{</span>
-    <span class="nd">@Override</span>
-    <span class="kd">public</span> <span class="n">String</span> <span class="nf">compute</span><span class="o">(</span><span class="n">String</span> <span class="n">fmt</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">InterruptedException</span> <span class="o">{</span>
-        <span class="k">return</span> <span class="k">new</span> <span class="n">SimpleDateFormat</span><span class="o">(</span><span class="n">fmt</span><span class="o">).</span><span class="na">format</span><span class="o">(</span><span class="k">new</span> <span class="n">Date</span><span class="o">());</span>
-    <span class="o">}</span>
-<span class="o">};</span>
-
-<span class="c1">// Our memoizer</span>
-<span class="n">Memoizer</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">String</span><span class="o">&gt;</span> <span class="n">dateCache</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Memoizer</span><span class="o">&lt;&gt;(</span><span class="n">getFormattedCurrentDate</span><span class="o">);</span>
-
-<span class="c1">// To illustrate its use</span>
-<span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">10</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
-    <span class="k">try</span> <span class="o">{</span>
-        <span class="c1">// S -&gt; Millisecond</span>
-        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">dateCache</span><span class="o">.</span><span class="na">compute</span><span class="o">(</span><span class="s">&quot;HH:mm:ss:S Z dd/MM/YYYY&quot;</span><span class="o">));</span>
-        <span class="c1">// Regardless of this sleep call, we get the same result every iteration</span>
-        <span class="n">Thread</span><span class="o">.</span><span class="na">sleep</span><span class="o">(</span><span class="mi">1500</span><span class="o">);</span>
-    <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">InterruptedException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
-        <span class="n">e</span><span class="o">.</span><span class="na">printStackTrace</span><span class="o">();</span>
-    <span class="o">}</span>
-<span class="o">}</span>
-</pre></div>
-
-<p>The computable created (<em>getFormattedCurrentDate</em>) will be called only once, and stored in
-a map. The parameter passed in the <em>#compute()</em> method will be used as key in the map.
-So choose your parameter wisely :-) The output of the example will be similar to the following one.</p>
-
-<div class="highlight"><pre>19:15:57:854 +1300 08/01/2017
-19:15:57:854 +1300 08/01/2017
-19:15:57:854 +1300 08/01/2017
-19:15:57:854 +1300 08/01/2017
-19:15:57:854 +1300 08/01/2017
-19:15:57:854 +1300 08/01/2017
-19:15:57:854 +1300 08/01/2017
-19:15:57:854 +1300 08/01/2017
-19:15:57:854 +1300 08/01/2017
-19:15:57:854 +1300 08/01/2017
-</pre></div>
-
-<p>In the example above I used a <em>for-loop</em> to illustrate what will happen. Even though we call
-the memoizer <em>#compute()</em> method several times, followed by
-<em>Thread#sleep()</em>; only one result, the first to be computed, will be returned.</p>
-
-<p>So that&#8217;s all for today. Hope you learned something about this new class, that must
-be available in the next release of Apache Commons Lang.</p>
-
-<p>Happy hacking!</p>
-
-<p>ps: [lang] uses Java 7, so that is why we do not have a functional instead of the Comparable</p>
-
-<!-- html -->
-
-<p class="postmetadata">
-
-    <small>tags 
-     [&nbsp;<a
-        href="/tag/java"
-        rel="tag">java</a>&nbsp;]&nbsp;
-
-     [&nbsp;<a
-        href="/tag/programming"
-        rel="tag">programming</a>&nbsp;]&nbsp;
-
-     [&nbsp;<a
-        href="/tag/apache%20software%20foundation"
-        rel="tag">apache software foundation</a>&nbsp;]&nbsp;
 
     </small>
 
