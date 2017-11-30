@@ -1,6 +1,12 @@
 ---
 title: Using formatter exclusions with Eclipse
 time: '21:56:56'
+author: kinow
+tags: 
+    - programming
+    - java
+    - opensource
+    - eclipse
 ---
 
 Sometimes when you are formatting your code in Eclipse, you may want to prevent
