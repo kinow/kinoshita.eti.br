@@ -13,10 +13,24 @@
     <atom:link href="/blog/feed.xml" rel="self" type="application/rss+xml" />
     <link>/</link>
     <description></description>
-    <lastBuildDate>1512119863.6979845</lastBuildDate>
+    <lastBuildDate>1512124139.8862805</lastBuildDate>
     <language>en-US</language>
     <generator>PieCrust 2.1.1</generator>
  
+
+<item>
+    <title>Adding coverage reports in Jenkins to GoogleTest with gcovr</title>
+    <pubDate>Oct 16, 2012</pubDate>
+    <link>/2012/10/16/adding-coverage-reports-in-jenkins-to-googletest-with-gcovr</link>
+    <dc:creator></dc:creator>
+    <description><p>After the <a href="//2012/10/11/jenkins-testlink-and-gtest-in-5-minutes-or-so" title="Jenkins, TestLink and GTest in 5 minutes (or so)">last post</a> about <a href="http://code.google.com/p/googletest/" title="GoogleTest">GoogleTest</a> and <a href="http://www.teamst.org" title="TestLink">TestLink</a> using <a href="https://wiki.jenkins-ci.org/display/JENKINS/TestLink+Plugin" title="Jenkins TestLink Plug-in">Jenkins TestLink Plug-in</a>, I received an e-mail asking about <a href="http://en.wikipedia.org/wiki/Code_coverage" title="Code Coverage">coverage</a> with GoogleTest and <a href="http://www.jenkins-ci.org" title="Jenkins CI">Jenkins</a>. I&#8217;ve just updated the <a href="https://github.com/kinow/gtest-tap-listener/blob/master/samples/Makefile">Makefile</a> in the samples directory, of the <a href="https://github.com/kinow/gtest-tap-listener" title="GTest TAP Listener">GoogleTest TAP listener project</a>, to output coverage data.</p>
+
+<p>Basically, you have to add the compiler flags <em>-fprofile-arcs -ftest-coverage</em> and link the executable with -lgcov. Take a look at the project&#8217;s Makefile and you&#8217;ll notice how simple it is. In order to have Jenkins interpreting your coverage report, you&#8217;ll have to convert it to <a href="http://cobertura.sourceforge.net" title="Cobertura">cobertura</a> XML. There is a Python utility that can be used for this: <a href="https://software.sandia.gov/trac/fast/wiki/gcovr" title="gcovr">gcovr</a>. Download it and copy it to somewhere where Jenkins can execute it (e.g.: <em>/usr/local/bin</em>).</p>
+
+<p>Now, if you&#8217;ve followed the instructions from the previous post, you should have a job that reports your GoogleTest tests from Jenkins to TestLink using the plug-in, and is downloading the source code from GitHub. Add an extra build step  (Shell) to execute <em>gcovr</em>.</p>
+
+</description>
+</item>
 
 <item>
     <title>Jenkins, TestLink and GTest in 5 minutes (or so)</title>
@@ -181,24 +195,6 @@ I simply love when these things happen, it was great work with Guerra, and even 
 
 <p>Here&#8217;s a list of some projects using Maven Fluido Skin (hopefully, in the near future <a title="Apache Commons" href="http://commons.apache.org/">Apache Commons</a> and other projects will adopt this skin as default too :-)):</p>
 
-</description>
-</item>
-
-<item>
-    <title>Ranges in Apache Commons Functor</title>
-    <pubDate>Jan 22, 2012</pubDate>
-    <link>/2012/01/22/ranges-in-apache-functor</link>
-    <dc:creator></dc:creator>
-    <description><p>This is a long post. So here is a <strong>TL;DR</strong>:
-<ul>
-    <li>Apache Commons Functor has no Double or Float Range (yet)</li>
-    <li>Apache Commons Functor IntegerRange and LongRange treat the low value as inclusive, and the high value as exclusive. How does that compare to other languages/APIs? (you will have to read to see some comparison)</li>
-    <li>Perl has support for characters ranges, perhaps we could implement it in Functor too?</li>
-    <li>In case we implemented a CharacterRange, it would have to be inclusive for both low and high limits. With &#8216;z&#8217; being the last character, there wouldn&#8217;t have a way to include Z with the current approach. Or we would have to make the CharacterRange a special one. What would go against <a title="Liskov Substitution Principle" href="http://en.wikipedia.org/wiki/Liskov_substitution_principle">Liskov Substitution Principle</a>.</li>
-    <li>You can see a comparison table with Apache Commons Functor, other Java API&#8217;s and other programming languages for ranges clicking <a href="#ctable" title="Comparison table">here</a>.</li>
-    <li>It would be nice to have a clear distinction in Functor documentation among a Sequence, a Generator and a Range. While I was gathering material for this post, I found places using range, others using sequence, and in Apache Commons Functor, an IntegerRange is a Generator.</li>
-</ul>
-Now, if you have some spare time or curiosity, keep reading :-)</p>
 </description>
 </item>
 

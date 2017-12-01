@@ -126,6 +126,80 @@
                     
                     <p>Posts tagged with &#8216;apache software foundation&#8217;</p>
 <div class="ui raised padded container segment">
+    <h2><a href="/2017/12/02/watch-out-for-locales-when-using-number-format-with-currencies" title="Permanent link">Watch out for Locales when using NumberFormat with currencies</a></h2>
+    <p><small>kinow</small> @ <small>Dec 02, 2017&nbsp;22:51:00</small></p>
+
+
+
+
+
+
+
+<a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2017/12/02/watch-out-for-locales-when-using-number-format-with-currencies" data-text="Watch out for Locales when using NumberFormat with currencies" data-via="kinow" data-hashtags="opensource">Tweet</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+
+
+    <p>In Java you have the <a href="https://docs.oracle.com/javase/9/docs/api/java/text/NumberFormat.html">NumberFormatException</a>
+to help you formatting and parsing numbers for any locale. Said that, here&#8217;s some code.</p>
+<div class="highlight"><pre>BigDecimal <span class="nv">negative</span> <span class="o">=</span> new BigDecimal<span class="o">(</span><span class="s2">&quot;-1234.56&quot;</span><span class="o">)</span><span class="p">;</span>
+
+DecimalFormat <span class="nv">nf</span> <span class="o">=</span> <span class="o">(</span>DecimalFormat<span class="o">)</span> NumberFormat.getCurrencyInstance<span class="o">(</span>Locale.UK<span class="o">)</span><span class="p">;</span>
+String <span class="nv">formattedNegative</span> <span class="o">=</span> nf.format<span class="o">(</span>negative<span class="o">)</span><span class="p">;</span>
+
+System.out.println<span class="o">(</span>formattedNegative<span class="o">)</span><span class="p">;</span>
+</pre></div>
+
+<p>The output for this code is <strong>-£1,234.56</strong>. That&#8217;s expected, as the locale is set to
+UK, so the currency symbol used is for British Pounds. And as the number is negative, you
+get that minus sign as a prefix. For Japanese locale you&#8217;d get <strong>-￥1,235</strong>, and for Brazilian
+locale you&#8217;d get <strong>-R$ 1.234,56</strong>.</p>
+
+<p>So far so good. </p>
+
+<p>What about the following code, with nothing different except for the locale set to <strong>US</strong>.</p>
+
+<div class="highlight"><pre>BigDecimal <span class="nv">negative</span> <span class="o">=</span> new BigDecimal<span class="o">(</span><span class="s2">&quot;-1234.56&quot;</span><span class="o">)</span><span class="p">;</span>
+
+DecimalFormat <span class="nv">nf</span> <span class="o">=</span> <span class="o">(</span>DecimalFormat<span class="o">)</span> NumberFormat.getCurrencyInstance<span class="o">(</span>Locale.US<span class="o">)</span><span class="p">;</span> // &lt;--- US now
+String <span class="nv">formattedNegative</span> <span class="o">=</span> nf.format<span class="o">(</span>negative<span class="o">)</span><span class="p">;</span>
+
+System.out.println<span class="o">(</span>formattedNegative<span class="o">)</span><span class="p">;</span>
+</pre></div>
+
+<p>Some could intuitively expect <strong>-$1,234.56</strong>. However, <strong>the output is actually ($1,234.56)</strong>.</p>
+
+<p>There are different prefixes and suffixes. But in some locales the prefix can be empty, or, as
+in the case of the US locale, it can be quite different than what you could expect.</p>
+
+<p>Learned about this peculiarity from NumberFormat while working on <a href="https://issues.apache.org/jira/browse/VALIDATOR-433">VALIDATOR-433</a> for Apache Commons Validator.</p>
+
+<p>Happy hacking!</p>
+
+<!-- html -->
+
+<p class="postmetadata">
+
+    <small>tags 
+     [&nbsp;<a
+        href="/tag/programming"
+        rel="tag">programming</a>&nbsp;]&nbsp;
+
+     [&nbsp;<a
+        href="/tag/java"
+        rel="tag">java</a>&nbsp;]&nbsp;
+
+     [&nbsp;<a
+        href="/tag/apache%20software%20foundation"
+        rel="tag">apache software foundation</a>&nbsp;]&nbsp;
+
+    </small>
+
+
+</p>
+
+</div>
+
+<div class="ui raised padded container segment">
     <h2><a href="/2017/10/14/quickly-verifying-jar-signatures-for-asf-releases" title="Permanent link">Quickly Verifying jar Signatures For ASF Releases</a></h2>
     <p><small>kinow</small> @ <small>Oct 14, 2017&nbsp;00:24:54</small></p>
 
@@ -574,63 +648,6 @@ wget -r -nd -np -e <span class="nv">robots</span><span class="o">=</span>off --w
      [&nbsp;<a
         href="/tag/opensource"
         rel="tag">opensource</a>&nbsp;]&nbsp;
-
-    </small>
-
-
-</p>
-</div>
-
-<div class="ui raised padded container segment">
-    <h2><a href="/2017/06/02/apache-commons-text-lookuptranslator" title="Permanent link">Apache Commons Text LookupTranslator</a></h2>
-    <p><small>kinow</small> @ <small>Jun 02, 2017&nbsp;22:50:39</small></p>
-
-
-
-
-
-
-
-<a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2017/06/02/apache-commons-text-lookuptranslator" data-text="Apache Commons Text LookupTranslator" data-via="kinow" data-hashtags="opensource">Tweet</a>
-<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-
-
-    <p><a href="http://commons.apache.org/proper/commons-text/">Apache Commons Text</a> includes several algorithms for text processing. Today&#8217;s post is about one of the classes available since the 1.0 release, the <a href="http://commons.apache.org/proper/commons-text/apidocs/org/apache/commons/text/translate/LookupTranslator.html">LookupTranslator</a>.</p>
-<p>It is used to translate text using a lookup table. Most users won&#8217;t necessarily be - knowingly - using this class. Most likely, they will use the <a href="http://commons.apache.org/proper/commons-text/apidocs/org/apache/commons/text/StringEscapeUtils.html">StringEscapeUtils</a>, which contains methods to escape and unescape CSV, JSON, XML, Java, and EcmaScript.</p>
-<div class="highlight"><pre><span class="n">String</span> <span class="n">original</span> <span class="o">=</span> <span class="s">&quot;He didn&#39;t say, \&quot;stop!\&quot;&quot;</span><span class="o">;</span>
-<span class="n">String</span> <span class="n">expected</span> <span class="o">=</span> <span class="s">&quot;He didn&#39;t say, \\\&quot;stop!\\\&quot;&quot;</span><span class="o">;</span>
-<span class="n">String</span> <span class="n">result</span>   <span class="o">=</span> <span class="n">StringEscapeUtils</span><span class="o">.</span><span class="na">escapeJava</span><span class="o">(</span><span class="n">original</span><span class="o">);</span>
-</pre></div>
-
-<p>StringEscapeUtils uses CharSequenceTranslator&#8217;s, including LookupTranslator. You can use it directly too, to escape other data your text may contain, special characters not supported by some third party library or system, or even a simpler case.</p>
-<p>In other words, you would be creating your own StringEscapeUtils. Let&#8217;s say you have some text where numbers must never start with the zero digital, due to some restriction in the way you use that data later.</p>
-<div class="highlight"><pre><span class="n">Map</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">String</span><span class="o">&gt;</span> <span class="n">lookupTable</span> <span class="o">=</span> <span class="k">new</span> <span class="n">HashMap</span><span class="o">&lt;&gt;();</span>
-<span class="n">lookupTable</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">&quot;a&quot;</span><span class="o">,</span> <span class="s">&quot;&quot;</span><span class="o">);</span>
-<span class="kd">final</span> <span class="n">LookupTranslator</span> <span class="n">escapeNumber0</span> <span class="o">=</span> <span class="k">new</span> <span class="n">LookupTranslator</span><span class="o">(</span><span class="k">new</span> <span class="n">String</span><span class="o">[][]</span> <span class="o">{</span> <span class="o">{</span><span class="s">&quot;0&quot;</span><span class="o">,</span> <span class="s">&quot;&quot;</span><span class="o">}</span> <span class="o">});</span>
-<span class="n">String</span> <span class="n">escaped</span> <span class="o">=</span> <span class="n">escapeNumber0</span><span class="o">.</span><span class="na">translate</span><span class="o">(</span><span class="s">&quot;There are 02 texts waiting for analysis today...&quot;</span><span class="o">);</span>
-</pre></div>
-
-<p>That way the resulting text would be &#8220;There are 2 texts waiting for analysis today&#8221;, allowing you to proceed with the rest of your analysis. This is a very simple example, but hopefully you grokked how LookupTranslator works.</p>
-<p>&hearts; Open Source</p><!-- html -->
-
-<p class="postmetadata">
-
-    <small>tags 
-     [&nbsp;<a
-        href="/tag/apache%20software%20foundation"
-        rel="tag">apache software foundation</a>&nbsp;]&nbsp;
-
-     [&nbsp;<a
-        href="/tag/java"
-        rel="tag">java</a>&nbsp;]&nbsp;
-
-     [&nbsp;<a
-        href="/tag/opensource"
-        rel="tag">opensource</a>&nbsp;]&nbsp;
-
-     [&nbsp;<a
-        href="/tag/programming"
-        rel="tag">programming</a>&nbsp;]&nbsp;
 
     </small>
 

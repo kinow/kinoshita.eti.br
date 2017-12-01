@@ -13,10 +13,46 @@
     <atom:link href="/blog/feed.xml" rel="self" type="application/rss+xml" />
     <link>/</link>
     <description></description>
-    <lastBuildDate>1512119863.6979845</lastBuildDate>
+    <lastBuildDate>1512124139.8862805</lastBuildDate>
     <language>en-US</language>
     <generator>PieCrust 2.1.1</generator>
  
+
+<item>
+    <title>Watch out for Locales when using NumberFormat with currencies</title>
+    <pubDate>Dec 02, 2017</pubDate>
+    <link>/2017/12/02/watch-out-for-locales-when-using-number-format-with-currencies</link>
+    <dc:creator></dc:creator>
+    <description><p>In Java you have the <a href="https://docs.oracle.com/javase/9/docs/api/java/text/NumberFormat.html">NumberFormatException</a>
+to help you formatting and parsing numbers for any locale. Said that, here&#8217;s some code.</p>
+<div class="highlight"><pre>BigDecimal <span class="nv">negative</span> <span class="o">=</span> new BigDecimal<span class="o">(</span><span class="s2">&quot;-1234.56&quot;</span><span class="o">)</span><span class="p">;</span>
+
+DecimalFormat <span class="nv">nf</span> <span class="o">=</span> <span class="o">(</span>DecimalFormat<span class="o">)</span> NumberFormat.getCurrencyInstance<span class="o">(</span>Locale.UK<span class="o">)</span><span class="p">;</span>
+String <span class="nv">formattedNegative</span> <span class="o">=</span> nf.format<span class="o">(</span>negative<span class="o">)</span><span class="p">;</span>
+
+System.out.println<span class="o">(</span>formattedNegative<span class="o">)</span><span class="p">;</span>
+</pre></div>
+
+<p>The output for this code is <strong>-£1,234.56</strong>. That&#8217;s expected, as the locale is set to
+UK, so the currency symbol used is for British Pounds. And as the number is negative, you
+get that minus sign as a prefix. For Japanese locale you&#8217;d get <strong>-￥1,235</strong>, and for Brazilian
+locale you&#8217;d get <strong>-R$ 1.234,56</strong>.</p>
+<p>So far so good. </p>
+<p>What about the following code, with nothing different except for the locale set to <strong>US</strong>.</p>
+<div class="highlight"><pre>BigDecimal <span class="nv">negative</span> <span class="o">=</span> new BigDecimal<span class="o">(</span><span class="s2">&quot;-1234.56&quot;</span><span class="o">)</span><span class="p">;</span>
+
+DecimalFormat <span class="nv">nf</span> <span class="o">=</span> <span class="o">(</span>DecimalFormat<span class="o">)</span> NumberFormat.getCurrencyInstance<span class="o">(</span>Locale.US<span class="o">)</span><span class="p">;</span> // &lt;--- US now
+String <span class="nv">formattedNegative</span> <span class="o">=</span> nf.format<span class="o">(</span>negative<span class="o">)</span><span class="p">;</span>
+
+System.out.println<span class="o">(</span>formattedNegative<span class="o">)</span><span class="p">;</span>
+</pre></div>
+
+<p>Some could intuitively expect <strong>-$1,234.56</strong>. However, <strong>the output is actually ($1,234.56)</strong>.</p>
+<p>There are different prefixes and suffixes. But in some locales the prefix can be empty, or, as
+in the case of the US locale, it can be quite different than what you could expect.</p>
+<p>Learned about this peculiarity from NumberFormat while working on <a href="https://issues.apache.org/jira/browse/VALIDATOR-433">VALIDATOR-433</a> for Apache Commons Validator.</p>
+<p>Happy hacking!</p></description>
+</item>
 
 <item>
     <title>What Are Identification Keys</title>
@@ -593,28 +629,6 @@ when creating the Markdown instance.</p>
 </div>
 
 <p>2B pencil, rubber eraser, blending stump, and HB 0.3 mechanical pencil. Yellow-ish layer added adjusting LAB colour space in GIMP.</p></description>
-</item>
-
-<item>
-    <title>SciCo 2017: An Introduction to the International Image Interoperability Framework (IIIF)</title>
-    <pubDate>Jul 21, 2017</pubDate>
-    <link>/2017/07/21/scico-2017-an-introduction-to-the-international-image-interoperability-framework-iiif</link>
-    <dc:creator></dc:creator>
-    <description><p><strong>An Introduction to the International Image Interoperability Framework (IIIF)</strong></p>
-<div class='row'>
-<div class="ui embed">
-<iframe src="https://kinow.github.io/scico-2017/" frameborder="0" allowfullscreen></iframe>
-</div>
-</div>
-
-<dl>
-<dt>Event</dt>
-<dd><a href="http://nesi-cri.nz/">Science Coding Conference 2017</a></dd>
-<dt>Where ?</dt>
-<dd><a href="https://www.google.co.nz/maps/place/Wellington/@-41.244027,174.6217709,11z/data=!3m1!4b1!4m5!3m4!1s0x6d38b1fc49e974cb:0xa00ef63a213b470!8m2!3d-41.2864603!4d174.776236">Wellington, New Zealand</a></dd>
-<dt>When ?</dt>
-<dd>2017-08-04</dd>
-</dl></description>
 </item>
 
 </channel>

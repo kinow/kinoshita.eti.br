@@ -126,6 +126,80 @@
                     
                     <p>Posts tagged with &#8216;programming&#8217;</p>
 <div class="ui raised padded container segment">
+    <h2><a href="/2017/12/02/watch-out-for-locales-when-using-number-format-with-currencies" title="Permanent link">Watch out for Locales when using NumberFormat with currencies</a></h2>
+    <p><small>kinow</small> @ <small>Dec 02, 2017&nbsp;22:51:00</small></p>
+
+
+
+
+
+
+
+<a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2017/12/02/watch-out-for-locales-when-using-number-format-with-currencies" data-text="Watch out for Locales when using NumberFormat with currencies" data-via="kinow" data-hashtags="opensource">Tweet</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+
+
+    <p>In Java you have the <a href="https://docs.oracle.com/javase/9/docs/api/java/text/NumberFormat.html">NumberFormatException</a>
+to help you formatting and parsing numbers for any locale. Said that, here&#8217;s some code.</p>
+<div class="highlight"><pre>BigDecimal <span class="nv">negative</span> <span class="o">=</span> new BigDecimal<span class="o">(</span><span class="s2">&quot;-1234.56&quot;</span><span class="o">)</span><span class="p">;</span>
+
+DecimalFormat <span class="nv">nf</span> <span class="o">=</span> <span class="o">(</span>DecimalFormat<span class="o">)</span> NumberFormat.getCurrencyInstance<span class="o">(</span>Locale.UK<span class="o">)</span><span class="p">;</span>
+String <span class="nv">formattedNegative</span> <span class="o">=</span> nf.format<span class="o">(</span>negative<span class="o">)</span><span class="p">;</span>
+
+System.out.println<span class="o">(</span>formattedNegative<span class="o">)</span><span class="p">;</span>
+</pre></div>
+
+<p>The output for this code is <strong>-£1,234.56</strong>. That&#8217;s expected, as the locale is set to
+UK, so the currency symbol used is for British Pounds. And as the number is negative, you
+get that minus sign as a prefix. For Japanese locale you&#8217;d get <strong>-￥1,235</strong>, and for Brazilian
+locale you&#8217;d get <strong>-R$ 1.234,56</strong>.</p>
+
+<p>So far so good. </p>
+
+<p>What about the following code, with nothing different except for the locale set to <strong>US</strong>.</p>
+
+<div class="highlight"><pre>BigDecimal <span class="nv">negative</span> <span class="o">=</span> new BigDecimal<span class="o">(</span><span class="s2">&quot;-1234.56&quot;</span><span class="o">)</span><span class="p">;</span>
+
+DecimalFormat <span class="nv">nf</span> <span class="o">=</span> <span class="o">(</span>DecimalFormat<span class="o">)</span> NumberFormat.getCurrencyInstance<span class="o">(</span>Locale.US<span class="o">)</span><span class="p">;</span> // &lt;--- US now
+String <span class="nv">formattedNegative</span> <span class="o">=</span> nf.format<span class="o">(</span>negative<span class="o">)</span><span class="p">;</span>
+
+System.out.println<span class="o">(</span>formattedNegative<span class="o">)</span><span class="p">;</span>
+</pre></div>
+
+<p>Some could intuitively expect <strong>-$1,234.56</strong>. However, <strong>the output is actually ($1,234.56)</strong>.</p>
+
+<p>There are different prefixes and suffixes. But in some locales the prefix can be empty, or, as
+in the case of the US locale, it can be quite different than what you could expect.</p>
+
+<p>Learned about this peculiarity from NumberFormat while working on <a href="https://issues.apache.org/jira/browse/VALIDATOR-433">VALIDATOR-433</a> for Apache Commons Validator.</p>
+
+<p>Happy hacking!</p>
+
+<!-- html -->
+
+<p class="postmetadata">
+
+    <small>tags 
+     [&nbsp;<a
+        href="/tag/programming"
+        rel="tag">programming</a>&nbsp;]&nbsp;
+
+     [&nbsp;<a
+        href="/tag/java"
+        rel="tag">java</a>&nbsp;]&nbsp;
+
+     [&nbsp;<a
+        href="/tag/apache%20software%20foundation"
+        rel="tag">apache software foundation</a>&nbsp;]&nbsp;
+
+    </small>
+
+
+</p>
+
+</div>
+
+<div class="ui raised padded container segment">
     <h2><a href="/2017/12/01/what-are-identification-keys" title="Permanent link">What Are Identification Keys</a></h2>
     <p><small>kinow</small> @ <small>Dec 01, 2017&nbsp;23:26:09</small></p>
 
@@ -476,56 +550,6 @@ wget -r -nd -np -e <span class="nv">robots</span><span class="o">=</span>off --w
 
 </p>
 
-</div>
-
-<div class="ui raised padded container segment">
-    <h2><a href="/2017/09/09/enabling-markdown-extension-tables-for-piecrust" title="Permanent link">Enabling Markdown Extension Tables For Piecrust</a></h2>
-    <p><small>kinow</small> @ <small>Sep 09, 2017&nbsp;20:35:01</small></p>
-
-
-
-
-
-
-
-<a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2017/09/09/enabling-markdown-extension-tables-for-piecrust" data-text="Enabling Markdown Extension Tables For Piecrust" data-via="kinow" data-hashtags="opensource">Tweet</a>
-<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-
-
-    <p><a href="https://github.com/ludovicchabant/PieCrust2">PieCrust</a> is a Python static site generator.
-It allows users to write content in Markdown. But if you try adding a table, the content by
-default will be generated as plain text.</p>
-<p>You have to enable <a href="https://pythonhosted.org/Markdown/extensions/tables.html">Markdown extension tables</a>.
-PieCrust will <a href="https://github.com/ludovicchabant/PieCrust2/blob/6462e052045552d2ba164f4965370d84ddb54946/piecrust/formatting/markdownformatter.py#L29">load it</a>
-when creating the Markdown instance.</p>
-<div class="highlight"><pre><span class="c1"># config.yml</span>
-<span class="l-Scalar-Plain">markdown</span><span class="p-Indicator">:</span>
-  <span class="l-Scalar-Plain">extensions</span><span class="p-Indicator">:</span>
-    <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">tables</span>
-</pre></div>
-
-<p>Et, voil&agrave;! Happy blogging!</p>
-<p>&hearts; Open Source</p><!-- html -->
-
-<p class="postmetadata">
-
-    <small>tags 
-     [&nbsp;<a
-        href="/tag/programming"
-        rel="tag">programming</a>&nbsp;]&nbsp;
-
-     [&nbsp;<a
-        href="/tag/python"
-        rel="tag">python</a>&nbsp;]&nbsp;
-
-     [&nbsp;<a
-        href="/tag/opensource"
-        rel="tag">opensource</a>&nbsp;]&nbsp;
-
-    </small>
-
-
-</p>
 </div>
 
 <div id="navigation">
