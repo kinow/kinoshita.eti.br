@@ -13,10 +13,40 @@
     <atom:link href="/blog/feed.xml" rel="self" type="application/rss+xml" />
     <link>/</link>
     <description></description>
-    <lastBuildDate>1512124139.8862805</lastBuildDate>
+    <lastBuildDate>1512299842.6897483</lastBuildDate>
     <language>en-US</language>
     <generator>PieCrust 2.1.1</generator>
  
+
+<item>
+    <title>Remember to synchronize when iterating streams from a synchronized Collection</title>
+    <pubDate>Dec 03, 2017</pubDate>
+    <link>/2017/12/03/remember-to-synchronize-when-iterating-streams-from-a-synchronized-collection</link>
+    <dc:creator></dc:creator>
+    <description><p>When iterating collections created via <code>Collections.synchronizedList</code> for instance, you are required
+to obtain a lock on the actual list before doing so. So you normally end up with code similar to:</p>
+<div class="highlight"><pre><span class="n">List</span> <span class="n">list</span> <span class="o">=</span> <span class="n">Collections</span><span class="o">.</span><span class="na">synchronizedList</span><span class="o">(</span><span class="k">new</span> <span class="n">ArrayList</span><span class="o">());</span>
+<span class="kd">synchronized</span> <span class="o">(</span><span class="n">list</span><span class="o">)</span> <span class="o">{</span>
+  <span class="n">Iterator</span> <span class="n">i</span> <span class="o">=</span> <span class="n">list</span><span class="o">.</span><span class="na">iterator</span><span class="o">();</span> <span class="c1">// Must be in synchronized block</span>
+  <span class="k">while</span> <span class="o">(</span><span class="n">i</span><span class="o">.</span><span class="na">hasNext</span><span class="o">())</span>
+      <span class="n">foo</span><span class="o">(</span><span class="n">i</span><span class="o">.</span><span class="na">next</span><span class="o">());</span>
+<span class="o">}</span>
+</pre></div>
+
+<p>This requirement is <a href="https://docs.oracle.com/javase/9/docs/api/java/util/Collections.html#synchronizedList-java.util.List-">documented in the javadocs</a>.</p>
+<p>Since lambdas and streams are being more widely used, it is important to remind
+that when iterating via a stream we also need to obtain a lock on the synchronized
+collection created.</p>
+<div class="highlight"><pre><span class="n">List</span> <span class="n">list</span> <span class="o">=</span> <span class="n">Collections</span><span class="o">.</span><span class="na">synchronizedList</span><span class="o">(</span><span class="k">new</span> <span class="n">ArrayList</span><span class="o">());</span>
+<span class="kd">synchronized</span> <span class="o">(</span><span class="n">list</span><span class="o">)</span> <span class="o">{</span>
+  <span class="n">list</span><span class="o">.</span><span class="na">stream</span><span class="o">()</span>
+    <span class="o">.</span><span class="na">anyMatch</span><span class="o">(...)</span>
+<span class="o">}</span>
+</pre></div>
+
+<p>Here&#8217;s an <a href="https://github.com/zalando/nakadi/pull/786">example from Zalando Nakadi Event Broker</a>.</p>
+<p>Happy hacking!</p></description>
+</item>
 
 <item>
     <title>Watch out for Locales when using NumberFormat with currencies</title>
@@ -596,39 +626,6 @@ when creating the Markdown instance.</p>
 <p>In order to fix the build, you have to either add the transitive dependency to your pom.xml file, or correct your import statements. This is specially useful to prevent future issues due to other dependencies being added or updated, and changing the version of the transitive dependency.</p>
 <p>Bonus points if you combine that with continuous integration and some service like Travis-CI.</p>
 <p>&hearts; Open Source</p></description>
-</item>
-
-<item>
-    <title>My favourite Star Trek captain: Jean-Luc Picard</title>
-    <pubDate>Aug 03, 2017</pubDate>
-    <link>/2017/08/03/my-favourite-star-trek-captain-jean-luc-picard</link>
-    <dc:creator></dc:creator>
-    <description><p>My favourite Star Trek captain: <a href="http://www.startrek.com/database_article/picard-jean-luc">Jean-Luc Picard</a>.</p>
-<blockquote>&ldquo;Space, the final frontier. These are the voyages of the starship Enterprise. Its continuing mission: to explore strange new worlds, to seek out new life and new civilizations, to boldly go where no one has gone before!&rdquo;</blockquote>
-
-<div class='row'>
-<div class="ui fluid container">
-<figure>
-<a  href="/2017/08/03/my-favourite-star-trek-captain-jean-luc-picard/jeanlucpicard.jpg" rel="prettyPhoto" class="thumbnail" title="Jean-Luc Picard">
-<img style="height: 400px;" class="ui image" src="/2017/08/03/my-favourite-star-trek-captain-jean-luc-picard/jeanlucpicard.jpg" alt="Jean-Luc Picard" />
-</a>
-<figcaption>Jean-Luc Picard</figcaption>
-</figure>
-</div>
-</div>
-
-<div class='row'>
-<div class="ui fluid container">
-<figure>
-<a  href="/2017/08/03/my-favourite-star-trek-captain-jean-luc-picard/jeanlucpicard-photo.jpg" rel="prettyPhoto" class="thumbnail" title="Jean-Luc Picard">
-<img style="height: 400px;" class="ui image" src="/2017/08/03/my-favourite-star-trek-captain-jean-luc-picard/jeanlucpicard-photo.jpg" alt="Jean-Luc Picard" />
-</a>
-<figcaption>Jean-Luc Picard</figcaption>
-</figure>
-</div>
-</div>
-
-<p>2B pencil, rubber eraser, blending stump, and HB 0.3 mechanical pencil. Yellow-ish layer added adjusting LAB colour space in GIMP.</p></description>
 </item>
 
 </channel>
