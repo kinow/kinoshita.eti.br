@@ -5,6 +5,7 @@ author: kinow
 tags: 
     - programming
     - java
+    - opensource
 ---
 
 When iterating collections created via `Collections.synchronizedList` for instance, you are required
