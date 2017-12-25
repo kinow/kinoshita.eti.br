@@ -2,7 +2,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en">
 <head profile="http://gmpg.org/xfn/11">
-    <title>Bruno P. Kinoshita &mdash; Remember to synchronize when iterating streams from a synchronized Collection</title> 
+    <title>Bruno P. Kinoshita &mdash; Exif Odd Offsets</title> 
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="description" content="Bruno de Paula Kinoshita personal web site" />
     <meta name="keywords"
@@ -78,7 +78,7 @@
                 <i class="content icon"></i>
             </a>
             <div class="item">
-                Remember to synchronize when iterating streams from a synchronized Collection
+                Exif Odd Offsets
             </div>
         </div>
     </div>
@@ -120,9 +120,9 @@
 
                 
 <div class="ui raised padded container segment">
-  <h1 class='post-topic'>Remember to synchronize when iterating streams from a synchronized Collection</h1>
+  <h1 class='post-topic'>Exif Odd Offsets</h1>
   <small>kinow</small> @
-	<small>Dec 03, 2017&nbsp;23:56:13 (<span class='stardate' data-input-date='Dec 03, 2017'></span>)</small>
+	<small>Dec 25, 2017&nbsp;21:43:33 (<span class='stardate' data-input-date='Dec 25, 2017'></span>)</small>
   <div class="entry">
     
 
@@ -130,36 +130,38 @@
 
 
 
-<a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2017/12/03/remember-to-synchronize-when-iterating-streams-from-a-synchronized-collection" data-text="Remember to synchronize when iterating streams from a synchronized Collection" data-via="kinow" data-hashtags="opensource">Tweet</a>
+<a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2017/12/25/exif-odd-offsets" data-text="Exif Odd Offsets" data-via="kinow" data-hashtags="opensource">Tweet</a>
 <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
 
-	  <p>When iterating collections created via <code>Collections.synchronizedList</code> for instance, you are required
-to obtain a lock on the actual list before doing so. So you normally end up with code similar to:</p>
-<div class="highlight"><pre><span class="n">List</span> <span class="n">list</span> <span class="o">=</span> <span class="n">Collections</span><span class="o">.</span><span class="na">synchronizedList</span><span class="o">(</span><span class="k">new</span> <span class="n">ArrayList</span><span class="o">());</span>
-<span class="kd">synchronized</span> <span class="o">(</span><span class="n">list</span><span class="o">)</span> <span class="o">{</span>
-  <span class="n">Iterator</span> <span class="n">i</span> <span class="o">=</span> <span class="n">list</span><span class="o">.</span><span class="na">iterator</span><span class="o">();</span> <span class="c1">// Must be in synchronized block</span>
-  <span class="k">while</span> <span class="o">(</span><span class="n">i</span><span class="o">.</span><span class="na">hasNext</span><span class="o">())</span>
-      <span class="n">foo</span><span class="o">(</span><span class="n">i</span><span class="o">.</span><span class="na">next</span><span class="o">());</span>
-<span class="o">}</span>
-</pre></div>
+	  <p>A file format like JPEG may contain metadata in JFIF, <a href="https://en.wikipedia.org/wiki/Exif">Exif</a>,
+or a vendor proprietary format. The Exif format is based - or uses parts of - on the TIFF format.</p>
+<p>Within an Exif metadata block, you should see directories, with several entries. The entries have fields
+like description, value, and also an offset. The offset indicates the offset to the next entry.</p>
+<p>The Exif specification defines that <strong>implementers must make sure to keep the offset an even number,
+within 4 bytes</strong>.</p>
+<p>I recently worked on <a href="https://issues.apache.org/jira/browse/IMAGING-205">IMAGING-205</a>, a ticket
+about odd offsets in files with Exif metadata. This issue was exactly to address that when files
+were rewritten with Apache Commons Imaging, even though the image initially had no odd offsets,
+after the entries were rearranged, we could have odd offsets.</p>
+<p>The fix was simply checking for odd offsets, adding +1, and later it would be put within the
+4 bytes limit.</p>
+<p style='text-align: center;'>
+<img style="display: inline" class="ui image" src="/2017/12/25/exif-odd-offsets/screenshot.png" alt="A screen shot of Eclipse with source code" title="Locating the bug" />
+<br/>
+<small>Locating the bug</small>
+</p>
 
-<p>This requirement is <a href="https://docs.oracle.com/javase/9/docs/api/java/util/Collections.html#synchronizedList-java.util.List-">documented in the javadocs</a>.</p>
-<p>Since lambdas and streams are being more widely used, it is important to remind
-that when iterating via a stream we also need to obtain a lock on the synchronized
-collection created.</p>
-<div class="highlight"><pre><span class="n">List</span> <span class="n">list</span> <span class="o">=</span> <span class="n">Collections</span><span class="o">.</span><span class="na">synchronizedList</span><span class="o">(</span><span class="k">new</span> <span class="n">ArrayList</span><span class="o">());</span>
-<span class="kd">synchronized</span> <span class="o">(</span><span class="n">list</span><span class="o">)</span> <span class="o">{</span>
-  <span class="n">list</span><span class="o">.</span><span class="na">stream</span><span class="o">()</span>
-    <span class="o">.</span><span class="na">anyMatch</span><span class="o">(...)</span>
-<span class="o">}</span>
-</pre></div>
-
-<p>Here&#8217;s an <a href="https://github.com/zalando/nakadi/pull/786">example from Zalando Nakadi Event Broker</a>.</p>
+<p>One interesting point, however, is that this is in the standard, but not all software that read
+and write Exif follow the specification. So it is quite common to find images with odd offsets.</p>
+<p>Which means you could take a picture with your phone, that contains some Exif metadata, and
+be surprised to analyze it with <code>exiftool</code> and get warnings about odd offsets. Most viewers
+handle odd and even offsets, so it should work for most cases, unless you have a strict reader/viewer.</p>
 <p>Happy hacking!</p>
+<p>&heart; Open Source</p>
   </div>
   <p class="postmetadata">
     
-    <small>tags [&nbsp;<a href="/tag/programming" rel="tag">programming</a>&nbsp;]&nbsp;[&nbsp;<a href="/tag/java" rel="tag">java</a>&nbsp;]&nbsp;[&nbsp;<a href="/tag/opensource" rel="tag">opensource</a>&nbsp;]&nbsp;</small>
+    <small>tags [&nbsp;<a href="/tag/programming" rel="tag">programming</a>&nbsp;]&nbsp;[&nbsp;<a href="/tag/java" rel="tag">java</a>&nbsp;]&nbsp;[&nbsp;<a href="/tag/apache%20software%20foundation" rel="tag">apache software foundation</a>&nbsp;]&nbsp;[&nbsp;<a href="/tag/opensource" rel="tag">opensource</a>&nbsp;]&nbsp;</small>
     
     
   </p>

@@ -126,6 +126,71 @@
                     
                     <p>Posts tagged with &#8216;apache software foundation&#8217;</p>
 <div class="ui raised padded container segment">
+    <h2><a href="/2017/06/10/backward-compatibility-and-switch-statements-with-constant-expressions" title="Permanent link">Backward compatibility and switch statement with constant expressions</a></h2>
+    <p><small>kinow</small> @ <small>Jun 10, 2017&nbsp;17:35:39</small></p>
+
+
+
+
+
+
+
+<a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2017/06/10/backward-compatibility-and-switch-statements-with-constant-expressions" data-text="Backward compatibility and switch statement with constant expressions" data-via="kinow" data-hashtags="opensource">Tweet</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+
+
+    <p>Maintaining Open Source software can be challenging. Making sure you keep backward compatibility (not only binary) can be even more challenging. <a href="https://commons.apache.org/proper/commons-lang/">Apache Commons Lang</a> 3.6 release is happening right now thanks to <a href="http://www.benediktritter.de/">Benedikt Ritter</a>, and it is on its fourth Release Candidate (i.e. RC4).</p>
+<p>A previous RC2 was cancelled due to <a href="http://commons.markmail.org/thread/57sqt2hkusegda73#query:+page:1+mid:dnwo5tjqo2e5bwuo+state:results">IBM JDK 8 compatibility</a>, more specifically the lazy initialization of ArrayList&#8217;s seems to be different in Oracle JDK and IBM JDK.</p>
+<p>The RC3 was cancelled due to a <a href="https://github.com/apache/commons-lang/commit/18e692478dcf91fdceb9b9fdca7c61a1111d63aa">change</a> that could affect users using a switch statement.</p>
+<p>The change was in the <em>CharEncoding</em> class. The issue was that this class has some constants, that stopped being <a href="http://docs.oracle.com/javase/specs/jls/se8/html/jls-15.html#jls-15.28">constant expressions</a>.</p>
+<blockquote>A constant expression is an expression denoting a value of primitive type or a String that does not complete abruptly and is composed using only the following (&#8230;)</blockquote>
+
+<div class="highlight"><pre><span class="kd">public</span> <span class="kd">class</span> <span class="nc">CharEncoding</span> <span class="o">{</span>
+    <span class="c1">// ...</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kd">final</span> <span class="n">String</span> <span class="n">ISO_8859_1</span> <span class="o">=</span> <span class="s">&quot;ISO-8859-1&quot;</span><span class="o">;</span>
+    <span class="c1">// ...</span>
+<span class="o">}</span>
+</pre></div>
+
+<p>The code above contains a constant (<em>static final</em>) variable, that is a constant expression. So users can safely use it in switch statements, and the Java compiler won&#8217;t complain about it.</p>
+<div class="highlight"><pre><span class="kd">public</span> <span class="kd">class</span> <span class="nc">CharEncoding</span> <span class="o">{</span>
+    <span class="c1">// ...</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kd">final</span> <span class="n">String</span> <span class="n">ISO_8859_1</span> <span class="o">=</span> <span class="n">StandardCharsets</span><span class="o">.</span><span class="na">ISO_8859_1</span><span class="o">.</span><span class="na">name</span><span class="o">();</span>
+    <span class="c1">// ...</span>
+<span class="o">}</span>
+</pre></div>
+
+<p>The code above is from the change that caused the regression. Any user that was using the ISO_8859_1 constant variable in a switch statement would get a compilation error (e.g. <em>case expressions must be constant expressions</em>) when updating to Apache Commons Lang 3.6. That is because the constant variable is not a constant expression.</p>
+<p>I think I learned that some time ago, but if you asked me what was wrong with the change, and if it would break backward compatibility, I would probably fail to spot the issue. There are tools for that now (e.g. Clirr, japicmp) though they may miss some cases too.</p>
+<p>Luckily in this case a user subscribed to the Apache Commons development mailing list spotted the issue and quickly reported it. It gets easier maintaining an Open Source project with the constructive feedback of users, like this one.</p>
+<p>&hearts; Open Source</p><!-- html -->
+
+<p class="postmetadata">
+
+    <small>tags 
+     [&nbsp;<a
+        href="/tag/java"
+        rel="tag">java</a>&nbsp;]&nbsp;
+
+     [&nbsp;<a
+        href="/tag/programming"
+        rel="tag">programming</a>&nbsp;]&nbsp;
+
+     [&nbsp;<a
+        href="/tag/apache%20software%20foundation"
+        rel="tag">apache software foundation</a>&nbsp;]&nbsp;
+
+     [&nbsp;<a
+        href="/tag/opensource"
+        rel="tag">opensource</a>&nbsp;]&nbsp;
+
+    </small>
+
+
+</p>
+</div>
+
+<div class="ui raised padded container segment">
     <h2><a href="/2017/06/02/apache-commons-text-lookuptranslator" title="Permanent link">Apache Commons Text LookupTranslator</a></h2>
     <p><small>kinow</small> @ <small>Jun 02, 2017&nbsp;22:50:39</small></p>
 
@@ -443,79 +508,6 @@ be available in the next release of Apache Commons Lang.</p>
 
 </p>
 
-</div>
-
-<div class="ui raised padded container segment">
-    <h2><a href="/2017/01/07/apache-commons-text" title="Permanent link">Apache Commons Text</a></h2>
-    <p><small>kinow</small> @ <small>Jan 07, 2017&nbsp;20:39:03</small></p>
-
-
-
-
-
-
-
-<a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2017/01/07/apache-commons-text" data-text="Apache Commons Text" data-via="kinow" data-hashtags="opensource">Tweet</a>
-<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-
-
-    <p>There is a new component in Apache Commons: Apache Commons Text. The 1.0 release might be announced
-in the next weeks. The current site is still in the <a href="http://commons.apache.org/sandbox/commons-text/">Commons Sandbox</a>,
-but it will change with the 1.0 release. The promotion from the sandbox
-<a href="http://markmail.org/message/dm7xwv5wc6z7wme3">happened a few days ago</a> in
-the project mailing list.</p>
-<p>Here&#8217;s the project description: <strong>Apache Commons Text is a library focused on algorithms working on strings</strong>.</p>
-<p>There was <a href="http://markmail.org/message/3k7m2zrzboji333r">a thread on the mailing list</a>
-some time ago (Oct/2014) when we first discussed the component idea. Since then
-many people contributed porting code from
-<a href="http://commons.apache.org/proper/commons-lang/">Apache Commons Lang</a>,
-<a href="http://lucene.apache.org/">Apache Lucene</a>, donating code from existing projects, and with new ideas.</p>
-<p><strong>It is important to be aware that certain parts of Apache Commons Lang are
-being marked as deprecated, and will be removed in the future, after Apache Commons Text
-1.0 is out</strong>. For example: <a href="https://commons.apache.org/proper/commons-lang/apidocs/org/apache/commons/lang3/StringUtils.html">StringUtils</a>,
-and <a href="https://commons.apache.org/proper/commons-lang/apidocs/org/apache/commons/lang3/RandomStringUtils.html">RandomStringUtils</a>.</p>
-<p>That will happen probably in a 4.x release of Apache Commons Lang, if everything
-goes well with Apache Commons Text :-)</p>
-<p>And there are already future features in
-<a href="https://github.com/apache/commons-text/branches/all">branches too</a>.
-It was decided that these features
-needed further work, so they will probably be included in next releases.</p>
-<p>So that&#8217;s a little bit of background on the new component that will be released soon.
-If you have code using Apache Commons Lang, you might be interested in staying
-tuned to release announcements in the mailing list!</p>
-<p>And should you have suggestions and would like to contribute, feel free to join and start
-a thread in the <a href="https://commons.apache.org/mail-lists.html">mailing list</a>,
-open a <a href="https://issues.apache.org/jira/browse/TEXT">JIRA issue</a>, or submit a
-<a href="https://github.com/apache/commons-text/pulls">pull request</a>.</p>
-<p>Happy hacking!</p><!-- html -->
-
-<p class="postmetadata">
-
-    <small>tags 
-     [&nbsp;<a
-        href="/tag/java"
-        rel="tag">java</a>&nbsp;]&nbsp;
-
-     [&nbsp;<a
-        href="/tag/programming"
-        rel="tag">programming</a>&nbsp;]&nbsp;
-
-     [&nbsp;<a
-        href="/tag/apache%20software%20foundation"
-        rel="tag">apache software foundation</a>&nbsp;]&nbsp;
-
-    </small>
-
-
-    <br/>
-    <small>posted in 
-    [&nbsp;<a
-        href="/blog"
-        title="View all posts in blog"
-        rel="category tag">blog</a>&nbsp;]&nbsp;
-    category </small>
-
-</p>
 </div>
 
 <div id="navigation">

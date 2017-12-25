@@ -13,10 +13,52 @@
     <atom:link href="/blog/feed.xml" rel="self" type="application/rss+xml" />
     <link>/</link>
     <description></description>
-    <lastBuildDate>1514191101.247782</lastBuildDate>
+    <lastBuildDate>1514192881.0525784</lastBuildDate>
     <language>en-US</language>
     <generator>PieCrust 2.1.1</generator>
  
+
+<item>
+    <title>When you don't realize you need a Comparable</title>
+    <pubDate>May 15, 2017</pubDate>
+    <link>/2017/05/15/when-you-dont-realize-you-need-a-comparable</link>
+    <dc:creator></dc:creator>
+    <description><p><a href="/2012/10/20/replacing-a-hashset-with-a-bitset">In 2012, I wrote</a> about how you always learn something new by following the <a href="http://www.apache.org/foundation/mailinglists.html">Apache dev mailing lists</a>.</p>
+<p>After about five years, I am still learning, and still getting impressed by the knowledge of other
+developers. Days ago I was massaging some code in <a href="https://github.com/apache/jena/pull/237">a pull request</a>
+and a developer suggested me to simplify my code.</p>
+<p>The suggestion was to make a class a <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Comparable.html">Comparable type</a>
+to both simplify the code, and also have a better design. I immediately agreed, and looking back in hindsight,
+it was the most logical choice. Yet, I simply did not think about that.</p>
+<div class="highlight"><pre><span class="c1">// What the code was</span>
+<span class="k">case</span> <span class="n">VSPACE_SORTKEY</span> <span class="o">:</span>
+    <span class="kt">int</span> <span class="n">cmp</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
+    <span class="n">String</span> <span class="n">c1</span> <span class="o">=</span> <span class="n">nv1</span><span class="o">.</span><span class="na">getCollation</span><span class="o">();</span>
+    <span class="n">String</span> <span class="n">c2</span> <span class="o">=</span> <span class="n">nv2</span><span class="o">.</span><span class="na">getCollation</span><span class="o">();</span>
+    <span class="k">if</span> <span class="o">(</span><span class="n">c1</span> <span class="o">!=</span> <span class="kc">null</span> 
+        <span class="n">Collator</span> <span class="n">collator</span> <span class="o">=</span> <span class="n">Collator</span><span class="o">.</span><span class="na">getInstance</span><span class="o">(</span><span class="n">desiredLocale</span><span class="o">);</span>
+        <span class="n">cmp</span> <span class="o">=</span> <span class="n">collator</span><span class="o">.</span><span class="na">compare</span><span class="o">(</span><span class="n">nv1</span><span class="o">.</span><span class="na">getString</span><span class="o">(),</span> <span class="n">nv2</span><span class="o">.</span><span class="na">getString</span><span class="o">());</span>
+    <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+        <span class="n">cmp</span> <span class="o">=</span> <span class="n">XSDFuncOp</span><span class="o">.</span><span class="na">compareString</span><span class="o">(</span><span class="n">nv1</span><span class="o">,</span> <span class="n">nv2</span><span class="o">)</span> <span class="o">;</span>
+    <span class="o">}</span>
+    <span class="k">return</span> <span class="n">cmp</span><span class="o">;</span>
+<span class="o">}</span>
+</pre></div>
+
+<div class="highlight"><pre><span class="c1">// What the code is now</span>
+<span class="k">case</span> <span class="n">VSPACE_SORTKEY</span> <span class="o">:</span>
+    <span class="k">return</span> <span class="o">((</span><span class="n">NodeValueSortKey</span><span class="o">)</span> <span class="n">nv1</span><span class="o">).</span><span class="na">compareTo</span><span class="o">((</span><span class="n">NodeValueSortKey</span><span class="o">)</span> <span class="n">nv2</span><span class="o">);</span>
+<span class="o">}</span>
+</pre></div>
+
+<p>This moved the logic to a method in the <code>NodeValueSortKey</code> class. This reduced the complexity
+of the class with the <code>switch</code> statement. And it also made it easier to write unit tests.</p>
+<p>If you are not involved in Open Source projects yet, I keep my suggestion from five years ago.
+Find a project related to something you like, and start reading the code, lurk in the
+mailing list or watch GitHub repositories.</p>
+<p>You can always learn more!</p>
+<p>&hearts; Open Source</p></description>
+</item>
 
 <item>
     <title>Drawing sketch: Page 036</title>
@@ -568,26 +610,6 @@ clipboard. Then just paste into my browser, and that&#8217;s that!</p>
 <li><a href="http://tecadmin.net/install-go-on-ubuntu/">How to Install Go 1.7 on Ubuntu 16.04 &amp; 14.04</a></li>
 <li><a href="http://garywoodfine.com/use-pbcopy-on-ubuntu/">Use pbcopy on Ubuntu</a></li>
 </ul></description>
-</item>
-
-<item>
-    <title>Proposed logos for OpenNLP</title>
-    <pubDate>Jan 15, 2017</pubDate>
-    <link>/2017/01/15/proposed-logos-for-opennlp</link>
-    <dc:creator></dc:creator>
-    <description><p>A couple of logos submitted to <a href="https://issues.apache.org/jira/browse/OPENNLP-6">OPENNLP-6</a>. Made with Inkscape, fonts from Google Fonts.</p>
-<div class='row'>
-<div class="ui fluid container">
-<figure>
-<a  href="/2017/01/15/proposed-logos-for-opennlp/OpenNLP-logos.svg.png" rel="prettyPhoto" class="thumbnail" title="Proposed logos for OpenNLP">
-<img style="height: 400px;" class="ui image" src="/2017/01/15/proposed-logos-for-opennlp/OpenNLP-logos.svg.png" alt="Proposed logos for OpenNLP" />
-</a>
-<figcaption>Proposed logos for OpenNLP</figcaption>
-</figure>
-</div>
-</div>
-
-<p>For more, check out <a href="http://kinow.deviantart.com/art/Proposed-logos-for-Apache-OpenNLP-657512914">my DeviantArt page</a>.</p></description>
 </item>
 
 </channel>

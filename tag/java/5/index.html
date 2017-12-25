@@ -126,6 +126,87 @@
                     
                     <p>Posts tagged with &#8216;java&#8217;</p>
 <div class="ui raised padded container segment">
+    <h2><a href="/2012/10/20/replacing-a-hashset-with-a-bitset" title="Permanent link">Replacing a HashSet with a BitSet</a></h2>
+    <p><small>kinow</small> @ <small>Oct 20, 2012&nbsp;19:51:39</small></p>
+
+
+
+
+
+
+
+<a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2012/10/20/replacing-a-hashset-with-a-bitset" data-text="Replacing a HashSet with a BitSet" data-via="kinow" data-hashtags="opensource">Tweet</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+
+
+    <p>I always read the messages in the <a href="http://www.apache.org/foundation/mailinglists.html" title="Apache mailing lists">Apache dev mailing lists</a>, including Apache Commons <a href="http://commons.apache.org/mail-lists.html" title="Apache Commons mailing lists">dev mailing list</a>. And you should too. There are always interesting discussions. Sometimes you participate, other times you only watch what&#8217;s happening, but in the end <strong>you always learn something new</strong>.</p>
+
+<p>A few days ago, I found <a href="https://issues.apache.org/jira/browse/LANG-839" title="LANG-839">an issue</a> where it was being proposed to replace an unnecessary <a href="http://docs.oracle.com/javase/6/docs/api/java/util/HashSet.html" title="HashSet">HashSet</a> in <a href="http://commons.apache.org/lang/api-release/org/apache/commons/lang3/ArrayUtils.html" title="ArrayUtils">ArrayUtils</a>#removeElements() by a <a href="http://docs.oracle.com/javase/6/docs/api/java/util/BitSet.html" title="BitSet">BitSet</a>. Here&#8217;s how the code looked like: </p>
+
+<div class="highlight"><pre><span class="n">HashSet</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">&gt;</span> <span class="n">toRemove</span> <span class="o">=</span> <span class="k">new</span> <span class="n">HashSet</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">&gt;();</span>
+<span class="k">for</span> <span class="o">(</span><span class="n">Map</span><span class="o">.</span><span class="na">Entry</span><span class="o">&lt;</span><span class="n">Character</span><span class="o">,</span> <span class="n">MutableInt</span><span class="o">&gt;</span> <span class="n">e</span> <span class="o">:</span> <span class="n">occurrences</span><span class="o">.</span><span class="na">entrySet</span><span class="o">())</span> <span class="o">{</span>
+    <span class="n">Character</span> <span class="n">v</span> <span class="o">=</span> <span class="n">e</span><span class="o">.</span><span class="na">getKey</span><span class="o">();</span>
+    <span class="kt">int</span> <span class="n">found</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
+    <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">,</span> <span class="n">ct</span> <span class="o">=</span> <span class="n">e</span><span class="o">.</span><span class="na">getValue</span><span class="o">().</span><span class="na">intValue</span><span class="o">();</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">ct</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+        <span class="n">found</span> <span class="o">=</span> <span class="n">indexOf</span><span class="o">(</span><span class="n">array</span><span class="o">,</span> <span class="n">v</span><span class="o">.</span><span class="na">charValue</span><span class="o">(),</span> <span class="n">found</span><span class="o">);</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">found</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">break</span><span class="o">;</span>
+        <span class="o">}</span>
+        <span class="n">toRemove</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">found</span><span class="o">++);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+<span class="k">return</span> <span class="o">(</span><span class="kt">char</span><span class="o">[])</span> <span class="n">removeAll</span><span class="o">((</span><span class="n">Object</span><span class="o">)</span><span class="n">array</span><span class="o">,</span> <span class="n">extractIndices</span><span class="o">(</span><span class="n">toRemove</span><span class="o">));</span>
+</pre></div>
+
+<p style="text-align: center"><a href="/2012/10/20/replacing-a-hashset-with-a-bitset/feather_small.gif"><img src="/2012/10/20/replacing-a-hashset-with-a-bitset/feather_small.gif" alt="" title="Apache Software Foundation" width="203" height="61" class="aligncenter size-full wp-image-1125" /></a></p>
+
+<p>The HashSet created at line 1, in the code above, was used to store the array index of the elements that should be removed. And at line 13 there is a call to removeAll method, passing the indexes to be removed. And here&#8217;s how the new code looks like: </p>
+
+<div class="highlight"><pre><span class="n">BitSet</span> <span class="n">toRemove</span> <span class="o">=</span> <span class="k">new</span> <span class="n">BitSet</span><span class="o">();</span>
+<span class="k">for</span> <span class="o">(</span><span class="n">Map</span><span class="o">.</span><span class="na">Entry</span><span class="o">&lt;</span><span class="n">Character</span><span class="o">,</span> <span class="n">MutableInt</span><span class="o">&gt;</span> <span class="n">e</span> <span class="o">:</span> <span class="n">occurrences</span><span class="o">.</span><span class="na">entrySet</span><span class="o">())</span> <span class="o">{</span>
+    <span class="n">Character</span> <span class="n">v</span> <span class="o">=</span> <span class="n">e</span><span class="o">.</span><span class="na">getKey</span><span class="o">();</span>
+    <span class="kt">int</span> <span class="n">found</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
+    <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">,</span> <span class="n">ct</span> <span class="o">=</span> <span class="n">e</span><span class="o">.</span><span class="na">getValue</span><span class="o">().</span><span class="na">intValue</span><span class="o">();</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">ct</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+        <span class="n">found</span> <span class="o">=</span> <span class="n">indexOf</span><span class="o">(</span><span class="n">array</span><span class="o">,</span> <span class="n">v</span><span class="o">.</span><span class="na">charValue</span><span class="o">(),</span> <span class="n">found</span><span class="o">);</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">found</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">break</span><span class="o">;</span>
+        <span class="o">}</span>
+        <span class="n">toRemove</span><span class="o">.</span><span class="na">set</span><span class="o">(</span><span class="n">found</span><span class="o">++);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+<span class="k">return</span> <span class="o">(</span><span class="kt">char</span><span class="o">[])</span> <span class="n">removeAll</span><span class="o">(</span><span class="n">array</span><span class="o">,</span> <span class="n">toRemove</span><span class="o">);</span>
+</pre></div>
+
+<p>The first difference is at line 1. Instead of a HashSet, it is now using a BitSet. And at line 10, instead of adding a new element to the HashSet, now it &#8220;sets&#8221; a bit in the set (the bit at the specified position is now true). But there are important changes at line 13. The method removeAll was changed, and now the array doesn&#8217;t require a cast anymore. And the it is not necessary to cast the elements from HashSet anymore, as now the bit in the index position of the set is set to true. So the extractIndices method could be removed.</p>
+
+<p>The code got simpler. But that&#8217;s not all. At <a href="http://www.apache.org" title="Apache Software Foundation">Apache Software Foundation</a> you can find a lot of talented developers - that&#8217;s why I got so excited after joining them. Besides simplifying the code, the developer responsible for these changes (<strong>sebb</strong>) also pointed out that the new code <strong>consumes less memory and is faster</strong>. Ah! And he also wrote <strong>unit tests</strong><!-- html -->
+
+<p class="postmetadata">
+
+    <small>tags 
+     [&nbsp;<a
+        href="/tag/apache%20software%20foundation"
+        rel="tag">apache software foundation</a>&nbsp;]&nbsp;
+
+     [&nbsp;<a
+        href="/tag/java"
+        rel="tag">java</a>&nbsp;]&nbsp;
+
+     [&nbsp;<a
+        href="/tag/opensource"
+        rel="tag">opensource</a>&nbsp;]&nbsp;
+
+     [&nbsp;<a
+        href="/tag/programming"
+        rel="tag">programming</a>&nbsp;]&nbsp;
+
+    </small>
+
+
+</p>
+</div>
+
+<div class="ui raised padded container segment">
     <h2><a href="/2012/09/09/invoking-testopia-xml-rpc-or-json-methods-using-java" title="Permanent link">Invoking Testopia XML-RPC or JSON methods using Java</a></h2>
     <p><small>kinow</small> @ <small>Sep 09, 2012&nbsp;16:08:09</small></p>
 
@@ -309,57 +390,6 @@
         href="/blog"
         title="View all posts in blog"
         rel="category tag">blog</a>&nbsp;]&nbsp;
-    category </small>
-
-</p>
-</div>
-
-<div class="ui raised padded container segment">
-    <h2><a href="/2011/09/20/building-jenkins-with-eclipse-and-m2e-plug-in" title="Permanent link">Building Jenkins with Eclipse and m2e plug-in</a></h2>
-    <p><small>kinow</small> @ <small>Sep 20, 2011&nbsp;17:50:04</small></p>
-
-
-
-
-
-
-
-<a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2011/09/20/building-jenkins-with-eclipse-and-m2e-plug-in" data-text="Building Jenkins with Eclipse and m2e plug-in" data-via="kinow" data-hashtags="opensource">Tweet</a>
-<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-
-
-    <p>Yesterday I finally managed to build <a title="Jenkins" href="http://www.jenkins-ci.org">Jenkins</a> using <a title="Eclipse" href="http://www.eclipse.org/">Eclipse</a> and <a title="m2e plug-in" href="http://eclipse.org/m2e/">m2e plug-in</a>. With <a title="Eclipse Indigo" href="http://www.eclipse.org/indigo">Eclipse Indigo</a> release came a new version of the <a title="Maven" href="http://maven.apache.org">Maven</a> plug-in for Eclipse (former <a title="M2Eclipse" href="http://m2eclipse.sonatype.org/">M2Eclipse</a>), m2e. Since I started using Eclipse Indigo and this new plug-in I hadn&#8217;t been able to build Jenkins in Eclipse anymore.</p>
-
-<p>I&#8217;ve been having a terrible fever and thought that it would be a good thing to stop playing <a href="http://www.minecraft.net" title="Minecraft">Minecraft</a> for a while and find a way to build Jenkins in Eclipse + m2e :-).</p>
-
-<h2>1. Maven Plug-ins execution in project life cycle</h2>
-
-<p>The first thing I&#8217;ve noticed were the messages regarding the execution of some Maven plug-ins in the project life cycle. m2e delegates the execution of Maven plug-ins to an external executor. As not all Maven plug-ins have an existing executor for m2e you will receive a message similar to &#8220;Plugin execution not covered by lifecycle configuration: &#8230;&#8221;.</p>
-
-<!-- html -->
-
-    <p>( <a href="/2011/09/20/building-jenkins-with-eclipse-and-m2e-plug-in" >Read more &#8230;</a> )</p>
-
-<p class="postmetadata">
-
-    <small>tags 
-     [&nbsp;<a
-        href="/tag/java"
-        rel="tag">java</a>&nbsp;]&nbsp;
-
-     [&nbsp;<a
-        href="/tag/jenkins"
-        rel="tag">jenkins</a>&nbsp;]&nbsp;
-
-    </small>
-
-
-    <br/>
-    <small>posted in 
-    [&nbsp;<a
-        href="/jenkins"
-        title="View all posts in jenkins"
-        rel="category tag">jenkins</a>&nbsp;]&nbsp;
     category </small>
 
 </p>

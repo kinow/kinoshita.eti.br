@@ -2,7 +2,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en">
 <head profile="http://gmpg.org/xfn/11">
-    <title>Bruno P. Kinoshita &mdash; Remember to synchronize when iterating streams from a synchronized Collection</title> 
+    <title>Bruno P. Kinoshita &mdash; Tag</title> 
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="description" content="Bruno de Paula Kinoshita personal web site" />
     <meta name="keywords"
@@ -78,7 +78,7 @@
                 <i class="content icon"></i>
             </a>
             <div class="item">
-                Remember to synchronize when iterating streams from a synchronized Collection
+                Tag
             </div>
         </div>
     </div>
@@ -119,52 +119,88 @@
                 <div class="main container" role="main">
 
                 
+                    
+                    <div class='ui padded container'>
+                        <h1 class='topic'>Tag</h1>
+                    </div>
+                    
+                    <p>Posts tagged with &#8216;java&#8217;</p>
 <div class="ui raised padded container segment">
-  <h1 class='post-topic'>Remember to synchronize when iterating streams from a synchronized Collection</h1>
-  <small>kinow</small> @
-	<small>Dec 03, 2017&nbsp;23:56:13 (<span class='stardate' data-input-date='Dec 03, 2017'></span>)</small>
-  <div class="entry">
-    
+    <h2><a href="/2009/03/06/displaying-japanese-characters-n-java-swing" title="Permanent link">Displaying Japanese characters in Java Swing</a></h2>
+    <p><small>kinow</small> @ <small>Mar 06, 2009&nbsp;12:10:07</small></p>
 
 
 
 
 
-<a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2017/12/03/remember-to-synchronize-when-iterating-streams-from-a-synchronized-collection" data-text="Remember to synchronize when iterating streams from a synchronized Collection" data-via="kinow" data-hashtags="opensource">Tweet</a>
+
+
+<a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2009/03/06/displaying-japanese-characters-n-java-swing" data-text="Displaying Japanese characters in Java Swing" data-via="kinow" data-hashtags="opensource">Tweet</a>
 <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
 
-	  <p>When iterating collections created via <code>Collections.synchronizedList</code> for instance, you are required
-to obtain a lock on the actual list before doing so. So you normally end up with code similar to:</p>
-<div class="highlight"><pre><span class="n">List</span> <span class="n">list</span> <span class="o">=</span> <span class="n">Collections</span><span class="o">.</span><span class="na">synchronizedList</span><span class="o">(</span><span class="k">new</span> <span class="n">ArrayList</span><span class="o">());</span>
-<span class="kd">synchronized</span> <span class="o">(</span><span class="n">list</span><span class="o">)</span> <span class="o">{</span>
-  <span class="n">Iterator</span> <span class="n">i</span> <span class="o">=</span> <span class="n">list</span><span class="o">.</span><span class="na">iterator</span><span class="o">();</span> <span class="c1">// Must be in synchronized block</span>
-  <span class="k">while</span> <span class="o">(</span><span class="n">i</span><span class="o">.</span><span class="na">hasNext</span><span class="o">())</span>
-      <span class="n">foo</span><span class="o">(</span><span class="n">i</span><span class="o">.</span><span class="na">next</span><span class="o">());</span>
+
+    <p>It&#8217;s not as complicated as I first thought.</p>
+<p>Had to use this technique to develop an Swing application for the JLPT certification exam.</p>
+<div class="highlight"><pre><span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+    <span class="n">JFrame</span> <span class="n">frame</span> <span class="o">=</span> <span class="k">new</span> <span class="n">JFrame</span><span class="o">();</span>
+    <span class="n">frame</span><span class="o">.</span><span class="na">setDefaultCloseOperation</span><span class="o">(</span><span class="n">JFrame</span><span class="o">.</span><span class="na">EXIT_ON_CLOSE</span><span class="o">);</span>
+    <span class="n">Container</span> <span class="n">container</span> <span class="o">=</span> <span class="n">frame</span><span class="o">.</span><span class="na">getContentPane</span><span class="o">();</span>
+    <span class="n">JLabel</span> <span class="n">japanese</span> <span class="o">=</span> <span class="k">new</span> <span class="n">JLabel</span><span class="o">(</span> <span class="s">&quot;Kino\u304D\u306E&quot;</span> <span class="o">);</span>
+    <span class="n">japanese</span><span class="o">.</span><span class="na">setToolTipText</span><span class="o">(</span> <span class="s">&quot;This is Japanese&quot;</span> <span class="o">);</span>
+    <span class="n">Font</span> <span class="n">f</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Font</span><span class="o">(</span><span class="s">&quot;Arial Unicode MS&quot;</span><span class="o">,</span> <span class="n">Font</span><span class="o">.</span><span class="na">BOLD</span><span class="o">,</span> <span class="mi">16</span><span class="o">);</span>
+    <span class="n">japanese</span><span class="o">.</span><span class="na">setFont</span><span class="o">(</span><span class="n">f</span><span class="o">);</span>
+    <span class="n">container</span><span class="o">.</span><span class="na">add</span><span class="o">(</span> <span class="n">japanese</span> <span class="o">);</span>
+    <span class="n">frame</span><span class="o">.</span><span class="na">pack</span><span class="o">();</span>
+    <span class="n">frame</span><span class="o">.</span><span class="na">setLocationRelativeTo</span><span class="o">(</span><span class="kc">null</span><span class="o">);</span>
+    <span class="n">frame</span><span class="o">.</span><span class="na">setVisible</span><span class="o">(</span><span class="kc">true</span><span class="o">);</span>
 <span class="o">}</span>
 </pre></div>
 
-<p>This requirement is <a href="https://docs.oracle.com/javase/9/docs/api/java/util/Collections.html#synchronizedList-java.util.List-">documented in the javadocs</a>.</p>
-<p>Since lambdas and streams are being more widely used, it is important to remind
-that when iterating via a stream we also need to obtain a lock on the synchronized
-collection created.</p>
-<div class="highlight"><pre><span class="n">List</span> <span class="n">list</span> <span class="o">=</span> <span class="n">Collections</span><span class="o">.</span><span class="na">synchronizedList</span><span class="o">(</span><span class="k">new</span> <span class="n">ArrayList</span><span class="o">());</span>
-<span class="kd">synchronized</span> <span class="o">(</span><span class="n">list</span><span class="o">)</span> <span class="o">{</span>
-  <span class="n">list</span><span class="o">.</span><span class="na">stream</span><span class="o">()</span>
-    <span class="o">.</span><span class="na">anyMatch</span><span class="o">(...)</span>
-<span class="o">}</span>
-</pre></div>
-
-<p>Here&#8217;s an <a href="https://github.com/zalando/nakadi/pull/786">example from Zalando Nakadi Event Broker</a>.</p>
-<p>Happy hacking!</p>
-  </div>
-  <p class="postmetadata">
-    
-    <small>tags [&nbsp;<a href="/tag/programming" rel="tag">programming</a>&nbsp;]&nbsp;[&nbsp;<a href="/tag/java" rel="tag">java</a>&nbsp;]&nbsp;[&nbsp;<a href="/tag/opensource" rel="tag">opensource</a>&nbsp;]&nbsp;</small>
-    
-    
-  </p>
+<p>All you have to do is to use the hexadecimal representation of the characters instead of using plain text. And here is the result.</p>
+<div class='row'>
+<div class="ui container" style='text-align: center;'>
+<figure>
+<a href="/2009/03/06/displaying-japanese-characters-n-java-swing/kino.png" rel="prettyPhoto" class="thumbnail" title="">
+<img class="ui fluid image" src="/2009/03/06/displaying-japanese-characters-n-java-swing/kino.png" alt="=" />
+</a>
+<figcaption></figcaption>
+</figure>
+</div>
 </div>
 
+<p>Banzai!</p><!-- html -->
+
+<p class="postmetadata">
+
+    <small>tags 
+     [&nbsp;<a
+        href="/tag/java"
+        rel="tag">java</a>&nbsp;]&nbsp;
+
+    </small>
+
+
+    <br/>
+    <small>posted in 
+    [&nbsp;<a
+        href="/blog"
+        title="View all posts in blog"
+        rel="category tag">blog</a>&nbsp;]&nbsp;
+    category </small>
+
+</p>
+</div>
+
+<div id="navigation">
+
+        &mdash; <a href="/tag/java/6" id="navigation-next">Newer Entries</a>&nbsp;&rarr;
+
+</div>
+                    <p class="postmetadata">
+                        
+                        
+                    </p>
+                
                 </div>
             </div>
         </div>
