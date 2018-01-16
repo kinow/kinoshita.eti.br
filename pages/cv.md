@@ -180,6 +180,13 @@ Linux, OSX, Windows
 
 <table class="ui celled table">
   <tr>
+    <td>Level 1 Introduction to Sailing Keelboat Certificate</td>
+    <td>Royal New Zealand Yacht Squadron</td>
+    <td>        Auckland, New Zealand
+    </td>
+    <td>2018</td>
+  </tr>
+  <tr>
     <td>OWASP NZ Day Advanced Web Hacking and Secure Coding</td>
     <td>University of Auckland</td>
     <td>        Auckland, New Zealand
