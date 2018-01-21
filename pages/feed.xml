@@ -50,9 +50,11 @@ content_type: xml
             {% endfor %}
             <pubDate>{{post.timestamp|atomdate}}</pubDate>
             <guid>{{post.url}}</guid>
-            <description>{{post.content}}
+            <description>
             {% if post.has_more and page.read_more_text %}
             {{ ("<a href=\"" ~ post.url ~ "\">" ~ page.read_more_text ~ "</a>")|escape }}
+            {% else %}
+            {{post.content|escape}}
             {% endif %}
             </description>
         </item>
