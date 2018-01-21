@@ -10,8 +10,8 @@
         
         <description>Latest news from Bruno P. Kinoshita</description>
         
-        <lastBuildDate>2018-01-21T18:38:39+13:00</lastBuildDate>
-        <pubDate>2018-01-21T18:38:39+13:00</pubDate>
+        <lastBuildDate>2018-01-21T18:43:58+13:00</lastBuildDate>
+        <pubDate>2018-01-21T18:43:58+13:00</pubDate>
         <generator>PieCrust 2.1.1</generator>
         
         
@@ -39,41 +39,43 @@
             
             <pubDate>2017-05-15T23:07:39+12:00</pubDate>
             <guid>/2017/05/15/when-you-dont-realize-you-need-a-comparable</guid>
-            <description><p><a href="/2012/10/20/replacing-a-hashset-with-a-bitset">In 2012, I wrote</a> about how you always learn something new by following the <a href="http://www.apache.org/foundation/mailinglists.html">Apache dev mailing lists</a>.</p>
-<p>After about five years, I am still learning, and still getting impressed by the knowledge of other
-developers. Days ago I was massaging some code in <a href="https://github.com/apache/jena/pull/237">a pull request</a>
-and a developer suggested me to simplify my code.</p>
-<p>The suggestion was to make a class a <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Comparable.html">Comparable type</a>
+            <description>
+            
+            &lt;p&gt;&lt;a href=&#34;/2012/10/20/replacing-a-hashset-with-a-bitset&#34;&gt;In 2012, I wrote&lt;/a&gt; about how you always learn something new by following the &lt;a href=&#34;http://www.apache.org/foundation/mailinglists.html&#34;&gt;Apache dev mailing lists&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;After about five years, I am still learning, and still getting impressed by the knowledge of other
+developers. Days ago I was massaging some code in &lt;a href=&#34;https://github.com/apache/jena/pull/237&#34;&gt;a pull request&lt;/a&gt;
+and a developer suggested me to simplify my code.&lt;/p&gt;
+&lt;p&gt;The suggestion was to make a class a &lt;a href=&#34;https://docs.oracle.com/javase/7/docs/api/java/lang/Comparable.html&#34;&gt;Comparable type&lt;/a&gt;
 to both simplify the code, and also have a better design. I immediately agreed, and looking back in hindsight,
-it was the most logical choice. Yet, I simply did not think about that.</p>
-<div class="highlight"><pre><span class="c1">// What the code was</span>
-<span class="k">case</span> <span class="n">VSPACE_SORTKEY</span> <span class="o">:</span>
-    <span class="kt">int</span> <span class="n">cmp</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
-    <span class="n">String</span> <span class="n">c1</span> <span class="o">=</span> <span class="n">nv1</span><span class="o">.</span><span class="na">getCollation</span><span class="o">();</span>
-    <span class="n">String</span> <span class="n">c2</span> <span class="o">=</span> <span class="n">nv2</span><span class="o">.</span><span class="na">getCollation</span><span class="o">();</span>
-    <span class="k">if</span> <span class="o">(</span><span class="n">c1</span> <span class="o">!=</span> <span class="kc">null</span> 
-        <span class="n">Collator</span> <span class="n">collator</span> <span class="o">=</span> <span class="n">Collator</span><span class="o">.</span><span class="na">getInstance</span><span class="o">(</span><span class="n">desiredLocale</span><span class="o">);</span>
-        <span class="n">cmp</span> <span class="o">=</span> <span class="n">collator</span><span class="o">.</span><span class="na">compare</span><span class="o">(</span><span class="n">nv1</span><span class="o">.</span><span class="na">getString</span><span class="o">(),</span> <span class="n">nv2</span><span class="o">.</span><span class="na">getString</span><span class="o">());</span>
-    <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
-        <span class="n">cmp</span> <span class="o">=</span> <span class="n">XSDFuncOp</span><span class="o">.</span><span class="na">compareString</span><span class="o">(</span><span class="n">nv1</span><span class="o">,</span> <span class="n">nv2</span><span class="o">)</span> <span class="o">;</span>
-    <span class="o">}</span>
-    <span class="k">return</span> <span class="n">cmp</span><span class="o">;</span>
-<span class="o">}</span>
-</pre></div>
+it was the most logical choice. Yet, I simply did not think about that.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;span class=&#34;c1&#34;&gt;// What the code was&lt;/span&gt;
+&lt;span class=&#34;k&#34;&gt;case&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;VSPACE_SORTKEY&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;:&lt;/span&gt;
+    &lt;span class=&#34;kt&#34;&gt;int&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;cmp&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;;&lt;/span&gt;
+    &lt;span class=&#34;n&#34;&gt;String&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;c1&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;nv1&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;getCollation&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;();&lt;/span&gt;
+    &lt;span class=&#34;n&#34;&gt;String&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;c2&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;nv2&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;getCollation&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;();&lt;/span&gt;
+    &lt;span class=&#34;k&#34;&gt;if&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;c1&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;!=&lt;/span&gt; &lt;span class=&#34;kc&#34;&gt;null&lt;/span&gt; 
+        &lt;span class=&#34;n&#34;&gt;Collator&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;collator&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Collator&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;getInstance&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;desiredLocale&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;);&lt;/span&gt;
+        &lt;span class=&#34;n&#34;&gt;cmp&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;collator&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;compare&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;nv1&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;getString&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(),&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;nv2&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;getString&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;());&lt;/span&gt;
+    &lt;span class=&#34;o&#34;&gt;}&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;else&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;
+        &lt;span class=&#34;n&#34;&gt;cmp&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;XSDFuncOp&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;compareString&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;nv1&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;nv2&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;;&lt;/span&gt;
+    &lt;span class=&#34;o&#34;&gt;}&lt;/span&gt;
+    &lt;span class=&#34;k&#34;&gt;return&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;cmp&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;;&lt;/span&gt;
+&lt;span class=&#34;o&#34;&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
 
-<div class="highlight"><pre><span class="c1">// What the code is now</span>
-<span class="k">case</span> <span class="n">VSPACE_SORTKEY</span> <span class="o">:</span>
-    <span class="k">return</span> <span class="o">((</span><span class="n">NodeValueSortKey</span><span class="o">)</span> <span class="n">nv1</span><span class="o">).</span><span class="na">compareTo</span><span class="o">((</span><span class="n">NodeValueSortKey</span><span class="o">)</span> <span class="n">nv2</span><span class="o">);</span>
-<span class="o">}</span>
-</pre></div>
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;span class=&#34;c1&#34;&gt;// What the code is now&lt;/span&gt;
+&lt;span class=&#34;k&#34;&gt;case&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;VSPACE_SORTKEY&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;:&lt;/span&gt;
+    &lt;span class=&#34;k&#34;&gt;return&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;((&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;NodeValueSortKey&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;nv1&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;).&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;compareTo&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;((&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;NodeValueSortKey&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;nv2&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;);&lt;/span&gt;
+&lt;span class=&#34;o&#34;&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
 
-<p>This moved the logic to a method in the <code>NodeValueSortKey</code> class. This reduced the complexity
-of the class with the <code>switch</code> statement. And it also made it easier to write unit tests.</p>
-<p>If you are not involved in Open Source projects yet, I keep my suggestion from five years ago.
+&lt;p&gt;This moved the logic to a method in the &lt;code&gt;NodeValueSortKey&lt;/code&gt; class. This reduced the complexity
+of the class with the &lt;code&gt;switch&lt;/code&gt; statement. And it also made it easier to write unit tests.&lt;/p&gt;
+&lt;p&gt;If you are not involved in Open Source projects yet, I keep my suggestion from five years ago.
 Find a project related to something you like, and start reading the code, lurk in the
-mailing list or watch GitHub repositories.</p>
-<p>You can always learn more!</p>
-<p>&hearts; Open Source</p>
+mailing list or watch GitHub repositories.&lt;/p&gt;
+&lt;p&gt;You can always learn more!&lt;/p&gt;
+&lt;p&gt;&amp;hearts; Open Source&lt;/p&gt;
             
             </description>
         </item>
@@ -93,25 +95,27 @@ mailing list or watch GitHub repositories.</p>
             
             <pubDate>2017-04-24T00:41:03+12:00</pubDate>
             <guid>/2017/04/24/drawing-sketch-page-036</guid>
-            <description><div class='row'>
-<div class="ui container" style='text-align: center;'>
-<figure>
-<a href="/2017/04/24/drawing-sketch-page-036/sketch-book-036.jpg" rel="prettyPhoto" class="thumbnail" title="Page 036">
-<img class="ui fluid image" src="/2017/04/24/drawing-sketch-page-036/sketch-book-036.jpg" alt="Page 036" />
-</a>
-<figcaption>Page 036</figcaption>
-</figure>
-</div>
-</div>
+            <description>
+            
+            &lt;div class=&#39;row&#39;&gt;
+&lt;div class=&#34;ui container&#34; style=&#39;text-align: center;&#39;&gt;
+&lt;figure&gt;
+&lt;a href=&#34;/2017/04/24/drawing-sketch-page-036/sketch-book-036.jpg&#34; rel=&#34;prettyPhoto&#34; class=&#34;thumbnail&#34; title=&#34;Page 036&#34;&gt;
+&lt;img class=&#34;ui fluid image&#34; src=&#34;/2017/04/24/drawing-sketch-page-036/sketch-book-036.jpg&#34; alt=&#34;Page 036&#34; /&gt;
+&lt;/a&gt;
+&lt;figcaption&gt;Page 036&lt;/figcaption&gt;
+&lt;/figure&gt;
+&lt;/div&gt;
+&lt;/div&gt;
 
-<p>Almost ANZAC day. And almost time to switch back to coding Jenkins plug-ins.</p>
-<p>Normally sketch more in-between development cycles for Open Source projects, or
-contract works.</p>
-<ul>
-<li><a href="http://animals.nationalgeographic.com/animals/invertebrates/krill/">Krill</a>: Krill are small crustaceans of the order Euphausiacea, and are found in all the world&#8217;s oceans. The name krill comes from the Norwegian word krill, meaning &#8220;small fry of fish&#8221;, which is also often attributed to species of fish.</li>
-<li><a href="http://nzbirdsonline.org.nz/species/tui">Tui</a>: Tui are boisterous, medium-sized, common and widespread bird of forest and suburbia – unless you live in Canterbury. They look black from a distance, but in good light tui have a blue, green and bronze iridescent sheen, and distinctive white throat tufts (poi). They are usually very vocal, with a complicated mix of tuneful notes interspersed with coughs, grunts and wheezes. In flight, their bodies slant with the head higher than the tail, and their noisy whirring flight is interspersed with short glides.</li>
-<li><a href="http://www.goodreads.com/quotes/209171-at-bottom-you-see-we-are-not-homo-sapiens-as">Fatigue or Craziness</a>: Lots of crazy people on Queen Street during holidays.</li>
-</ul>
+&lt;p&gt;Almost ANZAC day. And almost time to switch back to coding Jenkins plug-ins.&lt;/p&gt;
+&lt;p&gt;Normally sketch more in-between development cycles for Open Source projects, or
+contract works.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://animals.nationalgeographic.com/animals/invertebrates/krill/&#34;&gt;Krill&lt;/a&gt;: Krill are small crustaceans of the order Euphausiacea, and are found in all the world&amp;#8217;s oceans. The name krill comes from the Norwegian word krill, meaning &amp;#8220;small fry of fish&amp;#8221;, which is also often attributed to species of fish.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://nzbirdsonline.org.nz/species/tui&#34;&gt;Tui&lt;/a&gt;: Tui are boisterous, medium-sized, common and widespread bird of forest and suburbia – unless you live in Canterbury. They look black from a distance, but in good light tui have a blue, green and bronze iridescent sheen, and distinctive white throat tufts (poi). They are usually very vocal, with a complicated mix of tuneful notes interspersed with coughs, grunts and wheezes. In flight, their bodies slant with the head higher than the tail, and their noisy whirring flight is interspersed with short glides.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.goodreads.com/quotes/209171-at-bottom-you-see-we-are-not-homo-sapiens-as&#34;&gt;Fatigue or Craziness&lt;/a&gt;: Lots of crazy people on Queen Street during holidays.&lt;/li&gt;
+&lt;/ul&gt;
             
             </description>
         </item>
@@ -137,77 +141,79 @@ contract works.</p>
             
             <pubDate>2017-04-17T21:01:03+12:00</pubDate>
             <guid>/2017/04/17/troubleshooting-a-jenkins-plugin-compatibility-issue</guid>
-            <description><p>This post is probably different from others. I will give a TL;DR, but will then
+            <description>
+            
+            &lt;p&gt;This post is probably different from others. I will give a TL;DR, but will then
 give you a copy of
-<a href="https://issues.jenkins-ci.org/browse/JENKINS-42655?focusedCommentId=291470&amp;page=com.atlassian.jira.plugin.system.issuetabpanels%3Acomment-tabpanel#comment-291470">a comment of a Jenkins JIRA issue</a>.
+&lt;a href=&#34;https://issues.jenkins-ci.org/browse/JENKINS-42655?focusedCommentId=291470&amp;amp;page=com.atlassian.jira.plugin.system.issuetabpanels%3Acomment-tabpanel#comment-291470&#34;&gt;a comment of a Jenkins JIRA issue&lt;/a&gt;.
 Hope you have fun reading it,
-specially if you maintain Jenkins servers or plug-ins.</p>
-<p>TL;DR: there was an issue in Jenkins Job DSL Plug-in, that caused jobs created to
+specially if you maintain Jenkins servers or plug-ins.&lt;/p&gt;
+&lt;p&gt;TL;DR: there was an issue in Jenkins Job DSL Plug-in, that caused jobs created to
 have an invalid script. The fix had not been released, but was already in the
-master branch in GitHub.</p>
-<p style="text-align: center; color: #DDDDDD;">&diams;</p>
+master branch in GitHub.&lt;/p&gt;
+&lt;p style=&#34;text-align: center; color: #DDDDDD;&#34;&gt;&amp;diams;&lt;/p&gt;
 
-<p><em>Well, that was fun bug reproduced, I believe I know why that&#8217;s happening. Not so complicated to fix&#8230; but no fast way to fix it. Here&#8217;s the issue analysis (grab a coffee to read it).</em></p>
-<ul>
-<li><em>Downloaded jenkins.war (2.32.3.war)</em></li>
-<li><em>mkdir /tmp/123</em></li>
-<li><em>JENKINS_HOME=/tmp/123 java -jar jenkins.war</em></li>
-<li><em>Entered secret into form and submitted</em></li>
-<li><em>Installed suggested plugins (boy that takes a while)</em></li>
-<li><em>Created temp user</em></li>
-<li><em>Installed (without restart) active-choices-plugin 1.5.3</em></li>
-<li><em>Installed (without restart) job-dsl-plugin</em></li>
-<li><em>Manually stopped Jenkins, and started it again with same command #3</em></li>
-<li><em>Log in with user, all looking good</em></li>
-<li><em>Created Freestyle job JENKINS-42655 (see attached config.xml)</em></li>
-<li><em>Executed job, and found new job JENKINS-42655-1</em></li>
-<li><em>Never opened the job configuration, clicked on the &#8220;Generated Items link to JENKINS-42655-1&#8221; to open in a new tab</em></li>
-<li><em>Clicked on Build with Parameters</em></li>
-<li><em>Looked at logs, and noticed the security-script-plugin exceptions</em></li>
-<li><em>Went to &#8220;Manage Jenkins&#8221; / &#8220;In-process Script Approval&#8221; and approved scripts</em></li>
-<li><em>Went back to the JENKINS-42655-1 build with parameters screen, and everything worked as expected</em></li>
-</ul>
-<p>*<em>Hummm. Issue more or less reproduced. Let&#8217;s investigate more.</em></p>
-<ul>
-<li><em>Restarted Jenkins again</em></li>
-<li><em>Changed the JENKINS-42655 seed job configuration to use a different script</em></li>
-<li><em>Copied the config.xml file to another location</em></li>
-<li><em>Went to build with parameters, and now it was broken again</em></li>
-<li><em>Saved the job manually</em></li>
-<li><em>Copied the config.xml file to yet another location</em></li>
-<li><em>Went to build with parameters, and now it worked as reported in this issue</em></li>
-</ul>
-<p><em>Now comes the interesting part. Looking at the diff. Attaching a screen shot so that others can have fun looking at it too. I installed Kompare as it has some cool features such as disabling diff for white spaces, blank lines, etc. The whole file changes as you save it. But if you ignore the number of white spaces&#8230; Then you can see that the Job DSL Plug-in is creating a &lt;script&gt; tag, as we used to do before 1.5 I think.</em></p>
-<div class='row'>
-<div class="ui fluid container">
-<figure>
-<a  href="/2017/04/17/troubleshooting-a-jenkins-plugin-compatibility-issue/JENKINS-42655-diff.png" rel="prettyPhoto" class="thumbnail" title="Screen shot">
-<img style="height: 400px;" class="ui image" src="/2017/04/17/troubleshooting-a-jenkins-plugin-compatibility-issue/JENKINS-42655-diff.png" alt="Screen shot" />
-</a>
-<figcaption>Screen shot</figcaption>
-</figure>
-</div>
-</div>
+&lt;p&gt;&lt;em&gt;Well, that was fun bug reproduced, I believe I know why that&amp;#8217;s happening. Not so complicated to fix&amp;#8230; but no fast way to fix it. Here&amp;#8217;s the issue analysis (grab a coffee to read it).&lt;/em&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;em&gt;Downloaded jenkins.war (2.32.3.war)&lt;/em&gt;&lt;/li&gt;
+&lt;li&gt;&lt;em&gt;mkdir /tmp/123&lt;/em&gt;&lt;/li&gt;
+&lt;li&gt;&lt;em&gt;JENKINS_HOME=/tmp/123 java -jar jenkins.war&lt;/em&gt;&lt;/li&gt;
+&lt;li&gt;&lt;em&gt;Entered secret into form and submitted&lt;/em&gt;&lt;/li&gt;
+&lt;li&gt;&lt;em&gt;Installed suggested plugins (boy that takes a while)&lt;/em&gt;&lt;/li&gt;
+&lt;li&gt;&lt;em&gt;Created temp user&lt;/em&gt;&lt;/li&gt;
+&lt;li&gt;&lt;em&gt;Installed (without restart) active-choices-plugin 1.5.3&lt;/em&gt;&lt;/li&gt;
+&lt;li&gt;&lt;em&gt;Installed (without restart) job-dsl-plugin&lt;/em&gt;&lt;/li&gt;
+&lt;li&gt;&lt;em&gt;Manually stopped Jenkins, and started it again with same command #3&lt;/em&gt;&lt;/li&gt;
+&lt;li&gt;&lt;em&gt;Log in with user, all looking good&lt;/em&gt;&lt;/li&gt;
+&lt;li&gt;&lt;em&gt;Created Freestyle job JENKINS-42655 (see attached config.xml)&lt;/em&gt;&lt;/li&gt;
+&lt;li&gt;&lt;em&gt;Executed job, and found new job JENKINS-42655-1&lt;/em&gt;&lt;/li&gt;
+&lt;li&gt;&lt;em&gt;Never opened the job configuration, clicked on the &amp;#8220;Generated Items link to JENKINS-42655-1&amp;#8221; to open in a new tab&lt;/em&gt;&lt;/li&gt;
+&lt;li&gt;&lt;em&gt;Clicked on Build with Parameters&lt;/em&gt;&lt;/li&gt;
+&lt;li&gt;&lt;em&gt;Looked at logs, and noticed the security-script-plugin exceptions&lt;/em&gt;&lt;/li&gt;
+&lt;li&gt;&lt;em&gt;Went to &amp;#8220;Manage Jenkins&amp;#8221; / &amp;#8220;In-process Script Approval&amp;#8221; and approved scripts&lt;/em&gt;&lt;/li&gt;
+&lt;li&gt;&lt;em&gt;Went back to the JENKINS-42655-1 build with parameters screen, and everything worked as expected&lt;/em&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;*&lt;em&gt;Hummm. Issue more or less reproduced. Let&amp;#8217;s investigate more.&lt;/em&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;em&gt;Restarted Jenkins again&lt;/em&gt;&lt;/li&gt;
+&lt;li&gt;&lt;em&gt;Changed the JENKINS-42655 seed job configuration to use a different script&lt;/em&gt;&lt;/li&gt;
+&lt;li&gt;&lt;em&gt;Copied the config.xml file to another location&lt;/em&gt;&lt;/li&gt;
+&lt;li&gt;&lt;em&gt;Went to build with parameters, and now it was broken again&lt;/em&gt;&lt;/li&gt;
+&lt;li&gt;&lt;em&gt;Saved the job manually&lt;/em&gt;&lt;/li&gt;
+&lt;li&gt;&lt;em&gt;Copied the config.xml file to yet another location&lt;/em&gt;&lt;/li&gt;
+&lt;li&gt;&lt;em&gt;Went to build with parameters, and now it worked as reported in this issue&lt;/em&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;em&gt;Now comes the interesting part. Looking at the diff. Attaching a screen shot so that others can have fun looking at it too. I installed Kompare as it has some cool features such as disabling diff for white spaces, blank lines, etc. The whole file changes as you save it. But if you ignore the number of white spaces&amp;#8230; Then you can see that the Job DSL Plug-in is creating a &amp;lt;script&amp;gt; tag, as we used to do before 1.5 I think.&lt;/em&gt;&lt;/p&gt;
+&lt;div class=&#39;row&#39;&gt;
+&lt;div class=&#34;ui fluid container&#34;&gt;
+&lt;figure&gt;
+&lt;a  href=&#34;/2017/04/17/troubleshooting-a-jenkins-plugin-compatibility-issue/JENKINS-42655-diff.png&#34; rel=&#34;prettyPhoto&#34; class=&#34;thumbnail&#34; title=&#34;Screen shot&#34;&gt;
+&lt;img style=&#34;height: 400px;&#34; class=&#34;ui image&#34; src=&#34;/2017/04/17/troubleshooting-a-jenkins-plugin-compatibility-issue/JENKINS-42655-diff.png&#34; alt=&#34;Screen shot&#34; /&gt;
+&lt;/a&gt;
+&lt;figcaption&gt;Screen shot&lt;/figcaption&gt;
+&lt;/figure&gt;
+&lt;/div&gt;
+&lt;/div&gt;
 
-<p><em>Now we use the script-security-plugin. So we need to wrap that around the script-security-plugin&#8217;s tags. Will report an issue for job-dsl-plugin, and will probably submit a pull request in the next days too. There&#8217;s not much left we can change in the plug-in code for that Piotr Tempes, so I&#8217;m afraid you will have to:</em></p>
-<ul>
-<li><em>keep saving the job</em></li>
-<li><em>perhaps work on the fix for Job DSL if you feel like doing it (as you could probably be faster than me in submitting the PR)</em></li>
-<li><em>use an older version of the active-choices-plugin that doesn&#8217;t use security-script-plugin, though you could be bitten by other old bugs</em></li>
-<li><em>write some script to replace the &lt;script&gt; tag and wrap it by the secureScript (doing what the pull request will do automatically later)</em></li>
-</ul>
-<p><em>Sorry for not being able to quickly provide any workaround, nor to cut a quick bugfix release.</em></p>
-<p><em>Cheers</em>
-<em>Bruno</em></p>
-<p style="text-align: center; color: #DDDDDD;">&diams;</p>
+&lt;p&gt;&lt;em&gt;Now we use the script-security-plugin. So we need to wrap that around the script-security-plugin&amp;#8217;s tags. Will report an issue for job-dsl-plugin, and will probably submit a pull request in the next days too. There&amp;#8217;s not much left we can change in the plug-in code for that Piotr Tempes, so I&amp;#8217;m afraid you will have to:&lt;/em&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;em&gt;keep saving the job&lt;/em&gt;&lt;/li&gt;
+&lt;li&gt;&lt;em&gt;perhaps work on the fix for Job DSL if you feel like doing it (as you could probably be faster than me in submitting the PR)&lt;/em&gt;&lt;/li&gt;
+&lt;li&gt;&lt;em&gt;use an older version of the active-choices-plugin that doesn&amp;#8217;t use security-script-plugin, though you could be bitten by other old bugs&lt;/em&gt;&lt;/li&gt;
+&lt;li&gt;&lt;em&gt;write some script to replace the &amp;lt;script&amp;gt; tag and wrap it by the secureScript (doing what the pull request will do automatically later)&lt;/em&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;em&gt;Sorry for not being able to quickly provide any workaround, nor to cut a quick bugfix release.&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;Cheers&lt;/em&gt;
+&lt;em&gt;Bruno&lt;/em&gt;&lt;/p&gt;
+&lt;p style=&#34;text-align: center; color: #DDDDDD;&#34;&gt;&amp;diams;&lt;/p&gt;
 
-<p>ps: When I started getting involved in Open Source, I always felt extremely happy when
+&lt;p&gt;ps: When I started getting involved in Open Source, I always felt extremely happy when
 people would spend their time troubleshooting my issues, or just educating me on how to
 behave in an Open Source community, or even how I should have troubleshooted initially
 the issue myself. So whenever I have time, I try to write detailed and polite replies. The
 person posting the comment is my past. The person posting the comment is my future :-)
-<a href="http://revistaepoca.globo.com/Revista/Epoca/0,,EMI96818-15230,00.html">Kindness begets kindness</a>.</p>
-<p>&hearts; Open Source</p>
+&lt;a href=&#34;http://revistaepoca.globo.com/Revista/Epoca/0,,EMI96818-15230,00.html&#34;&gt;Kindness begets kindness&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;&amp;hearts; Open Source&lt;/p&gt;
             
             </description>
         </item>
@@ -231,73 +237,75 @@ person posting the comment is my past. The person posting the comment is my futu
             
             <pubDate>2017-04-14T19:21:03+12:00</pubDate>
             <guid>/2017/04/14/writing-a-binary-parser-in-python-numpy-vs-construct</guid>
-            <description><p>Some time ago I worked with researchers to write a parser for an old data format. The data
-was generated by device (radiosonde) using the vendor (Vaisala) specific binary format.</p>
-<p>One of the researchers told me someone had written a parser for his work, and shared it
+            <description>
+            
+            &lt;p&gt;Some time ago I worked with researchers to write a parser for an old data format. The data
+was generated by device (radiosonde) using the vendor (Vaisala) specific binary format.&lt;/p&gt;
+&lt;p&gt;One of the researchers told me someone had written a parser for his work, and shared it
 on GitHub. To be honest, that was my first time parsing data in binary with Python. Did
-that before with C, C++, Perl, and Java, but never with Python.</p>
-<p>The code on GitHub used <a href="http://www.numpy.org/">NumPy</a> and looked similar to this one.</p>
-<div class="highlight"><pre><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+that before with C, C++, Perl, and Java, but never with Python.&lt;/p&gt;
+&lt;p&gt;The code on GitHub used &lt;a href=&#34;http://www.numpy.org/&#34;&gt;NumPy&lt;/a&gt; and looked similar to this one.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;span class=&#34;kn&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;numpy&lt;/span&gt; &lt;span class=&#34;kn&#34;&gt;as&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;np&lt;/span&gt;
 
-<span class="n">parse_header</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dtype</span><span class="p">(</span> <span class="p">[</span> <span class="p">((</span><span class="s">&#39;field_a&#39;</span><span class="p">,</span> <span class="s">&#39;b1&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s">&#39;field_b&#39;</span><span class="p">,</span> <span class="s">&#39;17b1&#39;</span><span class="p">)</span> <span class="p">]</span> <span class="p">)</span>
+&lt;span class=&#34;n&#34;&gt;parse_header&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;np&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;dtype&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;[&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;((&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;#39;field_a&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;&amp;#39;b1&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;),&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;#39;field_b&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;&amp;#39;17b1&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;]&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
 
-<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s">&#39;input.dat&#39;</span><span class="p">,</span> <span class="s">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
-    <span class="n">header</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">fromfile</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">parse_header</span><span class="p">,</span> <span class="n">count</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-    <span class="c"># ...</span>
-</pre></div>
+&lt;span class=&#34;k&#34;&gt;with&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;open&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;#39;input.dat&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;&amp;#39;rb&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;as&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;f&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;
+    &lt;span class=&#34;n&#34;&gt;header&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;np&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;fromfile&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;f&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;dtype&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;parse_header&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;count&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+    &lt;span class=&#34;c&#34;&gt;# ...&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
 
-<p>And it indeed worked fine. But in the end I used the code - after contacting the author and letting
+&lt;p&gt;And it indeed worked fine. But in the end I used the code - after contacting the author and letting
 him know what I was about to do - as reference together with an old specification document
-for the format, and created a parser with <a href="https://construct.readthedocs.io/en/latest/">Construct</a>.</p>
-<p>From Construct&#8217;s website:</p>
-<blockquote>
-<p>Construct is a powerful declarative parser (and builder) for binary data.</p>
-</blockquote>
-<p>This is what the code with construct looked like.</p>
-<div class="highlight"><pre><span class="kn">from</span> <span class="nn">construct</span> <span class="kn">import</span> <span class="o">*</span>
+for the format, and created a parser with &lt;a href=&#34;https://construct.readthedocs.io/en/latest/&#34;&gt;Construct&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;From Construct&amp;#8217;s website:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Construct is a powerful declarative parser (and builder) for binary data.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;This is what the code with construct looked like.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;span class=&#34;kn&#34;&gt;from&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;construct&lt;/span&gt; &lt;span class=&#34;kn&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;*&lt;/span&gt;
 
-<span class="n">parse_header</span> <span class="o">=</span> <span class="n">Struct</span><span class="p">(</span><span class="s">&quot;parse_header&quot;</span><span class="p">,</span>
-    <span class="n">Enum</span><span class="p">(</span><span class="n">Byte</span><span class="p">(</span><span class="s">&quot;file_ready&quot;</span><span class="p">),</span>
-        <span class="n">READY</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
-        <span class="n">NOT_READY</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
-        <span class="n">_default_</span> <span class="o">=</span> <span class="s">&quot;UNKNOWN&quot;</span><span class="p">,</span>
-    <span class="p">),</span>
-    <span class="n">Bytes</span><span class="p">(</span><span class="s">&quot;reserved&quot;</span><span class="p">,</span> <span class="mi">17</span><span class="p">)</span>
-<span class="p">)</span>
+&lt;span class=&#34;n&#34;&gt;parse_header&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Struct&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;parse_header&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
+    &lt;span class=&#34;n&#34;&gt;Enum&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;Byte&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;file_ready&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;),&lt;/span&gt;
+        &lt;span class=&#34;n&#34;&gt;READY&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
+        &lt;span class=&#34;n&#34;&gt;NOT_READY&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
+        &lt;span class=&#34;n&#34;&gt;_default_&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;&amp;quot;UNKNOWN&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
+    &lt;span class=&#34;p&#34;&gt;),&lt;/span&gt;
+    &lt;span class=&#34;n&#34;&gt;Bytes&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;reserved&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;17&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
 
-<span class="c"># ...</span>
+&lt;span class=&#34;c&#34;&gt;# ...&lt;/span&gt;
 
-<span class="n">parse_contents</span> <span class="o">=</span> <span class="n">Struct</span><span class="p">(</span><span class="s">&quot;parse_contents&quot;</span><span class="p">,</span>
-    <span class="n">parse_header</span><span class="p">,</span>
-    <span class="n">Range</span><span class="p">(</span><span class="n">mincount</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">maxcout</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">subcon</span><span class="o">=</span><span class="n">pre_data</span><span class="p">),</span>
-    <span class="n">OptionalGreedyRange</span><span class="p">(</span><span class="n">detailed_data</span><span class="p">)</span>
-<span class="p">)</span>
+&lt;span class=&#34;n&#34;&gt;parse_contents&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Struct&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;parse_contents&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
+    &lt;span class=&#34;n&#34;&gt;parse_header&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
+    &lt;span class=&#34;n&#34;&gt;Range&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;mincount&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;maxcout&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;5&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;subcon&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;pre_data&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;),&lt;/span&gt;
+    &lt;span class=&#34;n&#34;&gt;OptionalGreedyRange&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;detailed_data&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
 
-<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s">&#39;input.dat&#39;</span><span class="p">,</span> <span class="s">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
-    <span class="n">parse_results</span> <span class="o">=</span> <span class="n">parse_contents</span><span class="o">.</span><span class="n">parse_stream</span><span class="p">(</span><span class="n">fid</span><span class="p">)</span>
-    <span class="c"># ...</span>
-</pre></div>
+&lt;span class=&#34;k&#34;&gt;with&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;open&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;#39;input.dat&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;&amp;#39;rb&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;as&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;f&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;
+    &lt;span class=&#34;n&#34;&gt;parse_results&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;parse_contents&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;parse_stream&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;fid&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+    &lt;span class=&#34;c&#34;&gt;# ...&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
 
-<p>Writing the parser with NumPy or Construct would achieve the same result. However, in the end
+&lt;p&gt;Writing the parser with NumPy or Construct would achieve the same result. However, in the end
 this came down to personal preference, and my point of view as Software Engineer. This is the
-description of NumPy.</p>
-<blockquote>
-<p>NumPy is the fundamental package for scientific computing with Python.</p>
-</blockquote>
-<p>NumPy is a project tailored for scientific computing, with a focus on linear algebra,
+description of NumPy.&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;NumPy is the fundamental package for scientific computing with Python.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;NumPy is a project tailored for scientific computing, with a focus on linear algebra,
 N-dimensional arrays, and so it goes. While it contains code that can parse binary data,
-the footprint added to a project that includes it as dependency is quite big.</p>
-<p>The parser written with NumPy wasn&#8217;t using 5% of the NumPy code base. Probably less than 1%. Updates
+the footprint added to a project that includes it as dependency is quite big.&lt;/p&gt;
+&lt;p&gt;The parser written with NumPy wasn&amp;#8217;t using 5% of the NumPy code base. Probably less than 1%. Updates
 to NumPy could break the application compatibility, even if the update came due to some new
-matrix operation added to NumPy through some external and missing dependency.</p>
-<p>In Java something similar happens with Google Guava. While I use it some times, most of the
+matrix operation added to NumPy through some external and missing dependency.&lt;/p&gt;
+&lt;p&gt;In Java something similar happens with Google Guava. While I use it some times, most of the
 times I find myself using one of the Apache Commons libraries, or another dependency
-with just what I need. To avoid including unnecessary code to my application.</p>
-<p>If you prefer to use NumPy that&#8217;s fine too :-) I just had the time enough to rewrite it
+with just what I need. To avoid including unnecessary code to my application.&lt;/p&gt;
+&lt;p&gt;If you prefer to use NumPy that&amp;#8217;s fine too :-) I just had the time enough to rewrite it
 instead of using the NumPy (took a couple of hours). In other cases it may still
 make sense to use another tool or library, even if it was not made specifically for the
-job ¯\<em>(ツ)</em>/¯</p>
-<p>&hearts; Open Source</p>
+job ¯\&lt;em&gt;(ツ)&lt;/em&gt;/¯&lt;/p&gt;
+&lt;p&gt;&amp;hearts; Open Source&lt;/p&gt;
             
             </description>
         </item>
@@ -321,35 +329,37 @@ job ¯\<em>(ツ)</em>/¯</p>
             
             <pubDate>2017-04-14T11:21:03+12:00</pubDate>
             <guid>/2017/04/14/spring-cloud-encrypted-values-and-spring-propertysources</guid>
-            <description><p>As I could not find any documentation for that, I decided to write it as a note to myself
+            <description>
+            
+            &lt;p&gt;As I could not find any documentation for that, I decided to write it as a note to myself
 in case I use the
-<a href="https://cloud.spring.io/spring-cloud-config/spring-cloud-config.html#_encryption_and_decryption">encryption and decryption</a>
-with Spring Cloud again.</p>
-<p>In Spring and Spring Boot, you normally have multiple sources of properties, like multiple
+&lt;a href=&#34;https://cloud.spring.io/spring-cloud-config/spring-cloud-config.html#_encryption_and_decryption&#34;&gt;encryption and decryption&lt;/a&gt;
+with Spring Cloud again.&lt;/p&gt;
+&lt;p&gt;In Spring and Spring Boot, you normally have multiple sources of properties, like multiple
 properties files, environment properties and variables, and so it goes. In the Spring API,
 these are represented as
-<a href="http://docs.spring.io/spring/docs/current/javadoc-api/org/springframework/context/annotation/PropertySource.html">PropertySource</a>&#8216;s.</p>
-<p>In a Spring Boot application, you would be used to overriding certain properties
+&lt;a href=&#34;http://docs.spring.io/spring/docs/current/javadoc-api/org/springframework/context/annotation/PropertySource.html&#34;&gt;PropertySource&lt;/a&gt;&amp;#8216;s.&lt;/p&gt;
+&lt;p&gt;In a Spring Boot application, you would be used to overriding certain properties
 by defining environments and using an application-production.properties file, or
-overriding values with environment properties.</p>
-<p>This is common in
-<a href="https://aws.amazon.com/blogs/devops/deploying-a-spring-boot-application-on-aws-using-aws-elastic-beanstalk/">Spring Boot applications deployed to Amazon Elastic Beanstalk</a>.</p>
-<p>Some time ago another team at work found that overriding did not always work when you have
+overriding values with environment properties.&lt;/p&gt;
+&lt;p&gt;This is common in
+&lt;a href=&#34;https://aws.amazon.com/blogs/devops/deploying-a-spring-boot-application-on-aws-using-aws-elastic-beanstalk/&#34;&gt;Spring Boot applications deployed to Amazon Elastic Beanstalk&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Some time ago another team at work found that overriding did not always work when you have
 encrypted values in your properties files. Even if you specified new values in the
-Amazon Elastic Beanstalk application configuration.</p>
-<p>Yesterday, while debugging the issue and reading Spring Cloud source code, I found its
-<a href="https://github.com/spring-cloud/spring-cloud-commons/blob/9675df02f6a2c01766711f7dee3c4d2818b7d716/spring-cloud-context/src/main/java/org/springframework/cloud/bootstrap/encrypt/EnvironmentDecryptApplicationInitializer.java#L44">EnvironmentDecryptApplicationInitializer</a>.</p>
-<p>It basically iterates through all loaded property sources, looking for values that start with
+Amazon Elastic Beanstalk application configuration.&lt;/p&gt;
+&lt;p&gt;Yesterday, while debugging the issue and reading Spring Cloud source code, I found its
+&lt;a href=&#34;https://github.com/spring-cloud/spring-cloud-commons/blob/9675df02f6a2c01766711f7dee3c4d2818b7d716/spring-cloud-context/src/main/java/org/springframework/cloud/bootstrap/encrypt/EnvironmentDecryptApplicationInitializer.java#L44&#34;&gt;EnvironmentDecryptApplicationInitializer&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;It basically iterates through all loaded property sources, looking for values that start with
 {cipher}. Then it calls the
-<a href="http://docs.spring.io/spring-security/site/docs/current/apidocs/org/springframework/security/crypto/encrypt/TextEncryptor.html">Spring Security TextEncryptor</a>
-defined in the application.</p>
-<p>Finally, it creates a new property source, called decrypted, with the decrypted values. So when
+&lt;a href=&#34;http://docs.spring.io/spring-security/site/docs/current/apidocs/org/springframework/security/crypto/encrypt/TextEncryptor.html&#34;&gt;Spring Security TextEncryptor&lt;/a&gt;
+defined in the application.&lt;/p&gt;
+&lt;p&gt;Finally, it creates a new property source, called decrypted, with the decrypted values. So when
 your application looks for a property called XPTO, and if it has been encrypted, it will
 find the value in the decrypted propery source, regardless of whether you tried to override it or
-not.</p>
-<div class="highlight"><pre><span class="c"># Property sources listed in Eclipse IDE</span>
+not.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;span class=&#34;c&#34;&gt;# Property sources listed in Eclipse IDE&lt;/span&gt;
 
-<span class="o">[</span>
+&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;
   servletConfigInitParams,
   servletContextInitParams,
   systemProperties,
@@ -358,12 +368,12 @@ not.</p>
   applicationConfigurationProperties,
   springCloudClientHostInfo,
   defaultProperties
-<span class="o">]</span>
+&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
 
-<span class="c"># When using encrypted values</span>
+&lt;span class=&#34;c&#34;&gt;# When using encrypted values&lt;/span&gt;
 
-<span class="o">[</span>
-  decrypted, &lt;-------- created by Spring Cloud, with decrypted values. Prepended to the list of property sources
+&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;
+  decrypted, &amp;lt;-------- created by Spring Cloud, with decrypted values. Prepended to the list of property sources
   servletConfigInitParams,
   servletContextInitParams,
   systemProperties,
@@ -372,13 +382,13 @@ not.</p>
   applicationConfigurationProperties,
   springCloudClientHostInfo,
   defaultProperties
-<span class="o">]</span>
-</pre></div>
+&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
 
-<p>So in case you have encrypted values in your Spring application (and you are using Spring Cloud, 
+&lt;p&gt;So in case you have encrypted values in your Spring application (and you are using Spring Cloud, 
 of course) remember that these values will have higher priority, and can only be overriden by other
-encrypted values.</p>
-<p>&hearts; Open Source</p>
+encrypted values.&lt;/p&gt;
+&lt;p&gt;&amp;hearts; Open Source&lt;/p&gt;
             
             </description>
         </item>
@@ -404,69 +414,71 @@ encrypted values.</p>
             
             <pubDate>2017-04-02T12:01:03+12:00</pubDate>
             <guid>/2017/04/02/fixing-qt-warning-qlayout-attempting-to-add-qlayout-to-qwidget-which-already-has-a-layout</guid>
-            <description><p>If you ever started Krita 3.x in your command line, and had a look at the console output,
-you may noticed the following warning.</p>
-<blockquote>
-<p>QLayout: Attempting to add QLayout &#8220;&#8221; to QWidget &#8220;&#8221;, which already has a layout</p>
-</blockquote>
-<p>Krita recently <a href="https://krita.org/en/item/krita-3-1-3-alpha-released/">announced the release of 3.1.3-alpha-2</a>,
+            <description>
+            
+            &lt;p&gt;If you ever started Krita 3.x in your command line, and had a look at the console output,
+you may noticed the following warning.&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;QLayout: Attempting to add QLayout &amp;#8220;&amp;#8221; to QWidget &amp;#8220;&amp;#8221;, which already has a layout&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;Krita recently &lt;a href=&#34;https://krita.org/en/item/krita-3-1-3-alpha-released/&#34;&gt;announced the release of 3.1.3-alpha-2&lt;/a&gt;,
 and while testing I saw this warning and
-decided to investigate why this warning happens.</p>
-<p>There was already
-<a href="http://stackoverflow.com/a/25451334">a similar question posted on StackOverflow</a>. And the
-best answer&#8217;s initial paragraph gave me a hint of what to look for.</p>
-<blockquote>
-<p>When you assign a widget as the parent of a QLayout by passing it into the constructor, the layout is automatically set as the layout for that widget. In your code you are not only doing this, but explicitly calling setlayout(). This is no problem when when the widget passed is the same. If they are different you will get an error because Qt tries to assign the second layout to your widget which has already had a layout set.</p>
-</blockquote>
-<p>So, somewhere in Krita code, there was a a QWidget being created, and layouts
+decided to investigate why this warning happens.&lt;/p&gt;
+&lt;p&gt;There was already
+&lt;a href=&#34;http://stackoverflow.com/a/25451334&#34;&gt;a similar question posted on StackOverflow&lt;/a&gt;. And the
+best answer&amp;#8217;s initial paragraph gave me a hint of what to look for.&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;When you assign a widget as the parent of a QLayout by passing it into the constructor, the layout is automatically set as the layout for that widget. In your code you are not only doing this, but explicitly calling setlayout(). This is no problem when when the widget passed is the same. If they are different you will get an error because Qt tries to assign the second layout to your widget which has already had a layout set.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;So, somewhere in Krita code, there was a a QWidget being created, and layouts
 were being added to it more than once. To find where the issue was happening was quite easy. A breakpoint at
-<a href="https://github.com/KDE/krita/blob/9e2b8c5b07deccd4a616ad7930a91e8cc784a85b/krita/main.cc#L141">main.cc</a>
+&lt;a href=&#34;https://github.com/KDE/krita/blob/9e2b8c5b07deccd4a616ad7930a91e8cc784a85b/krita/main.cc#L141&#34;&gt;main.cc&lt;/a&gt;
 where the application is initialized, then step through a few times, until the message appeared in the
-console.</p>
-<p>Further investigation led me to the History docker (the one that shows undo steps)
-<a href="https://github.com/KDE/krita/blob/9e2b8c5b07deccd4a616ad7930a91e8cc784a85b/plugins/dockers/historydocker/HistoryDock.cpp#L33">constructor</a>.</p>
-<div class="highlight"><pre>    <span class="n">QVBoxLayout</span> <span class="o">*</span><span class="n">vl</span> <span class="o">=</span> <span class="k">new</span> <span class="n">QVBoxLayout</span><span class="p">(</span><span class="n">page</span><span class="p">);</span> <span class="c1">// layout being set to page</span>
-    <span class="n">m_undoView</span> <span class="o">=</span> <span class="k">new</span> <span class="n">KisUndoView</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
-    <span class="n">vl</span><span class="o">-&gt;</span><span class="n">addWidget</span><span class="p">(</span><span class="n">m_undoView</span><span class="p">);</span>
-    <span class="n">QHBoxLayout</span> <span class="o">*</span><span class="n">hl</span> <span class="o">=</span> <span class="k">new</span> <span class="n">QHBoxLayout</span><span class="p">(</span><span class="n">page</span><span class="p">);</span> <span class="c1">// layout being set to page again</span>
-    <span class="n">hl</span><span class="o">-&gt;</span><span class="n">addSpacerItem</span><span class="p">(</span><span class="k">new</span> <span class="n">QSpacerItem</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span>  <span class="n">QSizePolicy</span><span class="o">::</span><span class="n">Expanding</span><span class="p">,</span> <span class="n">QSizePolicy</span><span class="o">::</span><span class="n">Fixed</span><span class="p">));</span>
-    <span class="n">m_bnConfigure</span> <span class="o">=</span> <span class="k">new</span> <span class="n">QToolButton</span><span class="p">(</span><span class="n">page</span><span class="p">);</span>
-    <span class="n">m_bnConfigure</span><span class="o">-&gt;</span><span class="n">setIcon</span><span class="p">(</span><span class="n">KisIconUtils</span><span class="o">::</span><span class="n">loadIcon</span><span class="p">(</span><span class="s">&quot;configure&quot;</span><span class="p">));</span>
-    <span class="n">connect</span><span class="p">(</span><span class="n">m_bnConfigure</span><span class="p">,</span> <span class="n">SIGNAL</span><span class="p">(</span><span class="n">clicked</span><span class="p">(</span><span class="kt">bool</span><span class="p">)),</span> <span class="n">SLOT</span><span class="p">(</span><span class="n">configure</span><span class="p">()));</span>
-    <span class="n">hl</span><span class="o">-&gt;</span><span class="n">addWidget</span><span class="p">(</span><span class="n">m_bnConfigure</span><span class="p">);</span>
-    <span class="n">vl</span><span class="o">-&gt;</span><span class="n">addItem</span><span class="p">(</span><span class="n">hl</span><span class="p">);</span>
+console.&lt;/p&gt;
+&lt;p&gt;Further investigation led me to the History docker (the one that shows undo steps)
+&lt;a href=&#34;https://github.com/KDE/krita/blob/9e2b8c5b07deccd4a616ad7930a91e8cc784a85b/plugins/dockers/historydocker/HistoryDock.cpp#L33&#34;&gt;constructor&lt;/a&gt;.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;    &lt;span class=&#34;n&#34;&gt;QVBoxLayout&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;*&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;vl&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;new&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;QVBoxLayout&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;page&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt; &lt;span class=&#34;c1&#34;&gt;// layout being set to page&lt;/span&gt;
+    &lt;span class=&#34;n&#34;&gt;m_undoView&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;new&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;KisUndoView&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;this&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
+    &lt;span class=&#34;n&#34;&gt;vl&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;addWidget&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;m_undoView&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
+    &lt;span class=&#34;n&#34;&gt;QHBoxLayout&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;*&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;hl&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;new&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;QHBoxLayout&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;page&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt; &lt;span class=&#34;c1&#34;&gt;// layout being set to page again&lt;/span&gt;
+    &lt;span class=&#34;n&#34;&gt;hl&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;addSpacerItem&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;new&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;QSpacerItem&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;10&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;  &lt;span class=&#34;n&#34;&gt;QSizePolicy&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;::&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;Expanding&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;QSizePolicy&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;::&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;Fixed&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;));&lt;/span&gt;
+    &lt;span class=&#34;n&#34;&gt;m_bnConfigure&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;new&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;QToolButton&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;page&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
+    &lt;span class=&#34;n&#34;&gt;m_bnConfigure&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;setIcon&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;KisIconUtils&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;::&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;loadIcon&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;configure&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;));&lt;/span&gt;
+    &lt;span class=&#34;n&#34;&gt;connect&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;m_bnConfigure&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;SIGNAL&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;clicked&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;kt&#34;&gt;bool&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)),&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;SLOT&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;configure&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()));&lt;/span&gt;
+    &lt;span class=&#34;n&#34;&gt;hl&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;addWidget&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;m_bnConfigure&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
+    &lt;span class=&#34;n&#34;&gt;vl&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;addItem&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;hl&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
 
-    <span class="n">setWidget</span><span class="p">(</span><span class="n">page</span><span class="p">);</span>
-    <span class="n">setWindowTitle</span><span class="p">(</span><span class="n">i18n</span><span class="p">(</span><span class="s">&quot;Undo History&quot;</span><span class="p">));</span>
-</pre></div>
+    &lt;span class=&#34;n&#34;&gt;setWidget&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;page&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
+    &lt;span class=&#34;n&#34;&gt;setWindowTitle&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;i18n&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;Undo History&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;));&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
 
-<p>Here the QWidget created receives both QHBoxLayout and QVBoxLayout. Again, searching the Internet
+&lt;p&gt;Here the QWidget created receives both QHBoxLayout and QVBoxLayout. Again, searching the Internet
 a little bit, then came across this post with a good example of a QWidget with
-QHBoxLayout and QVBoxLayout. Here&#8217;s what the constructor looks after the
-<a href="https://bugs.kde.org/show_bug.cgi?id=378313">patch</a>
-has been <a href="https://github.com/KDE/krita/commit/1d2343c0cacfb0b105fbe86c2bcef975a09b1041">applied</a>.</p>
-<div class="highlight"><pre>    <span class="n">QVBoxLayout</span> <span class="o">*</span><span class="n">vl</span> <span class="o">=</span> <span class="k">new</span> <span class="n">QVBoxLayout</span><span class="p">(</span><span class="n">page</span><span class="p">);</span> <span class="c1">// layout being set to page</span>
-    <span class="n">m_undoView</span> <span class="o">=</span> <span class="k">new</span> <span class="n">KisUndoView</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
-    <span class="n">vl</span><span class="o">-&gt;</span><span class="n">addWidget</span><span class="p">(</span><span class="n">m_undoView</span><span class="p">);</span>
-    <span class="n">QHBoxLayout</span> <span class="o">*</span><span class="n">hl</span> <span class="o">=</span> <span class="k">new</span> <span class="n">QHBoxLayout</span><span class="p">();</span>
-    <span class="n">hl</span><span class="o">-&gt;</span><span class="n">addSpacerItem</span><span class="p">(</span><span class="k">new</span> <span class="n">QSpacerItem</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span>  <span class="n">QSizePolicy</span><span class="o">::</span><span class="n">Expanding</span><span class="p">,</span> <span class="n">QSizePolicy</span><span class="o">::</span><span class="n">Fixed</span><span class="p">));</span>
-    <span class="n">m_bnConfigure</span> <span class="o">=</span> <span class="k">new</span> <span class="n">QToolButton</span><span class="p">(</span><span class="n">page</span><span class="p">);</span>
-    <span class="n">m_bnConfigure</span><span class="o">-&gt;</span><span class="n">setIcon</span><span class="p">(</span><span class="n">KisIconUtils</span><span class="o">::</span><span class="n">loadIcon</span><span class="p">(</span><span class="s">&quot;configure&quot;</span><span class="p">));</span>
-    <span class="n">connect</span><span class="p">(</span><span class="n">m_bnConfigure</span><span class="p">,</span> <span class="n">SIGNAL</span><span class="p">(</span><span class="n">clicked</span><span class="p">(</span><span class="kt">bool</span><span class="p">)),</span> <span class="n">SLOT</span><span class="p">(</span><span class="n">configure</span><span class="p">()));</span>
-    <span class="n">hl</span><span class="o">-&gt;</span><span class="n">addWidget</span><span class="p">(</span><span class="n">m_bnConfigure</span><span class="p">);</span>
-    <span class="n">vl</span><span class="o">-&gt;</span><span class="n">addItem</span><span class="p">(</span><span class="n">hl</span><span class="p">);</span>
-    <span class="n">vl</span><span class="o">-&gt;</span><span class="n">addLayout</span><span class="p">(</span><span class="n">hl</span><span class="p">);</span> <span class="c1">// horizontal layout added to the vertical layout</span>
+QHBoxLayout and QVBoxLayout. Here&amp;#8217;s what the constructor looks after the
+&lt;a href=&#34;https://bugs.kde.org/show_bug.cgi?id=378313&#34;&gt;patch&lt;/a&gt;
+has been &lt;a href=&#34;https://github.com/KDE/krita/commit/1d2343c0cacfb0b105fbe86c2bcef975a09b1041&#34;&gt;applied&lt;/a&gt;.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;    &lt;span class=&#34;n&#34;&gt;QVBoxLayout&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;*&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;vl&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;new&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;QVBoxLayout&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;page&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt; &lt;span class=&#34;c1&#34;&gt;// layout being set to page&lt;/span&gt;
+    &lt;span class=&#34;n&#34;&gt;m_undoView&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;new&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;KisUndoView&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;this&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
+    &lt;span class=&#34;n&#34;&gt;vl&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;addWidget&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;m_undoView&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
+    &lt;span class=&#34;n&#34;&gt;QHBoxLayout&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;*&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;hl&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;new&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;QHBoxLayout&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;();&lt;/span&gt;
+    &lt;span class=&#34;n&#34;&gt;hl&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;addSpacerItem&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;new&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;QSpacerItem&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;10&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;  &lt;span class=&#34;n&#34;&gt;QSizePolicy&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;::&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;Expanding&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;QSizePolicy&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;::&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;Fixed&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;));&lt;/span&gt;
+    &lt;span class=&#34;n&#34;&gt;m_bnConfigure&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;new&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;QToolButton&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;page&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
+    &lt;span class=&#34;n&#34;&gt;m_bnConfigure&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;setIcon&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;KisIconUtils&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;::&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;loadIcon&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;configure&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;));&lt;/span&gt;
+    &lt;span class=&#34;n&#34;&gt;connect&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;m_bnConfigure&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;SIGNAL&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;clicked&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;kt&#34;&gt;bool&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)),&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;SLOT&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;configure&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()));&lt;/span&gt;
+    &lt;span class=&#34;n&#34;&gt;hl&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;addWidget&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;m_bnConfigure&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
+    &lt;span class=&#34;n&#34;&gt;vl&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;addItem&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;hl&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
+    &lt;span class=&#34;n&#34;&gt;vl&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;addLayout&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;hl&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt; &lt;span class=&#34;c1&#34;&gt;// horizontal layout added to the vertical layout&lt;/span&gt;
 
-    <span class="n">setWidget</span><span class="p">(</span><span class="n">page</span><span class="p">);</span>
-    <span class="n">setWindowTitle</span><span class="p">(</span><span class="n">i18n</span><span class="p">(</span><span class="s">&quot;Undo History&quot;</span><span class="p">));</span>
-</pre></div>
+    &lt;span class=&#34;n&#34;&gt;setWidget&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;page&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
+    &lt;span class=&#34;n&#34;&gt;setWindowTitle&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;i18n&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;Undo History&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;));&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
 
-<p>That&#8217;s it. Learned something new in Qt. Not as important and useful as learning about
-<a href="http://doc.qt.io/qt-4.8/signalsandslots.html">signals and slots</a>, but now I can focus
-on other warnings in the console output of Krita.</p>
-<p>And you? Have you tested <a href="https://krita.org/en/item/krita-3-1-3-alpha-released/">Krita 3.1.3 alpha</a> already?
-What are you waiting for? :-)</p>
-<p>&hearts; Open Source</p>
+&lt;p&gt;That&amp;#8217;s it. Learned something new in Qt. Not as important and useful as learning about
+&lt;a href=&#34;http://doc.qt.io/qt-4.8/signalsandslots.html&#34;&gt;signals and slots&lt;/a&gt;, but now I can focus
+on other warnings in the console output of Krita.&lt;/p&gt;
+&lt;p&gt;And you? Have you tested &lt;a href=&#34;https://krita.org/en/item/krita-3-1-3-alpha-released/&#34;&gt;Krita 3.1.3 alpha&lt;/a&gt; already?
+What are you waiting for? :-)&lt;/p&gt;
+&lt;p&gt;&amp;hearts; Open Source&lt;/p&gt;
             
             </description>
         </item>
@@ -492,30 +504,32 @@ What are you waiting for? :-)</p>
             
             <pubDate>2017-03-26T11:14:03+13:00</pubDate>
             <guid>/2017/03/26/simulating-less-memory-with-ulimit</guid>
-            <description><p>These days I was trying to reproduce <a href="https://bugs.kde.org/show_bug.cgi?id=376382">a bug in Krita</a>
+            <description>
+            
+            &lt;p&gt;These days I was trying to reproduce &lt;a href=&#34;https://bugs.kde.org/show_bug.cgi?id=376382&#34;&gt;a bug in Krita&lt;/a&gt;
 where it would crash when a user copied group layers between windows. It appeared that the user was
-getting a segmentation fault due to the user&#8217;s computer running out of memory.</p>
-<p>I could not reproduce the issue, but my computer has 16 GB. The first thing that came to my mind was
+getting a segmentation fault due to the user&amp;#8217;s computer running out of memory.&lt;/p&gt;
+&lt;p&gt;I could not reproduce the issue, but my computer has 16 GB. The first thing that came to my mind was
 to create a virtual machine with less memory to reproduce the issue. But I decided to spend some time
-looking for a <a href="http://wiki.c2.com/?LazinessImpatienceHubris">simpler way</a> of doing it.</p>
-<p>Searching the web I found some suggestions that <code>ulimit</code> could work. After playing for a while with
-<code>ulimit</code> and <code>htop</code>, and verifying the amount of memory necessary to open two files in two windows
-in Krita, I came up with the following settings.</p>
-<div class="highlight"><pre><span class="c"># 2550 mb in kb</span>
-<span class="nb">ulimit</span> -v 2550000
+looking for a &lt;a href=&#34;http://wiki.c2.com/?LazinessImpatienceHubris&#34;&gt;simpler way&lt;/a&gt; of doing it.&lt;/p&gt;
+&lt;p&gt;Searching the web I found some suggestions that &lt;code&gt;ulimit&lt;/code&gt; could work. After playing for a while with
+&lt;code&gt;ulimit&lt;/code&gt; and &lt;code&gt;htop&lt;/code&gt;, and verifying the amount of memory necessary to open two files in two windows
+in Krita, I came up with the following settings.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;span class=&#34;c&#34;&gt;# 2550 mb in kb&lt;/span&gt;
+&lt;span class=&#34;nb&#34;&gt;ulimit&lt;/span&gt; -v 2550000
 
-<span class="c"># 2 gb in kb</span>
-<span class="nb">ulimit</span> -m 2000000
+&lt;span class=&#34;c&#34;&gt;# 2 gb in kb&lt;/span&gt;
+&lt;span class=&#34;nb&#34;&gt;ulimit&lt;/span&gt; -m 2000000
 
-<span class="c"># Confirm limits</span>
-<span class="nb">ulimit</span> -a
+&lt;span class=&#34;c&#34;&gt;# Confirm limits&lt;/span&gt;
+&lt;span class=&#34;nb&#34;&gt;ulimit&lt;/span&gt; -a
 
-gdb <span class="nv">$HOME</span>/Development/cpp/workspace/krita_install/bin/krita
-</pre></div>
+gdb &lt;span class=&#34;nv&#34;&gt;$HOME&lt;/span&gt;/Development/cpp/workspace/krita_install/bin/krita
+&lt;/pre&gt;&lt;/div&gt;
 
-<p>Then after copying a few layers from one window to another, I successfully reproduced the issue,
-and could include a backtrace in the Krita issue tracking system.</p>
-<p>&hearts; Open Source</p>
+&lt;p&gt;Then after copying a few layers from one window to another, I successfully reproduced the issue,
+and could include a backtrace in the Krita issue tracking system.&lt;/p&gt;
+&lt;p&gt;&amp;hearts; Open Source&lt;/p&gt;
             
             </description>
         </item>
@@ -539,97 +553,99 @@ and could include a backtrace in the Krita issue tracking system.</p>
             
             <pubDate>2017-03-15T13:18:03+13:00</pubDate>
             <guid>/2017/03/15/using-google-natural-language-api-in-aws-elastic-beanstalk-application</guid>
-            <description><p>Besides providing an API for users and developers, Google also provides a series of
-(very well-written) client implementation, in several programming languages. That&#8217;s the
-case for Google Storage, Google Vision, and for Google Natural Language API&#8217;s.</p>
-<p>I recently had to use the latter in a POC at work, and ran into an interesting issue with
-our AWS Elastic Beanstalk environment.</p>
-<p>Google Language API requires that clients authenticate before sending requests. If you use their <a href="https://github.com/GoogleCloudPlatform/google-cloud-java">google-cloud-java</a>, you can define the GOOGLE_APPLICATION_CREDENTIALS. This environment variable must point to a JSON file with the Google Language API credentials.</p>
-<p>The issue is that while Google Language API (or more precisely
-<a href="https://github.com/google/google-auth-library-java/blob/ae9735c576fd8593636e155ccb26e454576bc2cd/oauth2_http/java/com/google/auth/oauth2/DefaultCredentialsProvider.java#L124">google-auth-library-java</a>)
+            <description>
+            
+            &lt;p&gt;Besides providing an API for users and developers, Google also provides a series of
+(very well-written) client implementation, in several programming languages. That&amp;#8217;s the
+case for Google Storage, Google Vision, and for Google Natural Language API&amp;#8217;s.&lt;/p&gt;
+&lt;p&gt;I recently had to use the latter in a POC at work, and ran into an interesting issue with
+our AWS Elastic Beanstalk environment.&lt;/p&gt;
+&lt;p&gt;Google Language API requires that clients authenticate before sending requests. If you use their &lt;a href=&#34;https://github.com/GoogleCloudPlatform/google-cloud-java&#34;&gt;google-cloud-java&lt;/a&gt;, you can define the GOOGLE_APPLICATION_CREDENTIALS. This environment variable must point to a JSON file with the Google Language API credentials.&lt;/p&gt;
+&lt;p&gt;The issue is that while Google Language API (or more precisely
+&lt;a href=&#34;https://github.com/google/google-auth-library-java/blob/ae9735c576fd8593636e155ccb26e454576bc2cd/oauth2_http/java/com/google/auth/oauth2/DefaultCredentialsProvider.java#L124&#34;&gt;google-auth-library-java&lt;/a&gt;)
 looks for an environment variable, in Elastic Beanstalk you are able to
 specify only system properties (unless you want to try something with ebextensions,
-maybe some JNI&#8230;).</p>
-<p>A workaround for this issue in Google Natural Language API, is to create and pass a
-<a href="http://googlecloudplatform.github.io/google-cloud-java/0.8.0/apidocs/com/google/cloud/language/spi/v1/LanguageServiceSettings.html">LanguageServiceSettings</a>
-to your <a href="http://googlecloudplatform.github.io/google-cloud-java/0.8.0/apidocs/com/google/cloud/language/spi/v1/LanguageServiceClient.html">LanguageServiceClient</a>.
+maybe some JNI&amp;#8230;).&lt;/p&gt;
+&lt;p&gt;A workaround for this issue in Google Natural Language API, is to create and pass a
+&lt;a href=&#34;http://googlecloudplatform.github.io/google-cloud-java/0.8.0/apidocs/com/google/cloud/language/spi/v1/LanguageServiceSettings.html&#34;&gt;LanguageServiceSettings&lt;/a&gt;
+to your &lt;a href=&#34;http://googlecloudplatform.github.io/google-cloud-java/0.8.0/apidocs/com/google/cloud/language/spi/v1/LanguageServiceClient.html&#34;&gt;LanguageServiceClient&lt;/a&gt;.
 This settings object, when created, must be given a
-<a href="http://googleapis.github.io/gax-java/0.2.0/apidocs/com/google/api/gax/grpc/ChannelProvider.html">channel provider</a>
-with a <a href="http://googleapis.github.io/gax-java/0.2.0/apidocs/com/google/api/gax/core/FixedCredentialsProvider.html">FixedCredentialsProvider</a>.</p>
-<p>Of course reading code is way easier than reading this workaround description.</p>
-<div class="highlight"><pre><span class="c1">// File: GoogleNaturalLanguageService.java</span>
-<span class="c1">// ...</span>
-    <span class="c1">// envvar or property used to specify the Google Application Credentials</span>
-    <span class="kd">private</span> <span class="kd">final</span> <span class="kd">static</span> <span class="n">String</span> <span class="n">GOOGLE_APPLICATION_CREDENTIALS</span> <span class="o">=</span> <span class="s">&quot;GOOGLE_APPLICATION_CREDENTIALS&quot;</span><span class="o">;</span>
+&lt;a href=&#34;http://googleapis.github.io/gax-java/0.2.0/apidocs/com/google/api/gax/grpc/ChannelProvider.html&#34;&gt;channel provider&lt;/a&gt;
+with a &lt;a href=&#34;http://googleapis.github.io/gax-java/0.2.0/apidocs/com/google/api/gax/core/FixedCredentialsProvider.html&#34;&gt;FixedCredentialsProvider&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Of course reading code is way easier than reading this workaround description.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;span class=&#34;c1&#34;&gt;// File: GoogleNaturalLanguageService.java&lt;/span&gt;
+&lt;span class=&#34;c1&#34;&gt;// ...&lt;/span&gt;
+    &lt;span class=&#34;c1&#34;&gt;// envvar or property used to specify the Google Application Credentials&lt;/span&gt;
+    &lt;span class=&#34;kd&#34;&gt;private&lt;/span&gt; &lt;span class=&#34;kd&#34;&gt;final&lt;/span&gt; &lt;span class=&#34;kd&#34;&gt;static&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;String&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;GOOGLE_APPLICATION_CREDENTIALS&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;&amp;quot;GOOGLE_APPLICATION_CREDENTIALS&amp;quot;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;;&lt;/span&gt;
 
-    <span class="cm">/**</span>
-<span class="cm">     * Google Natural Language API.</span>
-<span class="cm">     */</span>
-    <span class="kd">private</span> <span class="n">LanguageServiceClient</span> <span class="n">languageServiceClient</span><span class="o">;</span>
+    &lt;span class=&#34;cm&#34;&gt;/**&lt;/span&gt;
+&lt;span class=&#34;cm&#34;&gt;     * Google Natural Language API.&lt;/span&gt;
+&lt;span class=&#34;cm&#34;&gt;     */&lt;/span&gt;
+    &lt;span class=&#34;kd&#34;&gt;private&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;LanguageServiceClient&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;languageServiceClient&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;;&lt;/span&gt;
 
-    <span class="nd">@PostConstruct</span>
-    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">init</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="o">{</span>
-        <span class="c1">// Elastic Beanstalk supports Properties, not Environment Variables.</span>
-        <span class="c1">// Google credentials library will load</span>
-        <span class="c1">// the JSON location for the service to authenticate from an envVar. So</span>
-        <span class="c1">// we need to fix that here.</span>
-        <span class="n">String</span> <span class="n">googleApplicationCredentials</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="na">getenv</span><span class="o">(</span><span class="n">GOOGLE_APPLICATION_CREDENTIALS</span><span class="o">);</span>
-        <span class="n">LOGGER</span><span class="o">.</span><span class="na">info</span><span class="o">(</span><span class="n">String</span><span class="o">.</span><span class="na">format</span><span class="o">(</span><span class="s">&quot;GOOGLE_APPLICATION_CREDENTIALS in environment variable: %s&quot;</span><span class="o">,</span> <span class="n">googleApplicationCredentials</span><span class="o">));</span>
-        <span class="k">if</span> <span class="o">(</span><span class="n">StringUtils</span><span class="o">.</span><span class="na">isBlank</span><span class="o">(</span><span class="n">googleApplicationCredentials</span><span class="o">))</span> <span class="o">{</span>
-            <span class="n">googleApplicationCredentials</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="na">getProperty</span><span class="o">(</span><span class="n">GOOGLE_APPLICATION_CREDENTIALS</span><span class="o">);</span>
-            <span class="n">LOGGER</span><span class="o">.</span><span class="na">info</span><span class="o">(</span><span class="n">String</span><span class="o">.</span><span class="na">format</span><span class="o">(</span><span class="s">&quot;GOOGLE_APPLICATION_CREDENTIALS in JVM property: %s&quot;</span><span class="o">,</span> <span class="n">googleApplicationCredentials</span><span class="o">));</span>
-        <span class="o">}</span>
+    &lt;span class=&#34;nd&#34;&gt;@PostConstruct&lt;/span&gt;
+    &lt;span class=&#34;kd&#34;&gt;public&lt;/span&gt; &lt;span class=&#34;kt&#34;&gt;void&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;init&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;()&lt;/span&gt; &lt;span class=&#34;kd&#34;&gt;throws&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Exception&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;
+        &lt;span class=&#34;c1&#34;&gt;// Elastic Beanstalk supports Properties, not Environment Variables.&lt;/span&gt;
+        &lt;span class=&#34;c1&#34;&gt;// Google credentials library will load&lt;/span&gt;
+        &lt;span class=&#34;c1&#34;&gt;// the JSON location for the service to authenticate from an envVar. So&lt;/span&gt;
+        &lt;span class=&#34;c1&#34;&gt;// we need to fix that here.&lt;/span&gt;
+        &lt;span class=&#34;n&#34;&gt;String&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;googleApplicationCredentials&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;System&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;getenv&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;GOOGLE_APPLICATION_CREDENTIALS&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;);&lt;/span&gt;
+        &lt;span class=&#34;n&#34;&gt;LOGGER&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;info&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;String&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;format&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;GOOGLE_APPLICATION_CREDENTIALS in environment variable: %s&amp;quot;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;googleApplicationCredentials&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;));&lt;/span&gt;
+        &lt;span class=&#34;k&#34;&gt;if&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;StringUtils&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;isBlank&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;googleApplicationCredentials&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;))&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;
+            &lt;span class=&#34;n&#34;&gt;googleApplicationCredentials&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;System&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;getProperty&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;GOOGLE_APPLICATION_CREDENTIALS&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;);&lt;/span&gt;
+            &lt;span class=&#34;n&#34;&gt;LOGGER&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;info&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;String&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;format&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;GOOGLE_APPLICATION_CREDENTIALS in JVM property: %s&amp;quot;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;googleApplicationCredentials&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;));&lt;/span&gt;
+        &lt;span class=&#34;o&#34;&gt;}&lt;/span&gt;
 
-        <span class="k">if</span> <span class="o">(</span><span class="n">googleApplicationCredentials</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
-            <span class="k">throw</span> <span class="k">new</span> <span class="n">RuntimeException</span><span class="o">(</span><span class="s">&quot;Could not locate GOOGLE_APPLICATION_CREDENTIALS variable!&quot;</span><span class="o">);</span>
-        <span class="o">}</span>
+        &lt;span class=&#34;k&#34;&gt;if&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;googleApplicationCredentials&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;==&lt;/span&gt; &lt;span class=&#34;kc&#34;&gt;null&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;
+            &lt;span class=&#34;k&#34;&gt;throw&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;new&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;RuntimeException&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;Could not locate GOOGLE_APPLICATION_CREDENTIALS variable!&amp;quot;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;);&lt;/span&gt;
+        &lt;span class=&#34;o&#34;&gt;}&lt;/span&gt;
 
-        <span class="kd">final</span> <span class="n">LanguageServiceSettings</span> <span class="n">languageServiceSettings</span><span class="o">;</span>
-        <span class="k">try</span> <span class="o">(</span><span class="n">InputStream</span> <span class="n">is</span> <span class="o">=</span> <span class="k">new</span> <span class="n">FileInputStream</span><span class="o">(</span><span class="k">new</span> <span class="n">File</span><span class="o">(</span><span class="n">googleApplicationCredentials</span><span class="o">)))</span> <span class="o">{</span>
-            <span class="kd">final</span> <span class="n">GoogleCredentials</span> <span class="n">myCredentials</span> <span class="o">=</span> <span class="n">GoogleCredentials</span>
-                    <span class="o">.</span><span class="na">fromStream</span><span class="o">(</span><span class="n">is</span><span class="o">)</span>
-                    <span class="o">.</span><span class="na">createScoped</span><span class="o">(</span>
-                            <span class="n">Collections</span><span class="o">.</span><span class="na">singleton</span><span class="o">(</span><span class="s">&quot;https://www.googleapis.com/auth/cloud-platform&quot;</span><span class="o">)</span>
-                    <span class="o">);</span>
-            <span class="kd">final</span> <span class="n">CredentialsProvider</span> <span class="n">credentialsProvider</span> <span class="o">=</span> <span class="n">FixedCredentialsProvider</span><span class="o">.</span><span class="na">create</span><span class="o">(</span><span class="n">myCredentials</span><span class="o">);</span>
+        &lt;span class=&#34;kd&#34;&gt;final&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;LanguageServiceSettings&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;languageServiceSettings&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;;&lt;/span&gt;
+        &lt;span class=&#34;k&#34;&gt;try&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;InputStream&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;is&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;new&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;FileInputStream&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;new&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;File&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;googleApplicationCredentials&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;)))&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;
+            &lt;span class=&#34;kd&#34;&gt;final&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;GoogleCredentials&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;myCredentials&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;GoogleCredentials&lt;/span&gt;
+                    &lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;fromStream&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;is&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
+                    &lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;createScoped&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;
+                            &lt;span class=&#34;n&#34;&gt;Collections&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;singleton&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;https://www.googleapis.com/auth/cloud-platform&amp;quot;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
+                    &lt;span class=&#34;o&#34;&gt;);&lt;/span&gt;
+            &lt;span class=&#34;kd&#34;&gt;final&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;CredentialsProvider&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;credentialsProvider&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;FixedCredentialsProvider&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;create&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;myCredentials&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;);&lt;/span&gt;
 
-            <span class="kd">final</span> <span class="n">InstantiatingChannelProvider</span> <span class="n">channelProvider</span> <span class="o">=</span> <span class="n">LanguageServiceSettings</span>
-                    <span class="o">.</span><span class="na">defaultChannelProviderBuilder</span><span class="o">()</span>
-                    <span class="o">.</span><span class="na">setCredentialsProvider</span><span class="o">(</span><span class="n">credentialsProvider</span><span class="o">)</span>
-                    <span class="o">.</span><span class="na">build</span><span class="o">();</span>
-            <span class="n">languageServiceSettings</span> <span class="o">=</span> <span class="n">LanguageServiceSettings</span>
-                    <span class="o">.</span><span class="na">defaultBuilder</span><span class="o">()</span>
-                    <span class="o">.</span><span class="na">setChannelProvider</span><span class="o">(</span><span class="n">channelProvider</span><span class="o">)</span>
-                    <span class="o">.</span><span class="na">build</span><span class="o">();</span>
-        <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">IOException</span> <span class="n">ioe</span><span class="o">)</span> <span class="o">{</span>
-            <span class="n">LOGGER</span><span class="o">.</span><span class="na">error</span><span class="o">(</span><span class="n">String</span><span class="o">.</span><span class="na">format</span><span class="o">(</span><span class="s">&quot;IO error creating Google NLP settings: %s&quot;</span><span class="o">,</span> <span class="n">ioe</span><span class="o">.</span><span class="na">getMessage</span><span class="o">()),</span> <span class="n">ioe</span><span class="o">);</span>
-            <span class="k">throw</span> <span class="n">ioe</span><span class="o">;</span>
-        <span class="o">}</span>
+            &lt;span class=&#34;kd&#34;&gt;final&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;InstantiatingChannelProvider&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;channelProvider&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;LanguageServiceSettings&lt;/span&gt;
+                    &lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;defaultChannelProviderBuilder&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;()&lt;/span&gt;
+                    &lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;setCredentialsProvider&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;credentialsProvider&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
+                    &lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;build&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;();&lt;/span&gt;
+            &lt;span class=&#34;n&#34;&gt;languageServiceSettings&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;LanguageServiceSettings&lt;/span&gt;
+                    &lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;defaultBuilder&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;()&lt;/span&gt;
+                    &lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;setChannelProvider&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;channelProvider&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
+                    &lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;build&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;();&lt;/span&gt;
+        &lt;span class=&#34;o&#34;&gt;}&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;catch&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;IOException&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;ioe&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;
+            &lt;span class=&#34;n&#34;&gt;LOGGER&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;error&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;String&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;format&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;IO error creating Google NLP settings: %s&amp;quot;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;ioe&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;getMessage&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;()),&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;ioe&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;);&lt;/span&gt;
+            &lt;span class=&#34;k&#34;&gt;throw&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;ioe&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;;&lt;/span&gt;
+        &lt;span class=&#34;o&#34;&gt;}&lt;/span&gt;
 
-        <span class="c1">// Create Google API client</span>
-        <span class="k">this</span><span class="o">.</span><span class="na">languageServiceClient</span> <span class="o">=</span> <span class="n">LanguageServiceClient</span><span class="o">.</span><span class="na">create</span><span class="o">(</span><span class="n">languageServiceSettings</span><span class="o">);</span>
-    <span class="o">}</span>
+        &lt;span class=&#34;c1&#34;&gt;// Create Google API client&lt;/span&gt;
+        &lt;span class=&#34;k&#34;&gt;this&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;languageServiceClient&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;LanguageServiceClient&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;create&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;languageServiceSettings&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;);&lt;/span&gt;
+    &lt;span class=&#34;o&#34;&gt;}&lt;/span&gt;
 
-    <span class="nd">@PreDestroy</span>
-    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">destroy</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="o">{</span>
-        <span class="k">if</span> <span class="o">(</span><span class="n">LOGGER</span><span class="o">.</span><span class="na">isDebugEnabled</span><span class="o">())</span> <span class="o">{</span>
-            <span class="n">LOGGER</span><span class="o">.</span><span class="na">debug</span><span class="o">(</span><span class="s">&quot;Destroying Google NLP API client&quot;</span><span class="o">);</span>
-        <span class="o">}</span>
-        <span class="c1">// Close Google API executors and channels</span>
-        <span class="k">this</span><span class="o">.</span><span class="na">languageServiceClient</span><span class="o">.</span><span class="na">close</span><span class="o">();</span>
-    <span class="o">}</span>
-<span class="c1">// ...</span>
-</pre></div>
+    &lt;span class=&#34;nd&#34;&gt;@PreDestroy&lt;/span&gt;
+    &lt;span class=&#34;kd&#34;&gt;public&lt;/span&gt; &lt;span class=&#34;kt&#34;&gt;void&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;destroy&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;()&lt;/span&gt; &lt;span class=&#34;kd&#34;&gt;throws&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Exception&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;
+        &lt;span class=&#34;k&#34;&gt;if&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;LOGGER&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;isDebugEnabled&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;())&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;
+            &lt;span class=&#34;n&#34;&gt;LOGGER&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;debug&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;Destroying Google NLP API client&amp;quot;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;);&lt;/span&gt;
+        &lt;span class=&#34;o&#34;&gt;}&lt;/span&gt;
+        &lt;span class=&#34;c1&#34;&gt;// Close Google API executors and channels&lt;/span&gt;
+        &lt;span class=&#34;k&#34;&gt;this&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;languageServiceClient&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;close&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;();&lt;/span&gt;
+    &lt;span class=&#34;o&#34;&gt;}&lt;/span&gt;
+&lt;span class=&#34;c1&#34;&gt;// ...&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
 
-<p>That way you should be able to use the API with AWS Elastic Beanstalk
+&lt;p&gt;That way you should be able to use the API with AWS Elastic Beanstalk
 without having to hack your environment to provide the GOOGLE_APPLICATION_CREDENTIALS
-environment variable.</p>
-<p>An alternative would be google-auth-library-java to look for an environment variable
-<em>and</em> a system property. Or maybe Amazon AWS add a way to provide environment variables.</p>
-<p>Note also that I included the @PostConstruct and @PreDestroy annotated methods. The
+environment variable.&lt;/p&gt;
+&lt;p&gt;An alternative would be google-auth-library-java to look for an environment variable
+&lt;em&gt;and&lt;/em&gt; a system property. Or maybe Amazon AWS add a way to provide environment variables.&lt;/p&gt;
+&lt;p&gt;Note also that I included the @PostConstruct and @PreDestroy annotated methods. The
 API will start an executor thread pool, so if you do not want to risk to have problems
-re-deploying your application, then remember to close your streams.</p>
-<p>&hearts; Open Source</p>
+re-deploying your application, then remember to close your streams.&lt;/p&gt;
+&lt;p&gt;&amp;hearts; Open Source&lt;/p&gt;
             
             </description>
         </item>
@@ -649,14 +665,16 @@ re-deploying your application, then remember to close your streams.</p>
             
             <pubDate>2017-03-14T21:22:03+13:00</pubDate>
             <guid>/2017/03/14/order-of-containers-in-docker-compose</guid>
-            <description><p>In Docker Compose you are able to control the startup order of the containers via
-the <em>depends_on</em> statement. This is documented in <a href="https://docs.docker.com/compose/startup-order/">Controlling startup order in Compose</a>.</p>
-<p>If you have a simple setup, with Tomcat and Postgres, sometimes Postgres will start first, but Compose
+            <description>
+            
+            &lt;p&gt;In Docker Compose you are able to control the startup order of the containers via
+the &lt;em&gt;depends_on&lt;/em&gt; statement. This is documented in &lt;a href=&#34;https://docs.docker.com/compose/startup-order/&#34;&gt;Controlling startup order in Compose&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;If you have a simple setup, with Tomcat and Postgres, sometimes Postgres will start first, but Compose
 will initialize Tomcat before Postgres has fully booted. When that happens, you may receive 401, 404, or other
-application errors.</p>
-<p>You can fix it by combining <em>depends_on</em> with a <em>healthcheck</em>. For example:</p>
-<div class="highlight"><pre><span class="c"># File: docker-compose.yml</span>
-version: <span class="s1">&#39;2.1&#39;</span>
+application errors.&lt;/p&gt;
+&lt;p&gt;You can fix it by combining &lt;em&gt;depends_on&lt;/em&gt; with a &lt;em&gt;healthcheck&lt;/em&gt;. For example:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;span class=&#34;c&#34;&gt;# File: docker-compose.yml&lt;/span&gt;
+version: &lt;span class=&#34;s1&#34;&gt;&amp;#39;2.1&amp;#39;&lt;/span&gt;
 services:
   db:
     container_name: twpg
@@ -665,9 +683,9 @@ services:
       dockerfile: Dockerfile.postgres
     restart: always
     ports:
-      - <span class="s2">&quot;5432:5432&quot;</span>
+      - &lt;span class=&#34;s2&#34;&gt;&amp;quot;5432:5432&amp;quot;&lt;/span&gt;
     healthcheck:
-      <span class="nb">test</span>: <span class="s2">&quot;pg_isready -h localhost -p 5432 -q -U postgres&quot;</span>
+      &lt;span class=&#34;nb&#34;&gt;test&lt;/span&gt;: &lt;span class=&#34;s2&#34;&gt;&amp;quot;pg_isready -h localhost -p 5432 -q -U postgres&amp;quot;&lt;/span&gt;
       interval: 10s
       timeout: 5s
       retries: 5
@@ -684,20 +702,20 @@ services:
     links:
       - db
     ports:
-      - <span class="s2">&quot;80:8080&quot;</span>
-</pre></div>
+      - &lt;span class=&#34;s2&#34;&gt;&amp;quot;80:8080&amp;quot;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
 
-<p>In the example docker-compose.yml, there are two containers, <em>db</em> and <em>web</em>. web is running
+&lt;p&gt;In the example docker-compose.yml, there are two containers, &lt;em&gt;db&lt;/em&gt; and &lt;em&gt;web&lt;/em&gt;. web is running
 a Tomcat, and db is running Postgres. Web depends on db (see depends_on), and uses a condition
-<em>service_healthy</em>. Which indicates it depends that that container is healthy.</p>
-<p>The <em>healthcheck</em> entry under the db container settings define how to check whether Postgres
-is running or not. In this case, we are using <em>pg_isready</em>, which is available in the
-vanilla Postgres 9 container.</p>
-<p>It will try 5 times, with a 10 seconds interval, and will time out after 5 seconds. You may
-have to tune these parameters for your application.</p>
-<p>This code snippet is from a
-<a href="https://github.com/Foxoncz/docker-thingworx/pull/3/files">pull request submitted to Foxoncz/docker-thingworx</a>.</p>
-<p>&hearts; Open Source</p>
+&lt;em&gt;service_healthy&lt;/em&gt;. Which indicates it depends that that container is healthy.&lt;/p&gt;
+&lt;p&gt;The &lt;em&gt;healthcheck&lt;/em&gt; entry under the db container settings define how to check whether Postgres
+is running or not. In this case, we are using &lt;em&gt;pg_isready&lt;/em&gt;, which is available in the
+vanilla Postgres 9 container.&lt;/p&gt;
+&lt;p&gt;It will try 5 times, with a 10 seconds interval, and will time out after 5 seconds. You may
+have to tune these parameters for your application.&lt;/p&gt;
+&lt;p&gt;This code snippet is from a
+&lt;a href=&#34;https://github.com/Foxoncz/docker-thingworx/pull/3/files&#34;&gt;pull request submitted to Foxoncz/docker-thingworx&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;&amp;hearts; Open Source&lt;/p&gt;
             
             </description>
         </item>
@@ -721,53 +739,55 @@ have to tune these parameters for your application.</p>
             
             <pubDate>2017-02-28T00:47:03+13:00</pubDate>
             <guid>/2017/02/28/using-aws-mfa-without-a-mobile-phone</guid>
-            <description><p>If you use AWS, the chances are that you use MFA - Multi-factor Authentication - to authenticate.
-I don&#8217;t like to install apps in my mobile phone, unless I need to, so having bought a new phone
-recently, I decided to find a replacement for Google Authenticator.</p>
-<p>There are several command line utilities, browser extensions, libraries, and tools (free and paid)
+            <description>
+            
+            &lt;p&gt;If you use AWS, the chances are that you use MFA - Multi-factor Authentication - to authenticate.
+I don&amp;#8217;t like to install apps in my mobile phone, unless I need to, so having bought a new phone
+recently, I decided to find a replacement for Google Authenticator.&lt;/p&gt;
+&lt;p&gt;There are several command line utilities, browser extensions, libraries, and tools (free and paid)
 that implement the TOTP - time-based one-time password -, the standard
-<a href="http://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_mfa_enable_virtual.html">required by Amazon</a>
-for MFA authentication.</p>
-<p>I decided to use a Go tool for the first time: <a href="https://github.com/pcarrier/gauth">gauth</a>. Note that you
-won&#8217;t be able to use it from home, in case you don&#8217;t bring your laptop home. You can have one MFA device
-linked to your AWS account, so you may have to remove an existing one. Follow these instructions with care :^)</p>
-<h2>Install Go</h2>
-<div class="highlight"><pre>sudo apt update <span class="o">&amp;&amp;</span> sudo apt upgrade -y
-<span class="nb">cd </span>tmp/ <span class="o">&amp;&amp;</span> wget https://storage.googleapis.com/golang/go1.8.linux-amd64.tar.gz
+&lt;a href=&#34;http://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_mfa_enable_virtual.html&#34;&gt;required by Amazon&lt;/a&gt;
+for MFA authentication.&lt;/p&gt;
+&lt;p&gt;I decided to use a Go tool for the first time: &lt;a href=&#34;https://github.com/pcarrier/gauth&#34;&gt;gauth&lt;/a&gt;. Note that you
+won&amp;#8217;t be able to use it from home, in case you don&amp;#8217;t bring your laptop home. You can have one MFA device
+linked to your AWS account, so you may have to remove an existing one. Follow these instructions with care :^)&lt;/p&gt;
+&lt;h2&gt;Install Go&lt;/h2&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;sudo apt update &lt;span class=&#34;o&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; sudo apt upgrade -y
+&lt;span class=&#34;nb&#34;&gt;cd &lt;/span&gt;tmp/ &lt;span class=&#34;o&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; wget https://storage.googleapis.com/golang/go1.8.linux-amd64.tar.gz
 tar -zxvf go1.*.tar.gz
 sudo mv go /usr/local
 vim ~/.bashrc
-</pre></div>
+&lt;/pre&gt;&lt;/div&gt;
 
-<p>Add the following at the bottom of the file.</p>
-<div class="highlight"><pre><span class="nv">GOROOT</span><span class="o">=</span>/usr/local/go
-<span class="nv">GOPATH</span><span class="o">=</span><span class="s2">&quot;</span><span class="nv">$HOME</span><span class="s2">/go&quot;</span>
-<span class="nv">PATH</span><span class="o">=</span><span class="s2">&quot;</span><span class="nv">$GOPATH</span><span class="s2">/bin:</span><span class="nv">$GOROOT</span><span class="s2">/bin:</span><span class="nv">$PATH</span><span class="s2">&quot;</span>
-</pre></div>
+&lt;p&gt;Add the following at the bottom of the file.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;span class=&#34;nv&#34;&gt;GOROOT&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;/usr/local/go
+&lt;span class=&#34;nv&#34;&gt;GOPATH&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;$HOME&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;/go&amp;quot;&lt;/span&gt;
+&lt;span class=&#34;nv&#34;&gt;PATH&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;$GOPATH&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;/bin:&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;$GOROOT&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;/bin:&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;$PATH&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
 
-<p>And you can test it with <code>. ~/.bashrc &amp;&amp; go version</code>.</p>
-<h2>Install gauth</h2>
-<p>Given your environment is correctly set up, you should be able to use the following command to install
-gauth, and have it available in your <em>$PATH</em>.</p>
-<div class="highlight"><pre>go get github.com/pcarrier/gauth
-</pre></div>
+&lt;p&gt;And you can test it with &lt;code&gt;. ~/.bashrc &amp;amp;&amp;amp; go version&lt;/code&gt;.&lt;/p&gt;
+&lt;h2&gt;Install gauth&lt;/h2&gt;
+&lt;p&gt;Given your environment is correctly set up, you should be able to use the following command to install
+gauth, and have it available in your &lt;em&gt;$PATH&lt;/em&gt;.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;go get github.com/pcarrier/gauth
+&lt;/pre&gt;&lt;/div&gt;
 
-<p>Edit <em>~/.config/gauth.csv</em> adding a value for the AWS MFA key.</p>
-<h2>Getting the AWS MFA key</h2>
-<p>To get the value that you must place in your <em>gauth.csv</em> file, you must add a new MFA device. When asked to scan a QR code, look for an option to enter the manual value. That will give you a long string. That&#8217;s the value you are looking for.</p>
-<h2>Extra: Auto copy-paste from command line</h2>
-<p>If you would like to quickly copy and paste, try creating an alias as described
-<a href="https://gist.github.com/ehime/9fd8810442daf64686a34f885e18be01">on this gist</a>.</p>
-<p>I used these instructions, and can now run one command line, that will put the next MFA code in my
-clipboard. Then just paste into my browser, and that&#8217;s that!</p>
-<p>Happy hacking!</p>
-<h2>References</h2>
-<ul>
-<li><a href="https://github.com/pcarrier/gauth">gauth: replace Google Authenticator</a></li>
-<li><a href="http://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_mfa_enable_virtual.html">Enabling a Virtual Multi-factor Authentication (MFA) Device</a></li>
-<li><a href="http://tecadmin.net/install-go-on-ubuntu/">How to Install Go 1.7 on Ubuntu 16.04 &amp; 14.04</a></li>
-<li><a href="http://garywoodfine.com/use-pbcopy-on-ubuntu/">Use pbcopy on Ubuntu</a></li>
-</ul>
+&lt;p&gt;Edit &lt;em&gt;~/.config/gauth.csv&lt;/em&gt; adding a value for the AWS MFA key.&lt;/p&gt;
+&lt;h2&gt;Getting the AWS MFA key&lt;/h2&gt;
+&lt;p&gt;To get the value that you must place in your &lt;em&gt;gauth.csv&lt;/em&gt; file, you must add a new MFA device. When asked to scan a QR code, look for an option to enter the manual value. That will give you a long string. That&amp;#8217;s the value you are looking for.&lt;/p&gt;
+&lt;h2&gt;Extra: Auto copy-paste from command line&lt;/h2&gt;
+&lt;p&gt;If you would like to quickly copy and paste, try creating an alias as described
+&lt;a href=&#34;https://gist.github.com/ehime/9fd8810442daf64686a34f885e18be01&#34;&gt;on this gist&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;I used these instructions, and can now run one command line, that will put the next MFA code in my
+clipboard. Then just paste into my browser, and that&amp;#8217;s that!&lt;/p&gt;
+&lt;p&gt;Happy hacking!&lt;/p&gt;
+&lt;h2&gt;References&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/pcarrier/gauth&#34;&gt;gauth: replace Google Authenticator&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_mfa_enable_virtual.html&#34;&gt;Enabling a Virtual Multi-factor Authentication (MFA) Device&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://tecadmin.net/install-go-on-ubuntu/&#34;&gt;How to Install Go 1.7 on Ubuntu 16.04 &amp;amp; 14.04&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://garywoodfine.com/use-pbcopy-on-ubuntu/&#34;&gt;Use pbcopy on Ubuntu&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
             
             </description>
         </item>

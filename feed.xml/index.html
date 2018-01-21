@@ -10,8 +10,8 @@
         
         <description>Latest news from Bruno P. Kinoshita</description>
         
-        <lastBuildDate>2018-01-21T18:38:39+13:00</lastBuildDate>
-        <pubDate>2018-01-21T18:38:39+13:00</pubDate>
+        <lastBuildDate>2018-01-21T18:43:58+13:00</lastBuildDate>
+        <pubDate>2018-01-21T18:43:58+13:00</pubDate>
         <generator>PieCrust 2.1.1</generator>
         
         
@@ -39,31 +39,33 @@
             
             <pubDate>2017-12-25T21:43:33+13:00</pubDate>
             <guid>/2017/12/25/exif-odd-offsets</guid>
-            <description><p>A file format like JPEG may contain metadata in JFIF, <a href="https://en.wikipedia.org/wiki/Exif">Exif</a>,
-or a vendor proprietary format. The Exif format is based - or uses parts of - on the TIFF format.</p>
-<p>Within an Exif metadata block, you should see directories, with several entries. The entries have fields
-like description, value, and also an offset. The offset indicates the offset to the next entry.</p>
-<p>The Exif specification defines that <strong>implementers must make sure to keep the offset an even number,
-within 4 bytes</strong>.</p>
-<p>I recently worked on <a href="https://issues.apache.org/jira/browse/IMAGING-205">IMAGING-205</a>, a ticket
+            <description>
+            
+            &lt;p&gt;A file format like JPEG may contain metadata in JFIF, &lt;a href=&#34;https://en.wikipedia.org/wiki/Exif&#34;&gt;Exif&lt;/a&gt;,
+or a vendor proprietary format. The Exif format is based - or uses parts of - on the TIFF format.&lt;/p&gt;
+&lt;p&gt;Within an Exif metadata block, you should see directories, with several entries. The entries have fields
+like description, value, and also an offset. The offset indicates the offset to the next entry.&lt;/p&gt;
+&lt;p&gt;The Exif specification defines that &lt;strong&gt;implementers must make sure to keep the offset an even number,
+within 4 bytes&lt;/strong&gt;.&lt;/p&gt;
+&lt;p&gt;I recently worked on &lt;a href=&#34;https://issues.apache.org/jira/browse/IMAGING-205&#34;&gt;IMAGING-205&lt;/a&gt;, a ticket
 about odd offsets in files with Exif metadata. This issue was exactly to address that when files
 were rewritten with Apache Commons Imaging, even though the image initially had no odd offsets,
-after the entries were rearranged, we could have odd offsets.</p>
-<p>The fix was simply checking for odd offsets, adding +1, and later it would be put within the
-4 bytes limit.</p>
-<p style='text-align: center;'>
-<img style="display: inline" class="ui image" src="/2017/12/25/exif-odd-offsets/screenshot.png" alt="A screen shot of Eclipse with source code" title="Locating the bug" />
-<br/>
-<small>Locating the bug</small>
-</p>
+after the entries were rearranged, we could have odd offsets.&lt;/p&gt;
+&lt;p&gt;The fix was simply checking for odd offsets, adding +1, and later it would be put within the
+4 bytes limit.&lt;/p&gt;
+&lt;p style=&#39;text-align: center;&#39;&gt;
+&lt;img style=&#34;display: inline&#34; class=&#34;ui image&#34; src=&#34;/2017/12/25/exif-odd-offsets/screenshot.png&#34; alt=&#34;A screen shot of Eclipse with source code&#34; title=&#34;Locating the bug&#34; /&gt;
+&lt;br/&gt;
+&lt;small&gt;Locating the bug&lt;/small&gt;
+&lt;/p&gt;
 
-<p>One interesting point, however, is that this is in the standard, but not all software that read
-and write Exif follow the specification. So it is quite common to find images with odd offsets.</p>
-<p>Which means you could take a picture with your phone, that contains some Exif metadata, and
-be surprised to analyze it with <code>exiftool</code> and get warnings about odd offsets. Most viewers
-handle odd and even offsets, so it should work for most cases, unless you have a strict reader/viewer.</p>
-<p>Happy hacking!</p>
-<p>&heart; Open Source</p>
+&lt;p&gt;One interesting point, however, is that this is in the standard, but not all software that read
+and write Exif follow the specification. So it is quite common to find images with odd offsets.&lt;/p&gt;
+&lt;p&gt;Which means you could take a picture with your phone, that contains some Exif metadata, and
+be surprised to analyze it with &lt;code&gt;exiftool&lt;/code&gt; and get warnings about odd offsets. Most viewers
+handle odd and even offsets, so it should work for most cases, unless you have a strict reader/viewer.&lt;/p&gt;
+&lt;p&gt;Happy hacking!&lt;/p&gt;
+&lt;p&gt;&amp;heart; Open Source&lt;/p&gt;
             
             </description>
         </item>
@@ -87,29 +89,31 @@ handle odd and even offsets, so it should work for most cases, unless you have a
             
             <pubDate>2017-12-03T23:56:13+13:00</pubDate>
             <guid>/2017/12/03/remember-to-synchronize-when-iterating-streams-from-a-synchronized-collection</guid>
-            <description><p>When iterating collections created via <code>Collections.synchronizedList</code> for instance, you are required
-to obtain a lock on the actual list before doing so. So you normally end up with code similar to:</p>
-<div class="highlight"><pre><span class="n">List</span> <span class="n">list</span> <span class="o">=</span> <span class="n">Collections</span><span class="o">.</span><span class="na">synchronizedList</span><span class="o">(</span><span class="k">new</span> <span class="n">ArrayList</span><span class="o">());</span>
-<span class="kd">synchronized</span> <span class="o">(</span><span class="n">list</span><span class="o">)</span> <span class="o">{</span>
-  <span class="n">Iterator</span> <span class="n">i</span> <span class="o">=</span> <span class="n">list</span><span class="o">.</span><span class="na">iterator</span><span class="o">();</span> <span class="c1">// Must be in synchronized block</span>
-  <span class="k">while</span> <span class="o">(</span><span class="n">i</span><span class="o">.</span><span class="na">hasNext</span><span class="o">())</span>
-      <span class="n">foo</span><span class="o">(</span><span class="n">i</span><span class="o">.</span><span class="na">next</span><span class="o">());</span>
-<span class="o">}</span>
-</pre></div>
+            <description>
+            
+            &lt;p&gt;When iterating collections created via &lt;code&gt;Collections.synchronizedList&lt;/code&gt; for instance, you are required
+to obtain a lock on the actual list before doing so. So you normally end up with code similar to:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;span class=&#34;n&#34;&gt;List&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;list&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Collections&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;synchronizedList&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;new&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;ArrayList&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;());&lt;/span&gt;
+&lt;span class=&#34;kd&#34;&gt;synchronized&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;list&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;
+  &lt;span class=&#34;n&#34;&gt;Iterator&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;i&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;list&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;iterator&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;();&lt;/span&gt; &lt;span class=&#34;c1&#34;&gt;// Must be in synchronized block&lt;/span&gt;
+  &lt;span class=&#34;k&#34;&gt;while&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;i&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;hasNext&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;())&lt;/span&gt;
+      &lt;span class=&#34;n&#34;&gt;foo&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;i&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;next&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;());&lt;/span&gt;
+&lt;span class=&#34;o&#34;&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
 
-<p>This requirement is <a href="https://docs.oracle.com/javase/9/docs/api/java/util/Collections.html#synchronizedList-java.util.List-">documented in the javadocs</a>.</p>
-<p>Since lambdas and streams are being more widely used, it is important to remind
+&lt;p&gt;This requirement is &lt;a href=&#34;https://docs.oracle.com/javase/9/docs/api/java/util/Collections.html#synchronizedList-java.util.List-&#34;&gt;documented in the javadocs&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Since lambdas and streams are being more widely used, it is important to remind
 that when iterating via a stream we also need to obtain a lock on the synchronized
-collection created.</p>
-<div class="highlight"><pre><span class="n">List</span> <span class="n">list</span> <span class="o">=</span> <span class="n">Collections</span><span class="o">.</span><span class="na">synchronizedList</span><span class="o">(</span><span class="k">new</span> <span class="n">ArrayList</span><span class="o">());</span>
-<span class="kd">synchronized</span> <span class="o">(</span><span class="n">list</span><span class="o">)</span> <span class="o">{</span>
-  <span class="n">list</span><span class="o">.</span><span class="na">stream</span><span class="o">()</span>
-    <span class="o">.</span><span class="na">anyMatch</span><span class="o">(...)</span>
-<span class="o">}</span>
-</pre></div>
+collection created.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;span class=&#34;n&#34;&gt;List&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;list&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Collections&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;synchronizedList&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;new&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;ArrayList&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;());&lt;/span&gt;
+&lt;span class=&#34;kd&#34;&gt;synchronized&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;list&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;
+  &lt;span class=&#34;n&#34;&gt;list&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;stream&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;()&lt;/span&gt;
+    &lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;anyMatch&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(...)&lt;/span&gt;
+&lt;span class=&#34;o&#34;&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
 
-<p>Here&#8217;s an <a href="https://github.com/zalando/nakadi/pull/786">example from Zalando Nakadi Event Broker</a>.</p>
-<p>Happy hacking!</p>
+&lt;p&gt;Here&amp;#8217;s an &lt;a href=&#34;https://github.com/zalando/nakadi/pull/786&#34;&gt;example from Zalando Nakadi Event Broker&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Happy hacking!&lt;/p&gt;
             
             </description>
         </item>
@@ -133,35 +137,37 @@ collection created.</p>
             
             <pubDate>2017-12-02T22:51:00+13:00</pubDate>
             <guid>/2017/12/02/watch-out-for-locales-when-using-number-format-with-currencies</guid>
-            <description><p>In Java you have the <a href="https://docs.oracle.com/javase/9/docs/api/java/text/NumberFormat.html">NumberFormatException</a>
-to help you formatting and parsing numbers for any locale. Said that, here&#8217;s some code.</p>
-<div class="highlight"><pre>BigDecimal <span class="nv">negative</span> <span class="o">=</span> new BigDecimal<span class="o">(</span><span class="s2">&quot;-1234.56&quot;</span><span class="o">)</span><span class="p">;</span>
+            <description>
+            
+            &lt;p&gt;In Java you have the &lt;a href=&#34;https://docs.oracle.com/javase/9/docs/api/java/text/NumberFormat.html&#34;&gt;NumberFormatException&lt;/a&gt;
+to help you formatting and parsing numbers for any locale. Said that, here&amp;#8217;s some code.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;BigDecimal &lt;span class=&#34;nv&#34;&gt;negative&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; new BigDecimal&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;-1234.56&amp;quot;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
 
-DecimalFormat <span class="nv">nf</span> <span class="o">=</span> <span class="o">(</span>DecimalFormat<span class="o">)</span> NumberFormat.getCurrencyInstance<span class="o">(</span>Locale.UK<span class="o">)</span><span class="p">;</span>
-String <span class="nv">formattedNegative</span> <span class="o">=</span> nf.format<span class="o">(</span>negative<span class="o">)</span><span class="p">;</span>
+DecimalFormat &lt;span class=&#34;nv&#34;&gt;nf&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;DecimalFormat&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt; NumberFormat.getCurrencyInstance&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;Locale.UK&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+String &lt;span class=&#34;nv&#34;&gt;formattedNegative&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; nf.format&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;negative&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
 
-System.out.println<span class="o">(</span>formattedNegative<span class="o">)</span><span class="p">;</span>
-</pre></div>
+System.out.println&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;formattedNegative&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
 
-<p>The output for this code is <strong>-£1,234.56</strong>. That&#8217;s expected, as the locale is set to
+&lt;p&gt;The output for this code is &lt;strong&gt;-£1,234.56&lt;/strong&gt;. That&amp;#8217;s expected, as the locale is set to
 UK, so the currency symbol used is for British Pounds. And as the number is negative, you
-get that minus sign as a prefix. For Japanese locale you&#8217;d get <strong>-￥1,235</strong>, and for Brazilian
-locale you&#8217;d get <strong>-R$ 1.234,56</strong>.</p>
-<p>So far so good. </p>
-<p>What about the following code, with nothing different except for the locale set to <strong>US</strong>.</p>
-<div class="highlight"><pre>BigDecimal <span class="nv">negative</span> <span class="o">=</span> new BigDecimal<span class="o">(</span><span class="s2">&quot;-1234.56&quot;</span><span class="o">)</span><span class="p">;</span>
+get that minus sign as a prefix. For Japanese locale you&amp;#8217;d get &lt;strong&gt;-￥1,235&lt;/strong&gt;, and for Brazilian
+locale you&amp;#8217;d get &lt;strong&gt;-R$ 1.234,56&lt;/strong&gt;.&lt;/p&gt;
+&lt;p&gt;So far so good. &lt;/p&gt;
+&lt;p&gt;What about the following code, with nothing different except for the locale set to &lt;strong&gt;US&lt;/strong&gt;.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;BigDecimal &lt;span class=&#34;nv&#34;&gt;negative&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; new BigDecimal&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;-1234.56&amp;quot;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
 
-DecimalFormat <span class="nv">nf</span> <span class="o">=</span> <span class="o">(</span>DecimalFormat<span class="o">)</span> NumberFormat.getCurrencyInstance<span class="o">(</span>Locale.US<span class="o">)</span><span class="p">;</span> // &lt;--- US now
-String <span class="nv">formattedNegative</span> <span class="o">=</span> nf.format<span class="o">(</span>negative<span class="o">)</span><span class="p">;</span>
+DecimalFormat &lt;span class=&#34;nv&#34;&gt;nf&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;DecimalFormat&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt; NumberFormat.getCurrencyInstance&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;Locale.US&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt; // &amp;lt;--- US now
+String &lt;span class=&#34;nv&#34;&gt;formattedNegative&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; nf.format&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;negative&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
 
-System.out.println<span class="o">(</span>formattedNegative<span class="o">)</span><span class="p">;</span>
-</pre></div>
+System.out.println&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;formattedNegative&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
 
-<p>Some could intuitively expect <strong>-$1,234.56</strong>. However, <strong>the output is actually ($1,234.56)</strong>.</p>
-<p>There are different prefixes and suffixes. But in some locales the prefix can be empty, or, as
-in the case of the US locale, it can be quite different than what you could expect.</p>
-<p>Learned about this peculiarity from NumberFormat while working on <a href="https://issues.apache.org/jira/browse/VALIDATOR-433">VALIDATOR-433</a> for Apache Commons Validator.</p>
-<p>Happy hacking!</p>
+&lt;p&gt;Some could intuitively expect &lt;strong&gt;-$1,234.56&lt;/strong&gt;. However, &lt;strong&gt;the output is actually ($1,234.56)&lt;/strong&gt;.&lt;/p&gt;
+&lt;p&gt;There are different prefixes and suffixes. But in some locales the prefix can be empty, or, as
+in the case of the US locale, it can be quite different than what you could expect.&lt;/p&gt;
+&lt;p&gt;Learned about this peculiarity from NumberFormat while working on &lt;a href=&#34;https://issues.apache.org/jira/browse/VALIDATOR-433&#34;&gt;VALIDATOR-433&lt;/a&gt; for Apache Commons Validator.&lt;/p&gt;
+&lt;p&gt;Happy hacking!&lt;/p&gt;
             
             </description>
         </item>
@@ -181,37 +187,39 @@ in the case of the US locale, it can be quite different than what you could expe
             
             <pubDate>2017-12-01T23:26:09+13:00</pubDate>
             <guid>/2017/12/01/what-are-identification-keys</guid>
-            <description><blockquote>
-<p>In biology, an identification key is a printed or computer-aided device that aids the identification of biological entities, such as plants, animals, fossils, microorganisms, and pollen grains. Identification keys are also used in many other scientific and technical fields to identify various kinds of entities, such as diseases, soil types, minerals, or archaeological and anthropological artifacts</p>
-</blockquote>
-<p>When you work writing software, it is common that at one point or another of the product
-development you will work with a SME, or <a href="https://en.wikipedia.org/wiki/Subject-matter_expert">subject-matter expert</a>.
+            <description>
+            
+            &lt;blockquote&gt;
+&lt;p&gt;In biology, an identification key is a printed or computer-aided device that aids the identification of biological entities, such as plants, animals, fossils, microorganisms, and pollen grains. Identification keys are also used in many other scientific and technical fields to identify various kinds of entities, such as diseases, soil types, minerals, or archaeological and anthropological artifacts&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;When you work writing software, it is common that at one point or another of the product
+development you will work with a SME, or &lt;a href=&#34;https://en.wikipedia.org/wiki/Subject-matter_expert&#34;&gt;subject-matter expert&lt;/a&gt;.
 This person is someone experienced in a field such as telecom billing, insurance, taxes, or
-even nature and environment.</p>
-<p>Questions too specific, that land away from the knowledge area of software engineers,
+even nature and environment.&lt;/p&gt;
+&lt;p&gt;Questions too specific, that land away from the knowledge area of software engineers,
 are normally addressed by the SME. Sometimes the knowledge from a SME can be spread in a team
-after they have worked together for a while.</p>
-<p>Most of my time in New Zealand I have been working with environmental sciences. In one project,
-I remember hearing other developers mention ID&#8217;s, Keys, and Identification Keys. I had not worked
+after they have worked together for a while.&lt;/p&gt;
+&lt;p&gt;Most of my time in New Zealand I have been working with environmental sciences. In one project,
+I remember hearing other developers mention ID&amp;#8217;s, Keys, and Identification Keys. I had not worked
 with environmental sciences before, and only learned about its Portuguese translation
-(&ldquo;Chave&rdquo;, or &ldquo;Chave de Identifica&ccedil;&atilde;o&rdquo;, or &ldquo;Chave
-Dicot&ecirc;mica&rdquo;) recently.</p>
-<p><strong>They are mechanisms, digital or physical, that help you identify plants, animals, fossils, etc.</strong>
+(&amp;ldquo;Chave&amp;rdquo;, or &amp;ldquo;Chave de Identifica&amp;ccedil;&amp;atilde;o&amp;rdquo;, or &amp;ldquo;Chave
+Dicot&amp;ecirc;mica&amp;rdquo;) recently.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;They are mechanisms, digital or physical, that help you identify plants, animals, fossils, etc.&lt;/strong&gt;
 And I found out later that there are many identification key software written for the Web, desktop,
-and also other medias like PDF&#8217;s, and even printed version.</p>
-<p>And also in New Zealand I found how fun identifying species can be with
-the <a href="https://www.inaturalist.org/">iNaturalist</a> app and community. If you are like me before, and
+and also other medias like PDF&amp;#8217;s, and even printed version.&lt;/p&gt;
+&lt;p&gt;And also in New Zealand I found how fun identifying species can be with
+the &lt;a href=&#34;https://www.inaturalist.org/&#34;&gt;iNaturalist&lt;/a&gt; app and community. If you are like me before, and
 had not heard about it before, search around more about it. It is a very simple concept, common
-to biologists, people who work with taxonomy, marine life, birds.</p>
-<p>If you are in New Zealand, or just interested about it, here are some links to get you started identifying
-the local species.</p>
-<ul>
-<li><a href="http://www.doc.govt.nz/nature/biodiversity/biodiversity-new-zealand-resources/biodiversity-references/species/">DOC (Department of Conservation) Species descriptions and threat classifications</a></li>
-<li><a href="http://naturewatch.org.nz/pages/links_nz">NatureWatch Helpful websites for exploring NZ nature</a></li>
-<li><a href="https://www.niwa.co.nz/freshwater-and-estuaries/nzffd/identification-guides-and-keys">NIWA (National Institute of Water and Atmospheric Research) Freshwater fish ID guides/keys</a></li>
-<li><a href="http://www.birds.cornell.edu/bbimages/PDFs/Clues2Bird%20ID.pdf">Clues to Bird ID (PDF)</a></li>
-</ul>
-<p>Have fun!</p>
+to biologists, people who work with taxonomy, marine life, birds.&lt;/p&gt;
+&lt;p&gt;If you are in New Zealand, or just interested about it, here are some links to get you started identifying
+the local species.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.doc.govt.nz/nature/biodiversity/biodiversity-new-zealand-resources/biodiversity-references/species/&#34;&gt;DOC (Department of Conservation) Species descriptions and threat classifications&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://naturewatch.org.nz/pages/links_nz&#34;&gt;NatureWatch Helpful websites for exploring NZ nature&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://www.niwa.co.nz/freshwater-and-estuaries/nzffd/identification-guides-and-keys&#34;&gt;NIWA (National Institute of Water and Atmospheric Research) Freshwater fish ID guides/keys&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.birds.cornell.edu/bbimages/PDFs/Clues2Bird%20ID.pdf&#34;&gt;Clues to Bird ID (PDF)&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Have fun!&lt;/p&gt;
             
             </description>
         </item>
@@ -237,68 +245,70 @@ the local species.</p>
             
             <pubDate>2017-11-06T21:56:56+13:00</pubDate>
             <guid>/2017/11/06/using-formatter-exclusions-with-eclipse</guid>
-            <description><p>Sometimes when you are formatting your code in Eclipse, you may want to prevent
+            <description>
+            
+            &lt;p&gt;Sometimes when you are formatting your code in Eclipse, you may want to prevent
 some parts of the code from being formatted. Especially when using Java 8 lambdas
-and optionals.</p>
-<p>Here&#8217;s some code before being formatted by Eclipse&#8217;s default formatter rules.</p>
-<p><small>Code adapted from: blog post <a href="http://javadeau.lawesson.se/2016/10/java-8-streams-in-hibernate-and-beyond.html"><i>Java d&#8217;eau &dash; Java 8: Streams in Hibernate and Beyond</i></a></small></p>
-<div class="highlight"><pre><span class="n">session</span><span class="o">.</span><span class="na">createQuery</span><span class="o">(</span><span class="s">&quot;SELECT h FROM Hare h&quot;</span><span class="o">,</span> <span class="n">Hare</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
-    <span class="o">.</span><span class="na">stream</span><span class="o">()</span>
-    <span class="o">.</span><span class="na">filter</span><span class="o">(</span><span class="n">h</span> <span class="o">-&gt;</span> <span class="n">h</span><span class="o">.</span><span class="na">getId</span><span class="o">()</span> <span class="o">==</span> <span class="mi">1</span><span class="o">)</span>
-    <span class="o">.</span><span class="na">map</span><span class="o">(</span><span class="n">Hare</span><span class="o">::</span><span class="n">getName</span><span class="o">)</span>
-    <span class="o">.</span><span class="na">forEach</span><span class="o">(</span><span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">::</span><span class="n">println</span><span class="o">);</span>
-</pre></div>
+and optionals.&lt;/p&gt;
+&lt;p&gt;Here&amp;#8217;s some code before being formatted by Eclipse&amp;#8217;s default formatter rules.&lt;/p&gt;
+&lt;p&gt;&lt;small&gt;Code adapted from: blog post &lt;a href=&#34;http://javadeau.lawesson.se/2016/10/java-8-streams-in-hibernate-and-beyond.html&#34;&gt;&lt;i&gt;Java d&amp;#8217;eau &amp;dash; Java 8: Streams in Hibernate and Beyond&lt;/i&gt;&lt;/a&gt;&lt;/small&gt;&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;span class=&#34;n&#34;&gt;session&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;createQuery&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;SELECT h FROM Hare h&amp;quot;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Hare&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;class&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
+    &lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;stream&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;()&lt;/span&gt;
+    &lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;filter&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;h&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;h&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;getId&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;()&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;==&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
+    &lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;map&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;Hare&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;::&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;getName&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
+    &lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;forEach&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;System&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;out&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;::&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;println&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;);&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
 
-<p>Then after formatting.</p>
-<div class="highlight"><pre><span class="n">session</span><span class="o">.</span><span class="na">createQuery</span><span class="o">(</span><span class="s">&quot;SELECT h FROM Hare h&quot;</span><span class="o">,</span> <span class="n">Hare</span><span class="o">.</span><span class="na">class</span><span class="o">).</span><span class="na">stream</span><span class="o">().</span><span class="na">filter</span><span class="o">(</span><span class="n">h</span> <span class="o">-&gt;</span> <span class="n">h</span><span class="o">.</span><span class="na">getId</span><span class="o">()</span> <span class="o">==</span> <span class="mi">1</span><span class="o">).</span><span class="na">map</span><span class="o">(</span><span class="n">Hare</span><span class="o">::</span><span class="n">getName</span><span class="o">)</span>
-                <span class="o">.</span><span class="na">forEach</span><span class="o">(</span><span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">::</span><span class="n">println</span><span class="o">);</span>
-</pre></div>
+&lt;p&gt;Then after formatting.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;span class=&#34;n&#34;&gt;session&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;createQuery&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;SELECT h FROM Hare h&amp;quot;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Hare&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;class&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;).&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;stream&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;().&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;filter&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;h&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;h&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;getId&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;()&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;==&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;).&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;map&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;Hare&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;::&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;getName&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
+                &lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;forEach&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;System&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;out&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;::&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;println&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;);&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
 
-<p>Which doesn&#8217;t look very appealing, ay? You can change this behaviour at least in two ways.
-The first by telling the formatter to ignore this block, through a special formatter tag in your code.</p>
-<p>First you need to enable this feature in Eclipse, as it is disabled by default. This setting is found in
-the preferences <em>Java</em> &rarr; <em>Code Style</em> &rarr; <em>Formatter</em> &rarr; <em>Edit</em> &rarr; <em>Off/On Tags</em>.</p>
-<p style='text-align: center;'>
-<img style="display: inline" class="ui image" src="/2017/11/06/using-formatter-exclusions-with-eclipse/formatter-tags.png" alt="A screen shot of Eclipse formatter settings" title="Enabling formatter tags in Eclipse" />
-<br/>
-<small>Enabling formatter tags in Eclipse</small>
-</p>
+&lt;p&gt;Which doesn&amp;#8217;t look very appealing, ay? You can change this behaviour at least in two ways.
+The first by telling the formatter to ignore this block, through a special formatter tag in your code.&lt;/p&gt;
+&lt;p&gt;First you need to enable this feature in Eclipse, as it is disabled by default. This setting is found in
+the preferences &lt;em&gt;Java&lt;/em&gt; &amp;rarr; &lt;em&gt;Code Style&lt;/em&gt; &amp;rarr; &lt;em&gt;Formatter&lt;/em&gt; &amp;rarr; &lt;em&gt;Edit&lt;/em&gt; &amp;rarr; &lt;em&gt;Off/On Tags&lt;/em&gt;.&lt;/p&gt;
+&lt;p style=&#39;text-align: center;&#39;&gt;
+&lt;img style=&#34;display: inline&#34; class=&#34;ui image&#34; src=&#34;/2017/11/06/using-formatter-exclusions-with-eclipse/formatter-tags.png&#34; alt=&#34;A screen shot of Eclipse formatter settings&#34; title=&#34;Enabling formatter tags in Eclipse&#34; /&gt;
+&lt;br/&gt;
+&lt;small&gt;Enabling formatter tags in Eclipse&lt;/small&gt;
+&lt;/p&gt;
 
-<p>Then formatting the following code won&#8217;t change a thing in the block surrounded by the formatter tags.</p>
-<div class="highlight"><pre><span class="cm">/* @Formatter:off */</span>
-<span class="n">session</span><span class="o">.</span><span class="na">createQuery</span><span class="o">(</span><span class="s">&quot;SELECT h FROM Hare h&quot;</span><span class="o">,</span> <span class="n">Hare</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
-    <span class="o">.</span><span class="na">stream</span><span class="o">()</span>
-    <span class="o">.</span><span class="na">filter</span><span class="o">(</span><span class="n">h</span> <span class="o">-&gt;</span> <span class="n">h</span><span class="o">.</span><span class="na">getId</span><span class="o">()</span> <span class="o">==</span> <span class="mi">1</span><span class="o">)</span>
-    <span class="o">.</span><span class="na">map</span><span class="o">(</span><span class="n">Hare</span><span class="o">::</span><span class="n">getName</span><span class="o">)</span>
-    <span class="o">.</span><span class="na">forEach</span><span class="o">(</span><span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">::</span><span class="n">println</span><span class="o">);</span>
-<span class="cm">/* @Formatter:on */</span>
-</pre></div>
+&lt;p&gt;Then formatting the following code won&amp;#8217;t change a thing in the block surrounded by the formatter tags.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;span class=&#34;cm&#34;&gt;/* @Formatter:off */&lt;/span&gt;
+&lt;span class=&#34;n&#34;&gt;session&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;createQuery&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;SELECT h FROM Hare h&amp;quot;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Hare&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;class&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
+    &lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;stream&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;()&lt;/span&gt;
+    &lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;filter&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;h&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;h&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;getId&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;()&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;==&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
+    &lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;map&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;Hare&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;::&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;getName&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
+    &lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;forEach&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;System&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;out&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;::&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;println&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;);&lt;/span&gt;
+&lt;span class=&#34;cm&#34;&gt;/* @Formatter:on */&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
 
-<p>But having to type these tags can become annoying, and cause more commits and pull requests to be
+&lt;p&gt;But having to type these tags can become annoying, and cause more commits and pull requests to be
 unnecessarily created. So an alternative approach can be to change the formatter
-<a href="https://stackoverflow.com/a/34492247/1762101">behaviour globally</a>.</p>
-<p>This can be done in Eclipse in another option under the formatter options, <em>Java</em> &rarr; <em>Code Style</em>
-&rarr; <em>Formatter</em> &rarr; <em>Edit</em> &rarr; <em>Line Wrapping</em> &rarr; <em>Function Calls</em> &rarr;
-<em>Qualified invocations</em>.</p>
-<p>You will have to choose <em>&ldquo;Wrap all elements, except first element if not necessary&rdquo;</em>
-under <em>Line wrapping policy</em>. And also check <em>&ldquo;Force split, even if line shorter than
-maximum line width&rdquo;</em>.</p>
-<p style='text-align: center;'>
-<img style="display: inline" class="ui image" src="/2017/11/06/using-formatter-exclusions-with-eclipse/global-setting.png" alt="A screen shot of Eclipse formatter settings" title="Enabling custom formatter behaviour globally" />
-<br/>
-<small>Enabling custom formatter behaviour globally</small>
-</p>
+&lt;a href=&#34;https://stackoverflow.com/a/34492247/1762101&#34;&gt;behaviour globally&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;This can be done in Eclipse in another option under the formatter options, &lt;em&gt;Java&lt;/em&gt; &amp;rarr; &lt;em&gt;Code Style&lt;/em&gt;
+&amp;rarr; &lt;em&gt;Formatter&lt;/em&gt; &amp;rarr; &lt;em&gt;Edit&lt;/em&gt; &amp;rarr; &lt;em&gt;Line Wrapping&lt;/em&gt; &amp;rarr; &lt;em&gt;Function Calls&lt;/em&gt; &amp;rarr;
+&lt;em&gt;Qualified invocations&lt;/em&gt;.&lt;/p&gt;
+&lt;p&gt;You will have to choose &lt;em&gt;&amp;ldquo;Wrap all elements, except first element if not necessary&amp;rdquo;&lt;/em&gt;
+under &lt;em&gt;Line wrapping policy&lt;/em&gt;. And also check &lt;em&gt;&amp;ldquo;Force split, even if line shorter than
+maximum line width&amp;rdquo;&lt;/em&gt;.&lt;/p&gt;
+&lt;p style=&#39;text-align: center;&#39;&gt;
+&lt;img style=&#34;display: inline&#34; class=&#34;ui image&#34; src=&#34;/2017/11/06/using-formatter-exclusions-with-eclipse/global-setting.png&#34; alt=&#34;A screen shot of Eclipse formatter settings&#34; title=&#34;Enabling custom formatter behaviour globally&#34; /&gt;
+&lt;br/&gt;
+&lt;small&gt;Enabling custom formatter behaviour globally&lt;/small&gt;
+&lt;/p&gt;
 
-<p>Once it is done, your code will look like the following no matter what.</p>
-<div class="highlight"><pre><span class="n">session</span><span class="o">.</span><span class="na">createQuery</span><span class="o">(</span><span class="s">&quot;SELECT h FROM Hare h&quot;</span><span class="o">,</span> <span class="n">Hare</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
-    <span class="o">.</span><span class="na">stream</span><span class="o">()</span>
-    <span class="o">.</span><span class="na">filter</span><span class="o">(</span><span class="n">h</span> <span class="o">-&gt;</span> <span class="n">h</span><span class="o">.</span><span class="na">getId</span><span class="o">()</span> <span class="o">==</span> <span class="mi">1</span><span class="o">)</span>
-    <span class="o">.</span><span class="na">map</span><span class="o">(</span><span class="n">Hare</span><span class="o">::</span><span class="n">getName</span><span class="o">)</span>
-    <span class="o">.</span><span class="na">forEach</span><span class="o">(</span><span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">::</span><span class="n">println</span><span class="o">);</span>
-</pre></div>
+&lt;p&gt;Once it is done, your code will look like the following no matter what.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;span class=&#34;n&#34;&gt;session&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;createQuery&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;SELECT h FROM Hare h&amp;quot;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Hare&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;class&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
+    &lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;stream&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;()&lt;/span&gt;
+    &lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;filter&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;h&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;h&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;getId&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;()&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;==&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
+    &lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;map&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;Hare&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;::&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;getName&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
+    &lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;forEach&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;System&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;out&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;::&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;println&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;);&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
 
-<p>Happy coding!</p>
-<p>&hearts; Open Source</p>
+&lt;p&gt;Happy coding!&lt;/p&gt;
+&lt;p&gt;&amp;hearts; Open Source&lt;/p&gt;
             
             </description>
         </item>
@@ -326,84 +336,86 @@ maximum line width&rdquo;</em>.</p>
             
             <pubDate>2017-10-14T00:24:54+13:00</pubDate>
             <guid>/2017/10/14/quickly-verifying-jar-signatures-for-asf-releases</guid>
-            <description><p>The release process within the Apache Software Foundation includes a series of steps. Amongst these
-steps is the <a href="https://www.apache.org/foundation/voting.html">voting process</a>. In Apache Commons, the
-<a href="https://commons.apache.org/releases/prepare.html">release instructions</a> includes a note on artefact
-signatures.</p>
-<blockquote>
-<p>During the course of the VOTE, make sure that one or more of the reviewers have verified the signatures and hash files included with the release artifacts. If no one specifically mentions having done that during the VOTE, ask on the dev list and make sure someone does this before you proceed with the release. </p>
-</blockquote>
-<p>Tired of always having to manually check several artefacts, or having to come up with the correct
+            <description>
+            
+            &lt;p&gt;The release process within the Apache Software Foundation includes a series of steps. Amongst these
+steps is the &lt;a href=&#34;https://www.apache.org/foundation/voting.html&#34;&gt;voting process&lt;/a&gt;. In Apache Commons, the
+&lt;a href=&#34;https://commons.apache.org/releases/prepare.html&#34;&gt;release instructions&lt;/a&gt; includes a note on artefact
+signatures.&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;During the course of the VOTE, make sure that one or more of the reviewers have verified the signatures and hash files included with the release artifacts. If no one specifically mentions having done that during the VOTE, ask on the dev list and make sure someone does this before you proceed with the release. &lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;Tired of always having to manually check several artefacts, or having to come up with the correct
 shell commands to iterate through a list of files, the other day I wrote a simple script to download
 the KEYS file, import it, download all the artefacts, then iterate through them and verify the
-signature.</p>
-<p>Here&#8217;s the script. Licensed under the GPL licence.</p>
-<div class="highlight"><pre><span class="c">#!/usr/bin/env bash</span>
+signature.&lt;/p&gt;
+&lt;p&gt;Here&amp;#8217;s the script. Licensed under the GPL licence.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;span class=&#34;c&#34;&gt;#!/usr/bin/env bash&lt;/span&gt;
 
-<span class="nv">url</span><span class="o">=</span><span class="s2">&quot;&quot;</span>
+&lt;span class=&#34;nv&#34;&gt;url&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;&amp;quot;&lt;/span&gt;
 
-<span class="c"># From: https://blog.mafr.de/2007/08/05/cmdline-options-in-shell-scripts/</span>
-<span class="nv">USAGE</span><span class="o">=</span><span class="s2">&quot;Usage: `basename </span><span class="nv">$0</span><span class="s2">` [-hv] https://repository.apache.org/.../commons/commons-configuration/2.2/&quot;</span>
+&lt;span class=&#34;c&#34;&gt;# From: https://blog.mafr.de/2007/08/05/cmdline-options-in-shell-scripts/&lt;/span&gt;
+&lt;span class=&#34;nv&#34;&gt;USAGE&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;Usage: `basename &lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;$0&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;` [-hv] https://repository.apache.org/.../commons/commons-configuration/2.2/&amp;quot;&lt;/span&gt;
 
-<span class="c"># Parse command line options.</span>
-<span class="k">while</span> <span class="nb">getopts </span>hv: OPT<span class="p">;</span> <span class="k">do</span>
-    <span class="k">case</span> <span class="s2">&quot;</span><span class="nv">$OPT</span><span class="s2">&quot;</span> in
-        h<span class="o">)</span>
-            <span class="nb">echo</span> <span class="nv">$USAGE</span>
-            <span class="nb">exit </span>0
-            <span class="p">;;</span>
-        v<span class="o">)</span>
-            <span class="nb">echo</span> <span class="s2">&quot;`basename </span><span class="nv">$0</span><span class="s2">` version 0.0.1&quot;</span>
-            <span class="nb">exit </span>0
-            <span class="p">;;</span>
-        <span class="se">\?</span><span class="o">)</span>
-            <span class="c"># getopts issues an error message</span>
-            <span class="nb">echo</span> <span class="nv">$USAGE</span> &gt;<span class="p">;</span>
-    <span class="k">esac</span>
-<span class="k">done</span>
+&lt;span class=&#34;c&#34;&gt;# Parse command line options.&lt;/span&gt;
+&lt;span class=&#34;k&#34;&gt;while&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;getopts &lt;/span&gt;hv: OPT&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;do&lt;/span&gt;
+    &lt;span class=&#34;k&#34;&gt;case&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;quot;&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;$OPT&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;&lt;/span&gt; in
+        h&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
+            &lt;span class=&#34;nb&#34;&gt;echo&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;$USAGE&lt;/span&gt;
+            &lt;span class=&#34;nb&#34;&gt;exit &lt;/span&gt;0
+            &lt;span class=&#34;p&#34;&gt;;;&lt;/span&gt;
+        v&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
+            &lt;span class=&#34;nb&#34;&gt;echo&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;quot;`basename &lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;$0&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;` version 0.0.1&amp;quot;&lt;/span&gt;
+            &lt;span class=&#34;nb&#34;&gt;exit &lt;/span&gt;0
+            &lt;span class=&#34;p&#34;&gt;;;&lt;/span&gt;
+        &lt;span class=&#34;se&#34;&gt;\?&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
+            &lt;span class=&#34;c&#34;&gt;# getopts issues an error message&lt;/span&gt;
+            &lt;span class=&#34;nb&#34;&gt;echo&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;$USAGE&lt;/span&gt; &amp;gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+    &lt;span class=&#34;k&#34;&gt;esac&lt;/span&gt;
+&lt;span class=&#34;k&#34;&gt;done&lt;/span&gt;
 
-<span class="c"># Remove the switches we parsed above.</span>
-<span class="nb">shift</span> <span class="sb">`</span>expr <span class="nv">$OPTIND</span> - 1<span class="sb">`</span>
+&lt;span class=&#34;c&#34;&gt;# Remove the switches we parsed above.&lt;/span&gt;
+&lt;span class=&#34;nb&#34;&gt;shift&lt;/span&gt; &lt;span class=&#34;sb&#34;&gt;`&lt;/span&gt;expr &lt;span class=&#34;nv&#34;&gt;$OPTIND&lt;/span&gt; - 1&lt;span class=&#34;sb&#34;&gt;`&lt;/span&gt;
 
-<span class="c"># We want at least one non-option argument. </span>
-<span class="c"># Remove this block if you don&#39;t need it.</span>
-<span class="k">if</span> <span class="o">[</span> <span class="nv">$# </span>-eq <span class="m">0</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
-    <span class="nb">echo</span> <span class="nv">$USAGE</span> &gt;<span class="p">&amp;</span>2
-    <span class="nb">exit </span>1
-<span class="k">fi</span>
+&lt;span class=&#34;c&#34;&gt;# We want at least one non-option argument. &lt;/span&gt;
+&lt;span class=&#34;c&#34;&gt;# Remove this block if you don&amp;#39;t need it.&lt;/span&gt;
+&lt;span class=&#34;k&#34;&gt;if&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;$# &lt;/span&gt;-eq &lt;span class=&#34;m&#34;&gt;0&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;then&lt;/span&gt;
+    &lt;span class=&#34;nb&#34;&gt;echo&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;$USAGE&lt;/span&gt; &amp;gt;&lt;span class=&#34;p&#34;&gt;&amp;amp;&lt;/span&gt;2
+    &lt;span class=&#34;nb&#34;&gt;exit &lt;/span&gt;1
+&lt;span class=&#34;k&#34;&gt;fi&lt;/span&gt;
 
-<span class="c"># Access additional arguments as usual through </span>
-<span class="c"># variables $@, $*, $1, $2, etc. or using this loop:</span>
-<span class="nv">URL</span><span class="o">=</span><span class="nv">$1</span>
+&lt;span class=&#34;c&#34;&gt;# Access additional arguments as usual through &lt;/span&gt;
+&lt;span class=&#34;c&#34;&gt;# variables $@, $*, $1, $2, etc. or using this loop:&lt;/span&gt;
+&lt;span class=&#34;nv&#34;&gt;URL&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;$1&lt;/span&gt;
 
-<span class="nb">echo</span> <span class="s2">&quot;url: </span><span class="si">${</span><span class="nv">URL</span><span class="si">}</span><span class="s2">&quot;</span>
+&lt;span class=&#34;nb&#34;&gt;echo&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;quot;url: &lt;/span&gt;&lt;span class=&#34;si&#34;&gt;${&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;URL&lt;/span&gt;&lt;span class=&#34;si&#34;&gt;}&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;&lt;/span&gt;
 
-<span class="c"># Use a local temporary directory</span>
-<span class="nv">BUILD_DIR</span><span class="o">=</span><span class="k">$(</span>mktemp -d<span class="k">)</span>
-<span class="nb">pushd</span> <span class="s2">&quot;</span><span class="nv">$BUILD_DIR</span><span class="s2">&quot;</span>
+&lt;span class=&#34;c&#34;&gt;# Use a local temporary directory&lt;/span&gt;
+&lt;span class=&#34;nv&#34;&gt;BUILD_DIR&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;$(&lt;/span&gt;mktemp -d&lt;span class=&#34;k&#34;&gt;)&lt;/span&gt;
+&lt;span class=&#34;nb&#34;&gt;pushd&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;quot;&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;$BUILD_DIR&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;&lt;/span&gt;
 
-<span class="nb">echo</span> <span class="s2">&quot;build dir: </span><span class="si">${</span><span class="nv">BUILD_DIR</span><span class="si">}</span><span class="s2">&quot;</span>
+&lt;span class=&#34;nb&#34;&gt;echo&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;quot;build dir: &lt;/span&gt;&lt;span class=&#34;si&#34;&gt;${&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;BUILD_DIR&lt;/span&gt;&lt;span class=&#34;si&#34;&gt;}&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;&lt;/span&gt;
 
-<span class="c"># Download KEYS file</span>
-<span class="nv">KEYS_URL</span><span class="o">=</span>https://www.apache.org/dist/commons/KEYS
+&lt;span class=&#34;c&#34;&gt;# Download KEYS file&lt;/span&gt;
+&lt;span class=&#34;nv&#34;&gt;KEYS_URL&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;https://www.apache.org/dist/commons/KEYS
 
-<span class="nb">echo</span> <span class="s2">&quot;importing KEYS from: </span><span class="si">${</span><span class="nv">KEYS_URL</span><span class="si">}</span><span class="s2">&quot;</span>
+&lt;span class=&#34;nb&#34;&gt;echo&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;quot;importing KEYS from: &lt;/span&gt;&lt;span class=&#34;si&#34;&gt;${&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;KEYS_URL&lt;/span&gt;&lt;span class=&#34;si&#34;&gt;}&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;&lt;/span&gt;
 
-wget <span class="s2">&quot;</span><span class="nv">$KEYS_URL</span><span class="s2">&quot;</span>
+wget &lt;span class=&#34;s2&#34;&gt;&amp;quot;&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;$KEYS_URL&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;&lt;/span&gt;
 gpg --import KEYS
 
-<span class="c"># Download JARs and signature files</span>
-<span class="nb">echo</span> <span class="s2">&quot;downloading all jars and signature files...&quot;</span>
+&lt;span class=&#34;c&#34;&gt;# Download JARs and signature files&lt;/span&gt;
+&lt;span class=&#34;nb&#34;&gt;echo&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;quot;downloading all jars and signature files...&amp;quot;&lt;/span&gt;
 
-wget -r -nd -np -e <span class="nv">robots</span><span class="o">=</span>off --wait <span class="m">1</span> -R <span class="s2">&quot;index.html*&quot;</span> <span class="s2">&quot;</span><span class="si">${</span><span class="nv">URL</span><span class="si">}</span><span class="s2">&quot;</span>
+wget -r -nd -np -e &lt;span class=&#34;nv&#34;&gt;robots&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;off --wait &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt; -R &lt;span class=&#34;s2&#34;&gt;&amp;quot;index.html*&amp;quot;&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;quot;&lt;/span&gt;&lt;span class=&#34;si&#34;&gt;${&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;URL&lt;/span&gt;&lt;span class=&#34;si&#34;&gt;}&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;&lt;/span&gt;
 
-<span class="c"># Check the files</span>
-<span class="k">for</span> x in *.jar<span class="p">;</span> <span class="k">do</span> gpg --verify <span class="s2">&quot;</span><span class="si">${</span><span class="nv">x</span><span class="si">}</span><span class="s2">&quot;</span>.asc<span class="p">;</span> <span class="k">done</span>
+&lt;span class=&#34;c&#34;&gt;# Check the files&lt;/span&gt;
+&lt;span class=&#34;k&#34;&gt;for&lt;/span&gt; x in *.jar&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;do&lt;/span&gt; gpg --verify &lt;span class=&#34;s2&#34;&gt;&amp;quot;&lt;/span&gt;&lt;span class=&#34;si&#34;&gt;${&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;x&lt;/span&gt;&lt;span class=&#34;si&#34;&gt;}&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;&lt;/span&gt;.asc&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;done&lt;/span&gt;
 
-<span class="c"># EOF</span>
-</pre></div>
+&lt;span class=&#34;c&#34;&gt;# EOF&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
 
-<p>The script can be found at GitHub too: <a href="https://github.com/kinow/dork-scripts/tree/3c519a74f28c08310ce2e65f8e860d61fd0c5c07/gpg/asf-sigs">https://github.com/kinow/dork-scripts/tree/3c519a74f28c08310ce2e65f8e860d61fd0c5c07/gpg/asf-sigs</a></p>
+&lt;p&gt;The script can be found at GitHub too: &lt;a href=&#34;https://github.com/kinow/dork-scripts/tree/3c519a74f28c08310ce2e65f8e860d61fd0c5c07/gpg/asf-sigs&#34;&gt;https://github.com/kinow/dork-scripts/tree/3c519a74f28c08310ce2e65f8e860d61fd0c5c07/gpg/asf-sigs&lt;/a&gt;&lt;/p&gt;
             
             </description>
         </item>
@@ -429,26 +441,28 @@ wget -r -nd -np -e <span class="nv">robots</span><span class="o">=</span>off --w
             
             <pubDate>2017-09-13T16:49:26+12:00</pubDate>
             <guid>/2017/09/13/removing-javadoc-svn-id-tags-with-shell-script</guid>
-            <description><p>Subversion supports <a href="http://svnbook.red-bean.com/en/1.4/svn.advanced.props.special.keywords.html">Keyword Substitution</a>, which performs substitution of some keywords such as <em>Author</em>, <em>Date</em>, and <strong><em>Id</em></strong>. The <strong><em>Id</em></strong> is the date, time, and user that last modified the file.</p>
-<p>It used to be common to all Apache Commons components to have a line as follows in the header of each Java class.</p>
-<div class="highlight"><pre><span class="cm">/**</span>
-<span class="cm"> * SomeClass class.</span>
-<span class="cm"> *</span>
-<span class="cm"> * @version $Id$</span>
-<span class="cm"> */</span>
-<span class="kd">public</span> <span class="kd">class</span> <span class="nc">SomeClass</span> <span class="o">{</span>
+            <description>
+            
+            &lt;p&gt;Subversion supports &lt;a href=&#34;http://svnbook.red-bean.com/en/1.4/svn.advanced.props.special.keywords.html&#34;&gt;Keyword Substitution&lt;/a&gt;, which performs substitution of some keywords such as &lt;em&gt;Author&lt;/em&gt;, &lt;em&gt;Date&lt;/em&gt;, and &lt;strong&gt;&lt;em&gt;Id&lt;/em&gt;&lt;/strong&gt;. The &lt;strong&gt;&lt;em&gt;Id&lt;/em&gt;&lt;/strong&gt; is the date, time, and user that last modified the file.&lt;/p&gt;
+&lt;p&gt;It used to be common to all Apache Commons components to have a line as follows in the header of each Java class.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;span class=&#34;cm&#34;&gt;/**&lt;/span&gt;
+&lt;span class=&#34;cm&#34;&gt; * SomeClass class.&lt;/span&gt;
+&lt;span class=&#34;cm&#34;&gt; *&lt;/span&gt;
+&lt;span class=&#34;cm&#34;&gt; * @version $Id$&lt;/span&gt;
+&lt;span class=&#34;cm&#34;&gt; */&lt;/span&gt;
+&lt;span class=&#34;kd&#34;&gt;public&lt;/span&gt; &lt;span class=&#34;kd&#34;&gt;class&lt;/span&gt; &lt;span class=&#34;nc&#34;&gt;SomeClass&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;
 
-<span class="o">}</span>
-</pre></div>
+&lt;span class=&#34;o&#34;&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
 
-<p>Then the generated Javadoc would contain the date of when the class was altered. Although useful, with proper versioning, it becomes obsolete. It is much more important to know what is the version of the software, not the last time it was modified or by whom. In case you have a problem with that specific file, you can always check the history of the file using <code>git log</code>, or <code>git bisect</code>, or &hellip;</p>
-<p>Apache Commons components that are migrated to git need to have these lines removed. git does not support these Subversion Keywords so it is never properly rendered. And as every time I have to remove these lines I come up with some shell script snippet, I decided to document the last one I wrote, so that it can save me some time &dash; and perhaps for somebody else too?</p>
-<div class="highlight"><pre>find . -name <span class="s2">&quot;*.java&quot;</span> -exec sed -i <span class="s1">&#39;/^.*\*\s*@version\s*\$Id\$.*$/d&#39;</span> <span class="o">{}</span> <span class="se">\;</span>
-</pre></div>
+&lt;p&gt;Then the generated Javadoc would contain the date of when the class was altered. Although useful, with proper versioning, it becomes obsolete. It is much more important to know what is the version of the software, not the last time it was modified or by whom. In case you have a problem with that specific file, you can always check the history of the file using &lt;code&gt;git log&lt;/code&gt;, or &lt;code&gt;git bisect&lt;/code&gt;, or &amp;hellip;&lt;/p&gt;
+&lt;p&gt;Apache Commons components that are migrated to git need to have these lines removed. git does not support these Subversion Keywords so it is never properly rendered. And as every time I have to remove these lines I come up with some shell script snippet, I decided to document the last one I wrote, so that it can save me some time &amp;dash; and perhaps for somebody else too?&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;find . -name &lt;span class=&#34;s2&#34;&gt;&amp;quot;*.java&amp;quot;&lt;/span&gt; -exec sed -i &lt;span class=&#34;s1&#34;&gt;&amp;#39;/^.*\*\s*@version\s*\$Id\$.*$/d&amp;#39;&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;{}&lt;/span&gt; &lt;span class=&#34;se&#34;&gt;\;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
 
-<p>And then <a href="https://github.com/apache/commons-collections/commit/29d2e93966e7fb99a888a58ab43480e485dcdfc6">push a commit</a> with the change :-) In case you know some regex, you can change it and use the same command syntax to remove comments, specific configuration lines, etc.</p>
-<p>That&#8217;s all. Happy scripting!</p>
-<p>&hearts; Open Source</p>
+&lt;p&gt;And then &lt;a href=&#34;https://github.com/apache/commons-collections/commit/29d2e93966e7fb99a888a58ab43480e485dcdfc6&#34;&gt;push a commit&lt;/a&gt; with the change :-) In case you know some regex, you can change it and use the same command syntax to remove comments, specific configuration lines, etc.&lt;/p&gt;
+&lt;p&gt;That&amp;#8217;s all. Happy scripting!&lt;/p&gt;
+&lt;p&gt;&amp;hearts; Open Source&lt;/p&gt;
             
             </description>
         </item>
@@ -472,20 +486,22 @@ wget -r -nd -np -e <span class="nv">robots</span><span class="o">=</span>off --w
             
             <pubDate>2017-09-09T20:35:01+12:00</pubDate>
             <guid>/2017/09/09/enabling-markdown-extension-tables-for-piecrust</guid>
-            <description><p><a href="https://github.com/ludovicchabant/PieCrust2">PieCrust</a> is a Python static site generator.
+            <description>
+            
+            &lt;p&gt;&lt;a href=&#34;https://github.com/ludovicchabant/PieCrust2&#34;&gt;PieCrust&lt;/a&gt; is a Python static site generator.
 It allows users to write content in Markdown. But if you try adding a table, the content by
-default will be generated as plain text.</p>
-<p>You have to enable <a href="https://pythonhosted.org/Markdown/extensions/tables.html">Markdown extension tables</a>.
-PieCrust will <a href="https://github.com/ludovicchabant/PieCrust2/blob/6462e052045552d2ba164f4965370d84ddb54946/piecrust/formatting/markdownformatter.py#L29">load it</a>
-when creating the Markdown instance.</p>
-<div class="highlight"><pre><span class="c1"># config.yml</span>
-<span class="l-Scalar-Plain">markdown</span><span class="p-Indicator">:</span>
-  <span class="l-Scalar-Plain">extensions</span><span class="p-Indicator">:</span>
-    <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">tables</span>
-</pre></div>
+default will be generated as plain text.&lt;/p&gt;
+&lt;p&gt;You have to enable &lt;a href=&#34;https://pythonhosted.org/Markdown/extensions/tables.html&#34;&gt;Markdown extension tables&lt;/a&gt;.
+PieCrust will &lt;a href=&#34;https://github.com/ludovicchabant/PieCrust2/blob/6462e052045552d2ba164f4965370d84ddb54946/piecrust/formatting/markdownformatter.py#L29&#34;&gt;load it&lt;/a&gt;
+when creating the Markdown instance.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;span class=&#34;c1&#34;&gt;# config.yml&lt;/span&gt;
+&lt;span class=&#34;l-Scalar-Plain&#34;&gt;markdown&lt;/span&gt;&lt;span class=&#34;p-Indicator&#34;&gt;:&lt;/span&gt;
+  &lt;span class=&#34;l-Scalar-Plain&#34;&gt;extensions&lt;/span&gt;&lt;span class=&#34;p-Indicator&#34;&gt;:&lt;/span&gt;
+    &lt;span class=&#34;p-Indicator&#34;&gt;-&lt;/span&gt; &lt;span class=&#34;l-Scalar-Plain&#34;&gt;tables&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
 
-<p>Et, voil&agrave;! Happy blogging!</p>
-<p>&hearts; Open Source</p>
+&lt;p&gt;Et, voil&amp;agrave;! Happy blogging!&lt;/p&gt;
+&lt;p&gt;&amp;hearts; Open Source&lt;/p&gt;
             
             </description>
         </item>
@@ -511,165 +527,167 @@ when creating the Markdown instance.</p>
             
             <pubDate>2017-09-01T20:23:03+12:00</pubDate>
             <guid>/2017/09/01/finding-base64-implementations-in-apache-software-foundation-projects</guid>
-            <description><p style='text-align: center;'>
-<a href="https://kinow.deviantart.com/art/Grey-Warbler-702099183?ga_submit_new=10%3A1504263729">
-<img style="display: inline" class="ui image" src="/2017/09/01/finding-base64-implementations-in-apache-software-foundation-projects/GreyWarbler.png" alt="NZ Grey Warbler (riroriro)" title="NZ Grey Warbler (riroriro)" />
-</a>
-<br/>
-<small><a href="http://nzbirdsonline.org.nz/species/grey-warbler">New Zealand Grey Warbler (riroriro)</a></small>
-</p>
+            <description>
+            
+            &lt;p style=&#39;text-align: center;&#39;&gt;
+&lt;a href=&#34;https://kinow.deviantart.com/art/Grey-Warbler-702099183?ga_submit_new=10%3A1504263729&#34;&gt;
+&lt;img style=&#34;display: inline&#34; class=&#34;ui image&#34; src=&#34;/2017/09/01/finding-base64-implementations-in-apache-software-foundation-projects/GreyWarbler.png&#34; alt=&#34;NZ Grey Warbler (riroriro)&#34; title=&#34;NZ Grey Warbler (riroriro)&#34; /&gt;
+&lt;/a&gt;
+&lt;br/&gt;
+&lt;small&gt;&lt;a href=&#34;http://nzbirdsonline.org.nz/species/grey-warbler&#34;&gt;New Zealand Grey Warbler (riroriro)&lt;/a&gt;&lt;/small&gt;
+&lt;/p&gt;
 
-<p>Some time ago while working in one of the many projects in the Apache Software Foundation (Apache Commons FileUpload if I remember well), I noticed that it had a Base64 implementation. What called my attention was that the project not using the <a href="https://github.com/apache/commons-codec/blob/c18b1923b3c1f897c7935d94fb9e443eabfff897/src/main/java/org/apache/commons/codec/binary/Base64.java">Apache Commons Codec</a> Base64 implementation.</p>
-<p>While Apache Commons&#8217; mission is to create components that can be re-used across ASF projects, and also by other projects not necessarily under the ASF, it is understandable that some projects prefer to keep its dependencies to a minimum. It is normally a good software engineering practice to carefully manage your dependencies.</p>
-<p>But would Apache Commons FileUpload be the only project in the ASF with its own Base64 implementation?</p>
-<h3>What is Base64?</h3>
-<p>Simply put, Base64 is a way to encode bytes to strings. It utilises a table, to convert parts of the binary input to certain numbers. These numbers match an entry in the table used by the Base64 implementation. There are several Base64 implementations, though some are obsolete now.</p>
-<p>The input text &ldquo;<em>this is base64!</em>&rdquo; results in &ldquo;<em>dGhpcyBpcyBiYXNlNjQh</em>&rdquo;. It can be decoded and will result in the same input text. An image can also be encoded. Or a ZIP file. This is helpful for data transfer and storage.</p>
-<p>Apache Commons Codec is well known to provide a Bse64 implementation, and used in several projects, both Open Source and in the industry. Its implementation is based on the <a href="https://www.ietf.org/rfc/rfc2045.txt">RFC-2045</a>.</p>
-<p>Java 8 contains a Base64 implementation, so that may very well replace Apache Commons Coded use in some projects, though that may take some time. The Java 8 implementation supports the RFC-2045, RFC-4648, and <a href="https://docs.oracle.com/javase/8/docs/api/java/util/Base64.html">has also</a> support to the URL and MIME formats.</p>
-<h3>Searching for other Base64 implementations</h3>
-<p>Using GitHub search, I looked for other Base64 implementations in the ASF projects. Here&#8217;s the result table with only the custom implementations found after going through some 15 pages in more than 100 pages with hits for &ldquo;base64&rdquo;.</p>
-<table>
-<thead>
-<tr>
-<th>Project &amp; link to implementation</th>
-<th align="center">JVM</th>
-<th align="right">Base64 implementation</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><a href="https://github.com/apache/activemq-artemis/blob/master/artemis-commons/src/main/java/org/apache/activemq/artemis/utils/Base64.java">Apache ActiveMQ Artemis</a></td>
-<td align="center">8</td>
-<td align="right">RFC-3548, based on http://iharder.net/base64</td>
-</tr>
-<tr>
-<td><a href="https://github.com/apache/incubator-asterixdb-hyracks/blob/3f849969f01effc9b6e7f22462ceb4b2bedabdc4/hyracks/hyracks-util/src/main/java/org/apache/hyracks/util/bytes/Base64Parser.java">Apache AsterixDB Hyracks (Incubator)</a></td>
-<td align="center">8</td>
-<td align="right">?</td>
-</tr>
-<tr>
-<td><a href="https://github.com/apache/calcite-avatica/blob/4db1fb9c66db8ccebc9e96ce678154ec69c557f0/core/src/main/java/org/apache/calcite/avatica/util/Base64.java">Apache Calcite Avatica</a></td>
-<td align="center">7</td>
-<td align="right">RFC-3548, based on http://iharder.net/base64</td>
-</tr>
-<tr>
-<td><a href="https://github.com/apache/cayenne/blob/bd1b109a943307a83078399c7a4d6aa53631a065/cayenne-server/src/main/java/org/apache/cayenne/util/Base64Codec.java">Apache Cayenne</a></td>
-<td align="center">8</td>
-<td align="right">RFC-2045 (based on codec)</td>
-</tr>
-<tr>
-<td><a href="https://github.com/apache/chemistry-opencmis/blob/trunk/chemistry-opencmis-commons/chemistry-opencmis-commons-impl/src/main/java/org/apache/chemistry/opencmis/commons/impl/Base64.java">Apache Chemistry</a></td>
-<td align="center">7</td>
-<td align="right">RFC-3548, based on http://iharder.net/base64</td>
-</tr>
-<tr>
-<td><a href="https://github.com/apache/commons-fileupload/blob/422caf46e5b7a950c639b8ba9fe41e16279b3aa9/src/main/java/org/apache/commons/fileupload/util/mime/Base64Decoder.java">Apache Commons FileUpload</a></td>
-<td align="center">6</td>
-<td align="right">?</td>
-</tr>
-<tr>
-<td><a href="https://github.com/apache/commons-net/blob/trunk/src/main/java/org/apache/commons/net/util/Base64.java">Apache Commons Net</a></td>
-<td align="center">6</td>
-<td align="right">RFC-2045 (copy of codec?)</td>
-</tr>
-<tr>
-<td><a href="https://github.com/apache/directory-kerby/blob/b7da10e3815a8ab84ab7ff4fa3572c92bfa9aef5/kerby-common/kerby-util/src/main/java/org/apache/kerby/util/Base64.java">Apache Directory Kerby</a></td>
-<td align="center">7</td>
-<td align="right">RFC-2045 (copy of codec?)</td>
-</tr>
-<tr>
-<td><a href="https://github.com/apache/felix/blob/a4755e768329a29252b1d7d8e52537941768606d/webconsole-plugins/upnp/src/main/java/org/apache/felix/webconsole/plugins/upnp/internal/Base64.java">Apache Felix</a></td>
-<td align="center">5 (?)</td>
-<td align="right">RFC-2045 (copy of codec?)</td>
-</tr>
-<tr>
-<td><a href="https://github.com/apache/hbase/blob/a66d491892514fd4a188d6ca87d6260d8ae46184/hbase-common/src/main/java/org/apache/hadoop/hbase/util/Base64.java">Apache HBase</a></td>
-<td align="center">8</td>
-<td align="right">RFC-3548, based on http://iharder.net/base64</td>
-</tr>
-<tr>
-<td><a href="https://github.com/apache/jackrabbit/blob/adb1e79ae26aba5d068be56e5e9eb562344e5bb9/jackrabbit-jcr-commons/src/main/java/org/apache/jackrabbit/util/Base64.java">Apache Jackrabbit</a></td>
-<td align="center">8 (?)</td>
-<td align="right">?</td>
-</tr>
-<tr>
-<td><a href="https://github.com/apache/james-project/blob/bab5ff434c407b98432cdc9af00b0263184de26a/server/protocols/protocols-smtp/src/test/java/org/apache/james/smtpserver/Base64.java">Apache James</a></td>
-<td align="center">6</td>
-<td align="right">RFC-2045 via javax.mail.internet.MimeUtility</td>
-</tr>
-<tr>
-<td><a href="https://github.com/apache/james-mime4j/blob/cb48082fb7cbbfb111c926cc8ae953d7261c235c/core/src/main/java/org/apache/james/mime4j/codec/Base64OutputStream.java">Apache James Mime4J</a></td>
-<td align="center">5</td>
-<td align="right">RFC-2045 (based on codec)</td>
-</tr>
-<tr>
-<td><a href="https://github.com/apache/ofbiz-framework/blob/29b815f1b969653da96995fed25e2cc52f25879d/framework/base/src/main/java/org/apache/ofbiz/base/util/Base64.java">Apache OFBiz</a></td>
-<td align="center">8</td>
-<td align="right">RFC-2045</td>
-</tr>
-<tr>
-<td><a href="https://github.com/apache/pivot/blob/d9a21718f182d3c667b18b0f2c62f6ec1cd0e6dd/core/src/org/apache/pivot/util/Base64.java">Apache Pivot</a></td>
-<td align="center">6</td>
-<td align="right">RFC-2045</td>
-</tr>
-<tr>
-<td><a href="https://github.com/apache/qpid-broker-j/blob/1c20cc32b17c58391b0aefcd00f74bc1b4253db9/broker-core/src/main/java/org/apache/qpid/server/util/Strings.java#L132">Apache Qpid</a></td>
-<td align="center">8</td>
-<td align="right">? uses javax.xml.bind.DatatypeConverter#parseBase64Binary()</td>
-</tr>
-<tr>
-<td><a href="https://github.com/apache/shiro/blob/8acc82ab4775b3af546e3bbde928f299be62dc23/lang/src/main/java/org/apache/shiro/codec/Base64.java">Apache Shiro</a></td>
-<td align="center">6</td>
-<td align="right">RFC-2045 (based on commons)</td>
-</tr>
-<tr>
-<td><a href="https://github.com/apache/tomcat/blob/trunk/java/org/apache/tomcat/util/codec/binary/Base64.java">Apache Tomcat</a></td>
-<td align="center">8</td>
-<td align="right">RFC-2045 (copy of codec?)</td>
-</tr>
-<tr>
-<td><a href="https://github.com/apache/tomee/blob/8fc8d8011c5155e7f47ebc162cb88124bf4ca06e/container/openejb-core/src/main/java/org/apache/openejb/util/Base64.java">Apache TomEE</a></td>
-<td align="center">7</td>
-<td align="right">RFC-2045</td>
-</tr>
-<tr>
-<td><a href="https://github.com/apache/tomee-site-ng/blob/8dbf7c5a4bdc6cd5249e00ff85d78a24fd76c7af/container/openejb-core/src/main/java/org/apache/openejb/util/Base64.java">Apache TomEE (Site-NG)</a></td>
-<td align="center">6</td>
-<td align="right">RFC-2045</td>
-</tr>
-<tr>
-<td><a href="https://github.com/apache/incubator-trafodion/blob/b36003cf824bae6b0faf8b03c313f189991d5be1/core/rest/src/main/java/org/trafodion/rest/util/Base64.java">Apache Trafodion (Incubator)</a></td>
-<td align="center">7</td>
-<td align="right">RFC-3548, based on http://iharder.net/base64</td>
-</tr>
-<tr>
-<td><a href="https://github.com/apache/incubator-wave/blob/master/wave/src/main/java/org/waveprotocol/wave/model/util/CharBase64.java">Apache Wave (Incubator)</a></td>
-<td align="center">7</td>
-<td align="right">RFC-3548 (?), based on http://iharder.net/base64</td>
-</tr>
-</tbody>
-</table>
-<h3>Notes and conclusions</h3>
-<ul>
-<li><strong>Projects using Java 8 can likely remove its own implementation in favour of the new JVM 8 implementation</strong>.</li>
-<li>Some projects were already using <a href="https://docs.oracle.com/javase/8/docs/api/java/util/Base64.Decoder.html">Java 8 Base64 implementation</a>.</li>
-<li>Some projects were using Apache Commons Codec.</li>
-<li>Some projects were using the Base64 implementation from http://iharder.net/base64, which claims to be very fast. It could be interesting to further investigate it. Perhaps projects where Base64 is used a lot, there could be a significant performance increase by using this version.</li>
-<li>Even though most of these projects are not using Apache Commons Codec, some have either copied or based their implementations on Apache Commons Codec. Perhaps shading would be more effective? Or maybe adding it as a dependency&hellip;</li>
-<li>I guess the Base64 implementations could be hidden from external users with /*protected*/, private scope. As they are probably not part of Apache Commons Net, or Apache Cayenne public API. Which will be solved eventually after Java 9&hellip;</li>
-<li>Some implementations do not make it clear which RFC or standard they are following. Some derived the reference work (e.g. Apache Wave (Incubator) modified the iharder removing features&hellip;).</li>
-<li>It could be that some of these projects that contain many dependencies like Cayenne and Pivot may even have Commons Codec in the class path as a transitive dependency. If so, it could be interesting to add it as a dependency and remove its own implementation, or simply use Java 8&#8217;s.</li>
-<li>Some implementations like HBase and Trafodion were not using the latest version from http://iharder.net/base64. In the case of HBase and Trafodion, several invalid inputs have been fixed from 2.2.1 to 2.3.7.</li>
-</ul>
-<h3>Future work</h3>
-<ul>
-<li>I will try to investigate which of these projects that have a custom Base64 implementation and are using Java 8 can be updated to throw away its own version (時間があるときでしょう!).</li>
-<li>The implementation from <a href="http://iharder.net/base64">http://iharder.net/base64</a> promises to be very fast, and Apache ActiveMQ Artemis adopted it. We could consider adding a similar <em>fast</em> version to Apache Commons Codec. This could be a reason for keeping its own Base64 implementation.</li>
-<li>Java 8 Base64 provides Base64, MIME, and URL formats for encode and decoding. Perhaps we could add more formats to Apache Commons Codec too. Even <a href="https://github.com/apache/commons-codec/pull/3">custom formats</a>. This could be a reason for keeping Apache Commons Codec&#8217;s implementation.</li>
-</ul>
-<p>Happy encoding!</p>
-<p>&hearts; Open Source</p>
+&lt;p&gt;Some time ago while working in one of the many projects in the Apache Software Foundation (Apache Commons FileUpload if I remember well), I noticed that it had a Base64 implementation. What called my attention was that the project not using the &lt;a href=&#34;https://github.com/apache/commons-codec/blob/c18b1923b3c1f897c7935d94fb9e443eabfff897/src/main/java/org/apache/commons/codec/binary/Base64.java&#34;&gt;Apache Commons Codec&lt;/a&gt; Base64 implementation.&lt;/p&gt;
+&lt;p&gt;While Apache Commons&amp;#8217; mission is to create components that can be re-used across ASF projects, and also by other projects not necessarily under the ASF, it is understandable that some projects prefer to keep its dependencies to a minimum. It is normally a good software engineering practice to carefully manage your dependencies.&lt;/p&gt;
+&lt;p&gt;But would Apache Commons FileUpload be the only project in the ASF with its own Base64 implementation?&lt;/p&gt;
+&lt;h3&gt;What is Base64?&lt;/h3&gt;
+&lt;p&gt;Simply put, Base64 is a way to encode bytes to strings. It utilises a table, to convert parts of the binary input to certain numbers. These numbers match an entry in the table used by the Base64 implementation. There are several Base64 implementations, though some are obsolete now.&lt;/p&gt;
+&lt;p&gt;The input text &amp;ldquo;&lt;em&gt;this is base64!&lt;/em&gt;&amp;rdquo; results in &amp;ldquo;&lt;em&gt;dGhpcyBpcyBiYXNlNjQh&lt;/em&gt;&amp;rdquo;. It can be decoded and will result in the same input text. An image can also be encoded. Or a ZIP file. This is helpful for data transfer and storage.&lt;/p&gt;
+&lt;p&gt;Apache Commons Codec is well known to provide a Bse64 implementation, and used in several projects, both Open Source and in the industry. Its implementation is based on the &lt;a href=&#34;https://www.ietf.org/rfc/rfc2045.txt&#34;&gt;RFC-2045&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Java 8 contains a Base64 implementation, so that may very well replace Apache Commons Coded use in some projects, though that may take some time. The Java 8 implementation supports the RFC-2045, RFC-4648, and &lt;a href=&#34;https://docs.oracle.com/javase/8/docs/api/java/util/Base64.html&#34;&gt;has also&lt;/a&gt; support to the URL and MIME formats.&lt;/p&gt;
+&lt;h3&gt;Searching for other Base64 implementations&lt;/h3&gt;
+&lt;p&gt;Using GitHub search, I looked for other Base64 implementations in the ASF projects. Here&amp;#8217;s the result table with only the custom implementations found after going through some 15 pages in more than 100 pages with hits for &amp;ldquo;base64&amp;rdquo;.&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Project &amp;amp; link to implementation&lt;/th&gt;
+&lt;th align=&#34;center&#34;&gt;JVM&lt;/th&gt;
+&lt;th align=&#34;right&#34;&gt;Base64 implementation&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;a href=&#34;https://github.com/apache/activemq-artemis/blob/master/artemis-commons/src/main/java/org/apache/activemq/artemis/utils/Base64.java&#34;&gt;Apache ActiveMQ Artemis&lt;/a&gt;&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;8&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;RFC-3548, based on http://iharder.net/base64&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;a href=&#34;https://github.com/apache/incubator-asterixdb-hyracks/blob/3f849969f01effc9b6e7f22462ceb4b2bedabdc4/hyracks/hyracks-util/src/main/java/org/apache/hyracks/util/bytes/Base64Parser.java&#34;&gt;Apache AsterixDB Hyracks (Incubator)&lt;/a&gt;&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;8&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;?&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;a href=&#34;https://github.com/apache/calcite-avatica/blob/4db1fb9c66db8ccebc9e96ce678154ec69c557f0/core/src/main/java/org/apache/calcite/avatica/util/Base64.java&#34;&gt;Apache Calcite Avatica&lt;/a&gt;&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;7&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;RFC-3548, based on http://iharder.net/base64&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;a href=&#34;https://github.com/apache/cayenne/blob/bd1b109a943307a83078399c7a4d6aa53631a065/cayenne-server/src/main/java/org/apache/cayenne/util/Base64Codec.java&#34;&gt;Apache Cayenne&lt;/a&gt;&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;8&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;RFC-2045 (based on codec)&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;a href=&#34;https://github.com/apache/chemistry-opencmis/blob/trunk/chemistry-opencmis-commons/chemistry-opencmis-commons-impl/src/main/java/org/apache/chemistry/opencmis/commons/impl/Base64.java&#34;&gt;Apache Chemistry&lt;/a&gt;&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;7&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;RFC-3548, based on http://iharder.net/base64&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;a href=&#34;https://github.com/apache/commons-fileupload/blob/422caf46e5b7a950c639b8ba9fe41e16279b3aa9/src/main/java/org/apache/commons/fileupload/util/mime/Base64Decoder.java&#34;&gt;Apache Commons FileUpload&lt;/a&gt;&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;6&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;?&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;a href=&#34;https://github.com/apache/commons-net/blob/trunk/src/main/java/org/apache/commons/net/util/Base64.java&#34;&gt;Apache Commons Net&lt;/a&gt;&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;6&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;RFC-2045 (copy of codec?)&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;a href=&#34;https://github.com/apache/directory-kerby/blob/b7da10e3815a8ab84ab7ff4fa3572c92bfa9aef5/kerby-common/kerby-util/src/main/java/org/apache/kerby/util/Base64.java&#34;&gt;Apache Directory Kerby&lt;/a&gt;&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;7&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;RFC-2045 (copy of codec?)&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;a href=&#34;https://github.com/apache/felix/blob/a4755e768329a29252b1d7d8e52537941768606d/webconsole-plugins/upnp/src/main/java/org/apache/felix/webconsole/plugins/upnp/internal/Base64.java&#34;&gt;Apache Felix&lt;/a&gt;&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;5 (?)&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;RFC-2045 (copy of codec?)&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;a href=&#34;https://github.com/apache/hbase/blob/a66d491892514fd4a188d6ca87d6260d8ae46184/hbase-common/src/main/java/org/apache/hadoop/hbase/util/Base64.java&#34;&gt;Apache HBase&lt;/a&gt;&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;8&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;RFC-3548, based on http://iharder.net/base64&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;a href=&#34;https://github.com/apache/jackrabbit/blob/adb1e79ae26aba5d068be56e5e9eb562344e5bb9/jackrabbit-jcr-commons/src/main/java/org/apache/jackrabbit/util/Base64.java&#34;&gt;Apache Jackrabbit&lt;/a&gt;&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;8 (?)&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;?&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;a href=&#34;https://github.com/apache/james-project/blob/bab5ff434c407b98432cdc9af00b0263184de26a/server/protocols/protocols-smtp/src/test/java/org/apache/james/smtpserver/Base64.java&#34;&gt;Apache James&lt;/a&gt;&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;6&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;RFC-2045 via javax.mail.internet.MimeUtility&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;a href=&#34;https://github.com/apache/james-mime4j/blob/cb48082fb7cbbfb111c926cc8ae953d7261c235c/core/src/main/java/org/apache/james/mime4j/codec/Base64OutputStream.java&#34;&gt;Apache James Mime4J&lt;/a&gt;&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;5&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;RFC-2045 (based on codec)&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;a href=&#34;https://github.com/apache/ofbiz-framework/blob/29b815f1b969653da96995fed25e2cc52f25879d/framework/base/src/main/java/org/apache/ofbiz/base/util/Base64.java&#34;&gt;Apache OFBiz&lt;/a&gt;&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;8&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;RFC-2045&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;a href=&#34;https://github.com/apache/pivot/blob/d9a21718f182d3c667b18b0f2c62f6ec1cd0e6dd/core/src/org/apache/pivot/util/Base64.java&#34;&gt;Apache Pivot&lt;/a&gt;&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;6&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;RFC-2045&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;a href=&#34;https://github.com/apache/qpid-broker-j/blob/1c20cc32b17c58391b0aefcd00f74bc1b4253db9/broker-core/src/main/java/org/apache/qpid/server/util/Strings.java#L132&#34;&gt;Apache Qpid&lt;/a&gt;&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;8&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;? uses javax.xml.bind.DatatypeConverter#parseBase64Binary()&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;a href=&#34;https://github.com/apache/shiro/blob/8acc82ab4775b3af546e3bbde928f299be62dc23/lang/src/main/java/org/apache/shiro/codec/Base64.java&#34;&gt;Apache Shiro&lt;/a&gt;&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;6&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;RFC-2045 (based on commons)&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;a href=&#34;https://github.com/apache/tomcat/blob/trunk/java/org/apache/tomcat/util/codec/binary/Base64.java&#34;&gt;Apache Tomcat&lt;/a&gt;&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;8&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;RFC-2045 (copy of codec?)&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;a href=&#34;https://github.com/apache/tomee/blob/8fc8d8011c5155e7f47ebc162cb88124bf4ca06e/container/openejb-core/src/main/java/org/apache/openejb/util/Base64.java&#34;&gt;Apache TomEE&lt;/a&gt;&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;7&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;RFC-2045&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;a href=&#34;https://github.com/apache/tomee-site-ng/blob/8dbf7c5a4bdc6cd5249e00ff85d78a24fd76c7af/container/openejb-core/src/main/java/org/apache/openejb/util/Base64.java&#34;&gt;Apache TomEE (Site-NG)&lt;/a&gt;&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;6&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;RFC-2045&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;a href=&#34;https://github.com/apache/incubator-trafodion/blob/b36003cf824bae6b0faf8b03c313f189991d5be1/core/rest/src/main/java/org/trafodion/rest/util/Base64.java&#34;&gt;Apache Trafodion (Incubator)&lt;/a&gt;&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;7&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;RFC-3548, based on http://iharder.net/base64&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;a href=&#34;https://github.com/apache/incubator-wave/blob/master/wave/src/main/java/org/waveprotocol/wave/model/util/CharBase64.java&#34;&gt;Apache Wave (Incubator)&lt;/a&gt;&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;7&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;RFC-3548 (?), based on http://iharder.net/base64&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h3&gt;Notes and conclusions&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Projects using Java 8 can likely remove its own implementation in favour of the new JVM 8 implementation&lt;/strong&gt;.&lt;/li&gt;
+&lt;li&gt;Some projects were already using &lt;a href=&#34;https://docs.oracle.com/javase/8/docs/api/java/util/Base64.Decoder.html&#34;&gt;Java 8 Base64 implementation&lt;/a&gt;.&lt;/li&gt;
+&lt;li&gt;Some projects were using Apache Commons Codec.&lt;/li&gt;
+&lt;li&gt;Some projects were using the Base64 implementation from http://iharder.net/base64, which claims to be very fast. It could be interesting to further investigate it. Perhaps projects where Base64 is used a lot, there could be a significant performance increase by using this version.&lt;/li&gt;
+&lt;li&gt;Even though most of these projects are not using Apache Commons Codec, some have either copied or based their implementations on Apache Commons Codec. Perhaps shading would be more effective? Or maybe adding it as a dependency&amp;hellip;&lt;/li&gt;
+&lt;li&gt;I guess the Base64 implementations could be hidden from external users with /*protected*/, private scope. As they are probably not part of Apache Commons Net, or Apache Cayenne public API. Which will be solved eventually after Java 9&amp;hellip;&lt;/li&gt;
+&lt;li&gt;Some implementations do not make it clear which RFC or standard they are following. Some derived the reference work (e.g. Apache Wave (Incubator) modified the iharder removing features&amp;hellip;).&lt;/li&gt;
+&lt;li&gt;It could be that some of these projects that contain many dependencies like Cayenne and Pivot may even have Commons Codec in the class path as a transitive dependency. If so, it could be interesting to add it as a dependency and remove its own implementation, or simply use Java 8&amp;#8217;s.&lt;/li&gt;
+&lt;li&gt;Some implementations like HBase and Trafodion were not using the latest version from http://iharder.net/base64. In the case of HBase and Trafodion, several invalid inputs have been fixed from 2.2.1 to 2.3.7.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;Future work&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;I will try to investigate which of these projects that have a custom Base64 implementation and are using Java 8 can be updated to throw away its own version (時間があるときでしょう!).&lt;/li&gt;
+&lt;li&gt;The implementation from &lt;a href=&#34;http://iharder.net/base64&#34;&gt;http://iharder.net/base64&lt;/a&gt; promises to be very fast, and Apache ActiveMQ Artemis adopted it. We could consider adding a similar &lt;em&gt;fast&lt;/em&gt; version to Apache Commons Codec. This could be a reason for keeping its own Base64 implementation.&lt;/li&gt;
+&lt;li&gt;Java 8 Base64 provides Base64, MIME, and URL formats for encode and decoding. Perhaps we could add more formats to Apache Commons Codec too. Even &lt;a href=&#34;https://github.com/apache/commons-codec/pull/3&#34;&gt;custom formats&lt;/a&gt;. This could be a reason for keeping Apache Commons Codec&amp;#8217;s implementation.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Happy encoding!&lt;/p&gt;
+&lt;p&gt;&amp;hearts; Open Source&lt;/p&gt;
             
             </description>
         </item>
@@ -695,81 +713,83 @@ when creating the Markdown instance.</p>
             
             <pubDate>2017-08-12T22:16:03+12:00</pubDate>
             <guid>/2017/08/12/two-other-maven-plugins-impsort-and-deptools</guid>
-            <description><p>Last <a href="/2017/08/06/checking-for-transitive-dependencies-use-with-maven-enforcer-plugin">week I wrote</a> about the <a href="https://github.com/ImmobilienScout24/illegal-transitive-dependency-check">ImmobilienScout24/illegal-transitive-dependency-check</a> rule for Maven Enforcer Plug-in. There are two other Maven Plug-ins that can be useful.</p>
-<h3>mbknor/deptools</h3>
-<p>The <a href="https://github.com/mbknor/deptools">mbknor/deptools</a> is another rule for the Maven Enforcer Plug-in. It will scan your project dependency tree, looking for transitive dependencies. Whenever it finds a transitive dependency, it will keep track of the versions. And if, because of the way your dependencies and transitive dependencies are organised, you end up with a version that is not the newest, the build will fail.</p>
-<p>So, for example, if you have <code>commons-lang3</code> as transitive dependency of two other dependencies, but one is using 3.4 and the other 3.5. If for any reason you are using 3.4 instead of 3.5, you will have a build error.</p>
-<p>Here&#8217;s an example of the plug-in configuration.</p>
-<div class="highlight"><pre><span class="nt">&lt;project&gt;</span>
+            <description>
+            
+            &lt;p&gt;Last &lt;a href=&#34;/2017/08/06/checking-for-transitive-dependencies-use-with-maven-enforcer-plugin&#34;&gt;week I wrote&lt;/a&gt; about the &lt;a href=&#34;https://github.com/ImmobilienScout24/illegal-transitive-dependency-check&#34;&gt;ImmobilienScout24/illegal-transitive-dependency-check&lt;/a&gt; rule for Maven Enforcer Plug-in. There are two other Maven Plug-ins that can be useful.&lt;/p&gt;
+&lt;h3&gt;mbknor/deptools&lt;/h3&gt;
+&lt;p&gt;The &lt;a href=&#34;https://github.com/mbknor/deptools&#34;&gt;mbknor/deptools&lt;/a&gt; is another rule for the Maven Enforcer Plug-in. It will scan your project dependency tree, looking for transitive dependencies. Whenever it finds a transitive dependency, it will keep track of the versions. And if, because of the way your dependencies and transitive dependencies are organised, you end up with a version that is not the newest, the build will fail.&lt;/p&gt;
+&lt;p&gt;So, for example, if you have &lt;code&gt;commons-lang3&lt;/code&gt; as transitive dependency of two other dependencies, but one is using 3.4 and the other 3.5. If for any reason you are using 3.4 instead of 3.5, you will have a build error.&lt;/p&gt;
+&lt;p&gt;Here&amp;#8217;s an example of the plug-in configuration.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;span class=&#34;nt&#34;&gt;&amp;lt;project&amp;gt;&lt;/span&gt;
   ...
-  <span class="nt">&lt;build&gt;</span>
-    <span class="nt">&lt;plugins&gt;</span>
-      <span class="nt">&lt;plugin&gt;</span>
-        <span class="nt">&lt;groupId&gt;</span>deptools.plugin<span class="nt">&lt;/groupId&gt;</span>
-        <span class="nt">&lt;artifactId&gt;</span>maven-deptools-plugin<span class="nt">&lt;/artifactId&gt;</span>
-        <span class="nt">&lt;version&gt;</span>1.3<span class="nt">&lt;/version&gt;</span>
-          <span class="nt">&lt;executions&gt;</span>
-              <span class="nt">&lt;execution&gt;</span>
-                  <span class="nt">&lt;phase&gt;</span>compile<span class="nt">&lt;/phase&gt;</span>
-                  <span class="nt">&lt;goals&gt;</span>
-                      <span class="nt">&lt;goal&gt;</span>version-checker<span class="nt">&lt;/goal&gt;</span>
-                  <span class="nt">&lt;/goals&gt;</span>
-              <span class="nt">&lt;/execution&gt;</span>
-          <span class="nt">&lt;/executions&gt;</span>
-        <span class="nt">&lt;/plugin&gt;</span>
-    <span class="nt">&lt;/plugins&gt;</span>
-  <span class="nt">&lt;/build&gt;</span>
+  &lt;span class=&#34;nt&#34;&gt;&amp;lt;build&amp;gt;&lt;/span&gt;
+    &lt;span class=&#34;nt&#34;&gt;&amp;lt;plugins&amp;gt;&lt;/span&gt;
+      &lt;span class=&#34;nt&#34;&gt;&amp;lt;plugin&amp;gt;&lt;/span&gt;
+        &lt;span class=&#34;nt&#34;&gt;&amp;lt;groupId&amp;gt;&lt;/span&gt;deptools.plugin&lt;span class=&#34;nt&#34;&gt;&amp;lt;/groupId&amp;gt;&lt;/span&gt;
+        &lt;span class=&#34;nt&#34;&gt;&amp;lt;artifactId&amp;gt;&lt;/span&gt;maven-deptools-plugin&lt;span class=&#34;nt&#34;&gt;&amp;lt;/artifactId&amp;gt;&lt;/span&gt;
+        &lt;span class=&#34;nt&#34;&gt;&amp;lt;version&amp;gt;&lt;/span&gt;1.3&lt;span class=&#34;nt&#34;&gt;&amp;lt;/version&amp;gt;&lt;/span&gt;
+          &lt;span class=&#34;nt&#34;&gt;&amp;lt;executions&amp;gt;&lt;/span&gt;
+              &lt;span class=&#34;nt&#34;&gt;&amp;lt;execution&amp;gt;&lt;/span&gt;
+                  &lt;span class=&#34;nt&#34;&gt;&amp;lt;phase&amp;gt;&lt;/span&gt;compile&lt;span class=&#34;nt&#34;&gt;&amp;lt;/phase&amp;gt;&lt;/span&gt;
+                  &lt;span class=&#34;nt&#34;&gt;&amp;lt;goals&amp;gt;&lt;/span&gt;
+                      &lt;span class=&#34;nt&#34;&gt;&amp;lt;goal&amp;gt;&lt;/span&gt;version-checker&lt;span class=&#34;nt&#34;&gt;&amp;lt;/goal&amp;gt;&lt;/span&gt;
+                  &lt;span class=&#34;nt&#34;&gt;&amp;lt;/goals&amp;gt;&lt;/span&gt;
+              &lt;span class=&#34;nt&#34;&gt;&amp;lt;/execution&amp;gt;&lt;/span&gt;
+          &lt;span class=&#34;nt&#34;&gt;&amp;lt;/executions&amp;gt;&lt;/span&gt;
+        &lt;span class=&#34;nt&#34;&gt;&amp;lt;/plugin&amp;gt;&lt;/span&gt;
+    &lt;span class=&#34;nt&#34;&gt;&amp;lt;/plugins&amp;gt;&lt;/span&gt;
+  &lt;span class=&#34;nt&#34;&gt;&amp;lt;/build&amp;gt;&lt;/span&gt;
 
-  <span class="nt">&lt;pluginRepositories&gt;</span>
-    <span class="nt">&lt;pluginRepository&gt;</span>
-      <span class="nt">&lt;id&gt;</span>mbk_mvn_repo<span class="nt">&lt;/id&gt;</span>
-      <span class="nt">&lt;name&gt;</span>mbk_mvn_repo<span class="nt">&lt;/name&gt;</span>
-      <span class="nt">&lt;url&gt;</span>https://raw.githubusercontent.com/mbknor/mbknor.github.com/master/m2repo/releases<span class="nt">&lt;/url&gt;</span>
-    <span class="nt">&lt;/pluginRepository&gt;</span>
-  <span class="nt">&lt;/pluginRepositories&gt;</span>
+  &lt;span class=&#34;nt&#34;&gt;&amp;lt;pluginRepositories&amp;gt;&lt;/span&gt;
+    &lt;span class=&#34;nt&#34;&gt;&amp;lt;pluginRepository&amp;gt;&lt;/span&gt;
+      &lt;span class=&#34;nt&#34;&gt;&amp;lt;id&amp;gt;&lt;/span&gt;mbk_mvn_repo&lt;span class=&#34;nt&#34;&gt;&amp;lt;/id&amp;gt;&lt;/span&gt;
+      &lt;span class=&#34;nt&#34;&gt;&amp;lt;name&amp;gt;&lt;/span&gt;mbk_mvn_repo&lt;span class=&#34;nt&#34;&gt;&amp;lt;/name&amp;gt;&lt;/span&gt;
+      &lt;span class=&#34;nt&#34;&gt;&amp;lt;url&amp;gt;&lt;/span&gt;https://raw.githubusercontent.com/mbknor/mbknor.github.com/master/m2repo/releases&lt;span class=&#34;nt&#34;&gt;&amp;lt;/url&amp;gt;&lt;/span&gt;
+    &lt;span class=&#34;nt&#34;&gt;&amp;lt;/pluginRepository&amp;gt;&lt;/span&gt;
+  &lt;span class=&#34;nt&#34;&gt;&amp;lt;/pluginRepositories&amp;gt;&lt;/span&gt;
   ...
-<span class="nt">&lt;/project&gt;</span>
-</pre></div>
+&lt;span class=&#34;nt&#34;&gt;&amp;lt;/project&amp;gt;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
 
-<p>Running <code>mvn clean verify</code> will execute the Maven Enforcer Plug-in <code>enforce</code> goal, which will call the deptools check. As you may have noticed, you also need to download the plug-in from GitHub, as it is not released to Maven Central.</p>
-<p>I do not use it for this reason, and also because I normally spend some time looking at the dependency tree anyway, but every now and then when I work on a new project I like quickly running it just to see what are the dependencies that are being shadowed by older versions.</p>
-<h3>revelc/impsort-maven-plugin</h3>
-<p>I only found about this plug-in in the last <a href="https://blogs.apache.org/foundation/entry/the-apache-news-round-up31">Apache News Round-up</a>. Where it was mentioned that <a href="https://github.com/apache/accumulo/blob/401411619239e301ad14216b3b9c88ee947ab072/pom.xml#L999">Apache Accumulo uses</a> this plug-in to standarize the order of imports in code.</p>
-<div class="highlight"><pre><span class="nt">&lt;project&gt;</span>
+&lt;p&gt;Running &lt;code&gt;mvn clean verify&lt;/code&gt; will execute the Maven Enforcer Plug-in &lt;code&gt;enforce&lt;/code&gt; goal, which will call the deptools check. As you may have noticed, you also need to download the plug-in from GitHub, as it is not released to Maven Central.&lt;/p&gt;
+&lt;p&gt;I do not use it for this reason, and also because I normally spend some time looking at the dependency tree anyway, but every now and then when I work on a new project I like quickly running it just to see what are the dependencies that are being shadowed by older versions.&lt;/p&gt;
+&lt;h3&gt;revelc/impsort-maven-plugin&lt;/h3&gt;
+&lt;p&gt;I only found about this plug-in in the last &lt;a href=&#34;https://blogs.apache.org/foundation/entry/the-apache-news-round-up31&#34;&gt;Apache News Round-up&lt;/a&gt;. Where it was mentioned that &lt;a href=&#34;https://github.com/apache/accumulo/blob/401411619239e301ad14216b3b9c88ee947ab072/pom.xml#L999&#34;&gt;Apache Accumulo uses&lt;/a&gt; this plug-in to standarize the order of imports in code.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;span class=&#34;nt&#34;&gt;&amp;lt;project&amp;gt;&lt;/span&gt;
   ...
-  <span class="nt">&lt;build&gt;</span>
-    <span class="nt">&lt;plugins&gt;</span>
-      <span class="nt">&lt;plugin&gt;</span>
-        <span class="nt">&lt;groupId&gt;</span>net.revelc.code<span class="nt">&lt;/groupId&gt;</span>
-        <span class="nt">&lt;artifactId&gt;</span>impsort-maven-plugin<span class="nt">&lt;/artifactId&gt;</span>
-        <span class="nt">&lt;version&gt;</span>1.0.0<span class="nt">&lt;/version&gt;</span>
-        <span class="nt">&lt;configuration&gt;</span>
-          <span class="nt">&lt;groups&gt;</span>java.,javax.,org.,com.<span class="nt">&lt;/groups&gt;</span>
-          <span class="nt">&lt;staticGroups&gt;</span>java,*<span class="nt">&lt;/staticGroups&gt;</span>
-          <span class="nt">&lt;excludes&gt;</span>
-            <span class="nt">&lt;exclude&gt;</span>**/thrift/*.java<span class="nt">&lt;/exclude&gt;</span>
-          <span class="nt">&lt;/excludes&gt;</span>
-        <span class="nt">&lt;/configuration&gt;</span>
-        <span class="nt">&lt;executions&gt;</span>
-          <span class="nt">&lt;execution&gt;</span>
-            <span class="nt">&lt;id&gt;</span>sort-imports<span class="nt">&lt;/id&gt;</span>
-            <span class="nt">&lt;goals&gt;</span>
-              <span class="nt">&lt;goal&gt;</span>sort<span class="nt">&lt;/goal&gt;</span><span class="c">&lt;!-- runs at process-sources phase by default --&gt;</span>
-            <span class="nt">&lt;/goals&gt;</span>
-          <span class="nt">&lt;/execution&gt;</span>
-        <span class="nt">&lt;/executions&gt;</span>
-      <span class="nt">&lt;/plugin&gt;</span>
-    <span class="nt">&lt;/plugins&gt;</span>
-  <span class="nt">&lt;/build&gt;</span>
+  &lt;span class=&#34;nt&#34;&gt;&amp;lt;build&amp;gt;&lt;/span&gt;
+    &lt;span class=&#34;nt&#34;&gt;&amp;lt;plugins&amp;gt;&lt;/span&gt;
+      &lt;span class=&#34;nt&#34;&gt;&amp;lt;plugin&amp;gt;&lt;/span&gt;
+        &lt;span class=&#34;nt&#34;&gt;&amp;lt;groupId&amp;gt;&lt;/span&gt;net.revelc.code&lt;span class=&#34;nt&#34;&gt;&amp;lt;/groupId&amp;gt;&lt;/span&gt;
+        &lt;span class=&#34;nt&#34;&gt;&amp;lt;artifactId&amp;gt;&lt;/span&gt;impsort-maven-plugin&lt;span class=&#34;nt&#34;&gt;&amp;lt;/artifactId&amp;gt;&lt;/span&gt;
+        &lt;span class=&#34;nt&#34;&gt;&amp;lt;version&amp;gt;&lt;/span&gt;1.0.0&lt;span class=&#34;nt&#34;&gt;&amp;lt;/version&amp;gt;&lt;/span&gt;
+        &lt;span class=&#34;nt&#34;&gt;&amp;lt;configuration&amp;gt;&lt;/span&gt;
+          &lt;span class=&#34;nt&#34;&gt;&amp;lt;groups&amp;gt;&lt;/span&gt;java.,javax.,org.,com.&lt;span class=&#34;nt&#34;&gt;&amp;lt;/groups&amp;gt;&lt;/span&gt;
+          &lt;span class=&#34;nt&#34;&gt;&amp;lt;staticGroups&amp;gt;&lt;/span&gt;java,*&lt;span class=&#34;nt&#34;&gt;&amp;lt;/staticGroups&amp;gt;&lt;/span&gt;
+          &lt;span class=&#34;nt&#34;&gt;&amp;lt;excludes&amp;gt;&lt;/span&gt;
+            &lt;span class=&#34;nt&#34;&gt;&amp;lt;exclude&amp;gt;&lt;/span&gt;**/thrift/*.java&lt;span class=&#34;nt&#34;&gt;&amp;lt;/exclude&amp;gt;&lt;/span&gt;
+          &lt;span class=&#34;nt&#34;&gt;&amp;lt;/excludes&amp;gt;&lt;/span&gt;
+        &lt;span class=&#34;nt&#34;&gt;&amp;lt;/configuration&amp;gt;&lt;/span&gt;
+        &lt;span class=&#34;nt&#34;&gt;&amp;lt;executions&amp;gt;&lt;/span&gt;
+          &lt;span class=&#34;nt&#34;&gt;&amp;lt;execution&amp;gt;&lt;/span&gt;
+            &lt;span class=&#34;nt&#34;&gt;&amp;lt;id&amp;gt;&lt;/span&gt;sort-imports&lt;span class=&#34;nt&#34;&gt;&amp;lt;/id&amp;gt;&lt;/span&gt;
+            &lt;span class=&#34;nt&#34;&gt;&amp;lt;goals&amp;gt;&lt;/span&gt;
+              &lt;span class=&#34;nt&#34;&gt;&amp;lt;goal&amp;gt;&lt;/span&gt;sort&lt;span class=&#34;nt&#34;&gt;&amp;lt;/goal&amp;gt;&lt;/span&gt;&lt;span class=&#34;c&#34;&gt;&amp;lt;!-- runs at process-sources phase by default --&amp;gt;&lt;/span&gt;
+            &lt;span class=&#34;nt&#34;&gt;&amp;lt;/goals&amp;gt;&lt;/span&gt;
+          &lt;span class=&#34;nt&#34;&gt;&amp;lt;/execution&amp;gt;&lt;/span&gt;
+        &lt;span class=&#34;nt&#34;&gt;&amp;lt;/executions&amp;gt;&lt;/span&gt;
+      &lt;span class=&#34;nt&#34;&gt;&amp;lt;/plugin&amp;gt;&lt;/span&gt;
+    &lt;span class=&#34;nt&#34;&gt;&amp;lt;/plugins&amp;gt;&lt;/span&gt;
+  &lt;span class=&#34;nt&#34;&gt;&amp;lt;/build&amp;gt;&lt;/span&gt;
   ...
-<span class="nt">&lt;/project&gt;</span>
-</pre></div>
+&lt;span class=&#34;nt&#34;&gt;&amp;lt;/project&amp;gt;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
 
-<p>I am neutral on imports order, though in cases where you have several contributors submitting pull requests, it can probably be useful to reduce the number of interactions. In other words, if a user submits a pull request and you have an automated check, then the user would be automatically notified about changes that s/he needs to do in order for his pull request to be accepted.</p>
-<h3>Conclusion</h3>
-<p>I am not using any of these two plug-ins, but wanted to save it somewhere in case I needed to use them in the future, and also to share with others. Besides most common plug-ins (PMD, CheckStyle, FindBugs), I normally use at least some Maven Enforcer Plug-in rules, and the <a href="https://www.owasp.org/index.php/OWASP_Dependency_Check">OWASP plug-in</a>.</p>
-<p>While most of the time we spend writing code, preparing the infrastructure, and deploying and testing, I got bitten by some maven build bugs a few times, and had to spend days/weeks debugging some of these. So hope some of these posts save some hours of someone out there in a similar situation.</p>
-<p>&hearts; Open Source</p>
+&lt;p&gt;I am neutral on imports order, though in cases where you have several contributors submitting pull requests, it can probably be useful to reduce the number of interactions. In other words, if a user submits a pull request and you have an automated check, then the user would be automatically notified about changes that s/he needs to do in order for his pull request to be accepted.&lt;/p&gt;
+&lt;h3&gt;Conclusion&lt;/h3&gt;
+&lt;p&gt;I am not using any of these two plug-ins, but wanted to save it somewhere in case I needed to use them in the future, and also to share with others. Besides most common plug-ins (PMD, CheckStyle, FindBugs), I normally use at least some Maven Enforcer Plug-in rules, and the &lt;a href=&#34;https://www.owasp.org/index.php/OWASP_Dependency_Check&#34;&gt;OWASP plug-in&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;While most of the time we spend writing code, preparing the infrastructure, and deploying and testing, I got bitten by some maven build bugs a few times, and had to spend days/weeks debugging some of these. So hope some of these posts save some hours of someone out there in a similar situation.&lt;/p&gt;
+&lt;p&gt;&amp;hearts; Open Source&lt;/p&gt;
             
             </description>
         </item>

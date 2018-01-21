@@ -10,8 +10,8 @@
         
         <description>Latest news from Bruno P. Kinoshita</description>
         
-        <lastBuildDate>2018-01-21T18:38:39+13:00</lastBuildDate>
-        <pubDate>2018-01-21T18:38:39+13:00</pubDate>
+        <lastBuildDate>2018-01-21T18:43:58+13:00</lastBuildDate>
+        <pubDate>2018-01-21T18:43:58+13:00</pubDate>
         <generator>PieCrust 2.1.1</generator>
         
         
@@ -33,44 +33,46 @@
             
             <pubDate>2016-11-25T01:24:03+13:00</pubDate>
             <guid>/2016/11/25/using-requests-session-objects-for-web-scraping</guid>
-            <description><p>I had to write a Python script some months ago, that would retrieve Solar energy
+            <description>
+            
+            &lt;p&gt;I had to write a Python script some months ago, that would retrieve Solar energy
 data from a web site. It was basically a handful of HTTP calls, parse the response
-that was mainly in JSON, and store the results as JSON and CSV for processing later.</p>
-<p>Since it was such a small task, I used the <a href="http://docs.python-requests.org">Requests</a>
+that was mainly in JSON, and store the results as JSON and CSV for processing later.&lt;/p&gt;
+&lt;p&gt;Since it was such a small task, I used the &lt;a href=&#34;http://docs.python-requests.org&#34;&gt;Requests&lt;/a&gt;
 module instead of a complete web scraper. The HTTP requests had to be made with a
 time out, and also pass certain headers. I started customizing each call, until
-I learned about the Requests <a href="http://docs.python-requests.org/en/master/user/advanced/">Session Objects</a>.</p>
-<p>You create a session, as in ORM/JPA, where you can define a context, with certain properties
-and control an orthogonal behavior.</p>
-<div class="highlight"><pre><span class="kn">import</span> <span class="nn">requests</span>
+I learned about the Requests &lt;a href=&#34;http://docs.python-requests.org/en/master/user/advanced/&#34;&gt;Session Objects&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;You create a session, as in ORM/JPA, where you can define a context, with certain properties
+and control an orthogonal behavior.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;span class=&#34;kn&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;requests&lt;/span&gt;
 
-<span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="n">session</span><span class="p">,</span> <span class="n">url</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Utility method to HTTP GET a URL&quot;&quot;&quot;</span>
-    <span class="n">response</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">response</span>
+&lt;span class=&#34;k&#34;&gt;def&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;get&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;session&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;url&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;):&lt;/span&gt;
+    &lt;span class=&#34;sd&#34;&gt;&amp;quot;&amp;quot;&amp;quot;Utility method to HTTP GET a URL&amp;quot;&amp;quot;&amp;quot;&lt;/span&gt;
+    &lt;span class=&#34;n&#34;&gt;response&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;session&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;get&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;url&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;timeout&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;bp&#34;&gt;None&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+    &lt;span class=&#34;k&#34;&gt;return&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;response&lt;/span&gt;
 
-<span class="k">def</span> <span class="nf">post</span><span class="p">(</span><span class="n">session</span><span class="p">,</span> <span class="n">url</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Utility method to HTTP POST a URL with data parameters&quot;&quot;&quot;</span>
-    <span class="n">response</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">!=</span> <span class="n">requests</span><span class="o">.</span><span class="n">codes</span><span class="o">.</span><span class="n">ok</span><span class="p">:</span>
-        <span class="n">response</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>
-    <span class="k">return</span> <span class="n">response</span>
+&lt;span class=&#34;k&#34;&gt;def&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;post&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;session&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;url&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;data&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;):&lt;/span&gt;
+    &lt;span class=&#34;sd&#34;&gt;&amp;quot;&amp;quot;&amp;quot;Utility method to HTTP POST a URL with data parameters&amp;quot;&amp;quot;&amp;quot;&lt;/span&gt;
+    &lt;span class=&#34;n&#34;&gt;response&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;session&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;post&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;url&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;data&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;data&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;timeout&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;bp&#34;&gt;None&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+    &lt;span class=&#34;k&#34;&gt;if&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;response&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;status_code&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;!=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;requests&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;codes&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;ok&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;
+        &lt;span class=&#34;n&#34;&gt;response&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;raise_for_status&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt;
+    &lt;span class=&#34;k&#34;&gt;return&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;response&lt;/span&gt;
 
-<span class="k">with</span> <span class="n">requests</span><span class="o">.</span><span class="n">Session</span><span class="p">()</span> <span class="k">as</span> <span class="n">s</span><span class="p">:</span>
-    <span class="c"># x-test header will be sent with every request</span>
-    <span class="n">s</span><span class="o">.</span><span class="n">headers</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s">&#39;x-test&#39;</span><span class="p">:</span> <span class="s">&#39;true&#39;</span><span class="p">})</span>
+&lt;span class=&#34;k&#34;&gt;with&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;requests&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;Session&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;as&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;s&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;
+    &lt;span class=&#34;c&#34;&gt;# x-test header will be sent with every request&lt;/span&gt;
+    &lt;span class=&#34;n&#34;&gt;s&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;headers&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;update&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;({&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;#39;x-test&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;&amp;#39;true&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;})&lt;/span&gt;
 
-    <span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;user&#39;</span><span class="p">:</span> <span class="n">user</span><span class="p">,</span> <span class="s">&#39;password&#39;</span><span class="p">:</span> <span class="n">password</span><span class="p">,</span> <span class="s">&#39;rememberne&#39;</span><span class="p">:</span> <span class="s">&#39;false&#39;</span><span class="p">}</span>
-    <span class="n">r</span> <span class="o">=</span> <span class="n">post</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="s">&#39;https://portal.login.url&#39;</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+    &lt;span class=&#34;n&#34;&gt;data&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;#39;user&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;user&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;&amp;#39;password&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;password&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;&amp;#39;rememberne&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;&amp;#39;false&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+    &lt;span class=&#34;n&#34;&gt;r&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;post&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;s&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;&amp;#39;https://portal.login.url&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;data&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
 
-    <span class="n">r</span> <span class="o">=</span> <span class="n">get</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="s">&#39;https://portal.home.url&#39;</span><span class="p">)</span>
-</pre></div>
+    &lt;span class=&#34;n&#34;&gt;r&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;get&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;s&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;&amp;#39;https://portal.home.url&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
 
-<p>Besides the session object, that gives you ability to add headers to all requests,
-you won&#8217;t have to worry about redirects. The library by default takes care
-<a href="https://github.com/kennethreitz/requests/blob/dfad00a6e84bc75b12468ca29ccf4f971c813fc8/requests/sessions.py#L110">of that</a>
-with a <a href="https://github.com/kennethreitz/requests/blob/dfad00a6e84bc75b12468ca29ccf4f971c813fc8/requests/models.py#L54">default limit of up to 30</a>.</p>
-<p>Happy hacking!</p>
+&lt;p&gt;Besides the session object, that gives you ability to add headers to all requests,
+you won&amp;#8217;t have to worry about redirects. The library by default takes care
+&lt;a href=&#34;https://github.com/kennethreitz/requests/blob/dfad00a6e84bc75b12468ca29ccf4f971c813fc8/requests/sessions.py#L110&#34;&gt;of that&lt;/a&gt;
+with a &lt;a href=&#34;https://github.com/kennethreitz/requests/blob/dfad00a6e84bc75b12468ca29ccf4f971c813fc8/requests/models.py#L54&#34;&gt;default limit of up to 30&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Happy hacking!&lt;/p&gt;
             
             </description>
         </item>
@@ -94,38 +96,40 @@ with a <a href="https://github.com/kennethreitz/requests/blob/dfad00a6e84bc75b12
             
             <pubDate>2016-11-21T21:26:03+13:00</pubDate>
             <guid>/2016/11/21/changing-spring-boot-environment-variables-in-the-command-line-</guid>
-            <description><p>This week while helping developers and testers to experiment with a backend application,
+            <description>
+            
+            &lt;p&gt;This week while helping developers and testers to experiment with a backend application,
 some of them found useful to learn a simple trick to change Spring Boot properties
 when you can run the application locally (our testers build, compile, change the code, how cool
-is that?).</p>
-<p>Here&#8217;s how it works. Say you have the following settings in your application&#8217;s
-<strong>application.properties</strong>:</p>
-<div class="highlight"><pre>my.application.database.username<span class="o">=</span>sa
-my.application.database.password<span class="o">=</span>notasimplepassword
-</pre></div>
+is that?).&lt;/p&gt;
+&lt;p&gt;Here&amp;#8217;s how it works. Say you have the following settings in your application&amp;#8217;s
+&lt;strong&gt;application.properties&lt;/strong&gt;:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;my.application.database.username&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;sa
+my.application.database.password&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;notasimplepassword
+&lt;/pre&gt;&lt;/div&gt;
 
-<p>And that you want to change these parameters in order to, for instance, create an application
-error, so that you can code and test what happens to the frontend application in that situation.</p>
-<p>You replace <em>dots</em> by <em>underscores</em>, and put all your words in upper case. So the variables
-above would be: MY_APPLICATION_DATABASE_USERNAME and MY_APPLICATION_DATABASE_PASSWORD.</p>
-<p>Furthermore, you do not need to edit your application.properties file, if you are on Linux or
+&lt;p&gt;And that you want to change these parameters in order to, for instance, create an application
+error, so that you can code and test what happens to the frontend application in that situation.&lt;/p&gt;
+&lt;p&gt;You replace &lt;em&gt;dots&lt;/em&gt; by &lt;em&gt;underscores&lt;/em&gt;, and put all your words in upper case. So the variables
+above would be: MY_APPLICATION_DATABASE_USERNAME and MY_APPLICATION_DATABASE_PASSWORD.&lt;/p&gt;
+&lt;p&gt;Furthermore, you do not need to edit your application.properties file, if you are on Linux or
 Mac OS. You can start the application and override environment variables at the same time
-with the following syntax.</p>
-<div class="highlight"><pre><span class="nv">$ MY_APPLICATION_DATABASE_USERNAME</span><span class="o">=</span>olivei <span class="nv">MY_APPLICATION_DATABASE_PASSWORD</span><span class="o">=</span>7655432222a mvn clean spring-boot:run
-</pre></div>
+with the following syntax.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;span class=&#34;nv&#34;&gt;$ MY_APPLICATION_DATABASE_USERNAME&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;olivei &lt;span class=&#34;nv&#34;&gt;MY_APPLICATION_DATABASE_PASSWORD&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;7655432222a mvn clean spring-boot:run
+&lt;/pre&gt;&lt;/div&gt;
 
-<p>This way your application will start with the new values.</p>
-<p>Happy hacking!</p>
-<p><strong>&#8212;EDIT&#8212;</strong></p>
-<p>As pointed by Stéphane Nicoll (thanks!), you could change the property values
-without having to use the upper case syntax.</p>
-<div class="highlight"><pre>mvn -Dmy.application.database.username<span class="o">=</span>anotheruser clean spring-boot:run
-</pre></div>
+&lt;p&gt;This way your application will start with the new values.&lt;/p&gt;
+&lt;p&gt;Happy hacking!&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;&amp;#8212;EDIT&amp;#8212;&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;As pointed by Stéphane Nicoll (thanks!), you could change the property values
+without having to use the upper case syntax.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;mvn -Dmy.application.database.username&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;anotheruser clean spring-boot:run
+&lt;/pre&gt;&lt;/div&gt;
 
-<p>And he even included a link to <a href="http://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#boot-features-external-config">docs</a>! ♥ the Internet and Open Source!</p>
-<blockquote class="twitter-tweet" data-lang="en"><p lang="en" dir="ltr"><a href="https://twitter.com/kinow">@kinow</a> you can also specify them as command-line arguments (no need for the upper case thing)<a href="https://t.co/zBKpgcXN1C">https://t.co/zBKpgcXN1C</a><br><br>or `-Drun.arguments`</p>&mdash; Stéphane Nicoll (@snicoll) <a href="https://twitter.com/snicoll/status/800965565120708608">November 22, 2016</a></blockquote>
+&lt;p&gt;And he even included a link to &lt;a href=&#34;http://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#boot-features-external-config&#34;&gt;docs&lt;/a&gt;! ♥ the Internet and Open Source!&lt;/p&gt;
+&lt;blockquote class=&#34;twitter-tweet&#34; data-lang=&#34;en&#34;&gt;&lt;p lang=&#34;en&#34; dir=&#34;ltr&#34;&gt;&lt;a href=&#34;https://twitter.com/kinow&#34;&gt;@kinow&lt;/a&gt; you can also specify them as command-line arguments (no need for the upper case thing)&lt;a href=&#34;https://t.co/zBKpgcXN1C&#34;&gt;https://t.co/zBKpgcXN1C&lt;/a&gt;&lt;br&gt;&lt;br&gt;or `-Drun.arguments`&lt;/p&gt;&amp;mdash; Stéphane Nicoll (@snicoll) &lt;a href=&#34;https://twitter.com/snicoll/status/800965565120708608&#34;&gt;November 22, 2016&lt;/a&gt;&lt;/blockquote&gt;
 
-<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+&lt;script async src=&#34;//platform.twitter.com/widgets.js&#34; charset=&#34;utf-8&#34;&gt;&lt;/script&gt;
             
             </description>
         </item>
@@ -145,23 +149,25 @@ without having to use the upper case syntax.</p>
             
             <pubDate>2016-11-12T01:55:03+13:00</pubDate>
             <guid>/2016/11/12/add-a-header-to-a-file-with-shell-script-sed</guid>
-            <description><p>Today I was re-generating the documentation for a REST API written in PHP, with
+            <description>
+            
+            &lt;p&gt;Today I was re-generating the documentation for a REST API written in PHP, with
 Laravel. To generate the documentation, one would have to call a Laravel command first.
 That command would create a Markdown page. And since in this project I am using Jekyll
 for the project site, the final step was adding a header to the file, so that Jekyll
-can recognize that content as a blog post.</p>
-<p>Laravel allows you to add custom commands to your project, so I decided to write a command
+can recognize that content as a blog post.&lt;/p&gt;
+&lt;p&gt;Laravel allows you to add custom commands to your project, so I decided to write a command
 that would call the other command that generates the documentation, and add an extra step
-of adding the header to the Markdown file.</p>
-<p>Here&#8217;s the shell script part, that allows you to add a header to a file, in place (i.e.
-it will alter and save the change your file).</p>
-<div class="highlight"><pre>sed -i 1i<span class="s2">&quot;----\nlayout: page\ntitle: API Installation\n----\n\n&quot;</span> ./docs/documentation/api/api.md
-</pre></div>
+of adding the header to the Markdown file.&lt;/p&gt;
+&lt;p&gt;Here&amp;#8217;s the shell script part, that allows you to add a header to a file, in place (i.e.
+it will alter and save the change your file).&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;sed -i 1i&lt;span class=&#34;s2&#34;&gt;&amp;quot;----\nlayout: page\ntitle: API Installation\n----\n\n&amp;quot;&lt;/span&gt; ./docs/documentation/api/api.md
+&lt;/pre&gt;&lt;/div&gt;
 
-<p>Here the first argument to sed, <em>-i</em> is for in place. Then that strange <em>1i</em>
+&lt;p&gt;Here the first argument to sed, &lt;em&gt;-i&lt;/em&gt; is for in place. Then that strange &lt;em&gt;1i&lt;/em&gt;
 means that it will insert something before the first line, once. Then we have our header,
-and finally the file.</p>
-<p>Happy hacking!</p>
+and finally the file.&lt;/p&gt;
+&lt;p&gt;Happy hacking!&lt;/p&gt;
             
             </description>
         </item>
@@ -183,28 +189,30 @@ and finally the file.</p>
             
             <pubDate>2016-11-07T20:07:03+13:00</pubDate>
             <guid>/2016/11/07/content-negotiation-with-spring-boot-and-react</guid>
-            <description><p>A few days ago I had a bug in a system built with Spring Boot and React. The frontend application
+            <description>
+            
+            &lt;p&gt;A few days ago I had a bug in a system built with Spring Boot and React. The frontend application
 was using a REST client in React, built in a similar way to what is found in the documentation, and
-also in blogs.</p>
-<div class="highlight"><pre><span class="kr">import</span> <span class="nx">rest</span> <span class="nx">from</span> <span class="s1">&#39;rest&#39;</span><span class="p">;</span>
-<span class="kr">const</span> <span class="nx">Rest</span> <span class="o">=</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="nx">rest</span><span class="p">.</span><span class="nx">wrap</span><span class="p">(</span><span class="nx">mime</span><span class="p">);</span>
-</pre></div>
+also in blogs.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;span class=&#34;kr&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;rest&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;from&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39;rest&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+&lt;span class=&#34;kr&#34;&gt;const&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;Rest&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;()&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;rest&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;wrap&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;mime&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
 
-<p>However, for one of the Spring Boot application endpoints, the React component was not working. The
+&lt;p&gt;However, for one of the Spring Boot application endpoints, the React component was not working. The
 response seemed to be OK in the Network tab, of the browser developer tools. But the component was
-failing and complaining when parsing the response.</p>
-<p>Turns out that the frontend was sending the request with the header <code>Accept: text/plain, application/json</code>.
-And Spring Boot was just using its <a href="https://spring.io/blog/2013/05/11/content-negotiation-using-spring-mvc">default content negotiation</a>
-and returning what the frontend requested: a text plain version of, what looked like, JSON.</p>
-<p>The quick fix was to request the content as JSON in React.</p>
-<div class="highlight"><pre><span class="kr">import</span> <span class="nx">rest</span> <span class="nx">from</span> <span class="s1">&#39;rest&#39;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="nx">mime</span> <span class="nx">from</span> <span class="s1">&#39;rest/interceptor/mime&#39;</span><span class="p">;</span>
-<span class="kr">const</span> <span class="nx">Rest</span> <span class="o">=</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="nx">rest</span><span class="p">.</span><span class="nx">wrap</span><span class="p">(</span><span class="nx">mime</span> <span class="p">,</span> <span class="p">{</span> <span class="nx">mime</span><span class="o">:</span> <span class="s1">&#39;application/json&#39;</span> <span class="p">}</span> <span class="p">);</span>
-</pre></div>
+failing and complaining when parsing the response.&lt;/p&gt;
+&lt;p&gt;Turns out that the frontend was sending the request with the header &lt;code&gt;Accept: text/plain, application/json&lt;/code&gt;.
+And Spring Boot was just using its &lt;a href=&#34;https://spring.io/blog/2013/05/11/content-negotiation-using-spring-mvc&#34;&gt;default content negotiation&lt;/a&gt;
+and returning what the frontend requested: a text plain version of, what looked like, JSON.&lt;/p&gt;
+&lt;p&gt;The quick fix was to request the content as JSON in React.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;span class=&#34;kr&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;rest&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;from&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39;rest&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+&lt;span class=&#34;kr&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;mime&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;from&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39;rest/interceptor/mime&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+&lt;span class=&#34;kr&#34;&gt;const&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;Rest&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;()&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;rest&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;wrap&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;mime&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;mime&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39;application/json&amp;#39;&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;}&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
 
-<p>Now we will revisit the backend to return the JSON content, as content, regardless of what
-the user asks :-)</p>
-<p>Happy hacking!</p>
+&lt;p&gt;Now we will revisit the backend to return the JSON content, as content, regardless of what
+the user asks :-)&lt;/p&gt;
+&lt;p&gt;Happy hacking!&lt;/p&gt;
             
             </description>
         </item>
@@ -224,37 +232,39 @@ the user asks :-)</p>
             
             <pubDate>2016-11-05T23:27:03+13:00</pubDate>
             <guid>/2016/11/05/checking-the-operating-system-type-in-shell-script</guid>
-            <description><p>Last week I learned about a tool called <a href="https://github.com/koalaman/shellcheck">ShellCheck</a>, a tool
+            <description>
+            
+            &lt;p&gt;Last week I learned about a tool called &lt;a href=&#34;https://github.com/koalaman/shellcheck&#34;&gt;ShellCheck&lt;/a&gt;, a tool
 for static analysis of shell scripts. It reports errors like missing double quotes, use of deprecated
-syntax, etc.</p>
-<p>I decided to check some projects I contribute to, and the first issue I found was in
-<a href="https://jena.apache.org">Apache Jena</a>:</p>
-<div class="highlight"><pre>kinow@localhost:~/Development/java/jena/jena/apache-jena/bin<span class="nv">$ </span>shellcheck arq
+syntax, etc.&lt;/p&gt;
+&lt;p&gt;I decided to check some projects I contribute to, and the first issue I found was in
+&lt;a href=&#34;https://jena.apache.org&#34;&gt;Apache Jena&lt;/a&gt;:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;kinow@localhost:~/Development/java/jena/jena/apache-jena/bin&lt;span class=&#34;nv&#34;&gt;$ &lt;/span&gt;shellcheck arq
 
 In arq line 8:
-    <span class="k">case</span> <span class="s2">&quot;</span><span class="nv">$OSTYPE</span><span class="s2">&quot;</span> in
+    &lt;span class=&#34;k&#34;&gt;case&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;quot;&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;$OSTYPE&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;&lt;/span&gt; in
           ^-- SC2039: In POSIX sh, OSTYPE is not supported.
-</pre></div>
+&lt;/pre&gt;&lt;/div&gt;
 
-<p>So, in summary, the <code>OSTYPE</code> variable should not be available in POSIX shell. The case in question, where
-<code>OSTYPE</code> is being used, checks for the Darwin OS type (i.e. Mac OS). Knowing how things get weird when you
-use different operating systems, I decided to check and learn how <code>OSTYPE</code> works. Here&#8217;s what I found.</p>
-<ul>
-<li>In Ubuntu, with /bin/bash, OSTYPE works fine (linux-gnu)</li>
-<li>In Ubuntu, with /bin/sh, OSTYPE is not set</li>
-<li>In Mac OS, with /bin/sh, OSTYPE is set (darwin15)</li>
-</ul>
-<p>I checked the shells to make sure they were not pointing to symbolic links - some distributions
+&lt;p&gt;So, in summary, the &lt;code&gt;OSTYPE&lt;/code&gt; variable should not be available in POSIX shell. The case in question, where
+&lt;code&gt;OSTYPE&lt;/code&gt; is being used, checks for the Darwin OS type (i.e. Mac OS). Knowing how things get weird when you
+use different operating systems, I decided to check and learn how &lt;code&gt;OSTYPE&lt;/code&gt; works. Here&amp;#8217;s what I found.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;In Ubuntu, with /bin/bash, OSTYPE works fine (linux-gnu)&lt;/li&gt;
+&lt;li&gt;In Ubuntu, with /bin/sh, OSTYPE is not set&lt;/li&gt;
+&lt;li&gt;In Mac OS, with /bin/sh, OSTYPE is set (darwin15)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;I checked the shells to make sure they were not pointing to symbolic links - some distributions
 use a different default shell, and replace /bin/bash and/or /bin/sh by a link to another
-shell. Looks like Mac OS has a POSIX shell that behaves different than Ubuntu&#8217;s.</p>
-<p>Instead of trying to find a way to use <code>OSTYPE</code>, I decided to spend some time looking at
+shell. Looks like Mac OS has a POSIX shell that behaves different than Ubuntu&amp;#8217;s.&lt;/p&gt;
+&lt;p&gt;Instead of trying to find a way to use &lt;code&gt;OSTYPE&lt;/code&gt;, I decided to spend some time looking at
 how other projects do the same thing. And the best example I could find was
-<a href="https://git.kernel.org/cgit/git/git.git/tree/config.mak.uname">git</a>.</p>
-<p>Instead of relying on <code>OSTYPE</code>, git uses <code>uname</code>.</p>
-<p>I will spend some time during the next days working on a proposal to replace the <code>OSTYPE</code>
+&lt;a href=&#34;https://git.kernel.org/cgit/git/git.git/tree/config.mak.uname&#34;&gt;git&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Instead of relying on &lt;code&gt;OSTYPE&lt;/code&gt;, git uses &lt;code&gt;uname&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;I will spend some time during the next days working on a proposal to replace the &lt;code&gt;OSTYPE&lt;/code&gt;
 from Apache Jena scripts, but then may have to submit more changes for the other issues
-found by ShellCheck.</p>
-<p>Happy hacking!</p>
+found by ShellCheck.&lt;/p&gt;
+&lt;p&gt;Happy hacking!&lt;/p&gt;
             
             </description>
         </item>
@@ -276,63 +286,65 @@ found by ShellCheck.</p>
             
             <pubDate>2016-10-04T21:15:03+13:00</pubDate>
             <guid>/2016/10/04/using-the-aws-api-with-python</guid>
-            <description><p>Amazon Web Services provides a series of cloud services. When you access the web interface, most - if not all - of the actions you do there are actually translated into API calls.</p>
-<p>They also provide SDK&#8217;s in several programming languages. With these SDK&#8217;s you are able to call the same API used by the web interface. Python has <a href="https://github.com/boto/boto3">boto</a> (or boto3) which lets you to automate several tasks in AWS.</p>
-<p>But before you start using the API, you will need to <a href="https://web.archive.org/web/20160818112016/http://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSGettingStartedGuide/AWSCredentials.html">set up your access key</a>.</p>
-<p>It is likely that with time you will have different roles, and may have different permissions with each role. You have to configure your local environment so that you can either use the command line Python utility (installed via <code>pip install awscli</code>) or with boto.</p>
-<p>The awscli is a dependency for using boto3. After you install it, you need to run <code>aws configure</code>. It will create the <em>~/.aws/config</em> and <em>~/.aws/credentials</em> files. You can tweak these files to support multiple roles.</p>
-<p>I followed the tutorials, but got all sorts of different issues. Then after debugging some locally installed dependencies, in special awscli files, I found that the following settings work for my environment.</p>
-<div class="highlight"><pre><span class="c"># File: config</span>
-<span class="o">[</span>profile default<span class="o">]</span>
-<span class="nv">region</span> <span class="o">=</span> ap-southeast-2
+            <description>
+            
+            &lt;p&gt;Amazon Web Services provides a series of cloud services. When you access the web interface, most - if not all - of the actions you do there are actually translated into API calls.&lt;/p&gt;
+&lt;p&gt;They also provide SDK&amp;#8217;s in several programming languages. With these SDK&amp;#8217;s you are able to call the same API used by the web interface. Python has &lt;a href=&#34;https://github.com/boto/boto3&#34;&gt;boto&lt;/a&gt; (or boto3) which lets you to automate several tasks in AWS.&lt;/p&gt;
+&lt;p&gt;But before you start using the API, you will need to &lt;a href=&#34;https://web.archive.org/web/20160818112016/http://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSGettingStartedGuide/AWSCredentials.html&#34;&gt;set up your access key&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;It is likely that with time you will have different roles, and may have different permissions with each role. You have to configure your local environment so that you can either use the command line Python utility (installed via &lt;code&gt;pip install awscli&lt;/code&gt;) or with boto.&lt;/p&gt;
+&lt;p&gt;The awscli is a dependency for using boto3. After you install it, you need to run &lt;code&gt;aws configure&lt;/code&gt;. It will create the &lt;em&gt;~/.aws/config&lt;/em&gt; and &lt;em&gt;~/.aws/credentials&lt;/em&gt; files. You can tweak these files to support multiple roles.&lt;/p&gt;
+&lt;p&gt;I followed the tutorials, but got all sorts of different issues. Then after debugging some locally installed dependencies, in special awscli files, I found that the following settings work for my environment.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;span class=&#34;c&#34;&gt;# File: config&lt;/span&gt;
+&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;profile default&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
+&lt;span class=&#34;nv&#34;&gt;region&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; ap-southeast-2
 
-<span class="o">[</span>profile profile1<span class="o">]</span>
-<span class="nv">region</span> <span class="o">=</span> ap-southeast-2
-<span class="nv">source_profile</span> <span class="o">=</span> default
-<span class="nv">role_arn</span> <span class="o">=</span> arn:aws:iam::123:role/Developer
+&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;profile profile1&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
+&lt;span class=&#34;nv&#34;&gt;region&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; ap-southeast-2
+&lt;span class=&#34;nv&#34;&gt;source_profile&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; default
+&lt;span class=&#34;nv&#34;&gt;role_arn&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; arn:aws:iam::123:role/Developer
 
-<span class="o">[</span>profile profile2<span class="o">]</span>
-<span class="nv">region</span> <span class="o">=</span> ap-southeast-2
-<span class="nv">source_profile</span> <span class="o">=</span> default
-<span class="nv">role_arn</span> <span class="o">=</span> arn:aws:iam::456:role/Sysops
-<span class="nv">mfa_serial</span> <span class="o">=</span> arn:aws:iam::789:mfa/user@domain.blabla
-</pre></div>
+&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;profile profile2&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
+&lt;span class=&#34;nv&#34;&gt;region&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; ap-southeast-2
+&lt;span class=&#34;nv&#34;&gt;source_profile&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; default
+&lt;span class=&#34;nv&#34;&gt;role_arn&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; arn:aws:iam::456:role/Sysops
+&lt;span class=&#34;nv&#34;&gt;mfa_serial&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; arn:aws:iam::789:mfa/user@domain.blabla
+&lt;/pre&gt;&lt;/div&gt;
 
-<p>and</p>
-<div class="highlight"><pre><span class="c"># File: credentials</span>
-<span class="o">[</span>default<span class="o">]</span>
-<span class="nv">aws_access_key_id</span> <span class="o">=</span> YOU_KEY_ID
-<span class="nv">aws_secret_access_key</span> <span class="o">=</span> YOUR_SECRET
-</pre></div>
+&lt;p&gt;and&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;span class=&#34;c&#34;&gt;# File: credentials&lt;/span&gt;
+&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;default&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
+&lt;span class=&#34;nv&#34;&gt;aws_access_key_id&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; YOU_KEY_ID
+&lt;span class=&#34;nv&#34;&gt;aws_secret_access_key&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; YOUR_SECRET
+&lt;/pre&gt;&lt;/div&gt;
 
-<p>And once it is done you can, for example, confirm it is working with some S3 commands in Python.</p>
-<div class="highlight"><pre><span class="c">#!/usr/bin/env python3</span>
+&lt;p&gt;And once it is done you can, for example, confirm it is working with some S3 commands in Python.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;span class=&#34;c&#34;&gt;#!/usr/bin/env python3&lt;/span&gt;
 
-<span class="kn">import</span> <span class="nn">os</span>
-<span class="kn">import</span> <span class="nn">boto3</span>
+&lt;span class=&#34;kn&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;os&lt;/span&gt;
+&lt;span class=&#34;kn&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;boto3&lt;/span&gt;
 
-<span class="n">session</span> <span class="o">=</span> <span class="n">boto3</span><span class="o">.</span><span class="n">Session</span><span class="p">(</span><span class="n">profile_name</span><span class="o">=</span><span class="s">&#39;profile2&#39;</span><span class="p">)</span>
-<span class="n">s3</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">resource</span><span class="p">(</span><span class="s">&#39;s3&#39;</span><span class="p">)</span>
+&lt;span class=&#34;n&#34;&gt;session&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;boto3&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;Session&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;profile_name&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;#39;profile2&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;span class=&#34;n&#34;&gt;s3&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;session&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;resource&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;#39;s3&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
 
-<span class="n">found</span> <span class="o">=</span> <span class="bp">False</span>
+&lt;span class=&#34;n&#34;&gt;found&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;bp&#34;&gt;False&lt;/span&gt;
 
-<span class="n">name</span> <span class="o">=</span> <span class="s">&#39;mysuperduperbucket&#39;</span>
+&lt;span class=&#34;n&#34;&gt;name&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;&amp;#39;mysuperduperbucket&amp;#39;&lt;/span&gt;
 
-<span class="k">for</span> <span class="n">bucket</span> <span class="ow">in</span> <span class="n">s3</span><span class="o">.</span><span class="n">buckets</span><span class="o">.</span><span class="n">all</span><span class="p">():</span>
-    <span class="k">if</span> <span class="n">bucket</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="n">name</span><span class="p">:</span>
-        <span class="n">found</span> <span class="o">=</span> <span class="bp">True</span>
+&lt;span class=&#34;k&#34;&gt;for&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;bucket&lt;/span&gt; &lt;span class=&#34;ow&#34;&gt;in&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;s3&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;buckets&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;all&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;():&lt;/span&gt;
+    &lt;span class=&#34;k&#34;&gt;if&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;bucket&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;name&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;==&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;name&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;
+        &lt;span class=&#34;n&#34;&gt;found&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;bp&#34;&gt;True&lt;/span&gt;
 
-<span class="k">if</span> <span class="ow">not</span> <span class="n">found</span><span class="p">:</span>
-    <span class="k">print</span><span class="p">(</span><span class="s">&quot;Creating bucket...&quot;</span><span class="p">)</span>
-    <span class="n">s3</span><span class="o">.</span><span class="n">create_bucket</span><span class="p">(</span><span class="n">Bucket</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
+&lt;span class=&#34;k&#34;&gt;if&lt;/span&gt; &lt;span class=&#34;ow&#34;&gt;not&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;found&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;
+    &lt;span class=&#34;k&#34;&gt;print&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;Creating bucket...&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+    &lt;span class=&#34;n&#34;&gt;s3&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;create_bucket&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;Bucket&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;name&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
 
-<span class="n">file_location</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">realpath</span><span class="p">(</span><span class="n">__file__</span><span class="p">))</span> <span class="o">+</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">sep</span> <span class="o">+</span> <span class="s">&#39;samplefile.txt&#39;</span>
-<span class="n">s3</span><span class="o">.</span><span class="n">meta</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">upload_file</span><span class="p">(</span><span class="n">Filename</span><span class="o">=</span><span class="n">file_location</span><span class="p">,</span> <span class="n">Bucket</span><span class="o">=</span><span class="n">name</span><span class="p">,</span> <span class="n">Key</span><span class="o">=</span><span class="s">&#39;book.txt&#39;</span><span class="p">)</span>
-</pre></div>
+&lt;span class=&#34;n&#34;&gt;file_location&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;os&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;path&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;dirname&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;os&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;path&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;realpath&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;__file__&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;))&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;+&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;os&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;path&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;sep&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;+&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;&amp;#39;samplefile.txt&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;n&#34;&gt;s3&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;meta&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;client&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;upload_file&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;Filename&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;file_location&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Bucket&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;name&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Key&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;#39;book.txt&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
 
-<p>The AWS files in this example are using MFA too, the multi-factor authentication. So the first time you run this code you may be asked to generate a token, which will be cached for a short time.</p>
-<p>That&#8217;s it for today.</p>
-<p>Happy hacking!</p>
+&lt;p&gt;The AWS files in this example are using MFA too, the multi-factor authentication. So the first time you run this code you may be asked to generate a token, which will be cached for a short time.&lt;/p&gt;
+&lt;p&gt;That&amp;#8217;s it for today.&lt;/p&gt;
+&lt;p&gt;Happy hacking!&lt;/p&gt;
             
             </description>
         </item>
@@ -354,13 +366,15 @@ found by ShellCheck.</p>
             
             <pubDate>2016-10-02T21:57:03+13:00</pubDate>
             <guid>/2016/10/02/best-place-to-find-science-fiction-books-in-new-zealand</guid>
-            <description><p>Since I moved to New Zealand it has been hard to find good science fiction sections in the local book stores. I really miss the Livraria Cultura at Avenida Paulista, or the Saraiva Megastores. Whitcoulls and Paper Plus do a good job, but they have very few series, only recent releases, and you do not feel that cool environment while you browse the books.</p>
-<p>I found that small secondhand bookstores are the best places to find good books - not only science fiction - in New Zealand. Devonport has one, near the waterfront. Auckland has Jason books too, right in the CBD. Wellington, Dunedin and Queenstown too (the Queenstown one is on the second level in a small mall, you have to check it out!).</p>
-<p>But last week I remembered my wife telling me about this web site, <a href="https://www.hardtofind.co.nz/">https://www.hardtofind.co.nz/</a>. I found several books from <a href="http://kinoshita.eti.br/books/#my-wish-list">my Wish List</a> there, and also other Stephen King books recommended by the bookstore clerk from Queenstown.</p>
-<p><img class="ui centered image" src="/2016/10/02/best-place-to-find-science-fiction-books-in-new-zealand/books-hard-to-find-store.jpg" alt="Books from Hard To Find bookstore" /></p>
-<p>If you are into science fiction, Asimov, Neal Stephenson, Peter H. Hamilton, Piers Anthony, Arthur C. Clarke, Stephen King, etc, I am sure you will enjoy going to the Hard To Find store in Onehunga. It is near the Dress Smart. So during week if you stop by Dress Smart, you can hop on their free bus from the city centre and later enjoy checking out the store too.</p>
-<p>It is a two story house, with lots of rooms, with science fiction, New Zealand, maritime sports, arts, poetry, health, etc.</p>
-<p>Happy reading!</p>
+            <description>
+            
+            &lt;p&gt;Since I moved to New Zealand it has been hard to find good science fiction sections in the local book stores. I really miss the Livraria Cultura at Avenida Paulista, or the Saraiva Megastores. Whitcoulls and Paper Plus do a good job, but they have very few series, only recent releases, and you do not feel that cool environment while you browse the books.&lt;/p&gt;
+&lt;p&gt;I found that small secondhand bookstores are the best places to find good books - not only science fiction - in New Zealand. Devonport has one, near the waterfront. Auckland has Jason books too, right in the CBD. Wellington, Dunedin and Queenstown too (the Queenstown one is on the second level in a small mall, you have to check it out!).&lt;/p&gt;
+&lt;p&gt;But last week I remembered my wife telling me about this web site, &lt;a href=&#34;https://www.hardtofind.co.nz/&#34;&gt;https://www.hardtofind.co.nz/&lt;/a&gt;. I found several books from &lt;a href=&#34;http://kinoshita.eti.br/books/#my-wish-list&#34;&gt;my Wish List&lt;/a&gt; there, and also other Stephen King books recommended by the bookstore clerk from Queenstown.&lt;/p&gt;
+&lt;p&gt;&lt;img class=&#34;ui centered image&#34; src=&#34;/2016/10/02/best-place-to-find-science-fiction-books-in-new-zealand/books-hard-to-find-store.jpg&#34; alt=&#34;Books from Hard To Find bookstore&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;If you are into science fiction, Asimov, Neal Stephenson, Peter H. Hamilton, Piers Anthony, Arthur C. Clarke, Stephen King, etc, I am sure you will enjoy going to the Hard To Find store in Onehunga. It is near the Dress Smart. So during week if you stop by Dress Smart, you can hop on their free bus from the city centre and later enjoy checking out the store too.&lt;/p&gt;
+&lt;p&gt;It is a two story house, with lots of rooms, with science fiction, New Zealand, maritime sports, arts, poetry, health, etc.&lt;/p&gt;
+&lt;p&gt;Happy reading!&lt;/p&gt;
             
             </description>
         </item>
@@ -384,36 +398,38 @@ found by ShellCheck.</p>
             
             <pubDate>2016-09-03T23:28:03+12:00</pubDate>
             <guid>/2016/09/03/performance-problems-in-jenkins-tap-plugin-part-1</guid>
-            <description><p><a href="https://issues.jenkins-ci.org/browse/JENKINS-17887">JENKINS-17887</a> reports performance problems in the <a href="https://wiki.jenkins-ci.org/display/JENKINS/TAP+Plugin">Jenkins TAP Plug-in</a>. It also lists a series of suggestions on how to improve the Jenkins TAP Plug-in performance. On this initial post, we will get a general idea of how the plug-in performs for large projects.</p>
-<p><a href="http://bioperl.org/">BioPerl</a> has over 21K tests. That should be enough for giving an initial idea of CPU, memory and disk usage for the plug-in.</p>
-<div class="highlight"><pre>git clone https://github.com/bioperl/bioperl-live.git
-<span class="nb">cd </span>bioperl-live
+            <description>
+            
+            &lt;p&gt;&lt;a href=&#34;https://issues.jenkins-ci.org/browse/JENKINS-17887&#34;&gt;JENKINS-17887&lt;/a&gt; reports performance problems in the &lt;a href=&#34;https://wiki.jenkins-ci.org/display/JENKINS/TAP+Plugin&#34;&gt;Jenkins TAP Plug-in&lt;/a&gt;. It also lists a series of suggestions on how to improve the Jenkins TAP Plug-in performance. On this initial post, we will get a general idea of how the plug-in performs for large projects.&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;http://bioperl.org/&#34;&gt;BioPerl&lt;/a&gt; has over 21K tests. That should be enough for giving an initial idea of CPU, memory and disk usage for the plug-in.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;git clone https://github.com/bioperl/bioperl-live.git
+&lt;span class=&#34;nb&#34;&gt;cd &lt;/span&gt;bioperl-live
 sudo cpanm  -vv --installdeps --notest .
-sudo cpanm Set::Scalar Graph::Directed XML::LibXML XML::SAX <span class="se">\</span>
-    SVG XML::Parser::PerlSAX Convert::Binary::C XML::SAX::Writer <span class="se">\</span>
-    XML::DOM::XPath Spreadsheet::ParseExcel XML::SAX::Writer <span class="se">\</span>
+sudo cpanm Set::Scalar Graph::Directed XML::LibXML XML::SAX &lt;span class=&#34;se&#34;&gt;\&lt;/span&gt;
+    SVG XML::Parser::PerlSAX Convert::Binary::C XML::SAX::Writer &lt;span class=&#34;se&#34;&gt;\&lt;/span&gt;
+    XML::DOM::XPath Spreadsheet::ParseExcel XML::SAX::Writer &lt;span class=&#34;se&#34;&gt;\&lt;/span&gt;
     XML::DOM HTML::TableExtract XML::Simple Test::Pod DBI
 prove -r t/ -a tests.tar.gz
 
 All tests successful.
-<span class="nv">Files</span><span class="o">=</span>325, <span class="nv">Tests</span><span class="o">=</span>21095, <span class="m">94</span> wallclock secs <span class="o">(</span> 2.47 usr  0.55 sys + 88.29 cusr  3.85 <span class="nv">csys</span> <span class="o">=</span> 95.16 CPU<span class="o">)</span>
+&lt;span class=&#34;nv&#34;&gt;Files&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;325, &lt;span class=&#34;nv&#34;&gt;Tests&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;21095, &lt;span class=&#34;m&#34;&gt;94&lt;/span&gt; wallclock secs &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt; 2.47 usr  0.55 sys + 88.29 cusr  3.85 &lt;span class=&#34;nv&#34;&gt;csys&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; 95.16 CPU&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
 Result: PASS
-</pre></div>
+&lt;/pre&gt;&lt;/div&gt;
 
-<p>When the test results are parsed, the plug-in also copies TAP files over to the master, in a folder called <em>tap-master-files</em>.</p>
-<p>The BioPerl tests are not really big, just <strong>1.7M</strong>. It gets doubled as there will be the workspace copy, and the tap-master-files directory copy, so <strong>3.4M</strong>.</p>
-<p>But several objects get created in memory, and persisted into the build.xml job file. BioPerl generates a build.xml file with <strong>11M</strong>. So <strong>less than 15M</strong>. But the build.xml contains objects that are read via XStream by Jenkins and into the memory.</p>
-<p>The build page with the graph, and the other two test result pages are rendering in more than 10 seconds in my computer. But the CPU load is OK, so a closer look at the memory use would probably be more interesting.</p>
-<p><img class="ui centered image" src="/2016/09/03/performance-problems-in-jenkins-tap-plugin-part-1/JENKINS-17887-yourkit1.png" alt="JENKINS-17887 YourKit profiler" /></p>
-<p>The image shows one of the screens in YourKit profiler, where it is possible to see that <strong>org.tap4j.plugin.model.TapTestResultResult</strong> has over 6 million objects.</p>
-<p>One build.xml for the BioPerl project gets over 80K entries for the TestResult object.</p>
-<div class="highlight"><pre>grep <span class="s2">&quot;org.tap4j.model.TestResult&quot;</span> builds/1/build.xml -o <span class="p">|</span> wc -l
+&lt;p&gt;When the test results are parsed, the plug-in also copies TAP files over to the master, in a folder called &lt;em&gt;tap-master-files&lt;/em&gt;.&lt;/p&gt;
+&lt;p&gt;The BioPerl tests are not really big, just &lt;strong&gt;1.7M&lt;/strong&gt;. It gets doubled as there will be the workspace copy, and the tap-master-files directory copy, so &lt;strong&gt;3.4M&lt;/strong&gt;.&lt;/p&gt;
+&lt;p&gt;But several objects get created in memory, and persisted into the build.xml job file. BioPerl generates a build.xml file with &lt;strong&gt;11M&lt;/strong&gt;. So &lt;strong&gt;less than 15M&lt;/strong&gt;. But the build.xml contains objects that are read via XStream by Jenkins and into the memory.&lt;/p&gt;
+&lt;p&gt;The build page with the graph, and the other two test result pages are rendering in more than 10 seconds in my computer. But the CPU load is OK, so a closer look at the memory use would probably be more interesting.&lt;/p&gt;
+&lt;p&gt;&lt;img class=&#34;ui centered image&#34; src=&#34;/2016/09/03/performance-problems-in-jenkins-tap-plugin-part-1/JENKINS-17887-yourkit1.png&#34; alt=&#34;JENKINS-17887 YourKit profiler&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;The image shows one of the screens in YourKit profiler, where it is possible to see that &lt;strong&gt;org.tap4j.plugin.model.TapTestResultResult&lt;/strong&gt; has over 6 million objects.&lt;/p&gt;
+&lt;p&gt;One build.xml for the BioPerl project gets over 80K entries for the TestResult object.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;grep &lt;span class=&#34;s2&#34;&gt;&amp;quot;org.tap4j.model.TestResult&amp;quot;&lt;/span&gt; builds/1/build.xml -o &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; wc -l
 84522
-</pre></div>
+&lt;/pre&gt;&lt;/div&gt;
 
-<p>This happens because each TAP file may contain multiple test results (lines with test results). Each of these test results gets turned into a Java object and loaded by the plug-in. So when loading the test result pages, Jenkins needs to wait until all these objects have been parsed, deserialized and read into the memory.</p>
-<p>The next post will continue on code improvements, and another benchmark.</p>
-<p>Happy profiling!</p>
+&lt;p&gt;This happens because each TAP file may contain multiple test results (lines with test results). Each of these test results gets turned into a Java object and loaded by the plug-in. So when loading the test result pages, Jenkins needs to wait until all these objects have been parsed, deserialized and read into the memory.&lt;/p&gt;
+&lt;p&gt;The next post will continue on code improvements, and another benchmark.&lt;/p&gt;
+&lt;p&gt;Happy profiling!&lt;/p&gt;
             
             </description>
         </item>
@@ -435,36 +451,38 @@ Result: PASS
             
             <pubDate>2016-08-24T23:54:03+12:00</pubDate>
             <guid>/2016/08/24/revamping-frege-logo-part-2</guid>
-            <description><p>Last time I used Blender was around 2007 I think, in University. But the bad weather in
-Auckland gives me plenty of time to have fun checking out Blender again :-)</p>
-<p>Followed the following tutorials:</p>
-<ul>
-<li><a href="https://www.youtube.com/watch?v=GeKhH1aaXuM">How to create a 3D Logo in Blender</a></li>
-<li><a href="https://www.youtube.com/watch?v=LArn4TFNnmk">Blender Tutorial Spinning Logo</a></li>
-</ul>
-<p>Here are the work in progress, created only with the b&eacute;zier curve.</p>
-<p><img class="ui centered large image" src="/2016/08/24/revamping-frege-logo-part-2/Frege_logo_flat_colours.png" alt="Frege updated logo" /></p>
-<p><img class="ui centered large image" src="/2016/08/24/revamping-frege-logo-part-2/Screenshot_2016-08-14_20-19-35.png" alt="Frege 3D #1" /></p>
-<p><img class="ui centered large image" src="/2016/08/24/revamping-frege-logo-part-2/Screenshot_2016-08-14_20-39-46.png" alt="Frege 3D #2" /></p>
-<p><img class="ui centered large image" src="/2016/08/24/revamping-frege-logo-part-2/Screenshot_2016-08-14_20-41-15.png" alt="Frege 3D #3" /></p>
-<p><img class="ui centered large image" src="/2016/08/24/revamping-frege-logo-part-2/Screenshot_2016-08-14_20-41-34.png" alt="Frege 3D #4" /></p>
-<p><img class="ui centered large image" src="/2016/08/24/revamping-frege-logo-part-2/Screenshot_2016-08-14_20-57-02.png" alt="Frege 3D #5" /></p>
-<p><img class="ui centered large image" src="/2016/08/24/revamping-frege-logo-part-2/Screenshot_2016-08-23_22-07-54.png" alt="Frege 3D #6" /></p>
-<p><img class="ui centered large image" src="/2016/08/24/revamping-frege-logo-part-2/Screenshot_2016-08-23_22-30-24.png" alt="Frege 3D #7" /></p>
-<p>Here&#8217;s the result after the mesh was created, and some material applied.</p>
-<p><img class="ui centered large image" src="/2016/08/24/revamping-frege-logo-part-2/Frege3d1.png" alt="Frege 3D #8" /></p>
-<p>Then using a plane as background, replacing the lamp by a sun, and tweaking a few parameters.</p>
-<p><img class="ui centered image" src="/2016/08/24/revamping-frege-logo-part-2/Frege3d2.png" alt="Frege 3D #9" /></p>
-<p>And finally playing with animation. Not sure if there was a time line and animation controls in
-Blender the last time I used it, but the controls are not really complex.</p>
-<p>I had to combine both meshes into a single object, in order to add a bone and rotate it. That
+            <description>
+            
+            &lt;p&gt;Last time I used Blender was around 2007 I think, in University. But the bad weather in
+Auckland gives me plenty of time to have fun checking out Blender again :-)&lt;/p&gt;
+&lt;p&gt;Followed the following tutorials:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://www.youtube.com/watch?v=GeKhH1aaXuM&#34;&gt;How to create a 3D Logo in Blender&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://www.youtube.com/watch?v=LArn4TFNnmk&#34;&gt;Blender Tutorial Spinning Logo&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Here are the work in progress, created only with the b&amp;eacute;zier curve.&lt;/p&gt;
+&lt;p&gt;&lt;img class=&#34;ui centered large image&#34; src=&#34;/2016/08/24/revamping-frege-logo-part-2/Frege_logo_flat_colours.png&#34; alt=&#34;Frege updated logo&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img class=&#34;ui centered large image&#34; src=&#34;/2016/08/24/revamping-frege-logo-part-2/Screenshot_2016-08-14_20-19-35.png&#34; alt=&#34;Frege 3D #1&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img class=&#34;ui centered large image&#34; src=&#34;/2016/08/24/revamping-frege-logo-part-2/Screenshot_2016-08-14_20-39-46.png&#34; alt=&#34;Frege 3D #2&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img class=&#34;ui centered large image&#34; src=&#34;/2016/08/24/revamping-frege-logo-part-2/Screenshot_2016-08-14_20-41-15.png&#34; alt=&#34;Frege 3D #3&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img class=&#34;ui centered large image&#34; src=&#34;/2016/08/24/revamping-frege-logo-part-2/Screenshot_2016-08-14_20-41-34.png&#34; alt=&#34;Frege 3D #4&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img class=&#34;ui centered large image&#34; src=&#34;/2016/08/24/revamping-frege-logo-part-2/Screenshot_2016-08-14_20-57-02.png&#34; alt=&#34;Frege 3D #5&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img class=&#34;ui centered large image&#34; src=&#34;/2016/08/24/revamping-frege-logo-part-2/Screenshot_2016-08-23_22-07-54.png&#34; alt=&#34;Frege 3D #6&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img class=&#34;ui centered large image&#34; src=&#34;/2016/08/24/revamping-frege-logo-part-2/Screenshot_2016-08-23_22-30-24.png&#34; alt=&#34;Frege 3D #7&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Here&amp;#8217;s the result after the mesh was created, and some material applied.&lt;/p&gt;
+&lt;p&gt;&lt;img class=&#34;ui centered large image&#34; src=&#34;/2016/08/24/revamping-frege-logo-part-2/Frege3d1.png&#34; alt=&#34;Frege 3D #8&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Then using a plane as background, replacing the lamp by a sun, and tweaking a few parameters.&lt;/p&gt;
+&lt;p&gt;&lt;img class=&#34;ui centered image&#34; src=&#34;/2016/08/24/revamping-frege-logo-part-2/Frege3d2.png&#34; alt=&#34;Frege 3D #9&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;And finally playing with animation. Not sure if there was a time line and animation controls in
+Blender the last time I used it, but the controls are not really complex.&lt;/p&gt;
+&lt;p&gt;I had to combine both meshes into a single object, in order to add a bone and rotate it. That
 is why the logo got back to a single material. The angle of the camera could probably do with
-some tweaking as well.</p>
-<p><img class="ui centered image" src="/2016/08/24/revamping-frege-logo-part-2/ezgif.com-resize.gif" alt="Frege 3D #10" /></p>
-<p>But it was my very first time animating in Blender. Some day if I get access to one of those
-3D printers, I will check what are the requirements for printing this logo.</p>
-<p>Blender models can be downloaded <a href="https://github.com/kinow/kinoshita.eti.br/tree/master/posts/2016-08-24_revamping-frege-logo-part-2-assets">here</a>.</p>
-<p>Now back to programming :-)</p>
+some tweaking as well.&lt;/p&gt;
+&lt;p&gt;&lt;img class=&#34;ui centered image&#34; src=&#34;/2016/08/24/revamping-frege-logo-part-2/ezgif.com-resize.gif&#34; alt=&#34;Frege 3D #10&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;But it was my very first time animating in Blender. Some day if I get access to one of those
+3D printers, I will check what are the requirements for printing this logo.&lt;/p&gt;
+&lt;p&gt;Blender models can be downloaded &lt;a href=&#34;https://github.com/kinow/kinoshita.eti.br/tree/master/posts/2016-08-24_revamping-frege-logo-part-2-assets&#34;&gt;here&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Now back to programming :-)&lt;/p&gt;
             
             </description>
         </item>
@@ -486,17 +504,19 @@ some tweaking as well.</p>
             
             <pubDate>2016-08-16T23:54:03+12:00</pubDate>
             <guid>/2016/08/16/revamping-frege-logo</guid>
-            <description><p>For a while I had been wanting to try adding a flat colour to the Frege
-logo. This weekend had some bit of spare time, and here is the result.</p>
-<p>Submitted to the project as <a href="https://github.com/Frege/frege/pull/299/files">pull request #299</a>.</p>
-<p>Current logo.</p>
-<p><img class="ui centered large image" src="/2016/08/16/revamping-frege-logo/Frege_logo.png" alt="Frege current logo" /></p>
-<p>And the updated logo.</p>
-<p><img class="ui centered large image" src="/2016/08/16/revamping-frege-logo/Frege_logo_flat_colours.png" alt="Frege updated logo" /></p>
-<p>The colour used was Flamingo (#EF4836), found in <a href="http://www.flatuicolorpicker.com/">Flat UI Color Picker</a>.</p>
-<p>Perhaps not exactly revamping, since all I did was just change a colour. There were
-adjustments to the b&eacute;zier curves as well, to better align them, but I updated both
-logos, not just the new one :-)</p>
+            <description>
+            
+            &lt;p&gt;For a while I had been wanting to try adding a flat colour to the Frege
+logo. This weekend had some bit of spare time, and here is the result.&lt;/p&gt;
+&lt;p&gt;Submitted to the project as &lt;a href=&#34;https://github.com/Frege/frege/pull/299/files&#34;&gt;pull request #299&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Current logo.&lt;/p&gt;
+&lt;p&gt;&lt;img class=&#34;ui centered large image&#34; src=&#34;/2016/08/16/revamping-frege-logo/Frege_logo.png&#34; alt=&#34;Frege current logo&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;And the updated logo.&lt;/p&gt;
+&lt;p&gt;&lt;img class=&#34;ui centered large image&#34; src=&#34;/2016/08/16/revamping-frege-logo/Frege_logo_flat_colours.png&#34; alt=&#34;Frege updated logo&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;The colour used was Flamingo (#EF4836), found in &lt;a href=&#34;http://www.flatuicolorpicker.com/&#34;&gt;Flat UI Color Picker&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Perhaps not exactly revamping, since all I did was just change a colour. There were
+adjustments to the b&amp;eacute;zier curves as well, to better align them, but I updated both
+logos, not just the new one :-)&lt;/p&gt;
             
             </description>
         </item>
