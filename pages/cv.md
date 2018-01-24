@@ -312,6 +312,10 @@ Linux, OSX, Windows
 
 <table class="ui celled table">
   <tr>
+    <td>Japanese-Language Proficiency Test N5</td>
+    <td>2018</td>
+  </tr>
+  <tr>
     <td>LFCE Linux Foundation Certified Engineer</td>
     <td>2015</td>
   </tr>
