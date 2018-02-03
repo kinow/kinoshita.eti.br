@@ -149,11 +149,13 @@
                               
                               <span style="font-size: 12.0pt"><a href="/tag/natural%20language%20processing">natural language processing</a></span>&nbsp;(4)
                               
-                              <span style="font-size: 22.0pt"><a href="/tag/opensource">opensource</a></span>&nbsp;(24)
+                              <span style="font-size: 22.5pt"><a href="/tag/opensource">opensource</a></span>&nbsp;(25)
                               
                               <span style="font-size: 26.0pt"><a href="/tag/programming">programming</a></span>&nbsp;(32)
                               
                               <span style="font-size: 14.0pt"><a href="/tag/python">python</a></span>&nbsp;(8)
+                              
+                              <span style="font-size: 11.5pt"><a href="/tag/r">r</a></span>&nbsp;(3)
                               
                               <span style="font-size: 12.5pt"><a href="/tag/security">security</a></span>&nbsp;(5)
                               
@@ -176,6 +178,102 @@
                         <h1 class='topic'>Home</h1>
                     </div>
                     
+                    
+                    <div class="ui raised padded container segment">
+                        <h2>
+                            <a href="/2017/02/28/using-aws-mfa-without-a-mobile-phone" title="Permanent link">Using AWS MFA without a mobile phone</a>
+                        </h2>
+                        <small>kinow</small> @ <small>Feb 28, 2017&nbsp;00:47:03 (<span class='stardate' data-input-date='Feb 28, 2017'></span>)</small>
+                        <div class="entry">
+                            
+
+
+
+
+
+<a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2017/02/28/using-aws-mfa-without-a-mobile-phone" data-text="Using AWS MFA without a mobile phone" data-via="kinow" data-hashtags="opensource">Tweet</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+                            
+                            <p>If you use AWS, the chances are that you use MFA - Multi-factor Authentication - to authenticate.
+I don&#8217;t like to install apps in my mobile phone, unless I need to, so having bought a new phone
+recently, I decided to find a replacement for Google Authenticator.</p>
+<p>There are several command line utilities, browser extensions, libraries, and tools (free and paid)
+that implement the TOTP - time-based one-time password -, the standard
+<a href="http://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_mfa_enable_virtual.html">required by Amazon</a>
+for MFA authentication.</p>
+<p>I decided to use a Go tool for the first time: <a href="https://github.com/pcarrier/gauth">gauth</a>. Note that you
+won&#8217;t be able to use it from home, in case you don&#8217;t bring your laptop home. You can have one MFA device
+linked to your AWS account, so you may have to remove an existing one. Follow these instructions with care :^)</p>
+<h2>Install Go</h2>
+<div class="highlight"><pre>sudo apt update <span class="o">&amp;&amp;</span> sudo apt upgrade -y
+<span class="nb">cd </span>tmp/ <span class="o">&amp;&amp;</span> wget https://storage.googleapis.com/golang/go1.8.linux-amd64.tar.gz
+tar -zxvf go1.*.tar.gz
+sudo mv go /usr/local
+vim ~/.bashrc
+</pre></div>
+
+<p>Add the following at the bottom of the file.</p>
+<div class="highlight"><pre><span class="nv">GOROOT</span><span class="o">=</span>/usr/local/go
+<span class="nv">GOPATH</span><span class="o">=</span><span class="s2">&quot;</span><span class="nv">$HOME</span><span class="s2">/go&quot;</span>
+<span class="nv">PATH</span><span class="o">=</span><span class="s2">&quot;</span><span class="nv">$GOPATH</span><span class="s2">/bin:</span><span class="nv">$GOROOT</span><span class="s2">/bin:</span><span class="nv">$PATH</span><span class="s2">&quot;</span>
+</pre></div>
+
+<p>And you can test it with <code>. ~/.bashrc &amp;&amp; go version</code>.</p>
+<h2>Install gauth</h2>
+<p>Given your environment is correctly set up, you should be able to use the following command to install
+gauth, and have it available in your <em>$PATH</em>.</p>
+<div class="highlight"><pre>go get github.com/pcarrier/gauth
+</pre></div>
+
+<p>Edit <em>~/.config/gauth.csv</em> adding a value for the AWS MFA key.</p>
+<h2>Getting the AWS MFA key</h2>
+<p>To get the value that you must place in your <em>gauth.csv</em> file, you must add a new MFA device. When asked to scan a QR code, look for an option to enter the manual value. That will give you a long string. That&#8217;s the value you are looking for.</p>
+<h2>Extra: Auto copy-paste from command line</h2>
+<p>If you would like to quickly copy and paste, try creating an alias as described
+<a href="https://gist.github.com/ehime/9fd8810442daf64686a34f885e18be01">on this gist</a>.</p>
+<p>I used these instructions, and can now run one command line, that will put the next MFA code in my
+clipboard. Then just paste into my browser, and that&#8217;s that!</p>
+<p>Happy hacking!</p>
+<h2>References</h2>
+<ul>
+<li><a href="https://github.com/pcarrier/gauth">gauth: replace Google Authenticator</a></li>
+<li><a href="http://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_mfa_enable_virtual.html">Enabling a Virtual Multi-factor Authentication (MFA) Device</a></li>
+<li><a href="http://tecadmin.net/install-go-on-ubuntu/">How to Install Go 1.7 on Ubuntu 16.04 &amp; 14.04</a></li>
+<li><a href="http://garywoodfine.com/use-pbcopy-on-ubuntu/">Use pbcopy on Ubuntu</a></li>
+</ul>
+                            
+                            
+                            
+                        </div>
+                        <p class="postmetadata">
+                            
+                            <small>tags 
+                             [&nbsp;<a
+                                href="/tag/go/"
+                                rel="tag">go</a>&nbsp;]&nbsp;
+                            
+                             [&nbsp;<a
+                                href="/tag/aws/"
+                                rel="tag">aws</a>&nbsp;]&nbsp;
+                            
+                             [&nbsp;<a
+                                href="/tag/security/"
+                                rel="tag">security</a>&nbsp;]&nbsp;
+                            
+                            </small>
+                            
+                            
+                            <br/>
+                            <small>posted in 
+                            [&nbsp;<a
+                                href="/blog"
+                                title="View all posts in blog"
+                                rel="category tag">blog</a>&nbsp;]
+                                &nbsp;category
+                            </small>
+                            
+                        </p>
+                    </div>
                     
                     <div class="ui raised padded container segment">
                         <h2>
@@ -456,85 +554,6 @@ open a <a href="https://issues.apache.org/jira/browse/TEXT">JIRA issue</a>, or s
                              [&nbsp;<a
                                 href="/tag/apache%20software%20foundation/"
                                 rel="tag">apache software foundation</a>&nbsp;]&nbsp;
-                            
-                            </small>
-                            
-                            
-                            <br/>
-                            <small>posted in 
-                            [&nbsp;<a
-                                href="/blog"
-                                title="View all posts in blog"
-                                rel="category tag">blog</a>&nbsp;]
-                                &nbsp;category
-                            </small>
-                            
-                        </p>
-                    </div>
-                    
-                    <div class="ui raised padded container segment">
-                        <h2>
-                            <a href="/2017/01/05/plotting-auckland-with-osmnx" title="Permanent link">Plotting Auckland with OSMnx</a>
-                        </h2>
-                        <small>kinow</small> @ <small>Jan 05, 2017&nbsp;10:39:03 (<span class='stardate' data-input-date='Jan 05, 2017'></span>)</small>
-                        <div class="entry">
-                            
-
-
-
-
-
-<a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2017/01/05/plotting-auckland-with-osmnx" data-text="Plotting Auckland with OSMnx" data-via="kinow" data-hashtags="opensource">Tweet</a>
-<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-                            
-                            <div class='row'>
-<div class="ui fluid container">
-<figure>
-<a  href="/2017/01/05/plotting-auckland-with-osmnx/figure_1.png" rel="prettyPhoto" class="thumbnail" title="Auckland">
-<img style="height: 400px;" class="ui image" src="/2017/01/05/plotting-auckland-with-osmnx/figure_1.png" alt="Auckland" />
-</a>
-<figcaption>Auckland</figcaption>
-</figure>
-</div>
-</div>
-
-<p>A couple of days ago I saw <a href="https://www.reddit.com/r/gis/comments/5lnjxs/creating_squaremile_figureground_diagrams_of/">a thread in reddit</a>
-about OSMnx. It is a utilty for interacting with the OpenStreeMap (OSM)
-API, manipulate it in pure Python and using libraries like NetworkX (a Python graph package).</p>
-<p>With it you can do things like <q>visualize cul-de-sacs or one-way streets, plot shortest-path routes, or calculate stats like intersection density, average node connectivity, or betweenness centrality</q>. Or simply
-plot the OSM data as in the graph above.</p>
-<p>The source code is hosted at GitHub: <a href="https://github.com/gboeing/osmnx">https://github.com/gboeing/osmnx</a>.</p>
-<blockquote cite="https://github.com/gboeing/osmnx">OSMnx is a Python 2+3 package that lets you download spatial geometries and construct, project, visualize, and analyze street networks from OpenStreetMap&#8217;s APIs. Users can download and construct walkable, drivable, or bikable urban networks with a single line of Python code, and then easily analyze and visualize them.</blockquote>
-
-<p>The only issue I found while creating the map for Auckland using the example from the project
-README, was that the script would exit with the following error: <strong>&#8220;ValueError: Geometry must be a shapely Polygon or MultiPolygon&#8221;</strong>.</p>
-<p>After looking at the list of dependencies and finding that everything seemed to be OK,
-I started looking at the project issues. And thankfully someone else had found the
-<a href="https://github.com/gboeing/osmnx/issues/16">same issue</a>
-and the maintainer of the project answered how to fix it.</p>
-<p>The issue was that the OSM API returns two <a href="https://nominatim.openstreetmap.org/search?format=json&amp;limit=10&amp;dedupe=0&amp;polygon_geojson=1&amp;q=Auckland,%20New%20Zealand">entries for Auckland</a>
-, where the first one is a Point, and the
-second is the one that we want (a Polygon). The application defaults to using the first element,
-so in order to change it you have to give a <em>which_result</em> argument.</p>
-<div class="highlight"><pre><span class="c">#!/usr/bin/env python3</span>
-
-<span class="kn">import</span> <span class="nn">osmnx</span> <span class="kn">as</span> <span class="nn">ox</span>
-<span class="n">G</span> <span class="o">=</span> <span class="n">ox</span><span class="o">.</span><span class="n">graph_from_place</span><span class="p">(</span><span class="s">&#39;Auckland, NZ&#39;</span><span class="p">,</span> <span class="n">network_type</span><span class="o">=</span><span class="s">&#39;drive&#39;</span><span class="p">,</span> <span class="n">which_result</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
-<span class="n">ox</span><span class="o">.</span><span class="n">plot_graph</span><span class="p">(</span><span class="n">ox</span><span class="o">.</span><span class="n">project_graph</span><span class="p">(</span><span class="n">G</span><span class="p">))</span>
-</pre></div>
-
-<p>And after that, and after waiting a few minutes, you should get your map :-)</p>
-<p>Happy hacking!</p>
-                            
-                            
-                            
-                        </div>
-                        <p class="postmetadata">
-                            
-                            <small>tags 
-                             [&nbsp;<a
-                                href="/tag/gis/"
-                                rel="tag">gis</a>&nbsp;]&nbsp;
                             
                             </small>
                             

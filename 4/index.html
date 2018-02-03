@@ -149,11 +149,13 @@
                               
                               <span style="font-size: 12.0pt"><a href="/tag/natural%20language%20processing">natural language processing</a></span>&nbsp;(4)
                               
-                              <span style="font-size: 22.0pt"><a href="/tag/opensource">opensource</a></span>&nbsp;(24)
+                              <span style="font-size: 22.5pt"><a href="/tag/opensource">opensource</a></span>&nbsp;(25)
                               
                               <span style="font-size: 26.0pt"><a href="/tag/programming">programming</a></span>&nbsp;(32)
                               
                               <span style="font-size: 14.0pt"><a href="/tag/python">python</a></span>&nbsp;(8)
+                              
+                              <span style="font-size: 11.5pt"><a href="/tag/r">r</a></span>&nbsp;(3)
                               
                               <span style="font-size: 12.5pt"><a href="/tag/security">security</a></span>&nbsp;(5)
                               
@@ -176,6 +178,102 @@
                         <h1 class='topic'>Home</h1>
                     </div>
                     
+                    
+                    <div class="ui raised padded container segment">
+                        <h2>
+                            <a href="/2017/06/14/how-to-remove-the-signature-from-emails-with-nlp" title="Permanent link">How to remove the signature from e-mails with NLP?</a>
+                        </h2>
+                        <small>kinow</small> @ <small>Jun 14, 2017&nbsp;13:59:33 (<span class='stardate' data-input-date='Jun 14, 2017'></span>)</small>
+                        <div class="entry">
+                            
+
+
+
+
+
+<a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2017/06/14/how-to-remove-the-signature-from-emails-with-nlp" data-text="How to remove the signature from e-mails with NLP?" data-via="kinow" data-hashtags="opensource">Tweet</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+                            
+                            <p>Some time ago I stumbled across <a href="https://github.com/mynameisvinn/EmailParser">EmailParser</a>, a Python utility to remove e-mail signatures. Here&#8217;s a sample input e-mail from the project documentation.</p>
+<div class="highlight"><pre>Wendy – thanks for the intro! Moving you to bcc.
+
+Hi Vincent – nice to meet you over email. Apologize for the late reply, I was on PTO for a couple weeks and this is my first week back in office. As Wendy mentioned, I am leading an AR/VR taskforce at Foobar Retail Solutions. The goal of the taskforce is to better understand how AR/VR can apply to retail/commerce and if/what is the role of a shopping center in AR/VR applications for retail.
+
+Wendy mentioned that you would be a great person to speak to since you are close to what is going on in this space. Would love to set up some time to chat via phone next week. What does your availability look like on Monday or Wednesday?
+
+Best,
+Joe Smith
+
+Joe Smith | Strategy &amp; Business Development
+111 Market St. Suite 111| San Francisco, CA 94103
+M: 111.111.1111| joe@foobar.com
+</pre></div>
+
+<p>And here&#8217;s what it looks like afterwards.</p>
+<div class="highlight"><pre>Wendy – thanks for the intro! Moving you to bcc.
+
+Hi Vincent – nice to meet you over email. Apologize for the late reply, I was on PTO for a couple weeks and this is my first week back in office. As Wendy mentioned, I am leading an AR/VR taskforce at Foobar Retail Solutions. The goal of the taskforce is to better understand how AR/VR can apply to retail/commerce and if/what is the role of a shopping center in AR/VR applications for retail.
+
+Wendy mentioned that you would be a great person to speak to since you are close to what is going on in this space. Would love to set up some time to chat via phone next week. What does your availability look like on Monday or Wednesday?
+</pre></div>
+
+<p>As you can see, it removed all the lines after the main part of the message (i.e. after the three paragraphs). Here&#8217;s what the Python code looks like.</p>
+<div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">Parser</span> <span class="kn">import</span> <span class="n">read_email</span><span class="p">,</span> <span class="n">strip</span><span class="p">,</span> <span class="n">prob_block</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">spacy.en</span> <span class="kn">import</span> <span class="n">English</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">pos</span> <span class="o">=</span> <span class="n">English</span><span class="p">()</span>  <span class="c"># part-of-speech tagger</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">msg_raw</span> <span class="o">=</span> <span class="n">read_email</span><span class="p">(</span><span class="s">&#39;emails/test1.txt&#39;</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">msg_stripped</span> <span class="o">=</span> <span class="n">strip</span><span class="p">(</span><span class="n">msg_raw</span><span class="p">)</span>  <span class="c"># preprocessing text before POS tagging</span>
+
+<span class="c"># iterate through lines, write to file if not signature block</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">generate_text</span><span class="p">(</span><span class="n">msg_stripped</span><span class="p">,</span> <span class="o">.</span><span class="mi">9</span><span class="p">,</span> <span class="n">pos_tagger</span><span class="p">,</span> <span class="s">&#39;emails/test1_clean.txt&#39;</span><span class="p">)</span>
+</pre></div>
+
+<p>What got me interested about this utility was the use of NLP. I couldn&#8217;t imagine how someone could use NLP for that. And I liked the simplicity of the approach, which is not perfect, but can be useful someday.</p>
+<p>After the imports in the code, it creates a <a href="https://en.wikipedia.org/wiki/Part_of_speech">Part of Speech</a> tagger using <a href="https://spacy.io/">spaCy</a> NLP library, reads the e-mail from a file, and sripts and creates an array with each paragraph of the message.</p>
+<p>The magic happens in the <code>generate_text</code> function, which receives the <strong>array of paragraphs</strong>, a <strong>threshold</strong>, the <strong>POS tagger</strong>, and the <strong>output destination</strong>. Here&#8217;s what the function does.</p>
+<div class="highlight"><pre>for each message
+    if probability ( signature block | message ) &lt; threshold
+        write to output file
+</pre></div>
+
+<p>And the formula for calculating the probability is quite simple too.</p>
+<div class="highlight"><pre>1. For a given paragraph (message block), find all the sentences in it.
+2. Then for each word (token) in the sentence, count the number of times a non-verb appears.
+3. Return the proportion of non-verbs per sentence, i.e. number of non-verbs / number of sentences.
+</pre></div>
+
+<p>In summary, it discards blocks that do not contain enough verbs to be considered a message block, being treated as signature blocks instead.</p>
+<p>Never thought about using an approach like this. It may definitely be helpful when doing data analysis, information retrieval, or scraping data from the web. Not necessarily with e-mails and signatures, but you got the gist of it.</p>
+<p>&hearts; Open Source</p>
+                            
+                            
+                            
+                        </div>
+                        <p class="postmetadata">
+                            
+                            <small>tags 
+                             [&nbsp;<a
+                                href="/tag/python/"
+                                rel="tag">python</a>&nbsp;]&nbsp;
+                            
+                             [&nbsp;<a
+                                href="/tag/programming/"
+                                rel="tag">programming</a>&nbsp;]&nbsp;
+                            
+                             [&nbsp;<a
+                                href="/tag/natural%20language%20processing/"
+                                rel="tag">natural language processing</a>&nbsp;]&nbsp;
+                            
+                             [&nbsp;<a
+                                href="/tag/opensource/"
+                                rel="tag">opensource</a>&nbsp;]&nbsp;
+                            
+                            </small>
+                            
+                            
+                        </p>
+                    </div>
                     
                     <div class="ui raised padded container segment">
                         <h2>
@@ -414,88 +512,6 @@ MYSQL_PASSWORD<span class="o">=</span>AQECAHga320J8WadplGCqqVAr4HNvDaFSQ<span cl
 </pre></div>
 
 <p>That way the resulting text would be &#8220;There are 2 texts waiting for analysis today&#8221;, allowing you to proceed with the rest of your analysis. This is a very simple example, but hopefully you grokked how LookupTranslator works.</p>
-<p>&hearts; Open Source</p>
-                            
-                            
-                            
-                        </div>
-                        <p class="postmetadata">
-                            
-                            <small>tags 
-                             [&nbsp;<a
-                                href="/tag/apache%20software%20foundation/"
-                                rel="tag">apache software foundation</a>&nbsp;]&nbsp;
-                            
-                             [&nbsp;<a
-                                href="/tag/java/"
-                                rel="tag">java</a>&nbsp;]&nbsp;
-                            
-                             [&nbsp;<a
-                                href="/tag/opensource/"
-                                rel="tag">opensource</a>&nbsp;]&nbsp;
-                            
-                             [&nbsp;<a
-                                href="/tag/programming/"
-                                rel="tag">programming</a>&nbsp;]&nbsp;
-                            
-                            </small>
-                            
-                            
-                        </p>
-                    </div>
-                    
-                    <div class="ui raised padded container segment">
-                        <h2>
-                            <a href="/2017/05/28/some-links-related-to-apache-commons-text" title="Permanent link">Some links related to Apache Commons Text</a>
-                        </h2>
-                        <small>kinow</small> @ <small>May 28, 2017&nbsp;19:50:39 (<span class='stardate' data-input-date='May 28, 2017'></span>)</small>
-                        <div class="entry">
-                            
-
-
-
-
-
-<a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2017/05/28/some-links-related-to-apache-commons-text" data-text="Some links related to Apache Commons Text" data-via="kinow" data-hashtags="opensource">Tweet</a>
-<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-                            
-                            <p><a href="http://commons.apache.org/proper/commons-text/">Apache Commons Text</a> is one of the most recent new components in Apache Commons. It &#8220;is a library focused on algorithms working on strings&#8221;. I recently collected some links
-under a bookmark folder that are in some way related to the project. In case you are interested,
-check some of the links below.</p>
-<ul>
-<li><a href="https://www.youtube.com/watch?v=bx3NOoroV-M">Morgan Wahl Text is More Complicated Than You Think Comparing and Sorting Unicode PyCon 2017</a> <iframe width="560" height="315" src="https://www.youtube.com/embed/bx3NOoroV-M?rel=0" frameborder="0" allowfullscreen></iframe><ul>
-<li>Q: test [text] to check if our methods are OK with some examples in this talk)</li>
-<li>Q: Canonical Decomposition, and code points comparisons; are we doing it? Are we doing it right?</li>
-<li>Q: Do we have casefolding?</li>
-<li>Q: Do we have multi-level sort?</li>
-<li>Q: CLDR</li>
-</ul>
-</li>
-<li><a href="https://www.youtube.com/watch?v=7m5JA3XaZ4k">Łukasz Langa Unicode what is the big deal PyCon 2017</a> <iframe width="560" height="315" src="https://www.youtube.com/embed/7m5JA3XaZ4k?rel=0" frameborder="0" allowfullscreen></iframe><ul>
-<li>Q: Quite sure we have an issue to guess the encoding for a text&#8230;. there is a GPL library for that? Under Mozilla perhaps?</li>
-</ul>
-</li>
-<li><a href="https://www.youtube.com/watch?v=kTS2b6pGElE">Jiaqi Liu Fuzzy Search Algorithms How and When to Use Them PyCon 2017</a> <iframe width="560" height="315" src="https://www.youtube.com/embed/kTS2b6pGElE?rel=0" frameborder="0" allowfullscreen></iframe><ul>
-<li>Q: Does OpenNLP have N-GRAM&#8217;s? Would it make sense to have that in [text]?</li>
-<li>Q: Where can we find some tokenizers? OpenNLP?</li>
-</ul>
-</li>
-<li><a href="http://www-igm.univ-mlv.fr/~berstel/Lothaire/">Lothaire&#8217;s Books</a> like &#8220;Combinatorics on Words&#8221; and &#8220;Algebraic Combinatorics&#8221;.</li>
-<li>Java tutorial lesson <a href="https://docs.oracle.com/javase/tutorial/i18n/text/">&#8220;Working with Text&#8221;</a></li>
-<li>Mitzi Morris&#8217; <a href="https://www.amazon.com/Text-Processing-Java-Mitzi-Morris/dp/0988208725">Text Processing in Java book</a></li>
-<li><a href="http://johannburkard.de/software/stringsearch/">StringSearch</a> java library.<ul>
-<li><blockquote>&#8220;The Java language lacks fast string searching algorithms. StringSearch provides implementations of the Boyer-Moore and the Shift-Or (bit-parallel) algorithms. These algorithms are easily five to ten times faster than the na&iuml;ve implementation found in java.lang.String&#8221;.</blockquote></li>
-</ul>
-</li>
-<li><a href="https://jakarta.apache.org/oro/">Jakarta Oro</a> (attic)<ul>
-<li><blockquote>The Jakarta-ORO Java classes are a set of text-processing Java classes that provide Perl5 compatible regular expressions, AWK-like regular expressions, glob expressions, and utility classes for performing substitutions, splits, filtering filenames, etc. This library is the successor to the OROMatcher, AwkTools, PerlTools, and TextTools libraries originally from ORO, Inc. Despite little activity in the form of new development initiatives, issue reports, questions, and suggestions are responded to quickly.</blockquote></li>
-<li>Discontinued, but is there anything useful in there? The attic has always interesting things after all&#8230;</li>
-</ul>
-</li>
-<li><a href="http://textprocessing.org/">TextProcessing blog</a> - A Text Processing Portal for Humans</li>
-<li><a href="https://github.com/twitter/twitter-text">twitter-text</a>, the Twitter Java (multi-language actually&#8230;) text processing library.</li>
-<li>Python&#8217;s <a href="https://docs.python.org/3/library/text.html">text modules</a></li>
-</ul>
 <p>&hearts; Open Source</p>
                             
                             
