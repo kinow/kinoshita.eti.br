@@ -31,7 +31,7 @@ Node.js, NumPy, Pandas, Spark, Spring, Struts, Hadoop, Tornado, Laravel
 <tr>
   <td>GIS</td>
   <td markdown="1">
-PostGIS, WFS, WMS, SOS, and other OGC standards
+PostGIS, QGIS, ArcGIS, gvSIG, WFS, WMS, SOS, and other OGC standards
   </td>
 </tr>
 <tr>
@@ -184,6 +184,13 @@ Linux, OSX, Windows
 
 <table class="ui celled table">
   <tr>
+    <td>Geographic Information System applied to municipality management</td>
+    <td>gvSIG Association</td>
+    <td>        Online
+    </td>
+    <td>2018</td>
+  </tr>
+  <tr>
     <td>Level 1 Introduction to Sailing Keelboat Certificate</td>
     <td>Royal New Zealand Yacht Squadron</td>
     <td>        Auckland, New Zealand
@@ -315,6 +322,10 @@ Linux, OSX, Windows
 ## <i class="fa fa-chevron-right"></i> Certifications
 
 <table class="ui celled table">
+  <tr>
+    <td>gvSIG User Certificate</td>
+    <td>2018</td>
+  </tr>
   <tr>
     <td>Japanese-Language Proficiency Test N5</td>
     <td>2018</td>
