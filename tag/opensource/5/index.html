@@ -126,6 +126,82 @@
                     
                     <p>Posts tagged with &#8216;opensource&#8217;</p>
 <div class="ui raised padded container segment">
+    <h2><a href="/2017/03/26/simulating-less-memory-with-ulimit" title="Permanent link">Simulating less memory with ulimit</a></h2>
+    <p><small>kinow</small> @ <small>Mar 26, 2017&nbsp;11:14:03</small></p>
+
+
+
+
+
+
+
+<a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2017/03/26/simulating-less-memory-with-ulimit" data-text="Simulating less memory with ulimit" data-via="kinow" data-hashtags="opensource">Tweet</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+
+
+    <p>These days I was trying to reproduce <a href="https://bugs.kde.org/show_bug.cgi?id=376382">a bug in Krita</a>
+where it would crash when a user copied group layers between windows. It appeared that the user was
+getting a segmentation fault due to the user&#8217;s computer running out of memory.</p>
+<p>I could not reproduce the issue, but my computer has 16 GB. The first thing that came to my mind was
+to create a virtual machine with less memory to reproduce the issue. But I decided to spend some time
+looking for a <a href="http://wiki.c2.com/?LazinessImpatienceHubris">simpler way</a> of doing it.</p>
+<p>Searching the web I found some suggestions that <code>ulimit</code> could work. After playing for a while with
+<code>ulimit</code> and <code>htop</code>, and verifying the amount of memory necessary to open two files in two windows
+in Krita, I came up with the following settings.</p>
+<div class="highlight"><pre><span class="c"># 2550 mb in kb</span>
+<span class="nb">ulimit</span> -v 2550000
+
+<span class="c"># 2 gb in kb</span>
+<span class="nb">ulimit</span> -m 2000000
+
+<span class="c"># Confirm limits</span>
+<span class="nb">ulimit</span> -a
+
+gdb <span class="nv">$HOME</span>/Development/cpp/workspace/krita_install/bin/krita
+</pre></div>
+
+<p>Then after copying a few layers from one window to another, I successfully reproduced the issue,
+and could include a backtrace in the Krita issue tracking system.</p>
+
+<p>&hearts; Open Source</p>
+
+<!-- html -->
+
+<p class="postmetadata">
+
+    <small>tags 
+     [&nbsp;<a
+        href="/tag/c%2B%2B"
+        rel="tag">c++</a>&nbsp;]&nbsp;
+
+     [&nbsp;<a
+        href="/tag/krita"
+        rel="tag">krita</a>&nbsp;]&nbsp;
+
+     [&nbsp;<a
+        href="/tag/programming"
+        rel="tag">programming</a>&nbsp;]&nbsp;
+
+     [&nbsp;<a
+        href="/tag/opensource"
+        rel="tag">opensource</a>&nbsp;]&nbsp;
+
+    </small>
+
+
+    <br/>
+    <small>posted in 
+    [&nbsp;<a
+        href="/blog"
+        title="View all posts in blog"
+        rel="category tag">blog</a>&nbsp;]&nbsp;
+    category </small>
+
+</p>
+
+</div>
+
+<div class="ui raised padded container segment">
     <h2><a href="/2017/01/03/contributing-to-krita" title="Permanent link">Contributing to Krita</a></h2>
     <p><small>kinow</small> @ <small>Jan 03, 2017&nbsp;11:40:03</small></p>
 
@@ -418,66 +494,10 @@ debug your application in Eclipse or whatever IDE you prefer.</p>
 </p>
 </div>
 
-<div class="ui raised padded container segment">
-    <h2><a href="/2011/02/14/btd-2011-how-to-automate-tests-using-testlink-and-hudson" title="Permanent link">Belgium Testing Days (BTD) 2011 How To Automate Tests Using Testlink And Hudson</a></h2>
-    <p><small>kinow</small> @ <small>Feb 14, 2011&nbsp;22:18:03</small></p>
-
-
-
-
-
-
-
-<a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2011/02/14/btd-2011-how-to-automate-tests-using-testlink-and-hudson" data-text="Belgium Testing Days (BTD) 2011 How To Automate Tests Using Testlink And Hudson" data-via="kinow" data-hashtags="opensource">Tweet</a>
-<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-
-
-    <p><strong>How To Automate Tests Using Testlink And Hudson</strong></p>
-<div class='row'>
-<div class="ui embed">
-<iframe src="https://kinow.github.io/btd-2011/" frameborder="0" allowfullscreen></iframe>
-</div>
-</div>
-
-<dl>
-<dt>Event</dt>
-<dd><a href="http://btdconf.org/">Belgium Testing Days 2011</a></dd>
-<dt>Where ?</dt>
-<dd><a href="https://www.google.co.nz/maps/place/Brussels,+Belgium/@50.838679,4.2933655,12z/data=!3m1!4b1!4m5!3m4!1s0x47c3c486740f9fff:0x10099ab2f4c8030!8m2!3d50.8503463!4d4.3517211">Brussels, Belgium</a></dd>
-<dt>When ?</dt>
-<dd>2011-02-14</dd>
-</dl><!-- html -->
-
-<p class="postmetadata">
-
-    <small>tags 
-     [&nbsp;<a
-        href="/tag/testlink"
-        rel="tag">testlink</a>&nbsp;]&nbsp;
-
-     [&nbsp;<a
-        href="/tag/jenkins"
-        rel="tag">jenkins</a>&nbsp;]&nbsp;
-
-     [&nbsp;<a
-        href="/tag/opensource"
-        rel="tag">opensource</a>&nbsp;]&nbsp;
-
-    </small>
-
-
-    <br/>
-    <small>posted in 
-    [&nbsp;<a
-        href="/presentations"
-        title="View all posts in presentations"
-        rel="category tag">presentations</a>&nbsp;]&nbsp;
-    category </small>
-
-</p>
-</div>
-
 <div id="navigation">
+
+        &larr;&nbsp;<a href="/tag/opensource/6" id="navigation-next">Older Entries</a>
+
 
         &mdash; <a href="/tag/opensource/4" id="navigation-next">Newer Entries</a>&nbsp;&rarr;
 
