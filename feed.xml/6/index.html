@@ -10,13 +10,68 @@
         
         <description>Latest news from Bruno P. Kinoshita</description>
         
-        <lastBuildDate>2018-05-12T19:35:14+12:00</lastBuildDate>
-        <pubDate>2018-05-12T19:35:14+12:00</pubDate>
+        <lastBuildDate>2018-05-13T03:28:01+12:00</lastBuildDate>
+        <pubDate>2018-05-13T03:28:01+12:00</pubDate>
         <generator>PieCrust 2.1.1</generator>
         
         
         
 
+        
+        
+        
+        <item>
+            <title>Performance problems in Jenkins TAP Plug-in &mdash; part 1</title>
+            <link>/2016/09/03/performance-problems-in-jenkins-tap-plugin-part-1</link>
+            
+            <author>kinow</author>
+            <dc:creator>kinow</dc:creator>
+            
+            <category>blog</category>
+            
+            <category>programming</category>
+            
+            <category>jenkins</category>
+            
+            <category>software quality</category>
+            
+            <pubDate>2016-09-03T23:28:03+12:00</pubDate>
+            <guid>/2016/09/03/performance-problems-in-jenkins-tap-plugin-part-1</guid>
+            <description>
+            
+            &lt;p&gt;&lt;a href=&#34;https://issues.jenkins-ci.org/browse/JENKINS-17887&#34;&gt;JENKINS-17887&lt;/a&gt; reports performance problems in the &lt;a href=&#34;https://wiki.jenkins-ci.org/display/JENKINS/TAP+Plugin&#34;&gt;Jenkins TAP Plug-in&lt;/a&gt;. It also lists a series of suggestions on how to improve the Jenkins TAP Plug-in performance. On this initial post, we will get a general idea of how the plug-in performs for large projects.&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;http://bioperl.org/&#34;&gt;BioPerl&lt;/a&gt; has over 21K tests. That should be enough for giving an initial idea of CPU, memory and disk usage for the plug-in.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;git clone https://github.com/bioperl/bioperl-live.git
+&lt;span class=&#34;nb&#34;&gt;cd &lt;/span&gt;bioperl-live
+sudo cpanm  -vv --installdeps --notest .
+sudo cpanm Set::Scalar Graph::Directed XML::LibXML XML::SAX &lt;span class=&#34;se&#34;&gt;\&lt;/span&gt;
+    SVG XML::Parser::PerlSAX Convert::Binary::C XML::SAX::Writer &lt;span class=&#34;se&#34;&gt;\&lt;/span&gt;
+    XML::DOM::XPath Spreadsheet::ParseExcel XML::SAX::Writer &lt;span class=&#34;se&#34;&gt;\&lt;/span&gt;
+    XML::DOM HTML::TableExtract XML::Simple Test::Pod DBI
+prove -r t/ -a tests.tar.gz
+
+All tests successful.
+&lt;span class=&#34;nv&#34;&gt;Files&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;325, &lt;span class=&#34;nv&#34;&gt;Tests&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;21095, &lt;span class=&#34;m&#34;&gt;94&lt;/span&gt; wallclock secs &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt; 2.47 usr  0.55 sys + 88.29 cusr  3.85 &lt;span class=&#34;nv&#34;&gt;csys&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; 95.16 CPU&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
+Result: PASS
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;When the test results are parsed, the plug-in also copies TAP files over to the master, in a folder called &lt;em&gt;tap-master-files&lt;/em&gt;.&lt;/p&gt;
+&lt;p&gt;The BioPerl tests are not really big, just &lt;strong&gt;1.7M&lt;/strong&gt;. It gets doubled as there will be the workspace copy, and the tap-master-files directory copy, so &lt;strong&gt;3.4M&lt;/strong&gt;.&lt;/p&gt;
+&lt;p&gt;But several objects get created in memory, and persisted into the build.xml job file. BioPerl generates a build.xml file with &lt;strong&gt;11M&lt;/strong&gt;. So &lt;strong&gt;less than 15M&lt;/strong&gt;. But the build.xml contains objects that are read via XStream by Jenkins and into the memory.&lt;/p&gt;
+&lt;p&gt;The build page with the graph, and the other two test result pages are rendering in more than 10 seconds in my computer. But the CPU load is OK, so a closer look at the memory use would probably be more interesting.&lt;/p&gt;
+&lt;p&gt;&lt;img class=&#34;ui centered image&#34; src=&#34;/2016/09/03/performance-problems-in-jenkins-tap-plugin-part-1/JENKINS-17887-yourkit1.png&#34; alt=&#34;JENKINS-17887 YourKit profiler&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;The image shows one of the screens in YourKit profiler, where it is possible to see that &lt;strong&gt;org.tap4j.plugin.model.TapTestResultResult&lt;/strong&gt; has over 6 million objects.&lt;/p&gt;
+&lt;p&gt;One build.xml for the BioPerl project gets over 80K entries for the TestResult object.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;grep &lt;span class=&#34;s2&#34;&gt;&amp;quot;org.tap4j.model.TestResult&amp;quot;&lt;/span&gt; builds/1/build.xml -o &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; wc -l
+84522
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;This happens because each TAP file may contain multiple test results (lines with test results). Each of these test results gets turned into a Java object and loaded by the plug-in. So when loading the test result pages, Jenkins needs to wait until all these objects have been parsed, deserialized and read into the memory.&lt;/p&gt;
+&lt;p&gt;The next post will continue on code improvements, and another benchmark.&lt;/p&gt;
+&lt;p&gt;Happy profiling!&lt;/p&gt;
+            
+            </description>
+        </item>
         
         
         
@@ -566,95 +621,6 @@ bugs or improvements. So watch Ioannis&amp;#8217; repository for updates!&lt;/p&
 &lt;/div&gt;
 
 &lt;p&gt;For Brazilian Kumamoto Kenjinkai. Done with Macromedia Freehand MX, some long time ago.&lt;/p&gt;
-            
-            </description>
-        </item>
-        
-        
-        
-        <item>
-            <title>Trying SaltStack with Docker</title>
-            <link>/2016/04/17/trying-saltstack-with-docker</link>
-            
-            <author>kinow</author>
-            <dc:creator>kinow</dc:creator>
-            
-            <category>blog</category>
-            
-            <category>jenkins</category>
-            
-            <category>docker</category>
-            
-            <category>saltstack</category>
-            
-            <pubDate>2016-04-17T22:06:03+12:00</pubDate>
-            <guid>/2016/04/17/trying-saltstack-with-docker</guid>
-            <description>
-            
-            &lt;p&gt;Some weeks ago I started learning &lt;a href=&#34;http://saltstack.com/&#34;&gt;SaltStack&lt;/a&gt; for a project at work. But I couldn&amp;#8217;t
-find a good Docker image for that and I had to ask the Ops team for some VM&amp;#8217;s. We
-are having a rainy weekend in Auckland, so I decided to have another look at the
-&lt;a href=&#34;https://wiki.jenkins-ci.org/display/JENKINS/saltstack-plugin&#34;&gt;Jenkins SaltStack Plug-in&lt;/a&gt;.&lt;/p&gt;
-&lt;p&gt;But now since I was at home, I couldn&amp;#8217;t use the VM&amp;#8217;s that I had access to at
-work. So decided to look again at Docker or Vagrant images. After playing
-with a few images, I found &lt;a href=&#34;https://hub.docker.com/r/bbinet/salt-master/&#34;&gt;bbinet/salt-master&lt;/a&gt;.
-It not only sets up a master, but also provides an easy way to enable the cherrypy
-API (necessary for the Jenkins plug-in).&lt;/p&gt;
-&lt;p&gt;This post describes the steps that I took to have a running Salt Master with the API
-enabled. First you need to create some directories and files to use with the image.&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;shell&lt;span class=&#34;nv&#34;&gt;$ &lt;/span&gt;mkdir ~/master &lt;span class=&#34;o&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;cd&lt;/span&gt; ~/master
-shell&lt;span class=&#34;nv&#34;&gt;$ &lt;/span&gt;mkdir -p config/master.d/
-shell&lt;span class=&#34;nv&#34;&gt;$ &lt;/span&gt;vim config/master.d/api.conf
-&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;The api.conf contains the SaltStack API configuration. You can change port, user
-and other settings if necessary. Just remember to add a credential in Jenkins
-for the plug-in.&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;span class=&#34;c&#34;&gt;# File: api.conf&lt;/span&gt;
-external_auth:
-  pam:
-    saltapiuser:
-      - .*
-      - &lt;span class=&#34;s1&#34;&gt;&amp;#39;@runner&amp;#39;&lt;/span&gt;
-      - &lt;span class=&#34;s1&#34;&gt;&amp;#39;@wheel&amp;#39;&lt;/span&gt;
-      - &lt;span class=&#34;s1&#34;&gt;&amp;#39;@jobs&amp;#39;&lt;/span&gt;
-rest_cherrypy:
-  port: 8000
-  host: 0.0.0.0
-  disable_ssl: True
-  static: /opt/molten
-  static_path: /assets
-  app: /opt/molten/index.html
-  app_path: /molten
-&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;The image also conveniently provides a script that is executed before the
-entry point (if provided). So we can also create a user for the API automatically
-when the image is created.&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;shell&lt;span class=&#34;nv&#34;&gt;$ &lt;/span&gt;vim config/before-exec.sh
-&lt;/pre&gt;&lt;/div&gt;
-
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;span class=&#34;c&#34;&gt;#!/bin/bash&lt;/span&gt;
-&lt;span class=&#34;c&#34;&gt;# File: before-exec.sh&lt;/span&gt;
-useradd saltapiuser
-&lt;span class=&#34;nb&#34;&gt;echo&lt;/span&gt; -e &lt;span class=&#34;s2&#34;&gt;&amp;quot;nosecret\nnosecret\n&amp;quot;&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; passwd saltapiuser
-&lt;span class=&#34;nb&#34;&gt;exit &lt;/span&gt;0
-&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;Also make the script executable.&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;chmod +x config/before-exec.sh
-&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;And finally start the container.&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;docker run --name salt-master -v &lt;span class=&#34;nv&#34;&gt;$PWD&lt;/span&gt;/config:/config &lt;span class=&#34;se&#34;&gt;\&lt;/span&gt;
-    -p 4505:4505 -p 4506:4506 -p 443:443 -p 8000:8000 &lt;span class=&#34;se&#34;&gt;\&lt;/span&gt;
-    bbinet/salt-master
-&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;Once the container is running, you can go to http://localhost:8000 and
-log in as saltapiuser:nosecret, and also configure your plug-in
-in Jenkins.&lt;/p&gt;
-&lt;p&gt;Happy hacking!&lt;/p&gt;
             
             </description>
         </item>
