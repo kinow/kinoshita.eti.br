@@ -184,8 +184,29 @@ Linux, OSX, Windows
 
 <table class="ui celled table">
   <tr>
-    <td>Geographic Information System applied to municipality management</td>
-    <td>gvSIG Association</td>
+    <td>Building Web Applications in R with Shiny</td>
+    <td>DataCamp</td>
+    <td>        Online
+    </td>
+    <td>2018</td>
+  </tr>
+  <tr>
+    <td>Intermediate R Course - Practice Course</td>
+    <td>DataCamp</td>
+    <td>        Online
+    </td>
+    <td>2018</td>
+  </tr>
+  <tr>
+    <td>Intermediate R Course</td>
+    <td>DataCamp</td>
+    <td>        Online
+    </td>
+    <td>2018</td>
+  </tr>
+  <tr>
+    <td>Introduction to R Course</td>
+    <td>DataCamp</td>
     <td>        Online
     </td>
     <td>2018</td>
