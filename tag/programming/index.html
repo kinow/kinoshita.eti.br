@@ -126,6 +126,143 @@
                     
                     <p>Posts tagged with &#8216;programming&#8217;</p>
 <div class="ui raised padded container segment">
+    <h2><a href="/2018/05/27/what-happens-when-you-upload-a-turtle-file-in-apache-jena-fuseki" title="Permanent link">What happens when you upload a Turtle file in Apache Jena Fuseki</a></h2>
+    <p><small>kinow</small> @ <small>May 27, 2018&nbsp;22:42:55</small></p>
+
+
+
+
+
+
+
+<a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2018/05/27/what-happens-when-you-upload-a-turtle-file-in-apache-jena-fuseki" data-text="What happens when you upload a Turtle file in Apache Jena Fuseki" data-via="kinow" data-hashtags="opensource">Tweet</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+
+
+    <p>I am working on <a href="https://github.com/NatLibFi/Skosmos/issues/738">an issue for Skosmos</a>
+that involves preparing some <a href="https://www.w3.org/TR/turtle/">Turtle</a> files and uploading
+them using Apache Jena Fuseki&#8217;s web interface.</p>
+<p>The issue is now pending feedback, which gives me a moment to have fun with
+something else. So I decided to dig down the rabbit hole and start learning more
+about certain parts of the Apache Jena code base.</p>
+<p style='text-align: center;'>
+<img style="display: inline; width: 600px;" class="ui image" src="/2018/05/27/what-happens-when-you-upload-a-turtle-file-in-apache-jena-fuseki/browser.png"  />
+</p>
+
+<p>This post will be useful to myself in the future, as a note-taking in a series, so that I
+remember how things work - you never know right? But hopefully this will be useful
+to other wanting to understand more about the code of Apache Jena. </p>
+<h2>Where upload happens - SPARQL_Upload and Upload (Fuseki Core)</h2>
+<p>Knowing a bit of the code base, I went straight to the <code>SPARQL_Upload</code> class,
+from the Fuseki Core module. Set up a couple of breakpoints, uploaded my file,
+but nothing. Then tried on its package-neighbour class, <code>Upload</code>.</p>
+<p>Actually, it is easier to understand seeing the class hierarchy, and knowing
+that when I run the application in Eclipse, it is running with Jetty, serving
+servlets (there is no framework like Wicket, Struts, etc, involved).</p>
+<p style='text-align: center;'>
+<img style="display: inline; width: 600px;" class="ui image" src="/2018/05/27/what-happens-when-you-upload-a-turtle-file-in-apache-jena-fuseki/class-hierarchy.png"  />
+</p>
+
+<p>Several filters are applied to the HTTP request too, like Cross Origin, Shiro, and
+the <code>FusekiFilter</code>. The latter looks at the requests to see if it includes a dataset.
+If a dataset is found - it is in our case - then it hands the request over to
+the right class to handle it.</p>
+<p>REST_Quads_RW will take care of the upload action, using the <code>Upload</code> class where my
+breakpoint stopped.</p>
+<h2>Upload#incomingData() (Fuseki Core)</h2>
+<p><code>Upload#incomingData()</code> starts by checking the Content Type from the request. In my case
+it is a <code>multipart/form-data</code>. Then it calls its other method <code>#fileUploadWorker()</code>.</p>
+<p><code>#fileUploadWorker()</code> creates a <code>ServletFilterUpload</code>, from Apache Commons FileUpload.
+With that, it opens a stream for the file, retrieves its name and other information,
+such as the content type.</p>
+<p>Ah, the content type is interesting too. It defaults to <code>RDFXML</code>, but what&#8217;s interesting
+is the comment.</p>
+<div class="highlight"><pre><span class="k">if</span> <span class="o">(</span> <span class="n">lang</span> <span class="o">==</span> <span class="kc">null</span> <span class="o">)</span>
+    <span class="c1">// Desperate.</span>
+    <span class="n">lang</span> <span class="o">=</span> <span class="n">RDFLanguages</span><span class="o">.</span><span class="na">RDFXML</span> <span class="o">;</span>
+</pre></div>
+
+<p>Well, in this case we are getting a <code>Lang:Turtle</code>. So it now knows that it has a Turtle
+file, but it still needs to parse it.</p>
+<h2>ActionLib#parse() (Fuseki Core)</h2>
+<p><code>Upload</code> calls <code>ActionLib#parse()</code>, which uses <code>RDFParserBuilder</code> to build a parser.
+It applies a nice fluent API design when doing that.</p>
+<div class="highlight"><pre><span class="n">RDFParser</span><span class="o">.</span><span class="na">create</span><span class="o">()</span>
+    <span class="o">.</span><span class="na">errorHandler</span><span class="o">(</span><span class="n">errorHandler</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">source</span><span class="o">(</span><span class="n">input</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">lang</span><span class="o">(</span><span class="n">lang</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">base</span><span class="o">(</span><span class="n">base</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">parse</span><span class="o">(</span><span class="n">dest</span><span class="o">);</span>
+</pre></div>
+
+<blockquote>Side note to self: the `RDFParser` has a `canUse` flag. It seems to indicate
+the parser can be used just once. Though it looks actually it works until the stream
+is closed&#8230;</blockquote>
+
+<p>So <code>RDFParserBuilder</code> will call <code>RDFParser</code>, which in turn will use the
+classes <code>LangTurtle</code> and <code>LangTurtleBase</code>.</p>
+<h2>LangTurtle (ARQ)</h2>
+<p>ARQ is a low level module in Jena, responsible for parsing queries, and also
+some of the interaction with graphs and datasets.</p>
+<p><code>LangTurtle</code> extends <code>LangTurtleBase</code>. Their task starts by populating
+the <code>prefixMap</code>, which contains all those prefixes used in queries like
+<code>rdfs</code>, <code>void</code>, <code>skos</code>, <code>etc</code>.</p>
+<p>Then it will keep parsing <strong>triples</strong> until it finds an <code>EOF</code>. For every
+triple, after the <em>Predicate-Object-List</em> is found, it calls
+<code>LangTurtle#emit()</code>.</p>
+<p>The <code>#emit()</code>method creates a <code>Triple</code> object (Jena Core, graph package).
+And also a <code>StreamRDFCountingBase</code> to keep track of statistics to display
+back to the user.</p>
+<p style='text-align: center;'>
+<img style="display: inline; width: 600px;" class="ui image" src="/2018/05/27/what-happens-when-you-upload-a-turtle-file-in-apache-jena-fuseki/eclipse.png"  />
+</p>
+
+<p><code>StreamRDFCountingBase</code> extends <code>StreamRDFWrapper</code>, and wraps - as per name -
+other <code>StreamRDF</code>&#8216;s, such as <code>ParserOutputDataset</code>.</p>
+<p><code>ParserOutputDataset</code> holds a reference to the <code>DatasetGraph</code> and also to the
+<code>prefixMap</code> populated earlier in <code>LangTurtle</code>. For each <code>Triple</code> that we have
+it will call the <code>DatasetGraph#add</code> method, creating a new <em>Quad</em> with the
+default graph name.</p>
+<h2>Conclusion</h2>
+<p>Finally, readers and streams are closed. An <code>UploadDetails</code> object is created
+holding stats ollected in <code>StreamRDFCountingBase</code>, which are also used for
+logging.</p>
+<p><code>Upload#incomingPath()</code> will return the <code>UploadDetails</code>. If there are no errors
+then the transaction will be commited. It involves again classes from ARQ and
+TDB (for journaling), but that will be for another post.</p>
+<p>The final method called in the <code>Upload</code> class will be <code>detailsJson()</code>, which
+returns the object as JSON. This JSON string is then finally returned to the
+user.</p>
+<p>So that&#8217;s it. Probably the next step will be to learn how <code>DatasetGraph</code> works,
+or maybe more about transactions in Jena.</p>
+<p>Happy hacking !</p><!-- html -->
+
+<p class="postmetadata">
+
+    <small>tags 
+     [&nbsp;<a
+        href="/tag/apache%20software%20foundation"
+        rel="tag">apache software foundation</a>&nbsp;]&nbsp;
+
+     [&nbsp;<a
+        href="/tag/jena"
+        rel="tag">jena</a>&nbsp;]&nbsp;
+
+     [&nbsp;<a
+        href="/tag/opensource"
+        rel="tag">opensource</a>&nbsp;]&nbsp;
+
+     [&nbsp;<a
+        href="/tag/programming"
+        rel="tag">programming</a>&nbsp;]&nbsp;
+
+    </small>
+
+
+</p>
+</div>
+
+<div class="ui raised padded container segment">
     <h2><a href="/2017/12/25/exif-odd-offsets" title="Permanent link">Exif Odd Offsets</a></h2>
     <p><small>kinow</small> @ <small>Dec 25, 2017&nbsp;21:43:33</small></p>
 
@@ -375,108 +512,6 @@ the local species.</p>
      [&nbsp;<a
         href="/tag/programming"
         rel="tag">programming</a>&nbsp;]&nbsp;
-
-    </small>
-
-
-</p>
-</div>
-
-<div class="ui raised padded container segment">
-    <h2><a href="/2017/11/06/using-formatter-exclusions-with-eclipse" title="Permanent link">Using formatter exclusions with Eclipse</a></h2>
-    <p><small>kinow</small> @ <small>Nov 06, 2017&nbsp;21:56:56</small></p>
-
-
-
-
-
-
-
-<a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2017/11/06/using-formatter-exclusions-with-eclipse" data-text="Using formatter exclusions with Eclipse" data-via="kinow" data-hashtags="opensource">Tweet</a>
-<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-
-
-    <p>Sometimes when you are formatting your code in Eclipse, you may want to prevent
-some parts of the code from being formatted. Especially when using Java 8 lambdas
-and optionals.</p>
-<p>Here&#8217;s some code before being formatted by Eclipse&#8217;s default formatter rules.</p>
-<p><small>Code adapted from: blog post <a href="http://javadeau.lawesson.se/2016/10/java-8-streams-in-hibernate-and-beyond.html"><i>Java d&#8217;eau &dash; Java 8: Streams in Hibernate and Beyond</i></a></small></p>
-<div class="highlight"><pre><span class="n">session</span><span class="o">.</span><span class="na">createQuery</span><span class="o">(</span><span class="s">&quot;SELECT h FROM Hare h&quot;</span><span class="o">,</span> <span class="n">Hare</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
-    <span class="o">.</span><span class="na">stream</span><span class="o">()</span>
-    <span class="o">.</span><span class="na">filter</span><span class="o">(</span><span class="n">h</span> <span class="o">-&gt;</span> <span class="n">h</span><span class="o">.</span><span class="na">getId</span><span class="o">()</span> <span class="o">==</span> <span class="mi">1</span><span class="o">)</span>
-    <span class="o">.</span><span class="na">map</span><span class="o">(</span><span class="n">Hare</span><span class="o">::</span><span class="n">getName</span><span class="o">)</span>
-    <span class="o">.</span><span class="na">forEach</span><span class="o">(</span><span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">::</span><span class="n">println</span><span class="o">);</span>
-</pre></div>
-
-<p>Then after formatting.</p>
-<div class="highlight"><pre><span class="n">session</span><span class="o">.</span><span class="na">createQuery</span><span class="o">(</span><span class="s">&quot;SELECT h FROM Hare h&quot;</span><span class="o">,</span> <span class="n">Hare</span><span class="o">.</span><span class="na">class</span><span class="o">).</span><span class="na">stream</span><span class="o">().</span><span class="na">filter</span><span class="o">(</span><span class="n">h</span> <span class="o">-&gt;</span> <span class="n">h</span><span class="o">.</span><span class="na">getId</span><span class="o">()</span> <span class="o">==</span> <span class="mi">1</span><span class="o">).</span><span class="na">map</span><span class="o">(</span><span class="n">Hare</span><span class="o">::</span><span class="n">getName</span><span class="o">)</span>
-                <span class="o">.</span><span class="na">forEach</span><span class="o">(</span><span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">::</span><span class="n">println</span><span class="o">);</span>
-</pre></div>
-
-<p>Which doesn&#8217;t look very appealing, ay? You can change this behaviour at least in two ways.
-The first by telling the formatter to ignore this block, through a special formatter tag in your code.</p>
-<p>First you need to enable this feature in Eclipse, as it is disabled by default. This setting is found in
-the preferences <em>Java</em> &rarr; <em>Code Style</em> &rarr; <em>Formatter</em> &rarr; <em>Edit</em> &rarr; <em>Off/On Tags</em>.</p>
-<p style='text-align: center;'>
-<img style="display: inline" class="ui image" src="/2017/11/06/using-formatter-exclusions-with-eclipse/formatter-tags.png" alt="A screen shot of Eclipse formatter settings" title="Enabling formatter tags in Eclipse" />
-<br/>
-<small>Enabling formatter tags in Eclipse</small>
-</p>
-
-<p>Then formatting the following code won&#8217;t change a thing in the block surrounded by the formatter tags.</p>
-<div class="highlight"><pre><span class="cm">/* @Formatter:off */</span>
-<span class="n">session</span><span class="o">.</span><span class="na">createQuery</span><span class="o">(</span><span class="s">&quot;SELECT h FROM Hare h&quot;</span><span class="o">,</span> <span class="n">Hare</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
-    <span class="o">.</span><span class="na">stream</span><span class="o">()</span>
-    <span class="o">.</span><span class="na">filter</span><span class="o">(</span><span class="n">h</span> <span class="o">-&gt;</span> <span class="n">h</span><span class="o">.</span><span class="na">getId</span><span class="o">()</span> <span class="o">==</span> <span class="mi">1</span><span class="o">)</span>
-    <span class="o">.</span><span class="na">map</span><span class="o">(</span><span class="n">Hare</span><span class="o">::</span><span class="n">getName</span><span class="o">)</span>
-    <span class="o">.</span><span class="na">forEach</span><span class="o">(</span><span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">::</span><span class="n">println</span><span class="o">);</span>
-<span class="cm">/* @Formatter:on */</span>
-</pre></div>
-
-<p>But having to type these tags can become annoying, and cause more commits and pull requests to be
-unnecessarily created. So an alternative approach can be to change the formatter
-<a href="https://stackoverflow.com/a/34492247/1762101">behaviour globally</a>.</p>
-<p>This can be done in Eclipse in another option under the formatter options, <em>Java</em> &rarr; <em>Code Style</em>
-&rarr; <em>Formatter</em> &rarr; <em>Edit</em> &rarr; <em>Line Wrapping</em> &rarr; <em>Function Calls</em> &rarr;
-<em>Qualified invocations</em>.</p>
-<p>You will have to choose <em>&ldquo;Wrap all elements, except first element if not necessary&rdquo;</em>
-under <em>Line wrapping policy</em>. And also check <em>&ldquo;Force split, even if line shorter than
-maximum line width&rdquo;</em>.</p>
-<p style='text-align: center;'>
-<img style="display: inline" class="ui image" src="/2017/11/06/using-formatter-exclusions-with-eclipse/global-setting.png" alt="A screen shot of Eclipse formatter settings" title="Enabling custom formatter behaviour globally" />
-<br/>
-<small>Enabling custom formatter behaviour globally</small>
-</p>
-
-<p>Once it is done, your code will look like the following no matter what.</p>
-<div class="highlight"><pre><span class="n">session</span><span class="o">.</span><span class="na">createQuery</span><span class="o">(</span><span class="s">&quot;SELECT h FROM Hare h&quot;</span><span class="o">,</span> <span class="n">Hare</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
-    <span class="o">.</span><span class="na">stream</span><span class="o">()</span>
-    <span class="o">.</span><span class="na">filter</span><span class="o">(</span><span class="n">h</span> <span class="o">-&gt;</span> <span class="n">h</span><span class="o">.</span><span class="na">getId</span><span class="o">()</span> <span class="o">==</span> <span class="mi">1</span><span class="o">)</span>
-    <span class="o">.</span><span class="na">map</span><span class="o">(</span><span class="n">Hare</span><span class="o">::</span><span class="n">getName</span><span class="o">)</span>
-    <span class="o">.</span><span class="na">forEach</span><span class="o">(</span><span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">::</span><span class="n">println</span><span class="o">);</span>
-</pre></div>
-
-<p>Happy coding!</p>
-<p>&hearts; Open Source</p><!-- html -->
-
-<p class="postmetadata">
-
-    <small>tags 
-     [&nbsp;<a
-        href="/tag/programming"
-        rel="tag">programming</a>&nbsp;]&nbsp;
-
-     [&nbsp;<a
-        href="/tag/java"
-        rel="tag">java</a>&nbsp;]&nbsp;
-
-     [&nbsp;<a
-        href="/tag/opensource"
-        rel="tag">opensource</a>&nbsp;]&nbsp;
-
-     [&nbsp;<a
-        href="/tag/eclipse"
-        rel="tag">eclipse</a>&nbsp;]&nbsp;
 
     </small>
 

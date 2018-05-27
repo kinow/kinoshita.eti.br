@@ -10,13 +10,68 @@
         
         <description>Latest news from Bruno P. Kinoshita</description>
         
-        <lastBuildDate>2018-05-26T11:11:11+12:00</lastBuildDate>
-        <pubDate>2018-05-26T11:11:11+12:00</pubDate>
+        <lastBuildDate>2018-05-28T00:28:14+12:00</lastBuildDate>
+        <pubDate>2018-05-28T00:28:14+12:00</pubDate>
         <generator>PieCrust 2.1.1</generator>
         
         
         
 
+        
+        
+        
+        <item>
+            <title>Securely using passwords with R</title>
+            <link>/2017/06/03/securely-using-passwords-with-r</link>
+            
+            <author>kinow</author>
+            <dc:creator>kinow</dc:creator>
+            
+            
+            
+            <category>r</category>
+            
+            <category>programming</category>
+            
+            <category>security</category>
+            
+            <pubDate>2017-06-03T20:21:39+12:00</pubDate>
+            <guid>/2017/06/03/securely-using-passwords-with-r</guid>
+            <description>
+            
+            &lt;p&gt;It is quite common to have code that needs to interact with another system, database, or third party application, and need to use some sort of credentials to securely communicate.&lt;/p&gt;
+&lt;p&gt;Most of the code I wrote in &lt;strong&gt;R&lt;/strong&gt;, or reviewed, had normally no borders (from a system analysis perspective) with other systems, or basically just interacted with the file system to retrieve NetCDF or JSON files.&lt;/p&gt;
+&lt;p&gt;However, after I saw a comment in &lt;em&gt;Reddit&lt;/em&gt; [1] some time ago about this, I decided to check what others used. With &lt;strong&gt;R Shiny&lt;/strong&gt; becoming more popular, and moving more R code to the web, I think this will become a common requirement for R code.&lt;/p&gt;
+&lt;p&gt;There is a blog post from &lt;strong&gt;RevolutionAnalytics&lt;/strong&gt; [2] that does a nice summary of the options for that. The post is from 2015, but I do not think much changed now in 2017. From the blog post and comments, there are seven methods listed:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Put &lt;a href=&#34;https://github.com/ropensci/fishbaseapi/blob/80393023a958aee54e2daa58c337458db5480b84/config_template.yaml&#34;&gt;credentials&lt;/a&gt; in your source code&lt;/li&gt;
+&lt;li&gt;Put credentials in a file in your project, but do not share this file (&lt;em&gt;#3&lt;/em&gt;, &lt;em&gt;#4&lt;/em&gt;, and &lt;em&gt;#5&lt;/em&gt; are similar to this one)&lt;/li&gt;
+&lt;li&gt;Put credentials in a &lt;a href=&#34;https://csgillespie.github.io/efficientR/3-3-r-startup.html#rprofile&#34;&gt;.Rprofile&lt;/a&gt; file&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Put credentials in a &lt;a href=&#34;https://csgillespie.github.io/efficientR/3-3-r-startup.html#renviron&#34;&gt;.Renviron&lt;/a&gt; file&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;Put &lt;a href=&#34;https://github.com/ropensci/fishbaseapi/blob/80393023a958aee54e2daa58c337458db5480b84/config_template.yaml&#34;&gt;credentials&lt;/a&gt; in a JSON or YAML file&lt;/li&gt;
+&lt;li&gt;Put credentials in a secure store that you can access from R&lt;/li&gt;
+&lt;li&gt;Ask the user for the credentials when the script is executed (possibly not useful for R Shiny applications)&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;strong&gt;My preferred way for R is the .Renviron (or a &lt;a href=&#34;https://github.com/gaborcsardi/dotenv&#34;&gt;dotEnv&lt;/a&gt;) file&lt;/strong&gt;. You basically store your password in this file, make sure you do not share this (a global gitignore could be helpful to prevent any accident) and read the variables when you start your code.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;span class=&#34;c1&#34;&gt;## Secrets&lt;/span&gt;
+MYSQL_PASSWORD&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;secret
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;If you would like to increase the security, you can combine it with a variation of &lt;em&gt;#6&lt;/em&gt;. You use a .Renviron file, and use an encryption service like &lt;a href=&#34;https://aws.amazon.com/kms/&#34;&gt;Amazon KMS&lt;/a&gt; (KMS stands for Key Management Service).&lt;/p&gt;
+&lt;p&gt;With &lt;a href=&#34;https://github.com/cardcorp/AWR.KMS&#34;&gt;AWS KMS in R&lt;/a&gt;, you can encrypt your values, put them encrypted in your .Renviron, and even if someone gets hold of your .Renviron file, you have an extra layer of protection, as the attacker would require access to your cloud environment to decrypt it too.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;span class=&#34;c1&#34;&gt;## Secrets&lt;/span&gt;
+MYSQL_PASSWORD&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;AQECAHga320J8WadplGCqqVAr4HNvDaFSQ&lt;span class=&#34;o&#34;&gt;+&lt;/span&gt;NaiwIBhmm6qDSFwAAAGIwYAYJKoZIhvcNAQcGoFMwUQIBADBMBgkqhkiG9w0BBwEwHgYJYIZIAWUDBAEuMBEE99&lt;span class=&#34;o&#34;&gt;+&lt;/span&gt;LoLdvYv8l41OhAAIBEIAfx49FFJCLeYrkfMfAw6XlnxP23MmDBdqP8dPp28OoAQ&lt;span class=&#34;o&#34;&gt;==&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h3&gt;References&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;[1] &lt;a href=&#34;https://www.reddit.com/r/rstats/comments/6aonwx/open_source_r_applications_and_hiding_database/&#34;&gt;r/stats * Open source R applications and hiding database connection&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;[2] &lt;a href=&#34;http://blog.revolutionanalytics.com/2015/11/how-to-store-and-use-authentication-details-with-r.html&#34;&gt;How to store and use webservice keys and authentication details with R&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&amp;hearts; Open Source&lt;/p&gt;
+            
+            </description>
+        </item>
         
         
         
@@ -641,57 +696,6 @@ has been &lt;a href=&#34;https://github.com/KDE/krita/commit/1d2343c0cacfb0b105f
 on other warnings in the console output of Krita.&lt;/p&gt;
 &lt;p&gt;And you? Have you tested &lt;a href=&#34;https://krita.org/en/item/krita-3-1-3-alpha-released/&#34;&gt;Krita 3.1.3 alpha&lt;/a&gt; already?
 What are you waiting for? :-)&lt;/p&gt;
-&lt;p&gt;&amp;hearts; Open Source&lt;/p&gt;
-            
-            </description>
-        </item>
-        
-        
-        
-        <item>
-            <title>Simulating less memory with ulimit</title>
-            <link>/2017/03/26/simulating-less-memory-with-ulimit</link>
-            
-            <author>kinow</author>
-            <dc:creator>kinow</dc:creator>
-            
-            <category>blog</category>
-            
-            <category>c++</category>
-            
-            <category>krita</category>
-            
-            <category>programming</category>
-            
-            <category>opensource</category>
-            
-            <pubDate>2017-03-26T11:14:03+13:00</pubDate>
-            <guid>/2017/03/26/simulating-less-memory-with-ulimit</guid>
-            <description>
-            
-            &lt;p&gt;These days I was trying to reproduce &lt;a href=&#34;https://bugs.kde.org/show_bug.cgi?id=376382&#34;&gt;a bug in Krita&lt;/a&gt;
-where it would crash when a user copied group layers between windows. It appeared that the user was
-getting a segmentation fault due to the user&amp;#8217;s computer running out of memory.&lt;/p&gt;
-&lt;p&gt;I could not reproduce the issue, but my computer has 16 GB. The first thing that came to my mind was
-to create a virtual machine with less memory to reproduce the issue. But I decided to spend some time
-looking for a &lt;a href=&#34;http://wiki.c2.com/?LazinessImpatienceHubris&#34;&gt;simpler way&lt;/a&gt; of doing it.&lt;/p&gt;
-&lt;p&gt;Searching the web I found some suggestions that &lt;code&gt;ulimit&lt;/code&gt; could work. After playing for a while with
-&lt;code&gt;ulimit&lt;/code&gt; and &lt;code&gt;htop&lt;/code&gt;, and verifying the amount of memory necessary to open two files in two windows
-in Krita, I came up with the following settings.&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;span class=&#34;c&#34;&gt;# 2550 mb in kb&lt;/span&gt;
-&lt;span class=&#34;nb&#34;&gt;ulimit&lt;/span&gt; -v 2550000
-
-&lt;span class=&#34;c&#34;&gt;# 2 gb in kb&lt;/span&gt;
-&lt;span class=&#34;nb&#34;&gt;ulimit&lt;/span&gt; -m 2000000
-
-&lt;span class=&#34;c&#34;&gt;# Confirm limits&lt;/span&gt;
-&lt;span class=&#34;nb&#34;&gt;ulimit&lt;/span&gt; -a
-
-gdb &lt;span class=&#34;nv&#34;&gt;$HOME&lt;/span&gt;/Development/cpp/workspace/krita_install/bin/krita
-&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;Then after copying a few layers from one window to another, I successfully reproduced the issue,
-and could include a backtrace in the Krita issue tracking system.&lt;/p&gt;
 &lt;p&gt;&amp;hearts; Open Source&lt;/p&gt;
             
             </description>

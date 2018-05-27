@@ -10,13 +10,137 @@
         
         <description>Latest news from Bruno P. Kinoshita</description>
         
-        <lastBuildDate>2018-05-26T11:11:11+12:00</lastBuildDate>
-        <pubDate>2018-05-26T11:11:11+12:00</pubDate>
+        <lastBuildDate>2018-05-28T00:28:14+12:00</lastBuildDate>
+        <pubDate>2018-05-28T00:28:14+12:00</pubDate>
         <generator>PieCrust 2.1.1</generator>
         
         
         
 
+        
+        
+        
+        <item>
+            <title>What happens when you upload a Turtle file in Apache Jena Fuseki</title>
+            <link>/2018/05/27/what-happens-when-you-upload-a-turtle-file-in-apache-jena-fuseki</link>
+            
+            <author>kinow</author>
+            <dc:creator>kinow</dc:creator>
+            
+            
+            
+            <category>apache software foundation</category>
+            
+            <category>jena</category>
+            
+            <category>opensource</category>
+            
+            <category>programming</category>
+            
+            <pubDate>2018-05-27T22:42:55+12:00</pubDate>
+            <guid>/2018/05/27/what-happens-when-you-upload-a-turtle-file-in-apache-jena-fuseki</guid>
+            <description>
+            
+            &lt;p&gt;I am working on &lt;a href=&#34;https://github.com/NatLibFi/Skosmos/issues/738&#34;&gt;an issue for Skosmos&lt;/a&gt;
+that involves preparing some &lt;a href=&#34;https://www.w3.org/TR/turtle/&#34;&gt;Turtle&lt;/a&gt; files and uploading
+them using Apache Jena Fuseki&amp;#8217;s web interface.&lt;/p&gt;
+&lt;p&gt;The issue is now pending feedback, which gives me a moment to have fun with
+something else. So I decided to dig down the rabbit hole and start learning more
+about certain parts of the Apache Jena code base.&lt;/p&gt;
+&lt;p style=&#39;text-align: center;&#39;&gt;
+&lt;img style=&#34;display: inline; width: 600px;&#34; class=&#34;ui image&#34; src=&#34;/2018/05/27/what-happens-when-you-upload-a-turtle-file-in-apache-jena-fuseki/browser.png&#34;  /&gt;
+&lt;/p&gt;
+
+&lt;p&gt;This post will be useful to myself in the future, as a note-taking in a series, so that I
+remember how things work - you never know right? But hopefully this will be useful
+to other wanting to understand more about the code of Apache Jena. &lt;/p&gt;
+&lt;h2&gt;Where upload happens - SPARQL_Upload and Upload (Fuseki Core)&lt;/h2&gt;
+&lt;p&gt;Knowing a bit of the code base, I went straight to the &lt;code&gt;SPARQL_Upload&lt;/code&gt; class,
+from the Fuseki Core module. Set up a couple of breakpoints, uploaded my file,
+but nothing. Then tried on its package-neighbour class, &lt;code&gt;Upload&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;Actually, it is easier to understand seeing the class hierarchy, and knowing
+that when I run the application in Eclipse, it is running with Jetty, serving
+servlets (there is no framework like Wicket, Struts, etc, involved).&lt;/p&gt;
+&lt;p style=&#39;text-align: center;&#39;&gt;
+&lt;img style=&#34;display: inline; width: 600px;&#34; class=&#34;ui image&#34; src=&#34;/2018/05/27/what-happens-when-you-upload-a-turtle-file-in-apache-jena-fuseki/class-hierarchy.png&#34;  /&gt;
+&lt;/p&gt;
+
+&lt;p&gt;Several filters are applied to the HTTP request too, like Cross Origin, Shiro, and
+the &lt;code&gt;FusekiFilter&lt;/code&gt;. The latter looks at the requests to see if it includes a dataset.
+If a dataset is found - it is in our case - then it hands the request over to
+the right class to handle it.&lt;/p&gt;
+&lt;p&gt;REST_Quads_RW will take care of the upload action, using the &lt;code&gt;Upload&lt;/code&gt; class where my
+breakpoint stopped.&lt;/p&gt;
+&lt;h2&gt;Upload#incomingData() (Fuseki Core)&lt;/h2&gt;
+&lt;p&gt;&lt;code&gt;Upload#incomingData()&lt;/code&gt; starts by checking the Content Type from the request. In my case
+it is a &lt;code&gt;multipart/form-data&lt;/code&gt;. Then it calls its other method &lt;code&gt;#fileUploadWorker()&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;#fileUploadWorker()&lt;/code&gt; creates a &lt;code&gt;ServletFilterUpload&lt;/code&gt;, from Apache Commons FileUpload.
+With that, it opens a stream for the file, retrieves its name and other information,
+such as the content type.&lt;/p&gt;
+&lt;p&gt;Ah, the content type is interesting too. It defaults to &lt;code&gt;RDFXML&lt;/code&gt;, but what&amp;#8217;s interesting
+is the comment.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;span class=&#34;k&#34;&gt;if&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;lang&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;==&lt;/span&gt; &lt;span class=&#34;kc&#34;&gt;null&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
+    &lt;span class=&#34;c1&#34;&gt;// Desperate.&lt;/span&gt;
+    &lt;span class=&#34;n&#34;&gt;lang&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;RDFLanguages&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;RDFXML&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Well, in this case we are getting a &lt;code&gt;Lang:Turtle&lt;/code&gt;. So it now knows that it has a Turtle
+file, but it still needs to parse it.&lt;/p&gt;
+&lt;h2&gt;ActionLib#parse() (Fuseki Core)&lt;/h2&gt;
+&lt;p&gt;&lt;code&gt;Upload&lt;/code&gt; calls &lt;code&gt;ActionLib#parse()&lt;/code&gt;, which uses &lt;code&gt;RDFParserBuilder&lt;/code&gt; to build a parser.
+It applies a nice fluent API design when doing that.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;span class=&#34;n&#34;&gt;RDFParser&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;create&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;()&lt;/span&gt;
+    &lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;errorHandler&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;errorHandler&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
+    &lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;source&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;input&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
+    &lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;lang&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;lang&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
+    &lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;base&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;base&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
+    &lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;parse&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;dest&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;);&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;blockquote&gt;Side note to self: the `RDFParser` has a `canUse` flag. It seems to indicate
+the parser can be used just once. Though it looks actually it works until the stream
+is closed&amp;#8230;&lt;/blockquote&gt;
+
+&lt;p&gt;So &lt;code&gt;RDFParserBuilder&lt;/code&gt; will call &lt;code&gt;RDFParser&lt;/code&gt;, which in turn will use the
+classes &lt;code&gt;LangTurtle&lt;/code&gt; and &lt;code&gt;LangTurtleBase&lt;/code&gt;.&lt;/p&gt;
+&lt;h2&gt;LangTurtle (ARQ)&lt;/h2&gt;
+&lt;p&gt;ARQ is a low level module in Jena, responsible for parsing queries, and also
+some of the interaction with graphs and datasets.&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;LangTurtle&lt;/code&gt; extends &lt;code&gt;LangTurtleBase&lt;/code&gt;. Their task starts by populating
+the &lt;code&gt;prefixMap&lt;/code&gt;, which contains all those prefixes used in queries like
+&lt;code&gt;rdfs&lt;/code&gt;, &lt;code&gt;void&lt;/code&gt;, &lt;code&gt;skos&lt;/code&gt;, &lt;code&gt;etc&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;Then it will keep parsing &lt;strong&gt;triples&lt;/strong&gt; until it finds an &lt;code&gt;EOF&lt;/code&gt;. For every
+triple, after the &lt;em&gt;Predicate-Object-List&lt;/em&gt; is found, it calls
+&lt;code&gt;LangTurtle#emit()&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;The &lt;code&gt;#emit()&lt;/code&gt;method creates a &lt;code&gt;Triple&lt;/code&gt; object (Jena Core, graph package).
+And also a &lt;code&gt;StreamRDFCountingBase&lt;/code&gt; to keep track of statistics to display
+back to the user.&lt;/p&gt;
+&lt;p style=&#39;text-align: center;&#39;&gt;
+&lt;img style=&#34;display: inline; width: 600px;&#34; class=&#34;ui image&#34; src=&#34;/2018/05/27/what-happens-when-you-upload-a-turtle-file-in-apache-jena-fuseki/eclipse.png&#34;  /&gt;
+&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;StreamRDFCountingBase&lt;/code&gt; extends &lt;code&gt;StreamRDFWrapper&lt;/code&gt;, and wraps - as per name -
+other &lt;code&gt;StreamRDF&lt;/code&gt;&amp;#8216;s, such as &lt;code&gt;ParserOutputDataset&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;ParserOutputDataset&lt;/code&gt; holds a reference to the &lt;code&gt;DatasetGraph&lt;/code&gt; and also to the
+&lt;code&gt;prefixMap&lt;/code&gt; populated earlier in &lt;code&gt;LangTurtle&lt;/code&gt;. For each &lt;code&gt;Triple&lt;/code&gt; that we have
+it will call the &lt;code&gt;DatasetGraph#add&lt;/code&gt; method, creating a new &lt;em&gt;Quad&lt;/em&gt; with the
+default graph name.&lt;/p&gt;
+&lt;h2&gt;Conclusion&lt;/h2&gt;
+&lt;p&gt;Finally, readers and streams are closed. An &lt;code&gt;UploadDetails&lt;/code&gt; object is created
+holding stats ollected in &lt;code&gt;StreamRDFCountingBase&lt;/code&gt;, which are also used for
+logging.&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;Upload#incomingPath()&lt;/code&gt; will return the &lt;code&gt;UploadDetails&lt;/code&gt;. If there are no errors
+then the transaction will be commited. It involves again classes from ARQ and
+TDB (for journaling), but that will be for another post.&lt;/p&gt;
+&lt;p&gt;The final method called in the &lt;code&gt;Upload&lt;/code&gt; class will be &lt;code&gt;detailsJson()&lt;/code&gt;, which
+returns the object as JSON. This JSON string is then finally returned to the
+user.&lt;/p&gt;
+&lt;p&gt;So that&amp;#8217;s it. Probably the next step will be to learn how &lt;code&gt;DatasetGraph&lt;/code&gt; works,
+or maybe more about transactions in Jena.&lt;/p&gt;
+&lt;p&gt;Happy hacking !&lt;/p&gt;
+            
+            </description>
+        </item>
         
         
         
@@ -640,53 +764,6 @@ wget -r -nd -np -e &lt;span class=&#34;nv&#34;&gt;robots&lt;/span&gt;&lt;span cl
 &lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;The script can be found at GitHub too: &lt;a href=&#34;https://github.com/kinow/dork-scripts/tree/3c519a74f28c08310ce2e65f8e860d61fd0c5c07/gpg/asf-sigs&#34;&gt;https://github.com/kinow/dork-scripts/tree/3c519a74f28c08310ce2e65f8e860d61fd0c5c07/gpg/asf-sigs&lt;/a&gt;&lt;/p&gt;
-            
-            </description>
-        </item>
-        
-        
-        
-        <item>
-            <title>Removing Javadoc SVN Id Tags with Shell Script</title>
-            <link>/2017/09/13/removing-javadoc-svn-id-tags-with-shell-script</link>
-            
-            <author>kinow</author>
-            <dc:creator>kinow</dc:creator>
-            
-            
-            
-            <category>programming</category>
-            
-            <category>shell script</category>
-            
-            <category>opensource</category>
-            
-            <category>apache software foundation</category>
-            
-            <pubDate>2017-09-13T16:49:26+12:00</pubDate>
-            <guid>/2017/09/13/removing-javadoc-svn-id-tags-with-shell-script</guid>
-            <description>
-            
-            &lt;p&gt;Subversion supports &lt;a href=&#34;http://svnbook.red-bean.com/en/1.4/svn.advanced.props.special.keywords.html&#34;&gt;Keyword Substitution&lt;/a&gt;, which performs substitution of some keywords such as &lt;em&gt;Author&lt;/em&gt;, &lt;em&gt;Date&lt;/em&gt;, and &lt;strong&gt;&lt;em&gt;Id&lt;/em&gt;&lt;/strong&gt;. The &lt;strong&gt;&lt;em&gt;Id&lt;/em&gt;&lt;/strong&gt; is the date, time, and user that last modified the file.&lt;/p&gt;
-&lt;p&gt;It used to be common to all Apache Commons components to have a line as follows in the header of each Java class.&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;span class=&#34;cm&#34;&gt;/**&lt;/span&gt;
-&lt;span class=&#34;cm&#34;&gt; * SomeClass class.&lt;/span&gt;
-&lt;span class=&#34;cm&#34;&gt; *&lt;/span&gt;
-&lt;span class=&#34;cm&#34;&gt; * @version $Id$&lt;/span&gt;
-&lt;span class=&#34;cm&#34;&gt; */&lt;/span&gt;
-&lt;span class=&#34;kd&#34;&gt;public&lt;/span&gt; &lt;span class=&#34;kd&#34;&gt;class&lt;/span&gt; &lt;span class=&#34;nc&#34;&gt;SomeClass&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;
-
-&lt;span class=&#34;o&#34;&gt;}&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;Then the generated Javadoc would contain the date of when the class was altered. Although useful, with proper versioning, it becomes obsolete. It is much more important to know what is the version of the software, not the last time it was modified or by whom. In case you have a problem with that specific file, you can always check the history of the file using &lt;code&gt;git log&lt;/code&gt;, or &lt;code&gt;git bisect&lt;/code&gt;, or &amp;hellip;&lt;/p&gt;
-&lt;p&gt;Apache Commons components that are migrated to git need to have these lines removed. git does not support these Subversion Keywords so it is never properly rendered. And as every time I have to remove these lines I come up with some shell script snippet, I decided to document the last one I wrote, so that it can save me some time &amp;dash; and perhaps for somebody else too?&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;find . -name &lt;span class=&#34;s2&#34;&gt;&amp;quot;*.java&amp;quot;&lt;/span&gt; -exec sed -i &lt;span class=&#34;s1&#34;&gt;&amp;#39;/^.*\*\s*@version\s*\$Id\$.*$/d&amp;#39;&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;{}&lt;/span&gt; &lt;span class=&#34;se&#34;&gt;\;&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;And then &lt;a href=&#34;https://github.com/apache/commons-collections/commit/29d2e93966e7fb99a888a58ab43480e485dcdfc6&#34;&gt;push a commit&lt;/a&gt; with the change :-) In case you know some regex, you can change it and use the same command syntax to remove comments, specific configuration lines, etc.&lt;/p&gt;
-&lt;p&gt;That&amp;#8217;s all. Happy scripting!&lt;/p&gt;
-&lt;p&gt;&amp;hearts; Open Source&lt;/p&gt;
             
             </description>
         </item>
