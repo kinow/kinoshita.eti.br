@@ -126,6 +126,108 @@
                     
                     <p>Posts tagged with &#8216;java&#8217;</p>
 <div class="ui raised padded container segment">
+    <h2><a href="/2017/11/06/using-formatter-exclusions-with-eclipse" title="Permanent link">Using formatter exclusions with Eclipse</a></h2>
+    <p><small>kinow</small> @ <small>Nov 06, 2017&nbsp;21:56:56</small></p>
+
+
+
+
+
+
+
+<a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2017/11/06/using-formatter-exclusions-with-eclipse" data-text="Using formatter exclusions with Eclipse" data-via="kinow" data-hashtags="opensource">Tweet</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+
+
+    <p>Sometimes when you are formatting your code in Eclipse, you may want to prevent
+some parts of the code from being formatted. Especially when using Java 8 lambdas
+and optionals.</p>
+<p>Here&#8217;s some code before being formatted by Eclipse&#8217;s default formatter rules.</p>
+<p><small>Code adapted from: blog post <a href="http://javadeau.lawesson.se/2016/10/java-8-streams-in-hibernate-and-beyond.html"><i>Java d&#8217;eau &dash; Java 8: Streams in Hibernate and Beyond</i></a></small></p>
+<div class="highlight"><pre><span class="n">session</span><span class="o">.</span><span class="na">createQuery</span><span class="o">(</span><span class="s">&quot;SELECT h FROM Hare h&quot;</span><span class="o">,</span> <span class="n">Hare</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">stream</span><span class="o">()</span>
+    <span class="o">.</span><span class="na">filter</span><span class="o">(</span><span class="n">h</span> <span class="o">-&gt;</span> <span class="n">h</span><span class="o">.</span><span class="na">getId</span><span class="o">()</span> <span class="o">==</span> <span class="mi">1</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">map</span><span class="o">(</span><span class="n">Hare</span><span class="o">::</span><span class="n">getName</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">forEach</span><span class="o">(</span><span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">::</span><span class="n">println</span><span class="o">);</span>
+</pre></div>
+
+<p>Then after formatting.</p>
+<div class="highlight"><pre><span class="n">session</span><span class="o">.</span><span class="na">createQuery</span><span class="o">(</span><span class="s">&quot;SELECT h FROM Hare h&quot;</span><span class="o">,</span> <span class="n">Hare</span><span class="o">.</span><span class="na">class</span><span class="o">).</span><span class="na">stream</span><span class="o">().</span><span class="na">filter</span><span class="o">(</span><span class="n">h</span> <span class="o">-&gt;</span> <span class="n">h</span><span class="o">.</span><span class="na">getId</span><span class="o">()</span> <span class="o">==</span> <span class="mi">1</span><span class="o">).</span><span class="na">map</span><span class="o">(</span><span class="n">Hare</span><span class="o">::</span><span class="n">getName</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">forEach</span><span class="o">(</span><span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">::</span><span class="n">println</span><span class="o">);</span>
+</pre></div>
+
+<p>Which doesn&#8217;t look very appealing, ay? You can change this behaviour at least in two ways.
+The first by telling the formatter to ignore this block, through a special formatter tag in your code.</p>
+<p>First you need to enable this feature in Eclipse, as it is disabled by default. This setting is found in
+the preferences <em>Java</em> &rarr; <em>Code Style</em> &rarr; <em>Formatter</em> &rarr; <em>Edit</em> &rarr; <em>Off/On Tags</em>.</p>
+<p style='text-align: center;'>
+<img style="display: inline" class="ui image" src="/2017/11/06/using-formatter-exclusions-with-eclipse/formatter-tags.png" alt="A screen shot of Eclipse formatter settings" title="Enabling formatter tags in Eclipse" />
+<br/>
+<small>Enabling formatter tags in Eclipse</small>
+</p>
+
+<p>Then formatting the following code won&#8217;t change a thing in the block surrounded by the formatter tags.</p>
+<div class="highlight"><pre><span class="cm">/* @Formatter:off */</span>
+<span class="n">session</span><span class="o">.</span><span class="na">createQuery</span><span class="o">(</span><span class="s">&quot;SELECT h FROM Hare h&quot;</span><span class="o">,</span> <span class="n">Hare</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">stream</span><span class="o">()</span>
+    <span class="o">.</span><span class="na">filter</span><span class="o">(</span><span class="n">h</span> <span class="o">-&gt;</span> <span class="n">h</span><span class="o">.</span><span class="na">getId</span><span class="o">()</span> <span class="o">==</span> <span class="mi">1</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">map</span><span class="o">(</span><span class="n">Hare</span><span class="o">::</span><span class="n">getName</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">forEach</span><span class="o">(</span><span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">::</span><span class="n">println</span><span class="o">);</span>
+<span class="cm">/* @Formatter:on */</span>
+</pre></div>
+
+<p>But having to type these tags can become annoying, and cause more commits and pull requests to be
+unnecessarily created. So an alternative approach can be to change the formatter
+<a href="https://stackoverflow.com/a/34492247/1762101">behaviour globally</a>.</p>
+<p>This can be done in Eclipse in another option under the formatter options, <em>Java</em> &rarr; <em>Code Style</em>
+&rarr; <em>Formatter</em> &rarr; <em>Edit</em> &rarr; <em>Line Wrapping</em> &rarr; <em>Function Calls</em> &rarr;
+<em>Qualified invocations</em>.</p>
+<p>You will have to choose <em>&ldquo;Wrap all elements, except first element if not necessary&rdquo;</em>
+under <em>Line wrapping policy</em>. And also check <em>&ldquo;Force split, even if line shorter than
+maximum line width&rdquo;</em>.</p>
+<p style='text-align: center;'>
+<img style="display: inline" class="ui image" src="/2017/11/06/using-formatter-exclusions-with-eclipse/global-setting.png" alt="A screen shot of Eclipse formatter settings" title="Enabling custom formatter behaviour globally" />
+<br/>
+<small>Enabling custom formatter behaviour globally</small>
+</p>
+
+<p>Once it is done, your code will look like the following no matter what.</p>
+<div class="highlight"><pre><span class="n">session</span><span class="o">.</span><span class="na">createQuery</span><span class="o">(</span><span class="s">&quot;SELECT h FROM Hare h&quot;</span><span class="o">,</span> <span class="n">Hare</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">stream</span><span class="o">()</span>
+    <span class="o">.</span><span class="na">filter</span><span class="o">(</span><span class="n">h</span> <span class="o">-&gt;</span> <span class="n">h</span><span class="o">.</span><span class="na">getId</span><span class="o">()</span> <span class="o">==</span> <span class="mi">1</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">map</span><span class="o">(</span><span class="n">Hare</span><span class="o">::</span><span class="n">getName</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">forEach</span><span class="o">(</span><span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">::</span><span class="n">println</span><span class="o">);</span>
+</pre></div>
+
+<p>Happy coding!</p>
+<p>&hearts; Open Source</p><!-- html -->
+
+<p class="postmetadata">
+
+    <small>tags 
+     [&nbsp;<a
+        href="/tag/programming"
+        rel="tag">programming</a>&nbsp;]&nbsp;
+
+     [&nbsp;<a
+        href="/tag/java"
+        rel="tag">java</a>&nbsp;]&nbsp;
+
+     [&nbsp;<a
+        href="/tag/opensource"
+        rel="tag">opensource</a>&nbsp;]&nbsp;
+
+     [&nbsp;<a
+        href="/tag/eclipse"
+        rel="tag">eclipse</a>&nbsp;]&nbsp;
+
+    </small>
+
+
+</p>
+</div>
+
+<div class="ui raised padded container segment">
     <h2><a href="/2017/09/01/finding-base64-implementations-in-apache-software-foundation-projects" title="Permanent link">Finding Base64 implementations in Apache Software Foundation projects</a></h2>
     <p><small>kinow</small> @ <small>Sep 01, 2017&nbsp;20:23:03</small></p>
 
@@ -597,63 +699,6 @@
      [&nbsp;<a
         href="/tag/opensource"
         rel="tag">opensource</a>&nbsp;]&nbsp;
-
-    </small>
-
-
-</p>
-</div>
-
-<div class="ui raised padded container segment">
-    <h2><a href="/2017/06/02/apache-commons-text-lookuptranslator" title="Permanent link">Apache Commons Text LookupTranslator</a></h2>
-    <p><small>kinow</small> @ <small>Jun 02, 2017&nbsp;22:50:39</small></p>
-
-
-
-
-
-
-
-<a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2017/06/02/apache-commons-text-lookuptranslator" data-text="Apache Commons Text LookupTranslator" data-via="kinow" data-hashtags="opensource">Tweet</a>
-<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-
-
-    <p><a href="http://commons.apache.org/proper/commons-text/">Apache Commons Text</a> includes several algorithms for text processing. Today&#8217;s post is about one of the classes available since the 1.0 release, the <a href="http://commons.apache.org/proper/commons-text/apidocs/org/apache/commons/text/translate/LookupTranslator.html">LookupTranslator</a>.</p>
-<p>It is used to translate text using a lookup table. Most users won&#8217;t necessarily be - knowingly - using this class. Most likely, they will use the <a href="http://commons.apache.org/proper/commons-text/apidocs/org/apache/commons/text/StringEscapeUtils.html">StringEscapeUtils</a>, which contains methods to escape and unescape CSV, JSON, XML, Java, and EcmaScript.</p>
-<div class="highlight"><pre><span class="n">String</span> <span class="n">original</span> <span class="o">=</span> <span class="s">&quot;He didn&#39;t say, \&quot;stop!\&quot;&quot;</span><span class="o">;</span>
-<span class="n">String</span> <span class="n">expected</span> <span class="o">=</span> <span class="s">&quot;He didn&#39;t say, \\\&quot;stop!\\\&quot;&quot;</span><span class="o">;</span>
-<span class="n">String</span> <span class="n">result</span>   <span class="o">=</span> <span class="n">StringEscapeUtils</span><span class="o">.</span><span class="na">escapeJava</span><span class="o">(</span><span class="n">original</span><span class="o">);</span>
-</pre></div>
-
-<p>StringEscapeUtils uses CharSequenceTranslator&#8217;s, including LookupTranslator. You can use it directly too, to escape other data your text may contain, special characters not supported by some third party library or system, or even a simpler case.</p>
-<p>In other words, you would be creating your own StringEscapeUtils. Let&#8217;s say you have some text where numbers must never start with the zero digital, due to some restriction in the way you use that data later.</p>
-<div class="highlight"><pre><span class="n">Map</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">String</span><span class="o">&gt;</span> <span class="n">lookupTable</span> <span class="o">=</span> <span class="k">new</span> <span class="n">HashMap</span><span class="o">&lt;&gt;();</span>
-<span class="n">lookupTable</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">&quot;a&quot;</span><span class="o">,</span> <span class="s">&quot;&quot;</span><span class="o">);</span>
-<span class="kd">final</span> <span class="n">LookupTranslator</span> <span class="n">escapeNumber0</span> <span class="o">=</span> <span class="k">new</span> <span class="n">LookupTranslator</span><span class="o">(</span><span class="k">new</span> <span class="n">String</span><span class="o">[][]</span> <span class="o">{</span> <span class="o">{</span><span class="s">&quot;0&quot;</span><span class="o">,</span> <span class="s">&quot;&quot;</span><span class="o">}</span> <span class="o">});</span>
-<span class="n">String</span> <span class="n">escaped</span> <span class="o">=</span> <span class="n">escapeNumber0</span><span class="o">.</span><span class="na">translate</span><span class="o">(</span><span class="s">&quot;There are 02 texts waiting for analysis today...&quot;</span><span class="o">);</span>
-</pre></div>
-
-<p>That way the resulting text would be &#8220;There are 2 texts waiting for analysis today&#8221;, allowing you to proceed with the rest of your analysis. This is a very simple example, but hopefully you grokked how LookupTranslator works.</p>
-<p>&hearts; Open Source</p><!-- html -->
-
-<p class="postmetadata">
-
-    <small>tags 
-     [&nbsp;<a
-        href="/tag/apache%20software%20foundation"
-        rel="tag">apache software foundation</a>&nbsp;]&nbsp;
-
-     [&nbsp;<a
-        href="/tag/java"
-        rel="tag">java</a>&nbsp;]&nbsp;
-
-     [&nbsp;<a
-        href="/tag/opensource"
-        rel="tag">opensource</a>&nbsp;]&nbsp;
-
-     [&nbsp;<a
-        href="/tag/programming"
-        rel="tag">programming</a>&nbsp;]&nbsp;
 
     </small>
 

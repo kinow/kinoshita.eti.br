@@ -10,13 +10,178 @@
         
         <description>Latest news from Bruno P. Kinoshita</description>
         
-        <lastBuildDate>2018-05-28T00:28:14+12:00</lastBuildDate>
-        <pubDate>2018-05-28T00:28:14+12:00</pubDate>
+        <lastBuildDate>2018-05-29T22:52:11+12:00</lastBuildDate>
+        <pubDate>2018-05-29T22:52:11+12:00</pubDate>
         <generator>PieCrust 2.1.1</generator>
         
         
         
 
+        
+        
+        
+        <item>
+            <title>Using Active Choices with Role Strategy Plug-in</title>
+            <link>/2016/04/24/using-active-choices-with-role-strategy-plugin</link>
+            
+            <author>kinow</author>
+            <dc:creator>kinow</dc:creator>
+            
+            <category>blog</category>
+            
+            <category>jenkins</category>
+            
+            <pubDate>2016-04-24T16:05:03+12:00</pubDate>
+            <guid>/2016/04/24/using-active-choices-with-role-strategy-plugin</guid>
+            <description>
+            
+            &lt;p&gt;Having worked in Open Source for a few years, one of my favorite things is when you can
+share experience with other people that you meet. &lt;a href=&#34;https://github.com/agray&#34;&gt;Andrew Gray&lt;/a&gt;
+has worked with .NET and Jenkins for years, and we met through Open Source. He has helped me
+in the past with Jenkins and .NET, and also maintains the blog
+&lt;a href=&#34;http://jenkinsheaven.blogspot.co.nz/&#34;&gt;Jenkins.NET&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;A couple of days ago he sent me an interesting question. He asked me if that would be possible
+to use Active Choices Plug-in with the &lt;a href=&#34;https://wiki.jenkins-ci.org/display/JENKINS/Role+Strategy+Plugin&#34;&gt;Role Strategy Plug-in&lt;/a&gt;. This plug-in lets you define roles, define which permissions a role has, and then assign users to the roles.&lt;/p&gt;
+&lt;p&gt;The idea was to show a set of parameters that would vary according to the user roles. So, say that the user
+is a tester. Then s/he would see certain parameters. But if s/he was a manager, other parameters would be
+displayed.&lt;/p&gt;
+&lt;h2&gt;To the code&lt;/h2&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;span class=&#34;kn&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;hudson.model.User&lt;/span&gt;
+&lt;span class=&#34;kn&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;hudson.model.Hudson&lt;/span&gt;
+&lt;span class=&#34;kn&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;hudson.security.AuthorizationStrategy&lt;/span&gt;
+&lt;span class=&#34;kn&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;hudson.security.Permission&lt;/span&gt;
+&lt;span class=&#34;kn&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;com.michelin.cio.hudson.plugins.rolestrategy.RoleBasedAuthorizationStrategy&lt;/span&gt;
+&lt;span class=&#34;kn&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;com.michelin.cio.hudson.plugins.rolestrategy.RoleMap&lt;/span&gt;
+
+&lt;span class=&#34;n&#34;&gt;AuthorizationStrategy&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;strategy&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Hudson&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;getInstance&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;().&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;getAuthorizationStrategy&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;();&lt;/span&gt;
+
+&lt;span class=&#34;n&#34;&gt;jobs&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;[]&lt;/span&gt;
+&lt;span class=&#34;n&#34;&gt;user&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;User&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;current&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;()&lt;/span&gt;
+&lt;span class=&#34;n&#34;&gt;userId&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;user&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;getId&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;()&lt;/span&gt;
+
+&lt;span class=&#34;k&#34;&gt;if&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;strategy&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;!=&lt;/span&gt; &lt;span class=&#34;kc&#34;&gt;null&lt;/span&gt; 
+    &lt;span class=&#34;c1&#34;&gt;// not very straightforward to get the groups for a given user&lt;/span&gt;
+    &lt;span class=&#34;n&#34;&gt;roles&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;roleStrategy&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;getGrantedRoles&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;globalRoles&amp;quot;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
+    &lt;span class=&#34;k&#34;&gt;for&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;entry&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;in&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;roles&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;
+        &lt;span class=&#34;n&#34;&gt;role&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;entry&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;key&lt;/span&gt;
+        &lt;span class=&#34;n&#34;&gt;users&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;entry&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;value&lt;/span&gt;
+        &lt;span class=&#34;nf&#34;&gt;if&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;role&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;getName&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;().&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;equals&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;tester&amp;quot;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;))&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;
+            &lt;span class=&#34;k&#34;&gt;if&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;userId&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;in&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;users&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;
+                &lt;span class=&#34;n&#34;&gt;jobs&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;PROJECT_FOR_TESTERS1&amp;quot;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;&amp;quot;PROJECT_FOR_TESTERS2&amp;quot;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
+                &lt;span class=&#34;k&#34;&gt;break&lt;/span&gt;
+            &lt;span class=&#34;o&#34;&gt;}&lt;/span&gt;
+        &lt;span class=&#34;o&#34;&gt;}&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;else&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;if&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;role&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;getName&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;().&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;equals&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;admin&amp;quot;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;))&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;
+            &lt;span class=&#34;k&#34;&gt;if&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;userId&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;in&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;users&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;
+                &lt;span class=&#34;n&#34;&gt;jobs&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;PROJECT_FOR_ADMINS1&amp;quot;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;&amp;quot;PROJECT_FOR_ADMINS2&amp;quot;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
+                &lt;span class=&#34;k&#34;&gt;break&lt;/span&gt;
+            &lt;span class=&#34;o&#34;&gt;}&lt;/span&gt;
+        &lt;span class=&#34;o&#34;&gt;}&lt;/span&gt;
+    &lt;span class=&#34;o&#34;&gt;}&lt;/span&gt;
+&lt;span class=&#34;o&#34;&gt;}&lt;/span&gt;
+
+&lt;span class=&#34;k&#34;&gt;return&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;jobs&lt;/span&gt;
+&lt;span class=&#34;c1&#34;&gt;// TODO: handle anonymous user ;-)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;And now let&amp;#8217;s dissect the code.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;span class=&#34;kn&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;hudson.model.User&lt;/span&gt;
+&lt;span class=&#34;kn&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;hudson.model.Hudson&lt;/span&gt;
+&lt;span class=&#34;kn&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;hudson.security.AuthorizationStrategy&lt;/span&gt;
+&lt;span class=&#34;kn&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;hudson.security.Permission&lt;/span&gt;
+&lt;span class=&#34;kn&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;com.michelin.cio.hudson.plugins.rolestrategy.RoleBasedAuthorizationStrategy&lt;/span&gt;
+&lt;span class=&#34;kn&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;com.michelin.cio.hudson.plugins.rolestrategy.RoleMap&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;You start by importing the classes that you need.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;span class=&#34;n&#34;&gt;AuthorizationStrategy&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;strategy&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Hudson&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;getInstance&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;().&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;getAuthorizationStrategy&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;();&lt;/span&gt;
+
+&lt;span class=&#34;n&#34;&gt;jobs&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;[]&lt;/span&gt;
+&lt;span class=&#34;n&#34;&gt;user&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;User&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;current&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;()&lt;/span&gt;
+&lt;span class=&#34;n&#34;&gt;userId&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;user&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;getId&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;()&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;The first line gets the current &lt;a href=&#34;https://github.com/jenkinsci/jenkins/blob/f6e431b80c4d162560419fa51633224a9724bb0d/core/src/main/java/hudson/security/AuthorizationStrategy.java&#34;&gt;AuthorizationStrategy&lt;/a&gt;
+used in Jenkins.&lt;/p&gt;
+&lt;p&gt;Then we create an empty array of jobs, which is the value returned by default. And get the current
+logged in user ID.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;span class=&#34;k&#34;&gt;if&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;strategy&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;!=&lt;/span&gt; &lt;span class=&#34;kc&#34;&gt;null&lt;/span&gt; 
+    &lt;span class=&#34;c1&#34;&gt;// not very straightforward to get the groups for a given user&lt;/span&gt;
+    &lt;span class=&#34;n&#34;&gt;roles&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;roleStrategy&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;getGrantedRoles&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;globalRoles&amp;quot;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
+    &lt;span class=&#34;k&#34;&gt;for&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;entry&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;in&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;roles&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;
+        &lt;span class=&#34;n&#34;&gt;role&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;entry&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;key&lt;/span&gt;
+        &lt;span class=&#34;n&#34;&gt;users&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;entry&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;value&lt;/span&gt;
+        &lt;span class=&#34;nf&#34;&gt;if&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;role&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;getName&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;().&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;equals&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;tester&amp;quot;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;))&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;
+            &lt;span class=&#34;k&#34;&gt;if&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;userId&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;in&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;users&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;
+                &lt;span class=&#34;n&#34;&gt;jobs&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;PROJECT_FOR_TESTERS1&amp;quot;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;&amp;quot;PROJECT_FOR_TESTERS2&amp;quot;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
+                &lt;span class=&#34;k&#34;&gt;break&lt;/span&gt;
+            &lt;span class=&#34;o&#34;&gt;}&lt;/span&gt;
+        &lt;span class=&#34;o&#34;&gt;}&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;else&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;if&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;role&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;getName&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;().&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;equals&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;admin&amp;quot;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;))&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;
+            &lt;span class=&#34;k&#34;&gt;if&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;userId&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;in&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;users&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;
+                &lt;span class=&#34;n&#34;&gt;jobs&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;PROJECT_FOR_ADMINS1&amp;quot;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;&amp;quot;PROJECT_FOR_ADMINS2&amp;quot;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
+                &lt;span class=&#34;k&#34;&gt;break&lt;/span&gt;
+            &lt;span class=&#34;o&#34;&gt;}&lt;/span&gt;
+        &lt;span class=&#34;o&#34;&gt;}&lt;/span&gt;
+    &lt;span class=&#34;o&#34;&gt;}&lt;/span&gt;
+&lt;span class=&#34;o&#34;&gt;}&lt;/span&gt;
+
+&lt;span class=&#34;k&#34;&gt;return&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;jobs&lt;/span&gt;
+&lt;span class=&#34;c1&#34;&gt;// TODO: handle anonymous user ;-)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;The final part simply iterates through each existing role, and then through the
+users in that role. I could not find a more elegant way of doing that, but in case
+you would like to maybe optimize the code, here are the main classes that I
+used from Jenkins to write the script.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/jenkinsci/role-strategy-plugin/blob/b6dca7904ce1c83b3afef0995ef5f42823171b0b/src/main/java/com/michelin/cio/hudson/plugins/rolestrategy/RoleBasedAuthorizationStrategy.java&#34;&gt;RoleBasedAuthorizationStrategy.java&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/jenkinsci/role-strategy-plugin/blob/master/src/main/java/com/michelin/cio/hudson/plugins/rolestrategy/Role.java&#34;&gt;Role.java&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/jenkinsci/role-strategy-plugin/blob/b6dca7904ce1c83b3afef0995ef5f42823171b0b/src/main/java/com/michelin/cio/hudson/plugins/rolestrategy/RoleMap.java&#34;&gt;RoleMap&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/jenkinsci/jenkins/blob/f6e431b80c4d162560419fa51633224a9724bb0d/core/src/main/java/hudson/model/User.java&#34;&gt;User.java&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Normally I either use my local working copy of Jenkins project imported in Eclipse, or use the
+&amp;#8220;Find File&amp;#8221; feature in GitHub. Then remember a little bit about Jenkins Java API to walk
+through the classes and write the Groovy code (I made a
+&lt;a href=&#34;https://www.youtube.com/watch?v=jmPJvJGEFb4&#34;&gt;video&lt;/a&gt; about writing Groovy with Auto Complete in
+Eclipse, but that&amp;#8217;s in Portuguese only).&lt;/p&gt;
+&lt;h2&gt;What the result looks like in Jenkins&lt;/h2&gt;
+&lt;p&gt;In this section we have just simple screenshots, showing the script in the job configuration.&lt;/p&gt;
+&lt;div class=&#39;row&#39;&gt;
+&lt;div class=&#34;ui container&#34; style=&#39;text-align: center;&#39;&gt;
+&lt;figure&gt;
+&lt;a href=&#34;/2016/04/24/using-active-choices-with-role-strategy-plugin/screenshot01.png&#34; rel=&#34;prettyPhoto&#34; class=&#34;thumbnail&#34; title=&#34;Screenshot 01&#34;&gt;
+&lt;img class=&#34;ui fluid image&#34; src=&#34;/2016/04/24/using-active-choices-with-role-strategy-plugin/screenshot01.png&#34; alt=&#34;Screenshot 01&#34; /&gt;
+&lt;/a&gt;
+&lt;figcaption&gt;Screenshot 01&lt;/figcaption&gt;
+&lt;/figure&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;p&gt;And the resulting screen. The parameter &lt;strong&gt;DeployAPP&lt;/strong&gt; will be available during the build,
+and can be used to trigger other jobs or pipelines.&lt;/p&gt;
+&lt;div class=&#39;row&#39;&gt;
+&lt;div class=&#34;ui container&#34; style=&#39;text-align: center;&#39;&gt;
+&lt;figure&gt;
+&lt;a href=&#34;/2016/04/24/using-active-choices-with-role-strategy-plugin/screenshot02.png&#34; rel=&#34;prettyPhoto&#34; class=&#34;thumbnail&#34; title=&#34;Screenshot 02&#34;&gt;
+&lt;img class=&#34;ui fluid image&#34; src=&#34;/2016/04/24/using-active-choices-with-role-strategy-plugin/screenshot02.png&#34; alt=&#34;Screenshot 02&#34; /&gt;
+&lt;/a&gt;
+&lt;figcaption&gt;Screenshot 02&lt;/figcaption&gt;
+&lt;/figure&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;h2&gt;Where can you find this script?&lt;/h2&gt;
+&lt;p&gt;This blog post has a copy of the script, but I have also submitted
+a pull request to a &lt;a href=&#34;https://github.com/imoutsatsos/jenkins-scriptlets&#34;&gt;repository&lt;/a&gt;
+maintained by another friend, &lt;a href=&#34;https://github.com/imoutsatsos&#34;&gt;Ioannis Moutsatsos&lt;/a&gt;. Ioannis
+maintains a Jenkins installation in Novartis, and is probably the most skillful user
+of the Active Choices Plug-in.&lt;/p&gt;
+&lt;p&gt;Another advantage of this other copy, is that it may be updated with time, in case there are
+bugs or improvements. So watch Ioannis&amp;#8217; repository for updates!&lt;/p&gt;
+&lt;p&gt;ps: I&amp;#8217;ve also met Ioannis through Open Source code, and have learned a lot by working with him. &lt;/p&gt;
+&lt;p&gt;♥ Open Source!&lt;/p&gt;
+            
+            </description>
+        </item>
         
         
         
@@ -497,89 +662,6 @@ as the following below.&lt;/p&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;Happy logging!&lt;/p&gt;
-            
-            </description>
-        </item>
-        
-        
-        
-        <item>
-            <title>Contributing to Apache Jena</title>
-            <link>/2015/01/01/contributing-to-apache-jena</link>
-            
-            <author>kinow</author>
-            <dc:creator>kinow</dc:creator>
-            
-            <category>blog</category>
-            
-            <category>jena</category>
-            
-            <category>apache software foundation</category>
-            
-            <pubDate>2015-01-01T18:49:03+13:00</pubDate>
-            <guid>/2015/01/01/contributing-to-apache-jena</guid>
-            <description>
-            
-            &lt;p&gt;As I mentioned in my &lt;a href=&#34;/2014/10/11/basic-workflow-of-a-sparql-query-in-fuseki&#34;&gt;previous post&lt;/a&gt;, 
-I am using &lt;a href=&#34;http://jena.apache.org&#34;&gt;Apache Jena&lt;/a&gt; for a project of a customer. I had never used 
-any triple store, nor a SPARQL Endpoint server before. But for being involved with the Apache 
-Software Foundation, and since the company itself is using several Apache components, it was only 
-natural Jena to be our first choice.&lt;/p&gt;
-&lt;p&gt;It has served us very well so far. At the moment we have less than 100 queries per day, but the 
-project is still under development and we expect 1000 queries per day by the first quarter of 
-2015 and 1000000 near the end of 2015. We also have few entries in TDB, but expect to grow this 
-number to a few million before 2016.&lt;/p&gt;
-&lt;p&gt;When I work for companies and we use Open Source Software (OSS) in a project, I always 
-prepare assessment reports to include in the deliveries. In this report I justify the choice 
-of Open Source Software (as well as commercial software). Sometimes I 
-am lucky to work for a company that asks me to include hours to work on OSS :-)&lt;/p&gt;
-&lt;p&gt;I use &lt;a href=&#34;https://trello.com&#34;&gt;Trello&lt;/a&gt; to triage issues in OSS projects (and for several other 
-things). I have a board with several cards for Open Source. About a month ago I set up one 
-for Jena and listed the issues that I thought I could contribute to. &lt;/p&gt;
-&lt;div class=&#39;row&#39;&gt;
-&lt;div class=&#34;span6 offset3&#34; style=&#39;text-align: center;&#39;&gt;
-&lt;figure&gt;
-&lt;a href=&#34;/2015/01/01/contributing-to-apache-jena/jena_trello.png&#34; rel=&#34;prettyPhoto&#34; class=&#34;thumbnail&#34; title=&#34;Jena Trello card&#34;&gt;
-&lt;img src=&#34;/2015/01/01/contributing-to-apache-jena/jena_trello.png&#34; alt=&#34;Jena Trello card&#34; /&gt;
-&lt;/a&gt;
-&lt;figcaption&gt;Jena Trello card&lt;/i&gt;&lt;/figcaption&gt;
-&lt;/figure&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;p&gt;I annotate easy issues with a &amp;#8220;lhf&amp;#8221; suffix for Low Hanging Fruit issues, and delete issues from 
-the card once I submit a patch or update it (and include it in another card for the 
-&lt;a href=&#34;https://tupilabs.github.io/tag/tupilabs-report/&#34;&gt;TupiLabs reports&lt;/a&gt;).&lt;/p&gt;
-&lt;p&gt;Most of the issues I included in the card for Jena had been created over two years ago, and hadn&amp;#8217;t 
-been updated in a while. When you test these issues against the current code, usually you find that 
-some of them have already been fixed. Other issues included documentation problems, and minor features. I didn&amp;#8217;t find any blocker issue that would impede us to use Jena in production.&lt;/p&gt;
-&lt;div class=&#39;row&#39;&gt;
-&lt;div class=&#34;span6 offset3&#34; style=&#39;text-align: center;&#39;&gt;
-&lt;figure&gt;
-&lt;a href=&#34;/2015/01/01/contributing-to-apache-jena/jena_jira.png&#34; rel=&#34;prettyPhoto&#34; class=&#34;thumbnail&#34; title=&#34;Jena JIRA activity summary&#34;&gt;
-&lt;img src=&#34;/2015/01/01/contributing-to-apache-jena/jena_jira.png&#34; alt=&#34;Jena JIRA activity summary&#34; /&gt;
-&lt;/a&gt;
-&lt;figcaption&gt;Jena JIRA activity summary&lt;/figcaption&gt;
-&lt;/figure&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;p&gt;The picture above shows the past 30 days activity summary in JIRA for Jena. The red line shows 
-issues created, and the green line issues resolved. &lt;a href=&#34;https://github.com/afs&#34;&gt;Andy Seaborne&lt;/a&gt; 
-was very active in the past days and fixed several issues that were too old and had already been fixed in the trunk, and kindly merged patches and pull requests.&lt;/p&gt;
-&lt;p&gt;Some issues like &lt;a href=&#34;https://issues.apache.org/jira/browse/JENA-632&#34;&gt;JENA-632&lt;/a&gt; will take a 
-longer time to fix, but I&amp;#8217;m getting used to Jena&amp;#8217;s source code, and at the same getting more 
-confident to use it in production - especially with a supportive OSS community. We are using 
-Jena for RDF with Hadoop, and I learned that I can replace some custom Writables by others 
-in the Jena Hadoop submodule.&lt;/p&gt;
-&lt;p&gt;By the way, even though this project ends in April, I intend to continue contributing to Jena. 
-There is a lot of parts of the code that I would love to be able to understand and contribute, 
-in special the Graph database, optimization techniques for SPARQL queries, the grammars used 
-in the project, Fuseki v2 and enhance its testing harness (as well as the test coverage).&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;If you are looking for a interesting project to get you started with semantics, linked data, 
-RDF, and even graphs and database querying, try contributing to Jena. I bet you&amp;#8217;ll have a lot 
-of fun!&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;Happy hacking and happy 2015!&lt;/p&gt;
             
             </description>
         </item>

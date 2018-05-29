@@ -2,7 +2,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en">
 <head profile="http://gmpg.org/xfn/11">
-    <title>Bruno P. Kinoshita &mdash; Tag</title> 
+    <title>Bruno P. Kinoshita &mdash; What happens when you create a new dataset in Apache Jena Fuseki</title> 
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="description" content="Bruno de Paula Kinoshita personal web site" />
     <meta name="keywords"
@@ -78,7 +78,7 @@
                 <i class="content icon"></i>
             </a>
             <div class="item">
-                Tag
+                What happens when you create a new dataset in Apache Jena Fuseki
             </div>
         </div>
     </div>
@@ -119,17 +119,12 @@
                 <div class="main container" role="main">
 
                 
-                    
-                    <div class='ui padded container'>
-                        <h1 class='topic'>Tag</h1>
-                    </div>
-                    
-                    <p>Posts tagged with &#8216;java&#8217;</p>
 <div class="ui raised padded container segment">
-    <h2><a href="/2018/05/29/what-happens-when-you-create-a-new-dataset-in-apache-jena-fuseki" title="Permanent link">What happens when you create a new dataset in Apache Jena Fuseki</a></h2>
-    <p><small>kinow</small> @ <small>May 29, 2018&nbsp;18:59:04</small></p>
-
-
+  <h1 class='post-topic'>What happens when you create a new dataset in Apache Jena Fuseki</h1>
+  <small>kinow</small> @
+	<small>May 29, 2018&nbsp;18:59:04 (<span class='stardate' data-input-date='May 29, 2018'></span>)</small>
+  <div class="entry">
+    
 
 
 
@@ -138,8 +133,7 @@
 <a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2018/05/29/what-happens-when-you-create-a-new-dataset-in-apache-jena-fuseki" data-text="What happens when you create a new dataset in Apache Jena Fuseki" data-via="kinow" data-hashtags="opensource">Tweet</a>
 <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
 
-
-    <p><a href="/2018/05/27/what-happens-when-you-upload-a-turtle-file-in-apache-jena-fuseki">Last post</a>
+	  <p><a href="/2018/05/27/what-happens-when-you-upload-a-turtle-file-in-apache-jena-fuseki">Last post</a>
 was about what happens when you upload a Turtle file to Apache Jena Fuseki. And now today&#8217;s post will be about
 what happens when you create a new dataset in Apache Jena Fuseki.</p>
 <p>In theory, that happens before you upload a Turtle file, but this post series won&#8217;t follow a logical order.
@@ -208,44 +202,31 @@ later by the <code>RDFParser</code>.</p>
 </pre></div>
 
 <h2>Persisting the dataset</h2>
-
 <p>Jena Fuseki will create a local copy of the template, using RIOT&#8217;s <code>RDFDataMgr</code>. For my environment, running from
 Eclipse, the file location was <em>/home/kinow/Development/java/jena/jena/jena-fuseki2/jena-fuseki-core/run/system_files/902154aa-2bb6-11b2-8053-024232e7b374</em>.</p>
-
 <p>Fuseki now will look for exactly one Service Name statement (http://jena.apache.org/fuseki#name). The
 name will be validated for things like blank space, empty, &#8216;/&#8217;, etc.</p>
-
 <p>Once the validation passes, then it will persist the file in somewhere like
 /home/kinow/Development/java/jena/jena/jena-fuseki2/jena-fuseki-core/run/configuration/aaa.ttl. But
 not without checking first it the file existed.</p>
-
 <p>As this is a brand new file, the <code>Model</code> instance will be written on the file now.</p>
-
 <h2>DatasetAccessPoint (ARQ)</h2>
-
 <p>Funny, when I wrote it I immediately put this class under Fuseki Core, but it is actually
 in ARQ. <strong>Why not in Fuseki?</strong>. Looks like ARQ has a Web layer too.</p>
-
 <p>Fuseki&#8217;s <code>FusekiBuilder#buildDataAccessPoint()</code> creates the <code>DataAccessPoint</code>. The <code>DataAccessPoint</code>&#8216;s
 Javadocs say: &ldquo;A name in the URL space of the server&rdquo;.</p>
-
 <ul>
 <li><code>DataService</code> contains operations, and endpoints</li>
 <li>Services are added to endpoints, such as an endpoint for the <code>Quads_RW</code>, the <code>REST_Quads_RW</code> from previous post</li>
 <li>The name and the data service are used to create the <code>DataAccessPoint</code></li>
 </ul>
-
 <p>The current <code>HttpAction</code> in the request contains a reference to Fuseki&#8217;s
 <code>DataAccessPointRegistry</code>. Fuseki&#8217;s <code>DataAccessPointRegistry</code> extends Atlas&#8217;
 <code>Registry</code>, which uses a <code>ConcurrentHashMap</code> (again, how does it work with multiple JVM&#8217;s?).</p>
-
 <p>The new <code>DataAccessPoint</code> is registered with Fuseki&#8217;s registry (not the other registry).</p>
-
 <p>And then, finally, the transaction is committed, the response is prepared (a 200 OK in <code>text/plain</code>).
 And a <code>null</code> is returned, which means empty response.</p>
-
 <p>And here&#8217;s some of the logs produced during this experiment.</p>
-
 <div class="highlight"><pre><span class="o">[</span>2018-05-28 21:11:43<span class="o">]</span> Config     INFO  Load configuration: file:///home/kinow/Development/java/jena/jena/jena-fuseki2/jena-fuseki-core/run/configuration/ds2.ttl
 <span class="o">[</span>2018-05-28 21:11:43<span class="o">]</span> Config     INFO  Load configuration: file:///home/kinow/Development/java/jena/jena/jena-fuseki2/jena-fuseki-core/run/configuration/p1.ttl
 <span class="o">[</span>2018-05-28 21:11:43<span class="o">]</span> Config     INFO  Register: /ds2
@@ -263,330 +244,17 @@ And a <code>null</code> is returned, which means empty response.</p>
 </pre></div>
 
 <p>So that&#8217;s that.</p>
-
 <p>Happy hacking !</p>
-
-<!-- html -->
-
-<p class="postmetadata">
-
-    <small>tags 
-     [&nbsp;<a
-        href="/tag/jena"
-        rel="tag">jena</a>&nbsp;]&nbsp;
-
-     [&nbsp;<a
-        href="/tag/apache%20software%20foundation"
-        rel="tag">apache software foundation</a>&nbsp;]&nbsp;
-
-     [&nbsp;<a
-        href="/tag/java"
-        rel="tag">java</a>&nbsp;]&nbsp;
-
-     [&nbsp;<a
-        href="/tag/sparql"
-        rel="tag">sparql</a>&nbsp;]&nbsp;
-
-     [&nbsp;<a
-        href="/tag/opensource"
-        rel="tag">opensource</a>&nbsp;]&nbsp;
-
-    </small>
-
-
-</p>
-
+  </div>
+  <p class="postmetadata">
+    
+    <small>tags [&nbsp;<a href="/tag/jena" rel="tag">jena</a>&nbsp;]&nbsp;[&nbsp;<a href="/tag/apache%20software%20foundation" rel="tag">apache software foundation</a>&nbsp;]&nbsp;[&nbsp;<a href="/tag/java" rel="tag">java</a>&nbsp;]&nbsp;[&nbsp;<a href="/tag/sparql" rel="tag">sparql</a>&nbsp;]&nbsp;[&nbsp;<a href="/tag/opensource" rel="tag">opensource</a>&nbsp;]&nbsp;</small>
+    
+    
+  </p>
+  
 </div>
 
-<div class="ui raised padded container segment">
-    <h2><a href="/2018/04/28/learning-more-about-sparql-and-jena-internals" title="Permanent link">Learning more about SPARQL and Jena internals</a></h2>
-    <p><small>kinow</small> @ <small>Apr 28, 2018&nbsp;18:20:28</small></p>
-
-
-
-
-
-
-
-<a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2018/04/28/learning-more-about-sparql-and-jena-internals" data-text="Learning more about SPARQL and Jena internals" data-via="kinow" data-hashtags="opensource">Tweet</a>
-<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-
-
-    <p style='text-align: center;'>
-<a href="https://kinow.deviantart.com/art/O-Corvo-742473382"><img style="display: inline; width: 600px;" class="ui image" src="/2018/04/28/learning-more-about-sparql-and-jena-internals/ocorvo.jpg" alt="O Corvo" /></a>
-<br/>
-<small><a href="https://kinow.deviantart.com/art/O-Corvo-742473382">O Corvo</a></small>
-</p>
-
-<p>Recently a <a href="https://github.com/apache/jena/pull/114/">pull request</a> for Apache Jena
-that I started three years ago got merged. Even though it has been three years since
-that pull request, there are still many parts of the project code base that I am
-not familiar with.</p>
-<p>And not only the code, but there are also many concepts about SPARQL, other standards
-used in Jena, and internals about triple stores.</p>
-<p>The following list contains some presentations and posts that I am reading right now,
-while I try to improve my knowledge of SPARQL and Jena internals.</p>
-<ul>
-<li><a href="https://www.slideshare.net/olafhartig/the-semantics-of-sparql">The Semantics of SPARQL</a><ul>
-<li>Slides with information from Query parsing to Algebra and evaluating the Query</li>
-</ul>
-</li>
-<li><a href="https://wiki.blazegraph.com/wiki/index.php/SPARQL_Order_Matters">SPARQL Order Matters</a><ul>
-<li>Short but great post from Blazegraph about order in SPARQL queries with JOIN&#8217;s
-and LEFT JOIN&#8217;s</li>
-</ul>
-</li>
-<li><a href="https://gregheartsfield.com/2012/08/26/jena-arq-query-performance.html">Jena ARQ Query Performance</a><ul>
-<li>Old post, but still very useful. Related to the post above, as it also talks about
-query performances due to the order of statements</li>
-</ul>
-</li>
-<li><a href="http://oracle.readthedocs.io/en/latest/sql/indexes/predicates-lhs-vs-rhs.html">Predicates: LHS vs RHS</a><ul>
-<li>Oracle post for SQL, but this part applies to SPARQL, at least terminology-wise. LHS
-and RHS appear in <a href="https://issues.apache.org/jira/browse/JENA-1534">some SPARQL related tickets</a>
-/documentation too</li>
-</ul>
-</li>
-</ul><!-- html -->
-
-<p class="postmetadata">
-
-    <small>tags 
-     [&nbsp;<a
-        href="/tag/jena"
-        rel="tag">jena</a>&nbsp;]&nbsp;
-
-     [&nbsp;<a
-        href="/tag/apache%20software%20foundation"
-        rel="tag">apache software foundation</a>&nbsp;]&nbsp;
-
-     [&nbsp;<a
-        href="/tag/java"
-        rel="tag">java</a>&nbsp;]&nbsp;
-
-     [&nbsp;<a
-        href="/tag/sparql"
-        rel="tag">sparql</a>&nbsp;]&nbsp;
-
-     [&nbsp;<a
-        href="/tag/opensource"
-        rel="tag">opensource</a>&nbsp;]&nbsp;
-
-    </small>
-
-
-</p>
-</div>
-
-<div class="ui raised padded container segment">
-    <h2><a href="/2017/12/25/exif-odd-offsets" title="Permanent link">Exif Odd Offsets</a></h2>
-    <p><small>kinow</small> @ <small>Dec 25, 2017&nbsp;21:43:33</small></p>
-
-
-
-
-
-
-
-<a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2017/12/25/exif-odd-offsets" data-text="Exif Odd Offsets" data-via="kinow" data-hashtags="opensource">Tweet</a>
-<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-
-
-    <p>A file format like JPEG may contain metadata in JFIF, <a href="https://en.wikipedia.org/wiki/Exif">Exif</a>,
-or a vendor proprietary format. The Exif format is based - or uses parts of - on the TIFF format.</p>
-<p>Within an Exif metadata block, you should see directories, with several entries. The entries have fields
-like description, value, and also an offset. The offset indicates the offset to the next entry.</p>
-<p>The Exif specification defines that <strong>implementers must make sure to keep the offset an even number,
-within 4 bytes</strong>.</p>
-<p>I recently worked on <a href="https://issues.apache.org/jira/browse/IMAGING-205">IMAGING-205</a>, a ticket
-about odd offsets in files with Exif metadata. This issue was exactly to address that when files
-were rewritten with Apache Commons Imaging, even though the image initially had no odd offsets,
-after the entries were rearranged, we could have odd offsets.</p>
-<p>The fix was simply checking for odd offsets, adding +1, and later it would be put within the
-4 bytes limit.</p>
-<p style='text-align: center;'>
-<img style="display: inline" class="ui image" src="/2017/12/25/exif-odd-offsets/screenshot.png" alt="A screen shot of Eclipse with source code" title="Locating the bug" />
-<br/>
-<small>Locating the bug</small>
-</p>
-
-<p>One interesting point, however, is that this is in the standard, but not all software that read
-and write Exif follow the specification. So it is quite common to find images with odd offsets.</p>
-<p>Which means you could take a picture with your phone, that contains some Exif metadata, and
-be surprised to analyze it with <code>exiftool</code> and get warnings about odd offsets. Most viewers
-handle odd and even offsets, so it should work for most cases, unless you have a strict reader/viewer.</p>
-<p>Happy hacking!</p>
-<p>&heart; Open Source</p><!-- html -->
-
-<p class="postmetadata">
-
-    <small>tags 
-     [&nbsp;<a
-        href="/tag/programming"
-        rel="tag">programming</a>&nbsp;]&nbsp;
-
-     [&nbsp;<a
-        href="/tag/java"
-        rel="tag">java</a>&nbsp;]&nbsp;
-
-     [&nbsp;<a
-        href="/tag/apache%20software%20foundation"
-        rel="tag">apache software foundation</a>&nbsp;]&nbsp;
-
-     [&nbsp;<a
-        href="/tag/opensource"
-        rel="tag">opensource</a>&nbsp;]&nbsp;
-
-    </small>
-
-
-</p>
-</div>
-
-<div class="ui raised padded container segment">
-    <h2><a href="/2017/12/03/remember-to-synchronize-when-iterating-streams-from-a-synchronized-collection" title="Permanent link">Remember to synchronize when iterating streams from a synchronized Collection</a></h2>
-    <p><small>kinow</small> @ <small>Dec 03, 2017&nbsp;23:56:13</small></p>
-
-
-
-
-
-
-
-<a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2017/12/03/remember-to-synchronize-when-iterating-streams-from-a-synchronized-collection" data-text="Remember to synchronize when iterating streams from a synchronized Collection" data-via="kinow" data-hashtags="opensource">Tweet</a>
-<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-
-
-    <p>When iterating collections created via <code>Collections.synchronizedList</code> for instance, you are required
-to obtain a lock on the actual list before doing so. So you normally end up with code similar to:</p>
-<div class="highlight"><pre><span class="n">List</span> <span class="n">list</span> <span class="o">=</span> <span class="n">Collections</span><span class="o">.</span><span class="na">synchronizedList</span><span class="o">(</span><span class="k">new</span> <span class="n">ArrayList</span><span class="o">());</span>
-<span class="kd">synchronized</span> <span class="o">(</span><span class="n">list</span><span class="o">)</span> <span class="o">{</span>
-  <span class="n">Iterator</span> <span class="n">i</span> <span class="o">=</span> <span class="n">list</span><span class="o">.</span><span class="na">iterator</span><span class="o">();</span> <span class="c1">// Must be in synchronized block</span>
-  <span class="k">while</span> <span class="o">(</span><span class="n">i</span><span class="o">.</span><span class="na">hasNext</span><span class="o">())</span>
-      <span class="n">foo</span><span class="o">(</span><span class="n">i</span><span class="o">.</span><span class="na">next</span><span class="o">());</span>
-<span class="o">}</span>
-</pre></div>
-
-<p>This requirement is <a href="https://docs.oracle.com/javase/9/docs/api/java/util/Collections.html#synchronizedList-java.util.List-">documented in the javadocs</a>.</p>
-<p>Since lambdas and streams are being more widely used, it is important to remind
-that when iterating via a stream we also need to obtain a lock on the synchronized
-collection created.</p>
-<div class="highlight"><pre><span class="n">List</span> <span class="n">list</span> <span class="o">=</span> <span class="n">Collections</span><span class="o">.</span><span class="na">synchronizedList</span><span class="o">(</span><span class="k">new</span> <span class="n">ArrayList</span><span class="o">());</span>
-<span class="kd">synchronized</span> <span class="o">(</span><span class="n">list</span><span class="o">)</span> <span class="o">{</span>
-  <span class="n">list</span><span class="o">.</span><span class="na">stream</span><span class="o">()</span>
-    <span class="o">.</span><span class="na">anyMatch</span><span class="o">(...)</span>
-<span class="o">}</span>
-</pre></div>
-
-<p>Here&#8217;s an <a href="https://github.com/zalando/nakadi/pull/786">example from Zalando Nakadi Event Broker</a>.</p>
-<p>Happy hacking!</p><!-- html -->
-
-<p class="postmetadata">
-
-    <small>tags 
-     [&nbsp;<a
-        href="/tag/programming"
-        rel="tag">programming</a>&nbsp;]&nbsp;
-
-     [&nbsp;<a
-        href="/tag/java"
-        rel="tag">java</a>&nbsp;]&nbsp;
-
-     [&nbsp;<a
-        href="/tag/opensource"
-        rel="tag">opensource</a>&nbsp;]&nbsp;
-
-    </small>
-
-
-</p>
-</div>
-
-<div class="ui raised padded container segment">
-    <h2><a href="/2017/12/02/watch-out-for-locales-when-using-number-format-with-currencies" title="Permanent link">Watch out for Locales when using NumberFormat with currencies</a></h2>
-    <p><small>kinow</small> @ <small>Dec 02, 2017&nbsp;22:51:00</small></p>
-
-
-
-
-
-
-
-<a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2017/12/02/watch-out-for-locales-when-using-number-format-with-currencies" data-text="Watch out for Locales when using NumberFormat with currencies" data-via="kinow" data-hashtags="opensource">Tweet</a>
-<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-
-
-    <p>In Java you have the <a href="https://docs.oracle.com/javase/9/docs/api/java/text/NumberFormat.html">NumberFormatException</a>
-to help you formatting and parsing numbers for any locale. Said that, here&#8217;s some code.</p>
-<div class="highlight"><pre>BigDecimal <span class="nv">negative</span> <span class="o">=</span> new BigDecimal<span class="o">(</span><span class="s2">&quot;-1234.56&quot;</span><span class="o">)</span><span class="p">;</span>
-
-DecimalFormat <span class="nv">nf</span> <span class="o">=</span> <span class="o">(</span>DecimalFormat<span class="o">)</span> NumberFormat.getCurrencyInstance<span class="o">(</span>Locale.UK<span class="o">)</span><span class="p">;</span>
-String <span class="nv">formattedNegative</span> <span class="o">=</span> nf.format<span class="o">(</span>negative<span class="o">)</span><span class="p">;</span>
-
-System.out.println<span class="o">(</span>formattedNegative<span class="o">)</span><span class="p">;</span>
-</pre></div>
-
-<p>The output for this code is <strong>-£1,234.56</strong>. That&#8217;s expected, as the locale is set to
-UK, so the currency symbol used is for British Pounds. And as the number is negative, you
-get that minus sign as a prefix. For Japanese locale you&#8217;d get <strong>-￥1,235</strong>, and for Brazilian
-locale you&#8217;d get <strong>-R$ 1.234,56</strong>.</p>
-
-<p>So far so good. </p>
-
-<p>What about the following code, with nothing different except for the locale set to <strong>US</strong>.</p>
-
-<div class="highlight"><pre>BigDecimal <span class="nv">negative</span> <span class="o">=</span> new BigDecimal<span class="o">(</span><span class="s2">&quot;-1234.56&quot;</span><span class="o">)</span><span class="p">;</span>
-
-DecimalFormat <span class="nv">nf</span> <span class="o">=</span> <span class="o">(</span>DecimalFormat<span class="o">)</span> NumberFormat.getCurrencyInstance<span class="o">(</span>Locale.US<span class="o">)</span><span class="p">;</span> // &lt;--- US now
-String <span class="nv">formattedNegative</span> <span class="o">=</span> nf.format<span class="o">(</span>negative<span class="o">)</span><span class="p">;</span>
-
-System.out.println<span class="o">(</span>formattedNegative<span class="o">)</span><span class="p">;</span>
-</pre></div>
-
-<p>Some could intuitively expect <strong>-$1,234.56</strong>. However, <strong>the output is actually ($1,234.56)</strong>.</p>
-
-<p>There are different prefixes and suffixes. But in some locales the prefix can be empty, or, as
-in the case of the US locale, it can be quite different than what you could expect.</p>
-
-<p>Learned about this peculiarity from NumberFormat while working on <a href="https://issues.apache.org/jira/browse/VALIDATOR-433">VALIDATOR-433</a> for Apache Commons Validator.</p>
-
-<p>Happy hacking!</p>
-
-<!-- html -->
-
-<p class="postmetadata">
-
-    <small>tags 
-     [&nbsp;<a
-        href="/tag/programming"
-        rel="tag">programming</a>&nbsp;]&nbsp;
-
-     [&nbsp;<a
-        href="/tag/java"
-        rel="tag">java</a>&nbsp;]&nbsp;
-
-     [&nbsp;<a
-        href="/tag/apache%20software%20foundation"
-        rel="tag">apache software foundation</a>&nbsp;]&nbsp;
-
-    </small>
-
-
-</p>
-
-</div>
-
-<div id="navigation">
-
-        &larr;&nbsp;<a href="/tag/java/2" id="navigation-next">Older Entries</a>
-
-
-</div>
-                    <p class="postmetadata">
-                        
-                        
-                    </p>
-                
                 </div>
             </div>
         </div>

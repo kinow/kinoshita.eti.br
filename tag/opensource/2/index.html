@@ -126,6 +126,71 @@
                     
                     <p>Posts tagged with &#8216;opensource&#8217;</p>
 <div class="ui raised padded container segment">
+    <h2><a href="/2017/12/25/exif-odd-offsets" title="Permanent link">Exif Odd Offsets</a></h2>
+    <p><small>kinow</small> @ <small>Dec 25, 2017&nbsp;21:43:33</small></p>
+
+
+
+
+
+
+
+<a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2017/12/25/exif-odd-offsets" data-text="Exif Odd Offsets" data-via="kinow" data-hashtags="opensource">Tweet</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+
+
+    <p>A file format like JPEG may contain metadata in JFIF, <a href="https://en.wikipedia.org/wiki/Exif">Exif</a>,
+or a vendor proprietary format. The Exif format is based - or uses parts of - on the TIFF format.</p>
+<p>Within an Exif metadata block, you should see directories, with several entries. The entries have fields
+like description, value, and also an offset. The offset indicates the offset to the next entry.</p>
+<p>The Exif specification defines that <strong>implementers must make sure to keep the offset an even number,
+within 4 bytes</strong>.</p>
+<p>I recently worked on <a href="https://issues.apache.org/jira/browse/IMAGING-205">IMAGING-205</a>, a ticket
+about odd offsets in files with Exif metadata. This issue was exactly to address that when files
+were rewritten with Apache Commons Imaging, even though the image initially had no odd offsets,
+after the entries were rearranged, we could have odd offsets.</p>
+<p>The fix was simply checking for odd offsets, adding +1, and later it would be put within the
+4 bytes limit.</p>
+<p style='text-align: center;'>
+<img style="display: inline" class="ui image" src="/2017/12/25/exif-odd-offsets/screenshot.png" alt="A screen shot of Eclipse with source code" title="Locating the bug" />
+<br/>
+<small>Locating the bug</small>
+</p>
+
+<p>One interesting point, however, is that this is in the standard, but not all software that read
+and write Exif follow the specification. So it is quite common to find images with odd offsets.</p>
+<p>Which means you could take a picture with your phone, that contains some Exif metadata, and
+be surprised to analyze it with <code>exiftool</code> and get warnings about odd offsets. Most viewers
+handle odd and even offsets, so it should work for most cases, unless you have a strict reader/viewer.</p>
+<p>Happy hacking!</p>
+<p>&heart; Open Source</p><!-- html -->
+
+<p class="postmetadata">
+
+    <small>tags 
+     [&nbsp;<a
+        href="/tag/programming"
+        rel="tag">programming</a>&nbsp;]&nbsp;
+
+     [&nbsp;<a
+        href="/tag/java"
+        rel="tag">java</a>&nbsp;]&nbsp;
+
+     [&nbsp;<a
+        href="/tag/apache%20software%20foundation"
+        rel="tag">apache software foundation</a>&nbsp;]&nbsp;
+
+     [&nbsp;<a
+        href="/tag/opensource"
+        rel="tag">opensource</a>&nbsp;]&nbsp;
+
+    </small>
+
+
+</p>
+</div>
+
+<div class="ui raised padded container segment">
     <h2><a href="/2017/12/03/remember-to-synchronize-when-iterating-streams-from-a-synchronized-collection" title="Permanent link">Remember to synchronize when iterating streams from a synchronized Collection</a></h2>
     <p><small>kinow</small> @ <small>Dec 03, 2017&nbsp;23:56:13</small></p>
 
@@ -476,56 +541,6 @@ wget -r -nd -np -e <span class="nv">robots</span><span class="o">=</span>off --w
 
 </p>
 
-</div>
-
-<div class="ui raised padded container segment">
-    <h2><a href="/2017/09/09/enabling-markdown-extension-tables-for-piecrust" title="Permanent link">Enabling Markdown Extension Tables For Piecrust</a></h2>
-    <p><small>kinow</small> @ <small>Sep 09, 2017&nbsp;20:35:01</small></p>
-
-
-
-
-
-
-
-<a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2017/09/09/enabling-markdown-extension-tables-for-piecrust" data-text="Enabling Markdown Extension Tables For Piecrust" data-via="kinow" data-hashtags="opensource">Tweet</a>
-<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-
-
-    <p><a href="https://github.com/ludovicchabant/PieCrust2">PieCrust</a> is a Python static site generator.
-It allows users to write content in Markdown. But if you try adding a table, the content by
-default will be generated as plain text.</p>
-<p>You have to enable <a href="https://pythonhosted.org/Markdown/extensions/tables.html">Markdown extension tables</a>.
-PieCrust will <a href="https://github.com/ludovicchabant/PieCrust2/blob/6462e052045552d2ba164f4965370d84ddb54946/piecrust/formatting/markdownformatter.py#L29">load it</a>
-when creating the Markdown instance.</p>
-<div class="highlight"><pre><span class="c1"># config.yml</span>
-<span class="l-Scalar-Plain">markdown</span><span class="p-Indicator">:</span>
-  <span class="l-Scalar-Plain">extensions</span><span class="p-Indicator">:</span>
-    <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">tables</span>
-</pre></div>
-
-<p>Et, voil&agrave;! Happy blogging!</p>
-<p>&hearts; Open Source</p><!-- html -->
-
-<p class="postmetadata">
-
-    <small>tags 
-     [&nbsp;<a
-        href="/tag/programming"
-        rel="tag">programming</a>&nbsp;]&nbsp;
-
-     [&nbsp;<a
-        href="/tag/python"
-        rel="tag">python</a>&nbsp;]&nbsp;
-
-     [&nbsp;<a
-        href="/tag/opensource"
-        rel="tag">opensource</a>&nbsp;]&nbsp;
-
-    </small>
-
-
-</p>
 </div>
 
 <div id="navigation">
