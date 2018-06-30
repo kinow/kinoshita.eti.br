@@ -25,7 +25,7 @@ Java, Python, PHP, R, C/C++, CSS, HTML, JavaScript, Shell, Perl, SQL
 <tr>
   <td>Frameworks</td>
   <td markdown="1">
-Node.js, NumPy, Pandas, Spark, Spring, Struts, Hadoop, Tornado, Laravel
+Node.js, NumPy, Pandas, Spark, Spring, SpringBoot, Struts, Hadoop, Tornado, Laravel
   </td>
 </tr>
 <tr>
@@ -408,4 +408,4 @@ Linux, OSX, Windows
 </table>
 
 
- I wrote articles that have been published in different magazines, and also spoke in conferences in some countries. The complete list is available in my web site. For a list of Open Source projects that I contribute to, look at my GitHub profile. References available upon request.
+ I wrote articles that have been published in different magazines, and also spoke in conferences in some countries. The complete list is available in my web site. For a list of Open Source projects that I contribute to, look at my GitHub profile. I have three software registered with Brazilian INPI (512018001048-2, 512018001051-2, and 512018001052-0) through Federal University of Amapa Foundation. References available upon request.
