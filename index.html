@@ -220,6 +220,21 @@ allow you to debug and diagnostic parts nor related to cycling and graphs
         <span class="n">script</span> <span class="o">=</span> <span class="s">&quot;sleep 10; echo PING&quot;</span>
 </pre></div>
 
+<p>I also combine this suite with the following <code>global.rc</code>.</p>
+<div class="highlight"><pre><span class="p">[</span><span class="n">editors</span><span class="p">]</span> 
+    <span class="n">terminal</span> <span class="o">=</span> <span class="n">vim</span> 
+    <span class="n">gui</span> <span class="o">=</span> <span class="n">gvim</span> <span class="o">-</span><span class="n">f</span>
+
+<span class="p">[</span><span class="n">communication</span><span class="p">]</span>
+    <span class="n">base</span> <span class="n">port</span> <span class="o">=</span> <span class="mi">44444</span>
+    <span class="n">method</span> <span class="o">=</span> <span class="n">http</span>
+    <span class="n">maximum</span> <span class="n">number</span> <span class="n">of</span> <span class="n">ports</span> <span class="o">=</span> <span class="mi">1</span>
+</pre></div>
+
+<p>With &#8220;base port&#8221; set to 44444, and the maximum number of ports to 1, I will
+be able to run only one task. But that way I can configure Wireshark and other
+tools to default to 44444/HTTP, for ease of debugging.</p>
+<p>Then initialize the suite with something like: <code>cylc start --non-daemon --debug /home/kinow/Development/python/workspace/example-suite/</code></p>
 <p>Happy cycling!</p>
                             
                             
