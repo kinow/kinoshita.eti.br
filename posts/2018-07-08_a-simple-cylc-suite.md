@@ -33,5 +33,24 @@ allow you to debug and diagnostic parts nor related to cycling and graphs
         script = "sleep 10; echo PING"
 {% endgeshi %}
 
+I also combine this suite with the following `global.rc`.
+
+{% geshi 'python' %}
+[editors] 
+    terminal = vim 
+    gui = gvim -f
+
+[communication]
+    base port = 44444
+    method = http
+    maximum number of ports = 1
+{% endgeshi %}
+
+With "base port" set to 44444, and the maximum number of ports to 1, I will
+be able to run only one task. But that way I can configure Wireshark and other
+tools to default to 44444/HTTP, for ease of debugging.
+
+Then initialize the suite with something like: `cylc start --non-daemon --debug /home/kinow/Development/python/workspace/example-suite/`
+
 Happy cycling!
 
