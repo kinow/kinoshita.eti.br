@@ -10,13 +10,130 @@
         
         <description>Latest news from Bruno P. Kinoshita</description>
         
-        <lastBuildDate>2018-07-08T01:18:08+12:00</lastBuildDate>
-        <pubDate>2018-07-08T01:18:08+12:00</pubDate>
-        <generator>PieCrust 3.2.1</generator>
+        <lastBuildDate>2018-07-08T20:03:08+12:00</lastBuildDate>
+        <pubDate>2018-07-08T20:03:08+12:00</pubDate>
+        <generator>PieCrust 3.2.0</generator>
         
         
         
 
+        
+        
+        
+        <item>
+            <title>Some Linux commands I used this week</title>
+            <link>/2016/05/06/some-linux-commands-i-used-this-week</link>
+            
+            <author>kinow</author>
+            <dc:creator>kinow</dc:creator>
+            
+            <category>blog</category>
+            
+            <category>linux</category>
+            
+            <pubDate>2016-05-06T23:26:03+12:00</pubDate>
+            <guid>/2016/05/06/some-linux-commands-i-used-this-week</guid>
+            <description>
+            
+            &lt;p&gt;These are some commands I used on Linux servers this week. Adding them here in case someone else
+find them interesting, and also due to my bad memory :-)&lt;/p&gt;
+&lt;h2&gt;Listing latest installed packages in SLES&lt;/h2&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;rpm -qa --last
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;This will display the last packages installed. Useful when there are packages being updated, and you
+need to confirm what changed, and when.&lt;/p&gt;
+&lt;h2&gt;Listing packages in SLES and origin repository&lt;/h2&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;rpm -qa --qf &lt;span class=&#34;s1&#34;&gt;&amp;#39;%-30{DISTRIBUTION} %{NAME}\n&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; sort
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;The output will have two columns. The first containing the repository name, and the second column with
+the package name. For example.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;devel:languages:R:base / SLE_11_SP2 R-base
+devel:languages:R:base / SLE_11_SP2 R-base-devel
+home:flacco:sles / SLE_11_SP3 php53-phar
+home:happenpappen / SLE_11_SP2 nodejs
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h2&gt;Grep for content in XML tags&lt;/h2&gt;
+&lt;p&gt;Be it for web services, or for finding things in Jenkins XML files. Being able to grep the tag attribute
+or tag name might be useful. Look at the following example that uses the 
+&lt;a href=&#34;https://msdn.microsoft.com/en-us/library/ms762271%28v=vs.85%29.aspx&#34;&gt;books XML provided by Microsoft for testing&lt;/a&gt;.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;grep -oP &lt;span class=&#34;s2&#34;&gt;&amp;quot;(?&amp;lt;=&amp;lt;genre&amp;gt;).*?(?=&amp;lt;/genre&amp;gt;)&amp;quot;&lt;/span&gt; books.xml &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; sort &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; uniq
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Which will outputs the following.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;Computer
+Fantasy
+Horror
+Romance
+Science Fiction
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h2&gt;Find Python site packages directory&lt;/h2&gt;
+&lt;p&gt;Sometimes you have Anaconda, but also the system installation, and maybe even other Python distributions.
+Knowing where Python is looking for site packages can be helpful to confirm the package exists, and also
+to inspect its sources.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;python -c &lt;span class=&#34;s2&#34;&gt;&amp;quot;from distutils.sysconfig import get_python_lib; print(get_python_lib())&amp;quot;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;An example of the output of the script.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;/usr/lib/python2.7/dist-packages
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h2&gt;Force no-cache via curl for a list of files&lt;/h2&gt;
+&lt;p&gt;Useful when you have a proxy like squid caching some requests from an application and you
+want to flush the cache and get the latest content (which will be cached again, but then
+you can fix it once confirmed).&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;curl --silent -H &lt;span class=&#34;s1&#34;&gt;&amp;#39;Cache-Control: no-cache&amp;#39;&lt;/span&gt; http://systemcachingvalues.local/somedoc.html
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h2&gt;Find to which servers a Linux process is talking to&lt;/h2&gt;
+&lt;p&gt;You have to find the pid of the process that you would like to investigate (e.g. 6364) and have
+&lt;a href=&#34;http://linux.die.net/man/1/strace&#34;&gt;strace&lt;/a&gt; installed.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;strace -p &lt;span class=&#34;m&#34;&gt;6364&lt;/span&gt; -f -e &lt;span class=&#34;nv&#34;&gt;trace&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;network -o output.txt
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;The command above creates output.txt with the trace information. Then you can grep for
+the IP addresses with the following regex.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;grep -E -o &lt;span class=&#34;s2&#34;&gt;&amp;quot;(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)&amp;quot;&lt;/span&gt; output.txt
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Which will output something similar to the following example.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;127.0.1.1
+127.0.1.1
+127.0.1.1
+192.168.20.4
+10.10.0.12
+...
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;And finally, you can call dig to get the server name, and also remove duplicates.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;grep -E -o &lt;span class=&#34;s2&#34;&gt;&amp;quot;(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)&amp;quot;&lt;/span&gt; output.txt &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; xargs -l dig +noall +answer +nocmd -x &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; awk &lt;span class=&#34;s1&#34;&gt;&amp;#39;{ print $5}&amp;#39;&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; sort &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; uniq
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Which gives you the following.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;ec2-52-13-43-205.compute-1.amazonaws.com.
+ec2-52-32-244-147.compute-1.amazonaws.com.
+ec2-52-44-11-85.compute-1.amazonaws.com.
+ec2-52-55-36-20.us-west-2.compute.amazonaws.com.
+ec2-52-11-19-24.us-west-2.compute.amazonaws.com.
+ec2-52-2-21-13.compute-1.amazonaws.com.
+ec2-54-33-249-49.us-west-2.compute.amazonaws.com.
+ec2-54-180-165-17.us-west-2.compute.amazonaws.com.
+ec2-54-2-177-91.compute-1.amazonaws.com.
+ec2-54-8-163-15.compute-1.amazonaws.com.
+syd11s01-in-f124.1e110.net.
+syd11s02-in-f5.1e110.net.
+syd12s02-in-f3.1e110.net.
+...
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;That&amp;#8217;s all for today.&lt;/p&gt;
+&lt;p&gt;Happy hacking!&lt;/p&gt;
+            
+            </description>
+        </item>
         
         
         
@@ -320,6 +437,8 @@ in Jenkins.&lt;/p&gt;
             
             <category>geek</category>
             
+            <category>cylc</category>
+            
             <pubDate>2016-04-08T22:17:03+12:00</pubDate>
             <guid>/2016/04/08/geek-vacation-2016</guid>
             <description>
@@ -621,49 +740,6 @@ how to model your observation data for SOS starts by defining &lt;em&gt;procedur
 
 &lt;p&gt;In the next post I will try to show how to load this model and some dummy data into a fresh installation of
 52North SOS server.&lt;/p&gt;
-            
-            </description>
-        </item>
-        
-        
-        
-        <item>
-            <title>Groovy Hooks in Jenkins for increasing logging level</title>
-            <link>/2015/04/12/groovy-hooks-in-jenkins-for-increasing-logging-level</link>
-            
-            <author>kinow</author>
-            <dc:creator>kinow</dc:creator>
-            
-            <category>blog</category>
-            
-            <category>jenkins</category>
-            
-            <category>groovy</category>
-            
-            <pubDate>2015-04-12T11:30:03+12:00</pubDate>
-            <guid>/2015/04/12/groovy-hooks-in-jenkins-for-increasing-logging-level</guid>
-            <description>
-            
-            &lt;p&gt;Yesterday, while debugging a problem we had in the &lt;a href=&#34;http://biouno.org&#34;&gt;BioUno&lt;/a&gt; update center, 
-I realized that after &lt;a href=&#34;https://wiki.jenkins-ci.org/display/JENKINS/Logging&#34;&gt;increasing the logging level in the WEB interface&lt;/a&gt;, 
-the messages that I needed weren&amp;#8217;t being displayed in the logs.&lt;/p&gt;
-&lt;p&gt;It happened because some of the logging happened during Jenkins initialization, and before I could adjust the log level.&lt;/p&gt;
-&lt;p&gt;The solution was to use a &lt;a href=&#34;https://wiki.jenkins-ci.org/display/JENKINS/Groovy+Hook+Script&#34;&gt;Groovy Hook Script&lt;/a&gt;. 
-If you are familiar with Linux init scripts, the idea is quite similar. &lt;/p&gt;
-&lt;p&gt;A Groovy script in the &lt;code&gt;$JENKINS_ROOT_DIR/init.groovy.d/&lt;/code&gt; directory is executed during
-Jenkins initialization. This way you can increase the global logger level with a script
-as the following below.&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;span class=&#34;kn&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;java.util.logging.ConsoleHandler&lt;/span&gt;
-&lt;span class=&#34;kn&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;java.util.logging.LogManager&lt;/span&gt;
-&lt;span class=&#34;kn&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;java.util.logging.Logger&lt;/span&gt;
-&lt;span class=&#34;kn&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;java.util.logging.Level&lt;/span&gt;
-
-&lt;span class=&#34;n&#34;&gt;def&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;logger&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Logger&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;getLogger&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;&amp;quot;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
-&lt;span class=&#34;n&#34;&gt;logger&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;setLevel&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;Level&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;FINEST&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
-&lt;span class=&#34;n&#34;&gt;logger&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;addHandler&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;new&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;ConsoleHandler&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;())&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;Happy logging!&lt;/p&gt;
             
             </description>
         </item>

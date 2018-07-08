@@ -8,7 +8,7 @@
     <meta name="keywords"
         content="kinoshita, bruno de paula kinoshita, geek, geek stuff, java, python, c, c++, msn now playing, neural network, mackenzie, sao paulo, brasil, brazil, nerd, nerd stuff, cool, jenkins, illustration, quadrinhos, machine learning, linguistic, apache, open source, codigo livre, codigo aberto" />
     <meta name="author" content="" />
-    <meta name="generator" content="PieCrust 3.2.1" />
+    <meta name="generator" content="PieCrust 3.2.0" />
     <meta name="template-engine" content="Twig" />
     <meta name="robots" content="all=index,follow" />
     <meta name="revisit-after" content="15 days" />
@@ -117,16 +117,151 @@
             </div>
             <div class="article">
                 <div class="main container" role="main">
+                    <!-- right fixed menu -->
+                    <div class="ui dividing right rail" id="taxonomy">
+                        <div class="ui sticky fixed top">
+                            <br/>
+                            <h4>Blog Taxonomy</h4>
+                            <nav id="tag-cloud" class="sidebar-box" role="complementary">
+                              
+                              
+                              <span style="font-size: 21.5pt"><a href="/tag/apache%20software%20foundation">apache software foundation</a></span>&nbsp;(23)
+                              
+                              <span style="font-size: 12.5pt"><a href="/tag/articles">articles</a></span>&nbsp;(5)
+                              
+                              <span style="font-size: 11.5pt"><a href="/tag/aws">aws</a></span>&nbsp;(3)
+                              
+                              <span style="font-size: 13.5pt"><a href="/tag/c%2B%2B">c++</a></span>&nbsp;(7)
+                              
+                              <span style="font-size: 11.5pt"><a href="/tag/docker">docker</a></span>&nbsp;(3)
+                              
+                              <span style="font-size: 12.5pt"><a href="/tag/events">events</a></span>&nbsp;(5)
+                              
+                              <span style="font-size: 11.5pt"><a href="/tag/functional%20programming">functional programming</a></span>&nbsp;(3)
+                              
+                              <span style="font-size: 16.5pt"><a href="/tag/illustrations">illustrations</a></span>&nbsp;(13)
+                              
+                              <span style="font-size: 26.5pt"><a href="/tag/java">java</a></span>&nbsp;(33)
+                              
+                              <span style="font-size: 12.5pt"><a href="/tag/jena">jena</a></span>&nbsp;(5)
+                              
+                              <span style="font-size: 23.0pt"><a href="/tag/jenkins">jenkins</a></span>&nbsp;(26)
+                              
+                              <span style="font-size: 12.5pt"><a href="/tag/krita">krita</a></span>&nbsp;(5)
+                              
+                              <span style="font-size: 12.0pt"><a href="/tag/natural%20language%20processing">natural language processing</a></span>&nbsp;(4)
+                              
+                              <span style="font-size: 25.0pt"><a href="/tag/opensource">opensource</a></span>&nbsp;(30)
+                              
+                              <span style="font-size: 26.5pt"><a href="/tag/programming">programming</a></span>&nbsp;(33)
+                              
+                              <span style="font-size: 14.0pt"><a href="/tag/python">python</a></span>&nbsp;(8)
+                              
+                              <span style="font-size: 11.5pt"><a href="/tag/r">r</a></span>&nbsp;(3)
+                              
+                              <span style="font-size: 12.5pt"><a href="/tag/security">security</a></span>&nbsp;(5)
+                              
+                              <span style="font-size: 12.5pt"><a href="/tag/shell%20script">shell script</a></span>&nbsp;(5)
+                              
+                              <span style="font-size: 24.5pt"><a href="/tag/software%20quality">software quality</a></span>&nbsp;(29)
+                              
+                              <span style="font-size: 12.0pt"><a href="/tag/sparql">sparql</a></span>&nbsp;(4)
+                              
+                              <span style="font-size: 13.5pt"><a href="/tag/test%20anything%20protocol">test anything protocol</a></span>&nbsp;(7)
+                              
+                              <span style="font-size: 16.5pt"><a href="/tag/testlink">testlink</a></span>&nbsp;(13)
+                              
+                              
+                            </nav>
+                            
+                        </div>
+                    </div>
+                
 
-                
-                    
-                    
-                    <p class="postmetadata">
-                        
-                        
-                    </p>
-                
-                </div>
+Posts tagged with 'gruan'
+
+
+
+
+<div class="ui raised padded container segment">
+    <h2><a href="/2016/07/12/processing-vaisala-radiosonde-data-with-python-and-creating-gruan-like-netcdf-files" title="Permanent link">Processing Vaisala Radiosonde data with Python, and creating GRUAN-like NetCDF files</a></h2>
+    <p><small>kinow</small> @ <small>Jul 12, 2016&nbsp;21:18:03</small></p>
+    
+    
+
+
+
+
+
+<a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2016/07/12/processing-vaisala-radiosonde-data-with-python-and-creating-gruan-like-netcdf-files" data-text="Processing Vaisala Radiosonde data with Python, and creating GRUAN-like NetCDF files" data-via="kinow" data-hashtags="opensource">Tweet</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+
+
+    <p>One of my last projects involved parsing a few GB&#8217;s of data that was in a certain binary format,
+and convert it into NetCDF files. In this post I will describe what was done, what I learned about radiosonde,
+<a href="http://www.dwd.de/EN/research/international_programme/gruan/home.html">GRUAN</a> and other geek stuff. Ready?</p>
+<h3>Vaisala Radiosonde data</h3>
+<p>When I was told the data was in some binary format, I thought it would be similar to
+parsing a flat file. That this would contain a fixed length entry, with the same
+kind of item repeated multiple times.</p>
+<p>Well, not exactly.</p>
+<p>The files had been generated by an instrument made by <a href="http://www.vaisala.com">Vaisala</a>, a Finnish company. This
+instrument is called a <strong>radiosonde</strong>. It is an instrument about the size of an old
+mobile phone, that is launched with a balloon into the atmosphere.</p>
+<p>I was lucky to be given the chance to release one of these balloons carrying a newer
+version of this equipment.</p>
+<p><img class="ui centered large bordered image" src="/2016/07/12/processing-vaisala-radiosonde-data-with-python-and-creating-gruan-like-netcdf-files/balloon-launch.jpg" alt="Radiosonde balloon launch" /></p>
+<p>The balloon can carry equipments for measuring different things, like air pressure,
+altitude, temperature, latitude, longitude, relative humidity, among others. Equipments
+like the radiosonde send the data back to a ground-level station via radio,
+normally in a short and constant interval.</p>
+<!-- html -->
+    
+    <p>( <a href="/2016/07/12/processing-vaisala-radiosonde-data-with-python-and-creating-gruan-like-netcdf-files" >Read more ...</a> )</p>
+    
+<p class="postmetadata">
+    
+    <small>tags 
+     [&nbsp;<a
+        href="/tag/python"
+        rel="tag">python</a>&nbsp;]&nbsp;
+    
+     [&nbsp;<a
+        href="/tag/netcdf"
+        rel="tag">netcdf</a>&nbsp;]&nbsp;
+    
+     [&nbsp;<a
+        href="/tag/climate"
+        rel="tag">climate</a>&nbsp;]&nbsp;
+    
+     [&nbsp;<a
+        href="/tag/radiosonde"
+        rel="tag">radiosonde</a>&nbsp;]&nbsp;
+    
+     [&nbsp;<a
+        href="/tag/gruan"
+        rel="tag">gruan</a>&nbsp;]&nbsp;
+    
+    </small>
+    
+    
+    <br/>
+    <small>posted in 
+    [&nbsp;<a
+        href="/blog"
+        title="View all posts in blog"
+        rel="category tag">blog</a>&nbsp;]&nbsp;
+    category </small>
+    
+</p>
+</div>
+
+
+
+
+
+
+               </div>
             </div>
         </div>
         <div class="ui vertical footer segment">

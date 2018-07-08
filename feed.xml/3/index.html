@@ -10,13 +10,92 @@
         
         <description>Latest news from Bruno P. Kinoshita</description>
         
-        <lastBuildDate>2018-07-08T01:18:08+12:00</lastBuildDate>
-        <pubDate>2018-07-08T01:18:08+12:00</pubDate>
-        <generator>PieCrust 3.2.1</generator>
+        <lastBuildDate>2018-07-08T20:03:08+12:00</lastBuildDate>
+        <pubDate>2018-07-08T20:03:08+12:00</pubDate>
+        <generator>PieCrust 3.2.0</generator>
         
         
         
 
+        
+        
+        
+        <item>
+            <title>How to remove the signature from e-mails with NLP?</title>
+            <link>/2017/06/14/how-to-remove-the-signature-from-emails-with-nlp</link>
+            
+            <author>kinow</author>
+            <dc:creator>kinow</dc:creator>
+            
+            
+            
+            <category>python</category>
+            
+            <category>programming</category>
+            
+            <category>natural language processing</category>
+            
+            <category>opensource</category>
+            
+            <pubDate>2017-06-14T13:59:33+12:00</pubDate>
+            <guid>/2017/06/14/how-to-remove-the-signature-from-emails-with-nlp</guid>
+            <description>
+            
+            &lt;p&gt;Some time ago I stumbled across &lt;a href=&#34;https://github.com/mynameisvinn/EmailParser&#34;&gt;EmailParser&lt;/a&gt;, a Python utility to remove e-mail signatures. Here&amp;#8217;s a sample input e-mail from the project documentation.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;Wendy – thanks for the intro! Moving you to bcc.
+
+Hi Vincent – nice to meet you over email. Apologize for the late reply, I was on PTO for a couple weeks and this is my first week back in office. As Wendy mentioned, I am leading an AR/VR taskforce at Foobar Retail Solutions. The goal of the taskforce is to better understand how AR/VR can apply to retail/commerce and if/what is the role of a shopping center in AR/VR applications for retail.
+
+Wendy mentioned that you would be a great person to speak to since you are close to what is going on in this space. Would love to set up some time to chat via phone next week. What does your availability look like on Monday or Wednesday?
+
+Best,
+Joe Smith
+
+Joe Smith | Strategy &amp;amp; Business Development
+111 Market St. Suite 111| San Francisco, CA 94103
+M: 111.111.1111| joe@foobar.com
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;And here&amp;#8217;s what it looks like afterwards.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;Wendy – thanks for the intro! Moving you to bcc.
+
+Hi Vincent – nice to meet you over email. Apologize for the late reply, I was on PTO for a couple weeks and this is my first week back in office. As Wendy mentioned, I am leading an AR/VR taskforce at Foobar Retail Solutions. The goal of the taskforce is to better understand how AR/VR can apply to retail/commerce and if/what is the role of a shopping center in AR/VR applications for retail.
+
+Wendy mentioned that you would be a great person to speak to since you are close to what is going on in this space. Would love to set up some time to chat via phone next week. What does your availability look like on Monday or Wednesday?
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;As you can see, it removed all the lines after the main part of the message (i.e. after the three paragraphs). Here&amp;#8217;s what the Python code looks like.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;span class=&#34;o&#34;&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class=&#34;kn&#34;&gt;from&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;Parser&lt;/span&gt; &lt;span class=&#34;kn&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;read_email&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;strip&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;prob_block&lt;/span&gt;
+&lt;span class=&#34;o&#34;&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class=&#34;kn&#34;&gt;from&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;spacy.en&lt;/span&gt; &lt;span class=&#34;kn&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;English&lt;/span&gt;
+
+&lt;span class=&#34;o&#34;&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;pos&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;English&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt;  &lt;span class=&#34;c&#34;&gt;# part-of-speech tagger&lt;/span&gt;
+&lt;span class=&#34;o&#34;&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;msg_raw&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;read_email&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;#39;emails/test1.txt&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;span class=&#34;o&#34;&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;msg_stripped&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;strip&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;msg_raw&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;  &lt;span class=&#34;c&#34;&gt;# preprocessing text before POS tagging&lt;/span&gt;
+
+&lt;span class=&#34;c&#34;&gt;# iterate through lines, write to file if not signature block&lt;/span&gt;
+&lt;span class=&#34;o&#34;&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;generate_text&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;msg_stripped&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;9&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;pos_tagger&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;&amp;#39;emails/test1_clean.txt&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;What got me interested about this utility was the use of NLP. I couldn&amp;#8217;t imagine how someone could use NLP for that. And I liked the simplicity of the approach, which is not perfect, but can be useful someday.&lt;/p&gt;
+&lt;p&gt;After the imports in the code, it creates a &lt;a href=&#34;https://en.wikipedia.org/wiki/Part_of_speech&#34;&gt;Part of Speech&lt;/a&gt; tagger using &lt;a href=&#34;https://spacy.io/&#34;&gt;spaCy&lt;/a&gt; NLP library, reads the e-mail from a file, and sripts and creates an array with each paragraph of the message.&lt;/p&gt;
+&lt;p&gt;The magic happens in the &lt;code&gt;generate_text&lt;/code&gt; function, which receives the &lt;strong&gt;array of paragraphs&lt;/strong&gt;, a &lt;strong&gt;threshold&lt;/strong&gt;, the &lt;strong&gt;POS tagger&lt;/strong&gt;, and the &lt;strong&gt;output destination&lt;/strong&gt;. Here&amp;#8217;s what the function does.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;for each message
+    if probability ( signature block | message ) &amp;lt; threshold
+        write to output file
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;And the formula for calculating the probability is quite simple too.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;1. For a given paragraph (message block), find all the sentences in it.
+2. Then for each word (token) in the sentence, count the number of times a non-verb appears.
+3. Return the proportion of non-verbs per sentence, i.e. number of non-verbs / number of sentences.
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;In summary, it discards blocks that do not contain enough verbs to be considered a message block, being treated as signature blocks instead.&lt;/p&gt;
+&lt;p&gt;Never thought about using an approach like this. It may definitely be helpful when doing data analysis, information retrieval, or scraping data from the web. Not necessarily with e-mails and signatures, but you got the gist of it.&lt;/p&gt;
+&lt;p&gt;&amp;hearts; Open Source&lt;/p&gt;
+            
+            </description>
+        </item>
         
         
         
@@ -577,89 +656,6 @@ with just what I need. To avoid including unnecessary code to my application.&lt
 instead of using the NumPy (took a couple of hours). In other cases it may still
 make sense to use another tool or library, even if it was not made specifically for the
 job ¯\&lt;em&gt;(ツ)&lt;/em&gt;/¯&lt;/p&gt;
-&lt;p&gt;&amp;hearts; Open Source&lt;/p&gt;
-            
-            </description>
-        </item>
-        
-        
-        
-        <item>
-            <title>Spring Cloud encrypted values and Spring PropertySources</title>
-            <link>/2017/04/14/spring-cloud-encrypted-values-and-spring-propertysources</link>
-            
-            <author>kinow</author>
-            <dc:creator>kinow</dc:creator>
-            
-            <category>blog</category>
-            
-            <category>java</category>
-            
-            <category>programming</category>
-            
-            <category>opensource</category>
-            
-            <pubDate>2017-04-14T11:21:03+12:00</pubDate>
-            <guid>/2017/04/14/spring-cloud-encrypted-values-and-spring-propertysources</guid>
-            <description>
-            
-            &lt;p&gt;As I could not find any documentation for that, I decided to write it as a note to myself
-in case I use the
-&lt;a href=&#34;https://cloud.spring.io/spring-cloud-config/spring-cloud-config.html#_encryption_and_decryption&#34;&gt;encryption and decryption&lt;/a&gt;
-with Spring Cloud again.&lt;/p&gt;
-&lt;p&gt;In Spring and Spring Boot, you normally have multiple sources of properties, like multiple
-properties files, environment properties and variables, and so it goes. In the Spring API,
-these are represented as
-&lt;a href=&#34;http://docs.spring.io/spring/docs/current/javadoc-api/org/springframework/context/annotation/PropertySource.html&#34;&gt;PropertySource&lt;/a&gt;&amp;#8216;s.&lt;/p&gt;
-&lt;p&gt;In a Spring Boot application, you would be used to overriding certain properties
-by defining environments and using an application-production.properties file, or
-overriding values with environment properties.&lt;/p&gt;
-&lt;p&gt;This is common in
-&lt;a href=&#34;https://aws.amazon.com/blogs/devops/deploying-a-spring-boot-application-on-aws-using-aws-elastic-beanstalk/&#34;&gt;Spring Boot applications deployed to Amazon Elastic Beanstalk&lt;/a&gt;.&lt;/p&gt;
-&lt;p&gt;Some time ago another team at work found that overriding did not always work when you have
-encrypted values in your properties files. Even if you specified new values in the
-Amazon Elastic Beanstalk application configuration.&lt;/p&gt;
-&lt;p&gt;Yesterday, while debugging the issue and reading Spring Cloud source code, I found its
-&lt;a href=&#34;https://github.com/spring-cloud/spring-cloud-commons/blob/9675df02f6a2c01766711f7dee3c4d2818b7d716/spring-cloud-context/src/main/java/org/springframework/cloud/bootstrap/encrypt/EnvironmentDecryptApplicationInitializer.java#L44&#34;&gt;EnvironmentDecryptApplicationInitializer&lt;/a&gt;.&lt;/p&gt;
-&lt;p&gt;It basically iterates through all loaded property sources, looking for values that start with
-{cipher}. Then it calls the
-&lt;a href=&#34;http://docs.spring.io/spring-security/site/docs/current/apidocs/org/springframework/security/crypto/encrypt/TextEncryptor.html&#34;&gt;Spring Security TextEncryptor&lt;/a&gt;
-defined in the application.&lt;/p&gt;
-&lt;p&gt;Finally, it creates a new property source, called decrypted, with the decrypted values. So when
-your application looks for a property called XPTO, and if it has been encrypted, it will
-find the value in the decrypted propery source, regardless of whether you tried to override it or
-not.&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;span class=&#34;c&#34;&gt;# Property sources listed in Eclipse IDE&lt;/span&gt;
-
-&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;
-  servletConfigInitParams,
-  servletContextInitParams,
-  systemProperties,
-  systemEnvironment,
-  random,
-  applicationConfigurationProperties,
-  springCloudClientHostInfo,
-  defaultProperties
-&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
-
-&lt;span class=&#34;c&#34;&gt;# When using encrypted values&lt;/span&gt;
-
-&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;
-  decrypted, &amp;lt;-------- created by Spring Cloud, with decrypted values. Prepended to the list of property sources
-  servletConfigInitParams,
-  servletContextInitParams,
-  systemProperties,
-  systemEnvironment,
-  random,
-  applicationConfigurationProperties,
-  springCloudClientHostInfo,
-  defaultProperties
-&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;So in case you have encrypted values in your Spring application (and you are using Spring Cloud, 
-of course) remember that these values will have higher priority, and can only be overriden by other
-encrypted values.&lt;/p&gt;
 &lt;p&gt;&amp;hearts; Open Source&lt;/p&gt;
             
             </description>

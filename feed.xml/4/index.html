@@ -10,13 +10,96 @@
         
         <description>Latest news from Bruno P. Kinoshita</description>
         
-        <lastBuildDate>2018-07-08T01:18:08+12:00</lastBuildDate>
-        <pubDate>2018-07-08T01:18:08+12:00</pubDate>
-        <generator>PieCrust 3.2.1</generator>
+        <lastBuildDate>2018-07-08T20:03:08+12:00</lastBuildDate>
+        <pubDate>2018-07-08T20:03:08+12:00</pubDate>
+        <generator>PieCrust 3.2.0</generator>
         
         
         
 
+        
+        
+        
+        <item>
+            <title>Spring Cloud encrypted values and Spring PropertySources</title>
+            <link>/2017/04/14/spring-cloud-encrypted-values-and-spring-propertysources</link>
+            
+            <author>kinow</author>
+            <dc:creator>kinow</dc:creator>
+            
+            <category>blog</category>
+            
+            <category>java</category>
+            
+            <category>programming</category>
+            
+            <category>opensource</category>
+            
+            <pubDate>2017-04-14T11:21:03+12:00</pubDate>
+            <guid>/2017/04/14/spring-cloud-encrypted-values-and-spring-propertysources</guid>
+            <description>
+            
+            &lt;p&gt;As I could not find any documentation for that, I decided to write it as a note to myself
+in case I use the
+&lt;a href=&#34;https://cloud.spring.io/spring-cloud-config/spring-cloud-config.html#_encryption_and_decryption&#34;&gt;encryption and decryption&lt;/a&gt;
+with Spring Cloud again.&lt;/p&gt;
+&lt;p&gt;In Spring and Spring Boot, you normally have multiple sources of properties, like multiple
+properties files, environment properties and variables, and so it goes. In the Spring API,
+these are represented as
+&lt;a href=&#34;http://docs.spring.io/spring/docs/current/javadoc-api/org/springframework/context/annotation/PropertySource.html&#34;&gt;PropertySource&lt;/a&gt;&amp;#8216;s.&lt;/p&gt;
+&lt;p&gt;In a Spring Boot application, you would be used to overriding certain properties
+by defining environments and using an application-production.properties file, or
+overriding values with environment properties.&lt;/p&gt;
+&lt;p&gt;This is common in
+&lt;a href=&#34;https://aws.amazon.com/blogs/devops/deploying-a-spring-boot-application-on-aws-using-aws-elastic-beanstalk/&#34;&gt;Spring Boot applications deployed to Amazon Elastic Beanstalk&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Some time ago another team at work found that overriding did not always work when you have
+encrypted values in your properties files. Even if you specified new values in the
+Amazon Elastic Beanstalk application configuration.&lt;/p&gt;
+&lt;p&gt;Yesterday, while debugging the issue and reading Spring Cloud source code, I found its
+&lt;a href=&#34;https://github.com/spring-cloud/spring-cloud-commons/blob/9675df02f6a2c01766711f7dee3c4d2818b7d716/spring-cloud-context/src/main/java/org/springframework/cloud/bootstrap/encrypt/EnvironmentDecryptApplicationInitializer.java#L44&#34;&gt;EnvironmentDecryptApplicationInitializer&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;It basically iterates through all loaded property sources, looking for values that start with
+{cipher}. Then it calls the
+&lt;a href=&#34;http://docs.spring.io/spring-security/site/docs/current/apidocs/org/springframework/security/crypto/encrypt/TextEncryptor.html&#34;&gt;Spring Security TextEncryptor&lt;/a&gt;
+defined in the application.&lt;/p&gt;
+&lt;p&gt;Finally, it creates a new property source, called decrypted, with the decrypted values. So when
+your application looks for a property called XPTO, and if it has been encrypted, it will
+find the value in the decrypted propery source, regardless of whether you tried to override it or
+not.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;span class=&#34;c&#34;&gt;# Property sources listed in Eclipse IDE&lt;/span&gt;
+
+&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;
+  servletConfigInitParams,
+  servletContextInitParams,
+  systemProperties,
+  systemEnvironment,
+  random,
+  applicationConfigurationProperties,
+  springCloudClientHostInfo,
+  defaultProperties
+&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
+
+&lt;span class=&#34;c&#34;&gt;# When using encrypted values&lt;/span&gt;
+
+&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;
+  decrypted, &amp;lt;-------- created by Spring Cloud, with decrypted values. Prepended to the list of property sources
+  servletConfigInitParams,
+  servletContextInitParams,
+  systemProperties,
+  systemEnvironment,
+  random,
+  applicationConfigurationProperties,
+  springCloudClientHostInfo,
+  defaultProperties
+&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;So in case you have encrypted values in your Spring application (and you are using Spring Cloud, 
+of course) remember that these values will have higher priority, and can only be overriden by other
+encrypted values.&lt;/p&gt;
+&lt;p&gt;&amp;hearts; Open Source&lt;/p&gt;
+            
+            </description>
+        </item>
         
         
         
@@ -617,65 +700,6 @@ tuned to release announcements in the mailing list!&lt;/p&gt;
 a thread in the &lt;a href=&#34;https://commons.apache.org/mail-lists.html&#34;&gt;mailing list&lt;/a&gt;,
 open a &lt;a href=&#34;https://issues.apache.org/jira/browse/TEXT&#34;&gt;JIRA issue&lt;/a&gt;, or submit a
 &lt;a href=&#34;https://github.com/apache/commons-text/pulls&#34;&gt;pull request&lt;/a&gt;.&lt;/p&gt;
-&lt;p&gt;Happy hacking!&lt;/p&gt;
-            
-            </description>
-        </item>
-        
-        
-        
-        <item>
-            <title>Plotting Auckland with OSMnx</title>
-            <link>/2017/01/05/plotting-auckland-with-osmnx</link>
-            
-            <author>kinow</author>
-            <dc:creator>kinow</dc:creator>
-            
-            <category>blog</category>
-            
-            <category>gis</category>
-            
-            <pubDate>2017-01-05T10:39:03+13:00</pubDate>
-            <guid>/2017/01/05/plotting-auckland-with-osmnx</guid>
-            <description>
-            
-            &lt;div class=&#39;row&#39;&gt;
-&lt;div class=&#34;ui fluid container&#34;&gt;
-&lt;figure&gt;
-&lt;a  href=&#34;/2017/01/05/plotting-auckland-with-osmnx/figure_1.png&#34; rel=&#34;prettyPhoto&#34; class=&#34;thumbnail&#34; title=&#34;Auckland&#34;&gt;
-&lt;img style=&#34;height: 400px;&#34; class=&#34;ui image&#34; src=&#34;/2017/01/05/plotting-auckland-with-osmnx/figure_1.png&#34; alt=&#34;Auckland&#34; /&gt;
-&lt;/a&gt;
-&lt;figcaption&gt;Auckland&lt;/figcaption&gt;
-&lt;/figure&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;p&gt;A couple of days ago I saw &lt;a href=&#34;https://www.reddit.com/r/gis/comments/5lnjxs/creating_squaremile_figureground_diagrams_of/&#34;&gt;a thread in reddit&lt;/a&gt;
-about OSMnx. It is a utilty for interacting with the OpenStreeMap (OSM)
-API, manipulate it in pure Python and using libraries like NetworkX (a Python graph package).&lt;/p&gt;
-&lt;p&gt;With it you can do things like &lt;q&gt;visualize cul-de-sacs or one-way streets, plot shortest-path routes, or calculate stats like intersection density, average node connectivity, or betweenness centrality&lt;/q&gt;. Or simply
-plot the OSM data as in the graph above.&lt;/p&gt;
-&lt;p&gt;The source code is hosted at GitHub: &lt;a href=&#34;https://github.com/gboeing/osmnx&#34;&gt;https://github.com/gboeing/osmnx&lt;/a&gt;.&lt;/p&gt;
-&lt;blockquote cite=&#34;https://github.com/gboeing/osmnx&#34;&gt;OSMnx is a Python 2+3 package that lets you download spatial geometries and construct, project, visualize, and analyze street networks from OpenStreetMap&amp;#8217;s APIs. Users can download and construct walkable, drivable, or bikable urban networks with a single line of Python code, and then easily analyze and visualize them.&lt;/blockquote&gt;
-
-&lt;p&gt;The only issue I found while creating the map for Auckland using the example from the project
-README, was that the script would exit with the following error: &lt;strong&gt;&amp;#8220;ValueError: Geometry must be a shapely Polygon or MultiPolygon&amp;#8221;&lt;/strong&gt;.&lt;/p&gt;
-&lt;p&gt;After looking at the list of dependencies and finding that everything seemed to be OK,
-I started looking at the project issues. And thankfully someone else had found the
-&lt;a href=&#34;https://github.com/gboeing/osmnx/issues/16&#34;&gt;same issue&lt;/a&gt;
-and the maintainer of the project answered how to fix it.&lt;/p&gt;
-&lt;p&gt;The issue was that the OSM API returns two &lt;a href=&#34;https://nominatim.openstreetmap.org/search?format=json&amp;amp;limit=10&amp;amp;dedupe=0&amp;amp;polygon_geojson=1&amp;amp;q=Auckland,%20New%20Zealand&#34;&gt;entries for Auckland&lt;/a&gt;
-, where the first one is a Point, and the
-second is the one that we want (a Polygon). The application defaults to using the first element,
-so in order to change it you have to give a &lt;em&gt;which_result&lt;/em&gt; argument.&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;span class=&#34;c&#34;&gt;#!/usr/bin/env python3&lt;/span&gt;
-
-&lt;span class=&#34;kn&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;osmnx&lt;/span&gt; &lt;span class=&#34;kn&#34;&gt;as&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;ox&lt;/span&gt;
-&lt;span class=&#34;n&#34;&gt;G&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;ox&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;graph_from_place&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;#39;Auckland, NZ&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;network_type&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;#39;drive&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;which_result&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;2&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
-&lt;span class=&#34;n&#34;&gt;ox&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;plot_graph&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;ox&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;project_graph&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;G&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;))&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;And after that, and after waiting a few minutes, you should get your map :-)&lt;/p&gt;
 &lt;p&gt;Happy hacking!&lt;/p&gt;
             
             </description>
