@@ -1,8 +1,10 @@
 ---
 title: A simple cylc suite
+time: '18:59:13'
 author: kinow
 tags:
     - cylc
+    - python
     - opensource
 ---
 
