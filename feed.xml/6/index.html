@@ -10,13 +10,58 @@
         
         <description>Latest news from Bruno P. Kinoshita</description>
         
-        <lastBuildDate>2018-07-08T22:21:27+12:00</lastBuildDate>
-        <pubDate>2018-07-08T22:21:27+12:00</pubDate>
+        <lastBuildDate>2018-07-10T01:12:05+12:00</lastBuildDate>
+        <pubDate>2018-07-10T01:12:05+12:00</pubDate>
         <generator>PieCrust 3.2.0</generator>
         
         
         
 
+        
+        
+        
+        <item>
+            <title>Content negotiation with Spring Boot and React</title>
+            <link>/2016/11/07/content-negotiation-with-spring-boot-and-react</link>
+            
+            <author>kinow</author>
+            <dc:creator>kinow</dc:creator>
+            
+            <category>blog</category>
+            
+            <category>java</category>
+            
+            <category>spring</category>
+            
+            <pubDate>2016-11-07T20:07:03+13:00</pubDate>
+            <guid>/2016/11/07/content-negotiation-with-spring-boot-and-react</guid>
+            <description>
+            
+            &lt;p&gt;A few days ago I had a bug in a system built with Spring Boot and React. The frontend application
+was using a REST client in React, built in a similar way to what is found in the documentation, and
+also in blogs.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;span class=&#34;kr&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;rest&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;from&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39;rest&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+&lt;span class=&#34;kr&#34;&gt;const&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;Rest&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;()&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;rest&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;wrap&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;mime&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;However, for one of the Spring Boot application endpoints, the React component was not working. The
+response seemed to be OK in the Network tab, of the browser developer tools. But the component was
+failing and complaining when parsing the response.&lt;/p&gt;
+&lt;p&gt;Turns out that the frontend was sending the request with the header &lt;code&gt;Accept: text/plain, application/json&lt;/code&gt;.
+And Spring Boot was just using its &lt;a href=&#34;https://spring.io/blog/2013/05/11/content-negotiation-using-spring-mvc&#34;&gt;default content negotiation&lt;/a&gt;
+and returning what the frontend requested: a text plain version of, what looked like, JSON.&lt;/p&gt;
+&lt;p&gt;The quick fix was to request the content as JSON in React.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;span class=&#34;kr&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;rest&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;from&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39;rest&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+&lt;span class=&#34;kr&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;mime&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;from&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39;rest/interceptor/mime&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+&lt;span class=&#34;kr&#34;&gt;const&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;Rest&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;()&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;rest&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;wrap&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;mime&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;mime&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39;application/json&amp;#39;&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;}&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Now we will revisit the backend to return the JSON content, as content, regardless of what
+the user asks :-)&lt;/p&gt;
+&lt;p&gt;Happy hacking!&lt;/p&gt;
+            
+            </description>
+        </item>
         
         
         
@@ -435,39 +480,6 @@ altitude, temperature, latitude, longitude, relative humidity, among others. Equ
 like the radiosonde send the data back to a ground-level station via radio,
 normally in a short and constant interval.&lt;/p&gt;
 
-            
-            </description>
-        </item>
-        
-        
-        
-        <item>
-            <title>Drawing sketch: Blue Hair</title>
-            <link>/2016/05/16/drawing-sketch-bluehair</link>
-            
-            <author>kinow</author>
-            <dc:creator>kinow</dc:creator>
-            
-            <category>blog</category>
-            
-            <category>illustrations</category>
-            
-            <pubDate>2016-05-16T11:13:03+12:00</pubDate>
-            <guid>/2016/05/16/drawing-sketch-bluehair</guid>
-            <description>
-            
-            &lt;div class=&#39;row&#39;&gt;
-&lt;div class=&#34;ui container&#34; style=&#39;text-align: center;&#39;&gt;
-&lt;figure&gt;
-&lt;a href=&#34;/2016/05/16/drawing-sketch-bluehair/bluehair.jpg&#34; rel=&#34;prettyPhoto&#34; class=&#34;thumbnail&#34; title=&#34;Blue Hair&#34;&gt;
-&lt;img class=&#34;ui fluid image&#34; src=&#34;/2016/05/16/drawing-sketch-bluehair/bluehair.jpg&#34; alt=&#34;Blue Hair&#34; /&gt;
-&lt;/a&gt;
-&lt;figcaption&gt;Blue Hair&lt;/figcaption&gt;
-&lt;/figure&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;p&gt;For &lt;a href=&#34;https://www.reddit.com/r/redditgetsdrawn/comments/4jakp0/someone_told_me_to_post_here_with_my_new_hair/&#34;&gt;redditgetsdrawn&lt;/a&gt;&lt;/p&gt;
             
             </description>
         </item>

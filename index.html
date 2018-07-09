@@ -133,6 +133,8 @@
                               
                               <span style="font-size: 13.5pt"><a href="/tag/c%2B%2B">c++</a></span>&nbsp;(7)
                               
+                              <span style="font-size: 11.5pt"><a href="/tag/cylc">cylc</a></span>&nbsp;(3)
+                              
                               <span style="font-size: 11.5pt"><a href="/tag/docker">docker</a></span>&nbsp;(3)
                               
                               <span style="font-size: 12.5pt"><a href="/tag/events">events</a></span>&nbsp;(5)
@@ -151,11 +153,11 @@
                               
                               <span style="font-size: 12.0pt"><a href="/tag/natural%20language%20processing">natural language processing</a></span>&nbsp;(4)
                               
-                              <span style="font-size: 25.0pt"><a href="/tag/opensource">opensource</a></span>&nbsp;(30)
+                              <span style="font-size: 25.5pt"><a href="/tag/opensource">opensource</a></span>&nbsp;(31)
                               
                               <span style="font-size: 26.5pt"><a href="/tag/programming">programming</a></span>&nbsp;(33)
                               
-                              <span style="font-size: 14.0pt"><a href="/tag/python">python</a></span>&nbsp;(8)
+                              <span style="font-size: 15.0pt"><a href="/tag/python">python</a></span>&nbsp;(10)
                               
                               <span style="font-size: 11.5pt"><a href="/tag/r">r</a></span>&nbsp;(3)
                               
@@ -185,9 +187,130 @@
                     
                     <div class="ui raised padded container segment">
                         <h2>
+                            <a href="/2018/07/10/import-error-when-debugging-cylc-in-eclipse" title="Permanent link">ImportError when debugging cylc in Eclipse</a>
+                        </h2>
+                        <small>kinow</small> @ <small>Jul 10, 2018&nbsp;00:47:13 (<span class='stardate' data-input-date='Jul 10, 2018'></span>)</small>
+                        <div class="entry">
+                            
+
+
+
+
+
+<a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2018/07/10/import-error-when-debugging-cylc-in-eclipse" data-text="ImportError when debugging cylc in Eclipse" data-via="kinow" data-hashtags="opensource">Tweet</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+                            
+                            <p>Since I started reading cylc&#8217;s source code in Eclipse to create some
+sequence diagrams, I have not been able to debug it properly without
+hitting errors in some part of the program execution.</p>
+<p>The error message was <strong><em>&ldquo;ImportError: cannot import name _remove_dead_weakref&rdquo;</em></strong>,
+which was a bit enigmatic as I never heard about that function, but it seemed to be
+something internal, or at least not from the project code base. And searching the Internet
+did not help much.</p>
+<p>Here is the complete console output in Eclipse.</p>
+<div class="highlight"><pre>pydev debugger: starting <span class="o">(</span>pid: 15124<span class="o">)</span>
+timeout <span class="m">10</span> ps -opid,args <span class="m">13640</span>  <span class="c"># return 1</span>
+
+            ._.                                                       
+            <span class="p">|</span> <span class="p">|</span>            The Cylc Suite Engine <span class="o">[</span>7.7.1-37-g09c8a<span class="o">]</span>    
+._____._. ._<span class="p">|</span> <span class="p">|</span>_____.           Copyright <span class="o">(</span>C<span class="o">)</span> 2008-2018 NIWA          
+<span class="p">|</span> .___<span class="p">|</span> <span class="p">|</span> <span class="p">|</span> <span class="p">|</span> <span class="p">|</span> .___<span class="p">|</span>  _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+<span class="p">|</span> !___<span class="p">|</span> !_! <span class="p">|</span> <span class="p">|</span> !___.  This program comes with ABSOLUTELY NO WARRANTY<span class="p">;</span>
+!_____!___. <span class="p">|</span>_!_____!  see <span class="sb">`</span>cylc warranty<span class="sb">`</span>.  It is free software, you 
+      .___! <span class="p">|</span>           are welcome to redistribute it under certain  
+      !_____!                conditions<span class="p">;</span> see <span class="sb">`</span>cylc conditions<span class="sb">`</span>.       
+2018-07-10T01:00:47+12 INFO - Suite starting: <span class="nv">server</span><span class="o">=</span>localhost:44444 <span class="nv">pid</span><span class="o">=</span>15124
+2018-07-10T01:00:47+12 INFO - Cylc version: 7.7.1-37-g09c8a
+2018-07-10T01:00:47+12 INFO - Run mode: live
+2018-07-10T01:00:47+12 INFO - Initial point: 1
+2018-07-10T01:00:47+12 INFO - Final point: None
+2018-07-10T01:00:47+12 INFO - Cold Start 1
+2018-07-10T01:00:47+12 DEBUG - <span class="o">[</span>hello.1<span class="o">]</span> -released to the task pool
+2018-07-10T01:00:47+12 DEBUG - BEGIN TASK PROCESSING
+2018-07-10T01:00:47+12 DEBUG - <span class="o">[</span>hello.1<span class="o">]</span> -waiting <span class="o">=</span>&gt; queued
+2018-07-10T01:00:47+12 DEBUG - <span class="m">1</span> task<span class="o">(</span>s<span class="o">)</span> de-queued
+2018-07-10T01:00:47+12 INFO - <span class="o">[</span>hello.1<span class="o">]</span> -submit-num<span class="o">=</span>1, owner@host<span class="o">=</span>localhost
+2018-07-10T01:00:47+12 DEBUG - <span class="o">[</span>hello.1<span class="o">]</span> -queued <span class="o">=</span>&gt; ready
+2018-07-10T01:00:47+12 DEBUG - END TASK PROCESSING <span class="o">(</span>took 0.023609161377 seconds<span class="o">)</span>
+2018-07-10T01:00:48+12 DEBUG - <span class="o">[</span><span class="s1">&#39;cylc&#39;</span>, <span class="s1">&#39;jobs-submit&#39;</span>, <span class="s1">&#39;--debug&#39;</span>, <span class="s1">&#39;--&#39;</span>, <span class="s1">&#39;/home/kinow/Development/python/workspace/example-suite/log/job&#39;</span>, <span class="s1">&#39;1/hello/01&#39;</span><span class="o">]</span>
+2018-07-10T01:00:48+12 ERROR - <span class="o">[</span><span class="nb">jobs</span>-submit cmd<span class="o">]</span> cylc <span class="nb">jobs</span>-submit --debug -- /home/kinow/Development/python/workspace/example-suite/log/job 1/hello/01
+    <span class="o">[</span><span class="nb">jobs</span>-submit ret_code<span class="o">]</span> 1
+    <span class="o">[</span><span class="nb">jobs</span>-submit err<span class="o">]</span>
+    Traceback <span class="o">(</span>most recent call last<span class="o">)</span>:
+      File <span class="s2">&quot;/home/kinow/Development/python/workspace/cylc/bin/cylc-jobs-submit&quot;</span>, line 52, in &lt;module&gt;
+        from cylc.batch_sys_manager import BatchSysManager
+      File <span class="s2">&quot;/home/kinow/Development/python/workspace/cylc/lib/cylc/batch_sys_manager.py&quot;</span>, line 114, in &lt;module&gt;
+        from cylc.task_message import <span class="o">(</span>
+      File <span class="s2">&quot;/home/kinow/Development/python/workspace/cylc/lib/cylc/task_message.py&quot;</span>, line 26, in &lt;module&gt;
+        from logging import getLevelName, WARNING, ERROR, CRITICAL
+      File <span class="s2">&quot;/home/kinow/Development/python/anaconda2/lib/python2.7/logging/__init__.py&quot;</span>, line 26, in &lt;module&gt;
+        import sys, os, <span class="nb">time</span>, cStringIO, traceback, warnings, weakref, collections
+      File <span class="s2">&quot;/home/kinow/Development/python/anaconda2/lib/python2.7/weakref.py&quot;</span>, line 14, in &lt;module&gt;
+        from _weakref import <span class="o">(</span>
+    ImportError: cannot import name _remove_dead_weakref
+2018-07-10T01:00:48+12 ERROR - <span class="o">[</span><span class="nb">jobs</span>-submit cmd<span class="o">]</span> cylc <span class="nb">jobs</span>-submit --debug -- /home/kinow/Development/python/workspace/example-suite/log/job 1/hello/01
+    <span class="o">[</span><span class="nb">jobs</span>-submit ret_code<span class="o">]</span> 1
+    <span class="o">[</span><span class="nb">jobs</span>-submit out<span class="o">]</span> 2018-07-10T01:00:48+12<span class="p">|</span>1/hello/01<span class="p">|</span>1
+2018-07-10T01:00:48+12 INFO - <span class="o">[</span>hello.1<span class="o">]</span> -<span class="o">(</span>current:ready<span class="o">)</span> submission failed at 2018-07-10T01:00:48+12
+2018-07-10T01:00:48+12 ERROR - <span class="o">[</span>hello.1<span class="o">]</span> -submission failed
+2018-07-10T01:00:48+12 DEBUG - <span class="o">[</span>hello.1<span class="o">]</span> -ready <span class="o">=</span>&gt; submit-failed
+2018-07-10T01:00:48+12 DEBUG - BEGIN TASK PROCESSING
+2018-07-10T01:00:48+12 DEBUG - <span class="m">0</span> task<span class="o">(</span>s<span class="o">)</span> de-queued
+2018-07-10T01:00:48+12 DEBUG - END TASK PROCESSING <span class="o">(</span>took 0.00175499916077 seconds<span class="o">)</span>
+2018-07-10T01:00:49+12 WARNING - suite stalled
+</pre></div>
+
+<p>As the current diagram I am working on has quite a few <code>if</code>&#8216;s and <code>else</code>&#8216;s, I decided
+to investigate why this error was occurring. Then, after some elimination I found that
+it was due to the missing Anaconda 2 entry in my <code>$PATH</code> environment variable.</p>
+<p>I had this variable configured in a custom script I load whenever I decide to use
+Anaconda 2. And reproducing the same behaviour in Eclipse was easy.</p>
+<p style='text-align: center;'>
+<img style="display: inline" class="ui image" src="/2018/07/10/import-error-when-debugging-cylc-in-eclipse/screenshot1.png" alt="A screen shot of Eclipse with source code" title="Locating the bug" />
+<br/>
+<small>Locating the bug</small>
+</p>
+
+<p>Et voil&agrave;! Eclipse was happily debugging again!</p>
+<p style='text-align: center;'>
+<img style="display: inline" class="ui image" src="/2018/07/10/import-error-when-debugging-cylc-in-eclipse/screenshot2.png" alt="A screen shot of Eclipse with source code" title="Locating the bug" />
+<br/>
+<small>Locating the bug</small>
+</p>
+
+<p>So if you have a similar problem, try comparing your environment variables and check if you
+have some entries missing, and try adding them in Eclipse Debug configuration.</p>
+<p>Happy cycling!</p>
+                            
+                            
+                            
+                        </div>
+                        <p class="postmetadata">
+                            
+                            <small>tags 
+                             [&nbsp;<a
+                                href="/tag/cylc/"
+                                rel="tag">cylc</a>&nbsp;]&nbsp;
+                            
+                             [&nbsp;<a
+                                href="/tag/python/"
+                                rel="tag">python</a>&nbsp;]&nbsp;
+                            
+                             [&nbsp;<a
+                                href="/tag/opensource/"
+                                rel="tag">opensource</a>&nbsp;]&nbsp;
+                            
+                            </small>
+                            
+                            
+                        </p>
+                    </div>
+                    
+                    <div class="ui raised padded container segment">
+                        <h2>
                             <a href="/2018/07/08/a-simple-cylc-suite" title="Permanent link">A simple cylc suite</a>
                         </h2>
-                        <small>kinow</small> @ <small>Jul 08, 2018&nbsp; (<span class='stardate' data-input-date='Jul 08, 2018'></span>)</small>
+                        <small>kinow</small> @ <small>Jul 08, 2018&nbsp;18:59:13 (<span class='stardate' data-input-date='Jul 08, 2018'></span>)</small>
                         <div class="entry">
                             
 
@@ -246,6 +369,10 @@ tools to default to 44444/HTTP, for ease of debugging.</p>
                              [&nbsp;<a
                                 href="/tag/cylc/"
                                 rel="tag">cylc</a>&nbsp;]&nbsp;
+                            
+                             [&nbsp;<a
+                                href="/tag/python/"
+                                rel="tag">python</a>&nbsp;]&nbsp;
                             
                              [&nbsp;<a
                                 href="/tag/opensource/"
@@ -685,90 +812,6 @@ Portuguese.</em></p>
                              [&nbsp;<a
                                 href="/tag/krita/"
                                 rel="tag">krita</a>&nbsp;]&nbsp;
-                            
-                            </small>
-                            
-                            
-                        </p>
-                    </div>
-                    
-                    <div class="ui raised padded container segment">
-                        <h2>
-                            <a href="/2018/04/28/learning-more-about-sparql-and-jena-internals" title="Permanent link">Learning more about SPARQL and Jena internals</a>
-                        </h2>
-                        <small>kinow</small> @ <small>Apr 28, 2018&nbsp;18:20:28 (<span class='stardate' data-input-date='Apr 28, 2018'></span>)</small>
-                        <div class="entry">
-                            
-
-
-
-
-
-<a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2018/04/28/learning-more-about-sparql-and-jena-internals" data-text="Learning more about SPARQL and Jena internals" data-via="kinow" data-hashtags="opensource">Tweet</a>
-<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-                            
-                            <p style='text-align: center;'>
-<a href="https://kinow.deviantart.com/art/O-Corvo-742473382"><img style="display: inline; width: 600px;" class="ui image" src="/2018/04/28/learning-more-about-sparql-and-jena-internals/ocorvo.jpg" alt="O Corvo" /></a>
-<br/>
-<small><a href="https://kinow.deviantart.com/art/O-Corvo-742473382">O Corvo</a></small>
-</p>
-
-<p>Recently a <a href="https://github.com/apache/jena/pull/114/">pull request</a> for Apache Jena
-that I started three years ago got merged. Even though it has been three years since
-that pull request, there are still many parts of the project code base that I am
-not familiar with.</p>
-<p>And not only the code, but there are also many concepts about SPARQL, other standards
-used in Jena, and internals about triple stores.</p>
-<p>The following list contains some presentations and posts that I am reading right now,
-while I try to improve my knowledge of SPARQL and Jena internals.</p>
-<ul>
-<li><a href="https://www.slideshare.net/olafhartig/the-semantics-of-sparql">The Semantics of SPARQL</a><ul>
-<li>Slides with information from Query parsing to Algebra and evaluating the Query</li>
-</ul>
-</li>
-<li><a href="https://wiki.blazegraph.com/wiki/index.php/SPARQL_Order_Matters">SPARQL Order Matters</a><ul>
-<li>Short but great post from Blazegraph about order in SPARQL queries with JOIN&#8217;s
-and LEFT JOIN&#8217;s</li>
-</ul>
-</li>
-<li><a href="https://gregheartsfield.com/2012/08/26/jena-arq-query-performance.html">Jena ARQ Query Performance</a><ul>
-<li>Old post, but still very useful. Related to the post above, as it also talks about
-query performances due to the order of statements</li>
-</ul>
-</li>
-<li><a href="http://oracle.readthedocs.io/en/latest/sql/indexes/predicates-lhs-vs-rhs.html">Predicates: LHS vs RHS</a><ul>
-<li>Oracle post for SQL, but this part applies to SPARQL, at least terminology-wise. LHS
-and RHS appear in <a href="https://issues.apache.org/jira/browse/JENA-1534">some SPARQL related tickets</a>
-/documentation too</li>
-</ul>
-</li>
-</ul>
-                            
-                            
-                            
-                        </div>
-                        <p class="postmetadata">
-                            
-                            <small>tags 
-                             [&nbsp;<a
-                                href="/tag/jena/"
-                                rel="tag">jena</a>&nbsp;]&nbsp;
-                            
-                             [&nbsp;<a
-                                href="/tag/apache%20software%20foundation/"
-                                rel="tag">apache software foundation</a>&nbsp;]&nbsp;
-                            
-                             [&nbsp;<a
-                                href="/tag/java/"
-                                rel="tag">java</a>&nbsp;]&nbsp;
-                            
-                             [&nbsp;<a
-                                href="/tag/sparql/"
-                                rel="tag">sparql</a>&nbsp;]&nbsp;
-                            
-                             [&nbsp;<a
-                                href="/tag/opensource/"
-                                rel="tag">opensource</a>&nbsp;]&nbsp;
                             
                             </small>
                             
