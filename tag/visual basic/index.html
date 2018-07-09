@@ -180,14 +180,14 @@
                     </div>
                 
 
-Posts tagged with 'saltstack'
+Posts tagged with 'visual basic'
 
 
 
 
 <div class="ui raised padded container segment">
-    <h2><a href="/2016/04/17/trying-saltstack-with-docker" title="Permanent link">Trying SaltStack with Docker</a></h2>
-    <p><small>kinow</small> @ <small>Apr 17, 2016&nbsp;22:06:03</small></p>
+    <h2><a href="/2010/10/15/extract-images-from-a-word-document" title="Permanent link">Extract images from a Word document</a></h2>
+    <p><small>kinow</small> @ <small>Oct 15, 2010&nbsp;16:10:26</small></p>
     
     
 
@@ -195,89 +195,34 @@ Posts tagged with 'saltstack'
 
 
 
-<a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2016/04/17/trying-saltstack-with-docker" data-text="Trying SaltStack with Docker" data-via="kinow" data-hashtags="opensource">Tweet</a>
+<a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2010/10/15/extract-images-from-a-word-document" data-text="Extract images from a Word document" data-via="kinow" data-hashtags="opensource">Tweet</a>
 <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
 
 
-    <p>Some weeks ago I started learning <a href="http://saltstack.com/">SaltStack</a> for a project at work. But I couldn&#8217;t
-find a good Docker image for that and I had to ask the Ops team for some VM&#8217;s. We
-are having a rainy weekend in Auckland, so I decided to have another look at the
-<a href="https://wiki.jenkins-ci.org/display/JENKINS/saltstack-plugin">Jenkins SaltStack Plug-in</a>.</p>
-<p>But now since I was at home, I couldn&#8217;t use the VM&#8217;s that I had access to at
-work. So decided to look again at Docker or Vagrant images. After playing
-with a few images, I found <a href="https://hub.docker.com/r/bbinet/salt-master/">bbinet/salt-master</a>.
-It not only sets up a master, but also provides an easy way to enable the cherrypy
-API (necessary for the Jenkins plug-in).</p>
-<p>This post describes the steps that I took to have a running Salt Master with the API
-enabled. First you need to create some directories and files to use with the image.</p>
-<div class="highlight"><pre>shell<span class="nv">$ </span>mkdir ~/master <span class="o">&amp;&amp;</span> <span class="nb">cd</span> ~/master
-shell<span class="nv">$ </span>mkdir -p config/master.d/
-shell<span class="nv">$ </span>vim config/master.d/api.conf
-</pre></div>
+    <p>Some time ago I was asked by my boss to get all the images out of a Word document and save them in a separated directory. In this <a title="Extract images from word" href="http://www.gmayor.com/extract_images_from_word.htm">site</a> the author gives you several different ways of extracting images from a Word document. However what I wanted was a quick and dirt way of having these images extracted without macros or having to open and save the document in HTML format.</p>
+<p>So I wrote this quick and dirt word images extractor. It has two versions, one where you need to pass the .doc file as parameter and another one that gives you an input dialog box to point out where is the file. You can get the VBScripts from <a title="http://github.com/kinow/word-images-extractor" href="http://github.com/kinow/word-images-extractor">http://github.com/kinow/word-images-extractor</a>.</p>
+<div class='row'>
+<div class="ui container" style='text-align: center;'>
+<figure>
+<a href="assets['word-images-extractor']" rel="prettyPhoto" class="thumbnail" title="">
+<img class="ui fluid image" src="assets['word-images-extractor']" alt="=" />
+</a>
+<figcaption></figcaption>
+</figure>
+</div>
+</div>
 
-<p>The api.conf contains the SaltStack API configuration. You can change port, user
-and other settings if necessary. Just remember to add a credential in Jenkins
-for the plug-in.</p>
-<div class="highlight"><pre><span class="c"># File: api.conf</span>
-external_auth:
-  pam:
-    saltapiuser:
-      - .*
-      - <span class="s1">&#39;@runner&#39;</span>
-      - <span class="s1">&#39;@wheel&#39;</span>
-      - <span class="s1">&#39;@jobs&#39;</span>
-rest_cherrypy:
-  port: 8000
-  host: 0.0.0.0
-  disable_ssl: True
-  static: /opt/molten
-  static_path: /assets
-  app: /opt/molten/index.html
-  app_path: /molten
-</pre></div>
-
-<p>The image also conveniently provides a script that is executed before the
-entry point (if provided). So we can also create a user for the API automatically
-when the image is created.</p>
-<div class="highlight"><pre>shell<span class="nv">$ </span>vim config/before-exec.sh
-</pre></div>
-
-<div class="highlight"><pre><span class="c">#!/bin/bash</span>
-<span class="c"># File: before-exec.sh</span>
-useradd saltapiuser
-<span class="nb">echo</span> -e <span class="s2">&quot;nosecret\nnosecret\n&quot;</span> <span class="p">|</span> passwd saltapiuser
-<span class="nb">exit </span>0
-</pre></div>
-
-<p>Also make the script executable.</p>
-<div class="highlight"><pre>chmod +x config/before-exec.sh
-</pre></div>
-
-<p>And finally start the container.</p>
-<div class="highlight"><pre>docker run --name salt-master -v <span class="nv">$PWD</span>/config:/config <span class="se">\</span>
-    -p 4505:4505 -p 4506:4506 -p 443:443 -p 8000:8000 <span class="se">\</span>
-    bbinet/salt-master
-</pre></div>
-
-<p>Once the container is running, you can go to http://localhost:8000 and
-log in as saltapiuser:nosecret, and also configure your plug-in
-in Jenkins.</p>
-<p>Happy hacking!</p><!-- html -->
+<p>Behind the scenes, this VBScript uses Word to save your .doc as .html and then copies the saved images into the same directory as your word file. So yes, you do have to have Word installed. If somebody gets interested in improving it, he/she could find a way of extracting multiple files at once. In this version some files are overridden. He/she could add to the beginning of the image name the word file name. Or it could be required to pass the output directory together with the input word file.</p>
+<p>That&#8217;s it, I hope it might be helpful to somebody as it was - and still is - to me. :-)</p>
+<p><a title="http://github.com/kinow/word-images-extractor" href="http://github.com/kinow/word-images-extractor">http://github.com/kinow/word-images-extractor</a></p>
+<p>Cheers</p><!-- html -->
     
 <p class="postmetadata">
     
     <small>tags 
      [&nbsp;<a
-        href="/tag/jenkins"
-        rel="tag">jenkins</a>&nbsp;]&nbsp;
-    
-     [&nbsp;<a
-        href="/tag/docker"
-        rel="tag">docker</a>&nbsp;]&nbsp;
-    
-     [&nbsp;<a
-        href="/tag/saltstack"
-        rel="tag">saltstack</a>&nbsp;]&nbsp;
+        href="/tag/visual%20basic"
+        rel="tag">visual basic</a>&nbsp;]&nbsp;
     
     </small>
     

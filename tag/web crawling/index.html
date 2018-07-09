@@ -180,14 +180,14 @@
                     </div>
                 
 
-Posts tagged with 'saltstack'
+Posts tagged with 'web crawling'
 
 
 
 
 <div class="ui raised padded container segment">
-    <h2><a href="/2016/04/17/trying-saltstack-with-docker" title="Permanent link">Trying SaltStack with Docker</a></h2>
-    <p><small>kinow</small> @ <small>Apr 17, 2016&nbsp;22:06:03</small></p>
+    <h2><a href="/2012/09/14/integrating-nutch-2-x-mysql-and-solr" title="Permanent link">Integrating Nutch 2.x, MySQL and Solr</a></h2>
+    <p><small>kinow</small> @ <small>Sep 14, 2012&nbsp;00:02:31</small></p>
     
     
 
@@ -195,100 +195,44 @@ Posts tagged with 'saltstack'
 
 
 
-<a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2016/04/17/trying-saltstack-with-docker" data-text="Trying SaltStack with Docker" data-via="kinow" data-hashtags="opensource">Tweet</a>
+<a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2012/09/14/integrating-nutch-2-x-mysql-and-solr" data-text="Integrating Nutch 2.x, MySQL and Solr" data-via="kinow" data-hashtags="opensource">Tweet</a>
 <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
 
 
-    <p>Some weeks ago I started learning <a href="http://saltstack.com/">SaltStack</a> for a project at work. But I couldn&#8217;t
-find a good Docker image for that and I had to ask the Ops team for some VM&#8217;s. We
-are having a rainy weekend in Auckland, so I decided to have another look at the
-<a href="https://wiki.jenkins-ci.org/display/JENKINS/saltstack-plugin">Jenkins SaltStack Plug-in</a>.</p>
-<p>But now since I was at home, I couldn&#8217;t use the VM&#8217;s that I had access to at
-work. So decided to look again at Docker or Vagrant images. After playing
-with a few images, I found <a href="https://hub.docker.com/r/bbinet/salt-master/">bbinet/salt-master</a>.
-It not only sets up a master, but also provides an easy way to enable the cherrypy
-API (necessary for the Jenkins plug-in).</p>
-<p>This post describes the steps that I took to have a running Salt Master with the API
-enabled. First you need to create some directories and files to use with the image.</p>
-<div class="highlight"><pre>shell<span class="nv">$ </span>mkdir ~/master <span class="o">&amp;&amp;</span> <span class="nb">cd</span> ~/master
-shell<span class="nv">$ </span>mkdir -p config/master.d/
-shell<span class="nv">$ </span>vim config/master.d/api.conf
-</pre></div>
+    <p>Right now we are working on a new project using <a href="http://nutch.apache.org" title="Apache Nutch">Apache Nutch</a> 2.x, <a href="http://hadoop.apache.org" title="Apache Hadoop">Apache Hadoop</a>, <a href="http://solr.apache.org" title="Apache Solr">Apache Solr</a> 4 and a lot of other cool tools/modules/API&#8217;s/etc. After following the instructions found on <a href="http://nlp.solutions.asia/?p=180" title="http://nlp.solutions.asia/?p=180">http://nlp.solutions.asia/?p=180</a>, I&#8217;ve successfully connected Apache Nutch, MySQL and Apache Solr.</p>
 
-<p>The api.conf contains the SaltStack API configuration. You can change port, user
-and other settings if necessary. Just remember to add a credential in Jenkins
-for the plug-in.</p>
-<div class="highlight"><pre><span class="c"># File: api.conf</span>
-external_auth:
-  pam:
-    saltapiuser:
-      - .*
-      - <span class="s1">&#39;@runner&#39;</span>
-      - <span class="s1">&#39;@wheel&#39;</span>
-      - <span class="s1">&#39;@jobs&#39;</span>
-rest_cherrypy:
-  port: 8000
-  host: 0.0.0.0
-  disable_ssl: True
-  static: /opt/molten
-  static_path: /assets
-  app: /opt/molten/index.html
-  app_path: /molten
-</pre></div>
+<p><img src="/2012/09/14/integrating-nutch-2-x-mysql-and-solr/mysql_hadoop_solr_nutch.png" alt="mysql_hadoop_solr_nutch" title="mysql_hadoop_solr_nutch" width="800" class="aligncenter size-medium wp-image-994" /></p>
 
-<p>The image also conveniently provides a script that is executed before the
-entry point (if provided). So we can also create a user for the API automatically
-when the image is created.</p>
-<div class="highlight"><pre>shell<span class="nv">$ </span>vim config/before-exec.sh
-</pre></div>
+<p>In summary:</p>
 
-<div class="highlight"><pre><span class="c">#!/bin/bash</span>
-<span class="c"># File: before-exec.sh</span>
-useradd saltapiuser
-<span class="nb">echo</span> -e <span class="s2">&quot;nosecret\nnosecret\n&quot;</span> <span class="p">|</span> passwd saltapiuser
-<span class="nb">exit </span>0
-</pre></div>
+<ul>
+<li>Create a database to hold your data</li>
+<li>Use SQLDataStore and add configuration for your MySQL server</li>
+<li>Update Apache Nutch configuration</li>
+<li>Update Solr schema</li>
+</ul>
 
-<p>Also make the script executable.</p>
-<div class="highlight"><pre>chmod +x config/before-exec.sh
-</pre></div>
+<p>Now our Apache Nutch uses MySQL as data store (the place where it keeps the result of the crawling process, such as URL,  text content, metadata, and so on). That&#8217;s grand, but there is one part missing in the Solr Schema provided in the blog post.</p>
 
-<p>And finally start the container.</p>
-<div class="highlight"><pre>docker run --name salt-master -v <span class="nv">$PWD</span>/config:/config <span class="se">\</span>
-    -p 4505:4505 -p 4506:4506 -p 443:443 -p 8000:8000 <span class="se">\</span>
-    bbinet/salt-master
-</pre></div>
+<p>Due to <a href="https://issues.apache.org/jira/browse/SOLR-3432" title="SOLR-3432">SOLR-3432</a>, after following the tutorial and replacing the schema, we couldn&#8217;t delete the whole index anymore. After following the instructions in the bug comments, and adding the following entry in schema.xml it worked again.</p>
 
-<p>Once the container is running, you can go to http://localhost:8000 and
-log in as saltapiuser:nosecret, and also configure your plug-in
-in Jenkins.</p>
-<p>Happy hacking!</p><!-- html -->
+<!-- html -->
+    
+    <p>( <a href="/2012/09/14/integrating-nutch-2-x-mysql-and-solr" >Read more ...</a> )</p>
     
 <p class="postmetadata">
     
     <small>tags 
      [&nbsp;<a
-        href="/tag/jenkins"
-        rel="tag">jenkins</a>&nbsp;]&nbsp;
+        href="/tag/apache%20software%20foundation"
+        rel="tag">apache software foundation</a>&nbsp;]&nbsp;
     
      [&nbsp;<a
-        href="/tag/docker"
-        rel="tag">docker</a>&nbsp;]&nbsp;
-    
-     [&nbsp;<a
-        href="/tag/saltstack"
-        rel="tag">saltstack</a>&nbsp;]&nbsp;
+        href="/tag/web%20crawling"
+        rel="tag">web crawling</a>&nbsp;]&nbsp;
     
     </small>
     
-    
-    <br/>
-    <small>posted in 
-    [&nbsp;<a
-        href="/blog"
-        title="View all posts in blog"
-        rel="category tag">blog</a>&nbsp;]&nbsp;
-    category </small>
     
 </p>
 </div>
