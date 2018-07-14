@@ -132,7 +132,7 @@
                               
                               <span style="font-size: 13.5pt"><a href="/tag/c%2B%2B">c++</a></span>&nbsp;(7)
                               
-                              <span style="font-size: 11.5pt"><a href="/tag/cylc">cylc</a></span>&nbsp;(3)
+                              <span style="font-size: 12.0pt"><a href="/tag/cylc">cylc</a></span>&nbsp;(4)
                               
                               <span style="font-size: 11.5pt"><a href="/tag/docker">docker</a></span>&nbsp;(3)
                               
@@ -152,11 +152,11 @@
                               
                               <span style="font-size: 12.0pt"><a href="/tag/natural%20language%20processing">natural language processing</a></span>&nbsp;(4)
                               
-                              <span style="font-size: 25.5pt"><a href="/tag/opensource">opensource</a></span>&nbsp;(31)
+                              <span style="font-size: 26.0pt"><a href="/tag/opensource">opensource</a></span>&nbsp;(32)
                               
                               <span style="font-size: 26.5pt"><a href="/tag/programming">programming</a></span>&nbsp;(33)
                               
-                              <span style="font-size: 15.0pt"><a href="/tag/python">python</a></span>&nbsp;(10)
+                              <span style="font-size: 15.5pt"><a href="/tag/python">python</a></span>&nbsp;(11)
                               
                               <span style="font-size: 11.5pt"><a href="/tag/r">r</a></span>&nbsp;(3)
                               
@@ -182,6 +182,85 @@
                         <h1 class='topic'>Home</h1>
                     </div>
                     
+                    
+                    <div class="ui raised padded container segment">
+                        <h2>
+                            <a href="/2017/01/02/debugging-an-application-that-freezes-the-x-server" title="Permanent link">Debugging an application that freezes the X server</a>
+                        </h2>
+                        <small>kinow</small> @ <small>Jan 02, 2017&nbsp;00:39:03 (<span class='stardate' data-input-date='Jan 02, 2017'></span>)</small>
+                        <div class="entry">
+                            
+
+
+
+
+
+<a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2017/01/02/debugging-an-application-that-freezes-the-x-server" data-text="Debugging an application that freezes the X server" data-via="kinow" data-hashtags="opensource">Tweet</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+                            
+                            <p>Some time ago, I decided to start writing C++ again, and picked Krita for that.
+Krita is written in C++ and Qt. The <a href="https://bugs.kde.org/show_bug.cgi?id=366741">bug I was working on</a>
+involved a memory issue when changing the UI.</p>
+<p>The problem was that this UI change would result in, not only Krita, but the whole
+X server freezing. My set up was basically Ubuntu 16.04.1 LTS, with Eclipse, Qt5,
+and the latest version of Krita checked out via git.</p>
+<p>Initially I spent some time looking at the logs, tracing the binary, even downloaded
+some Qt utility tools to look at the events and what was happening with the application
+when it froze.</p>
+<p>However, eventually I realized I was going to spend more time on this part of the
+issue, rather than on the memory bug. So decided to look for a work-around.</p>
+<p>Thankfully someone else blogged about a similar issue and saved me a lot of time :-)
+Here&#8217;s how I did it, following the instructions in
+<a href="http://www.geany.org/manual/gtk/gtk-faq/x462.html">this blog post</a>.</p>
+<div class="highlight"><pre><span class="nv">$ </span>sudo apt-get install xnest -y
+<span class="nv">$ </span><span class="nb">cd </span>krita_install/
+<span class="nv">$ </span>Xnest :10
+<span class="nv">$ </span>twm -display :10
+<span class="nv">$ </span><span class="nb">export </span><span class="nv">DISPLAY</span><span class="o">=</span>:10
+<span class="nv">$ </span>./krita
+</pre></div>
+
+<p>That&#8217;s it. You should have Krita running in a separate window, with Xnest, and within
+this window the twm window manager running. So when it freezes, at least you can still
+debug your application in Eclipse or whatever IDE you prefer.</p>
+<p>Happy hacking!</p>
+                            
+                            
+                            
+                        </div>
+                        <p class="postmetadata">
+                            
+                            <small>tags 
+                             [&nbsp;<a
+                                href="/tag/c%2B%2B/"
+                                rel="tag">c++</a>&nbsp;]&nbsp;
+                            
+                             [&nbsp;<a
+                                href="/tag/krita/"
+                                rel="tag">krita</a>&nbsp;]&nbsp;
+                            
+                             [&nbsp;<a
+                                href="/tag/opensource/"
+                                rel="tag">opensource</a>&nbsp;]&nbsp;
+                            
+                             [&nbsp;<a
+                                href="/tag/programming/"
+                                rel="tag">programming</a>&nbsp;]&nbsp;
+                            
+                            </small>
+                            
+                            
+                            <br/>
+                            <small>posted in 
+                            [&nbsp;<a
+                                href="/blog"
+                                title="View all posts in blog"
+                                rel="category tag">blog</a>&nbsp;]
+                                &nbsp;category
+                            </small>
+                            
+                        </p>
+                    </div>
                     
                     <div class="ui raised padded container segment">
                         <h2>
@@ -473,64 +552,6 @@ without having to use the upper case syntax.</p>
                              [&nbsp;<a
                                 href="/tag/spring/"
                                 rel="tag">spring</a>&nbsp;]&nbsp;
-                            
-                            </small>
-                            
-                            
-                            <br/>
-                            <small>posted in 
-                            [&nbsp;<a
-                                href="/blog"
-                                title="View all posts in blog"
-                                rel="category tag">blog</a>&nbsp;]
-                                &nbsp;category
-                            </small>
-                            
-                        </p>
-                    </div>
-                    
-                    <div class="ui raised padded container segment">
-                        <h2>
-                            <a href="/2016/11/12/add-a-header-to-a-file-with-shell-script-sed" title="Permanent link">Add a header to a file with Shell script (sed)</a>
-                        </h2>
-                        <small>kinow</small> @ <small>Nov 12, 2016&nbsp;01:55:03 (<span class='stardate' data-input-date='Nov 12, 2016'></span>)</small>
-                        <div class="entry">
-                            
-
-
-
-
-
-<a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2016/11/12/add-a-header-to-a-file-with-shell-script-sed" data-text="Add a header to a file with Shell script (sed)" data-via="kinow" data-hashtags="opensource">Tweet</a>
-<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-                            
-                            <p>Today I was re-generating the documentation for a REST API written in PHP, with
-Laravel. To generate the documentation, one would have to call a Laravel command first.
-That command would create a Markdown page. And since in this project I am using Jekyll
-for the project site, the final step was adding a header to the file, so that Jekyll
-can recognize that content as a blog post.</p>
-<p>Laravel allows you to add custom commands to your project, so I decided to write a command
-that would call the other command that generates the documentation, and add an extra step
-of adding the header to the Markdown file.</p>
-<p>Here&#8217;s the shell script part, that allows you to add a header to a file, in place (i.e.
-it will alter and save the change your file).</p>
-<div class="highlight"><pre>sed -i 1i<span class="s2">&quot;----\nlayout: page\ntitle: API Installation\n----\n\n&quot;</span> ./docs/documentation/api/api.md
-</pre></div>
-
-<p>Here the first argument to sed, <em>-i</em> is for in place. Then that strange <em>1i</em>
-means that it will insert something before the first line, once. Then we have our header,
-and finally the file.</p>
-<p>Happy hacking!</p>
-                            
-                            
-                            
-                        </div>
-                        <p class="postmetadata">
-                            
-                            <small>tags 
-                             [&nbsp;<a
-                                href="/tag/shell%20script/"
-                                rel="tag">shell script</a>&nbsp;]&nbsp;
                             
                             </small>
                             

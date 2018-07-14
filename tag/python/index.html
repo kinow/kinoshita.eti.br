@@ -132,7 +132,7 @@
                               
                               <span style="font-size: 13.5pt"><a href="/tag/c%2B%2B">c++</a></span>&nbsp;(7)
                               
-                              <span style="font-size: 11.5pt"><a href="/tag/cylc">cylc</a></span>&nbsp;(3)
+                              <span style="font-size: 12.0pt"><a href="/tag/cylc">cylc</a></span>&nbsp;(4)
                               
                               <span style="font-size: 11.5pt"><a href="/tag/docker">docker</a></span>&nbsp;(3)
                               
@@ -152,11 +152,11 @@
                               
                               <span style="font-size: 12.0pt"><a href="/tag/natural%20language%20processing">natural language processing</a></span>&nbsp;(4)
                               
-                              <span style="font-size: 25.5pt"><a href="/tag/opensource">opensource</a></span>&nbsp;(31)
+                              <span style="font-size: 26.0pt"><a href="/tag/opensource">opensource</a></span>&nbsp;(32)
                               
                               <span style="font-size: 26.5pt"><a href="/tag/programming">programming</a></span>&nbsp;(33)
                               
-                              <span style="font-size: 15.0pt"><a href="/tag/python">python</a></span>&nbsp;(10)
+                              <span style="font-size: 15.5pt"><a href="/tag/python">python</a></span>&nbsp;(11)
                               
                               <span style="font-size: 11.5pt"><a href="/tag/r">r</a></span>&nbsp;(3)
                               
@@ -179,6 +179,82 @@
                 
 
 Posts tagged with 'python'
+
+
+
+
+<div class="ui raised padded container segment">
+    <h2><a href="/2018/07/14/cylc-scheduler-internals-part-1" title="Permanent link">Cylc Scheduler Internals - Part 1</a></h2>
+    <p><small>kinow</small> @ <small>Jul 14, 2018&nbsp;22:42:47</small></p>
+    
+    
+
+
+
+
+
+<a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2018/07/14/cylc-scheduler-internals-part-1" data-text="Cylc Scheduler Internals - Part 1" data-via="kinow" data-hashtags="opensource">Tweet</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+
+
+    <p>This is the first post in a series of three (or maybe four later) based on diagrams
+I collected while debugging the Cylc scheduler. The scheduler is called by the <code>cylc start</code>
+utility.</p>
+<p><em>NB: this is a post to remember things, not really expecting to give someone enough
+information to be able to hack the Cylc Scheduler (though you can and would have fun!).</em></p>
+<p>Instead of going at length on what happens (and there is quite a bit happening when
+you run <code>cylc start my.suite</code>), I will use the following diagram, followed by a few paragraphs
+to highlight certain parts. The code used was based on <a href="https://github.com/cylc/cylc/tree/7.7.1">Cylc 7.7.1</a>.</p>
+<p style='text-align: center;'>
+<a href="/2018/07/14/cylc-scheduler-internals-part-1/cylc-scheduler_cli-workflow.png">
+<img style="display: inline; width: 100%;" class="ui image" src="/2018/07/14/cylc-scheduler-internals-part-1/cylc-scheduler_cli-workflow.png"  />
+</a>
+</p>
+
+<p>When a Cylc command like <code>cylc start</code> is invoked, it actually gets translated into
+<code>bin/cylc-$command_name</code>. <code>cylc-start</code> is a Shell file, that will simply call <code>cylc-run</code>.
+<code>cylc-run</code> then imports <code>scheduler_cli</code>&#8230; but what you need to know is that in the end
+<code>scheduler_cli</code> will create an instance of <code>Scheduler</code> with the right constructor
+arguments, and call its <code>start</code> method.</p>
+<p>After that point, you are at the left-most lifeline, on the <code>Scheduler</code> constructor
+(i.e. the <strong>init</strong> method of the scheduler.py&#8217;s Scheduler class).</p>
+<p>If you follow the method calls - which are hopefully easy to understand and follow -
+you will find that the constructor merely creates a few objects, prepares the suite
+information, and the suite database.</p>
+<p>Then the <code>start</code> method kicks things off, interacting with previously created objects,
+but also with some singletons for logging and configuration. Oh, that <code>Cylc</code> banner
+is also printed here (in case you would like to customize it as in SpringBoot).</p>
+<p>After that, if you are running the suite as daemon, it will be
+<a href="http://code.activestate.com/recipes/66012-fork-a-daemon-process-on-unix/">daemonized</a>,
+by forking the current process, but with Python.</p>
+<p>One important step that happens here, is the initialization of the HTTP Server. This server
+will be used to communicate with the <strong>Suite Server Program</strong>. It will be listening to
+connections with the right endpoints available only after the <code>configure</code> method.</p>
+<p>Lastly, we have <code>configure</code> and <code>run</code> methods, which are two very important methods to be discussed
+in the next part of this series, as they are quite extensive, and deserve their own diagrams.</p>
+<p>You can download the <a href="/2018/07/14/cylc-scheduler-internals-part-1/cylc-scheduler_cli-workflow-src.xml">source file</a> for the diagram used in this post, and edit it
+with <a href="https://draw.io">draw.io</a>.</p><!-- html -->
+    
+<p class="postmetadata">
+    
+    <small>tags 
+     [&nbsp;<a
+        href="/tag/cylc"
+        rel="tag">cylc</a>&nbsp;]&nbsp;
+    
+     [&nbsp;<a
+        href="/tag/python"
+        rel="tag">python</a>&nbsp;]&nbsp;
+    
+     [&nbsp;<a
+        href="/tag/opensource"
+        rel="tag">opensource</a>&nbsp;]&nbsp;
+    
+    </small>
+    
+    
+</p>
+</div>
 
 
 
@@ -521,120 +597,6 @@ Wendy mentioned that you would be a great person to speak to since you are close
     
     </small>
     
-    
-</p>
-</div>
-
-
-
-
-<div class="ui raised padded container segment">
-    <h2><a href="/2017/04/14/writing-a-binary-parser-in-python-numpy-vs-construct" title="Permanent link">Writing a binary parser in Python: NumPy vs. Construct</a></h2>
-    <p><small>kinow</small> @ <small>Apr 14, 2017&nbsp;19:21:03</small></p>
-    
-    
-
-
-
-
-
-<a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2017/04/14/writing-a-binary-parser-in-python-numpy-vs-construct" data-text="Writing a binary parser in Python: NumPy vs. Construct" data-via="kinow" data-hashtags="opensource">Tweet</a>
-<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-
-
-    <p>Some time ago I worked with researchers to write a parser for an old data format. The data
-was generated by device (radiosonde) using the vendor (Vaisala) specific binary format.</p>
-<p>One of the researchers told me someone had written a parser for his work, and shared it
-on GitHub. To be honest, that was my first time parsing data in binary with Python. Did
-that before with C, C++, Perl, and Java, but never with Python.</p>
-<p>The code on GitHub used <a href="http://www.numpy.org/">NumPy</a> and looked similar to this one.</p>
-<div class="highlight"><pre><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
-
-<span class="n">parse_header</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dtype</span><span class="p">(</span> <span class="p">[</span> <span class="p">((</span><span class="s">&#39;field_a&#39;</span><span class="p">,</span> <span class="s">&#39;b1&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s">&#39;field_b&#39;</span><span class="p">,</span> <span class="s">&#39;17b1&#39;</span><span class="p">)</span> <span class="p">]</span> <span class="p">)</span>
-
-<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s">&#39;input.dat&#39;</span><span class="p">,</span> <span class="s">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
-    <span class="n">header</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">fromfile</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">parse_header</span><span class="p">,</span> <span class="n">count</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-    <span class="c"># ...</span>
-</pre></div>
-
-<p>And it indeed worked fine. But in the end I used the code - after contacting the author and letting
-him know what I was about to do - as reference together with an old specification document
-for the format, and created a parser with <a href="https://construct.readthedocs.io/en/latest/">Construct</a>.</p>
-<p>From Construct&#8217;s website:</p>
-<blockquote>
-<p>Construct is a powerful declarative parser (and builder) for binary data.</p>
-</blockquote>
-<p>This is what the code with construct looked like.</p>
-<div class="highlight"><pre><span class="kn">from</span> <span class="nn">construct</span> <span class="kn">import</span> <span class="o">*</span>
-
-<span class="n">parse_header</span> <span class="o">=</span> <span class="n">Struct</span><span class="p">(</span><span class="s">&quot;parse_header&quot;</span><span class="p">,</span>
-    <span class="n">Enum</span><span class="p">(</span><span class="n">Byte</span><span class="p">(</span><span class="s">&quot;file_ready&quot;</span><span class="p">),</span>
-        <span class="n">READY</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
-        <span class="n">NOT_READY</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
-        <span class="n">_default_</span> <span class="o">=</span> <span class="s">&quot;UNKNOWN&quot;</span><span class="p">,</span>
-    <span class="p">),</span>
-    <span class="n">Bytes</span><span class="p">(</span><span class="s">&quot;reserved&quot;</span><span class="p">,</span> <span class="mi">17</span><span class="p">)</span>
-<span class="p">)</span>
-
-<span class="c"># ...</span>
-
-<span class="n">parse_contents</span> <span class="o">=</span> <span class="n">Struct</span><span class="p">(</span><span class="s">&quot;parse_contents&quot;</span><span class="p">,</span>
-    <span class="n">parse_header</span><span class="p">,</span>
-    <span class="n">Range</span><span class="p">(</span><span class="n">mincount</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">maxcout</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">subcon</span><span class="o">=</span><span class="n">pre_data</span><span class="p">),</span>
-    <span class="n">OptionalGreedyRange</span><span class="p">(</span><span class="n">detailed_data</span><span class="p">)</span>
-<span class="p">)</span>
-
-<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s">&#39;input.dat&#39;</span><span class="p">,</span> <span class="s">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
-    <span class="n">parse_results</span> <span class="o">=</span> <span class="n">parse_contents</span><span class="o">.</span><span class="n">parse_stream</span><span class="p">(</span><span class="n">fid</span><span class="p">)</span>
-    <span class="c"># ...</span>
-</pre></div>
-
-<p>Writing the parser with NumPy or Construct would achieve the same result. However, in the end
-this came down to personal preference, and my point of view as Software Engineer. This is the
-description of NumPy.</p>
-<blockquote>
-<p>NumPy is the fundamental package for scientific computing with Python.</p>
-</blockquote>
-<p>NumPy is a project tailored for scientific computing, with a focus on linear algebra,
-N-dimensional arrays, and so it goes. While it contains code that can parse binary data,
-the footprint added to a project that includes it as dependency is quite big.</p>
-<p>The parser written with NumPy wasn&#8217;t using 5% of the NumPy code base. Probably less than 1%. Updates
-to NumPy could break the application compatibility, even if the update came due to some new
-matrix operation added to NumPy through some external and missing dependency.</p>
-<p>In Java something similar happens with Google Guava. While I use it some times, most of the
-times I find myself using one of the Apache Commons libraries, or another dependency
-with just what I need. To avoid including unnecessary code to my application.</p>
-<p>If you prefer to use NumPy that&#8217;s fine too :-) I just had the time enough to rewrite it
-instead of using the NumPy (took a couple of hours). In other cases it may still
-make sense to use another tool or library, even if it was not made specifically for the
-job ¯\<em>(ツ)</em>/¯</p>
-<p>&hearts; Open Source</p><!-- html -->
-    
-<p class="postmetadata">
-    
-    <small>tags 
-     [&nbsp;<a
-        href="/tag/python"
-        rel="tag">python</a>&nbsp;]&nbsp;
-    
-     [&nbsp;<a
-        href="/tag/programming"
-        rel="tag">programming</a>&nbsp;]&nbsp;
-    
-     [&nbsp;<a
-        href="/tag/opensource"
-        rel="tag">opensource</a>&nbsp;]&nbsp;
-    
-    </small>
-    
-    
-    <br/>
-    <small>posted in 
-    [&nbsp;<a
-        href="/blog"
-        title="View all posts in blog"
-        rel="category tag">blog</a>&nbsp;]&nbsp;
-    category </small>
     
 </p>
 </div>

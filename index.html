@@ -132,7 +132,7 @@
                               
                               <span style="font-size: 13.5pt"><a href="/tag/c%2B%2B">c++</a></span>&nbsp;(7)
                               
-                              <span style="font-size: 11.5pt"><a href="/tag/cylc">cylc</a></span>&nbsp;(3)
+                              <span style="font-size: 12.0pt"><a href="/tag/cylc">cylc</a></span>&nbsp;(4)
                               
                               <span style="font-size: 11.5pt"><a href="/tag/docker">docker</a></span>&nbsp;(3)
                               
@@ -152,11 +152,11 @@
                               
                               <span style="font-size: 12.0pt"><a href="/tag/natural%20language%20processing">natural language processing</a></span>&nbsp;(4)
                               
-                              <span style="font-size: 25.5pt"><a href="/tag/opensource">opensource</a></span>&nbsp;(31)
+                              <span style="font-size: 26.0pt"><a href="/tag/opensource">opensource</a></span>&nbsp;(32)
                               
                               <span style="font-size: 26.5pt"><a href="/tag/programming">programming</a></span>&nbsp;(33)
                               
-                              <span style="font-size: 15.0pt"><a href="/tag/python">python</a></span>&nbsp;(10)
+                              <span style="font-size: 15.5pt"><a href="/tag/python">python</a></span>&nbsp;(11)
                               
                               <span style="font-size: 11.5pt"><a href="/tag/r">r</a></span>&nbsp;(3)
                               
@@ -182,6 +182,83 @@
                         <h1 class='topic'>Home</h1>
                     </div>
                     
+                    
+                    <div class="ui raised padded container segment">
+                        <h2>
+                            <a href="/2018/07/14/cylc-scheduler-internals-part-1" title="Permanent link">Cylc Scheduler Internals - Part 1</a>
+                        </h2>
+                        <small>kinow</small> @ <small>Jul 14, 2018&nbsp;22:42:47 (<span class='stardate' data-input-date='Jul 14, 2018'></span>)</small>
+                        <div class="entry">
+                            
+
+
+
+
+
+<a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2018/07/14/cylc-scheduler-internals-part-1" data-text="Cylc Scheduler Internals - Part 1" data-via="kinow" data-hashtags="opensource">Tweet</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+                            
+                            <p>This is the first post in a series of three (or maybe four later) based on diagrams
+I collected while debugging the Cylc scheduler. The scheduler is called by the <code>cylc start</code>
+utility.</p>
+<p><em>NB: this is a post to remember things, not really expecting to give someone enough
+information to be able to hack the Cylc Scheduler (though you can and would have fun!).</em></p>
+<p>Instead of going at length on what happens (and there is quite a bit happening when
+you run <code>cylc start my.suite</code>), I will use the following diagram, followed by a few paragraphs
+to highlight certain parts. The code used was based on <a href="https://github.com/cylc/cylc/tree/7.7.1">Cylc 7.7.1</a>.</p>
+<p style='text-align: center;'>
+<a href="/2018/07/14/cylc-scheduler-internals-part-1/cylc-scheduler_cli-workflow.png">
+<img style="display: inline; width: 100%;" class="ui image" src="/2018/07/14/cylc-scheduler-internals-part-1/cylc-scheduler_cli-workflow.png"  />
+</a>
+</p>
+
+<p>When a Cylc command like <code>cylc start</code> is invoked, it actually gets translated into
+<code>bin/cylc-$command_name</code>. <code>cylc-start</code> is a Shell file, that will simply call <code>cylc-run</code>.
+<code>cylc-run</code> then imports <code>scheduler_cli</code>&#8230; but what you need to know is that in the end
+<code>scheduler_cli</code> will create an instance of <code>Scheduler</code> with the right constructor
+arguments, and call its <code>start</code> method.</p>
+<p>After that point, you are at the left-most lifeline, on the <code>Scheduler</code> constructor
+(i.e. the <strong>init</strong> method of the scheduler.py&#8217;s Scheduler class).</p>
+<p>If you follow the method calls - which are hopefully easy to understand and follow -
+you will find that the constructor merely creates a few objects, prepares the suite
+information, and the suite database.</p>
+<p>Then the <code>start</code> method kicks things off, interacting with previously created objects,
+but also with some singletons for logging and configuration. Oh, that <code>Cylc</code> banner
+is also printed here (in case you would like to customize it as in SpringBoot).</p>
+<p>After that, if you are running the suite as daemon, it will be
+<a href="http://code.activestate.com/recipes/66012-fork-a-daemon-process-on-unix/">daemonized</a>,
+by forking the current process, but with Python.</p>
+<p>One important step that happens here, is the initialization of the HTTP Server. This server
+will be used to communicate with the <strong>Suite Server Program</strong>. It will be listening to
+connections with the right endpoints available only after the <code>configure</code> method.</p>
+<p>Lastly, we have <code>configure</code> and <code>run</code> methods, which are two very important methods to be discussed
+in the next part of this series, as they are quite extensive, and deserve their own diagrams.</p>
+<p>You can download the <a href="/2018/07/14/cylc-scheduler-internals-part-1/cylc-scheduler_cli-workflow-src.xml">source file</a> for the diagram used in this post, and edit it
+with <a href="https://draw.io">draw.io</a>.</p>
+                            
+                            
+                            
+                        </div>
+                        <p class="postmetadata">
+                            
+                            <small>tags 
+                             [&nbsp;<a
+                                href="/tag/cylc/"
+                                rel="tag">cylc</a>&nbsp;]&nbsp;
+                            
+                             [&nbsp;<a
+                                href="/tag/python/"
+                                rel="tag">python</a>&nbsp;]&nbsp;
+                            
+                             [&nbsp;<a
+                                href="/tag/opensource/"
+                                rel="tag">opensource</a>&nbsp;]&nbsp;
+                            
+                            </small>
+                            
+                            
+                        </p>
+                    </div>
                     
                     <div class="ui raised padded container segment">
                         <h2>
@@ -676,140 +753,6 @@ or maybe more about transactions in Jena.</p>
                              [&nbsp;<a
                                 href="/tag/programming/"
                                 rel="tag">programming</a>&nbsp;]&nbsp;
-                            
-                            </small>
-                            
-                            
-                        </p>
-                    </div>
-                    
-                    <div class="ui raised padded container segment">
-                        <h2>
-                            <a href="/2018/05/13/drawing-santos-dumonts-encantada-in-krita" title="Permanent link">Drawing Santos Dumont's "Encantada" in Krita</a>
-                        </h2>
-                        <small>kinow</small> @ <small>May 13, 2018&nbsp;02:38:12 (<span class='stardate' data-input-date='May 13, 2018'></span>)</small>
-                        <div class="entry">
-                            
-
-
-
-
-
-<a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2018/05/13/drawing-santos-dumonts-encantada-in-krita" data-text="Drawing Santos Dumont&#39;s &#34;Encantada&#34; in Krita" data-via="kinow" data-hashtags="opensource">Tweet</a>
-<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-                            
-                            <div class='row'>
-<div class="ui fluid container">
-<figure>
-<a  href="/2018/05/13/drawing-santos-dumonts-encantada-in-krita/encantada.png" rel="prettyPhoto" class="thumbnail" title="A Encantada">
-<img style="height: 400px;" class="ui image" src="/2018/05/13/drawing-santos-dumonts-encantada-in-krita/encantada.png" alt="A Encantada" />
-</a>
-<figcaption>A Encantada</i></figcaption>
-</figure>
-</div>
-</div>
-
-<p>With Krita 4.x released, and the <a href="https://forum.kde.org/viewtopic.php?f=277&amp;t=152338&amp;p=398403#p398403">Krita monthly challange</a>
-of May still open for submission, I decided to give it a go and try this new version to create
-an artwork to for the challenge. The topic of this month&#8217;s challenge is <strong>Home</strong>.</p>
-<p>My submission was <a href="https://www.google.co.nz/maps/place/Casa+de+Santos+Dumont/@-22.5103512,-43.1864205,17z/data=!3m1!4b1!4m5!3m4!1s0x70145eaee05ea9b:0x33f52a8860f58db9!8m2!3d-22.5103562!4d-43.1842318">Santos Dumont&#8217;s house in Petropolis, Rio de Janeiro</a>, called
-<a href="(https://en.wikipedia.org/wiki/Alberto_Santos-Dumont#A_Encantada)"><em>Encantada</em></a>.</p>
-<p>And I am happy to report that <strong>Krita 4.x looks much faster</strong>! And I had no crashes, bugs,
-nor any lags while painting.</p>
-<p>Santos Dumont built this house to be his home away from the big city, while also being able to
-keep some of his inventions nearby, and work on other projects. It was a space to be
-creative!</p>
-<p>I started by preparing the canvas with the original image and an onion layer, and then traced
-the lineart. I used <a href="https://www.davidrevoy.com/article340/krita-4-0-brushes">David Revoy&#8217;s brushes</a>.
-They are great! And used the built-in chalk brush for most of the colours.</p>
-<div class='row'>
-<div class="ui fluid container">
-<figure>
-<a  href="/2018/05/13/drawing-santos-dumonts-encantada-in-krita/side-by-side.jpg" rel="prettyPhoto" class="thumbnail" title="Line art">
-<img style="height: 400px;" class="ui image" src="/2018/05/13/drawing-santos-dumonts-encantada-in-krita/side-by-side.jpg" alt="Line art" />
-</a>
-<figcaption>Line art</i></figcaption>
-</figure>
-</div>
-</div>
-
-<p>I enjoy line art much more than colours, but for the monthly challenge, I tried to use
-some colours. I used the original photo to create the palette for the painting.</p>
-<div class='row'>
-<div class="ui fluid container">
-<figure>
-<a  href="/2018/05/13/drawing-santos-dumonts-encantada-in-krita/lineart.jpg" rel="prettyPhoto" class="thumbnail" title="Line art">
-<img style="height: 400px;" class="ui image" src="/2018/05/13/drawing-santos-dumonts-encantada-in-krita/lineart.jpg" alt="Line art" />
-</a>
-<figcaption>Line art</i></figcaption>
-</figure>
-</div>
-</div>
-
-<p>It had been a few months since I used either my Wacom tablet or Krita for painting. But I
-was glad to remember some shortcuts. Krita interface is also quite intuitive. In a few
-minutes I found how to rotate the canvas and the zoom controls.</p>
-<p>Below a few more screenshots. If you are interested, submit your artwork to the Krita monthly
-challenge too! Or if you are not using Krita yet, spend some time using it to compare
-with other editors.</p>
-<p>I am sure you will be glad with the results.</p>
-<div class='row'>
-<div class="ui fluid container">
-<img style="height: 400px;" class="ui image" src="/2018/05/13/drawing-santos-dumonts-encantada-in-krita/Screenshot_2018-05-12_23-16-21.png" alt="Screen shot" />
-</div>
-</div>
-
-<div class='row'>
-<div class="ui fluid container">
-<img style="height: 400px;" class="ui image" src="/2018/05/13/drawing-santos-dumonts-encantada-in-krita/Screenshot from 2018-05-12 22-42-51.png" alt="Screen shot" />
-</div>
-</div>
-
-<div class='row'>
-<div class="ui fluid container">
-<img style="height: 400px;" class="ui image" src="/2018/05/13/drawing-santos-dumonts-encantada-in-krita/Screenshot from 2018-05-13 00-11-38.png" alt="Screen shot" />
-</div>
-</div>
-
-<div class='row'>
-<div class="ui fluid container">
-<img style="height: 400px;" class="ui image" src="/2018/05/13/drawing-santos-dumonts-encantada-in-krita/Screenshot from 2018-05-13 00-38-24.png" alt="Screen shot" />
-</div>
-</div>
-
-<div class='row'>
-<div class="ui fluid container">
-<img style="height: 400px;" class="ui image" src="/2018/05/13/drawing-santos-dumonts-encantada-in-krita/Screenshot from 2018-05-13 01-24-27.png" alt="Screen shot" />
-</div>
-</div>
-
-<p>Oh! I also need to find some more time another day to try the newly released
-<a href="https://docs.krita.org/Introduction_to_Python_Scripting">Krita&#8217;s Python scripting</a>!</p>
-<p>&hearts; Open Source</p>
-<p><em>Trivia #1: I grew up on the North of Sao Paulo city, near an important avenue called Dumont Vilares.
-It gets this name after Lu&iacute;s Dumont Vilares, main name of Atlas Elevators, and brother of
-Santos Dumont. Very few people are aware that this avenue is related to the inventor.</em></p>
-<p><em>Trivia #2: the house is called &ldquo;A Encantada&rdquo;, which means Enchanted (feminine). It gets this name
-because of the name of the street where it was located: Enchant Street, or Rua do Encanto in
-Portuguese.</em></p>
-                            
-                            
-                            
-                        </div>
-                        <p class="postmetadata">
-                            
-                            <small>tags 
-                             [&nbsp;<a
-                                href="/tag/opensource/"
-                                rel="tag">opensource</a>&nbsp;]&nbsp;
-                            
-                             [&nbsp;<a
-                                href="/tag/illustrations/"
-                                rel="tag">illustrations</a>&nbsp;]&nbsp;
-                            
-                             [&nbsp;<a
-                                href="/tag/krita/"
-                                rel="tag">krita</a>&nbsp;]&nbsp;
                             
                             </small>
                             

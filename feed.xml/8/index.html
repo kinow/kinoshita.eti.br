@@ -10,13 +10,80 @@
         
         <description>Latest news from Bruno P. Kinoshita</description>
         
-        <lastBuildDate>2018-07-14T00:50:39+12:00</lastBuildDate>
-        <pubDate>2018-07-14T00:50:39+12:00</pubDate>
+        <lastBuildDate>2018-07-14T23:21:17+12:00</lastBuildDate>
+        <pubDate>2018-07-14T23:21:17+12:00</pubDate>
         <generator>PieCrust 3.2.0</generator>
         
         
         
 
+        
+        
+        
+        <item>
+            <title>How does the Jenkins Credentials Plug-in store passwords?</title>
+            <link>/2015/09/07/how_does_the_jenkins_credentials_plugin_store_passwords</link>
+            
+            <author>kinow</author>
+            <dc:creator>kinow</dc:creator>
+            
+            <category>blog</category>
+            
+            <category>jenkins</category>
+            
+            <category>security</category>
+            
+            <pubDate>2015-09-07T01:25:03+12:00</pubDate>
+            <guid>/2015/09/07/how_does_the_jenkins_credentials_plugin_store_passwords</guid>
+            <description>
+            
+            &lt;p&gt;&lt;a href=&#34;https://wiki.jenkins-ci.org/display/JENKINS/Credentials+Plugin&#34;&gt;Jenkins Credentials Plug-in&lt;/a&gt; manages credentials stored in Jenkins. These credentials can be used in many jobs and by plug-ins for executing SSH commands, authenticating to systems, or running other commands that need some sort of authentication or authorisation.&lt;/p&gt;
+&lt;p&gt;I recently used its API for the first time in the &lt;a href=&#34;https://github.com/biouno/figshare-plugin&#34;&gt;BioUno figshare Plug-in&lt;/a&gt; to store OAuth 1.0 credentials (consumer key, consumer secret, token key, token secret). This &lt;a href=&#34;http://biouno.org/2015/09/05/using_jenkins_credentials_plugin_to_create_the_biouno_figshare_plugin/&#34;&gt;blog post&lt;/a&gt; has more details about how we used the plug-in, but this post is specifically on how the passwords are stored by Jenkins.&lt;/p&gt;
+&lt;h2&gt;Secret and ciphers&lt;/h2&gt;
+&lt;p&gt;Jenkins stores its configuration on disk as XML using the XStream library. Plug-in developers using the Credentials Plug-in API must use the &lt;strong&gt;Secret&lt;/strong&gt; class to encrypt sensitive information.&lt;/p&gt;
+&lt;p&gt;The &lt;code&gt;Secret.fromString&lt;/code&gt; method is responsible for creating a cipher from a given String. As in the Secret Javadoc,  &lt;em&gt;&amp;#8220;this is not meant as a protection against code running in the same VM, nor against an attacker who has local file system access on Jenkins master&amp;#8221;&lt;/em&gt;. But at least makes things more complicated :-)&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://javadoc.jenkins-ci.org/hudson/util/Secret.html&#34;&gt;Secret Javadoc&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/jenkinsci/jenkins/blob/master/core/src/main/java/hudson/util/Secret.java&#34;&gt;Secret source code&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;span class=&#34;kd&#34;&gt;public&lt;/span&gt; &lt;span class=&#34;kd&#34;&gt;static&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Secret&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;fromString&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;String&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;data&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;
+    &lt;span class=&#34;n&#34;&gt;data&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Util&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;fixNull&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;data&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;);&lt;/span&gt;
+    &lt;span class=&#34;n&#34;&gt;Secret&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;s&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;decrypt&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;data&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;);&lt;/span&gt;
+    &lt;span class=&#34;k&#34;&gt;if&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;s&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;kc&#34;&gt;null&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;s&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;new&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Secret&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;data&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;);&lt;/span&gt;
+    &lt;span class=&#34;k&#34;&gt;return&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;s&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;;&lt;/span&gt;
+&lt;span class=&#34;o&#34;&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;The first line simply replaces a null string by an empty &amp;#8220;&amp;#8221;, or keeps the current value of not null.&lt;/p&gt;
+&lt;p&gt;After that, the decrypt method is called.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;span class=&#34;kd&#34;&gt;public&lt;/span&gt; &lt;span class=&#34;kd&#34;&gt;static&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Secret&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;decrypt&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;String&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;data&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;
+    &lt;span class=&#34;k&#34;&gt;if&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;data&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;kc&#34;&gt;null&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;      &lt;span class=&#34;k&#34;&gt;return&lt;/span&gt; &lt;span class=&#34;kc&#34;&gt;null&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;;&lt;/span&gt;
+    &lt;span class=&#34;k&#34;&gt;try&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;
+        &lt;span class=&#34;kt&#34;&gt;byte&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;[]&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;in&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Base64&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;decode&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;data&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;toCharArray&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;());&lt;/span&gt;
+        &lt;span class=&#34;n&#34;&gt;Secret&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;s&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;tryDecrypt&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;KEY&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;decrypt&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(),&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;in&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;);&lt;/span&gt;
+        &lt;span class=&#34;k&#34;&gt;if&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;s&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;!=&lt;/span&gt;&lt;span class=&#34;kc&#34;&gt;null&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;    &lt;span class=&#34;k&#34;&gt;return&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;s&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;;&lt;/span&gt;
+
+        &lt;span class=&#34;c1&#34;&gt;// try our historical key for backward compatibility&lt;/span&gt;
+        &lt;span class=&#34;n&#34;&gt;Cipher&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;cipher&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;getCipher&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;AES&amp;quot;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;);&lt;/span&gt;
+        &lt;span class=&#34;n&#34;&gt;cipher&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;init&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;Cipher&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;DECRYPT_MODE&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;getLegacyKey&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;());&lt;/span&gt;
+        &lt;span class=&#34;k&#34;&gt;return&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;tryDecrypt&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;cipher&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;in&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;);&lt;/span&gt;
+    &lt;span class=&#34;o&#34;&gt;}&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;catch&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;GeneralSecurityException&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;e&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;
+        &lt;span class=&#34;k&#34;&gt;return&lt;/span&gt; &lt;span class=&#34;kc&#34;&gt;null&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;;&lt;/span&gt;
+    &lt;span class=&#34;o&#34;&gt;}&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;catch&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;UnsupportedEncodingException&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;e&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;
+        &lt;span class=&#34;k&#34;&gt;throw&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;new&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Error&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;e&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;);&lt;/span&gt; &lt;span class=&#34;c1&#34;&gt;// impossible&lt;/span&gt;
+    &lt;span class=&#34;o&#34;&gt;}&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;catch&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;IOException&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;e&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;
+        &lt;span class=&#34;k&#34;&gt;return&lt;/span&gt; &lt;span class=&#34;kc&#34;&gt;null&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;;&lt;/span&gt;
+    &lt;span class=&#34;o&#34;&gt;}&lt;/span&gt;
+&lt;span class=&#34;o&#34;&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;The &lt;code&gt;KEY.decrypt()&lt;/code&gt; call will return a &lt;a href=&#34;http://docs.oracle.com/javase/8/docs/api/javax/crypto/Cipher.html&#34;&gt;&lt;code&gt;javax.crypto.Cipher&lt;/code&gt;&lt;/a&gt;. The Cipher class is handled in &lt;a href=&#34;https://github.com/jenkinsci/jenkins/blob/93dfe3377ec8d430818f5b9073f16c677343adb4/core/src/main/java/jenkins/security/CryptoConfidentialKey.java&#34;&gt;CryptoConfidentialKey&lt;/a&gt; in Jenkins API, where it defines the algorithm used to create the cipher: &lt;a href=&#34;https://en.wikipedia.org/wiki/Advanced_Encryption_Standard&#34;&gt;AES&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Jenkins has also a &lt;a href=&#34;https://github.com/jenkinsci/jenkins/blob/93dfe3377ec8d430818f5b9073f16c677343adb4/core/src/main/java/jenkins/security/ConfidentialStore.java#L63&#34;&gt;ConfidentialStore&lt;/a&gt;, that is required to create the cipher. This class must be initialized before someone tries to create or read a cipher. This extra step also increases security, though access to the JVM is still a problem.&lt;/p&gt;
+&lt;p&gt;It is a bit late, so it is all for today. In summary: the credentials plug-in gives you a central place to manage credentials, but it is up to plug-in developers to use it. Sensitive values can be encrypted with AES on disk. So it is important that your file permissions, ACL and system auditing processes are in place and well maintained and monitored.&lt;/p&gt;
+&lt;p&gt;Happy hacking!&lt;/p&gt;
+            
+            </description>
+        </item>
         
         
         
@@ -622,86 +689,6 @@ cleaning the templates cache directory (&lt;code&gt;$TESTLINK_HOME/gui/templates
 fixed the issue for me.&lt;/p&gt;
 &lt;p&gt;Hope that helps.
 Happy testing!&lt;/p&gt;
-            
-            </description>
-        </item>
-        
-        
-        
-        <item>
-            <title>The Apache Way and on writing software reviews</title>
-            <link>/2013/09/29/the-apache-way-and-on-writing-software-reviews</link>
-            
-            <author>kinow</author>
-            <dc:creator>kinow</dc:creator>
-            
-            <category>blog</category>
-            
-            <category>apache software foundation</category>
-            
-            <pubDate>2013-09-29T14:53:53+13:00</pubDate>
-            <guid>/2013/09/29/the-apache-way-and-on-writing-software-reviews</guid>
-            <description>
-            
-            &lt;p&gt;The &lt;a href=&#34;http://www.apache.org/foundation/how-it-works.html&#34;&gt;Apache Way&lt;/a&gt; is the philosophy behind 
-Apache Software Foundation and is shared by all of its projects. It is composed by a set of principles:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;Collaborative software development&lt;/li&gt;
-&lt;li&gt;Commercial-friendly standard license&lt;/li&gt;
-&lt;li&gt;Consistently high quality software&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Respectful, honest, technical-based interaction&lt;/strong&gt;&lt;/li&gt;
-&lt;li&gt;Faithful implementation of standards&lt;/li&gt;
-&lt;li&gt;Security as a mandatory feature&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;I have been part of &lt;a href=&#34;http://commons.apache.org&#34;&gt;Apache Commons&lt;/a&gt; for a while, and haven&amp;#8217;t 
-really contributed much yet. Maybe because I had lots of projects related to 
-&lt;a href=&#34;http://tupilabs.com&#34;&gt;TupiLabs&lt;/a&gt; as well as my own wedding this year. But I can 
-assure that &lt;em&gt;respectful, honest, technical-based interaction&lt;/em&gt; is quite right (not to discredit the 
-other items, of course).&lt;/p&gt;
-&lt;p&gt;Even though there are critics of the Apache Way (&lt;a href=&#34;&#34; title=&#34;#1&#34;&gt;1&lt;/a&gt;, &lt;a href=&#34;&#34; title=&#34;#2&#34;&gt;2&lt;/a&gt;, &lt;a href=&#34;&#34; title=&#34;#3&#34;&gt;3&lt;/a&gt;), it still stands as an important 
-pillar for the Apache Software Foundation, and its principles help to create stable and 
-production ready software, such as &lt;a href=&#34;http://hadoop.apache.org&#34;&gt;Apache Hadoop&lt;/a&gt;, 
-&lt;a href=&#34;http://httpd.apache.org&#34;&gt;Apache Httpd&lt;/a&gt;, &lt;a href=&#34;http://commons.apache.org/lang&#34;&gt;Apache Commons Lang&lt;/a&gt;, 
-among &lt;a href=&#34;http://projects.apache.org&#34;&gt;others&lt;/a&gt;.&lt;/p&gt;
-&lt;p&gt;There are many reviews and comparisons on Apache software (as well as on 
-other software, like JavaScript libraries, Java Web Frameworks, Ruby Web servers and so on). 
-Sometimes, though, these reviews or comparisons can be biased or not well founded. In 
-cases like this, the developers of the tools may be frustrated, or users can be 
-misled and choose the software based on wrong assertions.&lt;/p&gt;
-&lt;p&gt;I have just returned from honey moon, ready to start writing code again, but 
-first I had to read all the unread messages in my inbox. Some were e-mails from &lt;a href=&#34;https://www.apache.org/foundation/mailinglists.html&#34;&gt;Apache 
-mailing lists&lt;/a&gt;. &lt;a href=&#34;http://markmail.org/thread/uoh5m55mh4qjybaw&#34;&gt;One of these e-mails&lt;/a&gt; 
-had Phil Steitz comments on a post by Daniel Wu. &lt;/p&gt;
-&lt;p&gt;Instead of publishing his performance benchmark results of 
-&lt;a href=&#34;http://commons.apache.org/pool&#34;&gt;Apache Commons Pool&lt;/a&gt;, Daniel posted his 
-code to the commons-dev mailing list. Phil Steitz, one of Apache Commons Pool 
-committers replied with questions and a few points that Daniel could use to 
-enrich his benchmark tests.&lt;/p&gt;
-&lt;p&gt;This kind of behavior happens a lot within Apache (at least in the mailing lists that 
-I follow), and it produces a lot of benefits for different parts. &lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;The person writing a review or comparison can get the programmer opinion before actually 
-publishing anything. &lt;/li&gt;
-&lt;li&gt;The programmer can see how other people were testing his/her code.&lt;/li&gt;
-&lt;li&gt;All other commons-pool committers and maintainers, the mailing list readers, and 
-people that found the mailing list archives will be able to read the conversation 
-history.&lt;/li&gt;
-&lt;li&gt;No misguided benchmark results were published (and lots of wrong decisions were avoided).&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;I keep loving the Apache Way and the resulting community and code around it. There are 
-always lots of things to learn, the Open Source projects communities are healthy and you will always find 
-people willing to share their experience and time teaching you.&lt;/p&gt;
-&lt;p&gt;♥ Open Source&lt;/p&gt;
-&lt;hr /&gt;
-&lt;p&gt;&lt;sup&gt;&lt;a name=&#34;1&#34;&gt;1&lt;/a&gt; 
-&lt;a href=&#34;http://www.infoworld.com/d/open-source-software/has-apache-lost-its-way-225267?page=0,2&#34;&gt;
-http://www.infoworld.com/d/open-source-software/has-apache-lost-its-way-225267?page=0,2&lt;/a&gt;&lt;/sup&gt;&lt;/p&gt;
-&lt;p&gt;&lt;sup&gt;&lt;a name=&#34;2&#34;&gt;2&lt;/a&gt; 
-&lt;a href=&#34;http://footle.org/2011/11/23/apache-considered-harmful/&#34;&gt;
-http://footle.org/2011/11/23/apache-considered-harmful/&lt;/a&gt;&lt;/sup&gt;&lt;/p&gt;
-&lt;p&gt;&lt;sup&gt;&lt;a name=&#34;3&#34;&gt;3&lt;/a&gt; 
-&lt;a href=&#34;http://www.itworld.com/it-managementstrategy/227477/has-open-source-outgrown-apache-way&#34;&gt;
-http://www.itworld.com/it-managementstrategy/227477/has-open-source-outgrown-apache-way&lt;/a&gt;&lt;/sup&gt;&lt;/p&gt;
             
             </description>
         </item>
