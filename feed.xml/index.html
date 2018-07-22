@@ -10,13 +10,76 @@
         
         <description>Latest news from Bruno P. Kinoshita</description>
         
-        <lastBuildDate>2018-07-22T00:07:36+12:00</lastBuildDate>
-        <pubDate>2018-07-22T00:07:36+12:00</pubDate>
+        <lastBuildDate>2018-07-22T14:02:28+12:00</lastBuildDate>
+        <pubDate>2018-07-22T14:02:28+12:00</pubDate>
         <generator>PieCrust 3.2.0</generator>
         
         
         
 
+        
+        
+        
+        <item>
+            <title>Multithreaded code and Pandas</title>
+            <link>/2018/07/22/multithreaded-code-and-pandas</link>
+            
+            <author>kinow</author>
+            <dc:creator>kinow</dc:creator>
+            
+            
+            
+            <category>python</category>
+            
+            <category>pandas</category>
+            
+            <category>opensource</category>
+            
+            <pubDate>2018-07-22T13:22:14+12:00</pubDate>
+            <guid>/2018/07/22/multithreaded-code-and-pandas</guid>
+            <description>
+            
+            &lt;p&gt;&lt;a href=&#34;https://www.deviantart.com/kinow/art/Woman-looking-01-743551195&#34;&gt;&lt;img style=&#34;float: left; height: 300px;&#34; class=&#34;ui image&#34; src=&#34;/2018/07/22/multithreaded-code-and-pandas/woman-looking-01.png&#34; alt=&#34;Woman looking&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Pandas provides high-performance data structures in Python. I think in Java there are
+similar data structures in projects like Apache Commons Collections,
+Google Guava, and also Trove.&lt;/p&gt;
+&lt;p&gt;In the Java libraries thread-safety is always a must-have feature. Probably as it is quite
+common for a Java program to have more than one thread, especially if the code runs in some
+sort of web container.&lt;/p&gt;
+&lt;p&gt;I recently learned that Pandas, on the other hand, does not guarantee any thread-safety.
+I found that while reading an
+&lt;a href=&#34;https://github.com/pandas-dev/pandas/issues/21150&#34;&gt;issue about race condition in the &lt;code&gt;IndexEngine&lt;/code&gt;&lt;/a&gt;,
+and after preparing a pull request for that.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;span class=&#34;kn&#34;&gt;from&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;concurrent.futures&lt;/span&gt; &lt;span class=&#34;kn&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;ThreadPoolExecutor&lt;/span&gt;
+&lt;span class=&#34;kn&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;pandas&lt;/span&gt; &lt;span class=&#34;kn&#34;&gt;as&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;pd&lt;/span&gt;
+
+&lt;span class=&#34;n&#34;&gt;x&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;pd&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;date_range&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;#39;2001&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;&amp;#39;2020&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;span class=&#34;k&#34;&gt;with&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;ThreadPoolExecutor&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;2&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;as&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;p&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;
+    &lt;span class=&#34;k&#34;&gt;assert&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;all&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;p&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;map&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;lambda&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;x&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;x&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;is_unique&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;x&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;*&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;2&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;))&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;When you create an index like that, it will delegate most of the hard work to the &lt;code&gt;IndexEngine&lt;/code&gt;.
+Inside the &lt;code&gt;IndexEngine&lt;/code&gt;, the values passed for the index are stored, and then an empty
+&lt;code&gt;Hashtable&lt;/code&gt; is created (as well as several flags for the state of the object, such as
+&lt;code&gt;unique&lt;/code&gt;, which defines whether the index has unique elements or not).&lt;/p&gt;
+&lt;p&gt;Once a user calls a method like &lt;code&gt;is_unique&lt;/code&gt;, then the flags are updated, the &lt;code&gt;Hashtable&lt;/code&gt;
+mapping is populated, and while doing so, if not all elements are unique, the flag for
+&lt;code&gt;unique&lt;/code&gt; is set to &lt;code&gt;false&lt;/code&gt;, or &lt;code&gt;true&lt;/code&gt; otherwise. But if the user does not need that
+operation, we will avoid populating the mapping until we really need it.&lt;/p&gt;
+&lt;p&gt;I believe it is done that way for performance. However, at the cost that the state is shared
+among calls, which makes it harder to use this API in a multithreaded environment - though
+still possible by moving the synchronization to your caller code.&lt;/p&gt;
+&lt;p&gt;Some Apache software also do the same, asking users to synchronize, serialize, or handle
+certain corner cases on their side. There is a huge cost associated with maintaining an Open
+Source project that promises thread-safety.&lt;/p&gt;
+&lt;p&gt;But maybe &lt;a href=&#34;http://dask.pydata.org/en/latest/&#34;&gt;Dask&lt;/a&gt; provides an alternative to use Pandas
+with multiple threads. But I have not used that yet.&lt;/p&gt;
+&lt;p&gt;&amp;hearts; Open Source&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;NB: even though Pandas is not thread-safe, it does not mean you should not use it. Just use
+with care when using multiple threads&lt;/em&gt;&lt;/p&gt;
+            
+            </description>
+        </item>
         
         
         
@@ -786,54 +849,6 @@ be surprised to analyze it with &lt;code&gt;exiftool&lt;/code&gt; and get warnin
 handle odd and even offsets, so it should work for most cases, unless you have a strict reader/viewer.&lt;/p&gt;
 &lt;p&gt;Happy hacking!&lt;/p&gt;
 &lt;p&gt;&amp;heart; Open Source&lt;/p&gt;
-            
-            </description>
-        </item>
-        
-        
-        
-        <item>
-            <title>Remember to synchronize when iterating streams from a synchronized Collection</title>
-            <link>/2017/12/03/remember-to-synchronize-when-iterating-streams-from-a-synchronized-collection</link>
-            
-            <author>kinow</author>
-            <dc:creator>kinow</dc:creator>
-            
-            
-            
-            <category>programming</category>
-            
-            <category>java</category>
-            
-            <category>opensource</category>
-            
-            <pubDate>2017-12-03T23:56:13+13:00</pubDate>
-            <guid>/2017/12/03/remember-to-synchronize-when-iterating-streams-from-a-synchronized-collection</guid>
-            <description>
-            
-            &lt;p&gt;When iterating collections created via &lt;code&gt;Collections.synchronizedList&lt;/code&gt; for instance, you are required
-to obtain a lock on the actual list before doing so. So you normally end up with code similar to:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;span class=&#34;n&#34;&gt;List&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;list&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Collections&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;synchronizedList&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;new&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;ArrayList&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;());&lt;/span&gt;
-&lt;span class=&#34;kd&#34;&gt;synchronized&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;list&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;
-  &lt;span class=&#34;n&#34;&gt;Iterator&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;i&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;list&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;iterator&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;();&lt;/span&gt; &lt;span class=&#34;c1&#34;&gt;// Must be in synchronized block&lt;/span&gt;
-  &lt;span class=&#34;k&#34;&gt;while&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;i&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;hasNext&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;())&lt;/span&gt;
-      &lt;span class=&#34;n&#34;&gt;foo&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;i&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;next&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;());&lt;/span&gt;
-&lt;span class=&#34;o&#34;&gt;}&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;This requirement is &lt;a href=&#34;https://docs.oracle.com/javase/9/docs/api/java/util/Collections.html#synchronizedList-java.util.List-&#34;&gt;documented in the javadocs&lt;/a&gt;.&lt;/p&gt;
-&lt;p&gt;Since lambdas and streams are being more widely used, it is important to remind
-that when iterating via a stream we also need to obtain a lock on the synchronized
-collection created.&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;span class=&#34;n&#34;&gt;List&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;list&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Collections&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;synchronizedList&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;new&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;ArrayList&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;());&lt;/span&gt;
-&lt;span class=&#34;kd&#34;&gt;synchronized&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;list&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;
-  &lt;span class=&#34;n&#34;&gt;list&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;stream&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;()&lt;/span&gt;
-    &lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;anyMatch&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(...)&lt;/span&gt;
-&lt;span class=&#34;o&#34;&gt;}&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;Here&amp;#8217;s an &lt;a href=&#34;https://github.com/zalando/nakadi/pull/786&#34;&gt;example from Zalando Nakadi Event Broker&lt;/a&gt;.&lt;/p&gt;
-&lt;p&gt;Happy hacking!&lt;/p&gt;
             
             </description>
         </item>

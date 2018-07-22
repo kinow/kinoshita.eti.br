@@ -152,11 +152,11 @@
                               
                               <span style="font-size: 12.0pt"><a href="/tag/natural%20language%20processing">natural language processing</a></span>&nbsp;(4)
                               
-                              <span style="font-size: 26.0pt"><a href="/tag/opensource">opensource</a></span>&nbsp;(32)
+                              <span style="font-size: 26.5pt"><a href="/tag/opensource">opensource</a></span>&nbsp;(33)
                               
                               <span style="font-size: 26.5pt"><a href="/tag/programming">programming</a></span>&nbsp;(33)
                               
-                              <span style="font-size: 15.5pt"><a href="/tag/python">python</a></span>&nbsp;(11)
+                              <span style="font-size: 16.0pt"><a href="/tag/python">python</a></span>&nbsp;(12)
                               
                               <span style="font-size: 11.5pt"><a href="/tag/r">r</a></span>&nbsp;(3)
                               
@@ -182,6 +182,147 @@
                         <h1 class='topic'>Home</h1>
                     </div>
                     
+                    
+                    <div class="ui raised padded container segment">
+                        <h2>
+                            <a href="/2018/05/27/what-happens-when-you-upload-a-turtle-file-in-apache-jena-fuseki" title="Permanent link">What happens when you upload a Turtle file in Apache Jena Fuseki</a>
+                        </h2>
+                        <small>kinow</small> @ <small>May 27, 2018&nbsp;22:42:55 (<span class='stardate' data-input-date='May 27, 2018'></span>)</small>
+                        <div class="entry">
+                            
+
+
+
+
+
+<a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2018/05/27/what-happens-when-you-upload-a-turtle-file-in-apache-jena-fuseki" data-text="What happens when you upload a Turtle file in Apache Jena Fuseki" data-via="kinow" data-hashtags="opensource">Tweet</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+                            
+                            <p>I am working on <a href="https://github.com/NatLibFi/Skosmos/issues/738">an issue for Skosmos</a>
+that involves preparing some <a href="https://www.w3.org/TR/turtle/">Turtle</a> files and uploading
+them using Apache Jena Fuseki&#8217;s web interface.</p>
+<p>The issue is now pending feedback, which gives me a moment to have fun with
+something else. So I decided to dig down the rabbit hole and start learning more
+about certain parts of the Apache Jena code base.</p>
+<p style='text-align: center;'>
+<img style="display: inline; width: 600px;" class="ui image" src="/2018/05/27/what-happens-when-you-upload-a-turtle-file-in-apache-jena-fuseki/browser.png"  />
+</p>
+
+<p>This post will be useful to myself in the future, as a note-taking in a series, so that I
+remember how things work - you never know right? But hopefully this will be useful
+to other wanting to understand more about the code of Apache Jena. </p>
+<h2>Where upload happens - SPARQL_Upload and Upload (Fuseki Core)</h2>
+<p>Knowing a bit of the code base, I went straight to the <code>SPARQL_Upload</code> class,
+from the Fuseki Core module. Set up a couple of breakpoints, uploaded my file,
+but nothing. Then tried on its package-neighbour class, <code>Upload</code>.</p>
+<p>Actually, it is easier to understand seeing the class hierarchy, and knowing
+that when I run the application in Eclipse, it is running with Jetty, serving
+servlets (there is no framework like Wicket, Struts, etc, involved).</p>
+<p style='text-align: center;'>
+<img style="display: inline; width: 600px;" class="ui image" src="/2018/05/27/what-happens-when-you-upload-a-turtle-file-in-apache-jena-fuseki/class-hierarchy.png"  />
+</p>
+
+<p>Several filters are applied to the HTTP request too, like Cross Origin, Shiro, and
+the <code>FusekiFilter</code>. The latter looks at the requests to see if it includes a dataset.
+If a dataset is found - it is in our case - then it hands the request over to
+the right class to handle it.</p>
+<p>REST_Quads_RW will take care of the upload action, using the <code>Upload</code> class where my
+breakpoint stopped.</p>
+<h2>Upload#incomingData() (Fuseki Core)</h2>
+<p><code>Upload#incomingData()</code> starts by checking the Content Type from the request. In my case
+it is a <code>multipart/form-data</code>. Then it calls its other method <code>#fileUploadWorker()</code>.</p>
+<p><code>#fileUploadWorker()</code> creates a <code>ServletFilterUpload</code>, from Apache Commons FileUpload.
+With that, it opens a stream for the file, retrieves its name and other information,
+such as the content type.</p>
+<p>Ah, the content type is interesting too. It defaults to <code>RDFXML</code>, but what&#8217;s interesting
+is the comment.</p>
+<div class="highlight"><pre><span class="k">if</span> <span class="o">(</span> <span class="n">lang</span> <span class="o">==</span> <span class="kc">null</span> <span class="o">)</span>
+    <span class="c1">// Desperate.</span>
+    <span class="n">lang</span> <span class="o">=</span> <span class="n">RDFLanguages</span><span class="o">.</span><span class="na">RDFXML</span> <span class="o">;</span>
+</pre></div>
+
+<p>Well, in this case we are getting a <code>Lang:Turtle</code>. So it now knows that it has a Turtle
+file, but it still needs to parse it.</p>
+<h2>ActionLib#parse() (Fuseki Core)</h2>
+<p><code>Upload</code> calls <code>ActionLib#parse()</code>, which uses <code>RDFParserBuilder</code> to build a parser.
+It applies a nice fluent API design when doing that.</p>
+<div class="highlight"><pre><span class="n">RDFParser</span><span class="o">.</span><span class="na">create</span><span class="o">()</span>
+    <span class="o">.</span><span class="na">errorHandler</span><span class="o">(</span><span class="n">errorHandler</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">source</span><span class="o">(</span><span class="n">input</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">lang</span><span class="o">(</span><span class="n">lang</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">base</span><span class="o">(</span><span class="n">base</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">parse</span><span class="o">(</span><span class="n">dest</span><span class="o">);</span>
+</pre></div>
+
+<blockquote>Side note to self: the `RDFParser` has a `canUse` flag. It seems to indicate
+the parser can be used just once. Though it looks actually it works until the stream
+is closed&#8230;</blockquote>
+
+<p>So <code>RDFParserBuilder</code> will call <code>RDFParser</code>, which in turn will use the
+classes <code>LangTurtle</code> and <code>LangTurtleBase</code>.</p>
+<h2>LangTurtle (ARQ)</h2>
+<p>ARQ is a low level module in Jena, responsible for parsing queries, and also
+some of the interaction with graphs and datasets.</p>
+<p><code>LangTurtle</code> extends <code>LangTurtleBase</code>. Their task starts by populating
+the <code>prefixMap</code>, which contains all those prefixes used in queries like
+<code>rdfs</code>, <code>void</code>, <code>skos</code>, <code>etc</code>.</p>
+<p>Then it will keep parsing <strong>triples</strong> until it finds an <code>EOF</code>. For every
+triple, after the <em>Predicate-Object-List</em> is found, it calls
+<code>LangTurtle#emit()</code>.</p>
+<p>The <code>#emit()</code>method creates a <code>Triple</code> object (Jena Core, graph package).
+And also a <code>StreamRDFCountingBase</code> to keep track of statistics to display
+back to the user.</p>
+<p style='text-align: center;'>
+<img style="display: inline; width: 600px;" class="ui image" src="/2018/05/27/what-happens-when-you-upload-a-turtle-file-in-apache-jena-fuseki/eclipse.png"  />
+</p>
+
+<p><code>StreamRDFCountingBase</code> extends <code>StreamRDFWrapper</code>, and wraps - as per name -
+other <code>StreamRDF</code>&#8216;s, such as <code>ParserOutputDataset</code>.</p>
+<p><code>ParserOutputDataset</code> holds a reference to the <code>DatasetGraph</code> and also to the
+<code>prefixMap</code> populated earlier in <code>LangTurtle</code>. For each <code>Triple</code> that we have
+it will call the <code>DatasetGraph#add</code> method, creating a new <em>Quad</em> with the
+default graph name.</p>
+<h2>Conclusion</h2>
+<p>Finally, readers and streams are closed. An <code>UploadDetails</code> object is created
+holding stats ollected in <code>StreamRDFCountingBase</code>, which are also used for
+logging.</p>
+<p><code>Upload#incomingPath()</code> will return the <code>UploadDetails</code>. If there are no errors
+then the transaction will be commited. It involves again classes from ARQ and
+TDB (for journaling), but that will be for another post.</p>
+<p>The final method called in the <code>Upload</code> class will be <code>detailsJson()</code>, which
+returns the object as JSON. This JSON string is then finally returned to the
+user.</p>
+<p>So that&#8217;s it. Probably the next step will be to learn how <code>DatasetGraph</code> works,
+or maybe more about transactions in Jena.</p>
+<p>Happy hacking !</p>
+                            
+                            
+                            
+                        </div>
+                        <p class="postmetadata">
+                            
+                            <small>tags 
+                             [&nbsp;<a
+                                href="/tag/apache%20software%20foundation/"
+                                rel="tag">apache software foundation</a>&nbsp;]&nbsp;
+                            
+                             [&nbsp;<a
+                                href="/tag/jena/"
+                                rel="tag">jena</a>&nbsp;]&nbsp;
+                            
+                             [&nbsp;<a
+                                href="/tag/opensource/"
+                                rel="tag">opensource</a>&nbsp;]&nbsp;
+                            
+                             [&nbsp;<a
+                                href="/tag/programming/"
+                                rel="tag">programming</a>&nbsp;]&nbsp;
+                            
+                            </small>
+                            
+                            
+                        </p>
+                    </div>
                     
                     <div class="ui raised padded container segment">
                         <h2>
@@ -523,69 +664,6 @@ handle odd and even offsets, so it should work for most cases, unless you have a
                              [&nbsp;<a
                                 href="/tag/apache%20software%20foundation/"
                                 rel="tag">apache software foundation</a>&nbsp;]&nbsp;
-                            
-                             [&nbsp;<a
-                                href="/tag/opensource/"
-                                rel="tag">opensource</a>&nbsp;]&nbsp;
-                            
-                            </small>
-                            
-                            
-                        </p>
-                    </div>
-                    
-                    <div class="ui raised padded container segment">
-                        <h2>
-                            <a href="/2017/12/03/remember-to-synchronize-when-iterating-streams-from-a-synchronized-collection" title="Permanent link">Remember to synchronize when iterating streams from a synchronized Collection</a>
-                        </h2>
-                        <small>kinow</small> @ <small>Dec 03, 2017&nbsp;23:56:13 (<span class='stardate' data-input-date='Dec 03, 2017'></span>)</small>
-                        <div class="entry">
-                            
-
-
-
-
-
-<a href="https://twitter.com/share" class="twitter-share-button" data-url="http://kinoshita.eti.br/2017/12/03/remember-to-synchronize-when-iterating-streams-from-a-synchronized-collection" data-text="Remember to synchronize when iterating streams from a synchronized Collection" data-via="kinow" data-hashtags="opensource">Tweet</a>
-<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-                            
-                            <p>When iterating collections created via <code>Collections.synchronizedList</code> for instance, you are required
-to obtain a lock on the actual list before doing so. So you normally end up with code similar to:</p>
-<div class="highlight"><pre><span class="n">List</span> <span class="n">list</span> <span class="o">=</span> <span class="n">Collections</span><span class="o">.</span><span class="na">synchronizedList</span><span class="o">(</span><span class="k">new</span> <span class="n">ArrayList</span><span class="o">());</span>
-<span class="kd">synchronized</span> <span class="o">(</span><span class="n">list</span><span class="o">)</span> <span class="o">{</span>
-  <span class="n">Iterator</span> <span class="n">i</span> <span class="o">=</span> <span class="n">list</span><span class="o">.</span><span class="na">iterator</span><span class="o">();</span> <span class="c1">// Must be in synchronized block</span>
-  <span class="k">while</span> <span class="o">(</span><span class="n">i</span><span class="o">.</span><span class="na">hasNext</span><span class="o">())</span>
-      <span class="n">foo</span><span class="o">(</span><span class="n">i</span><span class="o">.</span><span class="na">next</span><span class="o">());</span>
-<span class="o">}</span>
-</pre></div>
-
-<p>This requirement is <a href="https://docs.oracle.com/javase/9/docs/api/java/util/Collections.html#synchronizedList-java.util.List-">documented in the javadocs</a>.</p>
-<p>Since lambdas and streams are being more widely used, it is important to remind
-that when iterating via a stream we also need to obtain a lock on the synchronized
-collection created.</p>
-<div class="highlight"><pre><span class="n">List</span> <span class="n">list</span> <span class="o">=</span> <span class="n">Collections</span><span class="o">.</span><span class="na">synchronizedList</span><span class="o">(</span><span class="k">new</span> <span class="n">ArrayList</span><span class="o">());</span>
-<span class="kd">synchronized</span> <span class="o">(</span><span class="n">list</span><span class="o">)</span> <span class="o">{</span>
-  <span class="n">list</span><span class="o">.</span><span class="na">stream</span><span class="o">()</span>
-    <span class="o">.</span><span class="na">anyMatch</span><span class="o">(...)</span>
-<span class="o">}</span>
-</pre></div>
-
-<p>Here&#8217;s an <a href="https://github.com/zalando/nakadi/pull/786">example from Zalando Nakadi Event Broker</a>.</p>
-<p>Happy hacking!</p>
-                            
-                            
-                            
-                        </div>
-                        <p class="postmetadata">
-                            
-                            <small>tags 
-                             [&nbsp;<a
-                                href="/tag/programming/"
-                                rel="tag">programming</a>&nbsp;]&nbsp;
-                            
-                             [&nbsp;<a
-                                href="/tag/java/"
-                                rel="tag">java</a>&nbsp;]&nbsp;
                             
                              [&nbsp;<a
                                 href="/tag/opensource/"
