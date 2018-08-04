@@ -132,9 +132,9 @@
                               
                               <span style="font-size: 13.5pt"><a href="/tag/c%2B%2B">c++</a></span>&nbsp;(7)
                               
-                              <span style="font-size: 12.5pt"><a href="/tag/cylc">cylc</a></span>&nbsp;(5)
+                              <span style="font-size: 13.0pt"><a href="/tag/cylc">cylc</a></span>&nbsp;(6)
                               
-                              <span style="font-size: 11.5pt"><a href="/tag/docker">docker</a></span>&nbsp;(3)
+                              <span style="font-size: 12.0pt"><a href="/tag/docker">docker</a></span>&nbsp;(4)
                               
                               <span style="font-size: 12.5pt"><a href="/tag/events">events</a></span>&nbsp;(5)
                               
@@ -152,7 +152,7 @@
                               
                               <span style="font-size: 12.0pt"><a href="/tag/natural%20language%20processing">natural language processing</a></span>&nbsp;(4)
                               
-                              <span style="font-size: 27.0pt"><a href="/tag/opensource">opensource</a></span>&nbsp;(34)
+                              <span style="font-size: 27.5pt"><a href="/tag/opensource">opensource</a></span>&nbsp;(35)
                               
                               <span style="font-size: 26.5pt"><a href="/tag/programming">programming</a></span>&nbsp;(33)
                               
@@ -179,6 +179,69 @@
                 
 
 Posts tagged with 'opensource'
+
+
+
+
+<div class="ui raised padded container segment">
+    <h2><a href="/2017/09/13/removing-javadoc-svn-id-tags-with-shell-script" title="Permanent link">Removing Javadoc SVN Id Tags with Shell Script</a></h2>
+    <p><small>kinow</small> @ <small>Sep 13, 2017&nbsp;16:49:26</small></p>
+    
+    
+
+
+
+
+
+<a href="https://twitter.com/share" class="twitter-share-button" data-url="https://kinoshita.eti.br/2017/09/13/removing-javadoc-svn-id-tags-with-shell-script" data-text="Removing Javadoc SVN Id Tags with Shell Script" data-via="kinow" data-hashtags="opensource">Tweet</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p='https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+
+
+    <p>Subversion supports <a href="http://svnbook.red-bean.com/en/1.4/svn.advanced.props.special.keywords.html">Keyword Substitution</a>, which performs substitution of some keywords such as <em>Author</em>, <em>Date</em>, and <strong><em>Id</em></strong>. The <strong><em>Id</em></strong> is the date, time, and user that last modified the file.</p>
+<p>It used to be common to all Apache Commons components to have a line as follows in the header of each Java class.</p>
+<div class="highlight"><pre><span class="cm">/**</span>
+<span class="cm"> * SomeClass class.</span>
+<span class="cm"> *</span>
+<span class="cm"> * @version $Id$</span>
+<span class="cm"> */</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">SomeClass</span> <span class="o">{</span>
+
+<span class="o">}</span>
+</pre></div>
+
+<p>Then the generated Javadoc would contain the date of when the class was altered. Although useful, with proper versioning, it becomes obsolete. It is much more important to know what is the version of the software, not the last time it was modified or by whom. In case you have a problem with that specific file, you can always check the history of the file using <code>git log</code>, or <code>git bisect</code>, or &hellip;</p>
+<p>Apache Commons components that are migrated to git need to have these lines removed. git does not support these Subversion Keywords so it is never properly rendered. And as every time I have to remove these lines I come up with some shell script snippet, I decided to document the last one I wrote, so that it can save me some time &dash; and perhaps for somebody else too?</p>
+<div class="highlight"><pre>find . -name <span class="s2">&quot;*.java&quot;</span> -exec sed -i <span class="s1">&#39;/^.*\*\s*@version\s*\$Id\$.*$/d&#39;</span> <span class="o">{}</span> <span class="se">\;</span>
+</pre></div>
+
+<p>And then <a href="https://github.com/apache/commons-collections/commit/29d2e93966e7fb99a888a58ab43480e485dcdfc6">push a commit</a> with the change :-) In case you know some regex, you can change it and use the same command syntax to remove comments, specific configuration lines, etc.</p>
+<p>That&#8217;s all. Happy scripting!</p>
+<p>&hearts; Open Source</p><!-- html -->
+    
+<p class="postmetadata">
+    
+    <small>tags 
+     [&nbsp;<a
+        href="/tag/programming"
+        rel="tag">programming</a>&nbsp;]&nbsp;
+    
+     [&nbsp;<a
+        href="/tag/shell%20script"
+        rel="tag">shell script</a>&nbsp;]&nbsp;
+    
+     [&nbsp;<a
+        href="/tag/opensource"
+        rel="tag">opensource</a>&nbsp;]&nbsp;
+    
+     [&nbsp;<a
+        href="/tag/apache%20software%20foundation"
+        rel="tag">apache software foundation</a>&nbsp;]&nbsp;
+    
+    </small>
+    
+    
+</p>
+</div>
 
 
 
@@ -638,101 +701,6 @@ when creating the Markdown instance.</p>
      [&nbsp;<a
         href="/tag/maven"
         rel="tag">maven</a>&nbsp;]&nbsp;
-    
-    </small>
-    
-    
-</p>
-</div>
-
-
-
-
-<div class="ui raised padded container segment">
-    <h2><a href="/2017/06/14/how-to-remove-the-signature-from-emails-with-nlp" title="Permanent link">How to remove the signature from e-mails with NLP?</a></h2>
-    <p><small>kinow</small> @ <small>Jun 14, 2017&nbsp;13:59:33</small></p>
-    
-    
-
-
-
-
-
-<a href="https://twitter.com/share" class="twitter-share-button" data-url="https://kinoshita.eti.br/2017/06/14/how-to-remove-the-signature-from-emails-with-nlp" data-text="How to remove the signature from e-mails with NLP?" data-via="kinow" data-hashtags="opensource">Tweet</a>
-<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p='https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-
-
-    <p>Some time ago I stumbled across <a href="https://github.com/mynameisvinn/EmailParser">EmailParser</a>, a Python utility to remove e-mail signatures. Here&#8217;s a sample input e-mail from the project documentation.</p>
-<div class="highlight"><pre>Wendy – thanks for the intro! Moving you to bcc.
-
-Hi Vincent – nice to meet you over email. Apologize for the late reply, I was on PTO for a couple weeks and this is my first week back in office. As Wendy mentioned, I am leading an AR/VR taskforce at Foobar Retail Solutions. The goal of the taskforce is to better understand how AR/VR can apply to retail/commerce and if/what is the role of a shopping center in AR/VR applications for retail.
-
-Wendy mentioned that you would be a great person to speak to since you are close to what is going on in this space. Would love to set up some time to chat via phone next week. What does your availability look like on Monday or Wednesday?
-
-Best,
-Joe Smith
-
-Joe Smith | Strategy &amp; Business Development
-111 Market St. Suite 111| San Francisco, CA 94103
-M: 111.111.1111| joe@foobar.com
-</pre></div>
-
-<p>And here&#8217;s what it looks like afterwards.</p>
-<div class="highlight"><pre>Wendy – thanks for the intro! Moving you to bcc.
-
-Hi Vincent – nice to meet you over email. Apologize for the late reply, I was on PTO for a couple weeks and this is my first week back in office. As Wendy mentioned, I am leading an AR/VR taskforce at Foobar Retail Solutions. The goal of the taskforce is to better understand how AR/VR can apply to retail/commerce and if/what is the role of a shopping center in AR/VR applications for retail.
-
-Wendy mentioned that you would be a great person to speak to since you are close to what is going on in this space. Would love to set up some time to chat via phone next week. What does your availability look like on Monday or Wednesday?
-</pre></div>
-
-<p>As you can see, it removed all the lines after the main part of the message (i.e. after the three paragraphs). Here&#8217;s what the Python code looks like.</p>
-<div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">Parser</span> <span class="kn">import</span> <span class="n">read_email</span><span class="p">,</span> <span class="n">strip</span><span class="p">,</span> <span class="n">prob_block</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">spacy.en</span> <span class="kn">import</span> <span class="n">English</span>
-
-<span class="o">&gt;&gt;&gt;</span> <span class="n">pos</span> <span class="o">=</span> <span class="n">English</span><span class="p">()</span>  <span class="c"># part-of-speech tagger</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">msg_raw</span> <span class="o">=</span> <span class="n">read_email</span><span class="p">(</span><span class="s">&#39;emails/test1.txt&#39;</span><span class="p">)</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">msg_stripped</span> <span class="o">=</span> <span class="n">strip</span><span class="p">(</span><span class="n">msg_raw</span><span class="p">)</span>  <span class="c"># preprocessing text before POS tagging</span>
-
-<span class="c"># iterate through lines, write to file if not signature block</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">generate_text</span><span class="p">(</span><span class="n">msg_stripped</span><span class="p">,</span> <span class="o">.</span><span class="mi">9</span><span class="p">,</span> <span class="n">pos_tagger</span><span class="p">,</span> <span class="s">&#39;emails/test1_clean.txt&#39;</span><span class="p">)</span>
-</pre></div>
-
-<p>What got me interested about this utility was the use of NLP. I couldn&#8217;t imagine how someone could use NLP for that. And I liked the simplicity of the approach, which is not perfect, but can be useful someday.</p>
-<p>After the imports in the code, it creates a <a href="https://en.wikipedia.org/wiki/Part_of_speech">Part of Speech</a> tagger using <a href="https://spacy.io/">spaCy</a> NLP library, reads the e-mail from a file, and sripts and creates an array with each paragraph of the message.</p>
-<p>The magic happens in the <code>generate_text</code> function, which receives the <strong>array of paragraphs</strong>, a <strong>threshold</strong>, the <strong>POS tagger</strong>, and the <strong>output destination</strong>. Here&#8217;s what the function does.</p>
-<div class="highlight"><pre>for each message
-    if probability ( signature block | message ) &lt; threshold
-        write to output file
-</pre></div>
-
-<p>And the formula for calculating the probability is quite simple too.</p>
-<div class="highlight"><pre>1. For a given paragraph (message block), find all the sentences in it.
-2. Then for each word (token) in the sentence, count the number of times a non-verb appears.
-3. Return the proportion of non-verbs per sentence, i.e. number of non-verbs / number of sentences.
-</pre></div>
-
-<p>In summary, it discards blocks that do not contain enough verbs to be considered a message block, being treated as signature blocks instead.</p>
-<p>Never thought about using an approach like this. It may definitely be helpful when doing data analysis, information retrieval, or scraping data from the web. Not necessarily with e-mails and signatures, but you got the gist of it.</p>
-<p>&hearts; Open Source</p><!-- html -->
-    
-<p class="postmetadata">
-    
-    <small>tags 
-     [&nbsp;<a
-        href="/tag/python"
-        rel="tag">python</a>&nbsp;]&nbsp;
-    
-     [&nbsp;<a
-        href="/tag/programming"
-        rel="tag">programming</a>&nbsp;]&nbsp;
-    
-     [&nbsp;<a
-        href="/tag/natural%20language%20processing"
-        rel="tag">natural language processing</a>&nbsp;]&nbsp;
-    
-     [&nbsp;<a
-        href="/tag/opensource"
-        rel="tag">opensource</a>&nbsp;]&nbsp;
     
     </small>
     

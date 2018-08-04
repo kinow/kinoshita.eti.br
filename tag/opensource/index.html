@@ -132,9 +132,9 @@
                               
                               <span style="font-size: 13.5pt"><a href="/tag/c%2B%2B">c++</a></span>&nbsp;(7)
                               
-                              <span style="font-size: 12.5pt"><a href="/tag/cylc">cylc</a></span>&nbsp;(5)
+                              <span style="font-size: 13.0pt"><a href="/tag/cylc">cylc</a></span>&nbsp;(6)
                               
-                              <span style="font-size: 11.5pt"><a href="/tag/docker">docker</a></span>&nbsp;(3)
+                              <span style="font-size: 12.0pt"><a href="/tag/docker">docker</a></span>&nbsp;(4)
                               
                               <span style="font-size: 12.5pt"><a href="/tag/events">events</a></span>&nbsp;(5)
                               
@@ -152,7 +152,7 @@
                               
                               <span style="font-size: 12.0pt"><a href="/tag/natural%20language%20processing">natural language processing</a></span>&nbsp;(4)
                               
-                              <span style="font-size: 27.0pt"><a href="/tag/opensource">opensource</a></span>&nbsp;(34)
+                              <span style="font-size: 27.5pt"><a href="/tag/opensource">opensource</a></span>&nbsp;(35)
                               
                               <span style="font-size: 26.5pt"><a href="/tag/programming">programming</a></span>&nbsp;(33)
                               
@@ -179,6 +179,78 @@
                 
 
 Posts tagged with 'opensource'
+
+
+
+
+<div class="ui raised padded container segment">
+    <h2><a href="/2018/08/04/creating-a-docker-container-to-run-as-a-command" title="Permanent link">Creating a Docker container to run as a command</a></h2>
+    <p><small>kinow</small> @ <small>Aug 04, 2018&nbsp;22:00:36</small></p>
+    
+    
+
+
+
+
+
+<a href="https://twitter.com/share" class="twitter-share-button" data-url="https://kinoshita.eti.br/2018/08/04/creating-a-docker-container-to-run-as-a-command" data-text="Creating a Docker container to run as a command" data-via="kinow" data-hashtags="opensource">Tweet</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p='https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+
+
+    <p>For the past two weeks at work I have been assigned to work on PHP projects. Though I used
+PHP some time ago - especially with Code Igniter and Laravel - I have not used it in a few
+years. And have been doing mostly Java nowadays.</p>
+<p>The complete project setup was done by co-workers. I had a PHP project, using Symfony, several
+bundles and libraries, and Postgres. But it required just running a few commands to set up
+AWS settings, and then fire up Docker Compose.</p>
+<p>Besides Docker Compose starting a web container, and another Postgres container, we used the
+web container to run <a href="https://getcomposer.org/">Composer</a>. In the past, I would see the PHP
+project mapped as a folder in the running container, and then composer would be executed
+in the host.</p>
+<p>I noticed then that I could do the same to an image I created in 2016 to run
+<a href="https://cylc.github.io/cylc/">Cylc</a>. The <a href="https://github.com/kinow/docker/blob/d1cc1771ac53b8efd37b5e4c4401b74ebd294a2b/cylc/Dockerfile">previous version</a>
+would be used to start a container in a terminal, then run some commands
+while maintaining the state within the container.</p>
+<p>The <a href="https://github.com/kinow/cylc-docker">new version</a>
+now maps a volume to the version of cylc, installs the dependencies, and
+then allows the state to be maintained solely in the mapped volume.</p>
+<p>Furthermore, the entrypoint of the image is the <code>cylc</code> command. Which means that
+you do not have to execute a terminal in order to run commands to the container
+(or change the command/entrypoint).</p>
+<div class="highlight"><pre>...
+VOLUME <span class="s2">&quot;/opt/cylc&quot;</span> <span class="s2">&quot;/tmp&quot;</span> <span class="s2">&quot;/run&quot;</span> <span class="s2">&quot;/var/run&quot;</span> <span class="c"># we have the state stored only in /opt/cylc</span>
+WORKDIR <span class="s2">&quot;/opt/cylc&quot;</span>
+ENV PATH /opt/cylc/bin:<span class="nv">$PATH</span>
+WORKDIR /opt/cylc
+ENTRYPOINT <span class="o">[</span><span class="s2">&quot;cylc&quot;</span><span class="o">]</span> <span class="c"># here&#39;s the trick!</span>
+</pre></div>
+
+<p>It uses the same approach from the PHP image I am using for Composer, with a few
+additional improvements from the <a href="https://docs.docker.com/develop/develop-images/dockerfile_best-practices/">Best practices for writing Dockerfiles</a> documentation.</p>
+<p>If you have a utility in your computer that requires a few dependencies, but that
+can store the state/data in a mapped volume, the same kind of container may be
+useful.</p><!-- html -->
+    
+<p class="postmetadata">
+    
+    <small>tags 
+     [&nbsp;<a
+        href="/tag/cylc"
+        rel="tag">cylc</a>&nbsp;]&nbsp;
+    
+     [&nbsp;<a
+        href="/tag/docker"
+        rel="tag">docker</a>&nbsp;]&nbsp;
+    
+     [&nbsp;<a
+        href="/tag/opensource"
+        rel="tag">opensource</a>&nbsp;]&nbsp;
+    
+    </small>
+    
+    
+</p>
+</div>
 
 
 
@@ -489,83 +561,6 @@ Anaconda 2. And reproducing the same behaviour in Eclipse was easy.</p>
 
 <p>So if you have a similar problem, try comparing your environment variables and check if you
 have some entries missing, and try adding them in Eclipse Debug configuration.</p>
-<p>Happy cycling!</p><!-- html -->
-    
-<p class="postmetadata">
-    
-    <small>tags 
-     [&nbsp;<a
-        href="/tag/cylc"
-        rel="tag">cylc</a>&nbsp;]&nbsp;
-    
-     [&nbsp;<a
-        href="/tag/python"
-        rel="tag">python</a>&nbsp;]&nbsp;
-    
-     [&nbsp;<a
-        href="/tag/opensource"
-        rel="tag">opensource</a>&nbsp;]&nbsp;
-    
-    </small>
-    
-    
-</p>
-</div>
-
-
-
-
-<div class="ui raised padded container segment">
-    <h2><a href="/2018/07/08/a-simple-cylc-suite" title="Permanent link">A simple cylc suite</a></h2>
-    <p><small>kinow</small> @ <small>Jul 08, 2018&nbsp;18:59:13</small></p>
-    
-    
-
-
-
-
-
-<a href="https://twitter.com/share" class="twitter-share-button" data-url="https://kinoshita.eti.br/2018/07/08/a-simple-cylc-suite" data-text="A simple cylc suite" data-via="kinow" data-hashtags="opensource">Tweet</a>
-<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p='https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-
-
-    <p>I have been writing more suites for <a href="https://cylc.github.io/cylc/">cylc</a> lately, and found
-an example that has proved to be useful for debugging certain parts of the code.</p>
-<p>It is an extremely simple suite, similar to what is in cylc&#8217;s documentation. It
-sleeps for N seconds, and prints a message.</p>
-<p>What makes it extra simpler, is that it cycles through integers, and has
-a limit of 1 maximum active points.</p>
-<p>It is essentially the same as running the command in your shell session. With
-the difference that it will run through all cylc&#8217;s internal, only once, and
-allow you to debug and diagnostic parts nor related to cycling and graphs
-(as for these parts you would probably need a more elaborate example).</p>
-<div class="highlight"><pre><span class="p">[</span><span class="n">scheduling</span><span class="p">]</span>
-    <span class="n">cycling</span> <span class="n">mode</span> <span class="o">=</span> <span class="n">integer</span>
-    <span class="n">initial</span> <span class="n">cycle</span> <span class="n">point</span> <span class="o">=</span> <span class="mi">1</span>
-    <span class="nb">max</span> <span class="n">active</span> <span class="n">cycle</span> <span class="n">points</span> <span class="o">=</span> <span class="mi">1</span>
-    <span class="p">[[</span><span class="n">dependencies</span><span class="p">]]</span>
-        <span class="p">[[[</span><span class="n">P1</span><span class="p">]]]</span>
-            <span class="n">graph</span> <span class="o">=</span> <span class="s">&quot;hello&quot;</span>
-<span class="p">[</span><span class="n">runtime</span><span class="p">]</span>
-    <span class="p">[[</span><span class="n">hello</span><span class="p">]]</span>
-        <span class="n">script</span> <span class="o">=</span> <span class="s">&quot;sleep 10; echo PING&quot;</span>
-</pre></div>
-
-<p>I also combine this suite with the following <code>global.rc</code>.</p>
-<div class="highlight"><pre><span class="p">[</span><span class="n">editors</span><span class="p">]</span> 
-    <span class="n">terminal</span> <span class="o">=</span> <span class="n">vim</span> 
-    <span class="n">gui</span> <span class="o">=</span> <span class="n">gvim</span> <span class="o">-</span><span class="n">f</span>
-
-<span class="p">[</span><span class="n">communication</span><span class="p">]</span>
-    <span class="n">base</span> <span class="n">port</span> <span class="o">=</span> <span class="mi">44444</span>
-    <span class="n">method</span> <span class="o">=</span> <span class="n">http</span>
-    <span class="n">maximum</span> <span class="n">number</span> <span class="n">of</span> <span class="n">ports</span> <span class="o">=</span> <span class="mi">1</span>
-</pre></div>
-
-<p>With &#8220;base port&#8221; set to 44444, and the maximum number of ports to 1, I will
-be able to run only one task. But that way I can configure Wireshark and other
-tools to default to 44444/HTTP, for ease of debugging.</p>
-<p>Then initialize the suite with something like: <code>cylc start --non-daemon --debug /home/kinow/Development/python/workspace/example-suite/</code></p>
 <p>Happy cycling!</p><!-- html -->
     
 <p class="postmetadata">

@@ -10,13 +10,47 @@
         
         <description>Latest news from Bruno P. Kinoshita</description>
         
-        <lastBuildDate>2018-08-04T18:32:34+12:00</lastBuildDate>
-        <pubDate>2018-08-04T18:32:34+12:00</pubDate>
+        <lastBuildDate>2018-08-04T23:42:20+12:00</lastBuildDate>
+        <pubDate>2018-08-04T23:42:20+12:00</pubDate>
         <generator>PieCrust 3.2.0</generator>
         
         
         
 
+        
+        
+        
+        <item>
+            <title>Revamping Frege logo</title>
+            <link>/2016/08/16/revamping-frege-logo</link>
+            
+            <author>kinow</author>
+            <dc:creator>kinow</dc:creator>
+            
+            <category>blog</category>
+            
+            <category>programming</category>
+            
+            <category>illustrations</category>
+            
+            <pubDate>2016-08-16T23:54:03+12:00</pubDate>
+            <guid>/2016/08/16/revamping-frege-logo</guid>
+            <description>
+            
+            &lt;p&gt;For a while I had been wanting to try adding a flat colour to the Frege
+logo. This weekend had some bit of spare time, and here is the result.&lt;/p&gt;
+&lt;p&gt;Submitted to the project as &lt;a href=&#34;https://github.com/Frege/frege/pull/299/files&#34;&gt;pull request #299&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Current logo.&lt;/p&gt;
+&lt;p&gt;&lt;img class=&#34;ui centered large image&#34; src=&#34;/2016/08/16/revamping-frege-logo/Frege_logo.png&#34; alt=&#34;Frege current logo&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;And the updated logo.&lt;/p&gt;
+&lt;p&gt;&lt;img class=&#34;ui centered large image&#34; src=&#34;/2016/08/16/revamping-frege-logo/Frege_logo_flat_colours.png&#34; alt=&#34;Frege updated logo&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;The colour used was Flamingo (#EF4836), found in &lt;a href=&#34;http://www.flatuicolorpicker.com/&#34;&gt;Flat UI Color Picker&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Perhaps not exactly revamping, since all I did was just change a colour. There were
+adjustments to the b&amp;eacute;zier curves as well, to better align them, but I updated both
+logos, not just the new one :-)&lt;/p&gt;
+            
+            </description>
+        </item>
         
         
         
@@ -630,56 +664,6 @@ pointers to what I used to study.&lt;/p&gt;
 &lt;/ul&gt;
 &lt;p&gt;Going to have less spare time now for Open Source and learning the rest of the stuff on this list,
 but there&amp;#8217;s always some books to read, and things to learn anyway right ¯\&lt;em&gt;(ツ)&lt;/em&gt;/¯&lt;/p&gt;
-            
-            </description>
-        </item>
-        
-        
-        
-        <item>
-            <title>Deploying WAR files to Tomcat with Jenkins</title>
-            <link>/2016/03/20/deploying-war-files-to-tomcat-with-jenkins</link>
-            
-            <author>kinow</author>
-            <dc:creator>kinow</dc:creator>
-            
-            <category>blog</category>
-            
-            <category>jenkins</category>
-            
-            <category>tomcat</category>
-            
-            <category>docker</category>
-            
-            <pubDate>2016-03-20T15:29:03+13:00</pubDate>
-            <guid>/2016/03/20/deploying-war-files-to-tomcat-with-jenkins</guid>
-            <description>
-            
-            &lt;p&gt;&lt;strong&gt;Table of Contents&lt;/strong&gt;&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;#1-deploying-with-custom-scripts&#34;&gt;Deploying with custom scripts&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;#2-deploying-with-a-build-tool&#34;&gt;Deploying with a build tool&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;#3-deploying-with-a-build-server&#34;&gt;Deploying with a build server&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;#final-thoughts&#34;&gt;Final thoughts&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;A co-worker asked me this week about how to deploy a WAR file to Tomcat with Jenkins. In my team we are
-currently maintaining and deploying about 10 Java web systems, but we have no consistent way of deploying
-the applications to Tomcat yet. In the past I used Ant, Maven, Cargo, Grunt, and Jenkins, so I
-decided to write this short post to show a few different ways it can be achieved, &amp;agrave; la
-&lt;a href=&#34;https://en.wikipedia.org/wiki/There&#39;s_more_than_one_way_to_do_it&#34;&gt;Perl&amp;#8217;s TMTOWTDI&lt;/a&gt; motto.&lt;/p&gt;
-&lt;h2&gt;&lt;a name=&#34;1-deploying-with-custom-scripts&#34; style=&#34;color: #222222;&#34;&gt;#1 Deploying with custom scripts&lt;/a&gt;&lt;/h2&gt;
-
-&lt;p&gt;At first you may be tempted to write your own script to deploy to Tomcat with some Shell, Perl, Python
-or Java. But I think I would choose this option only because either I needed some feature that is not
-available in the other options, or in order to call other tasks or debug some problem.&lt;/p&gt;
-&lt;p&gt;Example:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;span class=&#34;nv&#34;&gt;$ &lt;/span&gt;docker run -d -p 8888:8080 jeanblanchard/tomcat:8
-&lt;span class=&#34;nv&#34;&gt;$ &lt;/span&gt;git clone https://github.com/spring-projects/spring-petclinic.git &lt;span class=&#34;o&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;cd &lt;/span&gt;spring-petclinic &lt;span class=&#34;o&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; mvn package
-&lt;span class=&#34;nv&#34;&gt;$ &lt;/span&gt;curl --upload-file target/petclinic.war &lt;span class=&#34;s2&#34;&gt;&amp;quot;http://admin:admin@localhost:8888/manager/text/deploy?path=/spring-petclinic&amp;amp;update=true&amp;quot;&lt;/span&gt;
-OK - Deployed application at context path /spring-petclinic
-&lt;/pre&gt;&lt;/div&gt;
-
-
             
             </description>
         </item>

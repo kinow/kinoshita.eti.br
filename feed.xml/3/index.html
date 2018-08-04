@@ -10,13 +10,115 @@
         
         <description>Latest news from Bruno P. Kinoshita</description>
         
-        <lastBuildDate>2018-08-04T18:32:34+12:00</lastBuildDate>
-        <pubDate>2018-08-04T18:32:34+12:00</pubDate>
+        <lastBuildDate>2018-08-04T23:42:20+12:00</lastBuildDate>
+        <pubDate>2018-08-04T23:42:20+12:00</pubDate>
         <generator>PieCrust 3.2.0</generator>
         
         
         
 
+        
+        
+        
+        <item>
+            <title>Two other Maven Plug-ins: impsort and deptools</title>
+            <link>/2017/08/12/two-other-maven-plugins-impsort-and-deptools</link>
+            
+            <author>kinow</author>
+            <dc:creator>kinow</dc:creator>
+            
+            
+            
+            <category>java</category>
+            
+            <category>programming</category>
+            
+            <category>opensource</category>
+            
+            <category>maven</category>
+            
+            <pubDate>2017-08-12T22:16:03+12:00</pubDate>
+            <guid>/2017/08/12/two-other-maven-plugins-impsort-and-deptools</guid>
+            <description>
+            
+            &lt;p&gt;Last &lt;a href=&#34;/2017/08/06/checking-for-transitive-dependencies-use-with-maven-enforcer-plugin&#34;&gt;week I wrote&lt;/a&gt; about the &lt;a href=&#34;https://github.com/ImmobilienScout24/illegal-transitive-dependency-check&#34;&gt;ImmobilienScout24/illegal-transitive-dependency-check&lt;/a&gt; rule for Maven Enforcer Plug-in. There are two other Maven Plug-ins that can be useful.&lt;/p&gt;
+&lt;h3&gt;mbknor/deptools&lt;/h3&gt;
+&lt;p&gt;The &lt;a href=&#34;https://github.com/mbknor/deptools&#34;&gt;mbknor/deptools&lt;/a&gt; is another rule for the Maven Enforcer Plug-in. It will scan your project dependency tree, looking for transitive dependencies. Whenever it finds a transitive dependency, it will keep track of the versions. And if, because of the way your dependencies and transitive dependencies are organised, you end up with a version that is not the newest, the build will fail.&lt;/p&gt;
+&lt;p&gt;So, for example, if you have &lt;code&gt;commons-lang3&lt;/code&gt; as transitive dependency of two other dependencies, but one is using 3.4 and the other 3.5. If for any reason you are using 3.4 instead of 3.5, you will have a build error.&lt;/p&gt;
+&lt;p&gt;Here&amp;#8217;s an example of the plug-in configuration.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;span class=&#34;nt&#34;&gt;&amp;lt;project&amp;gt;&lt;/span&gt;
+  ...
+  &lt;span class=&#34;nt&#34;&gt;&amp;lt;build&amp;gt;&lt;/span&gt;
+    &lt;span class=&#34;nt&#34;&gt;&amp;lt;plugins&amp;gt;&lt;/span&gt;
+      &lt;span class=&#34;nt&#34;&gt;&amp;lt;plugin&amp;gt;&lt;/span&gt;
+        &lt;span class=&#34;nt&#34;&gt;&amp;lt;groupId&amp;gt;&lt;/span&gt;deptools.plugin&lt;span class=&#34;nt&#34;&gt;&amp;lt;/groupId&amp;gt;&lt;/span&gt;
+        &lt;span class=&#34;nt&#34;&gt;&amp;lt;artifactId&amp;gt;&lt;/span&gt;maven-deptools-plugin&lt;span class=&#34;nt&#34;&gt;&amp;lt;/artifactId&amp;gt;&lt;/span&gt;
+        &lt;span class=&#34;nt&#34;&gt;&amp;lt;version&amp;gt;&lt;/span&gt;1.3&lt;span class=&#34;nt&#34;&gt;&amp;lt;/version&amp;gt;&lt;/span&gt;
+          &lt;span class=&#34;nt&#34;&gt;&amp;lt;executions&amp;gt;&lt;/span&gt;
+              &lt;span class=&#34;nt&#34;&gt;&amp;lt;execution&amp;gt;&lt;/span&gt;
+                  &lt;span class=&#34;nt&#34;&gt;&amp;lt;phase&amp;gt;&lt;/span&gt;compile&lt;span class=&#34;nt&#34;&gt;&amp;lt;/phase&amp;gt;&lt;/span&gt;
+                  &lt;span class=&#34;nt&#34;&gt;&amp;lt;goals&amp;gt;&lt;/span&gt;
+                      &lt;span class=&#34;nt&#34;&gt;&amp;lt;goal&amp;gt;&lt;/span&gt;version-checker&lt;span class=&#34;nt&#34;&gt;&amp;lt;/goal&amp;gt;&lt;/span&gt;
+                  &lt;span class=&#34;nt&#34;&gt;&amp;lt;/goals&amp;gt;&lt;/span&gt;
+              &lt;span class=&#34;nt&#34;&gt;&amp;lt;/execution&amp;gt;&lt;/span&gt;
+          &lt;span class=&#34;nt&#34;&gt;&amp;lt;/executions&amp;gt;&lt;/span&gt;
+        &lt;span class=&#34;nt&#34;&gt;&amp;lt;/plugin&amp;gt;&lt;/span&gt;
+    &lt;span class=&#34;nt&#34;&gt;&amp;lt;/plugins&amp;gt;&lt;/span&gt;
+  &lt;span class=&#34;nt&#34;&gt;&amp;lt;/build&amp;gt;&lt;/span&gt;
+
+  &lt;span class=&#34;nt&#34;&gt;&amp;lt;pluginRepositories&amp;gt;&lt;/span&gt;
+    &lt;span class=&#34;nt&#34;&gt;&amp;lt;pluginRepository&amp;gt;&lt;/span&gt;
+      &lt;span class=&#34;nt&#34;&gt;&amp;lt;id&amp;gt;&lt;/span&gt;mbk_mvn_repo&lt;span class=&#34;nt&#34;&gt;&amp;lt;/id&amp;gt;&lt;/span&gt;
+      &lt;span class=&#34;nt&#34;&gt;&amp;lt;name&amp;gt;&lt;/span&gt;mbk_mvn_repo&lt;span class=&#34;nt&#34;&gt;&amp;lt;/name&amp;gt;&lt;/span&gt;
+      &lt;span class=&#34;nt&#34;&gt;&amp;lt;url&amp;gt;&lt;/span&gt;https://raw.githubusercontent.com/mbknor/mbknor.github.com/master/m2repo/releases&lt;span class=&#34;nt&#34;&gt;&amp;lt;/url&amp;gt;&lt;/span&gt;
+    &lt;span class=&#34;nt&#34;&gt;&amp;lt;/pluginRepository&amp;gt;&lt;/span&gt;
+  &lt;span class=&#34;nt&#34;&gt;&amp;lt;/pluginRepositories&amp;gt;&lt;/span&gt;
+  ...
+&lt;span class=&#34;nt&#34;&gt;&amp;lt;/project&amp;gt;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Running &lt;code&gt;mvn clean verify&lt;/code&gt; will execute the Maven Enforcer Plug-in &lt;code&gt;enforce&lt;/code&gt; goal, which will call the deptools check. As you may have noticed, you also need to download the plug-in from GitHub, as it is not released to Maven Central.&lt;/p&gt;
+&lt;p&gt;I do not use it for this reason, and also because I normally spend some time looking at the dependency tree anyway, but every now and then when I work on a new project I like quickly running it just to see what are the dependencies that are being shadowed by older versions.&lt;/p&gt;
+&lt;h3&gt;revelc/impsort-maven-plugin&lt;/h3&gt;
+&lt;p&gt;I only found about this plug-in in the last &lt;a href=&#34;https://blogs.apache.org/foundation/entry/the-apache-news-round-up31&#34;&gt;Apache News Round-up&lt;/a&gt;. Where it was mentioned that &lt;a href=&#34;https://github.com/apache/accumulo/blob/401411619239e301ad14216b3b9c88ee947ab072/pom.xml#L999&#34;&gt;Apache Accumulo uses&lt;/a&gt; this plug-in to standarize the order of imports in code.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;span class=&#34;nt&#34;&gt;&amp;lt;project&amp;gt;&lt;/span&gt;
+  ...
+  &lt;span class=&#34;nt&#34;&gt;&amp;lt;build&amp;gt;&lt;/span&gt;
+    &lt;span class=&#34;nt&#34;&gt;&amp;lt;plugins&amp;gt;&lt;/span&gt;
+      &lt;span class=&#34;nt&#34;&gt;&amp;lt;plugin&amp;gt;&lt;/span&gt;
+        &lt;span class=&#34;nt&#34;&gt;&amp;lt;groupId&amp;gt;&lt;/span&gt;net.revelc.code&lt;span class=&#34;nt&#34;&gt;&amp;lt;/groupId&amp;gt;&lt;/span&gt;
+        &lt;span class=&#34;nt&#34;&gt;&amp;lt;artifactId&amp;gt;&lt;/span&gt;impsort-maven-plugin&lt;span class=&#34;nt&#34;&gt;&amp;lt;/artifactId&amp;gt;&lt;/span&gt;
+        &lt;span class=&#34;nt&#34;&gt;&amp;lt;version&amp;gt;&lt;/span&gt;1.0.0&lt;span class=&#34;nt&#34;&gt;&amp;lt;/version&amp;gt;&lt;/span&gt;
+        &lt;span class=&#34;nt&#34;&gt;&amp;lt;configuration&amp;gt;&lt;/span&gt;
+          &lt;span class=&#34;nt&#34;&gt;&amp;lt;groups&amp;gt;&lt;/span&gt;java.,javax.,org.,com.&lt;span class=&#34;nt&#34;&gt;&amp;lt;/groups&amp;gt;&lt;/span&gt;
+          &lt;span class=&#34;nt&#34;&gt;&amp;lt;staticGroups&amp;gt;&lt;/span&gt;java,*&lt;span class=&#34;nt&#34;&gt;&amp;lt;/staticGroups&amp;gt;&lt;/span&gt;
+          &lt;span class=&#34;nt&#34;&gt;&amp;lt;excludes&amp;gt;&lt;/span&gt;
+            &lt;span class=&#34;nt&#34;&gt;&amp;lt;exclude&amp;gt;&lt;/span&gt;**/thrift/*.java&lt;span class=&#34;nt&#34;&gt;&amp;lt;/exclude&amp;gt;&lt;/span&gt;
+          &lt;span class=&#34;nt&#34;&gt;&amp;lt;/excludes&amp;gt;&lt;/span&gt;
+        &lt;span class=&#34;nt&#34;&gt;&amp;lt;/configuration&amp;gt;&lt;/span&gt;
+        &lt;span class=&#34;nt&#34;&gt;&amp;lt;executions&amp;gt;&lt;/span&gt;
+          &lt;span class=&#34;nt&#34;&gt;&amp;lt;execution&amp;gt;&lt;/span&gt;
+            &lt;span class=&#34;nt&#34;&gt;&amp;lt;id&amp;gt;&lt;/span&gt;sort-imports&lt;span class=&#34;nt&#34;&gt;&amp;lt;/id&amp;gt;&lt;/span&gt;
+            &lt;span class=&#34;nt&#34;&gt;&amp;lt;goals&amp;gt;&lt;/span&gt;
+              &lt;span class=&#34;nt&#34;&gt;&amp;lt;goal&amp;gt;&lt;/span&gt;sort&lt;span class=&#34;nt&#34;&gt;&amp;lt;/goal&amp;gt;&lt;/span&gt;&lt;span class=&#34;c&#34;&gt;&amp;lt;!-- runs at process-sources phase by default --&amp;gt;&lt;/span&gt;
+            &lt;span class=&#34;nt&#34;&gt;&amp;lt;/goals&amp;gt;&lt;/span&gt;
+          &lt;span class=&#34;nt&#34;&gt;&amp;lt;/execution&amp;gt;&lt;/span&gt;
+        &lt;span class=&#34;nt&#34;&gt;&amp;lt;/executions&amp;gt;&lt;/span&gt;
+      &lt;span class=&#34;nt&#34;&gt;&amp;lt;/plugin&amp;gt;&lt;/span&gt;
+    &lt;span class=&#34;nt&#34;&gt;&amp;lt;/plugins&amp;gt;&lt;/span&gt;
+  &lt;span class=&#34;nt&#34;&gt;&amp;lt;/build&amp;gt;&lt;/span&gt;
+  ...
+&lt;span class=&#34;nt&#34;&gt;&amp;lt;/project&amp;gt;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;I am neutral on imports order, though in cases where you have several contributors submitting pull requests, it can probably be useful to reduce the number of interactions. In other words, if a user submits a pull request and you have an automated check, then the user would be automatically notified about changes that s/he needs to do in order for his pull request to be accepted.&lt;/p&gt;
+&lt;h3&gt;Conclusion&lt;/h3&gt;
+&lt;p&gt;I am not using any of these two plug-ins, but wanted to save it somewhere in case I needed to use them in the future, and also to share with others. Besides most common plug-ins (PMD, CheckStyle, FindBugs), I normally use at least some Maven Enforcer Plug-in rules, and the &lt;a href=&#34;https://www.owasp.org/index.php/OWASP_Dependency_Check&#34;&gt;OWASP plug-in&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;While most of the time we spend writing code, preparing the infrastructure, and deploying and testing, I got bitten by some maven build bugs a few times, and had to spend days/weeks debugging some of these. So hope some of these posts save some hours of someone out there in a similar situation.&lt;/p&gt;
+&lt;p&gt;&amp;hearts; Open Source&lt;/p&gt;
+            
+            </description>
+        </item>
         
         
         
@@ -503,71 +605,6 @@ MYSQL_PASSWORD&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;AQECAHga320J8WadplGCqq
 &lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;That way the resulting text would be &amp;#8220;There are 2 texts waiting for analysis today&amp;#8221;, allowing you to proceed with the rest of your analysis. This is a very simple example, but hopefully you grokked how LookupTranslator works.&lt;/p&gt;
-&lt;p&gt;&amp;hearts; Open Source&lt;/p&gt;
-            
-            </description>
-        </item>
-        
-        
-        
-        <item>
-            <title>Some links related to Apache Commons Text</title>
-            <link>/2017/05/28/some-links-related-to-apache-commons-text</link>
-            
-            <author>kinow</author>
-            <dc:creator>kinow</dc:creator>
-            
-            
-            
-            <category>apache software foundation</category>
-            
-            <category>java</category>
-            
-            <category>opensource</category>
-            
-            <category>programming</category>
-            
-            <pubDate>2017-05-28T19:50:39+12:00</pubDate>
-            <guid>/2017/05/28/some-links-related-to-apache-commons-text</guid>
-            <description>
-            
-            &lt;p&gt;&lt;a href=&#34;http://commons.apache.org/proper/commons-text/&#34;&gt;Apache Commons Text&lt;/a&gt; is one of the most recent new components in Apache Commons. It &amp;#8220;is a library focused on algorithms working on strings&amp;#8221;. I recently collected some links
-under a bookmark folder that are in some way related to the project. In case you are interested,
-check some of the links below.&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;https://www.youtube.com/watch?v=bx3NOoroV-M&#34;&gt;Morgan Wahl Text is More Complicated Than You Think Comparing and Sorting Unicode PyCon 2017&lt;/a&gt; &lt;iframe width=&#34;560&#34; height=&#34;315&#34; src=&#34;https://www.youtube.com/embed/bx3NOoroV-M?rel=0&#34; frameborder=&#34;0&#34; allowfullscreen&gt;&lt;/iframe&gt;&lt;ul&gt;
-&lt;li&gt;Q: test [text] to check if our methods are OK with some examples in this talk)&lt;/li&gt;
-&lt;li&gt;Q: Canonical Decomposition, and code points comparisons; are we doing it? Are we doing it right?&lt;/li&gt;
-&lt;li&gt;Q: Do we have casefolding?&lt;/li&gt;
-&lt;li&gt;Q: Do we have multi-level sort?&lt;/li&gt;
-&lt;li&gt;Q: CLDR&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;https://www.youtube.com/watch?v=7m5JA3XaZ4k&#34;&gt;Łukasz Langa Unicode what is the big deal PyCon 2017&lt;/a&gt; &lt;iframe width=&#34;560&#34; height=&#34;315&#34; src=&#34;https://www.youtube.com/embed/7m5JA3XaZ4k?rel=0&#34; frameborder=&#34;0&#34; allowfullscreen&gt;&lt;/iframe&gt;&lt;ul&gt;
-&lt;li&gt;Q: Quite sure we have an issue to guess the encoding for a text&amp;#8230;. there is a GPL library for that? Under Mozilla perhaps?&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;https://www.youtube.com/watch?v=kTS2b6pGElE&#34;&gt;Jiaqi Liu Fuzzy Search Algorithms How and When to Use Them PyCon 2017&lt;/a&gt; &lt;iframe width=&#34;560&#34; height=&#34;315&#34; src=&#34;https://www.youtube.com/embed/kTS2b6pGElE?rel=0&#34; frameborder=&#34;0&#34; allowfullscreen&gt;&lt;/iframe&gt;&lt;ul&gt;
-&lt;li&gt;Q: Does OpenNLP have N-GRAM&amp;#8217;s? Would it make sense to have that in [text]?&lt;/li&gt;
-&lt;li&gt;Q: Where can we find some tokenizers? OpenNLP?&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;http://www-igm.univ-mlv.fr/~berstel/Lothaire/&#34;&gt;Lothaire&amp;#8217;s Books&lt;/a&gt; like &amp;#8220;Combinatorics on Words&amp;#8221; and &amp;#8220;Algebraic Combinatorics&amp;#8221;.&lt;/li&gt;
-&lt;li&gt;Java tutorial lesson &lt;a href=&#34;https://docs.oracle.com/javase/tutorial/i18n/text/&#34;&gt;&amp;#8220;Working with Text&amp;#8221;&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;Mitzi Morris&amp;#8217; &lt;a href=&#34;https://www.amazon.com/Text-Processing-Java-Mitzi-Morris/dp/0988208725&#34;&gt;Text Processing in Java book&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;http://johannburkard.de/software/stringsearch/&#34;&gt;StringSearch&lt;/a&gt; java library.&lt;ul&gt;
-&lt;li&gt;&lt;blockquote&gt;&amp;#8220;The Java language lacks fast string searching algorithms. StringSearch provides implementations of the Boyer-Moore and the Shift-Or (bit-parallel) algorithms. These algorithms are easily five to ten times faster than the na&amp;iuml;ve implementation found in java.lang.String&amp;#8221;.&lt;/blockquote&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;https://jakarta.apache.org/oro/&#34;&gt;Jakarta Oro&lt;/a&gt; (attic)&lt;ul&gt;
-&lt;li&gt;&lt;blockquote&gt;The Jakarta-ORO Java classes are a set of text-processing Java classes that provide Perl5 compatible regular expressions, AWK-like regular expressions, glob expressions, and utility classes for performing substitutions, splits, filtering filenames, etc. This library is the successor to the OROMatcher, AwkTools, PerlTools, and TextTools libraries originally from ORO, Inc. Despite little activity in the form of new development initiatives, issue reports, questions, and suggestions are responded to quickly.&lt;/blockquote&gt;&lt;/li&gt;
-&lt;li&gt;Discontinued, but is there anything useful in there? The attic has always interesting things after all&amp;#8230;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;http://textprocessing.org/&#34;&gt;TextProcessing blog&lt;/a&gt; - A Text Processing Portal for Humans&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;https://github.com/twitter/twitter-text&#34;&gt;twitter-text&lt;/a&gt;, the Twitter Java (multi-language actually&amp;#8230;) text processing library.&lt;/li&gt;
-&lt;li&gt;Python&amp;#8217;s &lt;a href=&#34;https://docs.python.org/3/library/text.html&#34;&gt;text modules&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
 &lt;p&gt;&amp;hearts; Open Source&lt;/p&gt;
             
             </description>
