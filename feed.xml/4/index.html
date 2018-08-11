@@ -10,13 +10,57 @@
         
         <description>Latest news from Bruno P. Kinoshita</description>
         
-        <lastBuildDate>2018-08-10T22:05:37+12:00</lastBuildDate>
-        <pubDate>2018-08-10T22:05:37+12:00</pubDate>
+        <lastBuildDate>2018-08-11T21:29:14+12:00</lastBuildDate>
+        <pubDate>2018-08-11T21:29:14+12:00</pubDate>
         <generator>PieCrust 3.2.0</generator>
         
         
         
 
+        
+        
+        
+        <item>
+            <title>Apache Commons Text LookupTranslator</title>
+            <link>/2017/06/02/apache-commons-text-lookuptranslator</link>
+            
+            <author>kinow</author>
+            <dc:creator>kinow</dc:creator>
+            
+            
+            
+            <category>apache software foundation</category>
+            
+            <category>java</category>
+            
+            <category>opensource</category>
+            
+            <category>programming</category>
+            
+            <pubDate>2017-06-02T22:50:39+12:00</pubDate>
+            <guid>/2017/06/02/apache-commons-text-lookuptranslator</guid>
+            <description>
+            
+            &lt;p&gt;&lt;a href=&#34;http://commons.apache.org/proper/commons-text/&#34;&gt;Apache Commons Text&lt;/a&gt; includes several algorithms for text processing. Today&amp;#8217;s post is about one of the classes available since the 1.0 release, the &lt;a href=&#34;http://commons.apache.org/proper/commons-text/apidocs/org/apache/commons/text/translate/LookupTranslator.html&#34;&gt;LookupTranslator&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;It is used to translate text using a lookup table. Most users won&amp;#8217;t necessarily be - knowingly - using this class. Most likely, they will use the &lt;a href=&#34;http://commons.apache.org/proper/commons-text/apidocs/org/apache/commons/text/StringEscapeUtils.html&#34;&gt;StringEscapeUtils&lt;/a&gt;, which contains methods to escape and unescape CSV, JSON, XML, Java, and EcmaScript.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;span class=&#34;n&#34;&gt;String&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;original&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;&amp;quot;He didn&amp;#39;t say, \&amp;quot;stop!\&amp;quot;&amp;quot;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;;&lt;/span&gt;
+&lt;span class=&#34;n&#34;&gt;String&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;expected&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;&amp;quot;He didn&amp;#39;t say, \\\&amp;quot;stop!\\\&amp;quot;&amp;quot;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;;&lt;/span&gt;
+&lt;span class=&#34;n&#34;&gt;String&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;result&lt;/span&gt;   &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;StringEscapeUtils&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;escapeJava&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;original&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;);&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;StringEscapeUtils uses CharSequenceTranslator&amp;#8217;s, including LookupTranslator. You can use it directly too, to escape other data your text may contain, special characters not supported by some third party library or system, or even a simpler case.&lt;/p&gt;
+&lt;p&gt;In other words, you would be creating your own StringEscapeUtils. Let&amp;#8217;s say you have some text where numbers must never start with the zero digital, due to some restriction in the way you use that data later.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;span class=&#34;n&#34;&gt;Map&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;String&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;String&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;lookupTable&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;new&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;HashMap&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;&amp;lt;&amp;gt;();&lt;/span&gt;
+&lt;span class=&#34;n&#34;&gt;lookupTable&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;put&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;a&amp;quot;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;&amp;quot;&amp;quot;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;);&lt;/span&gt;
+&lt;span class=&#34;kd&#34;&gt;final&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;LookupTranslator&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;escapeNumber0&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;new&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;LookupTranslator&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;new&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;String&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;[][]&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;{&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;0&amp;quot;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;&amp;quot;&amp;quot;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;}&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;});&lt;/span&gt;
+&lt;span class=&#34;n&#34;&gt;String&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;escaped&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;escapeNumber0&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;translate&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;There are 02 texts waiting for analysis today...&amp;quot;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;);&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;That way the resulting text would be &amp;#8220;There are 2 texts waiting for analysis today&amp;#8221;, allowing you to proceed with the rest of your analysis. This is a very simple example, but hopefully you grokked how LookupTranslator works.&lt;/p&gt;
+&lt;p&gt;&amp;hearts; Open Source&lt;/p&gt;
+            
+            </description>
+        </item>
         
         
         
@@ -712,76 +756,6 @@ environment variable.&lt;/p&gt;
 &lt;p&gt;Note also that I included the @PostConstruct and @PreDestroy annotated methods. The
 API will start an executor thread pool, so if you do not want to risk to have problems
 re-deploying your application, then remember to close your streams.&lt;/p&gt;
-&lt;p&gt;&amp;hearts; Open Source&lt;/p&gt;
-            
-            </description>
-        </item>
-        
-        
-        
-        <item>
-            <title>Order of containers in Docker Compose</title>
-            <link>/2017/03/14/order-of-containers-in-docker-compose</link>
-            
-            <author>kinow</author>
-            <dc:creator>kinow</dc:creator>
-            
-            <category>blog</category>
-            
-            <category>docker</category>
-            
-            <pubDate>2017-03-14T21:22:03+13:00</pubDate>
-            <guid>/2017/03/14/order-of-containers-in-docker-compose</guid>
-            <description>
-            
-            &lt;p&gt;In Docker Compose you are able to control the startup order of the containers via
-the &lt;em&gt;depends_on&lt;/em&gt; statement. This is documented in &lt;a href=&#34;https://docs.docker.com/compose/startup-order/&#34;&gt;Controlling startup order in Compose&lt;/a&gt;.&lt;/p&gt;
-&lt;p&gt;If you have a simple setup, with Tomcat and Postgres, sometimes Postgres will start first, but Compose
-will initialize Tomcat before Postgres has fully booted. When that happens, you may receive 401, 404, or other
-application errors.&lt;/p&gt;
-&lt;p&gt;You can fix it by combining &lt;em&gt;depends_on&lt;/em&gt; with a &lt;em&gt;healthcheck&lt;/em&gt;. For example:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;span class=&#34;c&#34;&gt;# File: docker-compose.yml&lt;/span&gt;
-version: &lt;span class=&#34;s1&#34;&gt;&amp;#39;2.1&amp;#39;&lt;/span&gt;
-services:
-  db:
-    container_name: twpg
-    build:
-      context: .
-      dockerfile: Dockerfile.postgres
-    restart: always
-    ports:
-      - &lt;span class=&#34;s2&#34;&gt;&amp;quot;5432:5432&amp;quot;&lt;/span&gt;
-    healthcheck:
-      &lt;span class=&#34;nb&#34;&gt;test&lt;/span&gt;: &lt;span class=&#34;s2&#34;&gt;&amp;quot;pg_isready -h localhost -p 5432 -q -U postgres&amp;quot;&lt;/span&gt;
-      interval: 10s
-      timeout: 5s
-      retries: 5
-
-  web:
-    container_name: twtc
-    build:
-      context: .
-      dockerfile: Dockerfile.tomcat
-    restart: always
-    depends_on:
-      db:
-        condition: service_healthy
-    links:
-      - db
-    ports:
-      - &lt;span class=&#34;s2&#34;&gt;&amp;quot;80:8080&amp;quot;&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;In the example docker-compose.yml, there are two containers, &lt;em&gt;db&lt;/em&gt; and &lt;em&gt;web&lt;/em&gt;. web is running
-a Tomcat, and db is running Postgres. Web depends on db (see depends_on), and uses a condition
-&lt;em&gt;service_healthy&lt;/em&gt;. Which indicates it depends that that container is healthy.&lt;/p&gt;
-&lt;p&gt;The &lt;em&gt;healthcheck&lt;/em&gt; entry under the db container settings define how to check whether Postgres
-is running or not. In this case, we are using &lt;em&gt;pg_isready&lt;/em&gt;, which is available in the
-vanilla Postgres 9 container.&lt;/p&gt;
-&lt;p&gt;It will try 5 times, with a 10 seconds interval, and will time out after 5 seconds. You may
-have to tune these parameters for your application.&lt;/p&gt;
-&lt;p&gt;This code snippet is from a
-&lt;a href=&#34;https://github.com/Foxoncz/docker-thingworx/pull/3/files&#34;&gt;pull request submitted to Foxoncz/docker-thingworx&lt;/a&gt;.&lt;/p&gt;
 &lt;p&gt;&amp;hearts; Open Source&lt;/p&gt;
             
             </description>

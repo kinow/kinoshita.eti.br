@@ -124,7 +124,7 @@
                             <h4>Blog Taxonomy</h4>
                             <nav id="tag-cloud" class="sidebar-box" role="complementary">
                               
-                              <span style="font-size: 21.5pt"><a href="/tag/apache%20software%20foundation">apache software foundation</a></span>&nbsp;(23)
+                              <span style="font-size: 22.0pt"><a href="/tag/apache%20software%20foundation">apache software foundation</a></span>&nbsp;(24)
                               
                               <span style="font-size: 12.5pt"><a href="/tag/articles">articles</a></span>&nbsp;(5)
                               
@@ -142,9 +142,9 @@
                               
                               <span style="font-size: 16.5pt"><a href="/tag/illustrations">illustrations</a></span>&nbsp;(13)
                               
-                              <span style="font-size: 26.5pt"><a href="/tag/java">java</a></span>&nbsp;(33)
+                              <span style="font-size: 27.0pt"><a href="/tag/java">java</a></span>&nbsp;(34)
                               
-                              <span style="font-size: 12.5pt"><a href="/tag/jena">jena</a></span>&nbsp;(5)
+                              <span style="font-size: 13.0pt"><a href="/tag/jena">jena</a></span>&nbsp;(6)
                               
                               <span style="font-size: 23.0pt"><a href="/tag/jenkins">jenkins</a></span>&nbsp;(26)
                               
@@ -152,7 +152,7 @@
                               
                               <span style="font-size: 12.0pt"><a href="/tag/natural%20language%20processing">natural language processing</a></span>&nbsp;(4)
                               
-                              <span style="font-size: 27.5pt"><a href="/tag/opensource">opensource</a></span>&nbsp;(35)
+                              <span style="font-size: 28.0pt"><a href="/tag/opensource">opensource</a></span>&nbsp;(36)
                               
                               <span style="font-size: 26.5pt"><a href="/tag/programming">programming</a></span>&nbsp;(33)
                               
@@ -182,6 +182,67 @@
                         <h1 class='topic'>Home</h1>
                     </div>
                     
+                    
+                    <div class="ui raised padded container segment">
+                        <h2>
+                            <a href="/2017/06/02/apache-commons-text-lookuptranslator" title="Permanent link">Apache Commons Text LookupTranslator</a>
+                        </h2>
+                        <small>kinow</small> @ <small>Jun 02, 2017&nbsp;22:50:39 (<span class='stardate' data-input-date='Jun 02, 2017'></span>)</small>
+                        <div class="entry">
+                            
+
+
+
+
+
+<a href="https://twitter.com/share" class="twitter-share-button" data-url="https://kinoshita.eti.br/2017/06/02/apache-commons-text-lookuptranslator" data-text="Apache Commons Text LookupTranslator" data-via="kinow" data-hashtags="opensource">Tweet</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p='https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+                            
+                            <p><a href="http://commons.apache.org/proper/commons-text/">Apache Commons Text</a> includes several algorithms for text processing. Today&#8217;s post is about one of the classes available since the 1.0 release, the <a href="http://commons.apache.org/proper/commons-text/apidocs/org/apache/commons/text/translate/LookupTranslator.html">LookupTranslator</a>.</p>
+<p>It is used to translate text using a lookup table. Most users won&#8217;t necessarily be - knowingly - using this class. Most likely, they will use the <a href="http://commons.apache.org/proper/commons-text/apidocs/org/apache/commons/text/StringEscapeUtils.html">StringEscapeUtils</a>, which contains methods to escape and unescape CSV, JSON, XML, Java, and EcmaScript.</p>
+<div class="highlight"><pre><span class="n">String</span> <span class="n">original</span> <span class="o">=</span> <span class="s">&quot;He didn&#39;t say, \&quot;stop!\&quot;&quot;</span><span class="o">;</span>
+<span class="n">String</span> <span class="n">expected</span> <span class="o">=</span> <span class="s">&quot;He didn&#39;t say, \\\&quot;stop!\\\&quot;&quot;</span><span class="o">;</span>
+<span class="n">String</span> <span class="n">result</span>   <span class="o">=</span> <span class="n">StringEscapeUtils</span><span class="o">.</span><span class="na">escapeJava</span><span class="o">(</span><span class="n">original</span><span class="o">);</span>
+</pre></div>
+
+<p>StringEscapeUtils uses CharSequenceTranslator&#8217;s, including LookupTranslator. You can use it directly too, to escape other data your text may contain, special characters not supported by some third party library or system, or even a simpler case.</p>
+<p>In other words, you would be creating your own StringEscapeUtils. Let&#8217;s say you have some text where numbers must never start with the zero digital, due to some restriction in the way you use that data later.</p>
+<div class="highlight"><pre><span class="n">Map</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">String</span><span class="o">&gt;</span> <span class="n">lookupTable</span> <span class="o">=</span> <span class="k">new</span> <span class="n">HashMap</span><span class="o">&lt;&gt;();</span>
+<span class="n">lookupTable</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">&quot;a&quot;</span><span class="o">,</span> <span class="s">&quot;&quot;</span><span class="o">);</span>
+<span class="kd">final</span> <span class="n">LookupTranslator</span> <span class="n">escapeNumber0</span> <span class="o">=</span> <span class="k">new</span> <span class="n">LookupTranslator</span><span class="o">(</span><span class="k">new</span> <span class="n">String</span><span class="o">[][]</span> <span class="o">{</span> <span class="o">{</span><span class="s">&quot;0&quot;</span><span class="o">,</span> <span class="s">&quot;&quot;</span><span class="o">}</span> <span class="o">});</span>
+<span class="n">String</span> <span class="n">escaped</span> <span class="o">=</span> <span class="n">escapeNumber0</span><span class="o">.</span><span class="na">translate</span><span class="o">(</span><span class="s">&quot;There are 02 texts waiting for analysis today...&quot;</span><span class="o">);</span>
+</pre></div>
+
+<p>That way the resulting text would be &#8220;There are 2 texts waiting for analysis today&#8221;, allowing you to proceed with the rest of your analysis. This is a very simple example, but hopefully you grokked how LookupTranslator works.</p>
+<p>&hearts; Open Source</p>
+                            
+                            
+                            
+                        </div>
+                        <p class="postmetadata">
+                            
+                            <small>tags 
+                             [&nbsp;<a
+                                href="/tag/apache%20software%20foundation/"
+                                rel="tag">apache software foundation</a>&nbsp;]&nbsp;
+                            
+                             [&nbsp;<a
+                                href="/tag/java/"
+                                rel="tag">java</a>&nbsp;]&nbsp;
+                            
+                             [&nbsp;<a
+                                href="/tag/opensource/"
+                                rel="tag">opensource</a>&nbsp;]&nbsp;
+                            
+                             [&nbsp;<a
+                                href="/tag/programming/"
+                                rel="tag">programming</a>&nbsp;]&nbsp;
+                            
+                            </small>
+                            
+                            
+                        </p>
+                    </div>
                     
                     <div class="ui raised padded container segment">
                         <h2>
@@ -506,122 +567,6 @@ person posting the comment is my past. The person posting the comment is my futu
                              [&nbsp;<a
                                 href="/tag/java/"
                                 rel="tag">java</a>&nbsp;]&nbsp;
-                            
-                             [&nbsp;<a
-                                href="/tag/programming/"
-                                rel="tag">programming</a>&nbsp;]&nbsp;
-                            
-                             [&nbsp;<a
-                                href="/tag/opensource/"
-                                rel="tag">opensource</a>&nbsp;]&nbsp;
-                            
-                            </small>
-                            
-                            
-                            <br/>
-                            <small>posted in 
-                            [&nbsp;<a
-                                href="/blog"
-                                title="View all posts in blog"
-                                rel="category tag">blog</a>&nbsp;]
-                                &nbsp;category
-                            </small>
-                            
-                        </p>
-                    </div>
-                    
-                    <div class="ui raised padded container segment">
-                        <h2>
-                            <a href="/2017/04/14/writing-a-binary-parser-in-python-numpy-vs-construct" title="Permanent link">Writing a binary parser in Python: NumPy vs. Construct</a>
-                        </h2>
-                        <small>kinow</small> @ <small>Apr 14, 2017&nbsp;19:21:03 (<span class='stardate' data-input-date='Apr 14, 2017'></span>)</small>
-                        <div class="entry">
-                            
-
-
-
-
-
-<a href="https://twitter.com/share" class="twitter-share-button" data-url="https://kinoshita.eti.br/2017/04/14/writing-a-binary-parser-in-python-numpy-vs-construct" data-text="Writing a binary parser in Python: NumPy vs. Construct" data-via="kinow" data-hashtags="opensource">Tweet</a>
-<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p='https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-                            
-                            <p>Some time ago I worked with researchers to write a parser for an old data format. The data
-was generated by device (radiosonde) using the vendor (Vaisala) specific binary format.</p>
-<p>One of the researchers told me someone had written a parser for his work, and shared it
-on GitHub. To be honest, that was my first time parsing data in binary with Python. Did
-that before with C, C++, Perl, and Java, but never with Python.</p>
-<p>The code on GitHub used <a href="http://www.numpy.org/">NumPy</a> and looked similar to this one.</p>
-<div class="highlight"><pre><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
-
-<span class="n">parse_header</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dtype</span><span class="p">(</span> <span class="p">[</span> <span class="p">((</span><span class="s">&#39;field_a&#39;</span><span class="p">,</span> <span class="s">&#39;b1&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s">&#39;field_b&#39;</span><span class="p">,</span> <span class="s">&#39;17b1&#39;</span><span class="p">)</span> <span class="p">]</span> <span class="p">)</span>
-
-<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s">&#39;input.dat&#39;</span><span class="p">,</span> <span class="s">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
-    <span class="n">header</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">fromfile</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">parse_header</span><span class="p">,</span> <span class="n">count</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-    <span class="c"># ...</span>
-</pre></div>
-
-<p>And it indeed worked fine. But in the end I used the code - after contacting the author and letting
-him know what I was about to do - as reference together with an old specification document
-for the format, and created a parser with <a href="https://construct.readthedocs.io/en/latest/">Construct</a>.</p>
-<p>From Construct&#8217;s website:</p>
-<blockquote>
-<p>Construct is a powerful declarative parser (and builder) for binary data.</p>
-</blockquote>
-<p>This is what the code with construct looked like.</p>
-<div class="highlight"><pre><span class="kn">from</span> <span class="nn">construct</span> <span class="kn">import</span> <span class="o">*</span>
-
-<span class="n">parse_header</span> <span class="o">=</span> <span class="n">Struct</span><span class="p">(</span><span class="s">&quot;parse_header&quot;</span><span class="p">,</span>
-    <span class="n">Enum</span><span class="p">(</span><span class="n">Byte</span><span class="p">(</span><span class="s">&quot;file_ready&quot;</span><span class="p">),</span>
-        <span class="n">READY</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
-        <span class="n">NOT_READY</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
-        <span class="n">_default_</span> <span class="o">=</span> <span class="s">&quot;UNKNOWN&quot;</span><span class="p">,</span>
-    <span class="p">),</span>
-    <span class="n">Bytes</span><span class="p">(</span><span class="s">&quot;reserved&quot;</span><span class="p">,</span> <span class="mi">17</span><span class="p">)</span>
-<span class="p">)</span>
-
-<span class="c"># ...</span>
-
-<span class="n">parse_contents</span> <span class="o">=</span> <span class="n">Struct</span><span class="p">(</span><span class="s">&quot;parse_contents&quot;</span><span class="p">,</span>
-    <span class="n">parse_header</span><span class="p">,</span>
-    <span class="n">Range</span><span class="p">(</span><span class="n">mincount</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">maxcout</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">subcon</span><span class="o">=</span><span class="n">pre_data</span><span class="p">),</span>
-    <span class="n">OptionalGreedyRange</span><span class="p">(</span><span class="n">detailed_data</span><span class="p">)</span>
-<span class="p">)</span>
-
-<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s">&#39;input.dat&#39;</span><span class="p">,</span> <span class="s">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
-    <span class="n">parse_results</span> <span class="o">=</span> <span class="n">parse_contents</span><span class="o">.</span><span class="n">parse_stream</span><span class="p">(</span><span class="n">fid</span><span class="p">)</span>
-    <span class="c"># ...</span>
-</pre></div>
-
-<p>Writing the parser with NumPy or Construct would achieve the same result. However, in the end
-this came down to personal preference, and my point of view as Software Engineer. This is the
-description of NumPy.</p>
-<blockquote>
-<p>NumPy is the fundamental package for scientific computing with Python.</p>
-</blockquote>
-<p>NumPy is a project tailored for scientific computing, with a focus on linear algebra,
-N-dimensional arrays, and so it goes. While it contains code that can parse binary data,
-the footprint added to a project that includes it as dependency is quite big.</p>
-<p>The parser written with NumPy wasn&#8217;t using 5% of the NumPy code base. Probably less than 1%. Updates
-to NumPy could break the application compatibility, even if the update came due to some new
-matrix operation added to NumPy through some external and missing dependency.</p>
-<p>In Java something similar happens with Google Guava. While I use it some times, most of the
-times I find myself using one of the Apache Commons libraries, or another dependency
-with just what I need. To avoid including unnecessary code to my application.</p>
-<p>If you prefer to use NumPy that&#8217;s fine too :-) I just had the time enough to rewrite it
-instead of using the NumPy (took a couple of hours). In other cases it may still
-make sense to use another tool or library, even if it was not made specifically for the
-job ¯\<em>(ツ)</em>/¯</p>
-<p>&hearts; Open Source</p>
-                            
-                            
-                            
-                        </div>
-                        <p class="postmetadata">
-                            
-                            <small>tags 
-                             [&nbsp;<a
-                                href="/tag/python/"
-                                rel="tag">python</a>&nbsp;]&nbsp;
                             
                              [&nbsp;<a
                                 href="/tag/programming/"
