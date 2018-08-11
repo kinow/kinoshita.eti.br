@@ -35,7 +35,7 @@ called `system`. (wonder how well it works if you try to deploy Jena Fuseki with
 [<sup>1</sup>](https://markmail.org/message/xpfcgccuwgycdopw) [<sup>2</sup>](https://afs.github.io/rdf-delta/ha-fuseki.html)).
 
 Its first task is to create an *UUID*, using `JenaUUID` (from Jena Core). This class looks
-very interesting, wonder how it works.
+very interesting, [wonder how it works]({{pcurl('2018/08/11/uuids-in-apache-jena')}}).
 
 Then it creates a `DatasetDescriptionRegistry`, which is a registry to keep track
 of the datasets created. There is also some validation of parameters and state check, and then
