@@ -124,7 +124,7 @@
                             <h4>Blog Taxonomy</h4>
                             <nav id="tag-cloud" class="sidebar-box" role="complementary">
                               
-                              <span style="font-size: 22.0pt"><a href="/tag/apache%20software%20foundation">apache software foundation</a></span>&nbsp;(24)
+                              <span style="font-size: 22.5pt"><a href="/tag/apache%20software%20foundation">apache software foundation</a></span>&nbsp;(25)
                               
                               <span style="font-size: 12.5pt"><a href="/tag/articles">articles</a></span>&nbsp;(5)
                               
@@ -142,7 +142,7 @@
                               
                               <span style="font-size: 16.5pt"><a href="/tag/illustrations">illustrations</a></span>&nbsp;(13)
                               
-                              <span style="font-size: 27.0pt"><a href="/tag/java">java</a></span>&nbsp;(34)
+                              <span style="font-size: 27.5pt"><a href="/tag/java">java</a></span>&nbsp;(35)
                               
                               <span style="font-size: 13.0pt"><a href="/tag/jena">jena</a></span>&nbsp;(6)
                               
@@ -152,7 +152,7 @@
                               
                               <span style="font-size: 12.0pt"><a href="/tag/natural%20language%20processing">natural language processing</a></span>&nbsp;(4)
                               
-                              <span style="font-size: 28.0pt"><a href="/tag/opensource">opensource</a></span>&nbsp;(36)
+                              <span style="font-size: 28.5pt"><a href="/tag/opensource">opensource</a></span>&nbsp;(37)
                               
                               <span style="font-size: 26.5pt"><a href="/tag/programming">programming</a></span>&nbsp;(33)
                               
@@ -179,6 +179,130 @@
                 
 
 Posts tagged with 'apache software foundation'
+
+
+
+
+<div class="ui raised padded container segment">
+    <h2><a href="/2018/08/12/use-of-logging-in-java-image-processing-libraries" title="Permanent link">Use of Logging in Java Image Processing libraries</a></h2>
+    <p><small>kinow</small> @ <small>Aug 12, 2018&nbsp;17:55:44</small></p>
+    
+    
+
+
+
+
+
+<a href="https://twitter.com/share" class="twitter-share-button" data-url="https://kinoshita.eti.br/2018/08/12/use-of-logging-in-java-image-processing-libraries" data-text="Use of Logging in Java Image Processing libraries" data-via="kinow" data-hashtags="opensource">Tweet</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p='https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+
+
+    <p>For <a href="https://issues.apache.org/jira/browse/IMAGING-154">IMAGING-154</a> I was trying to think in a solution
+for the <a href="https://github.com/apache/commons-imaging/blob/d2ec76bd10f30c39ae5180ede1254908e76045f0/src/main/java/org/apache/commons/imaging/util/Debug.java">existing <code>Debug</code></a>
+class. This class was the issue of discussion during a
+<a href="https://markmail.org/thread/ak3hcka7piykxixz#query:+page:1+mid:ppgxbhjx3opqlixj+state:results">previous 1.0 release vote thread</a>.</p>
+<p>Initially I tried simply changing the class a bit, and make it configurable, so that we could keep it -
+as there is a valid use case for having a class that collects information during the image processing
+algorithms were applied.</p>
+<p>And for me, the next step would naturally be to remove the use of <code>System.out</code>, as the <code>Debug</code> class
+would now have a <code>PrintStream</code> that could be <code>System.out</code> or something else.</p>
+<p>That&#8217;s when I realized in the current version of Apache Commons Imaging (n&eacute;e Sanselan) uses
+<code>System.out</code> when debugging, but also when it wants to enable a
+<a href="https://github.com/apache/commons-imaging/blob/d2ec76bd10f30c39ae5180ede1254908e76045f0/src/main/java/org/apache/commons/imaging/formats/gif/GifImageParser.java#L798">&ldquo;<em>verbose</em>&rdquo; mode</a>
+in some classes.</p>
+<p>I am using this post to collect a few cases, and check what other image processing images
+are doing with regards to logging.</p>
+<table>
+<thead>
+<tr>
+<th align="center"><strong>Library</strong></th>
+<th align="center"><strong>Logger</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="center">Java ImageIO</td>
+<td align="center">No logging (exceptions only)</td>
+</tr>
+<tr>
+<td align="center">im4java</td>
+<td align="center">No logging (exceptions only)</td>
+</tr>
+<tr>
+<td align="center">GeoSolutions ImageIO-Ext</td>
+<td align="center">java.util.logging</td>
+</tr>
+<tr>
+<td align="center">Catalano</td>
+<td align="center">java.util.logging</td>
+</tr>
+<tr>
+<td align="center">Apache PDFBox JBIG2</td>
+<td align="center">Custom Logger</td>
+</tr>
+<tr>
+<td align="center">ImageJ2</td>
+<td align="center">SciJava Logger</td>
+</tr>
+<tr>
+<td align="center">Fiji</td>
+<td align="center">SLF4J + logback</td>
+</tr>
+<tr>
+<td align="center">OpenJPEG</td>
+<td align="center">Custom Logger</td>
+</tr>
+<tr>
+<td align="center">imgscalar</td>
+<td align="center">System.out</td>
+</tr>
+<tr>
+<td align="center">Apache Commons Imaging</td>
+<td align="center">System.out</td>
+</tr>
+<tr>
+<td align="center">Sanselan</td>
+<td align="center">System.out</td>
+</tr>
+<tr>
+<td align="center">Marvin</td>
+<td align="center">System.out</td>
+</tr>
+<tr>
+<td align="center">Processing</td>
+<td align="center">System.out</td>
+</tr>
+</tbody>
+</table><!-- html -->
+    
+<p class="postmetadata">
+    
+    <small>tags 
+     [&nbsp;<a
+        href="/tag/apache%20software%20foundation"
+        rel="tag">apache software foundation</a>&nbsp;]&nbsp;
+    
+     [&nbsp;<a
+        href="/tag/java"
+        rel="tag">java</a>&nbsp;]&nbsp;
+    
+     [&nbsp;<a
+        href="/tag/apache%20commons"
+        rel="tag">apache commons</a>&nbsp;]&nbsp;
+    
+     [&nbsp;<a
+        href="/tag/image%20processing"
+        rel="tag">image processing</a>&nbsp;]&nbsp;
+    
+     [&nbsp;<a
+        href="/tag/opensource"
+        rel="tag">opensource</a>&nbsp;]&nbsp;
+    
+    </small>
+    
+    
+</p>
+</div>
 
 
 
@@ -704,74 +828,6 @@ and RHS appear in <a href="https://issues.apache.org/jira/browse/JENA-1534">some
      [&nbsp;<a
         href="/tag/sparql"
         rel="tag">sparql</a>&nbsp;]&nbsp;
-    
-     [&nbsp;<a
-        href="/tag/opensource"
-        rel="tag">opensource</a>&nbsp;]&nbsp;
-    
-    </small>
-    
-    
-</p>
-</div>
-
-
-
-
-<div class="ui raised padded container segment">
-    <h2><a href="/2017/12/25/exif-odd-offsets" title="Permanent link">Exif Odd Offsets</a></h2>
-    <p><small>kinow</small> @ <small>Dec 25, 2017&nbsp;21:43:33</small></p>
-    
-    
-
-
-
-
-
-<a href="https://twitter.com/share" class="twitter-share-button" data-url="https://kinoshita.eti.br/2017/12/25/exif-odd-offsets" data-text="Exif Odd Offsets" data-via="kinow" data-hashtags="opensource">Tweet</a>
-<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p='https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-
-
-    <p>A file format like JPEG may contain metadata in JFIF, <a href="https://en.wikipedia.org/wiki/Exif">Exif</a>,
-or a vendor proprietary format. The Exif format is based - or uses parts of - on the TIFF format.</p>
-<p>Within an Exif metadata block, you should see directories, with several entries. The entries have fields
-like description, value, and also an offset. The offset indicates the offset to the next entry.</p>
-<p>The Exif specification defines that <strong>implementers must make sure to keep the offset an even number,
-within 4 bytes</strong>.</p>
-<p>I recently worked on <a href="https://issues.apache.org/jira/browse/IMAGING-205">IMAGING-205</a>, a ticket
-about odd offsets in files with Exif metadata. This issue was exactly to address that when files
-were rewritten with Apache Commons Imaging, even though the image initially had no odd offsets,
-after the entries were rearranged, we could have odd offsets.</p>
-<p>The fix was simply checking for odd offsets, adding +1, and later it would be put within the
-4 bytes limit.</p>
-<p style='text-align: center;'>
-<img style="display: inline" class="ui image" src="/2017/12/25/exif-odd-offsets/screenshot.png" alt="A screen shot of Eclipse with source code" title="Locating the bug" />
-<br/>
-<small>Locating the bug</small>
-</p>
-
-<p>One interesting point, however, is that this is in the standard, but not all software that read
-and write Exif follow the specification. So it is quite common to find images with odd offsets.</p>
-<p>Which means you could take a picture with your phone, that contains some Exif metadata, and
-be surprised to analyze it with <code>exiftool</code> and get warnings about odd offsets. Most viewers
-handle odd and even offsets, so it should work for most cases, unless you have a strict reader/viewer.</p>
-<p>Happy hacking!</p>
-<p>&heart; Open Source</p><!-- html -->
-    
-<p class="postmetadata">
-    
-    <small>tags 
-     [&nbsp;<a
-        href="/tag/programming"
-        rel="tag">programming</a>&nbsp;]&nbsp;
-    
-     [&nbsp;<a
-        href="/tag/java"
-        rel="tag">java</a>&nbsp;]&nbsp;
-    
-     [&nbsp;<a
-        href="/tag/apache%20software%20foundation"
-        rel="tag">apache software foundation</a>&nbsp;]&nbsp;
     
      [&nbsp;<a
         href="/tag/opensource"

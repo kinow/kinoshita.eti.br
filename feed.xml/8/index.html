@@ -10,13 +10,102 @@
         
         <description>Latest news from Bruno P. Kinoshita</description>
         
-        <lastBuildDate>2018-08-11T21:35:14+12:00</lastBuildDate>
-        <pubDate>2018-08-11T21:35:14+12:00</pubDate>
+        <lastBuildDate>2018-08-12T20:09:51+12:00</lastBuildDate>
+        <pubDate>2018-08-12T20:09:51+12:00</pubDate>
         <generator>PieCrust 3.2.0</generator>
         
         
         
 
+        
+        
+        
+        <item>
+            <title>Trying SaltStack with Docker</title>
+            <link>/2016/04/17/trying-saltstack-with-docker</link>
+            
+            <author>kinow</author>
+            <dc:creator>kinow</dc:creator>
+            
+            <category>blog</category>
+            
+            <category>jenkins</category>
+            
+            <category>docker</category>
+            
+            <category>saltstack</category>
+            
+            <pubDate>2016-04-17T22:06:03+12:00</pubDate>
+            <guid>/2016/04/17/trying-saltstack-with-docker</guid>
+            <description>
+            
+            &lt;p&gt;Some weeks ago I started learning &lt;a href=&#34;http://saltstack.com/&#34;&gt;SaltStack&lt;/a&gt; for a project at work. But I couldn&amp;#8217;t
+find a good Docker image for that and I had to ask the Ops team for some VM&amp;#8217;s. We
+are having a rainy weekend in Auckland, so I decided to have another look at the
+&lt;a href=&#34;https://wiki.jenkins-ci.org/display/JENKINS/saltstack-plugin&#34;&gt;Jenkins SaltStack Plug-in&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;But now since I was at home, I couldn&amp;#8217;t use the VM&amp;#8217;s that I had access to at
+work. So decided to look again at Docker or Vagrant images. After playing
+with a few images, I found &lt;a href=&#34;https://hub.docker.com/r/bbinet/salt-master/&#34;&gt;bbinet/salt-master&lt;/a&gt;.
+It not only sets up a master, but also provides an easy way to enable the cherrypy
+API (necessary for the Jenkins plug-in).&lt;/p&gt;
+&lt;p&gt;This post describes the steps that I took to have a running Salt Master with the API
+enabled. First you need to create some directories and files to use with the image.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;shell&lt;span class=&#34;nv&#34;&gt;$ &lt;/span&gt;mkdir ~/master &lt;span class=&#34;o&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;cd&lt;/span&gt; ~/master
+shell&lt;span class=&#34;nv&#34;&gt;$ &lt;/span&gt;mkdir -p config/master.d/
+shell&lt;span class=&#34;nv&#34;&gt;$ &lt;/span&gt;vim config/master.d/api.conf
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;The api.conf contains the SaltStack API configuration. You can change port, user
+and other settings if necessary. Just remember to add a credential in Jenkins
+for the plug-in.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;span class=&#34;c&#34;&gt;# File: api.conf&lt;/span&gt;
+external_auth:
+  pam:
+    saltapiuser:
+      - .*
+      - &lt;span class=&#34;s1&#34;&gt;&amp;#39;@runner&amp;#39;&lt;/span&gt;
+      - &lt;span class=&#34;s1&#34;&gt;&amp;#39;@wheel&amp;#39;&lt;/span&gt;
+      - &lt;span class=&#34;s1&#34;&gt;&amp;#39;@jobs&amp;#39;&lt;/span&gt;
+rest_cherrypy:
+  port: 8000
+  host: 0.0.0.0
+  disable_ssl: True
+  static: /opt/molten
+  static_path: /assets
+  app: /opt/molten/index.html
+  app_path: /molten
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;The image also conveniently provides a script that is executed before the
+entry point (if provided). So we can also create a user for the API automatically
+when the image is created.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;shell&lt;span class=&#34;nv&#34;&gt;$ &lt;/span&gt;vim config/before-exec.sh
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;span class=&#34;c&#34;&gt;#!/bin/bash&lt;/span&gt;
+&lt;span class=&#34;c&#34;&gt;# File: before-exec.sh&lt;/span&gt;
+useradd saltapiuser
+&lt;span class=&#34;nb&#34;&gt;echo&lt;/span&gt; -e &lt;span class=&#34;s2&#34;&gt;&amp;quot;nosecret\nnosecret\n&amp;quot;&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; passwd saltapiuser
+&lt;span class=&#34;nb&#34;&gt;exit &lt;/span&gt;0
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Also make the script executable.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;chmod +x config/before-exec.sh
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;And finally start the container.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;docker run --name salt-master -v &lt;span class=&#34;nv&#34;&gt;$PWD&lt;/span&gt;/config:/config &lt;span class=&#34;se&#34;&gt;\&lt;/span&gt;
+    -p 4505:4505 -p 4506:4506 -p 443:443 -p 8000:8000 &lt;span class=&#34;se&#34;&gt;\&lt;/span&gt;
+    bbinet/salt-master
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Once the container is running, you can go to http://localhost:8000 and
+log in as saltapiuser:nosecret, and also configure your plug-in
+in Jenkins.&lt;/p&gt;
+&lt;p&gt;Happy hacking!&lt;/p&gt;
+            
+            </description>
+        </item>
         
         
         
@@ -512,154 +601,6 @@ error handling, and relying on the ARQ module, that is who actually handles the 
 I also think a new Fuseki server is baking in the project git repo, so stay tuned for an 
 updated version of this graph soon.&lt;/p&gt;
 &lt;p&gt;Happy hacking!&lt;/p&gt;
-            
-            </description>
-        </item>
-        
-        
-        
-        <item>
-            <title>Cypher, Gremlin and SPARQL: Graph dialects</title>
-            <link>/2014/09/09/cypher-gremlin-and-sparql-graph-dialects</link>
-            
-            <author>kinow</author>
-            <dc:creator>kinow</dc:creator>
-            
-            <category>blog</category>
-            
-            <category>graphs</category>
-            
-            <category>neo4j</category>
-            
-            <category>gremlin</category>
-            
-            <category>sparql</category>
-            
-            <pubDate>2014-09-09T10:14:33+12:00</pubDate>
-            <guid>/2014/09/09/cypher-gremlin-and-sparql-graph-dialects</guid>
-            <description>
-            
-            &lt;p&gt;When I was younger and my older brother was living in Germany, I asked him if he 
-had learned German. He said that he did, and explained that there are several 
-dialects, and he was quite proud for some people told him that he was using the 
-Bavarian dialect correctly.&lt;/p&gt;
-&lt;p&gt;Even though &lt;a href=&#34;http://www.neo4j.org/learn/cypher&#34;&gt;Cypher&lt;/a&gt;, 
-&lt;a href=&#34;http://gremlindocs.com/&#34;&gt;Gremlin&lt;/a&gt; and &lt;a href=&#34;http://en.wikipedia.org/wiki/SPARQL&#34;&gt;SPARQL&lt;/a&gt; 
-are all query languages, I think we can consider them dialects of a common graph language. 
-Cypher is the query language used in &lt;a href=&#34;http://www.neo4j.org/&#34;&gt;neo4j&lt;/a&gt;, a graph database. 
-Gremlin is part of the &lt;a href=&#34;http://www.tinkerpop.com/&#34;&gt;Tinkerpop&lt;/a&gt;, an open source project 
-that contains graph server, graph algorithms, graph language, among other sub-projects. 
-And last but not least, SPARQL is used to query &lt;a href=&#34;http://en.wikipedia.org/wiki/Resource_Description_Framework&#34;&gt;RDF documents&lt;/a&gt;.&lt;/p&gt;
-&lt;p&gt;Let&amp;#8217;s use the example of the Matrix movie provided by neo4j to take a look at the 
-three languages.&lt;/p&gt;
-&lt;h2&gt;Cypher&lt;/h2&gt;
-&lt;p&gt;First we create the graph.&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;span class=&#34;k&#34;&gt;create&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;matrix1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;Movie&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;{&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;id&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39;603&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;title&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39;The Matrix&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;year&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39;1999-03-31&amp;#39;&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;}&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;),&lt;/span&gt;
- &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;matrix2&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;Movie&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;{&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;id&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39;604&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;title&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39;The Matrix Reloaded&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;year&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39;2003-05-07&amp;#39;&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;}&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;),&lt;/span&gt;
- &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;matrix3&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;Movie&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;{&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;id&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39;605&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;title&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39;The Matrix Revolutions&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;year&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39;2003-10-27&amp;#39;&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;}&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;),&lt;/span&gt;
-
- &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;neo&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;Actor&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;{&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;name&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;Keanu Reeves&amp;#39;&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;}&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;),&lt;/span&gt;
- &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;morpheus&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;Actor&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;{&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;name&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;Laurence Fishburne&amp;#39;&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;}&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;),&lt;/span&gt;
- &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;trinity&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;Actor&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;{&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;name&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;Carrie-Anne Moss&amp;#39;&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;}&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;),&lt;/span&gt;
-
- &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;matrix1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;&amp;lt;-&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[:&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;ACTS_IN&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;{&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;role&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39;Neo&amp;#39;&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;}&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;-&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;neo&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;),&lt;/span&gt;
- &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;matrix2&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;&amp;lt;-&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[:&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;ACTS_IN&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;{&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;role&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39;Neo&amp;#39;&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;}&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;-&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;neo&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;),&lt;/span&gt;
- &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;matrix3&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;&amp;lt;-&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[:&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;ACTS_IN&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;{&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;role&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39;Neo&amp;#39;&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;}&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;-&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;neo&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;),&lt;/span&gt;
- &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;matrix1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;&amp;lt;-&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[:&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;ACTS_IN&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;{&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;role&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39;Morpheus&amp;#39;&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;}&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;-&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;morpheus&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;),&lt;/span&gt;
- &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;matrix2&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;&amp;lt;-&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[:&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;ACTS_IN&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;{&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;role&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39;Morpheus&amp;#39;&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;}&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;-&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;morpheus&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;),&lt;/span&gt;
- &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;matrix3&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;&amp;lt;-&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[:&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;ACTS_IN&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;{&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;role&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39;Morpheus&amp;#39;&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;}&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;-&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;morpheus&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;),&lt;/span&gt;
- &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;matrix1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;&amp;lt;-&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[:&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;ACTS_IN&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;{&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;role&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39;Trinity&amp;#39;&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;}&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;-&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;trinity&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;),&lt;/span&gt;
- &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;matrix2&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;&amp;lt;-&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[:&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;ACTS_IN&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;{&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;role&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39;Trinity&amp;#39;&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;}&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;-&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;trinity&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;),&lt;/span&gt;
- &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;matrix3&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;&amp;lt;-&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[:&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;ACTS_IN&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;{&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;role&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39;Trinity&amp;#39;&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;}&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;-&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;trinity&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;&lt;code&gt;Added 6 labels, created 6 nodes, set 21 properties, created 9 relationships, returned 0 rows in 2791 ms&lt;/code&gt;&lt;/p&gt;
-&lt;p&gt;And execute a simple query.&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;span class=&#34;k&#34;&gt;MATCH&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;a&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;Actor&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;{&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;name&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;ss&#34;&gt;&amp;quot;Keanu Reeves&amp;quot;&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;}&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
-&lt;span class=&#34;k&#34;&gt;RETURN&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;a&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;&lt;code&gt;(9:Actor {name:&#34;Keanu Reeves&#34;})&lt;/code&gt;&lt;/p&gt;
-&lt;h2&gt;Gremlin&lt;/h2&gt;
-&lt;p&gt;Again, let&amp;#8217;s start by creating our graph.&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;span class=&#34;k&#34;&gt;g&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;new&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;TinkerGraph&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;();&lt;/span&gt;
-&lt;span class=&#34;n&#34;&gt;matrix1&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;g&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;addVertex&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;([&lt;/span&gt;&lt;span class=&#34;ss&#34;&gt;&amp;quot;_id&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;603&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;ss&#34;&gt;&amp;quot;title&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;ss&#34;&gt;&amp;quot;The Matrix&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;ss&#34;&gt;&amp;quot;year&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;ss&#34;&gt;&amp;quot;1999-03-31&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]);&lt;/span&gt;
-&lt;span class=&#34;n&#34;&gt;matrix2&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;g&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;addVertex&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;([&lt;/span&gt;&lt;span class=&#34;ss&#34;&gt;&amp;quot;_id&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;604&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;ss&#34;&gt;&amp;quot;title&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;ss&#34;&gt;&amp;quot;The Matrix Reloaded&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;ss&#34;&gt;&amp;quot;year&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;ss&#34;&gt;&amp;quot;2003-05-07&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]);&lt;/span&gt;
-&lt;span class=&#34;n&#34;&gt;matrix3&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;g&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;addVertex&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;([&lt;/span&gt;&lt;span class=&#34;ss&#34;&gt;&amp;quot;_id&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;605&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;ss&#34;&gt;&amp;quot;title&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;ss&#34;&gt;&amp;quot;The Matrix Revolutions&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;ss&#34;&gt;&amp;quot;year&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;ss&#34;&gt;&amp;quot;2003-10-27&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]);&lt;/span&gt;
-
-&lt;span class=&#34;n&#34;&gt;neo&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;g&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;addVertex&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;([&lt;/span&gt;&lt;span class=&#34;ss&#34;&gt;&amp;quot;name&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;ss&#34;&gt;&amp;quot;Keanu Reeves&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]);&lt;/span&gt;
-&lt;span class=&#34;n&#34;&gt;morpheus&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;g&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;addVertex&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;([&lt;/span&gt;&lt;span class=&#34;ss&#34;&gt;&amp;quot;name&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;ss&#34;&gt;&amp;quot;Laurence Fishburne&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]);&lt;/span&gt;
-&lt;span class=&#34;n&#34;&gt;trinity&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;g&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;addVertex&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;([&lt;/span&gt;&lt;span class=&#34;ss&#34;&gt;&amp;quot;name&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;ss&#34;&gt;&amp;quot;Carrie-Anne Moss&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]);&lt;/span&gt;
-
-&lt;span class=&#34;n&#34;&gt;neo&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;addEdge&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;ss&#34;&gt;&amp;quot;actsIn&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;matrix1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt; 
-&lt;span class=&#34;n&#34;&gt;neo&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;addEdge&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;ss&#34;&gt;&amp;quot;actsIn&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;matrix2&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt; 
-&lt;span class=&#34;n&#34;&gt;neo&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;addEdge&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;ss&#34;&gt;&amp;quot;actsIn&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;matrix3&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt; 
-&lt;span class=&#34;n&#34;&gt;morpheus&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;addEdge&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;ss&#34;&gt;&amp;quot;actsIn&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;matrix1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt; 
-&lt;span class=&#34;n&#34;&gt;morpheus&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;addEdge&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;ss&#34;&gt;&amp;quot;actsIn&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;matrix2&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt; 
-&lt;span class=&#34;n&#34;&gt;morpheus&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;addEdge&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;ss&#34;&gt;&amp;quot;actsIn&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;matrix3&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt; 
-&lt;span class=&#34;n&#34;&gt;trinity&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;addEdge&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;ss&#34;&gt;&amp;quot;actsIn&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;matrix1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt; 
-&lt;span class=&#34;n&#34;&gt;trinity&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;addEdge&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;ss&#34;&gt;&amp;quot;actsIn&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;matrix2&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt; 
-&lt;span class=&#34;n&#34;&gt;trinity&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;addEdge&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;ss&#34;&gt;&amp;quot;actsIn&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;matrix3&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;And execute a simple query.&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;span class=&#34;k&#34;&gt;g&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;V&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;has&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;name&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39;Keanu Reeves&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;).&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;map&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;&lt;code&gt;gremlin&amp;gt; g.V.has(&#39;name&#39;, &#39;Keanu Reeves&#39;).map
-==&amp;gt;{name=Keanu Reeves}
-gremlin&amp;gt;&lt;/code&gt;&lt;/p&gt;
-&lt;p&gt;Quite similar to neo4j.&lt;/p&gt;
-&lt;h2&gt;SPARQL&lt;/h2&gt;
-&lt;p&gt;Let&amp;#8217;s load our example (thanks to &lt;a href=&#34;https://twitter.com/kendall&#34;&gt;Kendall G. Clark&lt;/a&gt;). I used 
-&lt;a href=&#34;http://jena.apache.org/documentation/serving_data/&#34;&gt;Fuseki&lt;/a&gt; to run these queries.&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;@prefix :          &lt;span class=&#34;nt&#34;&gt;&amp;lt;http:&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;//example.org/matrix&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;/&amp;gt;&lt;/span&gt; .
-
- :m1 a :Movie; :title &amp;quot;The Matrix&amp;quot;; :year &amp;quot;1999-03-31&amp;quot;.
- :m2 a :Movie; :title &amp;quot;The Matrix Reloaded&amp;quot;; :year &amp;quot;2003-05-07&amp;quot;.
- :m3 a :Movie; :title &amp;quot;The Matrix Revolutions&amp;quot;; :year &amp;quot;2003-10-27&amp;quot;.
-
- :neo a :Actor; :name &amp;quot;Keanu Reeves&amp;quot;.
- :morpheus a :Actor; :name &amp;quot;Laurence Fishburne&amp;quot;.
- :trinity a :Actor; :name &amp;quot;Carrie-Anne Moss&amp;quot;.
-
- :neo :hasRole [:as &amp;quot;Neo&amp;quot;; :in :m1].
- :neo :hasRole [:as &amp;quot;Neo&amp;quot;; :in :m2].
- :neo :hasRole [:as &amp;quot;Neo&amp;quot;; :in :m2].
- :morpheus :hasRole [:as &amp;quot;Morpheus&amp;quot;; :in :m1].
- :morpheus :hasRole [:as &amp;quot;Morpheus&amp;quot;; :in :m2].
- :morpheus :hasRole [:as &amp;quot;Morpheus&amp;quot;; :in :m2].
- :trinity :hasRole [:as &amp;quot;Trinity&amp;quot;; :in :m1].
- :trinity :hasRole [:as &amp;quot;Trinity&amp;quot;; :in :m2].
- :trinity :hasRole [:as &amp;quot;Trinity&amp;quot;; :in :m2].
-&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;And finally the SPARQL query.&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;span class=&#34;k&#34;&gt;SELECT&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;?&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;a&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;WHERE&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;{&lt;/span&gt;
-   &lt;span class=&#34;o&#34;&gt;?&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;a&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;a&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;http&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;//&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;example&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;org&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;/&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;matrix&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;/&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;Actor&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;
-   &lt;span class=&#34;o&#34;&gt;?&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;a&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;http&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;//&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;example&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;org&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;/&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;matrix&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;/&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;name&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;?&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;name&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;
-   &lt;span class=&#34;n&#34;&gt;FILTER&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;?&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;name&lt;/span&gt;  &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;ss&#34;&gt;&amp;quot;Keanu Reeves&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
-&lt;span class=&#34;err&#34;&gt;}&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;Returning the Keanu Reeves actor instance.&lt;/p&gt;
-&lt;pre&gt;-----------------------------------
-| a                               |
-===================================
-| &amp;lt;http://example.org/matrix/neo&amp;gt; |
------------------------------------&lt;/pre&gt;
-
-&lt;p&gt;SPARQL supports inference (or I must say that OWL, RDFS and the reasoners do), 
-but it is easier to define the depth of a search in the graph using neo4j. As for 
-Gremlin, it has native support to Groovy and Java. There is a common denominator 
-for these three languages, but what makes them really powerful are their unique features. &lt;/p&gt;
-&lt;p&gt;I hope you enjoyed, and that this post gave you a quick overview of some of the existing 
-graph languages. Make sure you ponder the pros and cons of each server/language, and 
-make the best decision for your project. Take a look at &lt;a href=&#34;http://en.wikipedia.org/wiki/Graph_database#APIs_and_Graph_Query.2FProgramming_Languages&#34;&gt;other graph query languages&lt;/a&gt; too.&lt;/p&gt;
-&lt;p&gt;Happy hacking!&lt;/p&gt;
-&lt;hr /&gt;
-&lt;p&gt;This post has been updated as suggested by &lt;a href=&#34;https://twitter.com/kendall&#34;&gt;@kendall&lt;/a&gt; (Thank you!).
-You can check the diff at &lt;a href=&#34;https://github.com/kinow/kinoshita.eti.br/commits/master/site/_content/posts/2014-09-09_cypher-gremlin-and-sparql-graph-dialects.html&#34;&gt;GitHub&lt;/a&gt;&lt;/p&gt;
             
             </description>
         </item>

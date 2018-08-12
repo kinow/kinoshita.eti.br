@@ -124,7 +124,7 @@
                             <h4>Blog Taxonomy</h4>
                             <nav id="tag-cloud" class="sidebar-box" role="complementary">
                               
-                              <span style="font-size: 22.0pt"><a href="/tag/apache%20software%20foundation">apache software foundation</a></span>&nbsp;(24)
+                              <span style="font-size: 22.5pt"><a href="/tag/apache%20software%20foundation">apache software foundation</a></span>&nbsp;(25)
                               
                               <span style="font-size: 12.5pt"><a href="/tag/articles">articles</a></span>&nbsp;(5)
                               
@@ -142,7 +142,7 @@
                               
                               <span style="font-size: 16.5pt"><a href="/tag/illustrations">illustrations</a></span>&nbsp;(13)
                               
-                              <span style="font-size: 27.0pt"><a href="/tag/java">java</a></span>&nbsp;(34)
+                              <span style="font-size: 27.5pt"><a href="/tag/java">java</a></span>&nbsp;(35)
                               
                               <span style="font-size: 13.0pt"><a href="/tag/jena">jena</a></span>&nbsp;(6)
                               
@@ -152,7 +152,7 @@
                               
                               <span style="font-size: 12.0pt"><a href="/tag/natural%20language%20processing">natural language processing</a></span>&nbsp;(4)
                               
-                              <span style="font-size: 28.0pt"><a href="/tag/opensource">opensource</a></span>&nbsp;(36)
+                              <span style="font-size: 28.5pt"><a href="/tag/opensource">opensource</a></span>&nbsp;(37)
                               
                               <span style="font-size: 26.5pt"><a href="/tag/programming">programming</a></span>&nbsp;(33)
                               
@@ -179,6 +179,111 @@
                 
 
 Posts tagged with 'opensource'
+
+
+
+
+<div class="ui raised padded container segment">
+    <h2><a href="/2017/11/06/using-formatter-exclusions-with-eclipse" title="Permanent link">Using formatter exclusions with Eclipse</a></h2>
+    <p><small>kinow</small> @ <small>Nov 06, 2017&nbsp;21:56:56</small></p>
+    
+    
+
+
+
+
+
+<a href="https://twitter.com/share" class="twitter-share-button" data-url="https://kinoshita.eti.br/2017/11/06/using-formatter-exclusions-with-eclipse" data-text="Using formatter exclusions with Eclipse" data-via="kinow" data-hashtags="opensource">Tweet</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p='https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+
+
+    <p>Sometimes when you are formatting your code in Eclipse, you may want to prevent
+some parts of the code from being formatted. Especially when using Java 8 lambdas
+and optionals.</p>
+<p>Here&#8217;s some code before being formatted by Eclipse&#8217;s default formatter rules.</p>
+<p><small>Code adapted from: blog post <a href="http://javadeau.lawesson.se/2016/10/java-8-streams-in-hibernate-and-beyond.html"><i>Java d&#8217;eau &dash; Java 8: Streams in Hibernate and Beyond</i></a></small></p>
+<div class="highlight"><pre><span class="n">session</span><span class="o">.</span><span class="na">createQuery</span><span class="o">(</span><span class="s">&quot;SELECT h FROM Hare h&quot;</span><span class="o">,</span> <span class="n">Hare</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">stream</span><span class="o">()</span>
+    <span class="o">.</span><span class="na">filter</span><span class="o">(</span><span class="n">h</span> <span class="o">-&gt;</span> <span class="n">h</span><span class="o">.</span><span class="na">getId</span><span class="o">()</span> <span class="o">==</span> <span class="mi">1</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">map</span><span class="o">(</span><span class="n">Hare</span><span class="o">::</span><span class="n">getName</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">forEach</span><span class="o">(</span><span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">::</span><span class="n">println</span><span class="o">);</span>
+</pre></div>
+
+<p>Then after formatting.</p>
+<div class="highlight"><pre><span class="n">session</span><span class="o">.</span><span class="na">createQuery</span><span class="o">(</span><span class="s">&quot;SELECT h FROM Hare h&quot;</span><span class="o">,</span> <span class="n">Hare</span><span class="o">.</span><span class="na">class</span><span class="o">).</span><span class="na">stream</span><span class="o">().</span><span class="na">filter</span><span class="o">(</span><span class="n">h</span> <span class="o">-&gt;</span> <span class="n">h</span><span class="o">.</span><span class="na">getId</span><span class="o">()</span> <span class="o">==</span> <span class="mi">1</span><span class="o">).</span><span class="na">map</span><span class="o">(</span><span class="n">Hare</span><span class="o">::</span><span class="n">getName</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">forEach</span><span class="o">(</span><span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">::</span><span class="n">println</span><span class="o">);</span>
+</pre></div>
+
+<p>Which doesn&#8217;t look very appealing, ay? You can change this behaviour at least in two ways.
+The first by telling the formatter to ignore this block, through a special formatter tag in your code.</p>
+<p>First you need to enable this feature in Eclipse, as it is disabled by default. This setting is found in
+the preferences <em>Java</em> &rarr; <em>Code Style</em> &rarr; <em>Formatter</em> &rarr; <em>Edit</em> &rarr; <em>Off/On Tags</em>.</p>
+<p style='text-align: center;'>
+<img style="display: inline" class="ui image" src="/2017/11/06/using-formatter-exclusions-with-eclipse/formatter-tags.png" alt="A screen shot of Eclipse formatter settings" title="Enabling formatter tags in Eclipse" />
+<br/>
+<small>Enabling formatter tags in Eclipse</small>
+</p>
+
+<p>Then formatting the following code won&#8217;t change a thing in the block surrounded by the formatter tags.</p>
+<div class="highlight"><pre><span class="cm">/* @Formatter:off */</span>
+<span class="n">session</span><span class="o">.</span><span class="na">createQuery</span><span class="o">(</span><span class="s">&quot;SELECT h FROM Hare h&quot;</span><span class="o">,</span> <span class="n">Hare</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">stream</span><span class="o">()</span>
+    <span class="o">.</span><span class="na">filter</span><span class="o">(</span><span class="n">h</span> <span class="o">-&gt;</span> <span class="n">h</span><span class="o">.</span><span class="na">getId</span><span class="o">()</span> <span class="o">==</span> <span class="mi">1</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">map</span><span class="o">(</span><span class="n">Hare</span><span class="o">::</span><span class="n">getName</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">forEach</span><span class="o">(</span><span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">::</span><span class="n">println</span><span class="o">);</span>
+<span class="cm">/* @Formatter:on */</span>
+</pre></div>
+
+<p>But having to type these tags can become annoying, and cause more commits and pull requests to be
+unnecessarily created. So an alternative approach can be to change the formatter
+<a href="https://stackoverflow.com/a/34492247/1762101">behaviour globally</a>.</p>
+<p>This can be done in Eclipse in another option under the formatter options, <em>Java</em> &rarr; <em>Code Style</em>
+&rarr; <em>Formatter</em> &rarr; <em>Edit</em> &rarr; <em>Line Wrapping</em> &rarr; <em>Function Calls</em> &rarr;
+<em>Qualified invocations</em>.</p>
+<p>You will have to choose <em>&ldquo;Wrap all elements, except first element if not necessary&rdquo;</em>
+under <em>Line wrapping policy</em>. And also check <em>&ldquo;Force split, even if line shorter than
+maximum line width&rdquo;</em>.</p>
+<p style='text-align: center;'>
+<img style="display: inline" class="ui image" src="/2017/11/06/using-formatter-exclusions-with-eclipse/global-setting.png" alt="A screen shot of Eclipse formatter settings" title="Enabling custom formatter behaviour globally" />
+<br/>
+<small>Enabling custom formatter behaviour globally</small>
+</p>
+
+<p>Once it is done, your code will look like the following no matter what.</p>
+<div class="highlight"><pre><span class="n">session</span><span class="o">.</span><span class="na">createQuery</span><span class="o">(</span><span class="s">&quot;SELECT h FROM Hare h&quot;</span><span class="o">,</span> <span class="n">Hare</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">stream</span><span class="o">()</span>
+    <span class="o">.</span><span class="na">filter</span><span class="o">(</span><span class="n">h</span> <span class="o">-&gt;</span> <span class="n">h</span><span class="o">.</span><span class="na">getId</span><span class="o">()</span> <span class="o">==</span> <span class="mi">1</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">map</span><span class="o">(</span><span class="n">Hare</span><span class="o">::</span><span class="n">getName</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">forEach</span><span class="o">(</span><span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">::</span><span class="n">println</span><span class="o">);</span>
+</pre></div>
+
+<p>Happy coding!</p>
+<p>&hearts; Open Source</p><!-- html -->
+    
+<p class="postmetadata">
+    
+    <small>tags 
+     [&nbsp;<a
+        href="/tag/programming"
+        rel="tag">programming</a>&nbsp;]&nbsp;
+    
+     [&nbsp;<a
+        href="/tag/java"
+        rel="tag">java</a>&nbsp;]&nbsp;
+    
+     [&nbsp;<a
+        href="/tag/opensource"
+        rel="tag">opensource</a>&nbsp;]&nbsp;
+    
+     [&nbsp;<a
+        href="/tag/eclipse"
+        rel="tag">eclipse</a>&nbsp;]&nbsp;
+    
+    </small>
+    
+    
+</p>
+</div>
 
 
 
@@ -618,124 +723,6 @@ when creating the Markdown instance.</p>
      [&nbsp;<a
         href="/tag/apache%20software%20foundation"
         rel="tag">apache software foundation</a>&nbsp;]&nbsp;
-    
-    </small>
-    
-    
-</p>
-</div>
-
-
-
-
-<div class="ui raised padded container segment">
-    <h2><a href="/2017/08/12/two-other-maven-plugins-impsort-and-deptools" title="Permanent link">Two other Maven Plug-ins: impsort and deptools</a></h2>
-    <p><small>kinow</small> @ <small>Aug 12, 2017&nbsp;22:16:03</small></p>
-    
-    
-
-
-
-
-
-<a href="https://twitter.com/share" class="twitter-share-button" data-url="https://kinoshita.eti.br/2017/08/12/two-other-maven-plugins-impsort-and-deptools" data-text="Two other Maven Plug-ins: impsort and deptools" data-via="kinow" data-hashtags="opensource">Tweet</a>
-<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p='https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-
-
-    <p>Last <a href="/2017/08/06/checking-for-transitive-dependencies-use-with-maven-enforcer-plugin">week I wrote</a> about the <a href="https://github.com/ImmobilienScout24/illegal-transitive-dependency-check">ImmobilienScout24/illegal-transitive-dependency-check</a> rule for Maven Enforcer Plug-in. There are two other Maven Plug-ins that can be useful.</p>
-<h3>mbknor/deptools</h3>
-<p>The <a href="https://github.com/mbknor/deptools">mbknor/deptools</a> is another rule for the Maven Enforcer Plug-in. It will scan your project dependency tree, looking for transitive dependencies. Whenever it finds a transitive dependency, it will keep track of the versions. And if, because of the way your dependencies and transitive dependencies are organised, you end up with a version that is not the newest, the build will fail.</p>
-<p>So, for example, if you have <code>commons-lang3</code> as transitive dependency of two other dependencies, but one is using 3.4 and the other 3.5. If for any reason you are using 3.4 instead of 3.5, you will have a build error.</p>
-<p>Here&#8217;s an example of the plug-in configuration.</p>
-<div class="highlight"><pre><span class="nt">&lt;project&gt;</span>
-  ...
-  <span class="nt">&lt;build&gt;</span>
-    <span class="nt">&lt;plugins&gt;</span>
-      <span class="nt">&lt;plugin&gt;</span>
-        <span class="nt">&lt;groupId&gt;</span>deptools.plugin<span class="nt">&lt;/groupId&gt;</span>
-        <span class="nt">&lt;artifactId&gt;</span>maven-deptools-plugin<span class="nt">&lt;/artifactId&gt;</span>
-        <span class="nt">&lt;version&gt;</span>1.3<span class="nt">&lt;/version&gt;</span>
-          <span class="nt">&lt;executions&gt;</span>
-              <span class="nt">&lt;execution&gt;</span>
-                  <span class="nt">&lt;phase&gt;</span>compile<span class="nt">&lt;/phase&gt;</span>
-                  <span class="nt">&lt;goals&gt;</span>
-                      <span class="nt">&lt;goal&gt;</span>version-checker<span class="nt">&lt;/goal&gt;</span>
-                  <span class="nt">&lt;/goals&gt;</span>
-              <span class="nt">&lt;/execution&gt;</span>
-          <span class="nt">&lt;/executions&gt;</span>
-        <span class="nt">&lt;/plugin&gt;</span>
-    <span class="nt">&lt;/plugins&gt;</span>
-  <span class="nt">&lt;/build&gt;</span>
-
-  <span class="nt">&lt;pluginRepositories&gt;</span>
-    <span class="nt">&lt;pluginRepository&gt;</span>
-      <span class="nt">&lt;id&gt;</span>mbk_mvn_repo<span class="nt">&lt;/id&gt;</span>
-      <span class="nt">&lt;name&gt;</span>mbk_mvn_repo<span class="nt">&lt;/name&gt;</span>
-      <span class="nt">&lt;url&gt;</span>https://raw.githubusercontent.com/mbknor/mbknor.github.com/master/m2repo/releases<span class="nt">&lt;/url&gt;</span>
-    <span class="nt">&lt;/pluginRepository&gt;</span>
-  <span class="nt">&lt;/pluginRepositories&gt;</span>
-  ...
-<span class="nt">&lt;/project&gt;</span>
-</pre></div>
-
-<p>Running <code>mvn clean verify</code> will execute the Maven Enforcer Plug-in <code>enforce</code> goal, which will call the deptools check. As you may have noticed, you also need to download the plug-in from GitHub, as it is not released to Maven Central.</p>
-<p>I do not use it for this reason, and also because I normally spend some time looking at the dependency tree anyway, but every now and then when I work on a new project I like quickly running it just to see what are the dependencies that are being shadowed by older versions.</p>
-<h3>revelc/impsort-maven-plugin</h3>
-<p>I only found about this plug-in in the last <a href="https://blogs.apache.org/foundation/entry/the-apache-news-round-up31">Apache News Round-up</a>. Where it was mentioned that <a href="https://github.com/apache/accumulo/blob/401411619239e301ad14216b3b9c88ee947ab072/pom.xml#L999">Apache Accumulo uses</a> this plug-in to standarize the order of imports in code.</p>
-<div class="highlight"><pre><span class="nt">&lt;project&gt;</span>
-  ...
-  <span class="nt">&lt;build&gt;</span>
-    <span class="nt">&lt;plugins&gt;</span>
-      <span class="nt">&lt;plugin&gt;</span>
-        <span class="nt">&lt;groupId&gt;</span>net.revelc.code<span class="nt">&lt;/groupId&gt;</span>
-        <span class="nt">&lt;artifactId&gt;</span>impsort-maven-plugin<span class="nt">&lt;/artifactId&gt;</span>
-        <span class="nt">&lt;version&gt;</span>1.0.0<span class="nt">&lt;/version&gt;</span>
-        <span class="nt">&lt;configuration&gt;</span>
-          <span class="nt">&lt;groups&gt;</span>java.,javax.,org.,com.<span class="nt">&lt;/groups&gt;</span>
-          <span class="nt">&lt;staticGroups&gt;</span>java,*<span class="nt">&lt;/staticGroups&gt;</span>
-          <span class="nt">&lt;excludes&gt;</span>
-            <span class="nt">&lt;exclude&gt;</span>**/thrift/*.java<span class="nt">&lt;/exclude&gt;</span>
-          <span class="nt">&lt;/excludes&gt;</span>
-        <span class="nt">&lt;/configuration&gt;</span>
-        <span class="nt">&lt;executions&gt;</span>
-          <span class="nt">&lt;execution&gt;</span>
-            <span class="nt">&lt;id&gt;</span>sort-imports<span class="nt">&lt;/id&gt;</span>
-            <span class="nt">&lt;goals&gt;</span>
-              <span class="nt">&lt;goal&gt;</span>sort<span class="nt">&lt;/goal&gt;</span><span class="c">&lt;!-- runs at process-sources phase by default --&gt;</span>
-            <span class="nt">&lt;/goals&gt;</span>
-          <span class="nt">&lt;/execution&gt;</span>
-        <span class="nt">&lt;/executions&gt;</span>
-      <span class="nt">&lt;/plugin&gt;</span>
-    <span class="nt">&lt;/plugins&gt;</span>
-  <span class="nt">&lt;/build&gt;</span>
-  ...
-<span class="nt">&lt;/project&gt;</span>
-</pre></div>
-
-<p>I am neutral on imports order, though in cases where you have several contributors submitting pull requests, it can probably be useful to reduce the number of interactions. In other words, if a user submits a pull request and you have an automated check, then the user would be automatically notified about changes that s/he needs to do in order for his pull request to be accepted.</p>
-<h3>Conclusion</h3>
-<p>I am not using any of these two plug-ins, but wanted to save it somewhere in case I needed to use them in the future, and also to share with others. Besides most common plug-ins (PMD, CheckStyle, FindBugs), I normally use at least some Maven Enforcer Plug-in rules, and the <a href="https://www.owasp.org/index.php/OWASP_Dependency_Check">OWASP plug-in</a>.</p>
-<p>While most of the time we spend writing code, preparing the infrastructure, and deploying and testing, I got bitten by some maven build bugs a few times, and had to spend days/weeks debugging some of these. So hope some of these posts save some hours of someone out there in a similar situation.</p>
-<p>&hearts; Open Source</p><!-- html -->
-    
-<p class="postmetadata">
-    
-    <small>tags 
-     [&nbsp;<a
-        href="/tag/java"
-        rel="tag">java</a>&nbsp;]&nbsp;
-    
-     [&nbsp;<a
-        href="/tag/programming"
-        rel="tag">programming</a>&nbsp;]&nbsp;
-    
-     [&nbsp;<a
-        href="/tag/opensource"
-        rel="tag">opensource</a>&nbsp;]&nbsp;
-    
-     [&nbsp;<a
-        href="/tag/maven"
-        rel="tag">maven</a>&nbsp;]&nbsp;
     
     </small>
     

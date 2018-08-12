@@ -124,7 +124,7 @@
                             <h4>Blog Taxonomy</h4>
                             <nav id="tag-cloud" class="sidebar-box" role="complementary">
                               
-                              <span style="font-size: 22.0pt"><a href="/tag/apache%20software%20foundation">apache software foundation</a></span>&nbsp;(24)
+                              <span style="font-size: 22.5pt"><a href="/tag/apache%20software%20foundation">apache software foundation</a></span>&nbsp;(25)
                               
                               <span style="font-size: 12.5pt"><a href="/tag/articles">articles</a></span>&nbsp;(5)
                               
@@ -142,7 +142,7 @@
                               
                               <span style="font-size: 16.5pt"><a href="/tag/illustrations">illustrations</a></span>&nbsp;(13)
                               
-                              <span style="font-size: 27.0pt"><a href="/tag/java">java</a></span>&nbsp;(34)
+                              <span style="font-size: 27.5pt"><a href="/tag/java">java</a></span>&nbsp;(35)
                               
                               <span style="font-size: 13.0pt"><a href="/tag/jena">jena</a></span>&nbsp;(6)
                               
@@ -152,7 +152,7 @@
                               
                               <span style="font-size: 12.0pt"><a href="/tag/natural%20language%20processing">natural language processing</a></span>&nbsp;(4)
                               
-                              <span style="font-size: 28.0pt"><a href="/tag/opensource">opensource</a></span>&nbsp;(36)
+                              <span style="font-size: 28.5pt"><a href="/tag/opensource">opensource</a></span>&nbsp;(37)
                               
                               <span style="font-size: 26.5pt"><a href="/tag/programming">programming</a></span>&nbsp;(33)
                               
@@ -182,6 +182,131 @@
                         <h1 class='topic'>Home</h1>
                     </div>
                     
+                    
+                    <div class="ui raised padded container segment">
+                        <h2>
+                            <a href="/2018/08/12/use-of-logging-in-java-image-processing-libraries" title="Permanent link">Use of Logging in Java Image Processing libraries</a>
+                        </h2>
+                        <small>kinow</small> @ <small>Aug 12, 2018&nbsp;17:55:44 (<span class='stardate' data-input-date='Aug 12, 2018'></span>)</small>
+                        <div class="entry">
+                            
+
+
+
+
+
+<a href="https://twitter.com/share" class="twitter-share-button" data-url="https://kinoshita.eti.br/2018/08/12/use-of-logging-in-java-image-processing-libraries" data-text="Use of Logging in Java Image Processing libraries" data-via="kinow" data-hashtags="opensource">Tweet</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p='https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+                            
+                            <p>For <a href="https://issues.apache.org/jira/browse/IMAGING-154">IMAGING-154</a> I was trying to think in a solution
+for the <a href="https://github.com/apache/commons-imaging/blob/d2ec76bd10f30c39ae5180ede1254908e76045f0/src/main/java/org/apache/commons/imaging/util/Debug.java">existing <code>Debug</code></a>
+class. This class was the issue of discussion during a
+<a href="https://markmail.org/thread/ak3hcka7piykxixz#query:+page:1+mid:ppgxbhjx3opqlixj+state:results">previous 1.0 release vote thread</a>.</p>
+<p>Initially I tried simply changing the class a bit, and make it configurable, so that we could keep it -
+as there is a valid use case for having a class that collects information during the image processing
+algorithms were applied.</p>
+<p>And for me, the next step would naturally be to remove the use of <code>System.out</code>, as the <code>Debug</code> class
+would now have a <code>PrintStream</code> that could be <code>System.out</code> or something else.</p>
+<p>That&#8217;s when I realized in the current version of Apache Commons Imaging (n&eacute;e Sanselan) uses
+<code>System.out</code> when debugging, but also when it wants to enable a
+<a href="https://github.com/apache/commons-imaging/blob/d2ec76bd10f30c39ae5180ede1254908e76045f0/src/main/java/org/apache/commons/imaging/formats/gif/GifImageParser.java#L798">&ldquo;<em>verbose</em>&rdquo; mode</a>
+in some classes.</p>
+<p>I am using this post to collect a few cases, and check what other image processing images
+are doing with regards to logging.</p>
+<table>
+<thead>
+<tr>
+<th align="center"><strong>Library</strong></th>
+<th align="center"><strong>Logger</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="center">Java ImageIO</td>
+<td align="center">No logging (exceptions only)</td>
+</tr>
+<tr>
+<td align="center">im4java</td>
+<td align="center">No logging (exceptions only)</td>
+</tr>
+<tr>
+<td align="center">GeoSolutions ImageIO-Ext</td>
+<td align="center">java.util.logging</td>
+</tr>
+<tr>
+<td align="center">Catalano</td>
+<td align="center">java.util.logging</td>
+</tr>
+<tr>
+<td align="center">Apache PDFBox JBIG2</td>
+<td align="center">Custom Logger</td>
+</tr>
+<tr>
+<td align="center">ImageJ2</td>
+<td align="center">SciJava Logger</td>
+</tr>
+<tr>
+<td align="center">Fiji</td>
+<td align="center">SLF4J + logback</td>
+</tr>
+<tr>
+<td align="center">OpenJPEG</td>
+<td align="center">Custom Logger</td>
+</tr>
+<tr>
+<td align="center">imgscalar</td>
+<td align="center">System.out</td>
+</tr>
+<tr>
+<td align="center">Apache Commons Imaging</td>
+<td align="center">System.out</td>
+</tr>
+<tr>
+<td align="center">Sanselan</td>
+<td align="center">System.out</td>
+</tr>
+<tr>
+<td align="center">Marvin</td>
+<td align="center">System.out</td>
+</tr>
+<tr>
+<td align="center">Processing</td>
+<td align="center">System.out</td>
+</tr>
+</tbody>
+</table>
+                            
+                            
+                            
+                        </div>
+                        <p class="postmetadata">
+                            
+                            <small>tags 
+                             [&nbsp;<a
+                                href="/tag/apache%20software%20foundation/"
+                                rel="tag">apache software foundation</a>&nbsp;]&nbsp;
+                            
+                             [&nbsp;<a
+                                href="/tag/java/"
+                                rel="tag">java</a>&nbsp;]&nbsp;
+                            
+                             [&nbsp;<a
+                                href="/tag/apache%20commons/"
+                                rel="tag">apache commons</a>&nbsp;]&nbsp;
+                            
+                             [&nbsp;<a
+                                href="/tag/image%20processing/"
+                                rel="tag">image processing</a>&nbsp;]&nbsp;
+                            
+                             [&nbsp;<a
+                                href="/tag/opensource/"
+                                rel="tag">opensource</a>&nbsp;]&nbsp;
+                            
+                            </small>
+                            
+                            
+                        </p>
+                    </div>
                     
                     <div class="ui raised padded container segment">
                         <h2>
@@ -594,83 +719,6 @@ with care when using multiple threads</em></p>
                              [&nbsp;<a
                                 href="/tag/pandas/"
                                 rel="tag">pandas</a>&nbsp;]&nbsp;
-                            
-                             [&nbsp;<a
-                                href="/tag/opensource/"
-                                rel="tag">opensource</a>&nbsp;]&nbsp;
-                            
-                            </small>
-                            
-                            
-                        </p>
-                    </div>
-                    
-                    <div class="ui raised padded container segment">
-                        <h2>
-                            <a href="/2018/07/14/cylc-scheduler-internals-part-1" title="Permanent link">Cylc Scheduler Internals - Part 1</a>
-                        </h2>
-                        <small>kinow</small> @ <small>Jul 14, 2018&nbsp;22:42:47 (<span class='stardate' data-input-date='Jul 14, 2018'></span>)</small>
-                        <div class="entry">
-                            
-
-
-
-
-
-<a href="https://twitter.com/share" class="twitter-share-button" data-url="https://kinoshita.eti.br/2018/07/14/cylc-scheduler-internals-part-1" data-text="Cylc Scheduler Internals - Part 1" data-via="kinow" data-hashtags="opensource">Tweet</a>
-<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p='https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-                            
-                            <p>This is the first post in a series of three (or maybe four later) based on diagrams
-I collected while debugging the Cylc scheduler. The scheduler is called by the <code>cylc start</code>
-utility.</p>
-<p><em>NB: this is a post to remember things, not really expecting to give someone enough
-information to be able to hack the Cylc Scheduler (though you can and would have fun!).</em></p>
-<p>Instead of going at length on what happens (and there is quite a bit happening when
-you run <code>cylc start my.suite</code>), I will use the following diagram, followed by a few paragraphs
-to highlight certain parts. The code used was based on <a href="https://github.com/cylc/cylc/tree/7.7.1">Cylc 7.7.1</a>.</p>
-<p style='text-align: center;'>
-<a href="/2018/07/14/cylc-scheduler-internals-part-1/cylc-scheduler_cli-workflow.png">
-<img style="display: inline; width: 100%;" class="ui image" src="/2018/07/14/cylc-scheduler-internals-part-1/cylc-scheduler_cli-workflow.png"  />
-</a>
-</p>
-
-<p>When a Cylc command like <code>cylc start</code> is invoked, it actually gets translated into
-<code>bin/cylc-$command_name</code>. <code>cylc-start</code> is a Shell file, that will simply call <code>cylc-run</code>.
-<code>cylc-run</code> then imports <code>scheduler_cli</code>&#8230; but what you need to know is that in the end
-<code>scheduler_cli</code> will create an instance of <code>Scheduler</code> with the right constructor
-arguments, and call its <code>start</code> method.</p>
-<p>After that point, you are at the left-most lifeline, on the <code>Scheduler</code> constructor
-(i.e. the <strong>init</strong> method of the scheduler.py&#8217;s Scheduler class).</p>
-<p>If you follow the method calls - which are hopefully easy to understand and follow -
-you will find that the constructor merely creates a few objects, prepares the suite
-information, and the suite database.</p>
-<p>Then the <code>start</code> method kicks things off, interacting with previously created objects,
-but also with some singletons for logging and configuration. Oh, that <code>Cylc</code> banner
-is also printed here (in case you would like to customize it as in SpringBoot).</p>
-<p>After that, if you are running the suite as daemon, it will be
-<a href="http://code.activestate.com/recipes/66012-fork-a-daemon-process-on-unix/">daemonized</a>,
-by forking the current process, but with Python.</p>
-<p>One important step that happens here, is the initialization of the HTTP Server. This server
-will be used to communicate with the <strong>Suite Server Program</strong>. It will be listening to
-connections with the right endpoints available only after the <code>configure</code> method.</p>
-<p>Lastly, we have <code>configure</code> and <code>run</code> methods, which are two very important methods to be discussed
-in the next part of this series, as they are quite extensive, and deserve their own diagrams.</p>
-<p>You can download the <a href="/2018/07/14/cylc-scheduler-internals-part-1/cylc-scheduler_cli-workflow-src.xml">source file</a> for the diagram used in this post, and edit it
-with <a href="https://draw.io">draw.io</a>.</p>
-                            
-                            
-                            
-                        </div>
-                        <p class="postmetadata">
-                            
-                            <small>tags 
-                             [&nbsp;<a
-                                href="/tag/cylc/"
-                                rel="tag">cylc</a>&nbsp;]&nbsp;
-                            
-                             [&nbsp;<a
-                                href="/tag/python/"
-                                rel="tag">python</a>&nbsp;]&nbsp;
                             
                              [&nbsp;<a
                                 href="/tag/opensource/"
