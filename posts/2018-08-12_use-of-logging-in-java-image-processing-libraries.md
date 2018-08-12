@@ -34,6 +34,7 @@ are doing with regards to logging.
 :-----:|:-----:
 Java ImageIO|No logging (exceptions only)
 im4java|No logging (exceptions only)
+opencv JNI|No logging (exceptions only)
 GeoSolutions ImageIO-Ext|java.util.logging
 Catalano|java.util.logging
 Apache PDFBox JBIG2|Custom Logger
