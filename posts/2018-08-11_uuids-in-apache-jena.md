@@ -149,3 +149,5 @@ are multiple JVM's in the same node.
 
 But to be honest, I am still not sure which one I would have to use, nor if there are
 cases where I should pick one over the other...
+
+_EDIT: Apache Jena's lead dev [replied](https://markmail.org/thread/vnys264p4c6lkc6l#query:+page:1+mid:raa7gaxconcnqbzp+state:results) with a bit of history about the project too (:_
