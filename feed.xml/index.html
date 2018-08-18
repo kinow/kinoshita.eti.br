@@ -10,13 +10,65 @@
         
         <description>Latest news from Bruno P. Kinoshita</description>
         
-        <lastBuildDate>2018-08-12T20:33:14+12:00</lastBuildDate>
-        <pubDate>2018-08-12T20:33:14+12:00</pubDate>
+        <lastBuildDate>2018-08-18T18:45:08+12:00</lastBuildDate>
+        <pubDate>2018-08-18T18:45:08+12:00</pubDate>
         <generator>PieCrust 3.2.0</generator>
         
         
         
 
+        
+        
+        
+        <item>
+            <title>Cylc Scheduler Internals - Part 3</title>
+            <link>/2018/08/18/cylc-scheduler-internals-part-3</link>
+            
+            <author>kinow</author>
+            <dc:creator>kinow</dc:creator>
+            
+            
+            
+            <category>cylc</category>
+            
+            <category>python</category>
+            
+            <category>opensource</category>
+            
+            <pubDate>2018-08-18T18:27:37+12:00</pubDate>
+            <guid>/2018/08/18/cylc-scheduler-internals-part-3</guid>
+            <description>
+            
+            &lt;p&gt;This is part 2, in a series of posts about &lt;a href=&#34;https://cylc.github.io/cylc&#34;&gt;Cylc&lt;/a&gt;
+internals. The &lt;a href=&#34;/2018/07/14/cylc-scheduler-internals-part-1&#34;&gt;part 1&lt;/a&gt;
+had the beginning of the workflow. &lt;a href=&#34;/2018/07/27/cylc-scheduler-internals-part-2&#34;&gt;part 2&lt;/a&gt;
+documented from the moment the method &lt;code&gt;configure()&lt;/code&gt; is called. This post will
+continue right after the &lt;code&gt;continue()&lt;/code&gt; method returns, going on with the next method: &lt;code&gt;run()&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;NB: this is a post to remember things, not really expecting to give someone enough
+information to be able to hack the Cylc Scheduler (though you can and would have fun!).&lt;/em&gt;&lt;/p&gt;
+&lt;p style=&#39;text-align: center;&#39;&gt;
+&lt;a href=&#34;/2018/08/18/cylc-scheduler-internals-part-3/cylc-scheduler_run.png&#34;&gt;
+&lt;img style=&#34;display: inline; width: 100%;&#34; class=&#34;ui image&#34; src=&#34;/2018/08/18/cylc-scheduler-internals-part-3/cylc-scheduler_run.png&#34;  /&gt;
+&lt;/a&gt;
+&lt;/p&gt;
+
+&lt;p&gt;At this point, the Suite Server program must have been initialized, with the
+objects that it requires, and with everything configured. So this method is the one
+that starts the whole work on the tasks &amp;amp; proxies.&lt;/p&gt;
+&lt;p&gt;The runahead points, i.e. what are the next available cycle points, are calculated
+and scheduled. In the scheduling, tasks are queued for execution.&lt;/p&gt;
+&lt;p&gt;Most of the interesting action takes place when &lt;code&gt;process_task_pool()&lt;/code&gt; is called,
+and in the &lt;code&gt;submit_task_jobs()&lt;/code&gt;. The latter is a method from &lt;code&gt;TaskJobManager&lt;/code&gt;, and
+it is here where - in this case - my shell command is executed through a temporary
+shell script file.&lt;/p&gt;
+&lt;p&gt;The graph was created from the initial execution of a suite that was starting from
+scratch (they can also be reinitialized). If there are multiple tasks waiting,
+or if a suite was restarted, the diagram would look considerably different.&lt;/p&gt;
+&lt;p&gt;You can download the &lt;a href=&#34;/2018/08/18/cylc-scheduler-internals-part-3/cylc-scheduler_run-src.xml&#34;&gt;source file&lt;/a&gt; for the diagram used in this post, and edit it
+with &lt;a href=&#34;https://draw.io&#34;&gt;draw.io&lt;/a&gt;.&lt;/p&gt;
+            
+            </description>
+        </item>
         
         
         
@@ -409,7 +461,7 @@ the moment the method &lt;code&gt;configure()&lt;/code&gt; is called.&lt;/p&gt;
 &lt;p&gt;&lt;em&gt;NB: this is a post to remember things, not really expecting to give someone enough
 information to be able to hack the Cylc Scheduler (though you can and would have fun!).&lt;/em&gt;&lt;/p&gt;
 &lt;p style=&#39;text-align: center;&#39;&gt;
-&lt;a href=&#34;&#34;&gt;
+&lt;a href=&#34;/2018/07/27/cylc-scheduler-internals-part-2/cylc-scheduler_configure.png&#34;&gt;
 &lt;img style=&#34;display: inline; width: 100%;&#34; class=&#34;ui image&#34; src=&#34;/2018/07/27/cylc-scheduler-internals-part-2/cylc-scheduler_configure.png&#34;  /&gt;
 &lt;/a&gt;
 &lt;/p&gt;
@@ -856,130 +908,6 @@ And a &lt;code&gt;null&lt;/code&gt; is returned, which means empty response.&lt;
 &lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;So that&amp;#8217;s that.&lt;/p&gt;
-&lt;p&gt;Happy hacking !&lt;/p&gt;
-            
-            </description>
-        </item>
-        
-        
-        
-        <item>
-            <title>What happens when you upload a Turtle file in Apache Jena Fuseki</title>
-            <link>/2018/05/27/what-happens-when-you-upload-a-turtle-file-in-apache-jena-fuseki</link>
-            
-            <author>kinow</author>
-            <dc:creator>kinow</dc:creator>
-            
-            
-            
-            <category>apache software foundation</category>
-            
-            <category>jena</category>
-            
-            <category>opensource</category>
-            
-            <category>programming</category>
-            
-            <pubDate>2018-05-27T22:42:55+12:00</pubDate>
-            <guid>/2018/05/27/what-happens-when-you-upload-a-turtle-file-in-apache-jena-fuseki</guid>
-            <description>
-            
-            &lt;p&gt;I am working on &lt;a href=&#34;https://github.com/NatLibFi/Skosmos/issues/738&#34;&gt;an issue for Skosmos&lt;/a&gt;
-that involves preparing some &lt;a href=&#34;https://www.w3.org/TR/turtle/&#34;&gt;Turtle&lt;/a&gt; files and uploading
-them using Apache Jena Fuseki&amp;#8217;s web interface.&lt;/p&gt;
-&lt;p&gt;The issue is now pending feedback, which gives me a moment to have fun with
-something else. So I decided to dig down the rabbit hole and start learning more
-about certain parts of the Apache Jena code base.&lt;/p&gt;
-&lt;p style=&#39;text-align: center;&#39;&gt;
-&lt;img style=&#34;display: inline; width: 600px;&#34; class=&#34;ui image&#34; src=&#34;/2018/05/27/what-happens-when-you-upload-a-turtle-file-in-apache-jena-fuseki/browser.png&#34;  /&gt;
-&lt;/p&gt;
-
-&lt;p&gt;This post will be useful to myself in the future, as a note-taking in a series, so that I
-remember how things work - you never know right? But hopefully this will be useful
-to other wanting to understand more about the code of Apache Jena. &lt;/p&gt;
-&lt;h2&gt;Where upload happens - SPARQL_Upload and Upload (Fuseki Core)&lt;/h2&gt;
-&lt;p&gt;Knowing a bit of the code base, I went straight to the &lt;code&gt;SPARQL_Upload&lt;/code&gt; class,
-from the Fuseki Core module. Set up a couple of breakpoints, uploaded my file,
-but nothing. Then tried on its package-neighbour class, &lt;code&gt;Upload&lt;/code&gt;.&lt;/p&gt;
-&lt;p&gt;Actually, it is easier to understand seeing the class hierarchy, and knowing
-that when I run the application in Eclipse, it is running with Jetty, serving
-servlets (there is no framework like Wicket, Struts, etc, involved).&lt;/p&gt;
-&lt;p style=&#39;text-align: center;&#39;&gt;
-&lt;img style=&#34;display: inline; width: 600px;&#34; class=&#34;ui image&#34; src=&#34;/2018/05/27/what-happens-when-you-upload-a-turtle-file-in-apache-jena-fuseki/class-hierarchy.png&#34;  /&gt;
-&lt;/p&gt;
-
-&lt;p&gt;Several filters are applied to the HTTP request too, like Cross Origin, Shiro, and
-the &lt;code&gt;FusekiFilter&lt;/code&gt;. The latter looks at the requests to see if it includes a dataset.
-If a dataset is found - it is in our case - then it hands the request over to
-the right class to handle it.&lt;/p&gt;
-&lt;p&gt;REST_Quads_RW will take care of the upload action, using the &lt;code&gt;Upload&lt;/code&gt; class where my
-breakpoint stopped.&lt;/p&gt;
-&lt;h2&gt;Upload#incomingData() (Fuseki Core)&lt;/h2&gt;
-&lt;p&gt;&lt;code&gt;Upload#incomingData()&lt;/code&gt; starts by checking the Content Type from the request. In my case
-it is a &lt;code&gt;multipart/form-data&lt;/code&gt;. Then it calls its other method &lt;code&gt;#fileUploadWorker()&lt;/code&gt;.&lt;/p&gt;
-&lt;p&gt;&lt;code&gt;#fileUploadWorker()&lt;/code&gt; creates a &lt;code&gt;ServletFilterUpload&lt;/code&gt;, from Apache Commons FileUpload.
-With that, it opens a stream for the file, retrieves its name and other information,
-such as the content type.&lt;/p&gt;
-&lt;p&gt;Ah, the content type is interesting too. It defaults to &lt;code&gt;RDFXML&lt;/code&gt;, but what&amp;#8217;s interesting
-is the comment.&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;span class=&#34;k&#34;&gt;if&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;lang&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;==&lt;/span&gt; &lt;span class=&#34;kc&#34;&gt;null&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
-    &lt;span class=&#34;c1&#34;&gt;// Desperate.&lt;/span&gt;
-    &lt;span class=&#34;n&#34;&gt;lang&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;RDFLanguages&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;RDFXML&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;;&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;Well, in this case we are getting a &lt;code&gt;Lang:Turtle&lt;/code&gt;. So it now knows that it has a Turtle
-file, but it still needs to parse it.&lt;/p&gt;
-&lt;h2&gt;ActionLib#parse() (Fuseki Core)&lt;/h2&gt;
-&lt;p&gt;&lt;code&gt;Upload&lt;/code&gt; calls &lt;code&gt;ActionLib#parse()&lt;/code&gt;, which uses &lt;code&gt;RDFParserBuilder&lt;/code&gt; to build a parser.
-It applies a nice fluent API design when doing that.&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;span class=&#34;n&#34;&gt;RDFParser&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;create&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;()&lt;/span&gt;
-    &lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;errorHandler&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;errorHandler&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
-    &lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;source&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;input&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
-    &lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;lang&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;lang&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
-    &lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;base&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;base&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
-    &lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;parse&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;dest&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;);&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-&lt;blockquote&gt;Side note to self: the `RDFParser` has a `canUse` flag. It seems to indicate
-the parser can be used just once. Though it looks actually it works until the stream
-is closed&amp;#8230;&lt;/blockquote&gt;
-
-&lt;p&gt;So &lt;code&gt;RDFParserBuilder&lt;/code&gt; will call &lt;code&gt;RDFParser&lt;/code&gt;, which in turn will use the
-classes &lt;code&gt;LangTurtle&lt;/code&gt; and &lt;code&gt;LangTurtleBase&lt;/code&gt;.&lt;/p&gt;
-&lt;h2&gt;LangTurtle (ARQ)&lt;/h2&gt;
-&lt;p&gt;ARQ is a low level module in Jena, responsible for parsing queries, and also
-some of the interaction with graphs and datasets.&lt;/p&gt;
-&lt;p&gt;&lt;code&gt;LangTurtle&lt;/code&gt; extends &lt;code&gt;LangTurtleBase&lt;/code&gt;. Their task starts by populating
-the &lt;code&gt;prefixMap&lt;/code&gt;, which contains all those prefixes used in queries like
-&lt;code&gt;rdfs&lt;/code&gt;, &lt;code&gt;void&lt;/code&gt;, &lt;code&gt;skos&lt;/code&gt;, &lt;code&gt;etc&lt;/code&gt;.&lt;/p&gt;
-&lt;p&gt;Then it will keep parsing &lt;strong&gt;triples&lt;/strong&gt; until it finds an &lt;code&gt;EOF&lt;/code&gt;. For every
-triple, after the &lt;em&gt;Predicate-Object-List&lt;/em&gt; is found, it calls
-&lt;code&gt;LangTurtle#emit()&lt;/code&gt;.&lt;/p&gt;
-&lt;p&gt;The &lt;code&gt;#emit()&lt;/code&gt;method creates a &lt;code&gt;Triple&lt;/code&gt; object (Jena Core, graph package).
-And also a &lt;code&gt;StreamRDFCountingBase&lt;/code&gt; to keep track of statistics to display
-back to the user.&lt;/p&gt;
-&lt;p style=&#39;text-align: center;&#39;&gt;
-&lt;img style=&#34;display: inline; width: 600px;&#34; class=&#34;ui image&#34; src=&#34;/2018/05/27/what-happens-when-you-upload-a-turtle-file-in-apache-jena-fuseki/eclipse.png&#34;  /&gt;
-&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;StreamRDFCountingBase&lt;/code&gt; extends &lt;code&gt;StreamRDFWrapper&lt;/code&gt;, and wraps - as per name -
-other &lt;code&gt;StreamRDF&lt;/code&gt;&amp;#8216;s, such as &lt;code&gt;ParserOutputDataset&lt;/code&gt;.&lt;/p&gt;
-&lt;p&gt;&lt;code&gt;ParserOutputDataset&lt;/code&gt; holds a reference to the &lt;code&gt;DatasetGraph&lt;/code&gt; and also to the
-&lt;code&gt;prefixMap&lt;/code&gt; populated earlier in &lt;code&gt;LangTurtle&lt;/code&gt;. For each &lt;code&gt;Triple&lt;/code&gt; that we have
-it will call the &lt;code&gt;DatasetGraph#add&lt;/code&gt; method, creating a new &lt;em&gt;Quad&lt;/em&gt; with the
-default graph name.&lt;/p&gt;
-&lt;h2&gt;Conclusion&lt;/h2&gt;
-&lt;p&gt;Finally, readers and streams are closed. An &lt;code&gt;UploadDetails&lt;/code&gt; object is created
-holding stats ollected in &lt;code&gt;StreamRDFCountingBase&lt;/code&gt;, which are also used for
-logging.&lt;/p&gt;
-&lt;p&gt;&lt;code&gt;Upload#incomingPath()&lt;/code&gt; will return the &lt;code&gt;UploadDetails&lt;/code&gt;. If there are no errors
-then the transaction will be commited. It involves again classes from ARQ and
-TDB (for journaling), but that will be for another post.&lt;/p&gt;
-&lt;p&gt;The final method called in the &lt;code&gt;Upload&lt;/code&gt; class will be &lt;code&gt;detailsJson()&lt;/code&gt;, which
-returns the object as JSON. This JSON string is then finally returned to the
-user.&lt;/p&gt;
-&lt;p&gt;So that&amp;#8217;s it. Probably the next step will be to learn how &lt;code&gt;DatasetGraph&lt;/code&gt; works,
-or maybe more about transactions in Jena.&lt;/p&gt;
 &lt;p&gt;Happy hacking !&lt;/p&gt;
             
             </description>

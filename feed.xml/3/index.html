@@ -10,13 +10,60 @@
         
         <description>Latest news from Bruno P. Kinoshita</description>
         
-        <lastBuildDate>2018-08-12T20:33:14+12:00</lastBuildDate>
-        <pubDate>2018-08-12T20:33:14+12:00</pubDate>
+        <lastBuildDate>2018-08-18T18:45:08+12:00</lastBuildDate>
+        <pubDate>2018-08-18T18:45:08+12:00</pubDate>
         <generator>PieCrust 3.2.0</generator>
         
         
         
 
+        
+        
+        
+        <item>
+            <title>Removing Javadoc SVN Id Tags with Shell Script</title>
+            <link>/2017/09/13/removing-javadoc-svn-id-tags-with-shell-script</link>
+            
+            <author>kinow</author>
+            <dc:creator>kinow</dc:creator>
+            
+            
+            
+            <category>programming</category>
+            
+            <category>shell script</category>
+            
+            <category>opensource</category>
+            
+            <category>apache software foundation</category>
+            
+            <pubDate>2017-09-13T16:49:26+12:00</pubDate>
+            <guid>/2017/09/13/removing-javadoc-svn-id-tags-with-shell-script</guid>
+            <description>
+            
+            &lt;p&gt;Subversion supports &lt;a href=&#34;http://svnbook.red-bean.com/en/1.4/svn.advanced.props.special.keywords.html&#34;&gt;Keyword Substitution&lt;/a&gt;, which performs substitution of some keywords such as &lt;em&gt;Author&lt;/em&gt;, &lt;em&gt;Date&lt;/em&gt;, and &lt;strong&gt;&lt;em&gt;Id&lt;/em&gt;&lt;/strong&gt;. The &lt;strong&gt;&lt;em&gt;Id&lt;/em&gt;&lt;/strong&gt; is the date, time, and user that last modified the file.&lt;/p&gt;
+&lt;p&gt;It used to be common to all Apache Commons components to have a line as follows in the header of each Java class.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;span class=&#34;cm&#34;&gt;/**&lt;/span&gt;
+&lt;span class=&#34;cm&#34;&gt; * SomeClass class.&lt;/span&gt;
+&lt;span class=&#34;cm&#34;&gt; *&lt;/span&gt;
+&lt;span class=&#34;cm&#34;&gt; * @version $Id$&lt;/span&gt;
+&lt;span class=&#34;cm&#34;&gt; */&lt;/span&gt;
+&lt;span class=&#34;kd&#34;&gt;public&lt;/span&gt; &lt;span class=&#34;kd&#34;&gt;class&lt;/span&gt; &lt;span class=&#34;nc&#34;&gt;SomeClass&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;
+
+&lt;span class=&#34;o&#34;&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Then the generated Javadoc would contain the date of when the class was altered. Although useful, with proper versioning, it becomes obsolete. It is much more important to know what is the version of the software, not the last time it was modified or by whom. In case you have a problem with that specific file, you can always check the history of the file using &lt;code&gt;git log&lt;/code&gt;, or &lt;code&gt;git bisect&lt;/code&gt;, or &amp;hellip;&lt;/p&gt;
+&lt;p&gt;Apache Commons components that are migrated to git need to have these lines removed. git does not support these Subversion Keywords so it is never properly rendered. And as every time I have to remove these lines I come up with some shell script snippet, I decided to document the last one I wrote, so that it can save me some time &amp;dash; and perhaps for somebody else too?&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;find . -name &lt;span class=&#34;s2&#34;&gt;&amp;quot;*.java&amp;quot;&lt;/span&gt; -exec sed -i &lt;span class=&#34;s1&#34;&gt;&amp;#39;/^.*\*\s*@version\s*\$Id\$.*$/d&amp;#39;&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;{}&lt;/span&gt; &lt;span class=&#34;se&#34;&gt;\;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;And then &lt;a href=&#34;https://github.com/apache/commons-collections/commit/29d2e93966e7fb99a888a58ab43480e485dcdfc6&#34;&gt;push a commit&lt;/a&gt; with the change :-) In case you know some regex, you can change it and use the same command syntax to remove comments, specific configuration lines, etc.&lt;/p&gt;
+&lt;p&gt;That&amp;#8217;s all. Happy scripting!&lt;/p&gt;
+&lt;p&gt;&amp;hearts; Open Source&lt;/p&gt;
+            
+            </description>
+        </item>
         
         
         
@@ -677,61 +724,6 @@ Wendy mentioned that you would be a great person to speak to since you are close
 &lt;p&gt;The code above is from the change that caused the regression. Any user that was using the ISO_8859_1 constant variable in a switch statement would get a compilation error (e.g. &lt;em&gt;case expressions must be constant expressions&lt;/em&gt;) when updating to Apache Commons Lang 3.6. That is because the constant variable is not a constant expression.&lt;/p&gt;
 &lt;p&gt;I think I learned that some time ago, but if you asked me what was wrong with the change, and if it would break backward compatibility, I would probably fail to spot the issue. There are tools for that now (e.g. Clirr, japicmp) though they may miss some cases too.&lt;/p&gt;
 &lt;p&gt;Luckily in this case a user subscribed to the Apache Commons development mailing list spotted the issue and quickly reported it. It gets easier maintaining an Open Source project with the constructive feedback of users, like this one.&lt;/p&gt;
-&lt;p&gt;&amp;hearts; Open Source&lt;/p&gt;
-            
-            </description>
-        </item>
-        
-        
-        
-        <item>
-            <title>Securely using passwords with R</title>
-            <link>/2017/06/03/securely-using-passwords-with-r</link>
-            
-            <author>kinow</author>
-            <dc:creator>kinow</dc:creator>
-            
-            
-            
-            <category>r</category>
-            
-            <category>programming</category>
-            
-            <category>security</category>
-            
-            <pubDate>2017-06-03T20:21:39+12:00</pubDate>
-            <guid>/2017/06/03/securely-using-passwords-with-r</guid>
-            <description>
-            
-            &lt;p&gt;It is quite common to have code that needs to interact with another system, database, or third party application, and need to use some sort of credentials to securely communicate.&lt;/p&gt;
-&lt;p&gt;Most of the code I wrote in &lt;strong&gt;R&lt;/strong&gt;, or reviewed, had normally no borders (from a system analysis perspective) with other systems, or basically just interacted with the file system to retrieve NetCDF or JSON files.&lt;/p&gt;
-&lt;p&gt;However, after I saw a comment in &lt;em&gt;Reddit&lt;/em&gt; [1] some time ago about this, I decided to check what others used. With &lt;strong&gt;R Shiny&lt;/strong&gt; becoming more popular, and moving more R code to the web, I think this will become a common requirement for R code.&lt;/p&gt;
-&lt;p&gt;There is a blog post from &lt;strong&gt;RevolutionAnalytics&lt;/strong&gt; [2] that does a nice summary of the options for that. The post is from 2015, but I do not think much changed now in 2017. From the blog post and comments, there are seven methods listed:&lt;/p&gt;
-&lt;ol&gt;
-&lt;li&gt;Put &lt;a href=&#34;https://github.com/ropensci/fishbaseapi/blob/80393023a958aee54e2daa58c337458db5480b84/config_template.yaml&#34;&gt;credentials&lt;/a&gt; in your source code&lt;/li&gt;
-&lt;li&gt;Put credentials in a file in your project, but do not share this file (&lt;em&gt;#3&lt;/em&gt;, &lt;em&gt;#4&lt;/em&gt;, and &lt;em&gt;#5&lt;/em&gt; are similar to this one)&lt;/li&gt;
-&lt;li&gt;Put credentials in a &lt;a href=&#34;https://csgillespie.github.io/efficientR/3-3-r-startup.html#rprofile&#34;&gt;.Rprofile&lt;/a&gt; file&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Put credentials in a &lt;a href=&#34;https://csgillespie.github.io/efficientR/3-3-r-startup.html#renviron&#34;&gt;.Renviron&lt;/a&gt; file&lt;/strong&gt;&lt;/li&gt;
-&lt;li&gt;Put &lt;a href=&#34;https://github.com/ropensci/fishbaseapi/blob/80393023a958aee54e2daa58c337458db5480b84/config_template.yaml&#34;&gt;credentials&lt;/a&gt; in a JSON or YAML file&lt;/li&gt;
-&lt;li&gt;Put credentials in a secure store that you can access from R&lt;/li&gt;
-&lt;li&gt;Ask the user for the credentials when the script is executed (possibly not useful for R Shiny applications)&lt;/li&gt;
-&lt;/ol&gt;
-&lt;p&gt;&lt;strong&gt;My preferred way for R is the .Renviron (or a &lt;a href=&#34;https://github.com/gaborcsardi/dotenv&#34;&gt;dotEnv&lt;/a&gt;) file&lt;/strong&gt;. You basically store your password in this file, make sure you do not share this (a global gitignore could be helpful to prevent any accident) and read the variables when you start your code.&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;span class=&#34;c1&#34;&gt;## Secrets&lt;/span&gt;
-MYSQL_PASSWORD&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;secret
-&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;If you would like to increase the security, you can combine it with a variation of &lt;em&gt;#6&lt;/em&gt;. You use a .Renviron file, and use an encryption service like &lt;a href=&#34;https://aws.amazon.com/kms/&#34;&gt;Amazon KMS&lt;/a&gt; (KMS stands for Key Management Service).&lt;/p&gt;
-&lt;p&gt;With &lt;a href=&#34;https://github.com/cardcorp/AWR.KMS&#34;&gt;AWS KMS in R&lt;/a&gt;, you can encrypt your values, put them encrypted in your .Renviron, and even if someone gets hold of your .Renviron file, you have an extra layer of protection, as the attacker would require access to your cloud environment to decrypt it too.&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;span class=&#34;c1&#34;&gt;## Secrets&lt;/span&gt;
-MYSQL_PASSWORD&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;AQECAHga320J8WadplGCqqVAr4HNvDaFSQ&lt;span class=&#34;o&#34;&gt;+&lt;/span&gt;NaiwIBhmm6qDSFwAAAGIwYAYJKoZIhvcNAQcGoFMwUQIBADBMBgkqhkiG9w0BBwEwHgYJYIZIAWUDBAEuMBEE99&lt;span class=&#34;o&#34;&gt;+&lt;/span&gt;LoLdvYv8l41OhAAIBEIAfx49FFJCLeYrkfMfAw6XlnxP23MmDBdqP8dPp28OoAQ&lt;span class=&#34;o&#34;&gt;==&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-&lt;h3&gt;References&lt;/h3&gt;
-&lt;ul&gt;
-&lt;li&gt;[1] &lt;a href=&#34;https://www.reddit.com/r/rstats/comments/6aonwx/open_source_r_applications_and_hiding_database/&#34;&gt;r/stats * Open source R applications and hiding database connection&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;[2] &lt;a href=&#34;http://blog.revolutionanalytics.com/2015/11/how-to-store-and-use-authentication-details-with-r.html&#34;&gt;How to store and use webservice keys and authentication details with R&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
 &lt;p&gt;&amp;hearts; Open Source&lt;/p&gt;
             
             </description>

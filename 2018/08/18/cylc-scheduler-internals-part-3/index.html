@@ -2,7 +2,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en">
 <head profile="http://gmpg.org/xfn/11">
-    <title>Bruno P. Kinoshita &mdash; Cylc Scheduler Internals - Part 2</title> 
+    <title>Bruno P. Kinoshita &mdash; Cylc Scheduler Internals - Part 3</title> 
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="description" content="Bruno de Paula Kinoshita personal web site" />
     <meta name="keywords"
@@ -78,7 +78,7 @@
                 <i class="content icon"></i>
             </a>
             <div class="item">
-                Cylc Scheduler Internals - Part 2
+                Cylc Scheduler Internals - Part 3
             </div>
         </div>
     </div>
@@ -120,9 +120,9 @@
 
                 
 <div class="ui raised padded container segment">
-  <h1 class='post-topic'>Cylc Scheduler Internals - Part 2</h1>
+  <h1 class='post-topic'>Cylc Scheduler Internals - Part 3</h1>
   <small>kinow</small> @
-	<small>2018-07-27&nbsp;00:25:37 (<span class='stardate' data-input-date='2018-07-27'></span>)</small>
+	<small>2018-08-18&nbsp;18:27:37 (<span class='stardate' data-input-date='2018-08-18'></span>)</small>
   <div class="entry">
     
 
@@ -130,28 +130,35 @@
 
 
 
-<a href="https://twitter.com/share" class="twitter-share-button" data-url="https://kinoshita.eti.br/2018/07/27/cylc-scheduler-internals-part-2" data-text="Cylc Scheduler Internals - Part 2" data-via="kinow" data-hashtags="opensource">Tweet</a>
+<a href="https://twitter.com/share" class="twitter-share-button" data-url="https://kinoshita.eti.br/2018/08/18/cylc-scheduler-internals-part-3" data-text="Cylc Scheduler Internals - Part 3" data-via="kinow" data-hashtags="opensource">Tweet</a>
 <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p='https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
 
 	  <p>This is part 2, in a series of posts about <a href="https://cylc.github.io/cylc">Cylc</a>
 internals. The <a href="/2018/07/14/cylc-scheduler-internals-part-1">part 1</a>
-had the beginning of the workflow. And here we will have the continuation, from
-the moment the method <code>configure()</code> is called.</p>
+had the beginning of the workflow. <a href="/2018/07/27/cylc-scheduler-internals-part-2">part 2</a>
+documented from the moment the method <code>configure()</code> is called. This post will
+continue right after the <code>continue()</code> method returns, going on with the next method: <code>run()</code>.</p>
 <p><em>NB: this is a post to remember things, not really expecting to give someone enough
 information to be able to hack the Cylc Scheduler (though you can and would have fun!).</em></p>
 <p style='text-align: center;'>
-<a href="/2018/07/27/cylc-scheduler-internals-part-2/cylc-scheduler_configure.png">
-<img style="display: inline; width: 100%;" class="ui image" src="/2018/07/27/cylc-scheduler-internals-part-2/cylc-scheduler_configure.png"  />
+<a href="/2018/08/18/cylc-scheduler-internals-part-3/cylc-scheduler_run.png">
+<img style="display: inline; width: 100%;" class="ui image" src="/2018/08/18/cylc-scheduler-internals-part-3/cylc-scheduler_run.png"  />
 </a>
 </p>
 
-<p>The <code>configure</code> method is responsible for configuring the Suite Server Program. Which
-means it will interact with the configuration singletons to retrieve the necessary
-configuration for the program.</p>
-<p>It also interacts with other objects that store state, and also creates basic data structures
-and objects required for a suite program (e.g. Queues).</p>
-<p>This is also where the <strong>contact file</strong> is created, as well as the HTTP server.</p>
-<p>You can download the <a href="/2018/07/27/cylc-scheduler-internals-part-2/cylc-scheduler_configure-src.xml">source file</a> for the diagram used in this post, and edit it
+<p>At this point, the Suite Server program must have been initialized, with the
+objects that it requires, and with everything configured. So this method is the one
+that starts the whole work on the tasks &amp; proxies.</p>
+<p>The runahead points, i.e. what are the next available cycle points, are calculated
+and scheduled. In the scheduling, tasks are queued for execution.</p>
+<p>Most of the interesting action takes place when <code>process_task_pool()</code> is called,
+and in the <code>submit_task_jobs()</code>. The latter is a method from <code>TaskJobManager</code>, and
+it is here where - in this case - my shell command is executed through a temporary
+shell script file.</p>
+<p>The graph was created from the initial execution of a suite that was starting from
+scratch (they can also be reinitialized). If there are multiple tasks waiting,
+or if a suite was restarted, the diagram would look considerably different.</p>
+<p>You can download the <a href="/2018/08/18/cylc-scheduler-internals-part-3/cylc-scheduler_run-src.xml">source file</a> for the diagram used in this post, and edit it
 with <a href="https://draw.io">draw.io</a>.</p>
   </div>
   <p class="postmetadata">

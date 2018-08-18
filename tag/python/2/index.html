@@ -132,7 +132,7 @@
                               
                               <span style="font-size: 13.5pt"><a href="/tag/c%2B%2B">c++</a></span>&nbsp;(7)
                               
-                              <span style="font-size: 13.0pt"><a href="/tag/cylc">cylc</a></span>&nbsp;(6)
+                              <span style="font-size: 13.5pt"><a href="/tag/cylc">cylc</a></span>&nbsp;(7)
                               
                               <span style="font-size: 12.0pt"><a href="/tag/docker">docker</a></span>&nbsp;(4)
                               
@@ -152,11 +152,11 @@
                               
                               <span style="font-size: 12.0pt"><a href="/tag/natural%20language%20processing">natural language processing</a></span>&nbsp;(4)
                               
-                              <span style="font-size: 28.5pt"><a href="/tag/opensource">opensource</a></span>&nbsp;(37)
+                              <span style="font-size: 29.0pt"><a href="/tag/opensource">opensource</a></span>&nbsp;(38)
                               
                               <span style="font-size: 26.5pt"><a href="/tag/programming">programming</a></span>&nbsp;(33)
                               
-                              <span style="font-size: 16.5pt"><a href="/tag/python">python</a></span>&nbsp;(13)
+                              <span style="font-size: 17.0pt"><a href="/tag/python">python</a></span>&nbsp;(14)
                               
                               <span style="font-size: 11.5pt"><a href="/tag/r">r</a></span>&nbsp;(3)
                               
@@ -179,6 +179,83 @@
                 
 
 Posts tagged with 'python'
+
+
+
+
+<div class="ui raised padded container segment">
+    <h2><a href="/2018/07/08/a-simple-cylc-suite" title="Permanent link">A simple cylc suite</a></h2>
+    <p><small>kinow</small> @ <small>Jul 08, 2018&nbsp;18:59:13</small></p>
+    
+    
+
+
+
+
+
+<a href="https://twitter.com/share" class="twitter-share-button" data-url="https://kinoshita.eti.br/2018/07/08/a-simple-cylc-suite" data-text="A simple cylc suite" data-via="kinow" data-hashtags="opensource">Tweet</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p='https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+
+
+    <p>I have been writing more suites for <a href="https://cylc.github.io/cylc/">cylc</a> lately, and found
+an example that has proved to be useful for debugging certain parts of the code.</p>
+<p>It is an extremely simple suite, similar to what is in cylc&#8217;s documentation. It
+sleeps for N seconds, and prints a message.</p>
+<p>What makes it extra simpler, is that it cycles through integers, and has
+a limit of 1 maximum active points.</p>
+<p>It is essentially the same as running the command in your shell session. With
+the difference that it will run through all cylc&#8217;s internal, only once, and
+allow you to debug and diagnostic parts nor related to cycling and graphs
+(as for these parts you would probably need a more elaborate example).</p>
+<div class="highlight"><pre><span class="p">[</span><span class="n">scheduling</span><span class="p">]</span>
+    <span class="n">cycling</span> <span class="n">mode</span> <span class="o">=</span> <span class="n">integer</span>
+    <span class="n">initial</span> <span class="n">cycle</span> <span class="n">point</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="nb">max</span> <span class="n">active</span> <span class="n">cycle</span> <span class="n">points</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="p">[[</span><span class="n">dependencies</span><span class="p">]]</span>
+        <span class="p">[[[</span><span class="n">P1</span><span class="p">]]]</span>
+            <span class="n">graph</span> <span class="o">=</span> <span class="s">&quot;hello&quot;</span>
+<span class="p">[</span><span class="n">runtime</span><span class="p">]</span>
+    <span class="p">[[</span><span class="n">hello</span><span class="p">]]</span>
+        <span class="n">script</span> <span class="o">=</span> <span class="s">&quot;sleep 10; echo PING&quot;</span>
+</pre></div>
+
+<p>I also combine this suite with the following <code>global.rc</code>.</p>
+<div class="highlight"><pre><span class="p">[</span><span class="n">editors</span><span class="p">]</span> 
+    <span class="n">terminal</span> <span class="o">=</span> <span class="n">vim</span> 
+    <span class="n">gui</span> <span class="o">=</span> <span class="n">gvim</span> <span class="o">-</span><span class="n">f</span>
+
+<span class="p">[</span><span class="n">communication</span><span class="p">]</span>
+    <span class="n">base</span> <span class="n">port</span> <span class="o">=</span> <span class="mi">44444</span>
+    <span class="n">method</span> <span class="o">=</span> <span class="n">http</span>
+    <span class="n">maximum</span> <span class="n">number</span> <span class="n">of</span> <span class="n">ports</span> <span class="o">=</span> <span class="mi">1</span>
+</pre></div>
+
+<p>With &#8220;base port&#8221; set to 44444, and the maximum number of ports to 1, I will
+be able to run only one task. But that way I can configure Wireshark and other
+tools to default to 44444/HTTP, for ease of debugging.</p>
+<p>Then initialize the suite with something like: <code>cylc start --non-daemon --debug /home/kinow/Development/python/workspace/example-suite/</code></p>
+<p>Happy cycling!</p><!-- html -->
+    
+<p class="postmetadata">
+    
+    <small>tags 
+     [&nbsp;<a
+        href="/tag/cylc"
+        rel="tag">cylc</a>&nbsp;]&nbsp;
+    
+     [&nbsp;<a
+        href="/tag/python"
+        rel="tag">python</a>&nbsp;]&nbsp;
+    
+     [&nbsp;<a
+        href="/tag/opensource"
+        rel="tag">opensource</a>&nbsp;]&nbsp;
+    
+    </small>
+    
+    
+</p>
+</div>
 
 
 
@@ -504,106 +581,6 @@ with a <a href="https://github.com/kennethreitz/requests/blob/dfad00a6e84bc75b12
      [&nbsp;<a
         href="/tag/python"
         rel="tag">python</a>&nbsp;]&nbsp;
-    
-    </small>
-    
-    
-    <br/>
-    <small>posted in 
-    [&nbsp;<a
-        href="/blog"
-        title="View all posts in blog"
-        rel="category tag">blog</a>&nbsp;]&nbsp;
-    category </small>
-    
-</p>
-</div>
-
-
-
-
-<div class="ui raised padded container segment">
-    <h2><a href="/2016/10/04/using-the-aws-api-with-python" title="Permanent link">Using the AWS API with Python</a></h2>
-    <p><small>kinow</small> @ <small>Oct 04, 2016&nbsp;21:15:03</small></p>
-    
-    
-
-
-
-
-
-<a href="https://twitter.com/share" class="twitter-share-button" data-url="https://kinoshita.eti.br/2016/10/04/using-the-aws-api-with-python" data-text="Using the AWS API with Python" data-via="kinow" data-hashtags="opensource">Tweet</a>
-<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p='https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-
-
-    <p>Amazon Web Services provides a series of cloud services. When you access the web interface, most - if not all - of the actions you do there are actually translated into API calls.</p>
-<p>They also provide SDK&#8217;s in several programming languages. With these SDK&#8217;s you are able to call the same API used by the web interface. Python has <a href="https://github.com/boto/boto3">boto</a> (or boto3) which lets you to automate several tasks in AWS.</p>
-<p>But before you start using the API, you will need to <a href="https://web.archive.org/web/20160818112016/http://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSGettingStartedGuide/AWSCredentials.html">set up your access key</a>.</p>
-<p>It is likely that with time you will have different roles, and may have different permissions with each role. You have to configure your local environment so that you can either use the command line Python utility (installed via <code>pip install awscli</code>) or with boto.</p>
-<p>The awscli is a dependency for using boto3. After you install it, you need to run <code>aws configure</code>. It will create the <em>~/.aws/config</em> and <em>~/.aws/credentials</em> files. You can tweak these files to support multiple roles.</p>
-<p>I followed the tutorials, but got all sorts of different issues. Then after debugging some locally installed dependencies, in special awscli files, I found that the following settings work for my environment.</p>
-<div class="highlight"><pre><span class="c"># File: config</span>
-<span class="o">[</span>profile default<span class="o">]</span>
-<span class="nv">region</span> <span class="o">=</span> ap-southeast-2
-
-<span class="o">[</span>profile profile1<span class="o">]</span>
-<span class="nv">region</span> <span class="o">=</span> ap-southeast-2
-<span class="nv">source_profile</span> <span class="o">=</span> default
-<span class="nv">role_arn</span> <span class="o">=</span> arn:aws:iam::123:role/Developer
-
-<span class="o">[</span>profile profile2<span class="o">]</span>
-<span class="nv">region</span> <span class="o">=</span> ap-southeast-2
-<span class="nv">source_profile</span> <span class="o">=</span> default
-<span class="nv">role_arn</span> <span class="o">=</span> arn:aws:iam::456:role/Sysops
-<span class="nv">mfa_serial</span> <span class="o">=</span> arn:aws:iam::789:mfa/user@domain.blabla
-</pre></div>
-
-<p>and</p>
-<div class="highlight"><pre><span class="c"># File: credentials</span>
-<span class="o">[</span>default<span class="o">]</span>
-<span class="nv">aws_access_key_id</span> <span class="o">=</span> YOU_KEY_ID
-<span class="nv">aws_secret_access_key</span> <span class="o">=</span> YOUR_SECRET
-</pre></div>
-
-<p>And once it is done you can, for example, confirm it is working with some S3 commands in Python.</p>
-<div class="highlight"><pre><span class="c">#!/usr/bin/env python3</span>
-
-<span class="kn">import</span> <span class="nn">os</span>
-<span class="kn">import</span> <span class="nn">boto3</span>
-
-<span class="n">session</span> <span class="o">=</span> <span class="n">boto3</span><span class="o">.</span><span class="n">Session</span><span class="p">(</span><span class="n">profile_name</span><span class="o">=</span><span class="s">&#39;profile2&#39;</span><span class="p">)</span>
-<span class="n">s3</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">resource</span><span class="p">(</span><span class="s">&#39;s3&#39;</span><span class="p">)</span>
-
-<span class="n">found</span> <span class="o">=</span> <span class="bp">False</span>
-
-<span class="n">name</span> <span class="o">=</span> <span class="s">&#39;mysuperduperbucket&#39;</span>
-
-<span class="k">for</span> <span class="n">bucket</span> <span class="ow">in</span> <span class="n">s3</span><span class="o">.</span><span class="n">buckets</span><span class="o">.</span><span class="n">all</span><span class="p">():</span>
-    <span class="k">if</span> <span class="n">bucket</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="n">name</span><span class="p">:</span>
-        <span class="n">found</span> <span class="o">=</span> <span class="bp">True</span>
-
-<span class="k">if</span> <span class="ow">not</span> <span class="n">found</span><span class="p">:</span>
-    <span class="k">print</span><span class="p">(</span><span class="s">&quot;Creating bucket...&quot;</span><span class="p">)</span>
-    <span class="n">s3</span><span class="o">.</span><span class="n">create_bucket</span><span class="p">(</span><span class="n">Bucket</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
-
-<span class="n">file_location</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">realpath</span><span class="p">(</span><span class="n">__file__</span><span class="p">))</span> <span class="o">+</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">sep</span> <span class="o">+</span> <span class="s">&#39;samplefile.txt&#39;</span>
-<span class="n">s3</span><span class="o">.</span><span class="n">meta</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">upload_file</span><span class="p">(</span><span class="n">Filename</span><span class="o">=</span><span class="n">file_location</span><span class="p">,</span> <span class="n">Bucket</span><span class="o">=</span><span class="n">name</span><span class="p">,</span> <span class="n">Key</span><span class="o">=</span><span class="s">&#39;book.txt&#39;</span><span class="p">)</span>
-</pre></div>
-
-<p>The AWS files in this example are using MFA too, the multi-factor authentication. So the first time you run this code you may be asked to generate a token, which will be cached for a short time.</p>
-<p>That&#8217;s it for today.</p>
-<p>Happy hacking!</p><!-- html -->
-    
-<p class="postmetadata">
-    
-    <small>tags 
-     [&nbsp;<a
-        href="/tag/python"
-        rel="tag">python</a>&nbsp;]&nbsp;
-    
-     [&nbsp;<a
-        href="/tag/aws"
-        rel="tag">aws</a>&nbsp;]&nbsp;
     
     </small>
     

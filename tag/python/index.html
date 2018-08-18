@@ -132,7 +132,7 @@
                               
                               <span style="font-size: 13.5pt"><a href="/tag/c%2B%2B">c++</a></span>&nbsp;(7)
                               
-                              <span style="font-size: 13.0pt"><a href="/tag/cylc">cylc</a></span>&nbsp;(6)
+                              <span style="font-size: 13.5pt"><a href="/tag/cylc">cylc</a></span>&nbsp;(7)
                               
                               <span style="font-size: 12.0pt"><a href="/tag/docker">docker</a></span>&nbsp;(4)
                               
@@ -152,11 +152,11 @@
                               
                               <span style="font-size: 12.0pt"><a href="/tag/natural%20language%20processing">natural language processing</a></span>&nbsp;(4)
                               
-                              <span style="font-size: 28.5pt"><a href="/tag/opensource">opensource</a></span>&nbsp;(37)
+                              <span style="font-size: 29.0pt"><a href="/tag/opensource">opensource</a></span>&nbsp;(38)
                               
                               <span style="font-size: 26.5pt"><a href="/tag/programming">programming</a></span>&nbsp;(33)
                               
-                              <span style="font-size: 16.5pt"><a href="/tag/python">python</a></span>&nbsp;(13)
+                              <span style="font-size: 17.0pt"><a href="/tag/python">python</a></span>&nbsp;(14)
                               
                               <span style="font-size: 11.5pt"><a href="/tag/r">r</a></span>&nbsp;(3)
                               
@@ -184,6 +184,72 @@ Posts tagged with 'python'
 
 
 <div class="ui raised padded container segment">
+    <h2><a href="/2018/08/18/cylc-scheduler-internals-part-3" title="Permanent link">Cylc Scheduler Internals - Part 3</a></h2>
+    <p><small>kinow</small> @ <small>Aug 18, 2018&nbsp;18:27:37</small></p>
+    
+    
+
+
+
+
+
+<a href="https://twitter.com/share" class="twitter-share-button" data-url="https://kinoshita.eti.br/2018/08/18/cylc-scheduler-internals-part-3" data-text="Cylc Scheduler Internals - Part 3" data-via="kinow" data-hashtags="opensource">Tweet</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p='https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+
+
+    <p>This is part 2, in a series of posts about <a href="https://cylc.github.io/cylc">Cylc</a>
+internals. The <a href="/2018/07/14/cylc-scheduler-internals-part-1">part 1</a>
+had the beginning of the workflow. <a href="/2018/07/27/cylc-scheduler-internals-part-2">part 2</a>
+documented from the moment the method <code>configure()</code> is called. This post will
+continue right after the <code>continue()</code> method returns, going on with the next method: <code>run()</code>.</p>
+<p><em>NB: this is a post to remember things, not really expecting to give someone enough
+information to be able to hack the Cylc Scheduler (though you can and would have fun!).</em></p>
+<p style='text-align: center;'>
+<a href="/2018/08/18/cylc-scheduler-internals-part-3/cylc-scheduler_run.png">
+<img style="display: inline; width: 100%;" class="ui image" src="/2018/08/18/cylc-scheduler-internals-part-3/cylc-scheduler_run.png"  />
+</a>
+</p>
+
+<p>At this point, the Suite Server program must have been initialized, with the
+objects that it requires, and with everything configured. So this method is the one
+that starts the whole work on the tasks &amp; proxies.</p>
+<p>The runahead points, i.e. what are the next available cycle points, are calculated
+and scheduled. In the scheduling, tasks are queued for execution.</p>
+<p>Most of the interesting action takes place when <code>process_task_pool()</code> is called,
+and in the <code>submit_task_jobs()</code>. The latter is a method from <code>TaskJobManager</code>, and
+it is here where - in this case - my shell command is executed through a temporary
+shell script file.</p>
+<p>The graph was created from the initial execution of a suite that was starting from
+scratch (they can also be reinitialized). If there are multiple tasks waiting,
+or if a suite was restarted, the diagram would look considerably different.</p>
+<p>You can download the <a href="/2018/08/18/cylc-scheduler-internals-part-3/cylc-scheduler_run-src.xml">source file</a> for the diagram used in this post, and edit it
+with <a href="https://draw.io">draw.io</a>.</p><!-- html -->
+    
+<p class="postmetadata">
+    
+    <small>tags 
+     [&nbsp;<a
+        href="/tag/cylc"
+        rel="tag">cylc</a>&nbsp;]&nbsp;
+    
+     [&nbsp;<a
+        href="/tag/python"
+        rel="tag">python</a>&nbsp;]&nbsp;
+    
+     [&nbsp;<a
+        href="/tag/opensource"
+        rel="tag">opensource</a>&nbsp;]&nbsp;
+    
+    </small>
+    
+    
+</p>
+</div>
+
+
+
+
+<div class="ui raised padded container segment">
     <h2><a href="/2018/07/27/cylc-scheduler-internals-part-2" title="Permanent link">Cylc Scheduler Internals - Part 2</a></h2>
     <p><small>kinow</small> @ <small>Jul 27, 2018&nbsp;00:25:37</small></p>
     
@@ -204,7 +270,7 @@ the moment the method <code>configure()</code> is called.</p>
 <p><em>NB: this is a post to remember things, not really expecting to give someone enough
 information to be able to hack the Cylc Scheduler (though you can and would have fun!).</em></p>
 <p style='text-align: center;'>
-<a href="">
+<a href="/2018/07/27/cylc-scheduler-internals-part-2/cylc-scheduler_configure.png">
 <img style="display: inline; width: 100%;" class="ui image" src="/2018/07/27/cylc-scheduler-internals-part-2/cylc-scheduler_configure.png"  />
 </a>
 </p>
@@ -489,83 +555,6 @@ Anaconda 2. And reproducing the same behaviour in Eclipse was easy.</p>
 
 <p>So if you have a similar problem, try comparing your environment variables and check if you
 have some entries missing, and try adding them in Eclipse Debug configuration.</p>
-<p>Happy cycling!</p><!-- html -->
-    
-<p class="postmetadata">
-    
-    <small>tags 
-     [&nbsp;<a
-        href="/tag/cylc"
-        rel="tag">cylc</a>&nbsp;]&nbsp;
-    
-     [&nbsp;<a
-        href="/tag/python"
-        rel="tag">python</a>&nbsp;]&nbsp;
-    
-     [&nbsp;<a
-        href="/tag/opensource"
-        rel="tag">opensource</a>&nbsp;]&nbsp;
-    
-    </small>
-    
-    
-</p>
-</div>
-
-
-
-
-<div class="ui raised padded container segment">
-    <h2><a href="/2018/07/08/a-simple-cylc-suite" title="Permanent link">A simple cylc suite</a></h2>
-    <p><small>kinow</small> @ <small>Jul 08, 2018&nbsp;18:59:13</small></p>
-    
-    
-
-
-
-
-
-<a href="https://twitter.com/share" class="twitter-share-button" data-url="https://kinoshita.eti.br/2018/07/08/a-simple-cylc-suite" data-text="A simple cylc suite" data-via="kinow" data-hashtags="opensource">Tweet</a>
-<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p='https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-
-
-    <p>I have been writing more suites for <a href="https://cylc.github.io/cylc/">cylc</a> lately, and found
-an example that has proved to be useful for debugging certain parts of the code.</p>
-<p>It is an extremely simple suite, similar to what is in cylc&#8217;s documentation. It
-sleeps for N seconds, and prints a message.</p>
-<p>What makes it extra simpler, is that it cycles through integers, and has
-a limit of 1 maximum active points.</p>
-<p>It is essentially the same as running the command in your shell session. With
-the difference that it will run through all cylc&#8217;s internal, only once, and
-allow you to debug and diagnostic parts nor related to cycling and graphs
-(as for these parts you would probably need a more elaborate example).</p>
-<div class="highlight"><pre><span class="p">[</span><span class="n">scheduling</span><span class="p">]</span>
-    <span class="n">cycling</span> <span class="n">mode</span> <span class="o">=</span> <span class="n">integer</span>
-    <span class="n">initial</span> <span class="n">cycle</span> <span class="n">point</span> <span class="o">=</span> <span class="mi">1</span>
-    <span class="nb">max</span> <span class="n">active</span> <span class="n">cycle</span> <span class="n">points</span> <span class="o">=</span> <span class="mi">1</span>
-    <span class="p">[[</span><span class="n">dependencies</span><span class="p">]]</span>
-        <span class="p">[[[</span><span class="n">P1</span><span class="p">]]]</span>
-            <span class="n">graph</span> <span class="o">=</span> <span class="s">&quot;hello&quot;</span>
-<span class="p">[</span><span class="n">runtime</span><span class="p">]</span>
-    <span class="p">[[</span><span class="n">hello</span><span class="p">]]</span>
-        <span class="n">script</span> <span class="o">=</span> <span class="s">&quot;sleep 10; echo PING&quot;</span>
-</pre></div>
-
-<p>I also combine this suite with the following <code>global.rc</code>.</p>
-<div class="highlight"><pre><span class="p">[</span><span class="n">editors</span><span class="p">]</span> 
-    <span class="n">terminal</span> <span class="o">=</span> <span class="n">vim</span> 
-    <span class="n">gui</span> <span class="o">=</span> <span class="n">gvim</span> <span class="o">-</span><span class="n">f</span>
-
-<span class="p">[</span><span class="n">communication</span><span class="p">]</span>
-    <span class="n">base</span> <span class="n">port</span> <span class="o">=</span> <span class="mi">44444</span>
-    <span class="n">method</span> <span class="o">=</span> <span class="n">http</span>
-    <span class="n">maximum</span> <span class="n">number</span> <span class="n">of</span> <span class="n">ports</span> <span class="o">=</span> <span class="mi">1</span>
-</pre></div>
-
-<p>With &#8220;base port&#8221; set to 44444, and the maximum number of ports to 1, I will
-be able to run only one task. But that way I can configure Wireshark and other
-tools to default to 44444/HTTP, for ease of debugging.</p>
-<p>Then initialize the suite with something like: <code>cylc start --non-daemon --debug /home/kinow/Development/python/workspace/example-suite/</code></p>
 <p>Happy cycling!</p><!-- html -->
     
 <p class="postmetadata">
