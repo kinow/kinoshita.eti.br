@@ -17,7 +17,7 @@ the moment the method `configure()` is called.
 information to be able to hack the Cylc Scheduler (though you can and would have fun!).*
 
 <p style='text-align: center;'>
-<a href="{{ assets['cylc-scheduler_cli-workflow'] }}">
+<a href="{{ assets['cylc-scheduler_configure'] }}">
 <img style="display: inline; width: 100%;" class="ui image" src="{{ assets['cylc-scheduler_configure'] }}"  />
 </a>
 </p>
