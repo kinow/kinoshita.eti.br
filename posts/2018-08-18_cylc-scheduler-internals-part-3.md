@@ -10,7 +10,7 @@ tags:
 
 This is part 2, in a series of posts about [Cylc](https://cylc.github.io/cylc)
 internals. The [part 1]({{pcurl('2018/07/14/cylc-scheduler-internals-part-1')}})
-had the beginning of the workflow. [part 1]({{pcurl('2018/07/14/cylc-scheduler-internals-part-1')}})
+had the beginning of the workflow. [part 2]({{pcurl('2018/07/27/cylc-scheduler-internals-part-2')}})
 documented from the moment the method `configure()` is called. This post will
 continue right after the `continue()` method returns, going on with the next method: `run()`.
 
