@@ -10,9 +10,9 @@
         
         <description>Latest news from Bruno P. Kinoshita</description>
         
-        <lastBuildDate>2018-09-21T18:42:51+12:00</lastBuildDate>
-        <pubDate>2018-09-21T18:42:51+12:00</pubDate>
-        <generator>PieCrust 3.2.0</generator>
+        <lastBuildDate>2018-09-23T23:33:10+12:00</lastBuildDate>
+        <pubDate>2018-09-23T23:33:10+12:00</pubDate>
+        <generator>PieCrust 3.2.1</generator>
         
         
         
@@ -50,13 +50,13 @@ looking for a &lt;a href=&#34;http://wiki.c2.com/?LazinessImpatienceHubris&#34;&
 &lt;p&gt;Searching the web I found some suggestions that &lt;code&gt;ulimit&lt;/code&gt; could work. After playing for a while with
 &lt;code&gt;ulimit&lt;/code&gt; and &lt;code&gt;htop&lt;/code&gt;, and verifying the amount of memory necessary to open two files in two windows
 in Krita, I came up with the following settings.&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;span class=&#34;c&#34;&gt;# 2550 mb in kb&lt;/span&gt;
-&lt;span class=&#34;nb&#34;&gt;ulimit&lt;/span&gt; -v 2550000
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;# 2550 mb in kb&lt;/span&gt;
+&lt;span class=&#34;nb&#34;&gt;ulimit&lt;/span&gt; -v &lt;span class=&#34;m&#34;&gt;2550000&lt;/span&gt;
 
-&lt;span class=&#34;c&#34;&gt;# 2 gb in kb&lt;/span&gt;
-&lt;span class=&#34;nb&#34;&gt;ulimit&lt;/span&gt; -m 2000000
+&lt;span class=&#34;c1&#34;&gt;# 2 gb in kb&lt;/span&gt;
+&lt;span class=&#34;nb&#34;&gt;ulimit&lt;/span&gt; -m &lt;span class=&#34;m&#34;&gt;2000000&lt;/span&gt;
 
-&lt;span class=&#34;c&#34;&gt;# Confirm limits&lt;/span&gt;
+&lt;span class=&#34;c1&#34;&gt;# Confirm limits&lt;/span&gt;
 &lt;span class=&#34;nb&#34;&gt;ulimit&lt;/span&gt; -a
 
 gdb &lt;span class=&#34;nv&#34;&gt;$HOME&lt;/span&gt;/Development/cpp/workspace/krita_install/bin/krita
@@ -108,7 +108,7 @@ This settings object, when created, must be given a
 &lt;a href=&#34;http://googleapis.github.io/gax-java/0.2.0/apidocs/com/google/api/gax/grpc/ChannelProvider.html&#34;&gt;channel provider&lt;/a&gt;
 with a &lt;a href=&#34;http://googleapis.github.io/gax-java/0.2.0/apidocs/com/google/api/gax/core/FixedCredentialsProvider.html&#34;&gt;FixedCredentialsProvider&lt;/a&gt;.&lt;/p&gt;
 &lt;p&gt;Of course reading code is way easier than reading this workaround description.&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;span class=&#34;c1&#34;&gt;// File: GoogleNaturalLanguageService.java&lt;/span&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;// File: GoogleNaturalLanguageService.java&lt;/span&gt;
 &lt;span class=&#34;c1&#34;&gt;// ...&lt;/span&gt;
     &lt;span class=&#34;c1&#34;&gt;// envvar or property used to specify the Google Application Credentials&lt;/span&gt;
     &lt;span class=&#34;kd&#34;&gt;private&lt;/span&gt; &lt;span class=&#34;kd&#34;&gt;final&lt;/span&gt; &lt;span class=&#34;kd&#34;&gt;static&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;String&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;GOOGLE_APPLICATION_CREDENTIALS&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;&amp;quot;GOOGLE_APPLICATION_CREDENTIALS&amp;quot;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;;&lt;/span&gt;
@@ -208,7 +208,7 @@ the &lt;em&gt;depends_on&lt;/em&gt; statement. This is documented in &lt;a href=
 will initialize Tomcat before Postgres has fully booted. When that happens, you may receive 401, 404, or other
 application errors.&lt;/p&gt;
 &lt;p&gt;You can fix it by combining &lt;em&gt;depends_on&lt;/em&gt; with a &lt;em&gt;healthcheck&lt;/em&gt;. For example:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;span class=&#34;c&#34;&gt;# File: docker-compose.yml&lt;/span&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;# File: docker-compose.yml&lt;/span&gt;
 version: &lt;span class=&#34;s1&#34;&gt;&amp;#39;2.1&amp;#39;&lt;/span&gt;
 services:
   db:
@@ -220,10 +220,10 @@ services:
     ports:
       - &lt;span class=&#34;s2&#34;&gt;&amp;quot;5432:5432&amp;quot;&lt;/span&gt;
     healthcheck:
-      &lt;span class=&#34;nb&#34;&gt;test&lt;/span&gt;: &lt;span class=&#34;s2&#34;&gt;&amp;quot;pg_isready -h localhost -p 5432 -q -U postgres&amp;quot;&lt;/span&gt;
+      test: &lt;span class=&#34;s2&#34;&gt;&amp;quot;pg_isready -h localhost -p 5432 -q -U postgres&amp;quot;&lt;/span&gt;
       interval: 10s
       timeout: 5s
-      retries: 5
+      retries: &lt;span class=&#34;m&#34;&gt;5&lt;/span&gt;
 
   web:
     container_name: twtc
@@ -287,15 +287,15 @@ for MFA authentication.&lt;/p&gt;
 won&amp;#8217;t be able to use it from home, in case you don&amp;#8217;t bring your laptop home. You can have one MFA device
 linked to your AWS account, so you may have to remove an existing one. Follow these instructions with care :^)&lt;/p&gt;
 &lt;h2&gt;Install Go&lt;/h2&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;sudo apt update &lt;span class=&#34;o&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; sudo apt upgrade -y
-&lt;span class=&#34;nb&#34;&gt;cd &lt;/span&gt;tmp/ &lt;span class=&#34;o&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; wget https://storage.googleapis.com/golang/go1.8.linux-amd64.tar.gz
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;sudo apt update &lt;span class=&#34;o&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; sudo apt upgrade -y
+&lt;span class=&#34;nb&#34;&gt;cd&lt;/span&gt; tmp/ &lt;span class=&#34;o&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; wget https://storage.googleapis.com/golang/go1.8.linux-amd64.tar.gz
 tar -zxvf go1.*.tar.gz
 sudo mv go /usr/local
 vim ~/.bashrc
 &lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;Add the following at the bottom of the file.&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;span class=&#34;nv&#34;&gt;GOROOT&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;/usr/local/go
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;GOROOT&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;/usr/local/go
 &lt;span class=&#34;nv&#34;&gt;GOPATH&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;$HOME&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;/go&amp;quot;&lt;/span&gt;
 &lt;span class=&#34;nv&#34;&gt;PATH&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;$GOPATH&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;/bin:&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;$GOROOT&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;/bin:&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;$PATH&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
@@ -304,7 +304,7 @@ vim ~/.bashrc
 &lt;h2&gt;Install gauth&lt;/h2&gt;
 &lt;p&gt;Given your environment is correctly set up, you should be able to use the following command to install
 gauth, and have it available in your &lt;em&gt;$PATH&lt;/em&gt;.&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;go get github.com/pcarrier/gauth
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;go get github.com/pcarrier/gauth
 &lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;Edit &lt;em&gt;~/.config/gauth.csv&lt;/em&gt; adding a value for the AWS MFA key.&lt;/p&gt;
@@ -428,7 +428,7 @@ and has also a &lt;a href=&#34;http://jcip.net/listings/Memoizer.java&#34;&gt;pu
 a computation. It receives a Computable object, responsible for doing something
 that will be stored by the Memoizer. Here&amp;#8217;s a simple code to illustrate how that
 will work in your Java code.&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;span class=&#34;c1&#34;&gt;// Computation to be stored in the cache&lt;/span&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;// Computation to be stored in the cache&lt;/span&gt;
 &lt;span class=&#34;n&#34;&gt;Computable&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;String&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;String&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;getFormattedCurrentDate&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;new&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Computable&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;String&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;String&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;&amp;gt;()&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;
     &lt;span class=&#34;nd&#34;&gt;@Override&lt;/span&gt;
     &lt;span class=&#34;kd&#34;&gt;public&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;String&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;compute&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;String&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;fmt&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;kd&#34;&gt;throws&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;InterruptedException&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;
@@ -455,16 +455,16 @@ will work in your Java code.&lt;/p&gt;
 &lt;p&gt;The computable created (&lt;em&gt;getFormattedCurrentDate&lt;/em&gt;) will be called only once, and stored in
 a map. The parameter passed in the &lt;em&gt;#compute()&lt;/em&gt; method will be used as key in the map.
 So choose your parameter wisely :-) The output of the example will be similar to the following one.&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;19:15:57:854 +1300 08/01/2017
-19:15:57:854 +1300 08/01/2017
-19:15:57:854 +1300 08/01/2017
-19:15:57:854 +1300 08/01/2017
-19:15:57:854 +1300 08/01/2017
-19:15:57:854 +1300 08/01/2017
-19:15:57:854 +1300 08/01/2017
-19:15:57:854 +1300 08/01/2017
-19:15:57:854 +1300 08/01/2017
-19:15:57:854 +1300 08/01/2017
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;19&lt;/span&gt;:15:57:854 +1300 &lt;span class=&#34;m&#34;&gt;08&lt;/span&gt;/01/2017
+&lt;span class=&#34;m&#34;&gt;19&lt;/span&gt;:15:57:854 +1300 &lt;span class=&#34;m&#34;&gt;08&lt;/span&gt;/01/2017
+&lt;span class=&#34;m&#34;&gt;19&lt;/span&gt;:15:57:854 +1300 &lt;span class=&#34;m&#34;&gt;08&lt;/span&gt;/01/2017
+&lt;span class=&#34;m&#34;&gt;19&lt;/span&gt;:15:57:854 +1300 &lt;span class=&#34;m&#34;&gt;08&lt;/span&gt;/01/2017
+&lt;span class=&#34;m&#34;&gt;19&lt;/span&gt;:15:57:854 +1300 &lt;span class=&#34;m&#34;&gt;08&lt;/span&gt;/01/2017
+&lt;span class=&#34;m&#34;&gt;19&lt;/span&gt;:15:57:854 +1300 &lt;span class=&#34;m&#34;&gt;08&lt;/span&gt;/01/2017
+&lt;span class=&#34;m&#34;&gt;19&lt;/span&gt;:15:57:854 +1300 &lt;span class=&#34;m&#34;&gt;08&lt;/span&gt;/01/2017
+&lt;span class=&#34;m&#34;&gt;19&lt;/span&gt;:15:57:854 +1300 &lt;span class=&#34;m&#34;&gt;08&lt;/span&gt;/01/2017
+&lt;span class=&#34;m&#34;&gt;19&lt;/span&gt;:15:57:854 +1300 &lt;span class=&#34;m&#34;&gt;08&lt;/span&gt;/01/2017
+&lt;span class=&#34;m&#34;&gt;19&lt;/span&gt;:15:57:854 +1300 &lt;span class=&#34;m&#34;&gt;08&lt;/span&gt;/01/2017
 &lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;In the example above I used a &lt;em&gt;for-loop&lt;/em&gt; to illustrate what will happen. Even though we call
@@ -578,10 +578,10 @@ and the maintainer of the project answered how to fix it.&lt;/p&gt;
 , where the first one is a Point, and the
 second is the one that we want (a Polygon). The application defaults to using the first element,
 so in order to change it you have to give a &lt;em&gt;which_result&lt;/em&gt; argument.&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;span class=&#34;c&#34;&gt;#!/usr/bin/env python3&lt;/span&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class=&#34;ch&#34;&gt;#!/usr/bin/env python3&lt;/span&gt;
 
 &lt;span class=&#34;kn&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;osmnx&lt;/span&gt; &lt;span class=&#34;kn&#34;&gt;as&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;ox&lt;/span&gt;
-&lt;span class=&#34;n&#34;&gt;G&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;ox&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;graph_from_place&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;#39;Auckland, NZ&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;network_type&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;#39;drive&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;which_result&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;2&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;span class=&#34;n&#34;&gt;G&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;ox&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;graph_from_place&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;Auckland, NZ&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;network_type&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;drive&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;which_result&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;2&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
 &lt;span class=&#34;n&#34;&gt;ox&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;plot_graph&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;ox&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;project_graph&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;G&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;))&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 

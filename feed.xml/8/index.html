@@ -10,9 +10,9 @@
         
         <description>Latest news from Bruno P. Kinoshita</description>
         
-        <lastBuildDate>2018-09-21T18:42:51+12:00</lastBuildDate>
-        <pubDate>2018-09-21T18:42:51+12:00</pubDate>
-        <generator>PieCrust 3.2.0</generator>
+        <lastBuildDate>2018-09-23T23:33:10+12:00</lastBuildDate>
+        <pubDate>2018-09-23T23:33:10+12:00</pubDate>
+        <generator>PieCrust 3.2.1</generator>
         
         
         
@@ -83,15 +83,15 @@ It not only sets up a master, but also provides an easy way to enable the cherry
 API (necessary for the Jenkins plug-in).&lt;/p&gt;
 &lt;p&gt;This post describes the steps that I took to have a running Salt Master with the API
 enabled. First you need to create some directories and files to use with the image.&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;shell&lt;span class=&#34;nv&#34;&gt;$ &lt;/span&gt;mkdir ~/master &lt;span class=&#34;o&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;cd&lt;/span&gt; ~/master
-shell&lt;span class=&#34;nv&#34;&gt;$ &lt;/span&gt;mkdir -p config/master.d/
-shell&lt;span class=&#34;nv&#34;&gt;$ &lt;/span&gt;vim config/master.d/api.conf
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;shell$ mkdir ~/master &lt;span class=&#34;o&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;cd&lt;/span&gt; ~/master
+shell$ mkdir -p config/master.d/
+shell$ vim config/master.d/api.conf
 &lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;The api.conf contains the SaltStack API configuration. You can change port, user
 and other settings if necessary. Just remember to add a credential in Jenkins
 for the plug-in.&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;span class=&#34;c&#34;&gt;# File: api.conf&lt;/span&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;# File: api.conf&lt;/span&gt;
 external_auth:
   pam:
     saltapiuser:
@@ -100,8 +100,8 @@ external_auth:
       - &lt;span class=&#34;s1&#34;&gt;&amp;#39;@wheel&amp;#39;&lt;/span&gt;
       - &lt;span class=&#34;s1&#34;&gt;&amp;#39;@jobs&amp;#39;&lt;/span&gt;
 rest_cherrypy:
-  port: 8000
-  host: 0.0.0.0
+  port: &lt;span class=&#34;m&#34;&gt;8000&lt;/span&gt;
+  host: &lt;span class=&#34;m&#34;&gt;0&lt;/span&gt;.0.0.0
   disable_ssl: True
   static: /opt/molten
   static_path: /assets
@@ -112,23 +112,23 @@ rest_cherrypy:
 &lt;p&gt;The image also conveniently provides a script that is executed before the
 entry point (if provided). So we can also create a user for the API automatically
 when the image is created.&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;shell&lt;span class=&#34;nv&#34;&gt;$ &lt;/span&gt;vim config/before-exec.sh
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;shell$ vim config/before-exec.sh
 &lt;/pre&gt;&lt;/div&gt;
 
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;span class=&#34;c&#34;&gt;#!/bin/bash&lt;/span&gt;
-&lt;span class=&#34;c&#34;&gt;# File: before-exec.sh&lt;/span&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class=&#34;ch&#34;&gt;#!/bin/bash&lt;/span&gt;
+&lt;span class=&#34;c1&#34;&gt;# File: before-exec.sh&lt;/span&gt;
 useradd saltapiuser
 &lt;span class=&#34;nb&#34;&gt;echo&lt;/span&gt; -e &lt;span class=&#34;s2&#34;&gt;&amp;quot;nosecret\nnosecret\n&amp;quot;&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; passwd saltapiuser
-&lt;span class=&#34;nb&#34;&gt;exit &lt;/span&gt;0
+&lt;span class=&#34;nb&#34;&gt;exit&lt;/span&gt; &lt;span class=&#34;m&#34;&gt;0&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;Also make the script executable.&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;chmod +x config/before-exec.sh
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;chmod +x config/before-exec.sh
 &lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;And finally start the container.&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;docker run --name salt-master -v &lt;span class=&#34;nv&#34;&gt;$PWD&lt;/span&gt;/config:/config &lt;span class=&#34;se&#34;&gt;\&lt;/span&gt;
-    -p 4505:4505 -p 4506:4506 -p 443:443 -p 8000:8000 &lt;span class=&#34;se&#34;&gt;\&lt;/span&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;docker run --name salt-master -v &lt;span class=&#34;nv&#34;&gt;$PWD&lt;/span&gt;/config:/config &lt;span class=&#34;se&#34;&gt;\&lt;/span&gt;
+    -p &lt;span class=&#34;m&#34;&gt;4505&lt;/span&gt;:4505 -p &lt;span class=&#34;m&#34;&gt;4506&lt;/span&gt;:4506 -p &lt;span class=&#34;m&#34;&gt;443&lt;/span&gt;:443 -p &lt;span class=&#34;m&#34;&gt;8000&lt;/span&gt;:8000 &lt;span class=&#34;se&#34;&gt;\&lt;/span&gt;
     bbinet/salt-master
 &lt;/pre&gt;&lt;/div&gt;
 
@@ -239,9 +239,9 @@ decided to write this short post to show a few different ways it can be achieved
 or Java. But I think I would choose this option only because either I needed some feature that is not
 available in the other options, or in order to call other tasks or debug some problem.&lt;/p&gt;
 &lt;p&gt;Example:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;span class=&#34;nv&#34;&gt;$ &lt;/span&gt;docker run -d -p 8888:8080 jeanblanchard/tomcat:8
-&lt;span class=&#34;nv&#34;&gt;$ &lt;/span&gt;git clone https://github.com/spring-projects/spring-petclinic.git &lt;span class=&#34;o&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;cd &lt;/span&gt;spring-petclinic &lt;span class=&#34;o&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; mvn package
-&lt;span class=&#34;nv&#34;&gt;$ &lt;/span&gt;curl --upload-file target/petclinic.war &lt;span class=&#34;s2&#34;&gt;&amp;quot;http://admin:admin@localhost:8888/manager/text/deploy?path=/spring-petclinic&amp;amp;update=true&amp;quot;&lt;/span&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ docker run -d -p &lt;span class=&#34;m&#34;&gt;8888&lt;/span&gt;:8080 jeanblanchard/tomcat:8
+$ git clone https://github.com/spring-projects/spring-petclinic.git &lt;span class=&#34;o&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;cd&lt;/span&gt; spring-petclinic &lt;span class=&#34;o&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; mvn package
+$ curl --upload-file target/petclinic.war &lt;span class=&#34;s2&#34;&gt;&amp;quot;http://admin:admin@localhost:8888/manager/text/deploy?path=/spring-petclinic&amp;amp;update=true&amp;quot;&lt;/span&gt;
 OK - Deployed application at context path /spring-petclinic
 &lt;/pre&gt;&lt;/div&gt;
 
@@ -348,7 +348,7 @@ as in case it finds any interesting bug I can submit it to the MapServer project
 &lt;li&gt;&lt;a href=&#34;http://javadoc.jenkins-ci.org/hudson/util/Secret.html&#34;&gt;Secret Javadoc&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&#34;https://github.com/jenkinsci/jenkins/blob/master/core/src/main/java/hudson/util/Secret.java&#34;&gt;Secret source code&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;span class=&#34;kd&#34;&gt;public&lt;/span&gt; &lt;span class=&#34;kd&#34;&gt;static&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Secret&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;fromString&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;String&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;data&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class=&#34;kd&#34;&gt;public&lt;/span&gt; &lt;span class=&#34;kd&#34;&gt;static&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Secret&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;fromString&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;String&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;data&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;
     &lt;span class=&#34;n&#34;&gt;data&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Util&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;fixNull&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;data&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;);&lt;/span&gt;
     &lt;span class=&#34;n&#34;&gt;Secret&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;s&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;decrypt&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;data&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;);&lt;/span&gt;
     &lt;span class=&#34;k&#34;&gt;if&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;s&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;kc&#34;&gt;null&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;s&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;new&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Secret&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;data&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;);&lt;/span&gt;
@@ -358,7 +358,7 @@ as in case it finds any interesting bug I can submit it to the MapServer project
 
 &lt;p&gt;The first line simply replaces a null string by an empty &amp;#8220;&amp;#8221;, or keeps the current value of not null.&lt;/p&gt;
 &lt;p&gt;After that, the decrypt method is called.&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;span class=&#34;kd&#34;&gt;public&lt;/span&gt; &lt;span class=&#34;kd&#34;&gt;static&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Secret&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;decrypt&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;String&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;data&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class=&#34;kd&#34;&gt;public&lt;/span&gt; &lt;span class=&#34;kd&#34;&gt;static&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Secret&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;decrypt&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;String&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;data&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;
     &lt;span class=&#34;k&#34;&gt;if&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;data&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;kc&#34;&gt;null&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;      &lt;span class=&#34;k&#34;&gt;return&lt;/span&gt; &lt;span class=&#34;kc&#34;&gt;null&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;;&lt;/span&gt;
     &lt;span class=&#34;k&#34;&gt;try&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;
         &lt;span class=&#34;kt&#34;&gt;byte&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;[]&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;in&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Base64&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;decode&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;data&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;toCharArray&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;());&lt;/span&gt;
@@ -488,7 +488,7 @@ If you are familiar with Linux init scripts, the idea is quite similar. &lt;/p&g
 &lt;p&gt;A Groovy script in the &lt;code&gt;$JENKINS_ROOT_DIR/init.groovy.d/&lt;/code&gt; directory is executed during
 Jenkins initialization. This way you can increase the global logger level with a script
 as the following below.&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;span class=&#34;kn&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;java.util.logging.ConsoleHandler&lt;/span&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class=&#34;kn&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;java.util.logging.ConsoleHandler&lt;/span&gt;
 &lt;span class=&#34;kn&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;java.util.logging.LogManager&lt;/span&gt;
 &lt;span class=&#34;kn&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;java.util.logging.Logger&lt;/span&gt;
 &lt;span class=&#34;kn&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;java.util.logging.Level&lt;/span&gt;

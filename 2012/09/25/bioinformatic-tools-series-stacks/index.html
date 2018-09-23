@@ -8,7 +8,7 @@
     <meta name="keywords"
         content="kinoshita, bruno de paula kinoshita, geek, geek stuff, java, python, c, c++, msn now playing, neural network, mackenzie, sao paulo, brasil, brazil, nerd, nerd stuff, cool, jenkins, illustration, quadrinhos, machine learning, linguistic, apache, open source, codigo livre, codigo aberto" />
     <meta name="author" content="" />
-    <meta name="generator" content="PieCrust 3.2.0" />
+    <meta name="generator" content="PieCrust 3.2.1" />
     <meta name="template-engine" content="Twig" />
     <meta name="robots" content="all=index,follow" />
     <meta name="revisit-after" content="15 days" />
@@ -182,87 +182,94 @@ gcc version 4.7.1 (Debian 4.7.1-8)</li>
 <p>The tutorial requires that you download samples and create some directories and a database. Here&#8217;s the status of my system before the analysis.</p>
 
 <p><strong>Database size: 880KB</strong></p>
+
 <p><strong>Directory size: 2.6 GB</strong></p>
-<code>kinow@chuva:~/Desktop/pe_tut$ du -h
+
+<p><code>kinow@chuva:~/Desktop/pe_tut$ du -h
 4.0K    ./stacks
 4.0K    ./assembled
 2.6G    ./samples
 4.0K    ./raw
 4.0K    ./pairs
-2.6G    .</code>
-
+2.6G    .</code></p>
 <p>After these steps, you start your pipeline with the <em>denovo_map.pl</em> script. The denovo_map.pl script took 23 minutes to finish, and here&#8217;s the new status of my system.</p>
 
 <p><strong>Database size: 1.7 GB</strong></p>
+
 <p><strong>Directory size: 3.5 GB</strong></p>
-<code>kinow@chuva:~/Desktop/pe_tut$ du -h
+
+<p><code>kinow@chuva:~/Desktop/pe_tut$ du -h
 971M    ./stacks
 4.0K    ./assembled
 2.6G    ./samples
 4.0K    ./raw
 4.0K    ./pairs
-3.5G    .</code>
-
+3.5G    .</code></p>
 <p>The next step is the <em>export_sql.pl</em> script. It took 31 minutes to finish.</p>
 
 <p><strong>Database size: 1.7 GB</strong></p>
+
 <p><strong>Directory size: 3.5 GB</strong></p>
-<code>kinow@chuva:~/Desktop/pe_tut$ du -h
+
+<p><code>kinow@chuva:~/Desktop/pe_tut$ du -h
 971M    ./stacks
 4.0K    ./assembled
 2.6G    ./samples
 4.0K    ./raw
 4.0K    ./pairs
-3.5G    .</code>
-
+3.5G    .</code></p>
 <p>Half way to go. Now execute the <em>sort_read_pairs.pl</em> script. This was the longest and the one that consumed more memory, it took 49 minutes to finish.</p>
 
 <p><strong>Database size: 1.7 GB</strong></p>
+
 <p><strong>Directory size: 3.7 GB</strong></p>
-<code>kinow@chuva:~/Desktop/pe_tut$ du -h
+
+<p><code>kinow@chuva:~/Desktop/pe_tut$ du -h
 971M    ./stacks
 4.0K    ./assembled
 2.6G    ./samples
 4.0K    ./raw
 170M    ./pairs
-3.7G    .</code>
-
+3.7G    .</code></p>
 <p>It&#8217;s time to get the contigs with Velvet now with <em>exec_velvet.pl</em>. Don&#8217;t worry, this one is faster, only 15 minutes.</p>
 
 <p><strong>Database size: 1.7 GB</strong></p>
+
 <p><strong>Directory size: 3.7 GB</strong></p>
-<code>kinow@chuva:~/Desktop/pe_tut$ du -h
+
+<p><code>kinow@chuva:~/Desktop/pe_tut$ du -h
 971M    ./stacks
 3.4M    ./assembled
 2.6G    ./samples
 4.0K    ./raw
 170M    ./pairs
-3.7G    .</code>
-
+3.7G    .</code></p>
 <p>Last two scripts to execute. First <em>load_sequences.pl</em>, that apparently loads some data into the database. It took 3 minutes to finish.</p>
 
 <p><strong>Database size: 1.8 GB</strong></p>
+
 <p><strong>Directory size: 3.7 GB</strong></p>
-<code>kinow@chuva:~/Desktop/pe_tut$ du -h
+
+<p><code>kinow@chuva:~/Desktop/pe_tut$ du -h
 971M    ./stacks
 3.4M    ./assembled
 2.6G    ./samples
 4.0K    ./raw
 170M    ./pairs
-3.7G    .</code>
-
+3.7G    .</code></p>
 <p>And finally <em>index_radtags.pl</em> which took only 1 minute.</p>
 
 <p><strong>Database size: 1.8 GB</strong></p>
+
 <p><strong>Directory size: 3.7 GB</strong></p>
-<code>kinow@chuva:~/Desktop/pe_tut$ du -h
+
+<p><code>kinow@chuva:~/Desktop/pe_tut$ du -h
 971M    ./stacks
 3.4M    ./assembled
 2.6G    ./samples
 4.0K    ./raw
 170M    ./pairs
-3.7G    .</code>
-
+3.7G    .</code></p>
 <h2>CPU, memory and disk usage</h2>
 
 <p>I was using Ganglia for monitoring Hadoop jobs, so I saved the graphs for the timeframe of the pipeline execution. I started to execute this analysis at 10AM, and finished about 2 and a half hours later (the process is not automated, so sometimes I had to check the output and documentation before executing the next step).</p>
@@ -289,7 +296,7 @@ gcc version 4.7.1 (Debian 4.7.1-8)</li>
 
 <p>Hope it helps you using Stacks. Kudos to all developers and contributors of this great tool.</p>
 
-<div class="highlight"><pre>disk<span class="o">=</span><span class="kt">c</span><span class="p">(</span><span class="m">2.6</span><span class="p">,</span><span class="m">3.5</span><span class="p">,</span><span class="m">3.5</span><span class="p">,</span><span class="m">3.7</span><span class="p">,</span><span class="m">3.7</span><span class="p">,</span><span class="m">3.7</span><span class="p">,</span><span class="m">3.7</span><span class="p">)</span>
+<div class="highlight"><pre><span></span>disk<span class="o">=</span><span class="kt">c</span><span class="p">(</span><span class="m">2.6</span><span class="p">,</span><span class="m">3.5</span><span class="p">,</span><span class="m">3.5</span><span class="p">,</span><span class="m">3.7</span><span class="p">,</span><span class="m">3.7</span><span class="p">,</span><span class="m">3.7</span><span class="p">,</span><span class="m">3.7</span><span class="p">)</span>
 db<span class="o">=</span><span class="kt">c</span><span class="p">(</span><span class="m">0.0008</span><span class="p">,</span><span class="m">1.7</span><span class="p">,</span><span class="m">1.7</span><span class="p">,</span><span class="m">1.7</span><span class="p">,</span><span class="m">1.7</span><span class="p">,</span><span class="m">1.8</span><span class="p">,</span><span class="m">1.8</span><span class="p">)</span>
 x<span class="o">=</span><span class="p">(</span><span class="m">1</span><span class="o">:</span><span class="m">7</span><span class="p">)</span>
 plot<span class="p">(</span>x<span class="o">=</span>x<span class="p">,</span> xlab<span class="o">=</span><span class="s">&quot;Tutorial Step (1 to 7)&quot;</span><span class="p">,</span> y<span class="o">=</span>disk<span class="p">,</span> ylab<span class="o">=</span><span class="s">&quot;Disk Usage (GB)&quot;</span><span class="p">,</span> col<span class="o">=</span><span class="s">&quot;red&quot;</span><span class="p">,</span> type<span class="o">=</span><span class="s">&quot;o&quot;</span><span class="p">,</span>ylim<span class="o">=</span><span class="kt">c</span><span class="p">(</span><span class="m">0</span><span class="p">,</span><span class="m">6</span><span class="p">),</span>xlim<span class="o">=</span><span class="kt">c</span><span class="p">(</span><span class="m">0</span><span class="p">,</span><span class="m">8</span><span class="p">))</span>
@@ -302,7 +309,6 @@ totals<span class="o">=</span><span class="kp">rowSums</span><span class="p">(</
 lines<span class="p">(</span>x<span class="o">=</span>x<span class="p">,</span> y<span class="o">=</span>totals<span class="p">,</span> type<span class="o">=</span><span class="s">&quot;o&quot;</span><span class="p">,</span> pch<span class="o">=</span><span class="m">22</span><span class="p">,</span> lty<span class="o">=</span><span class="m">2</span><span class="p">,</span> col<span class="o">=</span><span class="s">&quot;green&quot;</span><span class="p">)</span> 
 legend<span class="p">(</span><span class="m">0</span><span class="p">,</span><span class="m">6</span><span class="p">,</span><span class="kt">c</span><span class="p">(</span><span class="s">&quot;DB&quot;</span><span class="p">,</span> <span class="s">&quot;Disk&quot;</span><span class="p">,</span> <span class="s">&quot;Total&quot;</span><span class="p">),</span> cex<span class="o">=</span><span class="m">0.6</span><span class="p">,</span>col<span class="o">=</span><span class="kt">c</span><span class="p">(</span><span class="s">&quot;red&quot;</span><span class="p">,</span> <span class="s">&quot;blue&quot;</span><span class="p">,</span> <span class="s">&quot;green&quot;</span><span class="p">),</span>pch<span class="o">=</span><span class="m">21</span><span class="o">:</span><span class="m">23</span><span class="p">,</span>lty<span class="o">=</span><span class="m">1</span><span class="p">,</span>y.intersp<span class="o">=</span><span class="m">0.2</span><span class="p">,</span>x.intersp<span class="o">=</span><span class="m">0.2</span><span class="p">,</span>pt.lwd<span class="o">=</span><span class="m">1</span><span class="p">,</span>adj<span class="o">=</span><span class="m">0</span><span class="p">,</span>inset<span class="o">=</span><span class="kt">c</span><span class="p">(</span><span class="m">0.5</span><span class="p">,</span><span class="m">0.5</span><span class="p">))</span>
 </pre></div>
-
 
 <h4>References</h4>
 

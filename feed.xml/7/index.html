@@ -10,9 +10,9 @@
         
         <description>Latest news from Bruno P. Kinoshita</description>
         
-        <lastBuildDate>2018-09-21T18:42:51+12:00</lastBuildDate>
-        <pubDate>2018-09-21T18:42:51+12:00</pubDate>
-        <generator>PieCrust 3.2.0</generator>
+        <lastBuildDate>2018-09-23T23:33:10+12:00</lastBuildDate>
+        <pubDate>2018-09-23T23:33:10+12:00</pubDate>
+        <generator>PieCrust 3.2.1</generator>
         
         
         
@@ -71,8 +71,8 @@
             
             &lt;p&gt;&lt;a href=&#34;https://issues.jenkins-ci.org/browse/JENKINS-17887&#34;&gt;JENKINS-17887&lt;/a&gt; reports performance problems in the &lt;a href=&#34;https://wiki.jenkins-ci.org/display/JENKINS/TAP+Plugin&#34;&gt;Jenkins TAP Plug-in&lt;/a&gt;. It also lists a series of suggestions on how to improve the Jenkins TAP Plug-in performance. On this initial post, we will get a general idea of how the plug-in performs for large projects.&lt;/p&gt;
 &lt;p&gt;&lt;a href=&#34;http://bioperl.org/&#34;&gt;BioPerl&lt;/a&gt; has over 21K tests. That should be enough for giving an initial idea of CPU, memory and disk usage for the plug-in.&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;git clone https://github.com/bioperl/bioperl-live.git
-&lt;span class=&#34;nb&#34;&gt;cd &lt;/span&gt;bioperl-live
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;git clone https://github.com/bioperl/bioperl-live.git
+&lt;span class=&#34;nb&#34;&gt;cd&lt;/span&gt; bioperl-live
 sudo cpanm  -vv --installdeps --notest .
 sudo cpanm Set::Scalar Graph::Directed XML::LibXML XML::SAX &lt;span class=&#34;se&#34;&gt;\&lt;/span&gt;
     SVG XML::Parser::PerlSAX Convert::Binary::C XML::SAX::Writer &lt;span class=&#34;se&#34;&gt;\&lt;/span&gt;
@@ -81,7 +81,7 @@ sudo cpanm Set::Scalar Graph::Directed XML::LibXML XML::SAX &lt;span class=&#34;
 prove -r t/ -a tests.tar.gz
 
 All tests successful.
-&lt;span class=&#34;nv&#34;&gt;Files&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;325, &lt;span class=&#34;nv&#34;&gt;Tests&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;21095, &lt;span class=&#34;m&#34;&gt;94&lt;/span&gt; wallclock secs &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt; 2.47 usr  0.55 sys + 88.29 cusr  3.85 &lt;span class=&#34;nv&#34;&gt;csys&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; 95.16 CPU&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
+&lt;span class=&#34;nv&#34;&gt;Files&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;325&lt;/span&gt;, &lt;span class=&#34;nv&#34;&gt;Tests&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;21095&lt;/span&gt;, &lt;span class=&#34;m&#34;&gt;94&lt;/span&gt; wallclock secs &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt; &lt;span class=&#34;m&#34;&gt;2&lt;/span&gt;.47 usr  &lt;span class=&#34;m&#34;&gt;0&lt;/span&gt;.55 sys + &lt;span class=&#34;m&#34;&gt;88&lt;/span&gt;.29 cusr  &lt;span class=&#34;m&#34;&gt;3&lt;/span&gt;.85 &lt;span class=&#34;nv&#34;&gt;csys&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;m&#34;&gt;95&lt;/span&gt;.16 CPU&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
 Result: PASS
 &lt;/pre&gt;&lt;/div&gt;
 
@@ -92,8 +92,8 @@ Result: PASS
 &lt;p&gt;&lt;img class=&#34;ui centered image&#34; src=&#34;/2016/09/03/performance-problems-in-jenkins-tap-plugin-part-1/JENKINS-17887-yourkit1.png&#34; alt=&#34;JENKINS-17887 YourKit profiler&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;The image shows one of the screens in YourKit profiler, where it is possible to see that &lt;strong&gt;org.tap4j.plugin.model.TapTestResultResult&lt;/strong&gt; has over 6 million objects.&lt;/p&gt;
 &lt;p&gt;One build.xml for the BioPerl project gets over 80K entries for the TestResult object.&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;grep &lt;span class=&#34;s2&#34;&gt;&amp;quot;org.tap4j.model.TestResult&amp;quot;&lt;/span&gt; builds/1/build.xml -o &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; wc -l
-84522
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;grep &lt;span class=&#34;s2&#34;&gt;&amp;quot;org.tap4j.model.TestResult&amp;quot;&lt;/span&gt; builds/1/build.xml -o &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; wc -l
+&lt;span class=&#34;m&#34;&gt;84522&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;This happens because each TAP file may contain multiple test results (lines with test results). Each of these test results gets turned into a Java object and loaded by the plug-in. So when loading the test result pages, Jenkins needs to wait until all these objects have been parsed, deserialized and read into the memory.&lt;/p&gt;
@@ -360,18 +360,18 @@ normally in a short and constant interval.&lt;/p&gt;
             &lt;p&gt;These are some commands I used on Linux servers this week. Adding them here in case someone else
 find them interesting, and also due to my bad memory :-)&lt;/p&gt;
 &lt;h2&gt;Listing latest installed packages in SLES&lt;/h2&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;rpm -qa --last
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;rpm -qa --last
 &lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;This will display the last packages installed. Useful when there are packages being updated, and you
 need to confirm what changed, and when.&lt;/p&gt;
 &lt;h2&gt;Listing packages in SLES and origin repository&lt;/h2&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;rpm -qa --qf &lt;span class=&#34;s1&#34;&gt;&amp;#39;%-30{DISTRIBUTION} %{NAME}\n&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; sort
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;rpm -qa --qf &lt;span class=&#34;s1&#34;&gt;&amp;#39;%-30{DISTRIBUTION} %{NAME}\n&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; sort
 &lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;The output will have two columns. The first containing the repository name, and the second column with
 the package name. For example.&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;devel:languages:R:base / SLE_11_SP2 R-base
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;devel:languages:R:base / SLE_11_SP2 R-base
 devel:languages:R:base / SLE_11_SP2 R-base-devel
 home:flacco:sles / SLE_11_SP3 php53-phar
 home:happenpappen / SLE_11_SP2 nodejs
@@ -381,11 +381,11 @@ home:happenpappen / SLE_11_SP2 nodejs
 &lt;p&gt;Be it for web services, or for finding things in Jenkins XML files. Being able to grep the tag attribute
 or tag name might be useful. Look at the following example that uses the 
 &lt;a href=&#34;https://msdn.microsoft.com/en-us/library/ms762271%28v=vs.85%29.aspx&#34;&gt;books XML provided by Microsoft for testing&lt;/a&gt;.&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;grep -oP &lt;span class=&#34;s2&#34;&gt;&amp;quot;(?&amp;lt;=&amp;lt;genre&amp;gt;).*?(?=&amp;lt;/genre&amp;gt;)&amp;quot;&lt;/span&gt; books.xml &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; sort &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; uniq
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;grep -oP &lt;span class=&#34;s2&#34;&gt;&amp;quot;(?&amp;lt;=&amp;lt;genre&amp;gt;).*?(?=&amp;lt;/genre&amp;gt;)&amp;quot;&lt;/span&gt; books.xml &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; sort &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; uniq
 &lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;Which will outputs the following.&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;Computer
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;Computer
 Fantasy
 Horror
 Romance
@@ -396,46 +396,46 @@ Science Fiction
 &lt;p&gt;Sometimes you have Anaconda, but also the system installation, and maybe even other Python distributions.
 Knowing where Python is looking for site packages can be helpful to confirm the package exists, and also
 to inspect its sources.&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;python -c &lt;span class=&#34;s2&#34;&gt;&amp;quot;from distutils.sysconfig import get_python_lib; print(get_python_lib())&amp;quot;&lt;/span&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;python -c &lt;span class=&#34;s2&#34;&gt;&amp;quot;from distutils.sysconfig import get_python_lib; print(get_python_lib())&amp;quot;&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;An example of the output of the script.&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;/usr/lib/python2.7/dist-packages
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;/usr/lib/python2.7/dist-packages
 &lt;/pre&gt;&lt;/div&gt;
 
 &lt;h2&gt;Force no-cache via curl for a list of files&lt;/h2&gt;
 &lt;p&gt;Useful when you have a proxy like squid caching some requests from an application and you
 want to flush the cache and get the latest content (which will be cached again, but then
 you can fix it once confirmed).&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;curl --silent -H &lt;span class=&#34;s1&#34;&gt;&amp;#39;Cache-Control: no-cache&amp;#39;&lt;/span&gt; http://systemcachingvalues.local/somedoc.html
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;curl --silent -H &lt;span class=&#34;s1&#34;&gt;&amp;#39;Cache-Control: no-cache&amp;#39;&lt;/span&gt; http://systemcachingvalues.local/somedoc.html
 &lt;/pre&gt;&lt;/div&gt;
 
 &lt;h2&gt;Find to which servers a Linux process is talking to&lt;/h2&gt;
 &lt;p&gt;You have to find the pid of the process that you would like to investigate (e.g. 6364) and have
 &lt;a href=&#34;http://linux.die.net/man/1/strace&#34;&gt;strace&lt;/a&gt; installed.&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;strace -p &lt;span class=&#34;m&#34;&gt;6364&lt;/span&gt; -f -e &lt;span class=&#34;nv&#34;&gt;trace&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;network -o output.txt
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;strace -p &lt;span class=&#34;m&#34;&gt;6364&lt;/span&gt; -f -e &lt;span class=&#34;nv&#34;&gt;trace&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;network -o output.txt
 &lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;The command above creates output.txt with the trace information. Then you can grep for
 the IP addresses with the following regex.&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;grep -E -o &lt;span class=&#34;s2&#34;&gt;&amp;quot;(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)&amp;quot;&lt;/span&gt; output.txt
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;grep -E -o &lt;span class=&#34;s2&#34;&gt;&amp;quot;(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)&amp;quot;&lt;/span&gt; output.txt
 &lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;Which will output something similar to the following example.&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;127.0.1.1
-127.0.1.1
-127.0.1.1
-192.168.20.4
-10.10.0.12
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;127&lt;/span&gt;.0.1.1
+&lt;span class=&#34;m&#34;&gt;127&lt;/span&gt;.0.1.1
+&lt;span class=&#34;m&#34;&gt;127&lt;/span&gt;.0.1.1
+&lt;span class=&#34;m&#34;&gt;192&lt;/span&gt;.168.20.4
+&lt;span class=&#34;m&#34;&gt;10&lt;/span&gt;.10.0.12
 ...
 &lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;And finally, you can call dig to get the server name, and also remove duplicates.&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;grep -E -o &lt;span class=&#34;s2&#34;&gt;&amp;quot;(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)&amp;quot;&lt;/span&gt; output.txt &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; xargs -l dig +noall +answer +nocmd -x &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; awk &lt;span class=&#34;s1&#34;&gt;&amp;#39;{ print $5}&amp;#39;&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; sort &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; uniq
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;grep -E -o &lt;span class=&#34;s2&#34;&gt;&amp;quot;(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)&amp;quot;&lt;/span&gt; output.txt &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; xargs -l dig +noall +answer +nocmd -x &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; awk &lt;span class=&#34;s1&#34;&gt;&amp;#39;{ print $5}&amp;#39;&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; sort &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; uniq
 &lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;Which gives you the following.&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;ec2-52-13-43-205.compute-1.amazonaws.com.
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;ec2-52-13-43-205.compute-1.amazonaws.com.
 ec2-52-32-244-147.compute-1.amazonaws.com.
 ec2-52-44-11-85.compute-1.amazonaws.com.
 ec2-52-55-36-20.us-west-2.compute.amazonaws.com.
@@ -485,7 +485,7 @@ to use Active Choices Plug-in with the &lt;a href=&#34;https://wiki.jenkins-ci.o
 is a tester. Then s/he would see certain parameters. But if s/he was a manager, other parameters would be
 displayed.&lt;/p&gt;
 &lt;h2&gt;To the code&lt;/h2&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;span class=&#34;kn&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;hudson.model.User&lt;/span&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class=&#34;kn&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;hudson.model.User&lt;/span&gt;
 &lt;span class=&#34;kn&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;hudson.model.Hudson&lt;/span&gt;
 &lt;span class=&#34;kn&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;hudson.security.AuthorizationStrategy&lt;/span&gt;
 &lt;span class=&#34;kn&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;hudson.security.Permission&lt;/span&gt;
@@ -524,7 +524,7 @@ displayed.&lt;/p&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;And now let&amp;#8217;s dissect the code.&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;span class=&#34;kn&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;hudson.model.User&lt;/span&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class=&#34;kn&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;hudson.model.User&lt;/span&gt;
 &lt;span class=&#34;kn&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;hudson.model.Hudson&lt;/span&gt;
 &lt;span class=&#34;kn&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;hudson.security.AuthorizationStrategy&lt;/span&gt;
 &lt;span class=&#34;kn&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;hudson.security.Permission&lt;/span&gt;
@@ -533,7 +533,7 @@ displayed.&lt;/p&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;You start by importing the classes that you need.&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;span class=&#34;n&#34;&gt;AuthorizationStrategy&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;strategy&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Hudson&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;getInstance&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;().&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;getAuthorizationStrategy&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;();&lt;/span&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;AuthorizationStrategy&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;strategy&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Hudson&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;getInstance&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;().&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;getAuthorizationStrategy&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;();&lt;/span&gt;
 
 &lt;span class=&#34;n&#34;&gt;jobs&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;[]&lt;/span&gt;
 &lt;span class=&#34;n&#34;&gt;user&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;User&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;current&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;()&lt;/span&gt;
@@ -544,7 +544,7 @@ displayed.&lt;/p&gt;
 used in Jenkins.&lt;/p&gt;
 &lt;p&gt;Then we create an empty array of jobs, which is the value returned by default. And get the current
 logged in user ID.&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;span class=&#34;k&#34;&gt;if&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;strategy&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;!=&lt;/span&gt; &lt;span class=&#34;kc&#34;&gt;null&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;strategy&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;instanceof&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;com&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;michelin&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;cio&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;hudson&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;plugins&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;rolestrategy&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;RoleBasedAuthorizationStrategy&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;if&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;strategy&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;!=&lt;/span&gt; &lt;span class=&#34;kc&#34;&gt;null&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;strategy&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;instanceof&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;com&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;michelin&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;cio&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;hudson&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;plugins&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;rolestrategy&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;RoleBasedAuthorizationStrategy&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;
     &lt;span class=&#34;n&#34;&gt;roleStrategy&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;RoleBasedAuthorizationStrategy&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;strategy&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;;&lt;/span&gt;
     &lt;span class=&#34;c1&#34;&gt;// not very straightforward to get the groups for a given user&lt;/span&gt;
     &lt;span class=&#34;n&#34;&gt;roles&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;roleStrategy&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;getGrantedRoles&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;globalRoles&amp;quot;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;

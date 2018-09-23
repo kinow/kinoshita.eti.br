@@ -8,7 +8,7 @@
     <meta name="keywords"
         content="kinoshita, bruno de paula kinoshita, geek, geek stuff, java, python, c, c++, msn now playing, neural network, mackenzie, sao paulo, brasil, brazil, nerd, nerd stuff, cool, jenkins, illustration, quadrinhos, machine learning, linguistic, apache, open source, codigo livre, codigo aberto" />
     <meta name="author" content="" />
-    <meta name="generator" content="PieCrust 3.2.0" />
+    <meta name="generator" content="PieCrust 3.2.1" />
     <meta name="template-engine" content="Twig" />
     <meta name="robots" content="all=index,follow" />
     <meta name="revisit-after" content="15 days" />
@@ -209,55 +209,55 @@ shell commands to iterate through a list of files, the other day I wrote a simpl
 the KEYS file, import it, download all the artefacts, then iterate through them and verify the
 signature.</p>
 <p>Here&#8217;s the script. Licensed under the GPL licence.</p>
-<div class="highlight"><pre><span class="c">#!/usr/bin/env bash</span>
+<div class="highlight"><pre><span></span><span class="ch">#!/usr/bin/env bash</span>
 
 <span class="nv">url</span><span class="o">=</span><span class="s2">&quot;&quot;</span>
 
-<span class="c"># From: https://blog.mafr.de/2007/08/05/cmdline-options-in-shell-scripts/</span>
+<span class="c1"># From: https://blog.mafr.de/2007/08/05/cmdline-options-in-shell-scripts/</span>
 <span class="nv">USAGE</span><span class="o">=</span><span class="s2">&quot;Usage: `basename </span><span class="nv">$0</span><span class="s2">` [-hv] https://repository.apache.org/.../commons/commons-configuration/2.2/&quot;</span>
 
-<span class="c"># Parse command line options.</span>
-<span class="k">while</span> <span class="nb">getopts </span>hv: OPT<span class="p">;</span> <span class="k">do</span>
+<span class="c1"># Parse command line options.</span>
+<span class="k">while</span> <span class="nb">getopts</span> hv: OPT<span class="p">;</span> <span class="k">do</span>
     <span class="k">case</span> <span class="s2">&quot;</span><span class="nv">$OPT</span><span class="s2">&quot;</span> in
         h<span class="o">)</span>
             <span class="nb">echo</span> <span class="nv">$USAGE</span>
-            <span class="nb">exit </span>0
+            <span class="nb">exit</span> <span class="m">0</span>
             <span class="p">;;</span>
         v<span class="o">)</span>
             <span class="nb">echo</span> <span class="s2">&quot;`basename </span><span class="nv">$0</span><span class="s2">` version 0.0.1&quot;</span>
-            <span class="nb">exit </span>0
+            <span class="nb">exit</span> <span class="m">0</span>
             <span class="p">;;</span>
         <span class="se">\?</span><span class="o">)</span>
-            <span class="c"># getopts issues an error message</span>
-            <span class="nb">echo</span> <span class="nv">$USAGE</span> &gt;<span class="p">&amp;</span>2
-            <span class="nb">exit </span>1
+            <span class="c1"># getopts issues an error message</span>
+            <span class="nb">echo</span> <span class="nv">$USAGE</span> &gt;<span class="p">&amp;</span><span class="m">2</span>
+            <span class="nb">exit</span> <span class="m">1</span>
             <span class="p">;;</span>
     <span class="k">esac</span>
 <span class="k">done</span>
 
-<span class="c"># Remove the switches we parsed above.</span>
-<span class="nb">shift</span> <span class="sb">`</span>expr <span class="nv">$OPTIND</span> - 1<span class="sb">`</span>
+<span class="c1"># Remove the switches we parsed above.</span>
+<span class="nb">shift</span> <span class="sb">`</span>expr <span class="nv">$OPTIND</span> - <span class="m">1</span><span class="sb">`</span>
 
-<span class="c"># We want at least one non-option argument. </span>
-<span class="c"># Remove this block if you don&#39;t need it.</span>
-<span class="k">if</span> <span class="o">[</span> <span class="nv">$# </span>-eq <span class="m">0</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
-    <span class="nb">echo</span> <span class="nv">$USAGE</span> &gt;<span class="p">&amp;</span>2
-    <span class="nb">exit </span>1
+<span class="c1"># We want at least one non-option argument. </span>
+<span class="c1"># Remove this block if you don&#39;t need it.</span>
+<span class="k">if</span> <span class="o">[</span> <span class="nv">$#</span> -eq <span class="m">0</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+    <span class="nb">echo</span> <span class="nv">$USAGE</span> &gt;<span class="p">&amp;</span><span class="m">2</span>
+    <span class="nb">exit</span> <span class="m">1</span>
 <span class="k">fi</span>
 
-<span class="c"># Access additional arguments as usual through </span>
-<span class="c"># variables $@, $*, $1, $2, etc. or using this loop:</span>
+<span class="c1"># Access additional arguments as usual through </span>
+<span class="c1"># variables $@, $*, $1, $2, etc. or using this loop:</span>
 <span class="nv">URL</span><span class="o">=</span><span class="nv">$1</span>
 
 <span class="nb">echo</span> <span class="s2">&quot;url: </span><span class="si">${</span><span class="nv">URL</span><span class="si">}</span><span class="s2">&quot;</span>
 
-<span class="c"># Use a local temporary directory</span>
+<span class="c1"># Use a local temporary directory</span>
 <span class="nv">BUILD_DIR</span><span class="o">=</span><span class="k">$(</span>mktemp -d<span class="k">)</span>
 <span class="nb">pushd</span> <span class="s2">&quot;</span><span class="nv">$BUILD_DIR</span><span class="s2">&quot;</span>
 
 <span class="nb">echo</span> <span class="s2">&quot;build dir: </span><span class="si">${</span><span class="nv">BUILD_DIR</span><span class="si">}</span><span class="s2">&quot;</span>
 
-<span class="c"># Download KEYS file</span>
+<span class="c1"># Download KEYS file</span>
 <span class="nv">KEYS_URL</span><span class="o">=</span>https://www.apache.org/dist/commons/KEYS
 
 <span class="nb">echo</span> <span class="s2">&quot;importing KEYS from: </span><span class="si">${</span><span class="nv">KEYS_URL</span><span class="si">}</span><span class="s2">&quot;</span>
@@ -265,15 +265,15 @@ signature.</p>
 wget <span class="s2">&quot;</span><span class="nv">$KEYS_URL</span><span class="s2">&quot;</span>
 gpg --import KEYS
 
-<span class="c"># Download JARs and signature files</span>
+<span class="c1"># Download JARs and signature files</span>
 <span class="nb">echo</span> <span class="s2">&quot;downloading all jars and signature files...&quot;</span>
 
 wget -r -nd -np -e <span class="nv">robots</span><span class="o">=</span>off --wait <span class="m">1</span> -R <span class="s2">&quot;index.html*&quot;</span> <span class="s2">&quot;</span><span class="si">${</span><span class="nv">URL</span><span class="si">}</span><span class="s2">&quot;</span>
 
-<span class="c"># Check the files</span>
+<span class="c1"># Check the files</span>
 <span class="k">for</span> x in *.jar<span class="p">;</span> <span class="k">do</span> gpg --verify <span class="s2">&quot;</span><span class="si">${</span><span class="nv">x</span><span class="si">}</span><span class="s2">&quot;</span>.asc<span class="p">;</span> <span class="k">done</span>
 
-<span class="c"># EOF</span>
+<span class="c1"># EOF</span>
 </pre></div>
 
 <p>The script can be found at GitHub too: <a href="https://github.com/kinow/dork-scripts/tree/3c519a74f28c08310ce2e65f8e860d61fd0c5c07/gpg/asf-sigs">https://github.com/kinow/dork-scripts/tree/3c519a74f28c08310ce2e65f8e860d61fd0c5c07/gpg/asf-sigs</a></p><!-- html -->
@@ -326,7 +326,7 @@ wget -r -nd -np -e <span class="nv">robots</span><span class="o">=</span>off --w
 
     <p>Subversion supports <a href="http://svnbook.red-bean.com/en/1.4/svn.advanced.props.special.keywords.html">Keyword Substitution</a>, which performs substitution of some keywords such as <em>Author</em>, <em>Date</em>, and <strong><em>Id</em></strong>. The <strong><em>Id</em></strong> is the date, time, and user that last modified the file.</p>
 <p>It used to be common to all Apache Commons components to have a line as follows in the header of each Java class.</p>
-<div class="highlight"><pre><span class="cm">/**</span>
+<div class="highlight"><pre><span></span><span class="cm">/**</span>
 <span class="cm"> * SomeClass class.</span>
 <span class="cm"> *</span>
 <span class="cm"> * @version $Id$</span>
@@ -338,7 +338,7 @@ wget -r -nd -np -e <span class="nv">robots</span><span class="o">=</span>off --w
 
 <p>Then the generated Javadoc would contain the date of when the class was altered. Although useful, with proper versioning, it becomes obsolete. It is much more important to know what is the version of the software, not the last time it was modified or by whom. In case you have a problem with that specific file, you can always check the history of the file using <code>git log</code>, or <code>git bisect</code>, or &hellip;</p>
 <p>Apache Commons components that are migrated to git need to have these lines removed. git does not support these Subversion Keywords so it is never properly rendered. And as every time I have to remove these lines I come up with some shell script snippet, I decided to document the last one I wrote, so that it can save me some time &dash; and perhaps for somebody else too?</p>
-<div class="highlight"><pre>find . -name <span class="s2">&quot;*.java&quot;</span> -exec sed -i <span class="s1">&#39;/^.*\*\s*@version\s*\$Id\$.*$/d&#39;</span> <span class="o">{}</span> <span class="se">\;</span>
+<div class="highlight"><pre><span></span>find . -name <span class="s2">&quot;*.java&quot;</span> -exec sed -i <span class="s1">&#39;/^.*\*\s*@version\s*\$Id\$.*$/d&#39;</span> <span class="o">{}</span> <span class="se">\;</span>
 </pre></div>
 
 <p>And then <a href="https://github.com/apache/commons-collections/commit/29d2e93966e7fb99a888a58ab43480e485dcdfc6">push a commit</a> with the change :-) In case you know some regex, you can change it and use the same command syntax to remove comments, specific configuration lines, etc.</p>
@@ -393,7 +393,7 @@ when you can run the application locally (our testers build, compile, change the
 is that?).</p>
 <p>Here&#8217;s how it works. Say you have the following settings in your application&#8217;s
 <strong>application.properties</strong>:</p>
-<div class="highlight"><pre>my.application.database.username<span class="o">=</span>sa
+<div class="highlight"><pre><span></span>my.application.database.username<span class="o">=</span>sa
 my.application.database.password<span class="o">=</span>notasimplepassword
 </pre></div>
 
@@ -404,7 +404,7 @@ above would be: MY_APPLICATION_DATABASE_USERNAME and MY_APPLICATION_DATABASE_PAS
 <p>Furthermore, you do not need to edit your application.properties file, if you are on Linux or
 Mac OS. You can start the application and override environment variables at the same time
 with the following syntax.</p>
-<div class="highlight"><pre><span class="nv">$ MY_APPLICATION_DATABASE_USERNAME</span><span class="o">=</span>olivei <span class="nv">MY_APPLICATION_DATABASE_PASSWORD</span><span class="o">=</span>7655432222a mvn clean spring-boot:run
+<div class="highlight"><pre><span></span>$ <span class="nv">MY_APPLICATION_DATABASE_USERNAME</span><span class="o">=</span>olivei <span class="nv">MY_APPLICATION_DATABASE_PASSWORD</span><span class="o">=</span>7655432222a mvn clean spring-boot:run
 </pre></div>
 
 <p>This way your application will start with the new values.</p>
@@ -412,7 +412,7 @@ with the following syntax.</p>
 <p><strong>&#8212;EDIT&#8212;</strong></p>
 <p>As pointed by Stéphane Nicoll (thanks!), you could change the property values
 without having to use the upper case syntax.</p>
-<div class="highlight"><pre>mvn -Dmy.application.database.username<span class="o">=</span>anotheruser clean spring-boot:run
+<div class="highlight"><pre><span></span>mvn -Dmy.application.database.username<span class="o">=</span>anotheruser clean spring-boot:run
 </pre></div>
 
 <p>And he even included a link to <a href="http://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#boot-features-external-config">docs</a>! ♥ the Internet and Open Source!</p>
@@ -476,7 +476,7 @@ that would call the other command that generates the documentation, and add an e
 of adding the header to the Markdown file.</p>
 <p>Here&#8217;s the shell script part, that allows you to add a header to a file, in place (i.e.
 it will alter and save the change your file).</p>
-<div class="highlight"><pre>sed -i 1i<span class="s2">&quot;----\nlayout: page\ntitle: API Installation\n----\n\n&quot;</span> ./docs/documentation/api/api.md
+<div class="highlight"><pre><span></span>sed -i 1i<span class="s2">&quot;----\nlayout: page\ntitle: API Installation\n----\n\n&quot;</span> ./docs/documentation/api/api.md
 </pre></div>
 
 <p>Here the first argument to sed, <em>-i</em> is for in place. Then that strange <em>1i</em>
@@ -527,9 +527,9 @@ for static analysis of shell scripts. It reports errors like missing double quot
 syntax, etc.</p>
 <p>I decided to check some projects I contribute to, and the first issue I found was in
 <a href="https://jena.apache.org">Apache Jena</a>:</p>
-<div class="highlight"><pre>kinow@localhost:~/Development/java/jena/jena/apache-jena/bin<span class="nv">$ </span>shellcheck arq
+<div class="highlight"><pre><span></span>kinow@localhost:~/Development/java/jena/jena/apache-jena/bin$ shellcheck arq
 
-In arq line 8:
+In arq line <span class="m">8</span>:
     <span class="k">case</span> <span class="s2">&quot;</span><span class="nv">$OSTYPE</span><span class="s2">&quot;</span> in
           ^-- SC2039: In POSIX sh, OSTYPE is not supported.
 </pre></div>

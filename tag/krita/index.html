@@ -8,7 +8,7 @@
     <meta name="keywords"
         content="kinoshita, bruno de paula kinoshita, geek, geek stuff, java, python, c, c++, msn now playing, neural network, mackenzie, sao paulo, brasil, brazil, nerd, nerd stuff, cool, jenkins, illustration, quadrinhos, machine learning, linguistic, apache, open source, codigo livre, codigo aberto" />
     <meta name="author" content="" />
-    <meta name="generator" content="PieCrust 3.2.0" />
+    <meta name="generator" content="PieCrust 3.2.1" />
     <meta name="template-engine" content="Twig" />
     <meta name="robots" content="all=index,follow" />
     <meta name="revisit-after" content="15 days" />
@@ -351,7 +351,7 @@ where the application is initialized, then step through a few times, until the m
 console.</p>
 <p>Further investigation led me to the History docker (the one that shows undo steps)
 <a href="https://github.com/KDE/krita/blob/9e2b8c5b07deccd4a616ad7930a91e8cc784a85b/plugins/dockers/historydocker/HistoryDock.cpp#L33">constructor</a>.</p>
-<div class="highlight"><pre>    <span class="n">QVBoxLayout</span> <span class="o">*</span><span class="n">vl</span> <span class="o">=</span> <span class="k">new</span> <span class="n">QVBoxLayout</span><span class="p">(</span><span class="n">page</span><span class="p">);</span> <span class="c1">// layout being set to page</span>
+<div class="highlight"><pre><span></span>    <span class="n">QVBoxLayout</span> <span class="o">*</span><span class="n">vl</span> <span class="o">=</span> <span class="k">new</span> <span class="n">QVBoxLayout</span><span class="p">(</span><span class="n">page</span><span class="p">);</span> <span class="c1">// layout being set to page</span>
     <span class="n">m_undoView</span> <span class="o">=</span> <span class="k">new</span> <span class="n">KisUndoView</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
     <span class="n">vl</span><span class="o">-&gt;</span><span class="n">addWidget</span><span class="p">(</span><span class="n">m_undoView</span><span class="p">);</span>
     <span class="n">QHBoxLayout</span> <span class="o">*</span><span class="n">hl</span> <span class="o">=</span> <span class="k">new</span> <span class="n">QHBoxLayout</span><span class="p">(</span><span class="n">page</span><span class="p">);</span> <span class="c1">// layout being set to page again</span>
@@ -371,7 +371,7 @@ a little bit, then came across this post with a good example of a QWidget with
 QHBoxLayout and QVBoxLayout. Here&#8217;s what the constructor looks after the
 <a href="https://bugs.kde.org/show_bug.cgi?id=378313">patch</a>
 has been <a href="https://github.com/KDE/krita/commit/1d2343c0cacfb0b105fbe86c2bcef975a09b1041">applied</a>.</p>
-<div class="highlight"><pre>    <span class="n">QVBoxLayout</span> <span class="o">*</span><span class="n">vl</span> <span class="o">=</span> <span class="k">new</span> <span class="n">QVBoxLayout</span><span class="p">(</span><span class="n">page</span><span class="p">);</span> <span class="c1">// layout being set to page</span>
+<div class="highlight"><pre><span></span>    <span class="n">QVBoxLayout</span> <span class="o">*</span><span class="n">vl</span> <span class="o">=</span> <span class="k">new</span> <span class="n">QVBoxLayout</span><span class="p">(</span><span class="n">page</span><span class="p">);</span> <span class="c1">// layout being set to page</span>
     <span class="n">m_undoView</span> <span class="o">=</span> <span class="k">new</span> <span class="n">KisUndoView</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
     <span class="n">vl</span><span class="o">-&gt;</span><span class="n">addWidget</span><span class="p">(</span><span class="n">m_undoView</span><span class="p">);</span>
     <span class="n">QHBoxLayout</span> <span class="o">*</span><span class="n">hl</span> <span class="o">=</span> <span class="k">new</span> <span class="n">QHBoxLayout</span><span class="p">();</span>
@@ -453,13 +453,13 @@ looking for a <a href="http://wiki.c2.com/?LazinessImpatienceHubris">simpler way
 <p>Searching the web I found some suggestions that <code>ulimit</code> could work. After playing for a while with
 <code>ulimit</code> and <code>htop</code>, and verifying the amount of memory necessary to open two files in two windows
 in Krita, I came up with the following settings.</p>
-<div class="highlight"><pre><span class="c"># 2550 mb in kb</span>
-<span class="nb">ulimit</span> -v 2550000
+<div class="highlight"><pre><span></span><span class="c1"># 2550 mb in kb</span>
+<span class="nb">ulimit</span> -v <span class="m">2550000</span>
 
-<span class="c"># 2 gb in kb</span>
-<span class="nb">ulimit</span> -m 2000000
+<span class="c1"># 2 gb in kb</span>
+<span class="nb">ulimit</span> -m <span class="m">2000000</span>
 
-<span class="c"># Confirm limits</span>
+<span class="c1"># Confirm limits</span>
 <span class="nb">ulimit</span> -a
 
 gdb <span class="nv">$HOME</span>/Development/cpp/workspace/krita_install/bin/krita
@@ -615,12 +615,12 @@ issue, rather than on the memory bug. So decided to look for a work-around.</p>
 <p>Thankfully someone else blogged about a similar issue and saved me a lot of time :-)
 Here&#8217;s how I did it, following the instructions in
 <a href="http://www.geany.org/manual/gtk/gtk-faq/x462.html">this blog post</a>.</p>
-<div class="highlight"><pre><span class="nv">$ </span>sudo apt-get install xnest -y
-<span class="nv">$ </span><span class="nb">cd </span>krita_install/
-<span class="nv">$ </span>Xnest :10
-<span class="nv">$ </span>twm -display :10
-<span class="nv">$ </span><span class="nb">export </span><span class="nv">DISPLAY</span><span class="o">=</span>:10
-<span class="nv">$ </span>./krita
+<div class="highlight"><pre><span></span>$ sudo apt-get install xnest -y
+$ <span class="nb">cd</span> krita_install/
+$ Xnest :10
+$ twm -display :10
+$ <span class="nb">export</span> <span class="nv">DISPLAY</span><span class="o">=</span>:10
+$ ./krita
 </pre></div>
 
 <p>That&#8217;s it. You should have Krita running in a separate window, with Xnest, and within

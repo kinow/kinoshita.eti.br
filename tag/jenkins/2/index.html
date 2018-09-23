@@ -8,7 +8,7 @@
     <meta name="keywords"
         content="kinoshita, bruno de paula kinoshita, geek, geek stuff, java, python, c, c++, msn now playing, neural network, mackenzie, sao paulo, brasil, brazil, nerd, nerd stuff, cool, jenkins, illustration, quadrinhos, machine learning, linguistic, apache, open source, codigo livre, codigo aberto" />
     <meta name="author" content="" />
-    <meta name="generator" content="PieCrust 3.2.0" />
+    <meta name="generator" content="PieCrust 3.2.1" />
     <meta name="template-engine" content="Twig" />
     <meta name="robots" content="all=index,follow" />
     <meta name="revisit-after" content="15 days" />
@@ -215,9 +215,9 @@ decided to write this short post to show a few different ways it can be achieved
 or Java. But I think I would choose this option only because either I needed some feature that is not
 available in the other options, or in order to call other tasks or debug some problem.</p>
 <p>Example:</p>
-<div class="highlight"><pre><span class="nv">$ </span>docker run -d -p 8888:8080 jeanblanchard/tomcat:8
-<span class="nv">$ </span>git clone https://github.com/spring-projects/spring-petclinic.git <span class="o">&amp;&amp;</span> <span class="nb">cd </span>spring-petclinic <span class="o">&amp;&amp;</span> mvn package
-<span class="nv">$ </span>curl --upload-file target/petclinic.war <span class="s2">&quot;http://admin:admin@localhost:8888/manager/text/deploy?path=/spring-petclinic&amp;update=true&quot;</span>
+<div class="highlight"><pre><span></span>$ docker run -d -p <span class="m">8888</span>:8080 jeanblanchard/tomcat:8
+$ git clone https://github.com/spring-projects/spring-petclinic.git <span class="o">&amp;&amp;</span> <span class="nb">cd</span> spring-petclinic <span class="o">&amp;&amp;</span> mvn package
+$ curl --upload-file target/petclinic.war <span class="s2">&quot;http://admin:admin@localhost:8888/manager/text/deploy?path=/spring-petclinic&amp;update=true&quot;</span>
 OK - Deployed application at context path /spring-petclinic
 </pre></div>
 
@@ -280,7 +280,7 @@ OK - Deployed application at context path /spring-petclinic
 <li><a href="http://javadoc.jenkins-ci.org/hudson/util/Secret.html">Secret Javadoc</a></li>
 <li><a href="https://github.com/jenkinsci/jenkins/blob/master/core/src/main/java/hudson/util/Secret.java">Secret source code</a></li>
 </ul>
-<div class="highlight"><pre><span class="kd">public</span> <span class="kd">static</span> <span class="n">Secret</span> <span class="nf">fromString</span><span class="o">(</span><span class="n">String</span> <span class="n">data</span><span class="o">)</span> <span class="o">{</span>
+<div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">static</span> <span class="n">Secret</span> <span class="nf">fromString</span><span class="o">(</span><span class="n">String</span> <span class="n">data</span><span class="o">)</span> <span class="o">{</span>
     <span class="n">data</span> <span class="o">=</span> <span class="n">Util</span><span class="o">.</span><span class="na">fixNull</span><span class="o">(</span><span class="n">data</span><span class="o">);</span>
     <span class="n">Secret</span> <span class="n">s</span> <span class="o">=</span> <span class="n">decrypt</span><span class="o">(</span><span class="n">data</span><span class="o">);</span>
     <span class="k">if</span><span class="o">(</span><span class="n">s</span><span class="o">==</span><span class="kc">null</span><span class="o">)</span> <span class="n">s</span><span class="o">=</span><span class="k">new</span> <span class="n">Secret</span><span class="o">(</span><span class="n">data</span><span class="o">);</span>
@@ -290,7 +290,7 @@ OK - Deployed application at context path /spring-petclinic
 
 <p>The first line simply replaces a null string by an empty &#8220;&#8221;, or keeps the current value of not null.</p>
 <p>After that, the decrypt method is called.</p>
-<div class="highlight"><pre><span class="kd">public</span> <span class="kd">static</span> <span class="n">Secret</span> <span class="nf">decrypt</span><span class="o">(</span><span class="n">String</span> <span class="n">data</span><span class="o">)</span> <span class="o">{</span>
+<div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">static</span> <span class="n">Secret</span> <span class="nf">decrypt</span><span class="o">(</span><span class="n">String</span> <span class="n">data</span><span class="o">)</span> <span class="o">{</span>
     <span class="k">if</span><span class="o">(</span><span class="n">data</span><span class="o">==</span><span class="kc">null</span><span class="o">)</span>      <span class="k">return</span> <span class="kc">null</span><span class="o">;</span>
     <span class="k">try</span> <span class="o">{</span>
         <span class="kt">byte</span><span class="o">[]</span> <span class="n">in</span> <span class="o">=</span> <span class="n">Base64</span><span class="o">.</span><span class="na">decode</span><span class="o">(</span><span class="n">data</span><span class="o">.</span><span class="na">toCharArray</span><span class="o">());</span>
@@ -367,7 +367,7 @@ If you are familiar with Linux init scripts, the idea is quite similar. </p>
 <p>A Groovy script in the <code>$JENKINS_ROOT_DIR/init.groovy.d/</code> directory is executed during
 Jenkins initialization. This way you can increase the global logger level with a script
 as the following below.</p>
-<div class="highlight"><pre><span class="kn">import</span> <span class="nn">java.util.logging.ConsoleHandler</span>
+<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">java.util.logging.ConsoleHandler</span>
 <span class="kn">import</span> <span class="nn">java.util.logging.LogManager</span>
 <span class="kn">import</span> <span class="nn">java.util.logging.Logger</span>
 <span class="kn">import</span> <span class="nn">java.util.logging.Level</span>
@@ -434,7 +434,7 @@ and its implementations. That page is generated by a <a href="https://ci.jenkins
 <p>That job outputs a JSON file that contains each available extension points, as well as 
 an array with its implementations. The R code below will produce two vectors, one with the 
 count of implementations of each extension point, and the other with the class name.</p>
-<div class="highlight"><pre>nExtensionPoints <span class="o">&lt;-</span> <span class="kp">length</span><span class="p">(</span>extensionPointsJson<span class="o">$</span>extensionPoints<span class="p">)</span>
+<div class="highlight"><pre><span></span>nExtensionPoints <span class="o">&lt;-</span> <span class="kp">length</span><span class="p">(</span>extensionPointsJson<span class="o">$</span>extensionPoints<span class="p">)</span>
 numberOfImplementations <span class="o">&lt;-</span> <span class="kt">vector</span><span class="p">(</span>length <span class="o">=</span> nExtensionPoints<span class="p">)</span>
 namesOfTheExtensionPoints <span class="o">&lt;-</span> <span class="kt">vector</span><span class="p">(</span>length <span class="o">=</span> nExtensionPoints<span class="p">)</span>
 <span class="kr">for</span> <span class="p">(</span>i <span class="kr">in</span> <span class="kp">seq_along</span><span class="p">(</span>extensionPoints<span class="p">))</span> <span class="p">{</span>
@@ -449,14 +449,14 @@ namesOfTheExtensionPoints <span class="o">&lt;-</span> <span class="kt">vector</
 <p>For creating the treemap I used the <strong><a href="http://flowingdata.com/2010/02/11/an-easy-way-to-make-a-treemap/">portfolio package</a></strong>, and the <code>map.market</code> 
 function. The structures previously created and the next snippet of code are all that is 
 needed to create the treemap of the Jenkins extension points.</p>
-<div class="highlight"><pre>map.market<span class="p">(</span>id<span class="o">=</span><span class="kp">seq_along</span><span class="p">(</span>extensionPoints<span class="p">),</span> area<span class="o">=</span>numberOfImplementations<span class="p">,</span> group<span class="o">=</span>namesOfTheExtensionPoints<span class="p">,</span> color<span class="o">=</span>numberOfImplementations<span class="p">,</span> main<span class="o">=</span><span class="s">&quot;Jenkins Extension Points&quot;</span><span class="p">)</span>
+<div class="highlight"><pre><span></span>map.market<span class="p">(</span>id<span class="o">=</span><span class="kp">seq_along</span><span class="p">(</span>extensionPoints<span class="p">),</span> area<span class="o">=</span>numberOfImplementations<span class="p">,</span> group<span class="o">=</span>namesOfTheExtensionPoints<span class="p">,</span> color<span class="o">=</span>numberOfImplementations<span class="p">,</span> main<span class="o">=</span><span class="s">&quot;Jenkins Extension Points&quot;</span><span class="p">)</span>
 </pre></div>
 
 <p>You can also use the <a href="https://wiki.jenkins-ci.org/display/JENKINS/R+Plugin">Jenkins R Plug-in</a> to produce this graph, 
 as in this <a href="http://builds.tupilabs.com/job/backend-extension-points-treemap/2/">sample job</a>. 
 You can get the complete script in this <a href="https://gist.github.com/kinow/d5a2221c32dce3aa1076">gist</a>, or just 
 copy it here.</p>
-<div class="highlight"><pre><span class="kn">library</span><span class="p">(</span><span class="s">&#39;rjson&#39;</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><span class="kn">library</span><span class="p">(</span><span class="s">&#39;rjson&#39;</span><span class="p">)</span>
 <span class="kn">library</span><span class="p">(</span><span class="s">&#39;portfolio&#39;</span><span class="p">)</span>
 
 download.file<span class="p">(</span>url<span class="o">=</span><span class="s">&quot;https://ci.jenkins-ci.org/view/Infrastructure/job/infra_extension-indexer/ws/extension-points.json&quot;</span><span class="p">,</span> destfile<span class="o">=</span><span class="s">&quot;extension-points.json&quot;</span><span class="p">,</span> method<span class="o">=</span><span class="s">&quot;wget&quot;</span><span class="p">)</span>

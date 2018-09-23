@@ -8,7 +8,7 @@
     <meta name="keywords"
         content="kinoshita, bruno de paula kinoshita, geek, geek stuff, java, python, c, c++, msn now playing, neural network, mackenzie, sao paulo, brasil, brazil, nerd, nerd stuff, cool, jenkins, illustration, quadrinhos, machine learning, linguistic, apache, open source, codigo livre, codigo aberto" />
     <meta name="author" content="" />
-    <meta name="generator" content="PieCrust 3.2.0" />
+    <meta name="generator" content="PieCrust 3.2.1" />
     <meta name="template-engine" content="Twig" />
     <meta name="robots" content="all=index,follow" />
     <meta name="revisit-after" content="15 days" />
@@ -162,23 +162,23 @@ with different data types.</p>
 <h3>Parsing binary data with Python and construct</h3>
 <p><a href="https://construct.readthedocs.io/">Construct</a> is a declarative parser for binary data.
 You can build a parser by simply saying what you expect to be in each field. For example.</p>
-<div class="highlight"><pre><span class="n">pccora_header</span> <span class="o">=</span> <span class="n">Struct</span><span class="p">(</span><span class="s">&quot;pccora_header&quot;</span><span class="p">,</span>
-    <span class="n">ExprAdapter</span><span class="p">(</span><span class="n">String</span><span class="p">(</span><span class="s">&quot;copyright&quot;</span><span class="p">,</span> <span class="mi">20</span><span class="p">),</span>
+<div class="highlight"><pre><span></span><span class="n">pccora_header</span> <span class="o">=</span> <span class="n">Struct</span><span class="p">(</span><span class="s2">&quot;pccora_header&quot;</span><span class="p">,</span>
+    <span class="n">ExprAdapter</span><span class="p">(</span><span class="n">String</span><span class="p">(</span><span class="s2">&quot;copyright&quot;</span><span class="p">,</span> <span class="mi">20</span><span class="p">),</span>
         <span class="n">encoder</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">obj</span><span class="p">,</span> <span class="n">ctx</span><span class="p">:</span> <span class="n">obj</span><span class="o">.</span><span class="n">encode</span><span class="p">(),</span>
-        <span class="n">decoder</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">obj</span><span class="p">,</span> <span class="n">ctx</span><span class="p">:</span> <span class="n">obj</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s">&#39;utf-8&#39;</span><span class="p">,</span> <span class="s">&#39;ignore&#39;</span><span class="p">)</span>
+        <span class="n">decoder</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">obj</span><span class="p">,</span> <span class="n">ctx</span><span class="p">:</span> <span class="n">obj</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">,</span> <span class="s1">&#39;ignore&#39;</span><span class="p">)</span>
     <span class="p">),</span>
-    <span class="n">SLInt16</span><span class="p">(</span><span class="s">&quot;identification_length&quot;</span><span class="p">),</span>
-    <span class="n">SLInt16</span><span class="p">(</span><span class="s">&quot;syspar_length&quot;</span><span class="p">),</span>
-    <span class="n">SLInt16</span><span class="p">(</span><span class="s">&quot;data_records&quot;</span><span class="p">),</span>
-    <span class="n">SLInt16</span><span class="p">(</span><span class="s">&quot;standard_levels&quot;</span><span class="p">),</span>
-    <span class="n">SLInt16</span><span class="p">(</span><span class="s">&quot;data_type&quot;</span><span class="p">),</span>
-    <span class="n">SLInt16</span><span class="p">(</span><span class="s">&quot;data_length&quot;</span><span class="p">),</span>
-    <span class="n">Enum</span><span class="p">(</span><span class="n">Byte</span><span class="p">(</span><span class="s">&quot;file_ready&quot;</span><span class="p">),</span>
+    <span class="n">SLInt16</span><span class="p">(</span><span class="s2">&quot;identification_length&quot;</span><span class="p">),</span>
+    <span class="n">SLInt16</span><span class="p">(</span><span class="s2">&quot;syspar_length&quot;</span><span class="p">),</span>
+    <span class="n">SLInt16</span><span class="p">(</span><span class="s2">&quot;data_records&quot;</span><span class="p">),</span>
+    <span class="n">SLInt16</span><span class="p">(</span><span class="s2">&quot;standard_levels&quot;</span><span class="p">),</span>
+    <span class="n">SLInt16</span><span class="p">(</span><span class="s2">&quot;data_type&quot;</span><span class="p">),</span>
+    <span class="n">SLInt16</span><span class="p">(</span><span class="s2">&quot;data_length&quot;</span><span class="p">),</span>
+    <span class="n">Enum</span><span class="p">(</span><span class="n">Byte</span><span class="p">(</span><span class="s2">&quot;file_ready&quot;</span><span class="p">),</span>
         <span class="n">READY</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
         <span class="n">NOT_READY</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
-        <span class="n">_default_</span> <span class="o">=</span> <span class="s">&quot;UNKNOWN&quot;</span><span class="p">,</span>
+        <span class="n">_default_</span> <span class="o">=</span> <span class="s2">&quot;UNKNOWN&quot;</span><span class="p">,</span>
     <span class="p">),</span>
-    <span class="n">Bytes</span><span class="p">(</span><span class="s">&quot;reserved&quot;</span><span class="p">,</span> <span class="mi">17</span><span class="p">)</span>
+    <span class="n">Bytes</span><span class="p">(</span><span class="s2">&quot;reserved&quot;</span><span class="p">,</span> <span class="mi">17</span><span class="p">)</span>
 <span class="p">)</span>
 </pre></div>
 
@@ -217,37 +217,37 @@ can grab any example GRUAN NetCDF (.nc) file and inspect with <em>ncdump</em>,
 <em>Panoply</em>, <em>ncBrowse</em> or your favourite editor.</p>
 <p>For the file <a href="ftp://ftp.ncdc.noaa.gov/pub/data/gruan/processing/level2/RS92-GDP/version-002/TAT/2016/TAT-RS-01_2_RS92-GDP_002_20160104T000000_1-000-001.nc"></a>
 for example, the <strong>time</strong> and <strong>pressure</strong> variables are described below.</p>
-<div class="highlight"><pre><span class="n">dimensions</span><span class="p">:</span>
+<div class="highlight"><pre><span></span><span class="n">dimensions</span><span class="p">:</span>
   <span class="n">time</span> <span class="o">=</span> <span class="n">UNLIMITED</span> <span class="p">;</span> <span class="o">//</span> <span class="p">(</span><span class="mi">5735</span> <span class="n">currently</span><span class="p">)</span>
 <span class="n">variables</span><span class="p">:</span>
   <span class="nb">float</span> <span class="n">time</span><span class="p">(</span><span class="n">time</span><span class="p">)</span> <span class="p">;</span>
-    <span class="n">time</span><span class="p">:</span><span class="n">standard_name</span> <span class="o">=</span> <span class="s">&quot;time&quot;</span> <span class="p">;</span>
-    <span class="n">time</span><span class="p">:</span><span class="n">units</span> <span class="o">=</span> <span class="s">&quot;seconds since 2016-01-03T23:30:16&quot;</span> <span class="p">;</span>
-    <span class="n">time</span><span class="p">:</span><span class="n">long_name</span> <span class="o">=</span> <span class="s">&quot;Time&quot;</span> <span class="p">;</span>
-    <span class="n">time</span><span class="p">:</span><span class="n">g_format_type</span> <span class="o">=</span> <span class="s">&quot;FLT&quot;</span> <span class="p">;</span>
-    <span class="n">time</span><span class="p">:</span><span class="n">g_format_format</span> <span class="o">=</span> <span class="s">&quot;F8.1&quot;</span> <span class="p">;</span>
-    <span class="n">time</span><span class="p">:</span><span class="n">g_format_width</span> <span class="o">=</span> <span class="s">&quot;8&quot;</span> <span class="p">;</span>
-    <span class="n">time</span><span class="p">:</span><span class="n">g_format_nan</span> <span class="o">=</span> <span class="s">&quot;NaN&quot;</span> <span class="p">;</span>
-    <span class="n">time</span><span class="p">:</span><span class="n">g_source_desc</span> <span class="o">=</span> <span class="s">&quot;FRAWPTU&quot;</span> <span class="p">;</span>
-    <span class="n">time</span><span class="p">:</span><span class="n">g_column_type</span> <span class="o">=</span> <span class="s">&quot;original data&quot;</span> <span class="p">;</span>
-    <span class="n">time</span><span class="p">:</span><span class="n">g_resolution</span> <span class="o">=</span> <span class="s">&quot;1.0 s (time)&quot;</span> <span class="p">;</span>
-    <span class="n">time</span><span class="p">:</span><span class="n">axis</span> <span class="o">=</span> <span class="s">&quot;T&quot;</span> <span class="p">;</span>
-    <span class="n">time</span><span class="p">:</span><span class="n">calendar</span> <span class="o">=</span> <span class="s">&quot;gregorian&quot;</span> <span class="p">;</span>
+    <span class="n">time</span><span class="p">:</span><span class="n">standard_name</span> <span class="o">=</span> <span class="s2">&quot;time&quot;</span> <span class="p">;</span>
+    <span class="n">time</span><span class="p">:</span><span class="n">units</span> <span class="o">=</span> <span class="s2">&quot;seconds since 2016-01-03T23:30:16&quot;</span> <span class="p">;</span>
+    <span class="n">time</span><span class="p">:</span><span class="n">long_name</span> <span class="o">=</span> <span class="s2">&quot;Time&quot;</span> <span class="p">;</span>
+    <span class="n">time</span><span class="p">:</span><span class="n">g_format_type</span> <span class="o">=</span> <span class="s2">&quot;FLT&quot;</span> <span class="p">;</span>
+    <span class="n">time</span><span class="p">:</span><span class="n">g_format_format</span> <span class="o">=</span> <span class="s2">&quot;F8.1&quot;</span> <span class="p">;</span>
+    <span class="n">time</span><span class="p">:</span><span class="n">g_format_width</span> <span class="o">=</span> <span class="s2">&quot;8&quot;</span> <span class="p">;</span>
+    <span class="n">time</span><span class="p">:</span><span class="n">g_format_nan</span> <span class="o">=</span> <span class="s2">&quot;NaN&quot;</span> <span class="p">;</span>
+    <span class="n">time</span><span class="p">:</span><span class="n">g_source_desc</span> <span class="o">=</span> <span class="s2">&quot;FRAWPTU&quot;</span> <span class="p">;</span>
+    <span class="n">time</span><span class="p">:</span><span class="n">g_column_type</span> <span class="o">=</span> <span class="s2">&quot;original data&quot;</span> <span class="p">;</span>
+    <span class="n">time</span><span class="p">:</span><span class="n">g_resolution</span> <span class="o">=</span> <span class="s2">&quot;1.0 s (time)&quot;</span> <span class="p">;</span>
+    <span class="n">time</span><span class="p">:</span><span class="n">axis</span> <span class="o">=</span> <span class="s2">&quot;T&quot;</span> <span class="p">;</span>
+    <span class="n">time</span><span class="p">:</span><span class="n">calendar</span> <span class="o">=</span> <span class="s2">&quot;gregorian&quot;</span> <span class="p">;</span>
   <span class="nb">float</span> <span class="n">press</span><span class="p">(</span><span class="n">time</span><span class="p">)</span> <span class="p">;</span>
-    <span class="n">press</span><span class="p">:</span><span class="n">standard_name</span> <span class="o">=</span> <span class="s">&quot;air_pressure&quot;</span> <span class="p">;</span>
-    <span class="n">press</span><span class="p">:</span><span class="n">units</span> <span class="o">=</span> <span class="s">&quot;hPa&quot;</span> <span class="p">;</span>
-    <span class="n">press</span><span class="p">:</span><span class="n">long_name</span> <span class="o">=</span> <span class="s">&quot;Pressure&quot;</span> <span class="p">;</span>
-    <span class="n">press</span><span class="p">:</span><span class="n">g_format_type</span> <span class="o">=</span> <span class="s">&quot;FLT&quot;</span> <span class="p">;</span>
-    <span class="n">press</span><span class="p">:</span><span class="n">g_format_format</span> <span class="o">=</span> <span class="s">&quot;F8.3&quot;</span> <span class="p">;</span>
-    <span class="n">press</span><span class="p">:</span><span class="n">g_format_width</span> <span class="o">=</span> <span class="s">&quot;8&quot;</span> <span class="p">;</span>
-    <span class="n">press</span><span class="p">:</span><span class="n">g_format_nan</span> <span class="o">=</span> <span class="s">&quot;NaN&quot;</span> <span class="p">;</span>
-    <span class="n">press</span><span class="p">:</span><span class="n">g_processing_flag</span> <span class="o">=</span> <span class="s">&quot;raw, smoothed, internal QC passed, additional QC passed&quot;</span> <span class="p">;</span>
-    <span class="n">press</span><span class="p">:</span><span class="n">g_source_desc</span> <span class="o">=</span> <span class="s">&quot;FRAWPTU&quot;</span> <span class="p">;</span>
-    <span class="n">press</span><span class="p">:</span><span class="n">g_column_type</span> <span class="o">=</span> <span class="s">&quot;original data&quot;</span> <span class="p">;</span>
-    <span class="n">press</span><span class="p">:</span><span class="n">g_resolution</span> <span class="o">=</span> <span class="s">&quot;15.0 s (time)&quot;</span> <span class="p">;</span>
-    <span class="n">press</span><span class="p">:</span><span class="n">comment</span> <span class="o">=</span> <span class="s">&quot;Barometric air pressure using silicon sensor up to 13.1 km, derived from GPS-altitude above&quot;</span> <span class="p">;</span>
-    <span class="n">press</span><span class="p">:</span><span class="n">related_columns</span> <span class="o">=</span> <span class="s">&quot;u_press &quot;</span> <span class="p">;</span>
-    <span class="n">press</span><span class="p">:</span><span class="n">coordinates</span> <span class="o">=</span> <span class="s">&quot;lon lat alt&quot;</span> <span class="p">;</span>
+    <span class="n">press</span><span class="p">:</span><span class="n">standard_name</span> <span class="o">=</span> <span class="s2">&quot;air_pressure&quot;</span> <span class="p">;</span>
+    <span class="n">press</span><span class="p">:</span><span class="n">units</span> <span class="o">=</span> <span class="s2">&quot;hPa&quot;</span> <span class="p">;</span>
+    <span class="n">press</span><span class="p">:</span><span class="n">long_name</span> <span class="o">=</span> <span class="s2">&quot;Pressure&quot;</span> <span class="p">;</span>
+    <span class="n">press</span><span class="p">:</span><span class="n">g_format_type</span> <span class="o">=</span> <span class="s2">&quot;FLT&quot;</span> <span class="p">;</span>
+    <span class="n">press</span><span class="p">:</span><span class="n">g_format_format</span> <span class="o">=</span> <span class="s2">&quot;F8.3&quot;</span> <span class="p">;</span>
+    <span class="n">press</span><span class="p">:</span><span class="n">g_format_width</span> <span class="o">=</span> <span class="s2">&quot;8&quot;</span> <span class="p">;</span>
+    <span class="n">press</span><span class="p">:</span><span class="n">g_format_nan</span> <span class="o">=</span> <span class="s2">&quot;NaN&quot;</span> <span class="p">;</span>
+    <span class="n">press</span><span class="p">:</span><span class="n">g_processing_flag</span> <span class="o">=</span> <span class="s2">&quot;raw, smoothed, internal QC passed, additional QC passed&quot;</span> <span class="p">;</span>
+    <span class="n">press</span><span class="p">:</span><span class="n">g_source_desc</span> <span class="o">=</span> <span class="s2">&quot;FRAWPTU&quot;</span> <span class="p">;</span>
+    <span class="n">press</span><span class="p">:</span><span class="n">g_column_type</span> <span class="o">=</span> <span class="s2">&quot;original data&quot;</span> <span class="p">;</span>
+    <span class="n">press</span><span class="p">:</span><span class="n">g_resolution</span> <span class="o">=</span> <span class="s2">&quot;15.0 s (time)&quot;</span> <span class="p">;</span>
+    <span class="n">press</span><span class="p">:</span><span class="n">comment</span> <span class="o">=</span> <span class="s2">&quot;Barometric air pressure using silicon sensor up to 13.1 km, derived from GPS-altitude above&quot;</span> <span class="p">;</span>
+    <span class="n">press</span><span class="p">:</span><span class="n">related_columns</span> <span class="o">=</span> <span class="s2">&quot;u_press &quot;</span> <span class="p">;</span>
+    <span class="n">press</span><span class="p">:</span><span class="n">coordinates</span> <span class="o">=</span> <span class="s2">&quot;lon lat alt&quot;</span> <span class="p">;</span>
 </pre></div>
 
 <p>You can see the unit used for time (in seconds) and that the time variable is related
@@ -255,51 +255,51 @@ to the launch time. And pressure is using hPa. Both variables are mapped against
 the time dimension - you can see that by looking at the parenthesis that follow the variable name.</p>
 <p>The following snippet contains an example of the metadata that is added to data
 uploaded to GRUAN.</p>
-<div class="highlight"><pre><span class="o">//</span> <span class="k">global</span> <span class="n">attributes</span><span class="p">:</span>
-    <span class="p">:</span><span class="n">Conventions</span> <span class="o">=</span> <span class="s">&quot;CF-1.4&quot;</span> <span class="p">;</span>
-    <span class="p">:</span><span class="n">title</span> <span class="o">=</span> <span class="s">&quot;RS92 GRUAN Data Product (Version 2)&quot;</span> <span class="p">;</span>
-    <span class="p">:</span><span class="n">institution</span> <span class="o">=</span> <span class="s">&quot;JMA - Japan Meteorological Agency&quot;</span> <span class="p">;</span>
-    <span class="p">:</span><span class="n">source</span> <span class="o">=</span> <span class="s">&quot;RS92-SGP&quot;</span> <span class="p">;</span>
-    <span class="p">:</span><span class="n">history</span> <span class="o">=</span> <span class="s">&quot;2016-01-04 13:10:41.000Z RS92-GDP: RS92 GRUAN Data Product with gruan_DP_calcRsDataProduct.pro (GRUAN IDL Library, 2012-08)&quot;</span> <span class="p">;</span>
-    <span class="p">:</span><span class="n">references</span> <span class="o">=</span> <span class="s">&quot;Currently no references&quot;</span> <span class="p">;</span>
-    <span class="p">:</span><span class="n">comment</span> <span class="o">=</span> <span class="s">&quot;RS92 GRUAN Data Product&quot;</span> <span class="p">;</span>
-    <span class="p">:</span><span class="n">g</span><span class="o">.</span><span class="n">Product</span><span class="o">.</span><span class="n">ID</span> <span class="o">=</span> <span class="s">&quot;180821&quot;</span> <span class="p">;</span>
-    <span class="p">:</span><span class="n">g</span><span class="o">.</span><span class="n">Product</span><span class="o">.</span><span class="n">Code</span> <span class="o">=</span> <span class="s">&quot;RS92-GDP&quot;</span> <span class="p">;</span>
-    <span class="p">:</span><span class="n">g</span><span class="o">.</span><span class="n">Product</span><span class="o">.</span><span class="n">Name</span> <span class="o">=</span> <span class="s">&quot;RS92 GRUAN Data Product&quot;</span> <span class="p">;</span>
-    <span class="p">:</span><span class="n">g</span><span class="o">.</span><span class="n">Product</span><span class="o">.</span><span class="n">Version</span> <span class="o">=</span> <span class="s">&quot;2&quot;</span> <span class="p">;</span>
-    <span class="p">:</span><span class="n">g</span><span class="o">.</span><span class="n">Product</span><span class="o">.</span><span class="n">Level</span> <span class="o">=</span> <span class="s">&quot;2&quot;</span> <span class="p">;</span>
-    <span class="p">:</span><span class="n">g</span><span class="o">.</span><span class="n">Product</span><span class="o">.</span><span class="n">LevelDescription</span> <span class="o">=</span> <span class="s">&quot;Data read from original data file&quot;</span> <span class="p">;</span>
-    <span class="p">:</span><span class="n">g</span><span class="o">.</span><span class="n">Product</span><span class="o">.</span><span class="n">History</span> <span class="o">=</span> <span class="s">&quot;2016-01-04 13:10:41.000Z RS92-GDP: RS92 GRUAN Data Product with gruan_DP_calcRsDataProduct.pro (GRUAN IDL Library, 2012-08)&quot;</span> <span class="p">;</span>
-    <span class="p">:</span><span class="n">g</span><span class="o">.</span><span class="n">Product</span><span class="o">.</span><span class="n">References</span> <span class="o">=</span> <span class="s">&quot;Currently no references&quot;</span> <span class="p">;</span>
-    <span class="p">:</span><span class="n">g</span><span class="o">.</span><span class="n">Product</span><span class="o">.</span><span class="n">Producer</span> <span class="o">=</span> <span class="s">&quot;GRUAN Lead Centre (Lindenberg, DWD, Germany)&quot;</span> <span class="p">;</span>
+<div class="highlight"><pre><span></span><span class="o">//</span> <span class="k">global</span> <span class="n">attributes</span><span class="p">:</span>
+    <span class="p">:</span><span class="n">Conventions</span> <span class="o">=</span> <span class="s2">&quot;CF-1.4&quot;</span> <span class="p">;</span>
+    <span class="p">:</span><span class="n">title</span> <span class="o">=</span> <span class="s2">&quot;RS92 GRUAN Data Product (Version 2)&quot;</span> <span class="p">;</span>
+    <span class="p">:</span><span class="n">institution</span> <span class="o">=</span> <span class="s2">&quot;JMA - Japan Meteorological Agency&quot;</span> <span class="p">;</span>
+    <span class="p">:</span><span class="n">source</span> <span class="o">=</span> <span class="s2">&quot;RS92-SGP&quot;</span> <span class="p">;</span>
+    <span class="p">:</span><span class="n">history</span> <span class="o">=</span> <span class="s2">&quot;2016-01-04 13:10:41.000Z RS92-GDP: RS92 GRUAN Data Product with gruan_DP_calcRsDataProduct.pro (GRUAN IDL Library, 2012-08)&quot;</span> <span class="p">;</span>
+    <span class="p">:</span><span class="n">references</span> <span class="o">=</span> <span class="s2">&quot;Currently no references&quot;</span> <span class="p">;</span>
+    <span class="p">:</span><span class="n">comment</span> <span class="o">=</span> <span class="s2">&quot;RS92 GRUAN Data Product&quot;</span> <span class="p">;</span>
+    <span class="p">:</span><span class="n">g</span><span class="o">.</span><span class="n">Product</span><span class="o">.</span><span class="n">ID</span> <span class="o">=</span> <span class="s2">&quot;180821&quot;</span> <span class="p">;</span>
+    <span class="p">:</span><span class="n">g</span><span class="o">.</span><span class="n">Product</span><span class="o">.</span><span class="n">Code</span> <span class="o">=</span> <span class="s2">&quot;RS92-GDP&quot;</span> <span class="p">;</span>
+    <span class="p">:</span><span class="n">g</span><span class="o">.</span><span class="n">Product</span><span class="o">.</span><span class="n">Name</span> <span class="o">=</span> <span class="s2">&quot;RS92 GRUAN Data Product&quot;</span> <span class="p">;</span>
+    <span class="p">:</span><span class="n">g</span><span class="o">.</span><span class="n">Product</span><span class="o">.</span><span class="n">Version</span> <span class="o">=</span> <span class="s2">&quot;2&quot;</span> <span class="p">;</span>
+    <span class="p">:</span><span class="n">g</span><span class="o">.</span><span class="n">Product</span><span class="o">.</span><span class="n">Level</span> <span class="o">=</span> <span class="s2">&quot;2&quot;</span> <span class="p">;</span>
+    <span class="p">:</span><span class="n">g</span><span class="o">.</span><span class="n">Product</span><span class="o">.</span><span class="n">LevelDescription</span> <span class="o">=</span> <span class="s2">&quot;Data read from original data file&quot;</span> <span class="p">;</span>
+    <span class="p">:</span><span class="n">g</span><span class="o">.</span><span class="n">Product</span><span class="o">.</span><span class="n">History</span> <span class="o">=</span> <span class="s2">&quot;2016-01-04 13:10:41.000Z RS92-GDP: RS92 GRUAN Data Product with gruan_DP_calcRsDataProduct.pro (GRUAN IDL Library, 2012-08)&quot;</span> <span class="p">;</span>
+    <span class="p">:</span><span class="n">g</span><span class="o">.</span><span class="n">Product</span><span class="o">.</span><span class="n">References</span> <span class="o">=</span> <span class="s2">&quot;Currently no references&quot;</span> <span class="p">;</span>
+    <span class="p">:</span><span class="n">g</span><span class="o">.</span><span class="n">Product</span><span class="o">.</span><span class="n">Producer</span> <span class="o">=</span> <span class="s2">&quot;GRUAN Lead Centre (Lindenberg, DWD, Germany)&quot;</span> <span class="p">;</span>
 </pre></div>
 
 <p>For my work, the pccora Python library handled the binary data. I created a local variable,
 <strong>hires_data</strong> that holds the high resolution data from the radiosonde. Then created a new
 dataset, which is the NetCDF file.</p>
 <p>It might be easier to explain the rest after looking at some code.</p>
-<div class="highlight"><pre><span class="n">hires_data</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s">&#39;hires_data&#39;</span><span class="p">]</span>
+<div class="highlight"><pre><span></span><span class="n">hires_data</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;hires_data&#39;</span><span class="p">]</span>
 
-<span class="n">dataset</span> <span class="o">=</span> <span class="n">Dataset</span><span class="p">(</span><span class="nb">file</span><span class="p">,</span> <span class="s">&quot;w&quot;</span><span class="p">,</span> <span class="n">format</span><span class="o">=</span><span class="s">&quot;NETCDF4_CLASSIC&quot;</span><span class="p">)</span>
+<span class="n">dataset</span> <span class="o">=</span> <span class="n">Dataset</span><span class="p">(</span><span class="nb">file</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">,</span> <span class="n">format</span><span class="o">=</span><span class="s2">&quot;NETCDF4_CLASSIC&quot;</span><span class="p">)</span>
 
-<span class="c"># Dimensions</span>
-<span class="n">dataset</span><span class="o">.</span><span class="n">createDimension</span><span class="p">(</span><span class="s">&quot;time&quot;</span><span class="p">)</span>
+<span class="c1"># Dimensions</span>
+<span class="n">dataset</span><span class="o">.</span><span class="n">createDimension</span><span class="p">(</span><span class="s2">&quot;time&quot;</span><span class="p">)</span>
 
-<span class="n">dataset</span><span class="o">.</span><span class="n">setncattr</span><span class="p">(</span><span class="s">&#39;g.General.SiteWmoId&#39;</span><span class="p">,</span> <span class="n">ident</span><span class="p">[</span><span class="s">&#39;wmo_block_number&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="n">ident</span><span class="p">[</span><span class="s">&#39;wmo_station_number&#39;</span><span class="p">])</span>
-<span class="n">dataset</span><span class="o">.</span><span class="n">setncattr</span><span class="p">(</span><span class="s">&#39;g.MeasuringSystem.Longitude&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="s">&#39;N/A&#39;</span> <span class="k">if</span> <span class="bp">None</span> <span class="o">==</span> <span class="n">ident</span><span class="p">[</span><span class="s">&#39;station_longitude&#39;</span><span class="p">]</span> <span class="k">else</span> <span class="n">ident</span><span class="p">[</span><span class="s">&#39;station_longitude&#39;</span><span class="p">])</span> <span class="o">+</span> <span class="s">&#39; degree east&#39;</span><span class="p">)</span>
-<span class="n">dataset</span><span class="o">.</span><span class="n">setncattr</span><span class="p">(</span><span class="s">&#39;g.MeasuringSystem.Latitude&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">ident</span><span class="p">[</span><span class="s">&#39;station_latitude&#39;</span><span class="p">])</span> <span class="o">+</span> <span class="s">&#39; degree north&#39;</span><span class="p">)</span>
+<span class="n">dataset</span><span class="o">.</span><span class="n">setncattr</span><span class="p">(</span><span class="s1">&#39;g.General.SiteWmoId&#39;</span><span class="p">,</span> <span class="n">ident</span><span class="p">[</span><span class="s1">&#39;wmo_block_number&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="n">ident</span><span class="p">[</span><span class="s1">&#39;wmo_station_number&#39;</span><span class="p">])</span>
+<span class="n">dataset</span><span class="o">.</span><span class="n">setncattr</span><span class="p">(</span><span class="s1">&#39;g.MeasuringSystem.Longitude&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="s1">&#39;N/A&#39;</span> <span class="k">if</span> <span class="bp">None</span> <span class="o">==</span> <span class="n">ident</span><span class="p">[</span><span class="s1">&#39;station_longitude&#39;</span><span class="p">]</span> <span class="k">else</span> <span class="n">ident</span><span class="p">[</span><span class="s1">&#39;station_longitude&#39;</span><span class="p">])</span> <span class="o">+</span> <span class="s1">&#39; degree east&#39;</span><span class="p">)</span>
+<span class="n">dataset</span><span class="o">.</span><span class="n">setncattr</span><span class="p">(</span><span class="s1">&#39;g.MeasuringSystem.Latitude&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">ident</span><span class="p">[</span><span class="s1">&#39;station_latitude&#39;</span><span class="p">])</span> <span class="o">+</span> <span class="s1">&#39; degree north&#39;</span><span class="p">)</span>
 </pre></div>
 
 <p>In this example, a <strong>time</strong> dimension is added to our dataset, as well as some global attributes (metadata).</p>
 <p>In another part of the code, we have to populate arrays with the values for the data
 logged during the time, and then create variables to persist this data in the NetCDF
 file.</p>
-<div class="highlight"><pre><span class="c"># elapsed_time</span>
-<span class="n">elapsed_time_variable</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">createVariable</span><span class="p">(</span><span class="s">&#39;elapsed_time&#39;</span><span class="p">,</span> <span class="s">&#39;f4&#39;</span><span class="p">,</span> <span class="p">(</span><span class="s">&quot;time&quot;</span><span class="p">,</span> <span class="p">),</span> <span class="n">zlib</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">fill_value</span><span class="o">=-</span><span class="mi">32768</span><span class="p">)</span>
-<span class="n">elapsed_time_variable</span><span class="o">.</span><span class="n">standard_name</span> <span class="o">=</span> <span class="s">&#39;elapsed_time&#39;</span>
-<span class="n">elapsed_time_variable</span><span class="o">.</span><span class="n">units</span> <span class="o">=</span> <span class="s">&#39;s&#39;</span>
-<span class="n">elapsed_time_variable</span><span class="o">.</span><span class="n">long_name</span> <span class="o">=</span> <span class="s">&#39;Elapsed time since sonde release&#39;</span>
-<span class="n">elapsed_time_variable</span><span class="o">.</span><span class="n">g_format_type</span> <span class="o">=</span> <span class="s">&#39;FLT&#39;</span>
+<div class="highlight"><pre><span></span><span class="c1"># elapsed_time</span>
+<span class="n">elapsed_time_variable</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">createVariable</span><span class="p">(</span><span class="s1">&#39;elapsed_time&#39;</span><span class="p">,</span> <span class="s1">&#39;f4&#39;</span><span class="p">,</span> <span class="p">(</span><span class="s2">&quot;time&quot;</span><span class="p">,</span> <span class="p">),</span> <span class="n">zlib</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">fill_value</span><span class="o">=-</span><span class="mi">32768</span><span class="p">)</span>
+<span class="n">elapsed_time_variable</span><span class="o">.</span><span class="n">standard_name</span> <span class="o">=</span> <span class="s1">&#39;elapsed_time&#39;</span>
+<span class="n">elapsed_time_variable</span><span class="o">.</span><span class="n">units</span> <span class="o">=</span> <span class="s1">&#39;s&#39;</span>
+<span class="n">elapsed_time_variable</span><span class="o">.</span><span class="n">long_name</span> <span class="o">=</span> <span class="s1">&#39;Elapsed time since sonde release&#39;</span>
+<span class="n">elapsed_time_variable</span><span class="o">.</span><span class="n">g_format_type</span> <span class="o">=</span> <span class="s1">&#39;FLT&#39;</span>
 <span class="n">elapsed_time_variable</span><span class="p">[:]</span> <span class="o">=</span> <span class="n">elapsed_time</span>
 </pre></div>
 

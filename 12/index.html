@@ -8,7 +8,7 @@
     <meta name="keywords"
         content="kinoshita, bruno de paula kinoshita, geek, geek stuff, java, python, c, c++, msn now playing, neural network, mackenzie, sao paulo, brasil, brazil, nerd, nerd stuff, cool, jenkins, illustration, quadrinhos, machine learning, linguistic, apache, open source, codigo livre, codigo aberto" />
     <meta name="author" content="" />
-    <meta name="generator" content="PieCrust 3.2.0" />
+    <meta name="generator" content="PieCrust 3.2.1" />
     <meta name="template-engine" content="Twig" />
     <meta name="robots" content="all=index,follow" />
     <meta name="revisit-after" content="15 days" />
@@ -204,7 +204,7 @@ when you can run the application locally (our testers build, compile, change the
 is that?).</p>
 <p>Here&#8217;s how it works. Say you have the following settings in your application&#8217;s
 <strong>application.properties</strong>:</p>
-<div class="highlight"><pre>my.application.database.username<span class="o">=</span>sa
+<div class="highlight"><pre><span></span>my.application.database.username<span class="o">=</span>sa
 my.application.database.password<span class="o">=</span>notasimplepassword
 </pre></div>
 
@@ -215,7 +215,7 @@ above would be: MY_APPLICATION_DATABASE_USERNAME and MY_APPLICATION_DATABASE_PAS
 <p>Furthermore, you do not need to edit your application.properties file, if you are on Linux or
 Mac OS. You can start the application and override environment variables at the same time
 with the following syntax.</p>
-<div class="highlight"><pre><span class="nv">$ MY_APPLICATION_DATABASE_USERNAME</span><span class="o">=</span>olivei <span class="nv">MY_APPLICATION_DATABASE_PASSWORD</span><span class="o">=</span>7655432222a mvn clean spring-boot:run
+<div class="highlight"><pre><span></span>$ <span class="nv">MY_APPLICATION_DATABASE_USERNAME</span><span class="o">=</span>olivei <span class="nv">MY_APPLICATION_DATABASE_PASSWORD</span><span class="o">=</span>7655432222a mvn clean spring-boot:run
 </pre></div>
 
 <p>This way your application will start with the new values.</p>
@@ -223,7 +223,7 @@ with the following syntax.</p>
 <p><strong>&#8212;EDIT&#8212;</strong></p>
 <p>As pointed by Stéphane Nicoll (thanks!), you could change the property values
 without having to use the upper case syntax.</p>
-<div class="highlight"><pre>mvn -Dmy.application.database.username<span class="o">=</span>anotheruser clean spring-boot:run
+<div class="highlight"><pre><span></span>mvn -Dmy.application.database.username<span class="o">=</span>anotheruser clean spring-boot:run
 </pre></div>
 
 <p>And he even included a link to <a href="http://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#boot-features-external-config">docs</a>! ♥ the Internet and Open Source!</p>
@@ -289,7 +289,7 @@ that would call the other command that generates the documentation, and add an e
 of adding the header to the Markdown file.</p>
 <p>Here&#8217;s the shell script part, that allows you to add a header to a file, in place (i.e.
 it will alter and save the change your file).</p>
-<div class="highlight"><pre>sed -i 1i<span class="s2">&quot;----\nlayout: page\ntitle: API Installation\n----\n\n&quot;</span> ./docs/documentation/api/api.md
+<div class="highlight"><pre><span></span>sed -i 1i<span class="s2">&quot;----\nlayout: page\ntitle: API Installation\n----\n\n&quot;</span> ./docs/documentation/api/api.md
 </pre></div>
 
 <p>Here the first argument to sed, <em>-i</em> is for in place. Then that strange <em>1i</em>
@@ -340,8 +340,8 @@ and finally the file.</p>
                             <p>A few days ago I had a bug in a system built with Spring Boot and React. The frontend application
 was using a REST client in React, built in a similar way to what is found in the documentation, and
 also in blogs.</p>
-<div class="highlight"><pre><span class="kr">import</span> <span class="nx">rest</span> <span class="nx">from</span> <span class="s1">&#39;rest&#39;</span><span class="p">;</span>
-<span class="kr">const</span> <span class="nx">Rest</span> <span class="o">=</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="nx">rest</span><span class="p">.</span><span class="nx">wrap</span><span class="p">(</span><span class="nx">mime</span><span class="p">);</span>
+<div class="highlight"><pre><span></span><span class="kr">import</span> <span class="nx">rest</span> <span class="nx">from</span> <span class="s1">&#39;rest&#39;</span><span class="p">;</span>
+<span class="kr">const</span> <span class="nx">Rest</span> <span class="o">=</span> <span class="p">()</span> <span class="p">=&gt;</span> <span class="nx">rest</span><span class="p">.</span><span class="nx">wrap</span><span class="p">(</span><span class="nx">mime</span><span class="p">);</span>
 </pre></div>
 
 <p>However, for one of the Spring Boot application endpoints, the React component was not working. The
@@ -351,9 +351,9 @@ failing and complaining when parsing the response.</p>
 And Spring Boot was just using its <a href="https://spring.io/blog/2013/05/11/content-negotiation-using-spring-mvc">default content negotiation</a>
 and returning what the frontend requested: a text plain version of, what looked like, JSON.</p>
 <p>The quick fix was to request the content as JSON in React.</p>
-<div class="highlight"><pre><span class="kr">import</span> <span class="nx">rest</span> <span class="nx">from</span> <span class="s1">&#39;rest&#39;</span><span class="p">;</span>
+<div class="highlight"><pre><span></span><span class="kr">import</span> <span class="nx">rest</span> <span class="nx">from</span> <span class="s1">&#39;rest&#39;</span><span class="p">;</span>
 <span class="kr">import</span> <span class="nx">mime</span> <span class="nx">from</span> <span class="s1">&#39;rest/interceptor/mime&#39;</span><span class="p">;</span>
-<span class="kr">const</span> <span class="nx">Rest</span> <span class="o">=</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="nx">rest</span><span class="p">.</span><span class="nx">wrap</span><span class="p">(</span><span class="nx">mime</span> <span class="p">,</span> <span class="p">{</span> <span class="nx">mime</span><span class="o">:</span> <span class="s1">&#39;application/json&#39;</span> <span class="p">}</span> <span class="p">);</span>
+<span class="kr">const</span> <span class="nx">Rest</span> <span class="o">=</span> <span class="p">()</span> <span class="p">=&gt;</span> <span class="nx">rest</span><span class="p">.</span><span class="nx">wrap</span><span class="p">(</span><span class="nx">mime</span> <span class="p">,</span> <span class="p">{</span> <span class="nx">mime</span><span class="o">:</span> <span class="s1">&#39;application/json&#39;</span> <span class="p">}</span> <span class="p">);</span>
 </pre></div>
 
 <p>Now we will revisit the backend to return the JSON content, as content, regardless of what
@@ -409,9 +409,9 @@ for static analysis of shell scripts. It reports errors like missing double quot
 syntax, etc.</p>
 <p>I decided to check some projects I contribute to, and the first issue I found was in
 <a href="https://jena.apache.org">Apache Jena</a>:</p>
-<div class="highlight"><pre>kinow@localhost:~/Development/java/jena/jena/apache-jena/bin<span class="nv">$ </span>shellcheck arq
+<div class="highlight"><pre><span></span>kinow@localhost:~/Development/java/jena/jena/apache-jena/bin$ shellcheck arq
 
-In arq line 8:
+In arq line <span class="m">8</span>:
     <span class="k">case</span> <span class="s2">&quot;</span><span class="nv">$OSTYPE</span><span class="s2">&quot;</span> in
           ^-- SC2039: In POSIX sh, OSTYPE is not supported.
 </pre></div>
@@ -482,7 +482,7 @@ found by ShellCheck.</p>
 <p>It is likely that with time you will have different roles, and may have different permissions with each role. You have to configure your local environment so that you can either use the command line Python utility (installed via <code>pip install awscli</code>) or with boto.</p>
 <p>The awscli is a dependency for using boto3. After you install it, you need to run <code>aws configure</code>. It will create the <em>~/.aws/config</em> and <em>~/.aws/credentials</em> files. You can tweak these files to support multiple roles.</p>
 <p>I followed the tutorials, but got all sorts of different issues. Then after debugging some locally installed dependencies, in special awscli files, I found that the following settings work for my environment.</p>
-<div class="highlight"><pre><span class="c"># File: config</span>
+<div class="highlight"><pre><span></span><span class="c1"># File: config</span>
 <span class="o">[</span>profile default<span class="o">]</span>
 <span class="nv">region</span> <span class="o">=</span> ap-southeast-2
 
@@ -499,35 +499,35 @@ found by ShellCheck.</p>
 </pre></div>
 
 <p>and</p>
-<div class="highlight"><pre><span class="c"># File: credentials</span>
+<div class="highlight"><pre><span></span><span class="c1"># File: credentials</span>
 <span class="o">[</span>default<span class="o">]</span>
 <span class="nv">aws_access_key_id</span> <span class="o">=</span> YOU_KEY_ID
 <span class="nv">aws_secret_access_key</span> <span class="o">=</span> YOUR_SECRET
 </pre></div>
 
 <p>And once it is done you can, for example, confirm it is working with some S3 commands in Python.</p>
-<div class="highlight"><pre><span class="c">#!/usr/bin/env python3</span>
+<div class="highlight"><pre><span></span><span class="ch">#!/usr/bin/env python3</span>
 
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">boto3</span>
 
-<span class="n">session</span> <span class="o">=</span> <span class="n">boto3</span><span class="o">.</span><span class="n">Session</span><span class="p">(</span><span class="n">profile_name</span><span class="o">=</span><span class="s">&#39;profile2&#39;</span><span class="p">)</span>
-<span class="n">s3</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">resource</span><span class="p">(</span><span class="s">&#39;s3&#39;</span><span class="p">)</span>
+<span class="n">session</span> <span class="o">=</span> <span class="n">boto3</span><span class="o">.</span><span class="n">Session</span><span class="p">(</span><span class="n">profile_name</span><span class="o">=</span><span class="s1">&#39;profile2&#39;</span><span class="p">)</span>
+<span class="n">s3</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">resource</span><span class="p">(</span><span class="s1">&#39;s3&#39;</span><span class="p">)</span>
 
 <span class="n">found</span> <span class="o">=</span> <span class="bp">False</span>
 
-<span class="n">name</span> <span class="o">=</span> <span class="s">&#39;mysuperduperbucket&#39;</span>
+<span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;mysuperduperbucket&#39;</span>
 
 <span class="k">for</span> <span class="n">bucket</span> <span class="ow">in</span> <span class="n">s3</span><span class="o">.</span><span class="n">buckets</span><span class="o">.</span><span class="n">all</span><span class="p">():</span>
     <span class="k">if</span> <span class="n">bucket</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="n">name</span><span class="p">:</span>
         <span class="n">found</span> <span class="o">=</span> <span class="bp">True</span>
 
 <span class="k">if</span> <span class="ow">not</span> <span class="n">found</span><span class="p">:</span>
-    <span class="k">print</span><span class="p">(</span><span class="s">&quot;Creating bucket...&quot;</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="s2">&quot;Creating bucket...&quot;</span><span class="p">)</span>
     <span class="n">s3</span><span class="o">.</span><span class="n">create_bucket</span><span class="p">(</span><span class="n">Bucket</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
 
-<span class="n">file_location</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">realpath</span><span class="p">(</span><span class="n">__file__</span><span class="p">))</span> <span class="o">+</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">sep</span> <span class="o">+</span> <span class="s">&#39;samplefile.txt&#39;</span>
-<span class="n">s3</span><span class="o">.</span><span class="n">meta</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">upload_file</span><span class="p">(</span><span class="n">Filename</span><span class="o">=</span><span class="n">file_location</span><span class="p">,</span> <span class="n">Bucket</span><span class="o">=</span><span class="n">name</span><span class="p">,</span> <span class="n">Key</span><span class="o">=</span><span class="s">&#39;book.txt&#39;</span><span class="p">)</span>
+<span class="n">file_location</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">realpath</span><span class="p">(</span><span class="vm">__file__</span><span class="p">))</span> <span class="o">+</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">sep</span> <span class="o">+</span> <span class="s1">&#39;samplefile.txt&#39;</span>
+<span class="n">s3</span><span class="o">.</span><span class="n">meta</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">upload_file</span><span class="p">(</span><span class="n">Filename</span><span class="o">=</span><span class="n">file_location</span><span class="p">,</span> <span class="n">Bucket</span><span class="o">=</span><span class="n">name</span><span class="p">,</span> <span class="n">Key</span><span class="o">=</span><span class="s1">&#39;book.txt&#39;</span><span class="p">)</span>
 </pre></div>
 
 <p>The AWS files in this example are using MFA too, the multi-factor authentication. So the first time you run this code you may be asked to generate a token, which will be cached for a short time.</p>

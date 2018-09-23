@@ -8,7 +8,7 @@
     <meta name="keywords"
         content="kinoshita, bruno de paula kinoshita, geek, geek stuff, java, python, c, c++, msn now playing, neural network, mackenzie, sao paulo, brasil, brazil, nerd, nerd stuff, cool, jenkins, illustration, quadrinhos, machine learning, linguistic, apache, open source, codigo livre, codigo aberto" />
     <meta name="author" content="" />
-    <meta name="generator" content="PieCrust 3.2.0" />
+    <meta name="generator" content="PieCrust 3.2.1" />
     <meta name="template-engine" content="Twig" />
     <meta name="robots" content="all=index,follow" />
     <meta name="revisit-after" content="15 days" />
@@ -145,55 +145,55 @@ shell commands to iterate through a list of files, the other day I wrote a simpl
 the KEYS file, import it, download all the artefacts, then iterate through them and verify the
 signature.</p>
 <p>Here&#8217;s the script. Licensed under the GPL licence.</p>
-<div class="highlight"><pre><span class="c">#!/usr/bin/env bash</span>
+<div class="highlight"><pre><span></span><span class="ch">#!/usr/bin/env bash</span>
 
 <span class="nv">url</span><span class="o">=</span><span class="s2">&quot;&quot;</span>
 
-<span class="c"># From: https://blog.mafr.de/2007/08/05/cmdline-options-in-shell-scripts/</span>
+<span class="c1"># From: https://blog.mafr.de/2007/08/05/cmdline-options-in-shell-scripts/</span>
 <span class="nv">USAGE</span><span class="o">=</span><span class="s2">&quot;Usage: `basename </span><span class="nv">$0</span><span class="s2">` [-hv] https://repository.apache.org/.../commons/commons-configuration/2.2/&quot;</span>
 
-<span class="c"># Parse command line options.</span>
-<span class="k">while</span> <span class="nb">getopts </span>hv: OPT<span class="p">;</span> <span class="k">do</span>
+<span class="c1"># Parse command line options.</span>
+<span class="k">while</span> <span class="nb">getopts</span> hv: OPT<span class="p">;</span> <span class="k">do</span>
     <span class="k">case</span> <span class="s2">&quot;</span><span class="nv">$OPT</span><span class="s2">&quot;</span> in
         h<span class="o">)</span>
             <span class="nb">echo</span> <span class="nv">$USAGE</span>
-            <span class="nb">exit </span>0
+            <span class="nb">exit</span> <span class="m">0</span>
             <span class="p">;;</span>
         v<span class="o">)</span>
             <span class="nb">echo</span> <span class="s2">&quot;`basename </span><span class="nv">$0</span><span class="s2">` version 0.0.1&quot;</span>
-            <span class="nb">exit </span>0
+            <span class="nb">exit</span> <span class="m">0</span>
             <span class="p">;;</span>
         <span class="se">\?</span><span class="o">)</span>
-            <span class="c"># getopts issues an error message</span>
-            <span class="nb">echo</span> <span class="nv">$USAGE</span> &gt;<span class="p">&amp;</span>2
-            <span class="nb">exit </span>1
+            <span class="c1"># getopts issues an error message</span>
+            <span class="nb">echo</span> <span class="nv">$USAGE</span> &gt;<span class="p">&amp;</span><span class="m">2</span>
+            <span class="nb">exit</span> <span class="m">1</span>
             <span class="p">;;</span>
     <span class="k">esac</span>
 <span class="k">done</span>
 
-<span class="c"># Remove the switches we parsed above.</span>
-<span class="nb">shift</span> <span class="sb">`</span>expr <span class="nv">$OPTIND</span> - 1<span class="sb">`</span>
+<span class="c1"># Remove the switches we parsed above.</span>
+<span class="nb">shift</span> <span class="sb">`</span>expr <span class="nv">$OPTIND</span> - <span class="m">1</span><span class="sb">`</span>
 
-<span class="c"># We want at least one non-option argument. </span>
-<span class="c"># Remove this block if you don&#39;t need it.</span>
-<span class="k">if</span> <span class="o">[</span> <span class="nv">$# </span>-eq <span class="m">0</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
-    <span class="nb">echo</span> <span class="nv">$USAGE</span> &gt;<span class="p">&amp;</span>2
-    <span class="nb">exit </span>1
+<span class="c1"># We want at least one non-option argument. </span>
+<span class="c1"># Remove this block if you don&#39;t need it.</span>
+<span class="k">if</span> <span class="o">[</span> <span class="nv">$#</span> -eq <span class="m">0</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+    <span class="nb">echo</span> <span class="nv">$USAGE</span> &gt;<span class="p">&amp;</span><span class="m">2</span>
+    <span class="nb">exit</span> <span class="m">1</span>
 <span class="k">fi</span>
 
-<span class="c"># Access additional arguments as usual through </span>
-<span class="c"># variables $@, $*, $1, $2, etc. or using this loop:</span>
+<span class="c1"># Access additional arguments as usual through </span>
+<span class="c1"># variables $@, $*, $1, $2, etc. or using this loop:</span>
 <span class="nv">URL</span><span class="o">=</span><span class="nv">$1</span>
 
 <span class="nb">echo</span> <span class="s2">&quot;url: </span><span class="si">${</span><span class="nv">URL</span><span class="si">}</span><span class="s2">&quot;</span>
 
-<span class="c"># Use a local temporary directory</span>
+<span class="c1"># Use a local temporary directory</span>
 <span class="nv">BUILD_DIR</span><span class="o">=</span><span class="k">$(</span>mktemp -d<span class="k">)</span>
 <span class="nb">pushd</span> <span class="s2">&quot;</span><span class="nv">$BUILD_DIR</span><span class="s2">&quot;</span>
 
 <span class="nb">echo</span> <span class="s2">&quot;build dir: </span><span class="si">${</span><span class="nv">BUILD_DIR</span><span class="si">}</span><span class="s2">&quot;</span>
 
-<span class="c"># Download KEYS file</span>
+<span class="c1"># Download KEYS file</span>
 <span class="nv">KEYS_URL</span><span class="o">=</span>https://www.apache.org/dist/commons/KEYS
 
 <span class="nb">echo</span> <span class="s2">&quot;importing KEYS from: </span><span class="si">${</span><span class="nv">KEYS_URL</span><span class="si">}</span><span class="s2">&quot;</span>
@@ -201,15 +201,15 @@ signature.</p>
 wget <span class="s2">&quot;</span><span class="nv">$KEYS_URL</span><span class="s2">&quot;</span>
 gpg --import KEYS
 
-<span class="c"># Download JARs and signature files</span>
+<span class="c1"># Download JARs and signature files</span>
 <span class="nb">echo</span> <span class="s2">&quot;downloading all jars and signature files...&quot;</span>
 
 wget -r -nd -np -e <span class="nv">robots</span><span class="o">=</span>off --wait <span class="m">1</span> -R <span class="s2">&quot;index.html*&quot;</span> <span class="s2">&quot;</span><span class="si">${</span><span class="nv">URL</span><span class="si">}</span><span class="s2">&quot;</span>
 
-<span class="c"># Check the files</span>
+<span class="c1"># Check the files</span>
 <span class="k">for</span> x in *.jar<span class="p">;</span> <span class="k">do</span> gpg --verify <span class="s2">&quot;</span><span class="si">${</span><span class="nv">x</span><span class="si">}</span><span class="s2">&quot;</span>.asc<span class="p">;</span> <span class="k">done</span>
 
-<span class="c"># EOF</span>
+<span class="c1"># EOF</span>
 </pre></div>
 
 <p>The script can be found at GitHub too: <a href="https://github.com/kinow/dork-scripts/tree/3c519a74f28c08310ce2e65f8e860d61fd0c5c07/gpg/asf-sigs">https://github.com/kinow/dork-scripts/tree/3c519a74f28c08310ce2e65f8e860d61fd0c5c07/gpg/asf-sigs</a></p>

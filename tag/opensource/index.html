@@ -8,7 +8,7 @@
     <meta name="keywords"
         content="kinoshita, bruno de paula kinoshita, geek, geek stuff, java, python, c, c++, msn now playing, neural network, mackenzie, sao paulo, brasil, brazil, nerd, nerd stuff, cool, jenkins, illustration, quadrinhos, machine learning, linguistic, apache, open source, codigo livre, codigo aberto" />
     <meta name="author" content="" />
-    <meta name="generator" content="PieCrust 3.2.0" />
+    <meta name="generator" content="PieCrust 3.2.1" />
     <meta name="template-engine" content="Twig" />
     <meta name="robots" content="all=index,follow" />
     <meta name="revisit-after" content="15 days" />
@@ -477,7 +477,7 @@ node IDs use Java&#8217;s UUID</strong></em>? They are <a href="https://github.c
 <p>SPARQL 1.1 contains functions <a href="https://www.w3.org/TR/sparql11-query/#func-uuid"><code>UUID</code></a> and
 <a href="https://www.w3.org/TR/sparql11-query/#func-struuid"><code>STRUUID</code></a>. Apache Jena provides
 these two functions, and users can use them in queries such as</p>
-<div class="highlight"><pre><span class="k">SELECT</span> <span class="p">(</span><span class="n">UUID</span><span class="p">()</span> <span class="k">AS</span> <span class="o">?</span><span class="n">uuid</span><span class="p">)</span> <span class="p">(</span><span class="n">StrUUID</span><span class="p">()</span> <span class="k">AS</span> <span class="o">?</span><span class="n">strUuid</span><span class="p">)</span> <span class="k">WHERE</span> <span class="err">{</span> <span class="err">}</span>
+<div class="highlight"><pre><span></span><span class="k">SELECT</span> <span class="p">(</span><span class="n">UUID</span><span class="p">()</span> <span class="k">AS</span> <span class="o">?</span><span class="n">uuid</span><span class="p">)</span> <span class="p">(</span><span class="n">StrUUID</span><span class="p">()</span> <span class="k">AS</span> <span class="o">?</span><span class="n">strUuid</span><span class="p">)</span> <span class="k">WHERE</span> <span class="err">{</span> <span class="err">}</span>
 </pre></div>
 
 <p>(but before users would have to call extra functions in a different namespace).</p>
@@ -565,71 +565,71 @@ then allows the state to be maintained solely in the mapped volume.</p>
 <p>Furthermore, the entrypoint of the image is the <code>cylc</code> command. Which means that
 you do not have to execute a terminal in order to run commands to the container
 (or change the command/entrypoint).</p>
-<div class="highlight"><pre>...
-VOLUME <span class="s2">&quot;/opt/cylc&quot;</span> <span class="s2">&quot;/tmp&quot;</span> <span class="s2">&quot;/run&quot;</span> <span class="s2">&quot;/var/run&quot;</span> <span class="c"># we have the state stored only in /opt/cylc</span>
+<div class="highlight"><pre><span></span>...
+VOLUME <span class="s2">&quot;/opt/cylc&quot;</span> <span class="s2">&quot;/tmp&quot;</span> <span class="s2">&quot;/run&quot;</span> <span class="s2">&quot;/var/run&quot;</span> <span class="c1"># we have the state stored only in /opt/cylc</span>
 WORKDIR <span class="s2">&quot;/opt/cylc&quot;</span>
 ENV PATH /opt/cylc/bin:<span class="nv">$PATH</span>
 WORKDIR /opt/cylc
-ENTRYPOINT <span class="o">[</span><span class="s2">&quot;cylc&quot;</span><span class="o">]</span> <span class="c"># here&#39;s the trick!</span>
+ENTRYPOINT <span class="o">[</span><span class="s2">&quot;cylc&quot;</span><span class="o">]</span> <span class="c1"># here&#39;s the trick!</span>
 </pre></div>
 
 <p>It uses the same approach from the PHP image I am using for Composer, with a few
 additional improvements from the <a href="https://docs.docker.com/develop/develop-images/dockerfile_best-practices/">Best practices for writing Dockerfiles</a> documentation.</p>
-<div class="highlight"><pre><span class="nv">$ </span>docker run -ti -v <span class="s2">&quot;</span><span class="k">$(</span><span class="nb">pwd</span> -P<span class="k">)</span><span class="s2">&quot;</span>/cylc:/opt/cylc cylc validate /opt/cylc/etc/examples/tutorial/oneoff/basic/
+<div class="highlight"><pre><span></span>$ docker run -ti -v <span class="s2">&quot;</span><span class="k">$(</span><span class="nb">pwd</span> -P<span class="k">)</span><span class="s2">&quot;</span>/cylc:/opt/cylc cylc validate /opt/cylc/etc/examples/tutorial/oneoff/basic/
 Valid <span class="k">for</span> cylc-7.7.2
-<span class="nv">$ </span>docker run -ti -v <span class="s2">&quot;</span><span class="k">$(</span><span class="nb">pwd</span> -P<span class="k">)</span><span class="s2">&quot;</span>/cylc:/opt/cylc cylc register /opt/cylc/etc/examples/tutorial/oneoff/basic/
+$ docker run -ti -v <span class="s2">&quot;</span><span class="k">$(</span><span class="nb">pwd</span> -P<span class="k">)</span><span class="s2">&quot;</span>/cylc:/opt/cylc cylc register /opt/cylc/etc/examples/tutorial/oneoff/basic/
 REGISTER /opt/cylc/etc/examples/tutorial/oneoff/basic/
-<span class="nv">$ </span>docker run -ti -v <span class="s2">&quot;</span><span class="k">$(</span><span class="nb">pwd</span> -P<span class="k">)</span><span class="s2">&quot;</span>/cylc:/opt/cylc cylc start --non-daemon --debug /opt/cylc/etc/examples/tutorial/oneoff/basic/
+$ docker run -ti -v <span class="s2">&quot;</span><span class="k">$(</span><span class="nb">pwd</span> -P<span class="k">)</span><span class="s2">&quot;</span>/cylc:/opt/cylc cylc start --non-daemon --debug /opt/cylc/etc/examples/tutorial/oneoff/basic/
             ._.                                                       
-            <span class="p">|</span> <span class="p">|</span>                 The Cylc Suite Engine <span class="o">[</span>7.7.2<span class="o">]</span>         
-._____._. ._<span class="p">|</span> <span class="p">|</span>_____.           Copyright <span class="o">(</span>C<span class="o">)</span> 2008-2018 NIWA          
+            <span class="p">|</span> <span class="p">|</span>                 The Cylc Suite Engine <span class="o">[</span><span class="m">7</span>.7.2<span class="o">]</span>         
+._____._. ._<span class="p">|</span> <span class="p">|</span>_____.           Copyright <span class="o">(</span>C<span class="o">)</span> <span class="m">2008</span>-2018 NIWA          
 <span class="p">|</span> .___<span class="p">|</span> <span class="p">|</span> <span class="p">|</span> <span class="p">|</span> <span class="p">|</span> .___<span class="p">|</span>  _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
 <span class="p">|</span> !___<span class="p">|</span> !_! <span class="p">|</span> <span class="p">|</span> !___.  This program comes with ABSOLUTELY NO WARRANTY<span class="p">;</span>
 !_____!___. <span class="p">|</span>_!_____!  see <span class="sb">`</span>cylc warranty<span class="sb">`</span>.  It is free software, you 
       .___! <span class="p">|</span>           are welcome to redistribute it under certain  
       !_____!                conditions<span class="p">;</span> see <span class="sb">`</span>cylc conditions<span class="sb">`</span>.       
-2018-07-30T12:10:32Z INFO - Suite starting: <span class="nv">server</span><span class="o">=</span>3714d1a17999:43040 <span class="nv">pid</span><span class="o">=</span>1
-2018-07-30T12:10:32Z INFO - Cylc version: 7.7.2
-2018-07-30T12:10:32Z INFO - Run mode: live
-2018-07-30T12:10:32Z INFO - Initial point: 1
-2018-07-30T12:10:32Z INFO - Final point: 1
-2018-07-30T12:10:32Z INFO - Cold Start 1
-2018-07-30T12:10:32Z DEBUG - <span class="o">[</span>hello.1<span class="o">]</span> -released to the task pool
-2018-07-30T12:10:32Z DEBUG - BEGIN TASK PROCESSING
-2018-07-30T12:10:32Z DEBUG - <span class="o">[</span>hello.1<span class="o">]</span> -waiting <span class="o">=</span>&gt; queued
-2018-07-30T12:10:32Z DEBUG - <span class="m">1</span> task<span class="o">(</span>s<span class="o">)</span> de-queued
-2018-07-30T12:10:32Z INFO - <span class="o">[</span>hello.1<span class="o">]</span> -submit-num<span class="o">=</span>1, owner@host<span class="o">=</span>localhost
-2018-07-30T12:10:32Z DEBUG - <span class="o">[</span>hello.1<span class="o">]</span> -queued <span class="o">=</span>&gt; ready
-2018-07-30T12:10:32Z DEBUG - END TASK PROCESSING <span class="o">(</span>took 0.00642895698547 seconds<span class="o">)</span>
-2018-07-30T12:10:32Z DEBUG - <span class="o">[</span><span class="s1">&#39;cylc&#39;</span>, <span class="s1">&#39;jobs-submit&#39;</span>, <span class="s1">&#39;--debug&#39;</span>, <span class="s1">&#39;--&#39;</span>, <span class="s1">&#39;/opt/cylc/etc/examples/tutorial/oneoff/basic/log/job&#39;</span>, <span class="s1">&#39;1/hello/01&#39;</span><span class="o">]</span>
-2018-07-30T12:10:33Z DEBUG - <span class="o">[</span>client-connect<span class="o">]</span> root@3714d1a17999:cylc-message <span class="nv">privilege</span><span class="o">=</span><span class="s1">&#39;full-control&#39;</span> 7b05596a-5971-4733-82de-28528f702ff0
-2018-07-30T12:10:33Z INFO - <span class="o">[</span>client-command<span class="o">]</span> put_messages root@3714d1a17999:cylc-message 7b05596a-5971-4733-82de-28528f702ff0
-2018-07-30T12:10:33Z DEBUG - <span class="o">[</span><span class="nb">jobs</span>-submit cmd<span class="o">]</span> cylc <span class="nb">jobs</span>-submit --debug -- /opt/cylc/etc/examples/tutorial/oneoff/basic/log/job 1/hello/01
-    <span class="o">[</span><span class="nb">jobs</span>-submit ret_code<span class="o">]</span> 0
-    <span class="o">[</span><span class="nb">jobs</span>-submit out<span class="o">]</span>
-    <span class="o">[</span>TASK JOB SUMMARY<span class="o">]</span>2018-07-30T12:10:32Z<span class="p">|</span>1/hello/01<span class="p">|</span>0<span class="p">|</span>61
-    <span class="o">[</span>TASK JOB COMMAND<span class="o">]</span>2018-07-30T12:10:32Z<span class="p">|</span>1/hello/01<span class="p">|</span><span class="o">[</span>STDOUT<span class="o">]</span> 61
-2018-07-30T12:10:33Z INFO - <span class="o">[</span>hello.1<span class="o">]</span> -<span class="o">(</span>current:ready<span class="o">)</span> submitted at 2018-07-30T12:10:32Z
-2018-07-30T12:10:33Z INFO - <span class="o">[</span>hello.1<span class="o">]</span> -job<span class="o">[</span>01<span class="o">]</span> submitted to localhost:background<span class="o">[</span>61<span class="o">]</span>
-2018-07-30T12:10:33Z DEBUG - <span class="o">[</span>hello.1<span class="o">]</span> -ready <span class="o">=</span>&gt; submitted
-2018-07-30T12:10:33Z INFO - <span class="o">[</span>hello.1<span class="o">]</span> -health check settings: submission <span class="nv">timeout</span><span class="o">=</span>None
-2018-07-30T12:10:33Z DEBUG - BEGIN TASK PROCESSING
-2018-07-30T12:10:33Z DEBUG - <span class="m">0</span> task<span class="o">(</span>s<span class="o">)</span> de-queued
-2018-07-30T12:10:33Z DEBUG - <span class="o">[</span>hello.1<span class="o">]</span> -forced spawning
-2018-07-30T12:10:33Z DEBUG - END TASK PROCESSING <span class="o">(</span>took 0.000992059707642 seconds<span class="o">)</span>
-2018-07-30T12:10:33Z INFO - <span class="o">[</span>hello.1<span class="o">]</span> -<span class="o">(</span>current:submitted<span class="o">)</span>&gt; started at 2018-07-30T12:10:33Z
-2018-07-30T12:10:33Z DEBUG - <span class="o">[</span>hello.1<span class="o">]</span> -submitted <span class="o">=</span>&gt; running
-2018-07-30T12:10:33Z INFO - <span class="o">[</span>hello.1<span class="o">]</span> -health check settings: execution <span class="nv">timeout</span><span class="o">=</span>None
-2018-07-30T12:10:34Z DEBUG - BEGIN TASK PROCESSING
-2018-07-30T12:10:34Z DEBUG - <span class="m">0</span> task<span class="o">(</span>s<span class="o">)</span> de-queued
-2018-07-30T12:10:34Z DEBUG - END TASK PROCESSING <span class="o">(</span>took 0.000984191894531 seconds<span class="o">)</span>
-2018-07-30T12:10:43Z DEBUG - <span class="o">[</span>client-connect<span class="o">]</span> root@3714d1a17999:cylc-message <span class="nv">privilege</span><span class="o">=</span><span class="s1">&#39;full-control&#39;</span> 524d658e-9932-4135-9523-3c2ace3990cf
-2018-07-30T12:10:43Z INFO - <span class="o">[</span>client-command<span class="o">]</span> put_messages root@3714d1a17999:cylc-message 524d658e-9932-4135-9523-3c2ace3990cf
-2018-07-30T12:10:43Z INFO - <span class="o">[</span>hello.1<span class="o">]</span> -<span class="o">(</span>current:running<span class="o">)</span>&gt; succeeded at 2018-07-30T12:10:43Z
-2018-07-30T12:10:43Z DEBUG - <span class="o">[</span>hello.1<span class="o">]</span> -running <span class="o">=</span>&gt; succeeded
-2018-07-30T12:10:43Z INFO - Suite shutting down - AUTOMATIC
-2018-07-30T12:10:44Z INFO - DONE
-<span class="err">$</span>
+<span class="m">2018</span>-07-30T12:10:32Z INFO - Suite starting: <span class="nv">server</span><span class="o">=</span>3714d1a17999:43040 <span class="nv">pid</span><span class="o">=</span><span class="m">1</span>
+<span class="m">2018</span>-07-30T12:10:32Z INFO - Cylc version: <span class="m">7</span>.7.2
+<span class="m">2018</span>-07-30T12:10:32Z INFO - Run mode: live
+<span class="m">2018</span>-07-30T12:10:32Z INFO - Initial point: <span class="m">1</span>
+<span class="m">2018</span>-07-30T12:10:32Z INFO - Final point: <span class="m">1</span>
+<span class="m">2018</span>-07-30T12:10:32Z INFO - Cold Start <span class="m">1</span>
+<span class="m">2018</span>-07-30T12:10:32Z DEBUG - <span class="o">[</span>hello.1<span class="o">]</span> -released to the task pool
+<span class="m">2018</span>-07-30T12:10:32Z DEBUG - BEGIN TASK PROCESSING
+<span class="m">2018</span>-07-30T12:10:32Z DEBUG - <span class="o">[</span>hello.1<span class="o">]</span> -waiting <span class="o">=</span>&gt; queued
+<span class="m">2018</span>-07-30T12:10:32Z DEBUG - <span class="m">1</span> task<span class="o">(</span>s<span class="o">)</span> de-queued
+<span class="m">2018</span>-07-30T12:10:32Z INFO - <span class="o">[</span>hello.1<span class="o">]</span> -submit-num<span class="o">=</span><span class="m">1</span>, owner@host<span class="o">=</span>localhost
+<span class="m">2018</span>-07-30T12:10:32Z DEBUG - <span class="o">[</span>hello.1<span class="o">]</span> -queued <span class="o">=</span>&gt; ready
+<span class="m">2018</span>-07-30T12:10:32Z DEBUG - END TASK PROCESSING <span class="o">(</span>took <span class="m">0</span>.00642895698547 seconds<span class="o">)</span>
+<span class="m">2018</span>-07-30T12:10:32Z DEBUG - <span class="o">[</span><span class="s1">&#39;cylc&#39;</span>, <span class="s1">&#39;jobs-submit&#39;</span>, <span class="s1">&#39;--debug&#39;</span>, <span class="s1">&#39;--&#39;</span>, <span class="s1">&#39;/opt/cylc/etc/examples/tutorial/oneoff/basic/log/job&#39;</span>, <span class="s1">&#39;1/hello/01&#39;</span><span class="o">]</span>
+<span class="m">2018</span>-07-30T12:10:33Z DEBUG - <span class="o">[</span>client-connect<span class="o">]</span> root@3714d1a17999:cylc-message <span class="nv">privilege</span><span class="o">=</span><span class="s1">&#39;full-control&#39;</span> 7b05596a-5971-4733-82de-28528f702ff0
+<span class="m">2018</span>-07-30T12:10:33Z INFO - <span class="o">[</span>client-command<span class="o">]</span> put_messages root@3714d1a17999:cylc-message 7b05596a-5971-4733-82de-28528f702ff0
+<span class="m">2018</span>-07-30T12:10:33Z DEBUG - <span class="o">[</span>jobs-submit cmd<span class="o">]</span> cylc jobs-submit --debug -- /opt/cylc/etc/examples/tutorial/oneoff/basic/log/job <span class="m">1</span>/hello/01
+    <span class="o">[</span>jobs-submit ret_code<span class="o">]</span> <span class="m">0</span>
+    <span class="o">[</span>jobs-submit out<span class="o">]</span>
+    <span class="o">[</span>TASK JOB SUMMARY<span class="o">]</span><span class="m">2018</span>-07-30T12:10:32Z<span class="p">|</span><span class="m">1</span>/hello/01<span class="p">|</span><span class="m">0</span><span class="p">|</span><span class="m">61</span>
+    <span class="o">[</span>TASK JOB COMMAND<span class="o">]</span><span class="m">2018</span>-07-30T12:10:32Z<span class="p">|</span><span class="m">1</span>/hello/01<span class="p">|</span><span class="o">[</span>STDOUT<span class="o">]</span> <span class="m">61</span>
+<span class="m">2018</span>-07-30T12:10:33Z INFO - <span class="o">[</span>hello.1<span class="o">]</span> -<span class="o">(</span>current:ready<span class="o">)</span> submitted at <span class="m">2018</span>-07-30T12:10:32Z
+<span class="m">2018</span>-07-30T12:10:33Z INFO - <span class="o">[</span>hello.1<span class="o">]</span> -job<span class="o">[</span><span class="m">01</span><span class="o">]</span> submitted to localhost:background<span class="o">[</span><span class="m">61</span><span class="o">]</span>
+<span class="m">2018</span>-07-30T12:10:33Z DEBUG - <span class="o">[</span>hello.1<span class="o">]</span> -ready <span class="o">=</span>&gt; submitted
+<span class="m">2018</span>-07-30T12:10:33Z INFO - <span class="o">[</span>hello.1<span class="o">]</span> -health check settings: submission <span class="nv">timeout</span><span class="o">=</span>None
+<span class="m">2018</span>-07-30T12:10:33Z DEBUG - BEGIN TASK PROCESSING
+<span class="m">2018</span>-07-30T12:10:33Z DEBUG - <span class="m">0</span> task<span class="o">(</span>s<span class="o">)</span> de-queued
+<span class="m">2018</span>-07-30T12:10:33Z DEBUG - <span class="o">[</span>hello.1<span class="o">]</span> -forced spawning
+<span class="m">2018</span>-07-30T12:10:33Z DEBUG - END TASK PROCESSING <span class="o">(</span>took <span class="m">0</span>.000992059707642 seconds<span class="o">)</span>
+<span class="m">2018</span>-07-30T12:10:33Z INFO - <span class="o">[</span>hello.1<span class="o">]</span> -<span class="o">(</span>current:submitted<span class="o">)</span>&gt; started at <span class="m">2018</span>-07-30T12:10:33Z
+<span class="m">2018</span>-07-30T12:10:33Z DEBUG - <span class="o">[</span>hello.1<span class="o">]</span> -submitted <span class="o">=</span>&gt; running
+<span class="m">2018</span>-07-30T12:10:33Z INFO - <span class="o">[</span>hello.1<span class="o">]</span> -health check settings: execution <span class="nv">timeout</span><span class="o">=</span>None
+<span class="m">2018</span>-07-30T12:10:34Z DEBUG - BEGIN TASK PROCESSING
+<span class="m">2018</span>-07-30T12:10:34Z DEBUG - <span class="m">0</span> task<span class="o">(</span>s<span class="o">)</span> de-queued
+<span class="m">2018</span>-07-30T12:10:34Z DEBUG - END TASK PROCESSING <span class="o">(</span>took <span class="m">0</span>.000984191894531 seconds<span class="o">)</span>
+<span class="m">2018</span>-07-30T12:10:43Z DEBUG - <span class="o">[</span>client-connect<span class="o">]</span> root@3714d1a17999:cylc-message <span class="nv">privilege</span><span class="o">=</span><span class="s1">&#39;full-control&#39;</span> 524d658e-9932-4135-9523-3c2ace3990cf
+<span class="m">2018</span>-07-30T12:10:43Z INFO - <span class="o">[</span>client-command<span class="o">]</span> put_messages root@3714d1a17999:cylc-message 524d658e-9932-4135-9523-3c2ace3990cf
+<span class="m">2018</span>-07-30T12:10:43Z INFO - <span class="o">[</span>hello.1<span class="o">]</span> -<span class="o">(</span>current:running<span class="o">)</span>&gt; succeeded at <span class="m">2018</span>-07-30T12:10:43Z
+<span class="m">2018</span>-07-30T12:10:43Z DEBUG - <span class="o">[</span>hello.1<span class="o">]</span> -running <span class="o">=</span>&gt; succeeded
+<span class="m">2018</span>-07-30T12:10:43Z INFO - Suite shutting down - AUTOMATIC
+<span class="m">2018</span>-07-30T12:10:44Z INFO - DONE
+$
 </pre></div>
 
 <p>If you have a utility in your computer that requires a few dependencies, but that
