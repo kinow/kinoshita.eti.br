@@ -126,8 +126,12 @@ Linux, OSX, Windows
 ## <i class="fa fa-chevron-right"></i> Work Experience
 <table class="ui celled table">
 <tr>
+  <td><strong>NIWA</strong>, Research Software Engineer</td>
+  <td>October 2018 - Today</td>
+</tr>
+<tr>
   <td><strong>NIWA</strong>, Java Engineer</td>
-  <td>Jun 2017 - Jun 2018</td>
+  <td>Jun 2017 - Sep 2018</td>
 </tr>
 <tr>
   <td><strong>Spark Ventures</strong>, Full Stack Software Developer</td>
