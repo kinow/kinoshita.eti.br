@@ -152,11 +152,11 @@
                               
                               <span style="font-size: 12.0pt"><a href="/tag/natural%20language%20processing">natural language processing</a></span>&nbsp;(4)
                               
-                              <span style="font-size: 29.0pt"><a href="/tag/opensource">opensource</a></span>&nbsp;(38)
+                              <span style="font-size: 29.5pt"><a href="/tag/opensource">opensource</a></span>&nbsp;(39)
                               
                               <span style="font-size: 26.5pt"><a href="/tag/programming">programming</a></span>&nbsp;(33)
                               
-                              <span style="font-size: 17.0pt"><a href="/tag/python">python</a></span>&nbsp;(14)
+                              <span style="font-size: 17.5pt"><a href="/tag/python">python</a></span>&nbsp;(15)
                               
                               <span style="font-size: 11.5pt"><a href="/tag/r">r</a></span>&nbsp;(3)
                               
@@ -179,6 +179,126 @@
                 
 
 Posts tagged with 'python'
+
+
+
+
+<div class="ui raised padded container segment">
+    <h2><a href="/2018/07/10/import-error-when-debugging-cylc-in-eclipse" title="Permanent link">ImportError when debugging cylc in Eclipse</a></h2>
+    <p><small>kinow</small> @ <small>Jul 10, 2018&nbsp;00:47:13</small></p>
+    
+    
+
+
+
+
+
+<a href="https://twitter.com/share" class="twitter-share-button" data-url="https://kinoshita.eti.br/2018/07/10/import-error-when-debugging-cylc-in-eclipse" data-text="ImportError when debugging cylc in Eclipse" data-via="kinow" data-hashtags="opensource">Tweet</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p='https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+
+
+    <p>Since I started reading cylc&#8217;s source code in Eclipse to create some
+sequence diagrams, I have not been able to debug it properly without
+hitting errors in some part of the program execution.</p>
+<p>The error message was <strong><em>&ldquo;ImportError: cannot import name _remove_dead_weakref&rdquo;</em></strong>,
+which was a bit enigmatic as I never heard about that function, but it seemed to be
+something internal, or at least not from the project code base. And searching the Internet
+did not help much.</p>
+<p>Here is the complete console output in Eclipse.</p>
+<div class="highlight"><pre><span></span>pydev debugger: starting <span class="o">(</span>pid: <span class="m">15124</span><span class="o">)</span>
+timeout <span class="m">10</span> ps -opid,args <span class="m">13640</span>  <span class="c1"># return 1</span>
+
+            ._.                                                       
+            <span class="p">|</span> <span class="p">|</span>            The Cylc Suite Engine <span class="o">[</span><span class="m">7</span>.7.1-37-g09c8a<span class="o">]</span>    
+._____._. ._<span class="p">|</span> <span class="p">|</span>_____.           Copyright <span class="o">(</span>C<span class="o">)</span> <span class="m">2008</span>-2018 NIWA          
+<span class="p">|</span> .___<span class="p">|</span> <span class="p">|</span> <span class="p">|</span> <span class="p">|</span> <span class="p">|</span> .___<span class="p">|</span>  _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+<span class="p">|</span> !___<span class="p">|</span> !_! <span class="p">|</span> <span class="p">|</span> !___.  This program comes with ABSOLUTELY NO WARRANTY<span class="p">;</span>
+!_____!___. <span class="p">|</span>_!_____!  see <span class="sb">`</span>cylc warranty<span class="sb">`</span>.  It is free software, you 
+      .___! <span class="p">|</span>           are welcome to redistribute it under certain  
+      !_____!                conditions<span class="p">;</span> see <span class="sb">`</span>cylc conditions<span class="sb">`</span>.       
+<span class="m">2018</span>-07-10T01:00:47+12 INFO - Suite starting: <span class="nv">server</span><span class="o">=</span>localhost:44444 <span class="nv">pid</span><span class="o">=</span><span class="m">15124</span>
+<span class="m">2018</span>-07-10T01:00:47+12 INFO - Cylc version: <span class="m">7</span>.7.1-37-g09c8a
+<span class="m">2018</span>-07-10T01:00:47+12 INFO - Run mode: live
+<span class="m">2018</span>-07-10T01:00:47+12 INFO - Initial point: <span class="m">1</span>
+<span class="m">2018</span>-07-10T01:00:47+12 INFO - Final point: None
+<span class="m">2018</span>-07-10T01:00:47+12 INFO - Cold Start <span class="m">1</span>
+<span class="m">2018</span>-07-10T01:00:47+12 DEBUG - <span class="o">[</span>hello.1<span class="o">]</span> -released to the task pool
+<span class="m">2018</span>-07-10T01:00:47+12 DEBUG - BEGIN TASK PROCESSING
+<span class="m">2018</span>-07-10T01:00:47+12 DEBUG - <span class="o">[</span>hello.1<span class="o">]</span> -waiting <span class="o">=</span>&gt; queued
+<span class="m">2018</span>-07-10T01:00:47+12 DEBUG - <span class="m">1</span> task<span class="o">(</span>s<span class="o">)</span> de-queued
+<span class="m">2018</span>-07-10T01:00:47+12 INFO - <span class="o">[</span>hello.1<span class="o">]</span> -submit-num<span class="o">=</span><span class="m">1</span>, owner@host<span class="o">=</span>localhost
+<span class="m">2018</span>-07-10T01:00:47+12 DEBUG - <span class="o">[</span>hello.1<span class="o">]</span> -queued <span class="o">=</span>&gt; ready
+<span class="m">2018</span>-07-10T01:00:47+12 DEBUG - END TASK PROCESSING <span class="o">(</span>took <span class="m">0</span>.023609161377 seconds<span class="o">)</span>
+<span class="m">2018</span>-07-10T01:00:48+12 DEBUG - <span class="o">[</span><span class="s1">&#39;cylc&#39;</span>, <span class="s1">&#39;jobs-submit&#39;</span>, <span class="s1">&#39;--debug&#39;</span>, <span class="s1">&#39;--&#39;</span>, <span class="s1">&#39;/home/kinow/Development/python/workspace/example-suite/log/job&#39;</span>, <span class="s1">&#39;1/hello/01&#39;</span><span class="o">]</span>
+<span class="m">2018</span>-07-10T01:00:48+12 ERROR - <span class="o">[</span>jobs-submit cmd<span class="o">]</span> cylc jobs-submit --debug -- /home/kinow/Development/python/workspace/example-suite/log/job <span class="m">1</span>/hello/01
+    <span class="o">[</span>jobs-submit ret_code<span class="o">]</span> <span class="m">1</span>
+    <span class="o">[</span>jobs-submit err<span class="o">]</span>
+    Traceback <span class="o">(</span>most recent call last<span class="o">)</span>:
+      File <span class="s2">&quot;/home/kinow/Development/python/workspace/cylc/bin/cylc-jobs-submit&quot;</span>, line <span class="m">52</span>, in &lt;module&gt;
+        from cylc.batch_sys_manager import BatchSysManager
+      File <span class="s2">&quot;/home/kinow/Development/python/workspace/cylc/lib/cylc/batch_sys_manager.py&quot;</span>, line <span class="m">114</span>, in &lt;module&gt;
+        from cylc.task_message import <span class="o">(</span>
+      File <span class="s2">&quot;/home/kinow/Development/python/workspace/cylc/lib/cylc/task_message.py&quot;</span>, line <span class="m">26</span>, in &lt;module&gt;
+        from logging import getLevelName, WARNING, ERROR, CRITICAL
+      File <span class="s2">&quot;/home/kinow/Development/python/anaconda2/lib/python2.7/logging/__init__.py&quot;</span>, line <span class="m">26</span>, in &lt;module&gt;
+        import sys, os, time, cStringIO, traceback, warnings, weakref, collections
+      File <span class="s2">&quot;/home/kinow/Development/python/anaconda2/lib/python2.7/weakref.py&quot;</span>, line <span class="m">14</span>, in &lt;module&gt;
+        from _weakref import <span class="o">(</span>
+    ImportError: cannot import name _remove_dead_weakref
+<span class="m">2018</span>-07-10T01:00:48+12 ERROR - <span class="o">[</span>jobs-submit cmd<span class="o">]</span> cylc jobs-submit --debug -- /home/kinow/Development/python/workspace/example-suite/log/job <span class="m">1</span>/hello/01
+    <span class="o">[</span>jobs-submit ret_code<span class="o">]</span> <span class="m">1</span>
+    <span class="o">[</span>jobs-submit out<span class="o">]</span> <span class="m">2018</span>-07-10T01:00:48+12<span class="p">|</span><span class="m">1</span>/hello/01<span class="p">|</span><span class="m">1</span>
+<span class="m">2018</span>-07-10T01:00:48+12 INFO - <span class="o">[</span>hello.1<span class="o">]</span> -<span class="o">(</span>current:ready<span class="o">)</span> submission failed at <span class="m">2018</span>-07-10T01:00:48+12
+<span class="m">2018</span>-07-10T01:00:48+12 ERROR - <span class="o">[</span>hello.1<span class="o">]</span> -submission failed
+<span class="m">2018</span>-07-10T01:00:48+12 DEBUG - <span class="o">[</span>hello.1<span class="o">]</span> -ready <span class="o">=</span>&gt; submit-failed
+<span class="m">2018</span>-07-10T01:00:48+12 DEBUG - BEGIN TASK PROCESSING
+<span class="m">2018</span>-07-10T01:00:48+12 DEBUG - <span class="m">0</span> task<span class="o">(</span>s<span class="o">)</span> de-queued
+<span class="m">2018</span>-07-10T01:00:48+12 DEBUG - END TASK PROCESSING <span class="o">(</span>took <span class="m">0</span>.00175499916077 seconds<span class="o">)</span>
+<span class="m">2018</span>-07-10T01:00:49+12 WARNING - suite stalled
+</pre></div>
+
+<p>As the current diagram I am working on has quite a few <code>if</code>&#8216;s and <code>else</code>&#8216;s, I decided
+to investigate why this error was occurring. Then, after some elimination I found that
+it was due to the missing Anaconda 2 entry in my <code>$PATH</code> environment variable.</p>
+<p>I had this variable configured in a custom script I load whenever I decide to use
+Anaconda 2. And reproducing the same behaviour in Eclipse was easy.</p>
+<p style='text-align: center;'>
+<img style="display: inline" class="ui image" src="/2018/07/10/import-error-when-debugging-cylc-in-eclipse/screenshot1.png" alt="A screen shot of Eclipse with source code" title="Locating the bug" />
+<br/>
+<small>Locating the bug</small>
+</p>
+
+<p>Et voil&agrave;! Eclipse was happily debugging again!</p>
+<p style='text-align: center;'>
+<img style="display: inline" class="ui image" src="/2018/07/10/import-error-when-debugging-cylc-in-eclipse/screenshot2.png" alt="A screen shot of Eclipse with source code" title="Locating the bug" />
+<br/>
+<small>Locating the bug</small>
+</p>
+
+<p>So if you have a similar problem, try comparing your environment variables and check if you
+have some entries missing, and try adding them in Eclipse Debug configuration.</p>
+<p>Happy cycling!</p><!-- html -->
+    
+<p class="postmetadata">
+    
+    <small>tags 
+     [&nbsp;<a
+        href="/tag/cylc"
+        rel="tag">cylc</a>&nbsp;]&nbsp;
+    
+     [&nbsp;<a
+        href="/tag/python"
+        rel="tag">python</a>&nbsp;]&nbsp;
+    
+     [&nbsp;<a
+        href="/tag/opensource"
+        rel="tag">opensource</a>&nbsp;]&nbsp;
+    
+    </small>
+    
+    
+</p>
+</div>
 
 
 
@@ -504,83 +624,6 @@ job ¯\<em>(ツ)</em>/¯</p>
      [&nbsp;<a
         href="/tag/opensource"
         rel="tag">opensource</a>&nbsp;]&nbsp;
-    
-    </small>
-    
-    
-    <br/>
-    <small>posted in 
-    [&nbsp;<a
-        href="/blog"
-        title="View all posts in blog"
-        rel="category tag">blog</a>&nbsp;]&nbsp;
-    category </small>
-    
-</p>
-</div>
-
-
-
-
-<div class="ui raised padded container segment">
-    <h2><a href="/2016/11/25/using-requests-session-objects-for-web-scraping" title="Permanent link">Using Requests Session Objects for web scraping</a></h2>
-    <p><small>kinow</small> @ <small>Nov 25, 2016&nbsp;01:24:03</small></p>
-    
-    
-
-
-
-
-
-<a href="https://twitter.com/share" class="twitter-share-button" data-url="https://kinoshita.eti.br/2016/11/25/using-requests-session-objects-for-web-scraping" data-text="Using Requests Session Objects for web scraping" data-via="kinow" data-hashtags="opensource">Tweet</a>
-<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p='https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-
-
-    <p>I had to write a Python script some months ago, that would retrieve Solar energy
-data from a web site. It was basically a handful of HTTP calls, parse the response
-that was mainly in JSON, and store the results as JSON and CSV for processing later.</p>
-<p>Since it was such a small task, I used the <a href="http://docs.python-requests.org">Requests</a>
-module instead of a complete web scraper. The HTTP requests had to be made with a
-time out, and also pass certain headers. I started customizing each call, until
-I learned about the Requests <a href="http://docs.python-requests.org/en/master/user/advanced/">Session Objects</a>.</p>
-<p>You create a session, as in ORM/JPA, where you can define a context, with certain properties
-and control an orthogonal behavior.</p>
-<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">requests</span>
-
-<span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="n">session</span><span class="p">,</span> <span class="n">url</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Utility method to HTTP GET a URL&quot;&quot;&quot;</span>
-    <span class="n">response</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">response</span>
-
-<span class="k">def</span> <span class="nf">post</span><span class="p">(</span><span class="n">session</span><span class="p">,</span> <span class="n">url</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Utility method to HTTP POST a URL with data parameters&quot;&quot;&quot;</span>
-    <span class="n">response</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">!=</span> <span class="n">requests</span><span class="o">.</span><span class="n">codes</span><span class="o">.</span><span class="n">ok</span><span class="p">:</span>
-        <span class="n">response</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>
-    <span class="k">return</span> <span class="n">response</span>
-
-<span class="k">with</span> <span class="n">requests</span><span class="o">.</span><span class="n">Session</span><span class="p">()</span> <span class="k">as</span> <span class="n">s</span><span class="p">:</span>
-    <span class="c1"># x-test header will be sent with every request</span>
-    <span class="n">s</span><span class="o">.</span><span class="n">headers</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s1">&#39;x-test&#39;</span><span class="p">:</span> <span class="s1">&#39;true&#39;</span><span class="p">})</span>
-
-    <span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;user&#39;</span><span class="p">:</span> <span class="n">user</span><span class="p">,</span> <span class="s1">&#39;password&#39;</span><span class="p">:</span> <span class="n">password</span><span class="p">,</span> <span class="s1">&#39;rememberne&#39;</span><span class="p">:</span> <span class="s1">&#39;false&#39;</span><span class="p">}</span>
-    <span class="n">r</span> <span class="o">=</span> <span class="n">post</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="s1">&#39;https://portal.login.url&#39;</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
-
-    <span class="n">r</span> <span class="o">=</span> <span class="n">get</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="s1">&#39;https://portal.home.url&#39;</span><span class="p">)</span>
-</pre></div>
-
-<p>Besides the session object, that gives you ability to add headers to all requests,
-you won&#8217;t have to worry about redirects. The library by default takes care
-<a href="https://github.com/kennethreitz/requests/blob/dfad00a6e84bc75b12468ca29ccf4f971c813fc8/requests/sessions.py#L110">of that</a>
-with a <a href="https://github.com/kennethreitz/requests/blob/dfad00a6e84bc75b12468ca29ccf4f971c813fc8/requests/models.py#L54">default limit of up to 30</a>.</p>
-<p>Happy hacking!</p><!-- html -->
-    
-<p class="postmetadata">
-    
-    <small>tags 
-     [&nbsp;<a
-        href="/tag/python"
-        rel="tag">python</a>&nbsp;]&nbsp;
     
     </small>
     

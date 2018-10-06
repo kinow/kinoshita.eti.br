@@ -10,13 +10,59 @@
         
         <description>Latest news from Bruno P. Kinoshita</description>
         
-        <lastBuildDate>2018-10-06T17:38:23+13:00</lastBuildDate>
-        <pubDate>2018-10-06T17:38:23+13:00</pubDate>
+        <lastBuildDate>2018-10-06T21:55:13+13:00</lastBuildDate>
+        <pubDate>2018-10-06T21:55:13+13:00</pubDate>
         <generator>PieCrust 3.2.1</generator>
         
         
         
 
+        
+        
+        
+        <item>
+            <title>A couple of class diagrams of JupyterHub</title>
+            <link>/2018/10/06/a-couple-of-class-diagrams-of-jupyterhub</link>
+            
+            <author>kinow</author>
+            <dc:creator>kinow</dc:creator>
+            
+            
+            
+            <category>python</category>
+            
+            <category>jupyterhub</category>
+            
+            <category>opensource</category>
+            
+            <pubDate>2018-10-06T21:43:44+13:00</pubDate>
+            <guid>/2018/10/06/a-couple-of-class-diagrams-of-jupyterhub</guid>
+            <description>
+            
+            &lt;p&gt;Started on a new project last Monday. One of the tasks in this project involves a new design
+for the Web layer. And as the application is quite similar to &lt;a href=&#34;https://jupyterhub.readthedocs.io/&#34;&gt;JupyterHub&lt;/a&gt;,
+we are all learning more about its internal API and general system design.&lt;/p&gt;
+&lt;p&gt;This post contains only two class diagrams created with PyCharm. One is actually a SQLAlchemy
+ORM diagram, below.&lt;/p&gt;
+&lt;p style=&#39;text-align: center;&#39;&gt;
+&lt;a href=&#34;/2018/10/06/a-couple-of-class-diagrams-of-jupyterhub/jupyterhub-sqlalchemy-graph.png&#34;&gt;
+&lt;img style=&#34;display: inline; width: 100%;&#34; class=&#34;ui image&#34; src=&#34;/2018/10/06/a-couple-of-class-diagrams-of-jupyterhub/jupyterhub-sqlalchemy-graph.png&#34;  /&gt;
+&lt;/a&gt;
+&lt;/p&gt;
+
+&lt;p&gt;And the class diagram (which I removed &lt;code&gt;object&lt;/code&gt; and a tried to make it simpler to interpret).&lt;/p&gt;
+&lt;p style=&#39;text-align: center;&#39;&gt;
+&lt;a href=&#34;/2018/10/06/a-couple-of-class-diagrams-of-jupyterhub/jupyterhub-class-diagram.png&#34;&gt;
+&lt;img style=&#34;display: inline; width: 100%;&#34; class=&#34;ui image&#34; src=&#34;/2018/10/06/a-couple-of-class-diagrams-of-jupyterhub/jupyterhub-class-diagram.png&#34;  /&gt;
+&lt;/a&gt;
+&lt;/p&gt;
+
+&lt;p&gt;I enjoyed the parts of the code and the part of the system design that I could read about so far.
+But that&amp;#8217;s all for now, until I have more time to learn more about the project and the code.&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;p.s. there are spawners and other implementation classes in other GitHub repositories&amp;#8230; so a more complete diagram may come later on&lt;/em&gt;&lt;/p&gt;
+            
+            </description>
+        </item>
         
         
         
@@ -768,147 +814,6 @@ be able to run only one task. But that way I can configure Wireshark and other
 tools to default to 44444/HTTP, for ease of debugging.&lt;/p&gt;
 &lt;p&gt;Then initialize the suite with something like: &lt;code&gt;cylc start --non-daemon --debug /home/kinow/Development/python/workspace/example-suite/&lt;/code&gt;&lt;/p&gt;
 &lt;p&gt;Happy cycling!&lt;/p&gt;
-            
-            </description>
-        </item>
-        
-        
-        
-        <item>
-            <title>What happens when you create a new dataset in Apache Jena Fuseki</title>
-            <link>/2018/05/29/what-happens-when-you-create-a-new-dataset-in-apache-jena-fuseki</link>
-            
-            <author>kinow</author>
-            <dc:creator>kinow</dc:creator>
-            
-            
-            
-            <category>jena</category>
-            
-            <category>apache software foundation</category>
-            
-            <category>java</category>
-            
-            <category>sparql</category>
-            
-            <category>opensource</category>
-            
-            <pubDate>2018-05-29T18:59:04+12:00</pubDate>
-            <guid>/2018/05/29/what-happens-when-you-create-a-new-dataset-in-apache-jena-fuseki</guid>
-            <description>
-            
-            &lt;p&gt;&lt;a href=&#34;/2018/05/27/what-happens-when-you-upload-a-turtle-file-in-apache-jena-fuseki&#34;&gt;Last post&lt;/a&gt;
-was about what happens when you upload a Turtle file to Apache Jena Fuseki. And now today&amp;#8217;s post will be about
-what happens when you create a new dataset in Apache Jena Fuseki.&lt;/p&gt;
-&lt;p&gt;In theory, that happens before you upload a Turtle file, but this post series won&amp;#8217;t follow a logical order.
-It will be more based on what I find interesting.&lt;/p&gt;
-&lt;p&gt;Oh, the dataset created is &lt;strong&gt;an in-memory dataset&lt;/strong&gt;. Here&amp;#8217;s a simplified sequence diagram. Again,
-these articles are more brain-dumps, used by myself for later reference.&lt;/p&gt;
-&lt;p style=&#39;text-align: center;&#39;&gt;
-&lt;img style=&#34;display: inline; width: 100%;&#34; class=&#34;ui image&#34; src=&#34;/2018/05/29/what-happens-when-you-create-a-new-dataset-in-apache-jena-fuseki/sequence-diagram.png&#34;  /&gt;
-&lt;/p&gt;
-
-&lt;h2&gt;ActionDatasets#execPostContainer() (Fuseki Core)&lt;/h2&gt;
-&lt;p&gt;&lt;code&gt;ActionDatasets&lt;/code&gt;, as per the name, handles HTTP requests related to datasets. Such as when you
-create a new dataset. It is also an HTTP action. The concept in Jena, as far as I could tell,
-is similar to Jenkins&amp;#8217; actions, but simpler, without the UI/Jelly/Groovy part.&lt;/p&gt;
-&lt;p&gt;This class also has a few static fields, which hold system information. One variable is actually
-called &lt;code&gt;system&lt;/code&gt;. (wonder how well it works if you try to deploy Jena Fuseki with multiple JVM&amp;#8217;s
-&lt;a href=&#34;https://markmail.org/message/xpfcgccuwgycdopw&#34;&gt;&lt;sup&gt;1&lt;/sup&gt;&lt;/a&gt; &lt;a href=&#34;https://afs.github.io/rdf-delta/ha-fuseki.html&#34;&gt;&lt;sup&gt;2&lt;/sup&gt;&lt;/a&gt;).&lt;/p&gt;
-&lt;p&gt;Its first task is to create an &lt;em&gt;UUID&lt;/em&gt;, using &lt;code&gt;JenaUUID&lt;/code&gt; (from Jena Core). This class looks
-very interesting, &lt;a href=&#34;/2018/08/11/uuids-in-apache-jena&#34;&gt;wonder how it works&lt;/a&gt;.&lt;/p&gt;
-&lt;p&gt;Then it creates a &lt;code&gt;DatasetDescriptionRegistry&lt;/code&gt;, which is a registry to keep track
-of the datasets created. There is also some validation of parameters and state check, and then
-the transaction is started (&lt;code&gt;system.begin()&lt;/code&gt;).&lt;/p&gt;
-&lt;h2&gt;Model / (Core)&lt;/h2&gt;
-&lt;p&gt;I used &lt;code&gt;Model&lt;/code&gt; and &lt;code&gt;ModelFactory&lt;/code&gt; before when working with ontologies and Prot&amp;eacute;g&amp;eacute;.
-&lt;code&gt;ActionDatasets&lt;/code&gt; will create a &lt;code&gt;Model&lt;/code&gt;.&lt;/p&gt;
-&lt;blockquote&gt;    An RDF Model.
-
-    An RDF model is a set of Statements.  Methods are provided for creating
-    resources, properties and literals and the Statements which link them,
-    for adding statements to and removing them from a model, for
-    querying a model and set operations for combining models.
-&lt;/blockquote&gt;
-
-&lt;p&gt;It also gets a &lt;code&gt;StreamRDF&lt;/code&gt; from the model (i.e. &lt;code&gt;model.getGraph()&lt;/code&gt;), which will be used
-later by the &lt;code&gt;RDFParser&lt;/code&gt;.&lt;/p&gt;
-&lt;h2&gt;ActionDatasets#assemblerFromForm() (Fuseki)&lt;/h2&gt;
-&lt;p&gt;In &lt;code&gt;#assemblerFromForm()&lt;/code&gt;, it will create a template, and then use
-&lt;code&gt;RDFParser&lt;/code&gt; to parse the template and load into &lt;code&gt;SteamRFF&lt;/code&gt;. The template looks like this:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class=&#34;c&#34;&gt;# Licensed under the terms of http://www.apache.org/licenses/LICENSE-2.0&lt;/span&gt;
-
-&lt;span class=&#34;err&#34;&gt;@&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;prefix&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;        &lt;span class=&#34;nl&#34;&gt;&amp;lt;#&amp;gt;&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;
-&lt;span class=&#34;err&#34;&gt;@&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;prefix&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;fuseki&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;  &lt;span class=&#34;nl&#34;&gt;&amp;lt;http://jena.apache.org/fuseki#&amp;gt;&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;
-&lt;span class=&#34;err&#34;&gt;@&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;prefix&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;rdf&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;     &lt;span class=&#34;nl&#34;&gt;&amp;lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&amp;gt;&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;
-
-&lt;span class=&#34;err&#34;&gt;@&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;prefix&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;rdfs&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;    &lt;span class=&#34;nl&#34;&gt;&amp;lt;http://www.w3.org/2000/01/rdf-schema#&amp;gt;&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;
-&lt;span class=&#34;err&#34;&gt;@&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;prefix&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;tdb&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;     &lt;span class=&#34;nl&#34;&gt;&amp;lt;http://jena.hpl.hp.com/2008/tdb#&amp;gt;&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;
-&lt;span class=&#34;err&#34;&gt;@&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;prefix&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;ja&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;      &lt;span class=&#34;nl&#34;&gt;&amp;lt;http://jena.hpl.hp.com/2005/11/Assembler#&amp;gt;&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;
-
-&lt;span class=&#34;c&#34;&gt;## ---------------------------------------------------------------&lt;/span&gt;
-&lt;span class=&#34;c&#34;&gt;## Updatable in-memory dataset.&lt;/span&gt;
-
-&lt;span class=&#34;nl&#34;&gt;&amp;lt;#service1&amp;gt;&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;rdf&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;type&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;fuseki&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;Service&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
-    &lt;span class=&#34;c&#34;&gt;# URI of the dataset -- http://host:port/aaa&lt;/span&gt;
-    &lt;span class=&#34;nn&#34;&gt;fuseki&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;name&lt;/span&gt;                        &lt;span class=&#34;s&#34;&gt;&amp;quot;aaa&amp;quot;&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
-    &lt;span class=&#34;nn&#34;&gt;fuseki&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;serviceQuery&lt;/span&gt;                &lt;span class=&#34;s&#34;&gt;&amp;quot;sparql&amp;quot;&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
-    &lt;span class=&#34;nn&#34;&gt;fuseki&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;serviceQuery&lt;/span&gt;                &lt;span class=&#34;s&#34;&gt;&amp;quot;query&amp;quot;&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
-    &lt;span class=&#34;nn&#34;&gt;fuseki&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;serviceUpdate&lt;/span&gt;               &lt;span class=&#34;s&#34;&gt;&amp;quot;update&amp;quot;&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
-    &lt;span class=&#34;nn&#34;&gt;fuseki&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;serviceUpload&lt;/span&gt;               &lt;span class=&#34;s&#34;&gt;&amp;quot;upload&amp;quot;&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
-    &lt;span class=&#34;nn&#34;&gt;fuseki&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;serviceReadWriteGraphStore&lt;/span&gt;  &lt;span class=&#34;s&#34;&gt;&amp;quot;data&amp;quot;&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;     
-    &lt;span class=&#34;nn&#34;&gt;fuseki&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;serviceReadGraphStore&lt;/span&gt;       &lt;span class=&#34;s&#34;&gt;&amp;quot;get&amp;quot;&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
-    &lt;span class=&#34;nn&#34;&gt;fuseki&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;dataset&lt;/span&gt;                     &lt;span class=&#34;nl&#34;&gt;&amp;lt;#dataset&amp;gt;&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
-    &lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;
-
-&lt;span class=&#34;c&#34;&gt;# Transactional, in-memory dataset. Initially empty.&lt;/span&gt;
-&lt;span class=&#34;nl&#34;&gt;&amp;lt;#dataset&amp;gt;&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;rdf&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;type&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;ja&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;DatasetTxnMem&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-&lt;h2&gt;Persisting the dataset&lt;/h2&gt;
-&lt;p&gt;Jena Fuseki will create a local copy of the template, using RIOT&amp;#8217;s &lt;code&gt;RDFDataMgr&lt;/code&gt;. For my environment, running from
-Eclipse, the file location was &lt;em&gt;/home/kinow/Development/java/jena/jena/jena-fuseki2/jena-fuseki-core/run/system_files/902154aa-2bb6-11b2-8053-024232e7b374&lt;/em&gt;.&lt;/p&gt;
-&lt;p&gt;Fuseki now will look for exactly one Service Name statement (http://jena.apache.org/fuseki#name). The
-name will be validated for things like blank space, empty, &amp;#8216;/&amp;#8217;, etc.&lt;/p&gt;
-&lt;p&gt;Once the validation passes, then it will persist the file in somewhere like
-/home/kinow/Development/java/jena/jena/jena-fuseki2/jena-fuseki-core/run/configuration/aaa.ttl. But
-not without checking first it the file existed.&lt;/p&gt;
-&lt;p&gt;As this is a brand new file, the &lt;code&gt;Model&lt;/code&gt; instance will be written on the file now.&lt;/p&gt;
-&lt;h2&gt;DatasetAccessPoint (ARQ)&lt;/h2&gt;
-&lt;p&gt;Funny, when I wrote it I immediately put this class under Fuseki Core, but it is actually
-in ARQ. &lt;strong&gt;Why not in Fuseki?&lt;/strong&gt;. Looks like ARQ has a Web layer too.&lt;/p&gt;
-&lt;p&gt;Fuseki&amp;#8217;s &lt;code&gt;FusekiBuilder#buildDataAccessPoint()&lt;/code&gt; creates the &lt;code&gt;DataAccessPoint&lt;/code&gt;. The &lt;code&gt;DataAccessPoint&lt;/code&gt;&amp;#8216;s
-Javadocs say: &amp;ldquo;A name in the URL space of the server&amp;rdquo;.&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;code&gt;DataService&lt;/code&gt; contains operations, and endpoints&lt;/li&gt;
-&lt;li&gt;Services are added to endpoints, such as an endpoint for the &lt;code&gt;Quads_RW&lt;/code&gt;, the &lt;code&gt;REST_Quads_RW&lt;/code&gt; from previous post&lt;/li&gt;
-&lt;li&gt;The name and the data service are used to create the &lt;code&gt;DataAccessPoint&lt;/code&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;The current &lt;code&gt;HttpAction&lt;/code&gt; in the request contains a reference to Fuseki&amp;#8217;s
-&lt;code&gt;DataAccessPointRegistry&lt;/code&gt;. Fuseki&amp;#8217;s &lt;code&gt;DataAccessPointRegistry&lt;/code&gt; extends Atlas&amp;#8217;
-&lt;code&gt;Registry&lt;/code&gt;, which uses a &lt;code&gt;ConcurrentHashMap&lt;/code&gt; (again, how does it work with multiple JVM&amp;#8217;s?).&lt;/p&gt;
-&lt;p&gt;The new &lt;code&gt;DataAccessPoint&lt;/code&gt; is registered with Fuseki&amp;#8217;s registry (not the other registry).&lt;/p&gt;
-&lt;p&gt;And then, finally, the transaction is committed, the response is prepared (a 200 OK in &lt;code&gt;text/plain&lt;/code&gt;).
-And a &lt;code&gt;null&lt;/code&gt; is returned, which means empty response.&lt;/p&gt;
-&lt;p&gt;And here&amp;#8217;s some of the logs produced during this experiment.&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;2018&lt;/span&gt;-05-28 &lt;span class=&#34;m&#34;&gt;21&lt;/span&gt;:11:43&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; Config     INFO  Load configuration: file:///home/kinow/Development/java/jena/jena/jena-fuseki2/jena-fuseki-core/run/configuration/ds2.ttl
-&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;2018&lt;/span&gt;-05-28 &lt;span class=&#34;m&#34;&gt;21&lt;/span&gt;:11:43&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; Config     INFO  Load configuration: file:///home/kinow/Development/java/jena/jena/jena-fuseki2/jena-fuseki-core/run/configuration/p1.ttl
-&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;2018&lt;/span&gt;-05-28 &lt;span class=&#34;m&#34;&gt;21&lt;/span&gt;:11:43&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; Config     INFO  Register: /ds2
-&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;2018&lt;/span&gt;-05-28 &lt;span class=&#34;m&#34;&gt;21&lt;/span&gt;:11:43&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; Config     INFO  Register: /p1
-&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;2018&lt;/span&gt;-05-28 &lt;span class=&#34;m&#34;&gt;21&lt;/span&gt;:11:43&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; Server     INFO  Started &lt;span class=&#34;m&#34;&gt;2018&lt;/span&gt;/05/28 &lt;span class=&#34;m&#34;&gt;21&lt;/span&gt;:11:43 NZST on port &lt;span class=&#34;m&#34;&gt;3030&lt;/span&gt;
-&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;2018&lt;/span&gt;-05-28 &lt;span class=&#34;m&#34;&gt;21&lt;/span&gt;:11:52&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; Admin      INFO  &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; GET http://localhost:3030/$/server
-&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;2018&lt;/span&gt;-05-28 &lt;span class=&#34;m&#34;&gt;21&lt;/span&gt;:11:52&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; Admin      INFO  &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; &lt;span class=&#34;m&#34;&gt;200&lt;/span&gt; OK &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;11&lt;/span&gt; ms&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
-&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;2018&lt;/span&gt;-05-28 &lt;span class=&#34;m&#34;&gt;21&lt;/span&gt;:12:41&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; Admin      INFO  &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;2&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; GET http://localhost:3030/$/server
-&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;2018&lt;/span&gt;-05-28 &lt;span class=&#34;m&#34;&gt;21&lt;/span&gt;:12:41&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; Admin      INFO  &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;2&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; &lt;span class=&#34;m&#34;&gt;200&lt;/span&gt; OK &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;3&lt;/span&gt; ms&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
-&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;2018&lt;/span&gt;-05-28 &lt;span class=&#34;m&#34;&gt;21&lt;/span&gt;:22:33&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; Admin      INFO  &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;3&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; POST http://localhost:3030/$/datasets
-&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;2018&lt;/span&gt;-05-28 &lt;span class=&#34;m&#34;&gt;21&lt;/span&gt;:46:25&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; Admin      INFO  &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;3&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; Create database : &lt;span class=&#34;nv&#34;&gt;name&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; /aaa
-&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;2018&lt;/span&gt;-05-28 &lt;span class=&#34;m&#34;&gt;22&lt;/span&gt;:16:17&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; Admin      INFO  &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;3&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; &lt;span class=&#34;m&#34;&gt;200&lt;/span&gt; OK &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;3&lt;/span&gt;,224.390 s&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
-&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;2018&lt;/span&gt;-05-28 &lt;span class=&#34;m&#34;&gt;22&lt;/span&gt;:16:18&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; Admin      INFO  &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;4&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; GET http://localhost:3030/$/server
-&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;2018&lt;/span&gt;-05-28 &lt;span class=&#34;m&#34;&gt;22&lt;/span&gt;:16:18&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; Admin      INFO  &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;4&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; &lt;span class=&#34;m&#34;&gt;200&lt;/span&gt; OK &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;8&lt;/span&gt; ms&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;So that&amp;#8217;s that.&lt;/p&gt;
-&lt;p&gt;Happy hacking !&lt;/p&gt;
             
             </description>
         </item>

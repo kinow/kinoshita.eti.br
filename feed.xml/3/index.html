@@ -10,13 +10,122 @@
         
         <description>Latest news from Bruno P. Kinoshita</description>
         
-        <lastBuildDate>2018-10-06T17:38:23+13:00</lastBuildDate>
-        <pubDate>2018-10-06T17:38:23+13:00</pubDate>
+        <lastBuildDate>2018-10-06T21:55:13+13:00</lastBuildDate>
+        <pubDate>2018-10-06T21:55:13+13:00</pubDate>
         <generator>PieCrust 3.2.1</generator>
         
         
         
 
+        
+        
+        
+        <item>
+            <title>Quickly Verifying jar Signatures For ASF Releases</title>
+            <link>/2017/10/14/quickly-verifying-jar-signatures-for-asf-releases</link>
+            
+            <author>kinow</author>
+            <dc:creator>kinow</dc:creator>
+            
+            
+            
+            <category>programming</category>
+            
+            <category>shell script</category>
+            
+            <category>security</category>
+            
+            <category>opensource</category>
+            
+            <category>apache software foundation</category>
+            
+            <pubDate>2017-10-14T00:24:54+13:00</pubDate>
+            <guid>/2017/10/14/quickly-verifying-jar-signatures-for-asf-releases</guid>
+            <description>
+            
+            &lt;p&gt;The release process within the Apache Software Foundation includes a series of steps. Amongst these
+steps is the &lt;a href=&#34;https://www.apache.org/foundation/voting.html&#34;&gt;voting process&lt;/a&gt;. In Apache Commons, the
+&lt;a href=&#34;https://commons.apache.org/releases/prepare.html&#34;&gt;release instructions&lt;/a&gt; includes a note on artefact
+signatures.&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;During the course of the VOTE, make sure that one or more of the reviewers have verified the signatures and hash files included with the release artifacts. If no one specifically mentions having done that during the VOTE, ask on the dev list and make sure someone does this before you proceed with the release. &lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;Tired of always having to manually check several artefacts, or having to come up with the correct
+shell commands to iterate through a list of files, the other day I wrote a simple script to download
+the KEYS file, import it, download all the artefacts, then iterate through them and verify the
+signature.&lt;/p&gt;
+&lt;p&gt;Here&amp;#8217;s the script. Licensed under the GPL licence.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class=&#34;ch&#34;&gt;#!/usr/bin/env bash&lt;/span&gt;
+
+&lt;span class=&#34;nv&#34;&gt;url&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;&amp;quot;&lt;/span&gt;
+
+&lt;span class=&#34;c1&#34;&gt;# From: https://blog.mafr.de/2007/08/05/cmdline-options-in-shell-scripts/&lt;/span&gt;
+&lt;span class=&#34;nv&#34;&gt;USAGE&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;Usage: `basename &lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;$0&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;` [-hv] https://repository.apache.org/.../commons/commons-configuration/2.2/&amp;quot;&lt;/span&gt;
+
+&lt;span class=&#34;c1&#34;&gt;# Parse command line options.&lt;/span&gt;
+&lt;span class=&#34;k&#34;&gt;while&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;getopts&lt;/span&gt; hv: OPT&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;do&lt;/span&gt;
+    &lt;span class=&#34;k&#34;&gt;case&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;quot;&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;$OPT&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;&lt;/span&gt; in
+        h&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
+            &lt;span class=&#34;nb&#34;&gt;echo&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;$USAGE&lt;/span&gt;
+            &lt;span class=&#34;nb&#34;&gt;exit&lt;/span&gt; &lt;span class=&#34;m&#34;&gt;0&lt;/span&gt;
+            &lt;span class=&#34;p&#34;&gt;;;&lt;/span&gt;
+        v&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
+            &lt;span class=&#34;nb&#34;&gt;echo&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;quot;`basename &lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;$0&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;` version 0.0.1&amp;quot;&lt;/span&gt;
+            &lt;span class=&#34;nb&#34;&gt;exit&lt;/span&gt; &lt;span class=&#34;m&#34;&gt;0&lt;/span&gt;
+            &lt;span class=&#34;p&#34;&gt;;;&lt;/span&gt;
+        &lt;span class=&#34;se&#34;&gt;\?&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
+            &lt;span class=&#34;c1&#34;&gt;# getopts issues an error message&lt;/span&gt;
+            &lt;span class=&#34;nb&#34;&gt;echo&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;$USAGE&lt;/span&gt; &amp;gt;&lt;span class=&#34;p&#34;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;2&lt;/span&gt;
+            &lt;span class=&#34;nb&#34;&gt;exit&lt;/span&gt; &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt;
+            &lt;span class=&#34;p&#34;&gt;;;&lt;/span&gt;
+    &lt;span class=&#34;k&#34;&gt;esac&lt;/span&gt;
+&lt;span class=&#34;k&#34;&gt;done&lt;/span&gt;
+
+&lt;span class=&#34;c1&#34;&gt;# Remove the switches we parsed above.&lt;/span&gt;
+&lt;span class=&#34;nb&#34;&gt;shift&lt;/span&gt; &lt;span class=&#34;sb&#34;&gt;`&lt;/span&gt;expr &lt;span class=&#34;nv&#34;&gt;$OPTIND&lt;/span&gt; - &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;sb&#34;&gt;`&lt;/span&gt;
+
+&lt;span class=&#34;c1&#34;&gt;# We want at least one non-option argument. &lt;/span&gt;
+&lt;span class=&#34;c1&#34;&gt;# Remove this block if you don&amp;#39;t need it.&lt;/span&gt;
+&lt;span class=&#34;k&#34;&gt;if&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;$#&lt;/span&gt; -eq &lt;span class=&#34;m&#34;&gt;0&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;then&lt;/span&gt;
+    &lt;span class=&#34;nb&#34;&gt;echo&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;$USAGE&lt;/span&gt; &amp;gt;&lt;span class=&#34;p&#34;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;2&lt;/span&gt;
+    &lt;span class=&#34;nb&#34;&gt;exit&lt;/span&gt; &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt;
+&lt;span class=&#34;k&#34;&gt;fi&lt;/span&gt;
+
+&lt;span class=&#34;c1&#34;&gt;# Access additional arguments as usual through &lt;/span&gt;
+&lt;span class=&#34;c1&#34;&gt;# variables $@, $*, $1, $2, etc. or using this loop:&lt;/span&gt;
+&lt;span class=&#34;nv&#34;&gt;URL&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;$1&lt;/span&gt;
+
+&lt;span class=&#34;nb&#34;&gt;echo&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;quot;url: &lt;/span&gt;&lt;span class=&#34;si&#34;&gt;${&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;URL&lt;/span&gt;&lt;span class=&#34;si&#34;&gt;}&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;&lt;/span&gt;
+
+&lt;span class=&#34;c1&#34;&gt;# Use a local temporary directory&lt;/span&gt;
+&lt;span class=&#34;nv&#34;&gt;BUILD_DIR&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;$(&lt;/span&gt;mktemp -d&lt;span class=&#34;k&#34;&gt;)&lt;/span&gt;
+&lt;span class=&#34;nb&#34;&gt;pushd&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;quot;&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;$BUILD_DIR&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;&lt;/span&gt;
+
+&lt;span class=&#34;nb&#34;&gt;echo&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;quot;build dir: &lt;/span&gt;&lt;span class=&#34;si&#34;&gt;${&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;BUILD_DIR&lt;/span&gt;&lt;span class=&#34;si&#34;&gt;}&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;&lt;/span&gt;
+
+&lt;span class=&#34;c1&#34;&gt;# Download KEYS file&lt;/span&gt;
+&lt;span class=&#34;nv&#34;&gt;KEYS_URL&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;https://www.apache.org/dist/commons/KEYS
+
+&lt;span class=&#34;nb&#34;&gt;echo&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;quot;importing KEYS from: &lt;/span&gt;&lt;span class=&#34;si&#34;&gt;${&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;KEYS_URL&lt;/span&gt;&lt;span class=&#34;si&#34;&gt;}&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;&lt;/span&gt;
+
+wget &lt;span class=&#34;s2&#34;&gt;&amp;quot;&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;$KEYS_URL&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;&lt;/span&gt;
+gpg --import KEYS
+
+&lt;span class=&#34;c1&#34;&gt;# Download JARs and signature files&lt;/span&gt;
+&lt;span class=&#34;nb&#34;&gt;echo&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;quot;downloading all jars and signature files...&amp;quot;&lt;/span&gt;
+
+wget -r -nd -np -e &lt;span class=&#34;nv&#34;&gt;robots&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;off --wait &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt; -R &lt;span class=&#34;s2&#34;&gt;&amp;quot;index.html*&amp;quot;&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;quot;&lt;/span&gt;&lt;span class=&#34;si&#34;&gt;${&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;URL&lt;/span&gt;&lt;span class=&#34;si&#34;&gt;}&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;&lt;/span&gt;
+
+&lt;span class=&#34;c1&#34;&gt;# Check the files&lt;/span&gt;
+&lt;span class=&#34;k&#34;&gt;for&lt;/span&gt; x in *.jar&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;do&lt;/span&gt; gpg --verify &lt;span class=&#34;s2&#34;&gt;&amp;quot;&lt;/span&gt;&lt;span class=&#34;si&#34;&gt;${&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;x&lt;/span&gt;&lt;span class=&#34;si&#34;&gt;}&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;&lt;/span&gt;.asc&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;done&lt;/span&gt;
+
+&lt;span class=&#34;c1&#34;&gt;# EOF&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;The script can be found at GitHub too: &lt;a href=&#34;https://github.com/kinow/dork-scripts/tree/3c519a74f28c08310ce2e65f8e860d61fd0c5c07/gpg/asf-sigs&#34;&gt;https://github.com/kinow/dork-scripts/tree/3c519a74f28c08310ce2e65f8e860d61fd0c5c07/gpg/asf-sigs&lt;/a&gt;&lt;/p&gt;
+            
+            </description>
+        </item>
         
         
         
@@ -672,58 +781,6 @@ Wendy mentioned that you would be a great person to speak to since you are close
 
 &lt;p&gt;In summary, it discards blocks that do not contain enough verbs to be considered a message block, being treated as signature blocks instead.&lt;/p&gt;
 &lt;p&gt;Never thought about using an approach like this. It may definitely be helpful when doing data analysis, information retrieval, or scraping data from the web. Not necessarily with e-mails and signatures, but you got the gist of it.&lt;/p&gt;
-&lt;p&gt;&amp;hearts; Open Source&lt;/p&gt;
-            
-            </description>
-        </item>
-        
-        
-        
-        <item>
-            <title>Backward compatibility and switch statement with constant expressions</title>
-            <link>/2017/06/10/backward-compatibility-and-switch-statements-with-constant-expressions</link>
-            
-            <author>kinow</author>
-            <dc:creator>kinow</dc:creator>
-            
-            
-            
-            <category>java</category>
-            
-            <category>programming</category>
-            
-            <category>apache software foundation</category>
-            
-            <category>opensource</category>
-            
-            <pubDate>2017-06-10T17:35:39+12:00</pubDate>
-            <guid>/2017/06/10/backward-compatibility-and-switch-statements-with-constant-expressions</guid>
-            <description>
-            
-            &lt;p&gt;Maintaining Open Source software can be challenging. Making sure you keep backward compatibility (not only binary) can be even more challenging. &lt;a href=&#34;https://commons.apache.org/proper/commons-lang/&#34;&gt;Apache Commons Lang&lt;/a&gt; 3.6 release is happening right now thanks to &lt;a href=&#34;http://www.benediktritter.de/&#34;&gt;Benedikt Ritter&lt;/a&gt;, and it is on its fourth Release Candidate (i.e. RC4).&lt;/p&gt;
-&lt;p&gt;A previous RC2 was cancelled due to &lt;a href=&#34;http://commons.markmail.org/thread/57sqt2hkusegda73#query:+page:1+mid:dnwo5tjqo2e5bwuo+state:results&#34;&gt;IBM JDK 8 compatibility&lt;/a&gt;, more specifically the lazy initialization of ArrayList&amp;#8217;s seems to be different in Oracle JDK and IBM JDK.&lt;/p&gt;
-&lt;p&gt;The RC3 was cancelled due to a &lt;a href=&#34;https://github.com/apache/commons-lang/commit/18e692478dcf91fdceb9b9fdca7c61a1111d63aa&#34;&gt;change&lt;/a&gt; that could affect users using a switch statement.&lt;/p&gt;
-&lt;p&gt;The change was in the &lt;em&gt;CharEncoding&lt;/em&gt; class. The issue was that this class has some constants, that stopped being &lt;a href=&#34;http://docs.oracle.com/javase/specs/jls/se8/html/jls-15.html#jls-15.28&#34;&gt;constant expressions&lt;/a&gt;.&lt;/p&gt;
-&lt;blockquote&gt;A constant expression is an expression denoting a value of primitive type or a String that does not complete abruptly and is composed using only the following (&amp;#8230;)&lt;/blockquote&gt;
-
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class=&#34;kd&#34;&gt;public&lt;/span&gt; &lt;span class=&#34;kd&#34;&gt;class&lt;/span&gt; &lt;span class=&#34;nc&#34;&gt;CharEncoding&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;
-    &lt;span class=&#34;c1&#34;&gt;// ...&lt;/span&gt;
-    &lt;span class=&#34;kd&#34;&gt;public&lt;/span&gt; &lt;span class=&#34;kd&#34;&gt;static&lt;/span&gt; &lt;span class=&#34;kd&#34;&gt;final&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;String&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;ISO_8859_1&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;&amp;quot;ISO-8859-1&amp;quot;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;;&lt;/span&gt;
-    &lt;span class=&#34;c1&#34;&gt;// ...&lt;/span&gt;
-&lt;span class=&#34;o&#34;&gt;}&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;The code above contains a constant (&lt;em&gt;static final&lt;/em&gt;) variable, that is a constant expression. So users can safely use it in switch statements, and the Java compiler won&amp;#8217;t complain about it.&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class=&#34;kd&#34;&gt;public&lt;/span&gt; &lt;span class=&#34;kd&#34;&gt;class&lt;/span&gt; &lt;span class=&#34;nc&#34;&gt;CharEncoding&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;
-    &lt;span class=&#34;c1&#34;&gt;// ...&lt;/span&gt;
-    &lt;span class=&#34;kd&#34;&gt;public&lt;/span&gt; &lt;span class=&#34;kd&#34;&gt;static&lt;/span&gt; &lt;span class=&#34;kd&#34;&gt;final&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;String&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;ISO_8859_1&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;StandardCharsets&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;ISO_8859_1&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;name&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;();&lt;/span&gt;
-    &lt;span class=&#34;c1&#34;&gt;// ...&lt;/span&gt;
-&lt;span class=&#34;o&#34;&gt;}&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;The code above is from the change that caused the regression. Any user that was using the ISO_8859_1 constant variable in a switch statement would get a compilation error (e.g. &lt;em&gt;case expressions must be constant expressions&lt;/em&gt;) when updating to Apache Commons Lang 3.6. That is because the constant variable is not a constant expression.&lt;/p&gt;
-&lt;p&gt;I think I learned that some time ago, but if you asked me what was wrong with the change, and if it would break backward compatibility, I would probably fail to spot the issue. There are tools for that now (e.g. Clirr, japicmp) though they may miss some cases too.&lt;/p&gt;
-&lt;p&gt;Luckily in this case a user subscribed to the Apache Commons development mailing list spotted the issue and quickly reported it. It gets easier maintaining an Open Source project with the constructive feedback of users, like this one.&lt;/p&gt;
 &lt;p&gt;&amp;hearts; Open Source&lt;/p&gt;
             
             </description>
