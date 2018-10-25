@@ -10,13 +10,102 @@
         
         <description>Latest news from Bruno P. Kinoshita</description>
         
-        <lastBuildDate>2018-10-23T21:19:12+13:00</lastBuildDate>
-        <pubDate>2018-10-23T21:19:12+13:00</pubDate>
+        <lastBuildDate>2018-10-25T20:25:14+13:00</lastBuildDate>
+        <pubDate>2018-10-25T20:25:14+13:00</pubDate>
         <generator>PieCrust 3.2.1</generator>
         
         
         
 
+        
+        
+        
+        <item>
+            <title>Using formatter exclusions with Eclipse</title>
+            <link>/2017/11/06/using-formatter-exclusions-with-eclipse</link>
+            
+            <author>kinow</author>
+            <dc:creator>kinow</dc:creator>
+            
+            
+            
+            <category>programming</category>
+            
+            <category>java</category>
+            
+            <category>opensource</category>
+            
+            <category>eclipse</category>
+            
+            <pubDate>2017-11-06T21:56:56+13:00</pubDate>
+            <guid>/2017/11/06/using-formatter-exclusions-with-eclipse</guid>
+            <description>
+            
+            &lt;p&gt;Sometimes when you are formatting your code in Eclipse, you may want to prevent
+some parts of the code from being formatted. Especially when using Java 8 lambdas
+and optionals.&lt;/p&gt;
+&lt;p&gt;Here&amp;#8217;s some code before being formatted by Eclipse&amp;#8217;s default formatter rules.&lt;/p&gt;
+&lt;p&gt;&lt;small&gt;Code adapted from: blog post &lt;a href=&#34;http://javadeau.lawesson.se/2016/10/java-8-streams-in-hibernate-and-beyond.html&#34;&gt;&lt;i&gt;Java d&amp;#8217;eau &amp;dash; Java 8: Streams in Hibernate and Beyond&lt;/i&gt;&lt;/a&gt;&lt;/small&gt;&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;session&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;createQuery&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;SELECT h FROM Hare h&amp;quot;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Hare&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;class&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
+    &lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;stream&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;()&lt;/span&gt;
+    &lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;filter&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;h&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;h&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;getId&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;()&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;==&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
+    &lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;map&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;Hare&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;::&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;getName&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
+    &lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;forEach&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;System&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;out&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;::&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;println&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;);&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Then after formatting.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;session&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;createQuery&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;SELECT h FROM Hare h&amp;quot;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Hare&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;class&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;).&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;stream&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;().&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;filter&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;h&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;h&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;getId&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;()&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;==&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;).&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;map&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;Hare&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;::&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;getName&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
+                &lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;forEach&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;System&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;out&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;::&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;println&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;);&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Which doesn&amp;#8217;t look very appealing, ay? You can change this behaviour at least in two ways.
+The first by telling the formatter to ignore this block, through a special formatter tag in your code.&lt;/p&gt;
+&lt;p&gt;First you need to enable this feature in Eclipse, as it is disabled by default. This setting is found in
+the preferences &lt;em&gt;Java&lt;/em&gt; &amp;rarr; &lt;em&gt;Code Style&lt;/em&gt; &amp;rarr; &lt;em&gt;Formatter&lt;/em&gt; &amp;rarr; &lt;em&gt;Edit&lt;/em&gt; &amp;rarr; &lt;em&gt;Off/On Tags&lt;/em&gt;.&lt;/p&gt;
+&lt;p style=&#39;text-align: center;&#39;&gt;
+&lt;img style=&#34;display: inline&#34; class=&#34;ui image&#34; src=&#34;/2017/11/06/using-formatter-exclusions-with-eclipse/formatter-tags.png&#34; alt=&#34;A screen shot of Eclipse formatter settings&#34; title=&#34;Enabling formatter tags in Eclipse&#34; /&gt;
+&lt;br/&gt;
+&lt;small&gt;Enabling formatter tags in Eclipse&lt;/small&gt;
+&lt;/p&gt;
+
+&lt;p&gt;Then formatting the following code won&amp;#8217;t change a thing in the block surrounded by the formatter tags.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class=&#34;cm&#34;&gt;/* @Formatter:off */&lt;/span&gt;
+&lt;span class=&#34;n&#34;&gt;session&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;createQuery&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;SELECT h FROM Hare h&amp;quot;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Hare&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;class&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
+    &lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;stream&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;()&lt;/span&gt;
+    &lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;filter&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;h&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;h&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;getId&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;()&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;==&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
+    &lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;map&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;Hare&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;::&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;getName&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
+    &lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;forEach&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;System&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;out&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;::&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;println&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;);&lt;/span&gt;
+&lt;span class=&#34;cm&#34;&gt;/* @Formatter:on */&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;But having to type these tags can become annoying, and cause more commits and pull requests to be
+unnecessarily created. So an alternative approach can be to change the formatter
+&lt;a href=&#34;https://stackoverflow.com/a/34492247/1762101&#34;&gt;behaviour globally&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;This can be done in Eclipse in another option under the formatter options, &lt;em&gt;Java&lt;/em&gt; &amp;rarr; &lt;em&gt;Code Style&lt;/em&gt;
+&amp;rarr; &lt;em&gt;Formatter&lt;/em&gt; &amp;rarr; &lt;em&gt;Edit&lt;/em&gt; &amp;rarr; &lt;em&gt;Line Wrapping&lt;/em&gt; &amp;rarr; &lt;em&gt;Function Calls&lt;/em&gt; &amp;rarr;
+&lt;em&gt;Qualified invocations&lt;/em&gt;.&lt;/p&gt;
+&lt;p&gt;You will have to choose &lt;em&gt;&amp;ldquo;Wrap all elements, except first element if not necessary&amp;rdquo;&lt;/em&gt;
+under &lt;em&gt;Line wrapping policy&lt;/em&gt;. And also check &lt;em&gt;&amp;ldquo;Force split, even if line shorter than
+maximum line width&amp;rdquo;&lt;/em&gt;.&lt;/p&gt;
+&lt;p style=&#39;text-align: center;&#39;&gt;
+&lt;img style=&#34;display: inline&#34; class=&#34;ui image&#34; src=&#34;/2017/11/06/using-formatter-exclusions-with-eclipse/global-setting.png&#34; alt=&#34;A screen shot of Eclipse formatter settings&#34; title=&#34;Enabling custom formatter behaviour globally&#34; /&gt;
+&lt;br/&gt;
+&lt;small&gt;Enabling custom formatter behaviour globally&lt;/small&gt;
+&lt;/p&gt;
+
+&lt;p&gt;Once it is done, your code will look like the following no matter what.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;session&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;createQuery&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;SELECT h FROM Hare h&amp;quot;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Hare&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;class&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
+    &lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;stream&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;()&lt;/span&gt;
+    &lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;filter&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;h&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;h&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;getId&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;()&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;==&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
+    &lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;map&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;Hare&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;::&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;getName&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
+    &lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;forEach&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;System&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;out&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;::&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;println&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;);&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Happy coding!&lt;/p&gt;
+&lt;p&gt;&amp;hearts; Open Source&lt;/p&gt;
+            
+            </description>
+        </item>
         
         
         
@@ -703,85 +792,6 @@ when creating the Markdown instance.&lt;/p&gt;
 &lt;/div&gt;
 
 &lt;p&gt;Simplified and changed her angle. On &lt;a href=&#34;http://kinow.deviantart.com/art/Archer1-688782846&#34;&gt;DeviantArt&lt;/a&gt; too.&lt;/p&gt;
-            
-            </description>
-        </item>
-        
-        
-        
-        <item>
-            <title>How to remove the signature from e-mails with NLP?</title>
-            <link>/2017/06/14/how-to-remove-the-signature-from-emails-with-nlp</link>
-            
-            <author>kinow</author>
-            <dc:creator>kinow</dc:creator>
-            
-            
-            
-            <category>python</category>
-            
-            <category>programming</category>
-            
-            <category>natural language processing</category>
-            
-            <category>opensource</category>
-            
-            <pubDate>2017-06-14T13:59:33+12:00</pubDate>
-            <guid>/2017/06/14/how-to-remove-the-signature-from-emails-with-nlp</guid>
-            <description>
-            
-            &lt;p&gt;Some time ago I stumbled across &lt;a href=&#34;https://github.com/mynameisvinn/EmailParser&#34;&gt;EmailParser&lt;/a&gt;, a Python utility to remove e-mail signatures. Here&amp;#8217;s a sample input e-mail from the project documentation.&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;Wendy – thanks for the intro! Moving you to bcc.
-
-Hi Vincent – nice to meet you over email. Apologize for the late reply, I was on PTO for a couple weeks and this is my first week back in office. As Wendy mentioned, I am leading an AR/VR taskforce at Foobar Retail Solutions. The goal of the taskforce is to better understand how AR/VR can apply to retail/commerce and if/what is the role of a shopping center in AR/VR applications for retail.
-
-Wendy mentioned that you would be a great person to speak to since you are close to what is going on in this space. Would love to set up some time to chat via phone next week. What does your availability look like on Monday or Wednesday?
-
-Best,
-Joe Smith
-
-Joe Smith | Strategy &amp;amp; Business Development
-111 Market St. Suite 111| San Francisco, CA 94103
-M: 111.111.1111| joe@foobar.com
-&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;And here&amp;#8217;s what it looks like afterwards.&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;Wendy – thanks for the intro! Moving you to bcc.
-
-Hi Vincent – nice to meet you over email. Apologize for the late reply, I was on PTO for a couple weeks and this is my first week back in office. As Wendy mentioned, I am leading an AR/VR taskforce at Foobar Retail Solutions. The goal of the taskforce is to better understand how AR/VR can apply to retail/commerce and if/what is the role of a shopping center in AR/VR applications for retail.
-
-Wendy mentioned that you would be a great person to speak to since you are close to what is going on in this space. Would love to set up some time to chat via phone next week. What does your availability look like on Monday or Wednesday?
-&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;As you can see, it removed all the lines after the main part of the message (i.e. after the three paragraphs). Here&amp;#8217;s what the Python code looks like.&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class=&#34;kn&#34;&gt;from&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;Parser&lt;/span&gt; &lt;span class=&#34;kn&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;read_email&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;strip&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;prob_block&lt;/span&gt;
-&lt;span class=&#34;o&#34;&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class=&#34;kn&#34;&gt;from&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;spacy.en&lt;/span&gt; &lt;span class=&#34;kn&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;English&lt;/span&gt;
-
-&lt;span class=&#34;o&#34;&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;pos&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;English&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt;  &lt;span class=&#34;c1&#34;&gt;# part-of-speech tagger&lt;/span&gt;
-&lt;span class=&#34;o&#34;&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;msg_raw&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;read_email&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;emails/test1.txt&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
-&lt;span class=&#34;o&#34;&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;msg_stripped&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;strip&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;msg_raw&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;  &lt;span class=&#34;c1&#34;&gt;# preprocessing text before POS tagging&lt;/span&gt;
-
-&lt;span class=&#34;c1&#34;&gt;# iterate through lines, write to file if not signature block&lt;/span&gt;
-&lt;span class=&#34;o&#34;&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;generate_text&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;msg_stripped&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;9&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;pos_tagger&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39;emails/test1_clean.txt&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;What got me interested about this utility was the use of NLP. I couldn&amp;#8217;t imagine how someone could use NLP for that. And I liked the simplicity of the approach, which is not perfect, but can be useful someday.&lt;/p&gt;
-&lt;p&gt;After the imports in the code, it creates a &lt;a href=&#34;https://en.wikipedia.org/wiki/Part_of_speech&#34;&gt;Part of Speech&lt;/a&gt; tagger using &lt;a href=&#34;https://spacy.io/&#34;&gt;spaCy&lt;/a&gt; NLP library, reads the e-mail from a file, and sripts and creates an array with each paragraph of the message.&lt;/p&gt;
-&lt;p&gt;The magic happens in the &lt;code&gt;generate_text&lt;/code&gt; function, which receives the &lt;strong&gt;array of paragraphs&lt;/strong&gt;, a &lt;strong&gt;threshold&lt;/strong&gt;, the &lt;strong&gt;POS tagger&lt;/strong&gt;, and the &lt;strong&gt;output destination&lt;/strong&gt;. Here&amp;#8217;s what the function does.&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;for each message
-    if probability ( signature block | message ) &amp;lt; threshold
-        write to output file
-&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;And the formula for calculating the probability is quite simple too.&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;1. For a given paragraph (message block), find all the sentences in it.
-2. Then for each word (token) in the sentence, count the number of times a non-verb appears.
-3. Return the proportion of non-verbs per sentence, i.e. number of non-verbs / number of sentences.
-&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;In summary, it discards blocks that do not contain enough verbs to be considered a message block, being treated as signature blocks instead.&lt;/p&gt;
-&lt;p&gt;Never thought about using an approach like this. It may definitely be helpful when doing data analysis, information retrieval, or scraping data from the web. Not necessarily with e-mails and signatures, but you got the gist of it.&lt;/p&gt;
-&lt;p&gt;&amp;hearts; Open Source&lt;/p&gt;
             
             </description>
         </item>

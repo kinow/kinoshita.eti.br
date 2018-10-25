@@ -10,13 +10,56 @@
         
         <description>Latest news from Bruno P. Kinoshita</description>
         
-        <lastBuildDate>2018-10-23T21:19:12+13:00</lastBuildDate>
-        <pubDate>2018-10-23T21:19:12+13:00</pubDate>
+        <lastBuildDate>2018-10-25T20:25:14+13:00</lastBuildDate>
+        <pubDate>2018-10-25T20:25:14+13:00</pubDate>
         <generator>PieCrust 3.2.1</generator>
         
         
         
 
+        
+        
+        
+        <item>
+            <title>Groovy Hooks in Jenkins for increasing logging level</title>
+            <link>/2015/04/12/groovy-hooks-in-jenkins-for-increasing-logging-level</link>
+            
+            <author>kinow</author>
+            <dc:creator>kinow</dc:creator>
+            
+            <category>blog</category>
+            
+            <category>jenkins</category>
+            
+            <category>groovy</category>
+            
+            <pubDate>2015-04-12T11:30:03+12:00</pubDate>
+            <guid>/2015/04/12/groovy-hooks-in-jenkins-for-increasing-logging-level</guid>
+            <description>
+            
+            &lt;p&gt;Yesterday, while debugging a problem we had in the &lt;a href=&#34;http://biouno.org&#34;&gt;BioUno&lt;/a&gt; update center, 
+I realized that after &lt;a href=&#34;https://wiki.jenkins-ci.org/display/JENKINS/Logging&#34;&gt;increasing the logging level in the WEB interface&lt;/a&gt;, 
+the messages that I needed weren&amp;#8217;t being displayed in the logs.&lt;/p&gt;
+&lt;p&gt;It happened because some of the logging happened during Jenkins initialization, and before I could adjust the log level.&lt;/p&gt;
+&lt;p&gt;The solution was to use a &lt;a href=&#34;https://wiki.jenkins-ci.org/display/JENKINS/Groovy+Hook+Script&#34;&gt;Groovy Hook Script&lt;/a&gt;. 
+If you are familiar with Linux init scripts, the idea is quite similar. &lt;/p&gt;
+&lt;p&gt;A Groovy script in the &lt;code&gt;$JENKINS_ROOT_DIR/init.groovy.d/&lt;/code&gt; directory is executed during
+Jenkins initialization. This way you can increase the global logger level with a script
+as the following below.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class=&#34;kn&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;java.util.logging.ConsoleHandler&lt;/span&gt;
+&lt;span class=&#34;kn&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;java.util.logging.LogManager&lt;/span&gt;
+&lt;span class=&#34;kn&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;java.util.logging.Logger&lt;/span&gt;
+&lt;span class=&#34;kn&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;java.util.logging.Level&lt;/span&gt;
+
+&lt;span class=&#34;n&#34;&gt;def&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;logger&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Logger&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;getLogger&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;&amp;quot;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
+&lt;span class=&#34;n&#34;&gt;logger&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;setLevel&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;Level&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;FINEST&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
+&lt;span class=&#34;n&#34;&gt;logger&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;addHandler&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;new&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;ConsoleHandler&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;())&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Happy logging!&lt;/p&gt;
+            
+            </description>
+        </item>
         
         
         
@@ -646,38 +689,6 @@ command.&lt;/p&gt;
 &lt;p&gt;&lt;small&gt;&lt;sup&gt;1&lt;/sup&gt; You may have to enable *DEBUG* in your Django settings for seeing the exception in your browser&lt;/small&gt;&lt;/p&gt;
 
 &lt;p&gt;&lt;small&gt;&lt;sup&gt;2&lt;/sup&gt; Zabbix needed some minor tweaks in order to use [MariaDB](https://mariadb.org/), but probably you can give it a try too&lt;/small&gt;&lt;/p&gt;
-            
-            </description>
-        </item>
-        
-        
-        
-        <item>
-            <title>Graphite: Broken images</title>
-            <link>/2013/04/17/graphite-broken-images</link>
-            
-            <author>kinow</author>
-            <dc:creator>kinow</dc:creator>
-            
-            <category>blog</category>
-            
-            <category>monitoring</category>
-            
-            <category>python</category>
-            
-            <pubDate>2013-04-17T11:36:38+12:00</pubDate>
-            <guid>/2013/04/17/graphite-broken-images</guid>
-            <description>
-            
-            &lt;p&gt;This morning I was setting up a &lt;a href=&#34;http://graphite.wikidot.com/&#34; title=&#34;Graphite&#34;&gt;Graphite &lt;/a&gt;server to collect metrics with &lt;a href=&#34;https://github.com/etsy/statsd/&#34; title=&#34;statsd&#34;&gt;statsd&lt;/a&gt;, &lt;a href=&#34;http://logstash.net/&#34; title=&#34;LogStash&#34;&gt;LogStash &lt;/a&gt;and &lt;a href=&#34;https://github.com/jmxtrans/jmxtrans&#34; title=&#34;jmxtrans&#34;&gt;jmxtrans&lt;/a&gt;. After following the instructions from @jgeurst, I&amp;#8217;ve successfully installed Graphite.&lt;/p&gt;
-
-&lt;p&gt;I had previously installed another test box, so I decided to take a deeper look at the settings, write a &lt;a href=&#34;https://puppetlabs.com/&#34; title=&#34;Puppet&#34;&gt;puppet&lt;/a&gt; manifest and prepare this new box to become a production server. However, after browsing the webapp, all graphs were broken.&lt;/p&gt;
-
-&lt;p&gt;After googling a while, reading forums and bugs, I decided to open the &lt;em&gt;$GRAPHITE_HOME/webapp/graphite/render/views.py&lt;/em&gt;, adding &lt;em&gt;log.rendering(&amp;#8230;)&lt;/em&gt; statements (not the most elegant solution, I know).&lt;/p&gt;
-
-&lt;p&gt;By following the program workflow I found out it was entering a block after checking if it should remotely render the image. This feature is turned on/off by &lt;strong&gt;REMOTE_RENDERING&lt;/strong&gt; = True/False, in local_settings.py.&lt;/p&gt;
-
-&lt;p&gt;After setting this to &lt;em&gt;False&lt;/em&gt; the problem was solved.&lt;/p&gt;
             
             </description>
         </item>
