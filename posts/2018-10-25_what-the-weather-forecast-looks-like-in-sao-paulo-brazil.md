@@ -138,6 +138,8 @@ look for the forecast summary.
 
 ## Climatempo
 
+[Source](https://www.youtube.com/watch?v=TsdQtPYF8Qo)
+
 Later with Internet, I started using Climatempo. That was before smartphones if I recall.
 Elevators in most buildings have small LCD TV's with ads, and in the subway and buses too.
 They normally display the weather by Climatempo.
