@@ -1,0 +1,481 @@
+  
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head profile="http://gmpg.org/xfn/11">
+    <title>Bruno P. Kinoshita &mdash; Running Cylc tasks on PBS Torque with Docker</title> 
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="description" content="Bruno de Paula Kinoshita personal web site" />
+    <meta name="keywords"
+        content="kinoshita, bruno de paula kinoshita, geek, geek stuff, java, python, c, c++, msn now playing, neural network, mackenzie, sao paulo, brasil, brazil, nerd, nerd stuff, cool, jenkins, illustration, quadrinhos, machine learning, linguistic, apache, open source, codigo livre, codigo aberto" />
+    <meta name="author" content="" />
+    <meta name="generator" content="PieCrust 3.2.1" />
+    <meta name="template-engine" content="Twig" />
+    <meta name="robots" content="all=index,follow" />
+    <meta name="revisit-after" content="15 days" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta name="distribution" content="Global" />
+    <meta name="url" content="/" />
+    <meta name="copyright" content="Bruno de Paula Kinoshita" />
+    <meta name="Googlebot" content="all" />
+    <meta name="rating" content="general" />
+    <meta http-equiv="expires" content="0" />
+    <meta name="city" content="Sao Paulo" />
+    <meta name="state" content="Brasil, Sao Paulo" />
+    <meta http-equiv="content-language" content="en" />
+    <meta http-equiv="imagetoolbar" content="no" />
+    <meta id="page_favicon" href="/favicon.ico" rel="icon" type="image/x-icon" />
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <!--[if lt IE 9]>
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link rel="alternate" type="application/rss+xml" title="Bruno P. Kinoshita &raquo; Feed" href="/feed.xml" />
+    <link rel="stylesheet" href="/css/semantic/dist/semantic.min.css" type="text/css" media="screen, projection" />
+    <link rel="stylesheet" href="/css/style.css" type="text/css" media="screen, projection" />
+    <!--[if lt IE 8]>
+    <link rel="stylesheet" href="/css/blueprint/ie.css" type="text/css" media="screen, projection" />
+    <![endif]-->
+    <link rel="stylesheet" href="/css/prettyPhoto.css" type="text/css" media="all" />
+</head>
+<body id="body">
+    <div class="ui vertical sidebar menu" id="toc">
+        <nav class="menu" role="navigation">
+    <div class="item">
+        <a href="/" class="main-link">Kinoshita</a>
+    </div>
+    <div class="item">
+        <a href="/art">Art</a>
+    </div>
+    <div class="item">
+        <a href="/articles/">Articles</a>
+    </div>
+    <div class="item">
+        <a href="/books/">Books</a>
+    </div>
+    <div class="item">
+      <a href="/presentations/">Presentations</a>
+    </div>
+    <div class="item">
+        <a href="/software/">Software</a>
+    </div>
+    <div class="item">
+        <a href="/contact/">Contact</a>
+    </div>
+    <div class="item">
+        <a href="/about/">About &#038; CV</a>
+    </div>
+</nav>
+<img src="/img/bruno.jpg" title="Hmmmm" alt="My picture" width="134px" height="215px" />
+    </div>
+    <div class="ui black big launch right attached fixed button">
+        <i class="content icon"></i>
+        <span class="text">Menu</span>
+    </div>
+    <div class="ui fixed inverted main menu">
+        <div class="ui container">
+            <a class="launch icon item">
+                <i class="content icon"></i>
+            </a>
+            <div class="item">
+                Running Cylc tasks on PBS Torque with Docker
+            </div>
+        </div>
+    </div>
+    <div class="pusher">
+        <div class="full height">
+            <div class="toc">
+                <div class="ui vertical sticky fixed top menu">
+                    <nav class="menu" role="navigation">
+    <div class="item">
+        <a href="/" class="main-link">Kinoshita</a>
+    </div>
+    <div class="item">
+        <a href="/art">Art</a>
+    </div>
+    <div class="item">
+        <a href="/articles/">Articles</a>
+    </div>
+    <div class="item">
+        <a href="/books/">Books</a>
+    </div>
+    <div class="item">
+      <a href="/presentations/">Presentations</a>
+    </div>
+    <div class="item">
+        <a href="/software/">Software</a>
+    </div>
+    <div class="item">
+        <a href="/contact/">Contact</a>
+    </div>
+    <div class="item">
+        <a href="/about/">About &#038; CV</a>
+    </div>
+</nav>
+<img src="/img/bruno.jpg" title="Hmmmm" alt="My picture" width="134px" height="215px" />
+                </div>
+            </div>
+            <div class="article">
+                <div class="main container" role="main">
+
+                
+<div class="ui raised padded container segment">
+  <h1 class='post-topic'>Running Cylc tasks on PBS Torque with Docker</h1>
+  <small>kinow</small> @
+	<small>2018-12-22&nbsp;11:32:28 (<span class='stardate' data-input-date='2018-12-22'></span>)</small>
+  <div class="entry">
+    
+
+
+
+
+
+<a href="https://twitter.com/share" class="twitter-share-button" data-url="https://kinoshita.eti.br/2018/12/22/running-cylc-tasks-on-pbs-torque-with-docker" data-text="Running Cylc tasks on PBS Torque with Docker" data-via="kinow" data-hashtags="opensource">Tweet</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p='https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+
+	  <p>A few days ago I saw <a href="https://groups.google.com/forum/#!topic/cylc/dP2I1Gxqi20">a post</a> at the
+Cylc Google Group, about file permissions for files generated by Cylc. The post was related to
+content created by Cylc, but in an environment with PBS.</p>
+<p>For context, Cylc is an Open Source meta-scheduler, written in Python, that allows you to
+define cycle points with dependencies. These cycle points can be simple incremental integer
+numbers, or ISO8601 periods or points (e.g. run every 5 minutes, from 10 days ago until the
+next year). Cylc takes care to create an execution schedule for you, and delegate that to a
+system that runs your workflow. I work full time on this amazing Open Source tool!</p>
+<p>Such system could be the local computer in background, batch systems such as <code>at</code>, or PBS.
+PBS was created for NASA, to manage executing jobs taking into consideration cluster resources,
+and also using queues, priorities, and other features useful for HPC programming. Later PBS
+was acquired by Altair, an Open Source version OpenPBS was created, and later abandoned. And
+there is another fork called PBS Torque. I first encountered PBS at the S&atilde;o Paulo
+University, in Brazil, where they had a <a href="http://www.usp.br/hpc/puma.php">PBS Torque cluster</a>.</p>
+<h2>Running PBS Torque with Docker</h2>
+<p>Even though I have access to an environment with Cylc and with PBS, I decided to give it a try
+and see how hard it would be to reproduce it with Docker. One thing that I like about this
+approach is the possibility to share the work with others online. I believe it improves
+communication, agility, and can be useful for posterity.</p>
+<!-- more -->
+
+<p>I had some experience with PBS Torque on Docker, because of some
+<a href="https://github.com/biouno/pbs-plugin/wiki">old work</a> for another Open Source project called
+BioUno. So I started testing the image I used before,
+<a href="https://hub.docker.com/r/agaveapi/torque/">agaveapi/torque</a>.</p>
+<p>You can get PBS Torque up and running with one line if you have Docker and a good Internet
+connection - Docker is in the same category as NPM, Maven, etc (though I find the way Maven
+manages common dependencies <a href="https://dev.to/leoat12/the-nodemodules-problem-29dc">saner</a>).</p>
+<div class="highlight"><pre><span></span>$ docker run -d -h docker.example.com -p <span class="m">10022</span>:22 --privileged --name torque agaveapi/torque
+f18f2cc2a2f90f56d1b74370060a272d5faf5b39dfc295a2025c78e469950194
+</pre></div>
+
+<p>And from here you can submit a job after having access to the <code>testuser</code> user in the container.</p>
+<div class="highlight"><pre><span></span>$ docker <span class="nb">exec</span> -t -i torque /bin/bash
+bash-4.1# su - testuser
+<span class="o">[</span>testuser@docker ~<span class="o">]</span>$ qsub /home/testuser/torque.submit
+<span class="m">0</span>.docker.example.com
+</pre></div>
+
+<h2>Running Cylc with Docker</h2>
+<p>You can also start an Ubuntu container with Cylc in one line.</p>
+<div class="highlight"><pre><span></span>$ docker run -t -i -v ~/Development/python/workspace/cylc-docker/standalone/cylc:/opt/cylc --entrypoint /bin/bash kinow/cylc-standalone:0.1 
+root@58118e44f171:/opt/cylc# cylc check-software
+Checking your software...
+
+Individual results:
+<span class="o">==========================================================================================</span>
+Package <span class="o">(</span>version requirements<span class="o">)</span>                                     Outcome <span class="o">(</span>version found<span class="o">)</span>
+<span class="o">==========================================================================================</span>
+                                   *REQUIRED SOFTWARE*                                   
+Python <span class="o">(</span><span class="m">2</span>.6+, &lt;<span class="m">3</span><span class="o">)</span>................................FOUND <span class="p">&amp;</span> min. version MET <span class="o">(</span><span class="m">2</span>.7.12.final.0<span class="o">)</span>
+
+             *OPTIONAL SOFTWARE <span class="k">for</span> the GUI <span class="p">&amp;</span> dependency graph visualisation*             
+/usr/lib/python2.7/dist-packages/gtk-2.0/gtk/__init__.py:57: GtkWarning: could not open display
+  warnings.warn<span class="o">(</span>str<span class="o">(</span>e<span class="o">)</span>, _gtk.Warning<span class="o">)</span>
+Python:pygtk <span class="o">(</span><span class="m">2</span>.0+<span class="o">)</span>......................................FOUND <span class="p">&amp;</span> min. version MET <span class="o">(</span><span class="m">2</span>.24.0<span class="o">)</span>
+graphviz <span class="o">(</span>any<span class="o">)</span>..............................................................FOUND <span class="o">(</span><span class="m">2</span>.38.0<span class="o">)</span>
+Python:pygraphviz <span class="o">(</span>any<span class="o">)</span>......................................................FOUND <span class="o">(</span><span class="m">1</span>.3.1<span class="o">)</span>
+
+                       *OPTIONAL SOFTWARE <span class="k">for</span> the HTML User Guide*                       
+ImageMagick <span class="o">(</span>any<span class="o">)</span>............................................................NOT FOUND <span class="o">(</span>-<span class="o">)</span>
+
+                  *OPTIONAL SOFTWARE <span class="k">for</span> the HTTPS communications layer*                  
+Python:urllib3 <span class="o">(</span>any<span class="o">)</span>.........................................................NOT FOUND <span class="o">(</span>-<span class="o">)</span>
+Python:OpenSSL <span class="o">(</span>any<span class="o">)</span>........................................................FOUND <span class="o">(</span><span class="m">18</span>.0.0<span class="o">)</span>
+Python:requests <span class="o">(</span><span class="m">2</span>.4.2+<span class="o">)</span>.....................................................NOT FOUND <span class="o">(</span>-<span class="o">)</span>
+
+                       *OPTIONAL SOFTWARE <span class="k">for</span> the LaTeX User Guide*                       
+TeX:framed <span class="o">(</span>any<span class="o">)</span>.............................................................NOT FOUND <span class="o">(</span>-<span class="o">)</span>
+TeX <span class="o">(</span><span class="m">3</span>.0+<span class="o">)</span>...........................................FOUND <span class="p">&amp;</span> min. version MET <span class="o">(</span><span class="m">3</span>.14159265<span class="o">)</span>
+TeX:preprint <span class="o">(</span>any<span class="o">)</span>...........................................................NOT FOUND <span class="o">(</span>-<span class="o">)</span>
+TeX:tex4ht <span class="o">(</span>any<span class="o">)</span>.............................................................NOT FOUND <span class="o">(</span>-<span class="o">)</span>
+TeX:tocloft <span class="o">(</span>any<span class="o">)</span>............................................................NOT FOUND <span class="o">(</span>-<span class="o">)</span>
+TeX:texlive <span class="o">(</span>any<span class="o">)</span>............................................................NOT FOUND <span class="o">(</span>-<span class="o">)</span>
+<span class="o">==========================================================================================</span>
+
+Summary:
+                               ****************************                               
+                                  Core requirements: ok                                  
+                                Full-functionality: not ok                                
+                               ****************************
+</pre></div>
+
+<h2>Running PBS Torque and Cylc together with Docker</h2>
+<p>The repository <a href="https://github.com/kinow/cylc-docker">https://github.com/kinow/cylc-docker</a>
+contains some Dockerfile&#8217;s for running Cylc, including a new one where I combined
+the PBS Torque image, with the Cylc standalone image, with SSH between both. There is a
+<code>docker-compose.yml</code> configuration to initialize a mini cluster of two computers, with
+SSH and trusted configured, and shared volume/file system.</p>
+<div class="highlight"><pre><span></span>$ <span class="nb">cd</span> cylc-docker/pbs
+$ ssh-keygen -t rsa -f ./id_rsa -N <span class="s2">&quot;&quot;</span> -q
+$ <span class="nb">export</span> <span class="nv">CYLC_SSH_PUBKEY</span><span class="o">=</span><span class="k">$(</span>cat id_rsa.pub<span class="k">)</span>
+$ <span class="nb">echo</span> <span class="s2">&quot;CYLC_SSH_PUBKEY=</span><span class="si">${</span><span class="nv">CYLC_SSH_PUBKEY</span><span class="si">}</span><span class="s2">&quot;</span> &gt;&gt; .env
+$ docker-compose up
+Creating pbs  ... <span class="k">done</span>
+Creating cylc ... <span class="k">done</span>
+Attaching to cylc, pbs
+cylc    <span class="p">|</span> /usr/lib/python2.7/dist-packages/supervisor/options.py:297: UserWarning: Supervisord is running as root and it is searching <span class="k">for</span> its configuration file in default locations <span class="o">(</span>including its current working directory<span class="o">)</span><span class="p">;</span> you probably want to specify a <span class="s2">&quot;-c&quot;</span> argument specifying an absolute path to a configuration file <span class="k">for</span> improved security.
+cylc    <span class="p">|</span>   <span class="s1">&#39;Supervisord is running as root and it is searching &#39;</span>
+cylc    <span class="p">|</span> <span class="m">2018</span>-12-22 <span class="m">02</span>:29:06,526 CRIT Supervisor running as root <span class="o">(</span>no user in config file<span class="o">)</span>
+cylc    <span class="p">|</span> <span class="m">2018</span>-12-22 <span class="m">02</span>:29:06,526 WARN No file matches via include <span class="s2">&quot;/etc/supervisor/conf.d/*.conf&quot;</span>
+pbs     <span class="p">|</span> /usr/lib/python2.6/site-packages/supervisor/options.py:295: UserWarning: Supervisord is running as root and it is searching <span class="k">for</span> its configuration file in default locations <span class="o">(</span>including its current working directory<span class="o">)</span><span class="p">;</span> you probably want to specify a <span class="s2">&quot;-c&quot;</span> argument specifying an absolute path to a configuration file <span class="k">for</span> improved security.
+pbs     <span class="p">|</span>   <span class="s1">&#39;Supervisord is running as root and it is searching &#39;</span>
+cylc    <span class="p">|</span> <span class="m">2018</span>-12-22 <span class="m">02</span>:29:06,535 INFO RPC interface <span class="s1">&#39;supervisor&#39;</span> initialized
+cylc    <span class="p">|</span> <span class="m">2018</span>-12-22 <span class="m">02</span>:29:06,535 CRIT Server <span class="s1">&#39;unix_http_server&#39;</span> running without any HTTP authentication checking
+cylc    <span class="p">|</span> <span class="m">2018</span>-12-22 <span class="m">02</span>:29:06,535 INFO supervisord started with pid <span class="m">1</span>
+pbs     <span class="p">|</span> <span class="m">2018</span>-12-22 <span class="m">02</span>:29:07,480 CRIT Supervisor running as root <span class="o">(</span>no user in config file<span class="o">)</span>
+pbs     <span class="p">|</span> <span class="m">2018</span>-12-22 <span class="m">02</span>:29:07,483 INFO supervisord started with pid <span class="m">1</span>
+pbs     <span class="p">|</span> <span class="m">2018</span>-12-22 <span class="m">02</span>:29:08,487 INFO spawned: <span class="s1">&#39;pbsmom&#39;</span> with pid <span class="m">10</span>
+pbs     <span class="p">|</span> <span class="m">2018</span>-12-22 <span class="m">02</span>:29:08,490 INFO spawned: <span class="s1">&#39;sshd&#39;</span> with pid <span class="m">11</span>
+pbs     <span class="p">|</span> <span class="m">2018</span>-12-22 <span class="m">02</span>:29:08,493 INFO spawned: <span class="s1">&#39;pbssched&#39;</span> with pid <span class="m">12</span>
+pbs     <span class="p">|</span> <span class="m">2018</span>-12-22 <span class="m">02</span>:29:08,497 INFO spawned: <span class="s1">&#39;pbsserver&#39;</span> with pid <span class="m">13</span>
+pbs     <span class="p">|</span> <span class="m">2018</span>-12-22 <span class="m">02</span>:29:08,499 INFO spawned: <span class="s1">&#39;trqauthd&#39;</span> with pid <span class="m">14</span>
+pbs     <span class="p">|</span> <span class="m">2018</span>-12-22 <span class="m">02</span>:29:08,761 INFO exited: pbssched <span class="o">(</span><span class="nb">exit</span> status <span class="m">0</span><span class="p">;</span> not expected<span class="o">)</span>
+pbs     <span class="p">|</span> <span class="m">2018</span>-12-22 <span class="m">02</span>:29:08,794 INFO gave up: pbssched entered FATAL state, too many start retries too quickly
+pbs     <span class="p">|</span> <span class="m">2018</span>-12-22 <span class="m">02</span>:29:10,078 INFO success: pbsmom entered RUNNING state, process has stayed up <span class="k">for</span> &gt; than <span class="m">1</span> seconds <span class="o">(</span>startsecs<span class="o">)</span>
+pbs     <span class="p">|</span> <span class="m">2018</span>-12-22 <span class="m">02</span>:29:10,079 INFO success: sshd entered RUNNING state, process has stayed up <span class="k">for</span> &gt; than <span class="m">1</span> seconds <span class="o">(</span>startsecs<span class="o">)</span>
+pbs     <span class="p">|</span> <span class="m">2018</span>-12-22 <span class="m">02</span>:29:10,079 INFO success: pbsserver entered RUNNING state, process has stayed up <span class="k">for</span> &gt; than <span class="m">1</span> seconds <span class="o">(</span>startsecs<span class="o">)</span>
+pbs     <span class="p">|</span> <span class="m">2018</span>-12-22 <span class="m">02</span>:29:10,079 INFO success: trqauthd entered RUNNING state, process has stayed up <span class="k">for</span> &gt; than <span class="m">1</span> seconds <span class="o">(</span>startsecs<span class="o">)</span>
+</pre></div>
+
+<p>This should start two containers, <code>cylc</code>, and <code>pbs</code>, and with an example <code>suite.rc</code>.</p>
+<div class="highlight"><pre><span></span>$ docker-compose <span class="nb">exec</span> cylc /bin/bash
+bash-4.1# su - testuser
+testuser@f85bd666bced:~$ cylc register pbs1 ./suites/pbs1/
+REGISTER pbs1: ./suites/pbs1/
+</pre></div>
+
+<p>The example suite has one task that runs on a PBS remote node. In the output of running the suite
+below, you can tell the tasks are being executed in different computers, by different owners, through
+Cylc and PBS.</p>
+<p>The task <code>a</code> has <code>[a.1] -submit-num=1, owner@host=pbs</code> in the logs, and <code>b</code> has
+<code>[b.1] -submit-num=1, owner@host=7ce742eb050c</code>.</p>
+<div class="highlight"><pre><span></span>testuser@7ce742eb050c:~$ cylc run --no-detach pbs1
+            ._.                                                       
+            <span class="p">|</span> <span class="p">|</span>              The Cylc Suite Engine <span class="o">[</span><span class="m">7</span>.8.0-dirty<span class="o">]</span>      
+._____._. ._<span class="p">|</span> <span class="p">|</span>_____.           Copyright <span class="o">(</span>C<span class="o">)</span> <span class="m">2008</span>-2018 NIWA          
+<span class="p">|</span> .___<span class="p">|</span> <span class="p">|</span> <span class="p">|</span> <span class="p">|</span> <span class="p">|</span> .___<span class="p">|</span>   <span class="p">&amp;</span> British Crown <span class="o">(</span>Met Office<span class="o">)</span> <span class="p">&amp;</span> Contributors.  
+<span class="p">|</span> !___<span class="p">|</span> !_! <span class="p">|</span> <span class="p">|</span> !___.  _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+!_____!___. <span class="p">|</span>_!_____!  This program comes with ABSOLUTELY NO WARRANTY<span class="p">;</span>
+      .___! <span class="p">|</span>          see <span class="sb">`</span>cylc warranty<span class="sb">`</span>.  It is free software, you 
+      !_____!           are welcome to redistribute it under certain  
+<span class="m">2018</span>-12-22T02:36:36Z INFO - Suite server: <span class="nv">url</span><span class="o">=</span>https://7ce742eb050c:43037/ <span class="nv">pid</span><span class="o">=</span><span class="m">90</span>
+<span class="m">2018</span>-12-22T02:36:36Z INFO - Run: <span class="o">(</span>re<span class="o">)</span><span class="nv">start</span><span class="o">=</span><span class="m">0</span> <span class="nv">log</span><span class="o">=</span><span class="m">1</span>
+<span class="m">2018</span>-12-22T02:36:36Z INFO - Cylc version: <span class="m">7</span>.8.0-dirty
+<span class="m">2018</span>-12-22T02:36:36Z INFO - Run mode: live
+<span class="m">2018</span>-12-22T02:36:36Z INFO - Initial point: <span class="m">1</span>
+<span class="m">2018</span>-12-22T02:36:36Z INFO - Final point: <span class="m">1</span>
+<span class="m">2018</span>-12-22T02:36:36Z INFO - Cold Start <span class="m">1</span>
+<span class="m">2018</span>-12-22T02:36:38Z INFO - <span class="o">[</span>a.1<span class="o">]</span> -submit-num<span class="o">=</span><span class="m">1</span>, owner@host<span class="o">=</span>pbs
+<span class="m">2018</span>-12-22T02:36:39Z INFO - <span class="o">[</span>a.1<span class="o">]</span> -<span class="o">(</span>current:ready<span class="o">)</span> submitted at <span class="m">2018</span>-12-22T02:36:39Z
+<span class="m">2018</span>-12-22T02:36:39Z INFO - <span class="o">[</span>a.1<span class="o">]</span> -health check settings: submission <span class="nv">timeout</span><span class="o">=</span>None
+<span class="m">2018</span>-12-22T02:36:40Z INFO - <span class="o">[</span>a.1<span class="o">]</span> -<span class="o">(</span>current:submitted<span class="o">)</span>&gt; started at <span class="m">2018</span>-12-22T02:36:39Z
+<span class="m">2018</span>-12-22T02:36:40Z INFO - <span class="o">[</span>a.1<span class="o">]</span> -health check settings: execution <span class="nv">timeout</span><span class="o">=</span>None
+<span class="m">2018</span>-12-22T02:36:40Z INFO - <span class="o">[</span>a.1<span class="o">]</span> -<span class="o">(</span>current:running<span class="o">)</span>&gt; succeeded at <span class="m">2018</span>-12-22T02:36:40Z
+<span class="m">2018</span>-12-22T02:36:41Z INFO - <span class="o">[</span>b.1<span class="o">]</span> -submit-num<span class="o">=</span><span class="m">1</span>, owner@host<span class="o">=</span>7ce742eb050c
+<span class="m">2018</span>-12-22T02:36:42Z INFO - <span class="o">[</span>client-command<span class="o">]</span> poll_tasks testuser@7ce742eb050c:cylc-poll d03e9798-14bb-4ef3-86a6-c01ea3a380ee
+<span class="m">2018</span>-12-22T02:36:42Z INFO - Command succeeded: poll_tasks<span class="o">([</span>u<span class="s1">&#39;a&#39;</span><span class="o">]</span>, <span class="nv">poll_succ</span><span class="o">=</span>False<span class="o">)</span>
+<span class="m">2018</span>-12-22T02:36:42Z INFO - Processing <span class="m">1</span> queued command<span class="o">(</span>s<span class="o">)</span>
+    +   poll_tasks<span class="o">([</span>u<span class="s1">&#39;a&#39;</span><span class="o">]</span>, <span class="nv">poll_succ</span><span class="o">=</span>False<span class="o">)</span>
+<span class="m">2018</span>-12-22T02:36:42Z INFO - <span class="o">[</span>b.1<span class="o">]</span> -<span class="o">(</span>current:ready<span class="o">)</span> submitted at <span class="m">2018</span>-12-22T02:36:42Z
+<span class="m">2018</span>-12-22T02:36:42Z INFO - <span class="o">[</span>b.1<span class="o">]</span> -health check settings: submission <span class="nv">timeout</span><span class="o">=</span>None
+<span class="m">2018</span>-12-22T02:36:42Z INFO - <span class="o">[</span>b.1<span class="o">]</span> -<span class="o">(</span>current:submitted<span class="o">)</span>&gt; started at <span class="m">2018</span>-12-22T02:36:42Z
+<span class="m">2018</span>-12-22T02:36:42Z INFO - <span class="o">[</span>b.1<span class="o">]</span> -health check settings: execution <span class="nv">timeout</span><span class="o">=</span>None
+<span class="m">2018</span>-12-22T02:36:43Z INFO - <span class="o">[</span>b.1<span class="o">]</span> -<span class="o">(</span>current:running<span class="o">)</span>&gt; succeeded at <span class="m">2018</span>-12-22T02:36:43Z
+<span class="m">2018</span>-12-22T02:36:43Z INFO - Suite shutting down - AUTOMATIC
+<span class="m">2018</span>-12-22T02:36:44Z INFO - DONE
+</pre></div>
+
+<div class='row'>
+<div class="ui container" style='text-align: center;'>
+<figure>
+<a href="/2018/12/22/running-cylc-tasks-on-pbs-torque-with-docker/cylcpbs-screenshot.png" rel="prettyPhoto" class="thumbnail">
+<img class="ui fluid image" src="/2018/12/22/running-cylc-tasks-on-pbs-torque-with-docker/cylcpbs-screenshot.png" />
+</a>
+<figcaption>Running Cylc tasks on PBS with Docker</figcaption>
+</figure>
+</div>
+</div>
+
+<h2>Reproducing the issue</h2>
+<p>All right, so by now we have a working cluster of two computers, that share <code>~/cylc-run</code> via
+Docker volumes (in the real world this is normally done via NFS).</p>
+<p>The issue was related to the retrieval of remote logs. So we need to change <code>~/.cylc/global.rc</code>
+in order to get it working.</p>
+<div class="highlight"><pre><span></span><span class="c1"># File: global.rc</span>
+
+<span class="o">[</span>hosts<span class="o">]</span>
+<span class="o">[[</span>pbs<span class="o">]]</span>
+retrieve job logs <span class="nb">command</span> <span class="o">=</span> rsync -v -rltgoD --chmod<span class="o">=</span><span class="nv">Du</span><span class="o">=</span>rwx,Dgo<span class="o">=</span>rx,Fu<span class="o">=</span>rw,Fgo<span class="o">=</span>r
+</pre></div>
+
+<p>The first thing I noticed debugging it, was that when I copied the command it had an
+extra space, and it failed to execute. However, nothing appeared in the logs (!).</p>
+<p>Then I managed to print the <code>rsync</code> command executed.</p>
+<div class="highlight"><pre><span></span>sync -v -rltgoD --chmod<span class="o">=</span><span class="nv">Du</span><span class="o">=</span>rwx,Dgo<span class="o">=</span>rx,Fu<span class="o">=</span>rw,Fgo<span class="o">=</span>r <span class="s1">&#39;--rsh=ssh -oBatchMode=yes -oConnectTimeout=10&#39;</span> -v --include<span class="o">=</span>/1 --include<span class="o">=</span>/1/a --include<span class="o">=</span>/1/a/01 <span class="s1">&#39;--include=/1/a/01/**&#39;</span> <span class="s1">&#39;--exclude=/**&#39;</span> <span class="s1">&#39;pbs:$HOME/cylc-run/pbs1/log/job/&#39;</span> /home/testuser/cylc-run/pbs1/log/job/
+</pre></div>
+
+<p>The thing that got me here as that it wasn&#8217;t <code>rsync</code>&#8216;ing the logs from PBS Torque spool, but rather
+the logs that were already synced via Docker shared volume (or NFS in other environments).</p>
+<p>The Cylc suite contains a PBS directive <code>-W umask=0077</code>, which forces the logs
+to be readable only by the owner. It is possible to confirm it in the output
+logs. But only because it is using an empty directory.</p>
+<div class="highlight"><pre><span></span>testuser@7ce742eb050c:~$ ls -lah /home/testuser/cylc-run/pbs1/log/job/1/a/01/
+total 24K
+drwxrwxr-x <span class="m">2</span> testuser testuser <span class="m">4</span>.0K Dec <span class="m">22</span> <span class="m">02</span>:36 .
+drwxrwxr-x <span class="m">3</span> testuser testuser <span class="m">4</span>.0K Dec <span class="m">22</span> <span class="m">02</span>:34 ..
+-rwxrwxr-x <span class="m">1</span> testuser testuser <span class="m">1</span>.3K Dec <span class="m">22</span> <span class="m">02</span>:36 job
+-rw-rw-r-- <span class="m">1</span> testuser testuser  <span class="m">266</span> Dec <span class="m">22</span> <span class="m">02</span>:36 job-activity.log
+-rw------- <span class="m">1</span> testuser testuser    <span class="m">0</span> Dec <span class="m">22</span> <span class="m">02</span>:36 job.err
+-rw------- <span class="m">1</span> testuser testuser  <span class="m">147</span> Dec <span class="m">22</span> <span class="m">02</span>:36 job.out
+-rw-rw-r-- <span class="m">1</span> testuser testuser  <span class="m">231</span> Dec <span class="m">22</span> <span class="m">02</span>:36 job.status
+</pre></div>
+
+<p>Even though the <code>rsync</code> command was executed, it had no effect. We can confirm it by running it
+in the <code>cylc</code> node.</p>
+<div class="highlight"><pre><span></span>testuser@7ce742eb050c:~$ rsync -v -rltgoD --chmod<span class="o">=</span><span class="nv">Du</span><span class="o">=</span>rwx,Dgo<span class="o">=</span>rx,Fu<span class="o">=</span>rw,Fgo<span class="o">=</span>r <span class="s1">&#39;--rsh=ssh -oBatchMode=yes -oConnectTimeout=10&#39;</span> -v --include<span class="o">=</span>/1 --include<span class="o">=</span>/1/a --include<span class="o">=</span>/1/a/01 <span class="s1">&#39;--include=/1/a/01/**&#39;</span> <span class="s1">&#39;--exclude=/**&#39;</span> <span class="s1">&#39;pbs:$HOME/cylc-run/pbs1/log/job/&#39;</span> /home/testuser/cylc-run/pbs1/log/job/
+opening connection using: ssh -oBatchMode<span class="o">=</span>yes -oConnectTimeout<span class="o">=</span><span class="m">10</span> pbs rsync --server --sender -vvlogDtre.iLsfx . <span class="s2">&quot;</span><span class="nv">$HOME</span><span class="s2">/cylc-run/pbs1/log/job/&quot;</span>  <span class="o">(</span><span class="m">10</span> args<span class="o">)</span>
+receiving incremental file list
+<span class="o">[</span>sender<span class="o">]</span> showing directory <span class="m">1</span> because of pattern /1
+delta-transmission enabled
+<span class="o">[</span>sender<span class="o">]</span> showing directory <span class="m">1</span>/a because of pattern /1/a
+<span class="o">[</span>sender<span class="o">]</span> hiding directory <span class="m">1</span>/b because of pattern /**
+<span class="o">[</span>sender<span class="o">]</span> showing directory <span class="m">1</span>/a/01 because of pattern /1/a/01
+<span class="o">[</span>sender<span class="o">]</span> hiding file <span class="m">1</span>/a/NN because of pattern /**
+<span class="o">[</span>sender<span class="o">]</span> showing file <span class="m">1</span>/a/01/job.out because of pattern /1/a/01/**
+<span class="o">[</span>sender<span class="o">]</span> showing file <span class="m">1</span>/a/01/job-activity.log because of pattern /1/a/01/**
+<span class="o">[</span>sender<span class="o">]</span> showing file <span class="m">1</span>/a/01/job.status because of pattern /1/a/01/**
+<span class="o">[</span>sender<span class="o">]</span> showing file <span class="m">1</span>/a/01/job because of pattern /1/a/01/**
+<span class="o">[</span>sender<span class="o">]</span> showing file <span class="m">1</span>/a/01/job.err because of pattern /1/a/01/**
+<span class="m">1</span>/a/01/job is uptodate
+<span class="m">1</span>/a/01/job-activity.log is uptodate
+<span class="m">1</span>/a/01/job.err is uptodate
+<span class="m">1</span>/a/01/job.out is uptodate
+<span class="m">1</span>/a/01/job.status is uptodate
+total: <span class="nv">matches</span><span class="o">=</span><span class="m">0</span>  <span class="nv">hash_hits</span><span class="o">=</span><span class="m">0</span>  <span class="nv">false_alarms</span><span class="o">=</span><span class="m">0</span> <span class="nv">data</span><span class="o">=</span><span class="m">0</span>
+
+sent <span class="m">97</span> bytes  received <span class="m">935</span> bytes  <span class="m">688</span>.00 bytes/sec
+total size is <span class="m">1</span>,888  speedup is <span class="m">1</span>.83
+</pre></div>
+
+<p><code>rsync</code> realizes that the files are already up to date, and does not change the permission
+of the files. If we run this against a different empty folder, <code>rsync</code> will adjust the
+permissions. In the next example first a directory <code>test</code> is created, and <code>rsync</code> command
+is changed to use this new local folder.</p>
+<div class="highlight"><pre><span></span>testuser@7ce742eb050c:~$ mkdir ~/test
+testuser@7ce742eb050c:~$ rsync -v -rltgoD --chmod<span class="o">=</span><span class="nv">Du</span><span class="o">=</span>rwx,Dgo<span class="o">=</span>rx,Fu<span class="o">=</span>rw,Fgo<span class="o">=</span>r <span class="s1">&#39;--rsh=ssh -oBatchMode=yes -oConnectTimeout=10&#39;</span> -v --include<span class="o">=</span>/1 --include<span class="o">=</span>/1/a --include<span class="o">=</span>/1/a/01 <span class="s1">&#39;--include=/1/a/01/**&#39;</span> <span class="s1">&#39;--exclude=/**&#39;</span> <span class="s1">&#39;pbs:$HOME/cylc-run/pbs1/log/job/&#39;</span> /home/testuser/test                  
+opening connection using: ssh -oBatchMode<span class="o">=</span>yes -oConnectTimeout<span class="o">=</span><span class="m">10</span> pbs rsync --server --sender -vvlogDtre.iLsfx . <span class="s2">&quot;</span><span class="nv">$HOME</span><span class="s2">/cylc-run/pbs1/log/job/&quot;</span>  <span class="o">(</span><span class="m">10</span> args<span class="o">)</span>
+receiving incremental file list
+<span class="o">[</span>sender<span class="o">]</span> showing directory <span class="m">1</span> because of pattern /1
+delta-transmission enabled
+<span class="o">[</span>sender<span class="o">]</span> showing directory <span class="m">1</span>/a because of pattern /1/a
+<span class="o">[</span>sender<span class="o">]</span> hiding directory <span class="m">1</span>/b because of pattern /**
+<span class="o">[</span>sender<span class="o">]</span> showing directory <span class="m">1</span>/a/01 because of pattern /1/a/01
+<span class="o">[</span>sender<span class="o">]</span> hiding file <span class="m">1</span>/a/NN because of pattern /**
+<span class="o">[</span>sender<span class="o">]</span> showing file <span class="m">1</span>/a/01/job.out because of pattern /1/a/01/**
+<span class="o">[</span>sender<span class="o">]</span> showing file <span class="m">1</span>/a/01/job-activity.log because of pattern /1/a/01/**
+<span class="o">[</span>sender<span class="o">]</span> showing file <span class="m">1</span>/a/01/job.status because of pattern /1/a/01/**
+<span class="o">[</span>sender<span class="o">]</span> showing file <span class="m">1</span>/a/01/job because of pattern /1/a/01/**
+<span class="o">[</span>sender<span class="o">]</span> showing file <span class="m">1</span>/a/01/job.err because of pattern /1/a/01/**
+./
+<span class="m">1</span>/
+<span class="m">1</span>/a/
+<span class="m">1</span>/a/01/
+<span class="m">1</span>/a/01/job
+<span class="m">1</span>/a/01/job-activity.log
+<span class="m">1</span>/a/01/job.err
+<span class="m">1</span>/a/01/job.out
+<span class="m">1</span>/a/01/job.status
+total: <span class="nv">matches</span><span class="o">=</span><span class="m">0</span>  <span class="nv">hash_hits</span><span class="o">=</span><span class="m">0</span>  <span class="nv">false_alarms</span><span class="o">=</span><span class="m">0</span> <span class="nv">data</span><span class="o">=</span><span class="m">1888</span>
+
+sent <span class="m">177</span> bytes  received <span class="m">3</span>,022 bytes  <span class="m">6</span>,398.00 bytes/sec
+total size is <span class="m">1</span>,888  speedup is <span class="m">0</span>.59
+testuser@7ce742eb050c:~$ ls -lah test/1/a/01/
+total 24K
+drwxr-xr-x <span class="m">2</span> testuser testuser <span class="m">4</span>.0K Dec <span class="m">22</span> <span class="m">02</span>:36 .
+drwxr-xr-x <span class="m">3</span> testuser testuser <span class="m">4</span>.0K Dec <span class="m">22</span> <span class="m">02</span>:34 ..
+-rw-r--r-- <span class="m">1</span> testuser testuser <span class="m">1</span>.3K Dec <span class="m">22</span> <span class="m">02</span>:36 job
+-rw-r--r-- <span class="m">1</span> testuser testuser  <span class="m">266</span> Dec <span class="m">22</span> <span class="m">02</span>:36 job-activity.log
+-rw-r--r-- <span class="m">1</span> testuser testuser    <span class="m">0</span> Dec <span class="m">22</span> <span class="m">02</span>:36 job.err
+-rw-r--r-- <span class="m">1</span> testuser testuser  <span class="m">147</span> Dec <span class="m">22</span> <span class="m">02</span>:36 job.out
+-rw-r--r-- <span class="m">1</span> testuser testuser  <span class="m">231</span> Dec <span class="m">22</span> <span class="m">02</span>:36 job.status
+</pre></div>
+
+<p>It is possible now to confirm that <code>rsync</code> has synced the folders, and instead of the
+previous <code>-rw-------</code> permissions, both <code>job.out</code> and <code>job.err</code> have <code>-rw-r--r--</code> now.</p>
+<h2>Conclusion</h2>
+<p>This was a good experiment, where I managed to publish some images to DockerHub for Cylc,
+though they still lack maturity, and are probably not suitable for production use. There
+are two other images in the same GitHub repository for Cylc, but these are even less mature.</p>
+<p>The Cylc PBS image can be used by people familiar with Docker (i.e. who know what and how
+to kick). It provides a quick way to test and troubleshoot issues with Cylc and PBS.</p>
+<p>One <a href="https://github.com/cylc/cylc/pull/2911">issue</a> identified during this analysis is that
+the log retrieval command may fail in Cylc, but without any output in the logs.</p>
+<p>I believe the problem reported in the Google Groups could be due to <code>rsync</code> not
+ applying the new <code>chmod</code> values on existing values, but only on new ones. The documentation
+ for <code>--chmod</code> does not say much, however, if you look under <code>--permissions</code>:</p>
+<blockquote>
+<p>In summary: to give destination files (both old and new) the source permissions, use &#8212;perms.  To give new files the destination-default permissions (while leaving existing files
+             unchanged),  make  sure  that  the &#8212;perms option is off and use &#8212;chmod=ugo=rwX (which ensures that all non-masked bits get enabled).</p>
+</blockquote>
+<p>My understanding is that there is a difference on how some settings in <code>rsync</code> work
+for new files, and for existing files. I think the documentation could be clearer about it.
+The <code>cylc</code> container&#8217;s <code>rsync</code> version was 3.1.1. I compiled the latest version (3.1.3) on
+my Ubuntu LTS, and copied it across to the container, and confirmed the behaviour is the
+same (might message the <code>rsync</code> devs later to confirm).</p>
+<p>Finally, I think there is room for improvement in the current log retrieval strategies
+in Cylc, and hopefully I will be able to later translate the fuzzy ideas I have in my
+mind right now to a simple description to discuss it with other developers, and maybe
+improve this feature in the future.</p>
+<p>Live long and prosper!</p>
+<p>&hearts; Open Source</p>
+  </div>
+  <p class="postmetadata">
+    
+    <small>tags [&nbsp;<a href="/tag/cylc" rel="tag">cylc</a>&nbsp;]&nbsp;[&nbsp;<a href="/tag/python" rel="tag">python</a>&nbsp;]&nbsp;[&nbsp;<a href="/tag/pbs" rel="tag">pbs</a>&nbsp;]&nbsp;[&nbsp;<a href="/tag/hpc" rel="tag">hpc</a>&nbsp;]&nbsp;[&nbsp;<a href="/tag/docker" rel="tag">docker</a>&nbsp;]&nbsp;</small>
+    
+    
+  </p>
+  
+</div>
+
+                </div>
+            </div>
+        </div>
+        <div class="ui vertical footer segment">
+            <div class="ui center aligned container">
+                           <div id="copy" class="">
+                <p>&copy; <a href="/about"><span
+                            class="b">Bru</span><span
+                            class="r">no de</span> <span
+                            class="a">Paula</span> <span
+                            class="s"></span><span
+                            class="i">Kinos</span><span
+                            class="l">hita</span></a>
+                </p>
+            </div>
+            </div>
+         </div>
+    </div>
+</body>
+</html>
+<script src="/js/jquery-2.2.3.min.js"  type="text/javascript"></script>
+<script src="/css/semantic/dist/semantic.min.js"  type="text/javascript"></script>
+<script src="/js/jquery.prettyPhoto.js"></script>
+<script src="/js/site.js"></script>

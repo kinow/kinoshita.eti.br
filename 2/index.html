@@ -132,9 +132,9 @@
                               
                               <span style="font-size: 13.5pt"><a href="/tag/c%2B%2B">c++</a></span>&nbsp;(7)
                               
-                              <span style="font-size: 13.5pt"><a href="/tag/cylc">cylc</a></span>&nbsp;(7)
+                              <span style="font-size: 14.0pt"><a href="/tag/cylc">cylc</a></span>&nbsp;(8)
                               
-                              <span style="font-size: 12.0pt"><a href="/tag/docker">docker</a></span>&nbsp;(4)
+                              <span style="font-size: 12.5pt"><a href="/tag/docker">docker</a></span>&nbsp;(5)
                               
                               <span style="font-size: 12.5pt"><a href="/tag/events">events</a></span>&nbsp;(5)
                               
@@ -156,7 +156,7 @@
                               
                               <span style="font-size: 26.5pt"><a href="/tag/programming">programming</a></span>&nbsp;(33)
                               
-                              <span style="font-size: 17.5pt"><a href="/tag/python">python</a></span>&nbsp;(15)
+                              <span style="font-size: 18.0pt"><a href="/tag/python">python</a></span>&nbsp;(16)
                               
                               <span style="font-size: 11.5pt"><a href="/tag/r">r</a></span>&nbsp;(3)
                               
@@ -182,6 +182,161 @@
                         <h1 class='topic'>Home</h1>
                     </div>
                     
+                    
+                    <div class="ui raised padded container segment">
+                        <h2>
+                            <a href="/2018/08/11/uuids-in-apache-jena" title="Permanent link">UUID's in Apache Jena</a>
+                        </h2>
+                        <small>kinow</small> @ <small>Aug 11, 2018&nbsp;19:02:16 (<span class='stardate' data-input-date='Aug 11, 2018'></span>)</small>
+                        <div class="entry">
+                            
+
+
+
+
+
+<a href="https://twitter.com/share" class="twitter-share-button" data-url="https://kinoshita.eti.br/2018/08/11/uuids-in-apache-jena" data-text="UUID&#39;s in Apache Jena" data-via="kinow" data-hashtags="opensource">Tweet</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p='https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+                            
+                            <p>In this post I won&#8217;t talk about what are UUID&#8217;s, or how they work in Java.
+<a href="https://www.baeldung.com/java-uuid">Here</a>&#8216;s a great article on that. Or access the always reliable <a href="https://en.wikipedia.org/wiki/Universally_unique_identifier">Wikipedia article</a>
+about it. <em>(or if you would rather, read the <a href="http://www.ietf.org/rfc/rfc4122.txt">RFC 4122</a>)</em></p>
+<p>I found out that Jena had UUID implementations after writing a 
+<a href="/2018/05/29/what-happens-when-you-create-a-new-dataset-in-apache-jena-fuseki">previous post</a>.
+And then decided to look into which UUID&#8217;s Jena has, and where these UUID&#8217;s
+were used. This way I would either understand why Jena needed UUID&#8217;s, or
+just be more educated in case I ever stumbled with a change in Jena that
+required related work.</p>
+<h2>Jena Core&#8217;s <em>org.apache.jena.shared.uuid</em></h2>
+<p>This package is small and simply contains: <em>factories</em>,</p>
+<p><a href="https://www.deviantart.com/kinow/art/Zatoichi-Crying-from-A-Tale-of-Zatoichi-758902187"><img style="float: right; height: 300px;" class="ui image" src="/2018/08/11/uuids-in-apache-jena/zatoichi_crying.png" alt="Zatoichi Crying" /></a></p>
+<ul>
+<li><code>UUIDFactory</code>: interface for a factory of UUID&#8217;s</li>
+<li><code>UUID_V1_Gen</code>: a factory for <code>UUID_V1</code></li>
+<li><code>UUID_V4_Gen</code>: a factory for <code>UUID_V4</code></li>
+</ul>
+<p>and <em>UUID implementations</em>,</p>
+<ul>
+<li><code>JenaUUID</code>: abstract base class for UUID implementations</li>
+<li><code>UUID_nil</code>: a special UUID, <em>nil</em>, filled with zeroes</li>
+<li><code>UUID_V1</code>: UUID V1</li>
+<li><code>UUID_V4</code>: UUID V4</li>
+</ul>
+<p>and a <em>utility class</em></p>
+<ul>
+<li><code>LibUUID</code>: with methods to create a <code>Random</code> and to create <code>byte[]</code> seeds.</li>
+</ul>
+<p><code>JenaUUID</code> contains a method to return a <code>JenaUUID</code> as a Java&#8217;s <code>UUID</code>. And is used
+in the command line utility <code>juuid</code>, for transaction ID&#8217;s, and when a new
+dataset is created. For the new dataset, Fuseki will create files in a temporary
+location. The name of the temporary location is created using an instance of
+<code>JenaUUID</code>.</p>
+<h3><em>UUID_V1</em> and <em>UUID_V4</em></h3>
+<p>Jena&#8217;s <code>UUID_V1</code> is an implementation of Version 1 (<em>time based</em>),
+variant 2 (<em>DCE</em>). Which means it uses MAC address and
+timestamp to generate the universal unique ID&#8217;s.</p>
+<p>It uses <code>NetworkInterface.getNetworkInterfaces()</code> to retrieve the MAC
+address of the node running Jena. When using localhost, the MAC
+address is not available, so it resorts to using a random number.</p>
+<hr />
+<p>And Jena&#8217;s <code>UUID_V4</code> is an implementation of Version 4(<em>random</em>),
+variant 2 (<em>DCE</em>). Which means it uses random numbers to generate
+the universal unique ID&#8217;s.</p>
+<p>The factory for V4 will have a random for the most significant bits,
+and for the least significant bits of the UUID (also including version
+and variant). The random for the factory is created by <code>LibUUID#makeRandom()</code>.
+This method returns a <code>SecureRandom</code> with two seeds, one being random, and
+the other created with <code>LibUUID#makeSeed()</code>.</p>
+<p><code>UUID_V4</code> uses a <code>SecureRandom</code> created locally but with the seed also set by
+<code>LibUUID#makeSeed()</code>. The seed returned by this method may use the
+MAC address, but will also use the <code>os.version</code>, <code>user.name</code>, <code>java.version</code>,
+number of active threads, total memory, free memory, and the hash code
+of a newly created <code>Object</code>.</p>
+<h2>Transaction ID UUID (<em>TxnIdUuid</em>) &mdash; uses JenaUUID</h2>
+<p>Jena contains two implementations of <code>TxnId</code> (transaction identifiers),</p>
+<ul>
+<li><code>TxnIdSimple</code>: transaction IDs are created with a counter within each JVM</li>
+<li><code>TxnIdUuid</code>: transaction IDs are created using <code>JenaUUID</code>.</li>
+</ul>
+<p>The first thing that called my eye in this class was the inconsistency with the
+name - which is quite normal in large projects such as Jena.</p>
+<p>As <code>TxnIdUuid</code> calls <code>JenaUUID#generate()</code>, it will use the default factory,
+<code>UUID_V1_Gen</code>. Then it will call <code>asUUID</code> to return a Java <code>UUID</code> object but
+with the same UUID.</p>
+<h2>Create a new dataset in Fuseki (<em>ActionDatasets</em>) &mdash; uses JenaUUID</h2>
+<p>When you create a new dataset in Fuseki, as explained in the
+<a href="/2018/05/29/what-happens-when-you-create-a-new-dataset-in-apache-jena-fuseki">previous post</a>,
+Fuseki will create some temporary files and folders. For at least one folder, it will
+use an instance of <code>JenaUUID</code>, in <code>ActionDatasets#execPostContainer()</code>.</p>
+<h2>Blank node IDs (<em>BlankNodeId</em>) &mdash; uses Java&#8217;s UUID</h2>
+<p>Blank nodes in Jena need an identifier too. It is possible to configure Jena
+to either return a JVM bound counter (similarly to how <code>TxnIdSimple</code> works),
+or otherwise blank nodes identifiers will be generated with
+<code>java.util.UUID.randomUUID()</code>.</p>
+<p><em><strong>I wonder why the transaction ID&#8217;s use Jena&#8217;s <code>JenaUUID</code>s, but the blank
+node IDs use Java&#8217;s UUID</strong></em>? They are <a href="https://github.com/apache/jena/blob/7b011c30b6bf54db44b5b14408f103009adbdd67/jena-core/src/test/java/org/apache/jena/shared/uuid/TestUUID_JRE.java">compatible</a> anyway.</p>
+<p>Other methods related to blank nodes also use Java&#8217;s <code>UUID</code>,</p>
+<ul>
+<li><code>BlankNodeAllocatorFixedSeedHash</code></li>
+<li><code>BlankNodeAllocatorHash#freshSeed()</code>.</li>
+</ul>
+<h2>SPARQL functions, and <em>NodeFunctions</em> &mdash; uses Java&#8217;s UUID</h2>
+<p>SPARQL 1.1 contains functions <a href="https://www.w3.org/TR/sparql11-query/#func-uuid"><code>UUID</code></a> and
+<a href="https://www.w3.org/TR/sparql11-query/#func-struuid"><code>STRUUID</code></a>. Apache Jena provides
+these two functions, and users can use them in queries such as</p>
+<div class="highlight"><pre><span></span><span class="k">SELECT</span> <span class="p">(</span><span class="n">UUID</span><span class="p">()</span> <span class="k">AS</span> <span class="o">?</span><span class="n">uuid</span><span class="p">)</span> <span class="p">(</span><span class="n">StrUUID</span><span class="p">()</span> <span class="k">AS</span> <span class="o">?</span><span class="n">strUuid</span><span class="p">)</span> <span class="k">WHERE</span> <span class="err">{</span> <span class="err">}</span>
+</pre></div>
+
+<p>(but before users would have to call extra functions in a different namespace).</p>
+<p>The function implementations use <code>NodeFunctions</code> methods <code>struuid</code> and <code>uuid</code>. Both methods in
+<code>NodeFunctions</code> use Java&#8217;s <code>UUID</code>, and not <code>JenaUUID</code>.</p>
+<h2>Files and directories for databases / datasets &mdash; uses Java&#8217;s UUID</h2>
+<p>Files and directories created in Jena use Java&#8217;s <code>UUID</code>,</p>
+<ul>
+<li><code>BufferAllocatorMapped#getNewTemporaryFile()</code></li>
+<li><code>TDBBuilder#create</code> methods and <code>ComponentIdMgr</code> constructor</li>
+<li><code>AbstractDataBag#getNewTemporaryFile()</code>.</li>
+</ul>
+<h2>Conclusion</h2>
+<p>In Jena there are places where instances of <code>JenaUUID</code> are used to produce a
+UUID, and other places where Java&#8217;s <code>UUID</code> is used.</p>
+<p>Java&#8217;s <code>UUID</code> provides a variant 2 version 4 (random DCE), which is equivalent to
+<code>UUID_V4</code>. But there is no equivalent of <code>UUID_V1</code>, the default used in Jena.</p>
+<p>And even though <code>UUID_V4</code> and <code>UUID</code> are compatible, I believe Jena&#8217;s version is using
+a seed with so many JVM and operating system related settings (<code>os.version</code>, free memory, etc)
+in order to have a unique seed per node running Jena, independent of whether there
+are multiple JVM&#8217;s in the same node.</p>
+<p>But to be honest, I am still not sure which one I would have to use, nor if there are
+cases where I should pick one over the other&#8230;</p>
+<p><em>EDIT: Apache Jena&#8217;s lead dev <a href="https://markmail.org/thread/vnys264p4c6lkc6l#query:+page:1+mid:raa7gaxconcnqbzp+state:results">replied</a> with a bit of history about the project too (:</em></p>
+                            
+                            
+                            
+                        </div>
+                        <p class="postmetadata">
+                            
+                            <small>tags 
+                             [&nbsp;<a
+                                href="/tag/apache%20software%20foundation/"
+                                rel="tag">apache software foundation</a>&nbsp;]&nbsp;
+                            
+                             [&nbsp;<a
+                                href="/tag/java/"
+                                rel="tag">java</a>&nbsp;]&nbsp;
+                            
+                             [&nbsp;<a
+                                href="/tag/jena/"
+                                rel="tag">jena</a>&nbsp;]&nbsp;
+                            
+                             [&nbsp;<a
+                                href="/tag/opensource/"
+                                rel="tag">opensource</a>&nbsp;]&nbsp;
+                            
+                            </small>
+                            
+                            
+                        </p>
+                    </div>
                     
                     <div class="ui raised padded container segment">
                         <h2>
@@ -503,127 +658,6 @@ connections with the right endpoints available only after the <code>configure</c
 in the next part of this series, as they are quite extensive, and deserve their own diagrams.</p>
 <p>You can download the <a href="/2018/07/14/cylc-scheduler-internals-part-1/cylc-scheduler_cli-workflow-src.xml">source file</a> for the diagram used in this post, and edit it
 with <a href="https://draw.io">draw.io</a>.</p>
-                            
-                            
-                            
-                        </div>
-                        <p class="postmetadata">
-                            
-                            <small>tags 
-                             [&nbsp;<a
-                                href="/tag/cylc/"
-                                rel="tag">cylc</a>&nbsp;]&nbsp;
-                            
-                             [&nbsp;<a
-                                href="/tag/python/"
-                                rel="tag">python</a>&nbsp;]&nbsp;
-                            
-                             [&nbsp;<a
-                                href="/tag/opensource/"
-                                rel="tag">opensource</a>&nbsp;]&nbsp;
-                            
-                            </small>
-                            
-                            
-                        </p>
-                    </div>
-                    
-                    <div class="ui raised padded container segment">
-                        <h2>
-                            <a href="/2018/07/10/import-error-when-debugging-cylc-in-eclipse" title="Permanent link">ImportError when debugging cylc in Eclipse</a>
-                        </h2>
-                        <small>kinow</small> @ <small>Jul 10, 2018&nbsp;00:47:13 (<span class='stardate' data-input-date='Jul 10, 2018'></span>)</small>
-                        <div class="entry">
-                            
-
-
-
-
-
-<a href="https://twitter.com/share" class="twitter-share-button" data-url="https://kinoshita.eti.br/2018/07/10/import-error-when-debugging-cylc-in-eclipse" data-text="ImportError when debugging cylc in Eclipse" data-via="kinow" data-hashtags="opensource">Tweet</a>
-<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p='https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-                            
-                            <p>Since I started reading cylc&#8217;s source code in Eclipse to create some
-sequence diagrams, I have not been able to debug it properly without
-hitting errors in some part of the program execution.</p>
-<p>The error message was <strong><em>&ldquo;ImportError: cannot import name _remove_dead_weakref&rdquo;</em></strong>,
-which was a bit enigmatic as I never heard about that function, but it seemed to be
-something internal, or at least not from the project code base. And searching the Internet
-did not help much.</p>
-<p>Here is the complete console output in Eclipse.</p>
-<div class="highlight"><pre><span></span>pydev debugger: starting <span class="o">(</span>pid: <span class="m">15124</span><span class="o">)</span>
-timeout <span class="m">10</span> ps -opid,args <span class="m">13640</span>  <span class="c1"># return 1</span>
-
-            ._.                                                       
-            <span class="p">|</span> <span class="p">|</span>            The Cylc Suite Engine <span class="o">[</span><span class="m">7</span>.7.1-37-g09c8a<span class="o">]</span>    
-._____._. ._<span class="p">|</span> <span class="p">|</span>_____.           Copyright <span class="o">(</span>C<span class="o">)</span> <span class="m">2008</span>-2018 NIWA          
-<span class="p">|</span> .___<span class="p">|</span> <span class="p">|</span> <span class="p">|</span> <span class="p">|</span> <span class="p">|</span> .___<span class="p">|</span>  _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
-<span class="p">|</span> !___<span class="p">|</span> !_! <span class="p">|</span> <span class="p">|</span> !___.  This program comes with ABSOLUTELY NO WARRANTY<span class="p">;</span>
-!_____!___. <span class="p">|</span>_!_____!  see <span class="sb">`</span>cylc warranty<span class="sb">`</span>.  It is free software, you 
-      .___! <span class="p">|</span>           are welcome to redistribute it under certain  
-      !_____!                conditions<span class="p">;</span> see <span class="sb">`</span>cylc conditions<span class="sb">`</span>.       
-<span class="m">2018</span>-07-10T01:00:47+12 INFO - Suite starting: <span class="nv">server</span><span class="o">=</span>localhost:44444 <span class="nv">pid</span><span class="o">=</span><span class="m">15124</span>
-<span class="m">2018</span>-07-10T01:00:47+12 INFO - Cylc version: <span class="m">7</span>.7.1-37-g09c8a
-<span class="m">2018</span>-07-10T01:00:47+12 INFO - Run mode: live
-<span class="m">2018</span>-07-10T01:00:47+12 INFO - Initial point: <span class="m">1</span>
-<span class="m">2018</span>-07-10T01:00:47+12 INFO - Final point: None
-<span class="m">2018</span>-07-10T01:00:47+12 INFO - Cold Start <span class="m">1</span>
-<span class="m">2018</span>-07-10T01:00:47+12 DEBUG - <span class="o">[</span>hello.1<span class="o">]</span> -released to the task pool
-<span class="m">2018</span>-07-10T01:00:47+12 DEBUG - BEGIN TASK PROCESSING
-<span class="m">2018</span>-07-10T01:00:47+12 DEBUG - <span class="o">[</span>hello.1<span class="o">]</span> -waiting <span class="o">=</span>&gt; queued
-<span class="m">2018</span>-07-10T01:00:47+12 DEBUG - <span class="m">1</span> task<span class="o">(</span>s<span class="o">)</span> de-queued
-<span class="m">2018</span>-07-10T01:00:47+12 INFO - <span class="o">[</span>hello.1<span class="o">]</span> -submit-num<span class="o">=</span><span class="m">1</span>, owner@host<span class="o">=</span>localhost
-<span class="m">2018</span>-07-10T01:00:47+12 DEBUG - <span class="o">[</span>hello.1<span class="o">]</span> -queued <span class="o">=</span>&gt; ready
-<span class="m">2018</span>-07-10T01:00:47+12 DEBUG - END TASK PROCESSING <span class="o">(</span>took <span class="m">0</span>.023609161377 seconds<span class="o">)</span>
-<span class="m">2018</span>-07-10T01:00:48+12 DEBUG - <span class="o">[</span><span class="s1">&#39;cylc&#39;</span>, <span class="s1">&#39;jobs-submit&#39;</span>, <span class="s1">&#39;--debug&#39;</span>, <span class="s1">&#39;--&#39;</span>, <span class="s1">&#39;/home/kinow/Development/python/workspace/example-suite/log/job&#39;</span>, <span class="s1">&#39;1/hello/01&#39;</span><span class="o">]</span>
-<span class="m">2018</span>-07-10T01:00:48+12 ERROR - <span class="o">[</span>jobs-submit cmd<span class="o">]</span> cylc jobs-submit --debug -- /home/kinow/Development/python/workspace/example-suite/log/job <span class="m">1</span>/hello/01
-    <span class="o">[</span>jobs-submit ret_code<span class="o">]</span> <span class="m">1</span>
-    <span class="o">[</span>jobs-submit err<span class="o">]</span>
-    Traceback <span class="o">(</span>most recent call last<span class="o">)</span>:
-      File <span class="s2">&quot;/home/kinow/Development/python/workspace/cylc/bin/cylc-jobs-submit&quot;</span>, line <span class="m">52</span>, in &lt;module&gt;
-        from cylc.batch_sys_manager import BatchSysManager
-      File <span class="s2">&quot;/home/kinow/Development/python/workspace/cylc/lib/cylc/batch_sys_manager.py&quot;</span>, line <span class="m">114</span>, in &lt;module&gt;
-        from cylc.task_message import <span class="o">(</span>
-      File <span class="s2">&quot;/home/kinow/Development/python/workspace/cylc/lib/cylc/task_message.py&quot;</span>, line <span class="m">26</span>, in &lt;module&gt;
-        from logging import getLevelName, WARNING, ERROR, CRITICAL
-      File <span class="s2">&quot;/home/kinow/Development/python/anaconda2/lib/python2.7/logging/__init__.py&quot;</span>, line <span class="m">26</span>, in &lt;module&gt;
-        import sys, os, time, cStringIO, traceback, warnings, weakref, collections
-      File <span class="s2">&quot;/home/kinow/Development/python/anaconda2/lib/python2.7/weakref.py&quot;</span>, line <span class="m">14</span>, in &lt;module&gt;
-        from _weakref import <span class="o">(</span>
-    ImportError: cannot import name _remove_dead_weakref
-<span class="m">2018</span>-07-10T01:00:48+12 ERROR - <span class="o">[</span>jobs-submit cmd<span class="o">]</span> cylc jobs-submit --debug -- /home/kinow/Development/python/workspace/example-suite/log/job <span class="m">1</span>/hello/01
-    <span class="o">[</span>jobs-submit ret_code<span class="o">]</span> <span class="m">1</span>
-    <span class="o">[</span>jobs-submit out<span class="o">]</span> <span class="m">2018</span>-07-10T01:00:48+12<span class="p">|</span><span class="m">1</span>/hello/01<span class="p">|</span><span class="m">1</span>
-<span class="m">2018</span>-07-10T01:00:48+12 INFO - <span class="o">[</span>hello.1<span class="o">]</span> -<span class="o">(</span>current:ready<span class="o">)</span> submission failed at <span class="m">2018</span>-07-10T01:00:48+12
-<span class="m">2018</span>-07-10T01:00:48+12 ERROR - <span class="o">[</span>hello.1<span class="o">]</span> -submission failed
-<span class="m">2018</span>-07-10T01:00:48+12 DEBUG - <span class="o">[</span>hello.1<span class="o">]</span> -ready <span class="o">=</span>&gt; submit-failed
-<span class="m">2018</span>-07-10T01:00:48+12 DEBUG - BEGIN TASK PROCESSING
-<span class="m">2018</span>-07-10T01:00:48+12 DEBUG - <span class="m">0</span> task<span class="o">(</span>s<span class="o">)</span> de-queued
-<span class="m">2018</span>-07-10T01:00:48+12 DEBUG - END TASK PROCESSING <span class="o">(</span>took <span class="m">0</span>.00175499916077 seconds<span class="o">)</span>
-<span class="m">2018</span>-07-10T01:00:49+12 WARNING - suite stalled
-</pre></div>
-
-<p>As the current diagram I am working on has quite a few <code>if</code>&#8216;s and <code>else</code>&#8216;s, I decided
-to investigate why this error was occurring. Then, after some elimination I found that
-it was due to the missing Anaconda 2 entry in my <code>$PATH</code> environment variable.</p>
-<p>I had this variable configured in a custom script I load whenever I decide to use
-Anaconda 2. And reproducing the same behaviour in Eclipse was easy.</p>
-<p style='text-align: center;'>
-<img style="display: inline" class="ui image" src="/2018/07/10/import-error-when-debugging-cylc-in-eclipse/screenshot1.png" alt="A screen shot of Eclipse with source code" title="Locating the bug" />
-<br/>
-<small>Locating the bug</small>
-</p>
-
-<p>Et voil&agrave;! Eclipse was happily debugging again!</p>
-<p style='text-align: center;'>
-<img style="display: inline" class="ui image" src="/2018/07/10/import-error-when-debugging-cylc-in-eclipse/screenshot2.png" alt="A screen shot of Eclipse with source code" title="Locating the bug" />
-<br/>
-<small>Locating the bug</small>
-</p>
-
-<p>So if you have a similar problem, try comparing your environment variables and check if you
-have some entries missing, and try adding them in Eclipse Debug configuration.</p>
-<p>Happy cycling!</p>
                             
                             
                             

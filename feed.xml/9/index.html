@@ -10,13 +10,86 @@
         
         <description>Latest news from Bruno P. Kinoshita</description>
         
-        <lastBuildDate>2018-12-22T11:28:14+13:00</lastBuildDate>
-        <pubDate>2018-12-22T11:28:14+13:00</pubDate>
+        <lastBuildDate>2018-12-22T18:23:33+13:00</lastBuildDate>
+        <pubDate>2018-12-22T18:23:33+13:00</pubDate>
         <generator>PieCrust 3.2.1</generator>
         
         
         
 
+        
+        
+        
+        <item>
+            <title>Modeling observation data in SOS (Sensor Observation Service)</title>
+            <link>/2015/06/23/modeling-observation-data-in-sos</link>
+            
+            <author>kinow</author>
+            <dc:creator>kinow</dc:creator>
+            
+            <category>blog</category>
+            
+            <category>sensor web</category>
+            
+            <pubDate>2015-06-23T13:40:03+12:00</pubDate>
+            <guid>/2015/06/23/modeling-observation-data-in-sos</guid>
+            <description>
+            
+            &lt;p&gt;This week NZ Herald published an &lt;a href=&#34;http://www.nzherald.co.nz/technology/news/article.cfm?c_id=5&amp;amp;objectid=11469418&#34;&gt;article&lt;/a&gt;
+about a device created by an Irish farmer enterpreneur that sends a message to a farmer when the cow is about to give birth.
+The device monitors &amp;#8220;heightened tail moviment&amp;#8221;.&lt;/p&gt;
+&lt;p&gt;In this post I will try to apply what I am learning following the &lt;a href=&#34;http://www.ogcnetwork.net/SOS_2_0/tutorial&#34;&gt;SOS Tutorial&lt;/a&gt;
+(the Open Geospatial Consortium standard for Sensor Observation Service). Feel free to drop me a message via
+&lt;a href=&#34;https://twitter.com/kinow&#34;&gt;@kinow&lt;/a&gt; if you find any mistakes or have any suggestions.&lt;/p&gt;
+&lt;h2&gt;Modeling the tail moviment observation data in SOS&lt;/h2&gt;
+&lt;p&gt;SOS is a standard designed to provide access to observation data. There are several server implementations, such as Kisters KiWIS, 
+istSOS and 52North SOS.&lt;/p&gt;
+&lt;p&gt;The standard mentions and utilises several other standards, such as SensorML, WFS, XML, WMS, etc. The SOS Tutorial on
+how to model your observation data for SOS starts by defining &lt;em&gt;procedure&lt;/em&gt;, &lt;em&gt;observed property&lt;/em&gt;, &lt;em&gt;feature of interest&lt;/em&gt;,
+&lt;em&gt;phenomenon and result times&lt;/em&gt;, and the &lt;em&gt;result value&lt;/em&gt;.&lt;/p&gt;
+&lt;p&gt;Let&amp;#8217;s try to model the data from the tail moviment sensors in the following table.&lt;/p&gt;
+&lt;table class=&#34;table table-bordered&#34;&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Name&lt;/th&gt;
+&lt;th&gt;Description&lt;/th&gt;
+&lt;th&gt;Our example&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;th&gt;Procedure&lt;/th&gt;
+&lt;td&gt;The process that has generated the observation, such as a sensor, from the O&amp;M specification. In our example that could be a sensor identification&lt;/td&gt;
+&lt;td&gt;moocall_001&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;th&gt;Observed Property&lt;/th&gt;
+&lt;td&gt;A property which is observed (look at NASA SWEET ontology for existing values)&lt;/td&gt;
+&lt;td&gt;Heightned tail moviment&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;th&gt;Feature of Interest&lt;/th&gt;
+&lt;td&gt;A feature that carries the property which is observed&lt;/td&gt;
+&lt;td&gt;Pregnant cow&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;th&gt;Phenomenon and Result Times&lt;/th&gt;
+&lt;td&gt;The phenomenon time is when the data has been taken, and the result time when it has been created. If both are the same, the resultTime can point to the phenomenonTime&lt;/td&gt;
+&lt;td&gt;20150623142000&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;th&gt;Result value&lt;/th&gt;
+&lt;td&gt;This is the result of the observation. Can be a OM_Measurement if numeric, OM_TruthObservation, etc (O&amp;M)&lt;/td&gt;
+&lt;td&gt;3 (supposing we have a scale from 1 to 5)&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;In the next post I will try to show how to load this model and some dummy data into a fresh installation of
+52North SOS server.&lt;/p&gt;
+            
+            </description>
+        </item>
         
         
         
@@ -629,66 +702,6 @@ http://footle.org/2011/11/23/apache-considered-harmful/&lt;/a&gt;&lt;/sup&gt;&lt
 &lt;p&gt;&lt;sup&gt;&lt;a name=&#34;3&#34;&gt;3&lt;/a&gt; 
 &lt;a href=&#34;http://www.itworld.com/it-managementstrategy/227477/has-open-source-outgrown-apache-way&#34;&gt;
 http://www.itworld.com/it-managementstrategy/227477/has-open-source-outgrown-apache-way&lt;/a&gt;&lt;/sup&gt;&lt;/p&gt;
-            
-            </description>
-        </item>
-        
-        
-        
-        <item>
-            <title>Too many SQL variables exception in Graphite with SQLite3</title>
-            <link>/2013/07/04/too_many_sql_variables_in_graphite_with_sqlite3</link>
-            
-            <author>kinow</author>
-            <dc:creator>kinow</dc:creator>
-            
-            <category>blog</category>
-            
-            <category>monitoring</category>
-            
-            <category>python</category>
-            
-            <pubDate>2013-07-04T13:54:53+12:00</pubDate>
-            <guid>/2013/07/04/too_many_sql_variables_in_graphite_with_sqlite3</guid>
-            <description>
-            
-            &lt;p&gt;Having run &lt;a href=&#34;http://graphite.wikidot.com/&#34;&gt;Graphite&lt;/a&gt; for a while, today I found a rather annoying issue. We were using 
-&lt;a href=&#34;https://code.launchpad.net/~lucio.torre/graphite/add-events/+merge/69142&#34;&gt;events&lt;/a&gt;, and everything was working perfectly fine so far. But for the 24 last hours, 
-the graph was blank. &lt;/p&gt;
-&lt;p&gt;Actually, in the dashboard, the graph was &lt;em&gt;missing&lt;/em&gt;, being displayed as a gray box. 
-Enabling the web inspector in Google Chrome I got the graph URL. Opening the link in 
-a new tab gave me the exception message: &lt;strong&gt;too many SQL variables&lt;/strong&gt; (&lt;sup&gt;1&lt;/sup&gt;).&lt;/p&gt;
-&lt;p&gt;After some research, I found out this was a bug in SQLite. After trying to hack the code, 
-and being concerned about using a patched version of Graphite and having to update it 
-later, I decided to switch database. &lt;/p&gt;
-&lt;p&gt;But to avoid losing the graphs, users and other settings, including the events, I 
-migrated the SQLite database to a MySQL server. This MySQL server was already installed in 
-the server machine, since this machine hosted a &lt;a href=&#34;http://www.zabbix.com/&#34;&gt;Zabbix&lt;/a&gt; server too.&lt;/p&gt;
-&lt;p&gt;Here are the steps required to migrate your database from SQLite to MySQL (&lt;sup&gt;2&lt;/sup&gt;).&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;Download &lt;strong&gt;sqlite3_mysql&lt;/strong&gt; python script from &lt;a href=&#34;http://www.redmine.org/boards/2/topics/12793&#34;&gt;http://www.redmine.org/boards/2/topics/12793&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;Stop Apache/Nginx&lt;/li&gt;
-&lt;li&gt;mysql -u user -p -e &amp;#8220;create database redmine graphite set utf8;&amp;#8221; &lt;/li&gt;
-&lt;li&gt;sqlite3 graphite.db .dump | sqlite3-to-mysql.py | mysql -uroot -pyourpass graphite&lt;/li&gt;
-&lt;li&gt;Start Apache again&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;After tail&amp;#8217;ing the Graphite webapp log file, &lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;tail f- storage/log/webapp/error.log
-&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;I noticed the Python MySQLdb wasn&amp;#8217;t installed.&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;ImproperlyConfigured&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Error&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;loading&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;MySQLdb&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;module&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;No&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;module&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;named&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;MySQLdb&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;My server was an Ubuntu 13.04, so I installed the module simply with the following 
-command.&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;apt-get install python-mysqldb
-&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;Hope that helps!&lt;/p&gt;
-&lt;p&gt;&lt;small&gt;&lt;sup&gt;1&lt;/sup&gt; You may have to enable *DEBUG* in your Django settings for seeing the exception in your browser&lt;/small&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;small&gt;&lt;sup&gt;2&lt;/sup&gt; Zabbix needed some minor tweaks in order to use [MariaDB](https://mariadb.org/), but probably you can give it a try too&lt;/small&gt;&lt;/p&gt;
             
             </description>
         </item>

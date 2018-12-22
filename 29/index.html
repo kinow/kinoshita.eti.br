@@ -132,9 +132,9 @@
                               
                               <span style="font-size: 13.5pt"><a href="/tag/c%2B%2B">c++</a></span>&nbsp;(7)
                               
-                              <span style="font-size: 13.5pt"><a href="/tag/cylc">cylc</a></span>&nbsp;(7)
+                              <span style="font-size: 14.0pt"><a href="/tag/cylc">cylc</a></span>&nbsp;(8)
                               
-                              <span style="font-size: 12.0pt"><a href="/tag/docker">docker</a></span>&nbsp;(4)
+                              <span style="font-size: 12.5pt"><a href="/tag/docker">docker</a></span>&nbsp;(5)
                               
                               <span style="font-size: 12.5pt"><a href="/tag/events">events</a></span>&nbsp;(5)
                               
@@ -156,7 +156,7 @@
                               
                               <span style="font-size: 26.5pt"><a href="/tag/programming">programming</a></span>&nbsp;(33)
                               
-                              <span style="font-size: 17.5pt"><a href="/tag/python">python</a></span>&nbsp;(15)
+                              <span style="font-size: 18.0pt"><a href="/tag/python">python</a></span>&nbsp;(16)
                               
                               <span style="font-size: 11.5pt"><a href="/tag/r">r</a></span>&nbsp;(3)
                               
@@ -182,6 +182,106 @@
                         <h1 class='topic'>Home</h1>
                     </div>
                     
+                    
+                    <div class="ui raised padded container segment">
+                        <h2>
+                            <a href="/2009/03/22/code-to-change-your-message-in-msn-messenger" title="Permanent link">Code to change your message in MSN messenger</a>
+                        </h2>
+                        <small>kinow</small> @ <small>Mar 22, 2009&nbsp;14:31:18 (<span class='stardate' data-input-date='Mar 22, 2009'></span>)</small>
+                        <div class="entry">
+                            
+
+
+
+
+
+<a href="https://twitter.com/share" class="twitter-share-button" data-url="https://kinoshita.eti.br/2009/03/22/code-to-change-your-message-in-msn-messenger" data-text="Code to change your message in MSN messenger" data-via="kinow" data-hashtags="opensource">Tweet</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p='https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+                            
+                            <p>I&#8217;ve always wanted to know how does the code to show what was I listening to looked like. I found it after installing XMPlay and XMPlay MSN Plug-in. The plug-in zip had the plug-in itself and its source code. And what a neat source code (-:.</p>
+<p>Basically, you just send a message to the MSN UI API with a defined data structure. And to remove the message, just send again with an empty string.</p>
+<div class="highlight"><pre><span></span><span class="cm">/*</span>
+<span class="cm">Bruno de Paula Kinoshita</span>
+<span class="cm">original src code:</span>
+<span class="cm">XMPlay MSN Plugin (c) 2005-2006 Elliott Sales de Andrade</span>
+<span class="cm">*/</span>
+
+<span class="cp">#include</span> <span class="cpf">&lt;cstdlib&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;windows.h&gt;</span><span class="cp"></span>
+
+<span class="n">using</span> <span class="n">namespace</span> <span class="n">std</span><span class="p">;</span>
+
+<span class="k">typedef</span> <span class="k">struct</span> <span class="p">{</span>
+<span class="n">BOOL</span> <span class="n">showCues</span><span class="p">;</span>
+<span class="n">BOOL</span> <span class="n">keepOnClose</span><span class="p">;</span>
+<span class="p">}</span> <span class="n">MSNStuff</span><span class="p">;</span>
+<span class="k">static</span> <span class="n">MSNStuff</span> <span class="n">msnConf</span><span class="p">;</span>
+
+<span class="kt">void</span> <span class="nf">setNowPlaying</span><span class="p">(</span> <span class="kt">char</span> <span class="o">*</span><span class="n">title</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="kt">wchar_t</span> <span class="o">*</span><span class="n">lpMsn</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">strLen</span> <span class="o">=</span> <span class="mi">20</span><span class="p">;</span>
+    <span class="n">HWND</span> <span class="n">xmpwin</span><span class="p">;</span>
+    <span class="n">HWND</span> <span class="n">msnui</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
+
+    <span class="n">lpMsn</span> <span class="o">=</span> <span class="p">(</span><span class="kt">wchar_t</span><span class="o">*</span><span class="p">)</span><span class="n">calloc</span><span class="p">(</span><span class="mi">1024</span><span class="p">,</span><span class="mi">1024</span><span class="p">);</span>
+    <span class="c1">// stuff for MSN before...</span>
+    <span class="n">memcpy</span><span class="p">(</span><span class="n">lpMsn</span><span class="p">,</span> <span class="sa">L</span><span class="s">&quot;</span><span class="se">\\</span><span class="s">0Music</span><span class="se">\\</span><span class="s">01</span><span class="se">\\</span><span class="s">0{0}</span><span class="se">\\</span><span class="s">0&quot;</span><span class="p">,</span> <span class="mi">17</span><span class="o">*</span><span class="mi">2</span><span class="p">);</span>
+    <span class="c1">// actual title...</span>
+    <span class="n">strLen</span><span class="o">=</span><span class="n">MultiByteToWideChar</span><span class="p">(</span><span class="nb">false</span><span class="o">?</span><span class="nl">CP_UTF8</span><span class="p">:</span><span class="n">CP_ACP</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="n">title</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="n">lpMsn</span><span class="o">+</span><span class="mi">17</span><span class="p">,</span><span class="mi">492</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">;</span><span class="err">Â</span>  <span class="cm">/* 1024/2 - 20 */</span>
+    <span class="c1">// stuff for MSN after...</span>
+    <span class="n">memcpy</span><span class="p">(</span><span class="n">lpMsn</span> <span class="o">+</span> <span class="mi">17</span> <span class="o">+</span> <span class="n">strLen</span><span class="p">,</span> <span class="sa">L</span><span class="s">&quot;</span><span class="se">\\</span><span class="s">0&quot;</span><span class="p">,</span> <span class="mi">3</span><span class="o">*</span><span class="mi">2</span><span class="p">);</span>
+    <span class="n">strLen</span> <span class="o">+=</span> <span class="mi">20</span><span class="p">;</span>
+
+    <span class="n">COPYDATASTRUCT</span> <span class="n">msndata</span><span class="p">;</span>
+    <span class="n">msndata</span><span class="p">.</span><span class="n">dwData</span> <span class="o">=</span> <span class="mh">0x547</span><span class="p">;</span>
+    <span class="n">msndata</span><span class="p">.</span><span class="n">lpData</span> <span class="o">=</span> <span class="p">(</span><span class="kt">void</span><span class="o">*</span><span class="p">)</span><span class="n">lpMsn</span><span class="p">;</span>
+    <span class="n">msndata</span><span class="p">.</span><span class="n">cbData</span> <span class="o">=</span> <span class="n">strLen</span> <span class="o">*</span> <span class="mi">2</span><span class="p">;</span>
+
+    <span class="k">while</span> <span class="p">(</span> <span class="n">msnui</span> <span class="o">=</span> <span class="n">FindWindowEx</span><span class="p">(</span><span class="nb">NULL</span><span class="p">,</span> <span class="n">msnui</span><span class="p">,</span> <span class="s">&quot;MsnMsgrUIManager&quot;</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">)</span> <span class="p">)</span>
+        <span class="n">SendMessage</span><span class="p">(</span><span class="n">msnui</span><span class="p">,</span> <span class="n">WM_COPYDATA</span><span class="p">,</span> <span class="p">(</span><span class="n">WPARAM</span><span class="p">)</span><span class="n">xmpwin</span><span class="p">,</span> <span class="p">(</span><span class="n">LPARAM</span><span class="p">)</span><span class="o">&amp;</span><span class="n">msndata</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span><span class="n">argv</span><span class="p">[])</span>
+<span class="p">{</span>
+    <span class="kt">char</span> <span class="o">*</span><span class="n">title</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">argc</span> <span class="o">==</span> <span class="mi">1</span> <span class="p">)</span>
+        <span class="n">title</span> <span class="o">=</span> <span class="s">&quot;&quot;</span><span class="p">;</span>
+    <span class="k">else</span>
+        <span class="n">title</span> <span class="o">=</span> <span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span>
+
+    <span class="n">setNowPlaying</span> <span class="p">(</span> <span class="n">title</span> <span class="p">);</span>
+
+    <span class="k">return</span> <span class="n">EXIT_SUCCESS</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+                            
+                            
+                            
+                        </div>
+                        <p class="postmetadata">
+                            
+                            <small>tags 
+                             [&nbsp;<a
+                                href="/tag/c%2B%2B/"
+                                rel="tag">c++</a>&nbsp;]&nbsp;
+                            
+                            </small>
+                            
+                            
+                            <br/>
+                            <small>posted in 
+                            [&nbsp;<a
+                                href="/blog"
+                                title="View all posts in blog"
+                                rel="category tag">blog</a>&nbsp;]
+                                &nbsp;category
+                            </small>
+                            
+                        </p>
+                    </div>
                     
                     <div class="ui raised padded container segment">
                         <h2>
