@@ -10,13 +10,45 @@
         
         <description>Latest news from Bruno P. Kinoshita</description>
         
-        <lastBuildDate>2018-12-24T13:10:37+13:00</lastBuildDate>
-        <pubDate>2018-12-24T13:10:37+13:00</pubDate>
+        <lastBuildDate>2018-12-24T17:17:10+13:00</lastBuildDate>
+        <pubDate>2018-12-24T17:17:10+13:00</pubDate>
         <generator>PieCrust 3.2.1</generator>
         
         
         
 
+        
+        
+        
+        <item>
+            <title>Adding coverage reports in Jenkins to GoogleTest with gcovr</title>
+            <link>/2012/10/16/adding-coverage-reports-in-jenkins-to-googletest-with-gcovr</link>
+            
+            <author>kinow</author>
+            <dc:creator>kinow</dc:creator>
+            
+            <category>jenkins</category>
+            
+            <category>jenkins</category>
+            
+            <category>c++</category>
+            
+            <category>test anything protocol</category>
+            
+            <pubDate>2012-10-16T16:09:33+13:00</pubDate>
+            <guid>/2012/10/16/adding-coverage-reports-in-jenkins-to-googletest-with-gcovr</guid>
+            <description>
+            
+            &lt;p&gt;After the &lt;a href=&#34;//2012/10/11/jenkins-testlink-and-gtest-in-5-minutes-or-so&#34; title=&#34;Jenkins, TestLink and GTest in 5 minutes (or so)&#34;&gt;last post&lt;/a&gt; about &lt;a href=&#34;http://code.google.com/p/googletest/&#34; title=&#34;GoogleTest&#34;&gt;GoogleTest&lt;/a&gt; and &lt;a href=&#34;http://www.teamst.org&#34; title=&#34;TestLink&#34;&gt;TestLink&lt;/a&gt; using &lt;a href=&#34;https://wiki.jenkins-ci.org/display/JENKINS/TestLink+Plugin&#34; title=&#34;Jenkins TestLink Plug-in&#34;&gt;Jenkins TestLink Plug-in&lt;/a&gt;, I received an e-mail asking about &lt;a href=&#34;http://en.wikipedia.org/wiki/Code_coverage&#34; title=&#34;Code Coverage&#34;&gt;coverage&lt;/a&gt; with GoogleTest and &lt;a href=&#34;http://www.jenkins-ci.org&#34; title=&#34;Jenkins CI&#34;&gt;Jenkins&lt;/a&gt;. I&amp;#8217;ve just updated the &lt;a href=&#34;https://github.com/kinow/gtest-tap-listener/blob/master/samples/Makefile&#34;&gt;Makefile&lt;/a&gt; in the samples directory, of the &lt;a href=&#34;https://github.com/kinow/gtest-tap-listener&#34; title=&#34;GTest TAP Listener&#34;&gt;GoogleTest TAP listener project&lt;/a&gt;, to output coverage data.&lt;/p&gt;
+
+&lt;p&gt;Basically, you have to add the compiler flags &lt;em&gt;-fprofile-arcs -ftest-coverage&lt;/em&gt; and link the executable with -lgcov. Take a look at the project&amp;#8217;s Makefile and you&amp;#8217;ll notice how simple it is. In order to have Jenkins interpreting your coverage report, you&amp;#8217;ll have to convert it to &lt;a href=&#34;http://cobertura.sourceforge.net&#34; title=&#34;Cobertura&#34;&gt;cobertura&lt;/a&gt; XML. There is a Python utility that can be used for this: &lt;a href=&#34;https://software.sandia.gov/trac/fast/wiki/gcovr&#34; title=&#34;gcovr&#34;&gt;gcovr&lt;/a&gt;. Download it and copy it to somewhere where Jenkins can execute it (e.g.: &lt;em&gt;/usr/local/bin&lt;/em&gt;).&lt;/p&gt;
+
+&lt;p&gt;Now, if you&amp;#8217;ve followed the instructions from the previous post, you should have a job that reports your GoogleTest tests from Jenkins to TestLink using the plug-in, and is downloading the source code from GitHub. Add an extra build step  (Shell) to execute &lt;em&gt;gcovr&lt;/em&gt;.&lt;/p&gt;
+
+
+            
+            </description>
+        </item>
         
         
         
@@ -315,40 +347,6 @@ I simply love when these things happen, it was great work with Guerra, and even 
 
 &lt;p&gt;Here&amp;#8217;s a list of some projects using Maven Fluido Skin (hopefully, in the near future &lt;a title=&#34;Apache Commons&#34; href=&#34;http://commons.apache.org/&#34;&gt;Apache Commons&lt;/a&gt; and other projects will adopt this skin as default too :-)):&lt;/p&gt;
 
-
-            
-            </description>
-        </item>
-        
-        
-        
-        <item>
-            <title>Ranges in Apache Commons Functor</title>
-            <link>/2012/01/22/ranges-in-apache-functor</link>
-            
-            <author>kinow</author>
-            <dc:creator>kinow</dc:creator>
-            
-            <category>blog</category>
-            
-            <category>apache software foundation</category>
-            
-            <category>functional programming</category>
-            
-            <pubDate>2012-01-22T19:54:36+13:00</pubDate>
-            <guid>/2012/01/22/ranges-in-apache-functor</guid>
-            <description>
-            
-            &lt;p&gt;This is a long post. So here is a &lt;strong&gt;TL;DR&lt;/strong&gt;:
-&lt;ul&gt;
-    &lt;li&gt;Apache Commons Functor has no Double or Float Range (yet)&lt;/li&gt;
-    &lt;li&gt;Apache Commons Functor IntegerRange and LongRange treat the low value as inclusive, and the high value as exclusive. How does that compare to other languages/APIs? (you will have to read to see some comparison)&lt;/li&gt;
-    &lt;li&gt;Perl has support for characters ranges, perhaps we could implement it in Functor too?&lt;/li&gt;
-    &lt;li&gt;In case we implemented a CharacterRange, it would have to be inclusive for both low and high limits. With &amp;#8216;z&amp;#8217; being the last character, there wouldn&amp;#8217;t have a way to include Z with the current approach. Or we would have to make the CharacterRange a special one. What would go against &lt;a title=&#34;Liskov Substitution Principle&#34; href=&#34;http://en.wikipedia.org/wiki/Liskov_substitution_principle&#34;&gt;Liskov Substitution Principle&lt;/a&gt;.&lt;/li&gt;
-    &lt;li&gt;You can see a comparison table with Apache Commons Functor, other Java API&amp;#8217;s and other programming languages for ranges clicking &lt;a href=&#34;#ctable&#34; title=&#34;Comparison table&#34;&gt;here&lt;/a&gt;.&lt;/li&gt;
-    &lt;li&gt;It would be nice to have a clear distinction in Functor documentation among a Sequence, a Generator and a Range. While I was gathering material for this post, I found places using range, others using sequence, and in Apache Commons Functor, an IntegerRange is a Generator.&lt;/li&gt;
-&lt;/ul&gt;
-Now, if you have some spare time or curiosity, keep reading :-)&lt;/p&gt;
 
             
             </description>

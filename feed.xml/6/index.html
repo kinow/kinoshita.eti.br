@@ -10,13 +10,97 @@
         
         <description>Latest news from Bruno P. Kinoshita</description>
         
-        <lastBuildDate>2018-12-24T13:10:37+13:00</lastBuildDate>
-        <pubDate>2018-12-24T13:10:37+13:00</pubDate>
+        <lastBuildDate>2018-12-24T17:17:10+13:00</lastBuildDate>
+        <pubDate>2018-12-24T17:17:10+13:00</pubDate>
         <generator>PieCrust 3.2.1</generator>
         
         
         
 
+        
+        
+        
+        <item>
+            <title>Apache Commons Lang: Memoizer</title>
+            <link>/2017/01/08/apache-commons-lang-memoizer</link>
+            
+            <author>kinow</author>
+            <dc:creator>kinow</dc:creator>
+            
+            <category>blog</category>
+            
+            <category>java</category>
+            
+            <category>programming</category>
+            
+            <category>apache software foundation</category>
+            
+            <pubDate>2017-01-08T18:34:03+13:00</pubDate>
+            <guid>/2017/01/08/apache-commons-lang-memoizer</guid>
+            <description>
+            
+            &lt;p&gt;The current release of &lt;a href=&#34;https://commons.apache.org/proper/commons-lang/&#34;&gt;Apache Commons Lang&lt;/a&gt;
+is &lt;strong&gt;3.5&lt;/strong&gt;. The upcoming release, probably 3.6,
+will include a new feature, added in a
+&lt;a href=&#34;https://github.com/apache/commons-lang/pull/203&#34;&gt;pull request&lt;/a&gt;:
+&lt;strong&gt;a Memoizer implementation&lt;/strong&gt;. Check out the ticket &lt;a href=&#34;https://issues.apache.org/jira/browse/LANG-740&#34;&gt;LANG-740&lt;/a&gt;
+for more about the implementation being added to [lang].&lt;/p&gt;
+&lt;p&gt;The book &lt;a href=&#34;http://jcip.net/&#34;&gt;Java Concurrency in Practice&lt;/a&gt; introduces readers to the Memoizer,
+and has also a &lt;a href=&#34;http://jcip.net/listings/Memoizer.java&#34;&gt;public domain implementation available for download&lt;/a&gt;
+(besides that, the book has also lots of other interesting topics!).&lt;/p&gt;
+&lt;p&gt;In summary, Memoizer is a simple cache, that will store the result of
+a computation. It receives a Computable object, responsible for doing something
+that will be stored by the Memoizer. Here&amp;#8217;s a simple code to illustrate how that
+will work in your Java code.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;// Computation to be stored in the cache&lt;/span&gt;
+&lt;span class=&#34;n&#34;&gt;Computable&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;String&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;String&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;getFormattedCurrentDate&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;new&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Computable&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;String&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;String&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;&amp;gt;()&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;
+    &lt;span class=&#34;nd&#34;&gt;@Override&lt;/span&gt;
+    &lt;span class=&#34;kd&#34;&gt;public&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;String&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;compute&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;String&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;fmt&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;kd&#34;&gt;throws&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;InterruptedException&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;
+        &lt;span class=&#34;k&#34;&gt;return&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;new&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;SimpleDateFormat&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;fmt&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;).&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;format&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;new&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Date&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;());&lt;/span&gt;
+    &lt;span class=&#34;o&#34;&gt;}&lt;/span&gt;
+&lt;span class=&#34;o&#34;&gt;};&lt;/span&gt;
+
+&lt;span class=&#34;c1&#34;&gt;// Our memoizer&lt;/span&gt;
+&lt;span class=&#34;n&#34;&gt;Memoizer&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;String&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;String&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;dateCache&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;new&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Memoizer&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;&amp;lt;&amp;gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;getFormattedCurrentDate&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;);&lt;/span&gt;
+
+&lt;span class=&#34;c1&#34;&gt;// To illustrate its use&lt;/span&gt;
+&lt;span class=&#34;k&#34;&gt;for&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;kt&#34;&gt;int&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;i&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;;&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;i&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;10&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;;&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;i&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;++)&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;
+    &lt;span class=&#34;k&#34;&gt;try&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;
+        &lt;span class=&#34;c1&#34;&gt;// S -&amp;gt; Millisecond&lt;/span&gt;
+        &lt;span class=&#34;n&#34;&gt;System&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;out&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;println&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;dateCache&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;compute&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;HH:mm:ss:S Z dd/MM/YYYY&amp;quot;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;));&lt;/span&gt;
+        &lt;span class=&#34;c1&#34;&gt;// Regardless of this sleep call, we get the same result every iteration&lt;/span&gt;
+        &lt;span class=&#34;n&#34;&gt;Thread&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;sleep&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;1500&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;);&lt;/span&gt;
+    &lt;span class=&#34;o&#34;&gt;}&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;catch&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;InterruptedException&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;e&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;
+        &lt;span class=&#34;n&#34;&gt;e&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;printStackTrace&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;();&lt;/span&gt;
+    &lt;span class=&#34;o&#34;&gt;}&lt;/span&gt;
+&lt;span class=&#34;o&#34;&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;The computable created (&lt;em&gt;getFormattedCurrentDate&lt;/em&gt;) will be called only once, and stored in
+a map. The parameter passed in the &lt;em&gt;#compute()&lt;/em&gt; method will be used as key in the map.
+So choose your parameter wisely :-) The output of the example will be similar to the following one.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;19&lt;/span&gt;:15:57:854 +1300 &lt;span class=&#34;m&#34;&gt;08&lt;/span&gt;/01/2017
+&lt;span class=&#34;m&#34;&gt;19&lt;/span&gt;:15:57:854 +1300 &lt;span class=&#34;m&#34;&gt;08&lt;/span&gt;/01/2017
+&lt;span class=&#34;m&#34;&gt;19&lt;/span&gt;:15:57:854 +1300 &lt;span class=&#34;m&#34;&gt;08&lt;/span&gt;/01/2017
+&lt;span class=&#34;m&#34;&gt;19&lt;/span&gt;:15:57:854 +1300 &lt;span class=&#34;m&#34;&gt;08&lt;/span&gt;/01/2017
+&lt;span class=&#34;m&#34;&gt;19&lt;/span&gt;:15:57:854 +1300 &lt;span class=&#34;m&#34;&gt;08&lt;/span&gt;/01/2017
+&lt;span class=&#34;m&#34;&gt;19&lt;/span&gt;:15:57:854 +1300 &lt;span class=&#34;m&#34;&gt;08&lt;/span&gt;/01/2017
+&lt;span class=&#34;m&#34;&gt;19&lt;/span&gt;:15:57:854 +1300 &lt;span class=&#34;m&#34;&gt;08&lt;/span&gt;/01/2017
+&lt;span class=&#34;m&#34;&gt;19&lt;/span&gt;:15:57:854 +1300 &lt;span class=&#34;m&#34;&gt;08&lt;/span&gt;/01/2017
+&lt;span class=&#34;m&#34;&gt;19&lt;/span&gt;:15:57:854 +1300 &lt;span class=&#34;m&#34;&gt;08&lt;/span&gt;/01/2017
+&lt;span class=&#34;m&#34;&gt;19&lt;/span&gt;:15:57:854 +1300 &lt;span class=&#34;m&#34;&gt;08&lt;/span&gt;/01/2017
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;In the example above I used a &lt;em&gt;for-loop&lt;/em&gt; to illustrate what will happen. Even though we call
+the memoizer &lt;em&gt;#compute()&lt;/em&gt; method several times, followed by
+&lt;em&gt;Thread#sleep()&lt;/em&gt;; only one result, the first to be computed, will be returned.&lt;/p&gt;
+&lt;p&gt;So that&amp;#8217;s all for today. Hope you learned something about this new class, that must
+be available in the next release of Apache Commons Lang.&lt;/p&gt;
+&lt;p&gt;Happy hacking!&lt;/p&gt;
+&lt;p&gt;ps: [lang] uses Java 7, so that is why we do not have a functional instead of the Comparable&lt;/p&gt;
+            
+            </description>
+        </item>
         
         
         
@@ -498,44 +582,6 @@ without having to use the upper case syntax.&lt;/p&gt;
 &lt;blockquote class=&#34;twitter-tweet&#34; data-lang=&#34;en&#34;&gt;&lt;p lang=&#34;en&#34; dir=&#34;ltr&#34;&gt;&lt;a href=&#34;https://twitter.com/kinow&#34;&gt;@kinow&lt;/a&gt; you can also specify them as command-line arguments (no need for the upper case thing)&lt;a href=&#34;https://t.co/zBKpgcXN1C&#34;&gt;https://t.co/zBKpgcXN1C&lt;/a&gt;&lt;br&gt;&lt;br&gt;or `-Drun.arguments`&lt;/p&gt;&amp;mdash; Stéphane Nicoll (@snicoll) &lt;a href=&#34;https://twitter.com/snicoll/status/800965565120708608&#34;&gt;November 22, 2016&lt;/a&gt;&lt;/blockquote&gt;
 
 &lt;script async src=&#34;//platform.twitter.com/widgets.js&#34; charset=&#34;utf-8&#34;&gt;&lt;/script&gt;
-            
-            </description>
-        </item>
-        
-        
-        
-        <item>
-            <title>Add a header to a file with Shell script (sed)</title>
-            <link>/2016/11/12/add-a-header-to-a-file-with-shell-script-sed</link>
-            
-            <author>kinow</author>
-            <dc:creator>kinow</dc:creator>
-            
-            <category>blog</category>
-            
-            <category>shell script</category>
-            
-            <pubDate>2016-11-12T01:55:03+13:00</pubDate>
-            <guid>/2016/11/12/add-a-header-to-a-file-with-shell-script-sed</guid>
-            <description>
-            
-            &lt;p&gt;Today I was re-generating the documentation for a REST API written in PHP, with
-Laravel. To generate the documentation, one would have to call a Laravel command first.
-That command would create a Markdown page. And since in this project I am using Jekyll
-for the project site, the final step was adding a header to the file, so that Jekyll
-can recognize that content as a blog post.&lt;/p&gt;
-&lt;p&gt;Laravel allows you to add custom commands to your project, so I decided to write a command
-that would call the other command that generates the documentation, and add an extra step
-of adding the header to the Markdown file.&lt;/p&gt;
-&lt;p&gt;Here&amp;#8217;s the shell script part, that allows you to add a header to a file, in place (i.e.
-it will alter and save the change your file).&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;sed -i 1i&lt;span class=&#34;s2&#34;&gt;&amp;quot;----\nlayout: page\ntitle: API Installation\n----\n\n&amp;quot;&lt;/span&gt; ./docs/documentation/api/api.md
-&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;Here the first argument to sed, &lt;em&gt;-i&lt;/em&gt; is for in place. Then that strange &lt;em&gt;1i&lt;/em&gt;
-means that it will insert something before the first line, once. Then we have our header,
-and finally the file.&lt;/p&gt;
-&lt;p&gt;Happy hacking!&lt;/p&gt;
             
             </description>
         </item>

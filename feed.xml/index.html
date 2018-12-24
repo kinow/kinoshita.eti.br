@@ -10,13 +10,70 @@
         
         <description>Latest news from Bruno P. Kinoshita</description>
         
-        <lastBuildDate>2018-12-24T13:10:37+13:00</lastBuildDate>
-        <pubDate>2018-12-24T13:10:37+13:00</pubDate>
+        <lastBuildDate>2018-12-24T17:17:10+13:00</lastBuildDate>
+        <pubDate>2018-12-24T17:17:10+13:00</pubDate>
         <generator>PieCrust 3.2.1</generator>
         
         
         
 
+        
+        
+        
+        <item>
+            <title>How the Skosmos Widget Wiki plugin works</title>
+            <link>/2018/12/24/how-the-skosmos-widget-wiki-plugin-works</link>
+            
+            <author>kinow</author>
+            <dc:creator>kinow</dc:creator>
+            
+            
+            
+            <category>php</category>
+            
+            <category>skosmos</category>
+            
+            <category>semantic web</category>
+            
+            <category>vocabulary server</category>
+            
+            <pubDate>2018-12-24T15:43:43+13:00</pubDate>
+            <guid>/2018/12/24/how-the-skosmos-widget-wiki-plugin-works</guid>
+            <description>
+            
+            &lt;p&gt;Skosmos can be extended through plugins, or widgets (a widget is a plugin for Skosmos).
+You can read more about how &lt;a href=&#34;https://github.com/NatLibFi/Skosmos/wiki/Plugins&#34;&gt;plugins work in Skosmos here&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;This post is a note-to-self, explaining how the &lt;strong&gt;Skosmos Widget Wiki plugin&lt;/strong&gt; works. This
+is a plugin - or widget - that displays Wikipedia information when the concept supports it.&lt;/p&gt;
+&lt;p&gt;Here&amp;#8217;s an image of the plugin in action. Or you can go to
+&lt;a href=&#34;http://finto.fi/yso-paikat/en/page/p107650&#34;&gt;a live instance of Skosmos&lt;/a&gt;
+that has the plugin enabled.&lt;/p&gt;
+&lt;div class=&#39;row&#39;&gt;
+&lt;div class=&#34;ui container&#34; style=&#39;text-align: center;&#39;&gt;
+&lt;figure&gt;
+&lt;a href=&#34;/2018/12/24/how-the-skosmos-widget-wiki-plugin-works/skosmos-widget-wiki-screenshot.png&#34; rel=&#34;prettyPhoto&#34; class=&#34;thumbnail&#34;&gt;
+&lt;img class=&#34;ui fluid image&#34; src=&#34;/2018/12/24/how-the-skosmos-widget-wiki-plugin-works/skosmos-widget-wiki-screenshot.png&#34; /&gt;
+&lt;/a&gt;
+&lt;figcaption&gt;Skosmos Widget Wiki plugin in action&lt;/figcaption&gt;
+&lt;/figure&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;h2&gt;Under the hood&lt;/h2&gt;
+&lt;p&gt;The plugin exposes a JavaScript callback via its &lt;code&gt;plugin.json&lt;/code&gt; file. In the callback, it
+receives a &lt;code&gt;data&lt;/code&gt; object, with the following properties.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;uri&lt;/code&gt;, the concept identifier, e.g. &lt;em&gt;http://www.yso.fi/onto/yso/p107650&amp;#8221;&lt;/em&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;prefLabels&lt;/code&gt;, the concepts preferred labels, e.g. &lt;em&gt;&amp;#8220;Central Asia&amp;#8221;@en&lt;/em&gt;, &lt;em&gt;&amp;#8220;Keski-Aasia&amp;#8221;@fi&lt;/em&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;pageType&lt;/code&gt;, defaults to &lt;code&gt;page&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;json-ld&lt;/code&gt;, which contains the JSON-LD &lt;code&gt;@context&lt;/code&gt;, as well as a &lt;code&gt;graph&lt;/code&gt; property&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;If the &lt;code&gt;pageType&lt;/code&gt; is not &lt;code&gt;page&lt;/code&gt;, or if there are no preferred labels, or if there is no
+JSON-LD data, the plugin is not activated.&lt;/p&gt;
+
+            
+            </description>
+        </item>
         
         
         
@@ -663,68 +720,6 @@ with multiple threads. But I have not used that yet.&lt;/p&gt;
 &lt;p&gt;&amp;hearts; Open Source&lt;/p&gt;
 &lt;p&gt;&lt;em&gt;NB: even though Pandas is not thread-safe, it does not mean you should not use it. Just use
 with care when using multiple threads&lt;/em&gt;&lt;/p&gt;
-            
-            </description>
-        </item>
-        
-        
-        
-        <item>
-            <title>Cylc Scheduler Internals - Part 1</title>
-            <link>/2018/07/14/cylc-scheduler-internals-part-1</link>
-            
-            <author>kinow</author>
-            <dc:creator>kinow</dc:creator>
-            
-            
-            
-            <category>cylc</category>
-            
-            <category>python</category>
-            
-            <category>opensource</category>
-            
-            <pubDate>2018-07-14T22:42:47+12:00</pubDate>
-            <guid>/2018/07/14/cylc-scheduler-internals-part-1</guid>
-            <description>
-            
-            &lt;p&gt;This is the first post in a series of three (or maybe four later) based on diagrams
-I collected while debugging the Cylc scheduler. The scheduler is called by the &lt;code&gt;cylc start&lt;/code&gt;
-utility.&lt;/p&gt;
-&lt;p&gt;&lt;em&gt;NB: this is a post to remember things, not really expecting to give someone enough
-information to be able to hack the Cylc Scheduler (though you can and would have fun!).&lt;/em&gt;&lt;/p&gt;
-&lt;p&gt;Instead of going at length on what happens (and there is quite a bit happening when
-you run &lt;code&gt;cylc start my.suite&lt;/code&gt;), I will use the following diagram, followed by a few paragraphs
-to highlight certain parts. The code used was based on &lt;a href=&#34;https://github.com/cylc/cylc/tree/7.7.1&#34;&gt;Cylc 7.7.1&lt;/a&gt;.&lt;/p&gt;
-&lt;p style=&#39;text-align: center;&#39;&gt;
-&lt;a href=&#34;/2018/07/14/cylc-scheduler-internals-part-1/cylc-scheduler_cli-workflow.png&#34;&gt;
-&lt;img style=&#34;display: inline; width: 100%;&#34; class=&#34;ui image&#34; src=&#34;/2018/07/14/cylc-scheduler-internals-part-1/cylc-scheduler_cli-workflow.png&#34;  /&gt;
-&lt;/a&gt;
-&lt;/p&gt;
-
-&lt;p&gt;When a Cylc command like &lt;code&gt;cylc start&lt;/code&gt; is invoked, it actually gets translated into
-&lt;code&gt;bin/cylc-$command_name&lt;/code&gt;. &lt;code&gt;cylc-start&lt;/code&gt; is a Shell file, that will simply call &lt;code&gt;cylc-run&lt;/code&gt;.
-&lt;code&gt;cylc-run&lt;/code&gt; then imports &lt;code&gt;scheduler_cli&lt;/code&gt;&amp;#8230; but what you need to know is that in the end
-&lt;code&gt;scheduler_cli&lt;/code&gt; will create an instance of &lt;code&gt;Scheduler&lt;/code&gt; with the right constructor
-arguments, and call its &lt;code&gt;start&lt;/code&gt; method.&lt;/p&gt;
-&lt;p&gt;After that point, you are at the left-most lifeline, on the &lt;code&gt;Scheduler&lt;/code&gt; constructor
-(i.e. the &lt;strong&gt;init&lt;/strong&gt; method of the scheduler.py&amp;#8217;s Scheduler class).&lt;/p&gt;
-&lt;p&gt;If you follow the method calls - which are hopefully easy to understand and follow -
-you will find that the constructor merely creates a few objects, prepares the suite
-information, and the suite database.&lt;/p&gt;
-&lt;p&gt;Then the &lt;code&gt;start&lt;/code&gt; method kicks things off, interacting with previously created objects,
-but also with some singletons for logging and configuration. Oh, that &lt;code&gt;Cylc&lt;/code&gt; banner
-is also printed here (in case you would like to customize it as in SpringBoot).&lt;/p&gt;
-&lt;p&gt;After that, if you are running the suite as daemon, it will be
-&lt;a href=&#34;http://code.activestate.com/recipes/66012-fork-a-daemon-process-on-unix/&#34;&gt;daemonized&lt;/a&gt;,
-by forking the current process, but with Python.&lt;/p&gt;
-&lt;p&gt;One important step that happens here, is the initialization of the HTTP Server. This server
-will be used to communicate with the &lt;strong&gt;Suite Server Program&lt;/strong&gt;. It will be listening to
-connections with the right endpoints available only after the &lt;code&gt;configure&lt;/code&gt; method.&lt;/p&gt;
-&lt;p&gt;Lastly, we have &lt;code&gt;configure&lt;/code&gt; and &lt;code&gt;run&lt;/code&gt; methods, which are two very important methods to be discussed
-in the next part of this series, as they are quite extensive, and deserve their own diagrams.&lt;/p&gt;
-&lt;p&gt;You can download the &lt;a href=&#34;/2018/07/14/cylc-scheduler-internals-part-1/cylc-scheduler_cli-workflow-src.xml&#34;&gt;source file&lt;/a&gt; for the diagram used in this post, and edit it
-with &lt;a href=&#34;https://draw.io&#34;&gt;draw.io&lt;/a&gt;.&lt;/p&gt;
             
             </description>
         </item>

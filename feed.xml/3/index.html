@@ -10,13 +10,67 @@
         
         <description>Latest news from Bruno P. Kinoshita</description>
         
-        <lastBuildDate>2018-12-24T13:10:37+13:00</lastBuildDate>
-        <pubDate>2018-12-24T13:10:37+13:00</pubDate>
+        <lastBuildDate>2018-12-24T17:17:10+13:00</lastBuildDate>
+        <pubDate>2018-12-24T17:17:10+13:00</pubDate>
         <generator>PieCrust 3.2.1</generator>
         
         
         
 
+        
+        
+        
+        <item>
+            <title>Watch out for Locales when using NumberFormat with currencies</title>
+            <link>/2017/12/02/watch-out-for-locales-when-using-number-format-with-currencies</link>
+            
+            <author>kinow</author>
+            <dc:creator>kinow</dc:creator>
+            
+            
+            
+            <category>programming</category>
+            
+            <category>java</category>
+            
+            <category>apache software foundation</category>
+            
+            <pubDate>2017-12-02T22:51:00+13:00</pubDate>
+            <guid>/2017/12/02/watch-out-for-locales-when-using-number-format-with-currencies</guid>
+            <description>
+            
+            &lt;p&gt;In Java you have the &lt;a href=&#34;https://docs.oracle.com/javase/9/docs/api/java/text/NumberFormat.html&#34;&gt;NumberFormatException&lt;/a&gt;
+to help you formatting and parsing numbers for any locale. Said that, here&amp;#8217;s some code.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;BigDecimal &lt;span class=&#34;nv&#34;&gt;negative&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; new BigDecimal&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;-1234.56&amp;quot;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+
+DecimalFormat &lt;span class=&#34;nv&#34;&gt;nf&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;DecimalFormat&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt; NumberFormat.getCurrencyInstance&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;Locale.UK&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+String &lt;span class=&#34;nv&#34;&gt;formattedNegative&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; nf.format&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;negative&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+
+System.out.println&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;formattedNegative&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;The output for this code is &lt;strong&gt;-£1,234.56&lt;/strong&gt;. That&amp;#8217;s expected, as the locale is set to
+UK, so the currency symbol used is for British Pounds. And as the number is negative, you
+get that minus sign as a prefix. For Japanese locale you&amp;#8217;d get &lt;strong&gt;-￥1,235&lt;/strong&gt;, and for Brazilian
+locale you&amp;#8217;d get &lt;strong&gt;-R$ 1.234,56&lt;/strong&gt;.&lt;/p&gt;
+&lt;p&gt;So far so good. &lt;/p&gt;
+&lt;p&gt;What about the following code, with nothing different except for the locale set to &lt;strong&gt;US&lt;/strong&gt;.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;BigDecimal &lt;span class=&#34;nv&#34;&gt;negative&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; new BigDecimal&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;-1234.56&amp;quot;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+
+DecimalFormat &lt;span class=&#34;nv&#34;&gt;nf&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;DecimalFormat&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt; NumberFormat.getCurrencyInstance&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;Locale.US&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt; // &amp;lt;--- US now
+String &lt;span class=&#34;nv&#34;&gt;formattedNegative&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; nf.format&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;negative&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+
+System.out.println&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;formattedNegative&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Some could intuitively expect &lt;strong&gt;-$1,234.56&lt;/strong&gt;. However, &lt;strong&gt;the output is actually ($1,234.56)&lt;/strong&gt;.&lt;/p&gt;
+&lt;p&gt;There are different prefixes and suffixes. But in some locales the prefix can be empty, or, as
+in the case of the US locale, it can be quite different than what you could expect.&lt;/p&gt;
+&lt;p&gt;Learned about this peculiarity from NumberFormat while working on &lt;a href=&#34;https://issues.apache.org/jira/browse/VALIDATOR-433&#34;&gt;VALIDATOR-433&lt;/a&gt; for Apache Commons Validator.&lt;/p&gt;
+&lt;p&gt;Happy hacking!&lt;/p&gt;
+            
+            </description>
+        </item>
         
         
         
@@ -763,42 +817,6 @@ when creating the Markdown instance.&lt;/p&gt;
 &lt;/div&gt;
 
 &lt;p&gt;2B pencil, rubber eraser, blending stump, and HB 0.3 mechanical pencil. Yellow-ish layer added adjusting LAB colour space in GIMP.&lt;/p&gt;
-            
-            </description>
-        </item>
-        
-        
-        
-        <item>
-            <title>SciCo 2017: An Introduction to the International Image Interoperability Framework (IIIF)</title>
-            <link>/2017/07/21/scico-2017-an-introduction-to-the-international-image-interoperability-framework-iiif</link>
-            
-            <author>kinow</author>
-            <dc:creator>kinow</dc:creator>
-            
-            <category>presentations</category>
-            
-            <category>iiif</category>
-            
-            <pubDate>2017-07-21T21:25:03+12:00</pubDate>
-            <guid>/2017/07/21/scico-2017-an-introduction-to-the-international-image-interoperability-framework-iiif</guid>
-            <description>
-            
-            &lt;p&gt;&lt;strong&gt;An Introduction to the International Image Interoperability Framework (IIIF)&lt;/strong&gt;&lt;/p&gt;
-&lt;div class=&#39;row&#39;&gt;
-&lt;div class=&#34;ui embed&#34;&gt;
-&lt;iframe src=&#34;https://kinow.github.io/scico-2017/&#34; frameborder=&#34;0&#34; allowfullscreen&gt;&lt;/iframe&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;dl&gt;
-&lt;dt&gt;Event&lt;/dt&gt;
-&lt;dd&gt;&lt;a href=&#34;http://nesi-cri.nz/&#34;&gt;Science Coding Conference 2017&lt;/a&gt;&lt;/dd&gt;
-&lt;dt&gt;Where ?&lt;/dt&gt;
-&lt;dd&gt;&lt;a href=&#34;https://www.google.co.nz/maps/place/Wellington/@-41.244027,174.6217709,11z/data=!3m1!4b1!4m5!3m4!1s0x6d38b1fc49e974cb:0xa00ef63a213b470!8m2!3d-41.2864603!4d174.776236&#34;&gt;Wellington, New Zealand&lt;/a&gt;&lt;/dd&gt;
-&lt;dt&gt;When ?&lt;/dt&gt;
-&lt;dd&gt;2017-08-04&lt;/dd&gt;
-&lt;/dl&gt;
             
             </description>
         </item>
