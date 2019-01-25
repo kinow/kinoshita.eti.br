@@ -348,11 +348,15 @@ Linux, OSX, Windows
 
 <table class="ui celled table">
   <tr>
+    <td>Japanese-Language Proficiency Test (JLPT) N4</td>
+    <td>2019</td>
+  </tr>
+  <tr>
     <td>gvSIG User Certificate</td>
     <td>2018</td>
   </tr>
   <tr>
-    <td>Japanese-Language Proficiency Test N5</td>
+    <td>Japanese-Language Proficiency Test (JLPT) N5</td>
     <td>2018</td>
   </tr>
   <tr>
