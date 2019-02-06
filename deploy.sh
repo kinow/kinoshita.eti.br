@@ -1,4 +1,5 @@
 #!/bin/bash
+. ~/Development/python/sa3.sh
 DIR=$(dirname "$0")
 
 chef --root="$DIR" purge
