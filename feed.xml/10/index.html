@@ -10,13 +10,50 @@
         
         <description>Latest news from Bruno P. Kinoshita</description>
         
-        <lastBuildDate>2019-02-12T22:14:00+13:00</lastBuildDate>
-        <pubDate>2019-02-12T22:14:00+13:00</pubDate>
+        <lastBuildDate>2019-02-17T01:12:29+13:00</lastBuildDate>
+        <pubDate>2019-02-17T01:12:29+13:00</pubDate>
         <generator>PieCrust 3.2.1</generator>
         
         
         
 
+        
+        
+        
+        <item>
+            <title>Missing menus in new installation of TestLink 1.9.8</title>
+            <link>/2013/10/27/missing-menus-in-new-installation-of-testlink</link>
+            
+            <author>kinow</author>
+            <dc:creator>kinow</dc:creator>
+            
+            <category>blog</category>
+            
+            <category>testlink</category>
+            
+            <pubDate>2013-10-27T12:42:33+13:00</pubDate>
+            <guid>/2013/10/27/missing-menus-in-new-installation-of-testlink</guid>
+            <description>
+            
+            &lt;p&gt;I recently installed TestLink 1.9.8 and noticed that the menus and some other parts 
+of the UI we missing. Looking at &lt;code&gt;/var/log/testlink/userlog1.log&lt;/code&gt; (the location 
+may change depending on your settings) I realized that there was something wrong 
+with my PHP installation. There were log messages like the below.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;include_once(ADORecordSet_ext_empty.class.php): failed to open stream: No such file or directory - in /home/kinow/php/workspace/testlink-1.9.8/lib/functions/common.php - Line 92
+[13/Sep/18 12:51:09][WARNING][2o0h173pdgg5fjqh1pukr83og2][GUI]
+E_WARNING
+include_once(): Failed opening &#39;ADORecordSet_ext_empty.class.php&#39; for inclusion (include_path=&#39;.:/usr/share/php:/usr/share/pear:.:/home/kinow/php/workspace/testlink-1.9.8/lib/functions/:/home/kinow/php/workspace/testlink-1.9.8/lib/issuet
+...
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;I found a post in a forum (but unfortunately I forgot to save the link) that suggested 
+these ADORecordSet were being caused by the module &lt;strong&gt;php5-adodb&lt;/strong&gt;. Removing the module, and 
+cleaning the templates cache directory (&lt;code&gt;$TESTLINK_HOME/gui/templates_c/*&lt;/code&gt;) 
+fixed the issue for me.&lt;/p&gt;
+&lt;p&gt;Hope that helps.
+Happy testing!&lt;/p&gt;
+            
+            </description>
+        </item>
         
         
         
@@ -393,74 +430,6 @@ command.&lt;/p&gt;
 &lt;p&gt;This post contains information that I gathered for creating this new API, but that may also be useful for other programmers. I used &lt;a href=&#34;#wp&#34;&gt;Wordpress&lt;/a&gt;, &lt;a href=&#34;#mantis&#34;&gt;Mantis&lt;/a&gt; and &lt;a href=&#34;#jenkins&#34;&gt;Jenkins&lt;/a&gt; in this study. Let me know if you find any mistakes or if you have any other suggestions.&lt;/p&gt;
 
 
-            
-            </description>
-        </item>
-        
-        
-        
-        <item>
-            <title>Replacing a HashSet with a BitSet</title>
-            <link>/2012/10/20/replacing-a-hashset-with-a-bitset</link>
-            
-            <author>kinow</author>
-            <dc:creator>kinow</dc:creator>
-            
-            
-            
-            <category>apache software foundation</category>
-            
-            <category>java</category>
-            
-            <category>opensource</category>
-            
-            <category>programming</category>
-            
-            <pubDate>2012-10-20T19:51:39+13:00</pubDate>
-            <guid>/2012/10/20/replacing-a-hashset-with-a-bitset</guid>
-            <description>
-            
-            &lt;p&gt;I always read the messages in the &lt;a href=&#34;http://www.apache.org/foundation/mailinglists.html&#34; title=&#34;Apache mailing lists&#34;&gt;Apache dev mailing lists&lt;/a&gt;, including Apache Commons &lt;a href=&#34;http://commons.apache.org/mail-lists.html&#34; title=&#34;Apache Commons mailing lists&#34;&gt;dev mailing list&lt;/a&gt;. And you should too. There are always interesting discussions. Sometimes you participate, other times you only watch what&amp;#8217;s happening, but in the end &lt;strong&gt;you always learn something new&lt;/strong&gt;.&lt;/p&gt;
-
-&lt;p&gt;A few days ago, I found &lt;a href=&#34;https://issues.apache.org/jira/browse/LANG-839&#34; title=&#34;LANG-839&#34;&gt;an issue&lt;/a&gt; where it was being proposed to replace an unnecessary &lt;a href=&#34;http://docs.oracle.com/javase/6/docs/api/java/util/HashSet.html&#34; title=&#34;HashSet&#34;&gt;HashSet&lt;/a&gt; in &lt;a href=&#34;http://commons.apache.org/lang/api-release/org/apache/commons/lang3/ArrayUtils.html&#34; title=&#34;ArrayUtils&#34;&gt;ArrayUtils&lt;/a&gt;#removeElements() by a &lt;a href=&#34;http://docs.oracle.com/javase/6/docs/api/java/util/BitSet.html&#34; title=&#34;BitSet&#34;&gt;BitSet&lt;/a&gt;. Here&amp;#8217;s how the code looked like: &lt;/p&gt;
-
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;HashSet&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;Integer&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;toRemove&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;new&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;HashSet&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;Integer&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;&amp;gt;();&lt;/span&gt;
-&lt;span class=&#34;k&#34;&gt;for&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;Map&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;Entry&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;Character&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;MutableInt&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;e&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;occurrences&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;entrySet&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;())&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;
-    &lt;span class=&#34;n&#34;&gt;Character&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;v&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;e&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;getKey&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;();&lt;/span&gt;
-    &lt;span class=&#34;kt&#34;&gt;int&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;found&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;;&lt;/span&gt;
-    &lt;span class=&#34;k&#34;&gt;for&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;kt&#34;&gt;int&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;i&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;ct&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;e&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;getValue&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;().&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;intValue&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;();&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;i&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;ct&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;;&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;i&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;++)&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;
-        &lt;span class=&#34;n&#34;&gt;found&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;indexOf&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;array&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;v&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;charValue&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(),&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;found&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;);&lt;/span&gt;
-        &lt;span class=&#34;k&#34;&gt;if&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;found&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;
-            &lt;span class=&#34;k&#34;&gt;break&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;;&lt;/span&gt;
-        &lt;span class=&#34;o&#34;&gt;}&lt;/span&gt;
-        &lt;span class=&#34;n&#34;&gt;toRemove&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;add&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;found&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;++);&lt;/span&gt;
-    &lt;span class=&#34;o&#34;&gt;}&lt;/span&gt;
-&lt;span class=&#34;o&#34;&gt;}&lt;/span&gt;
-&lt;span class=&#34;k&#34;&gt;return&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;kt&#34;&gt;char&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;[])&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;removeAll&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;((&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;Object&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;array&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;extractIndices&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;toRemove&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;));&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p style=&#34;text-align: center&#34;&gt;&lt;a href=&#34;/2012/10/20/replacing-a-hashset-with-a-bitset/feather_small.gif&#34;&gt;&lt;img src=&#34;/2012/10/20/replacing-a-hashset-with-a-bitset/feather_small.gif&#34; alt=&#34;&#34; title=&#34;Apache Software Foundation&#34; width=&#34;203&#34; height=&#34;61&#34; class=&#34;aligncenter size-full wp-image-1125&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;The HashSet created at line 1, in the code above, was used to store the array index of the elements that should be removed. And at line 13 there is a call to removeAll method, passing the indexes to be removed. And here&amp;#8217;s how the new code looks like: &lt;/p&gt;
-
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;BitSet&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;toRemove&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;new&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;BitSet&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;();&lt;/span&gt;
-&lt;span class=&#34;k&#34;&gt;for&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;Map&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;Entry&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;Character&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;MutableInt&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;e&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;occurrences&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;entrySet&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;())&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;
-    &lt;span class=&#34;n&#34;&gt;Character&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;v&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;e&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;getKey&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;();&lt;/span&gt;
-    &lt;span class=&#34;kt&#34;&gt;int&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;found&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;;&lt;/span&gt;
-    &lt;span class=&#34;k&#34;&gt;for&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;kt&#34;&gt;int&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;i&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;ct&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;e&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;getValue&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;().&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;intValue&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;();&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;i&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;ct&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;;&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;i&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;++)&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;
-        &lt;span class=&#34;n&#34;&gt;found&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;indexOf&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;array&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;v&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;charValue&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(),&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;found&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;);&lt;/span&gt;
-        &lt;span class=&#34;k&#34;&gt;if&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;found&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;
-            &lt;span class=&#34;k&#34;&gt;break&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;;&lt;/span&gt;
-        &lt;span class=&#34;o&#34;&gt;}&lt;/span&gt;
-        &lt;span class=&#34;n&#34;&gt;toRemove&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;set&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;found&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;++);&lt;/span&gt;
-    &lt;span class=&#34;o&#34;&gt;}&lt;/span&gt;
-&lt;span class=&#34;o&#34;&gt;}&lt;/span&gt;
-&lt;span class=&#34;k&#34;&gt;return&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;kt&#34;&gt;char&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;[])&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;removeAll&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;array&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;toRemove&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;);&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;The first difference is at line 1. Instead of a HashSet, it is now using a BitSet. And at line 10, instead of adding a new element to the HashSet, now it &amp;#8220;sets&amp;#8221; a bit in the set (the bit at the specified position is now true). But there are important changes at line 13. The method removeAll was changed, and now the array doesn&amp;#8217;t require a cast anymore. And the it is not necessary to cast the elements from HashSet anymore, as now the bit in the index position of the set is set to true. So the extractIndices method could be removed.&lt;/p&gt;
-
-&lt;p&gt;The code got simpler. But that&amp;#8217;s not all. At &lt;a href=&#34;http://www.apache.org&#34; title=&#34;Apache Software Foundation&#34;&gt;Apache Software Foundation&lt;/a&gt; you can find a lot of talented developers - that&amp;#8217;s why I got so excited after joining them. Besides simplifying the code, the developer responsible for these changes (&lt;strong&gt;sebb&lt;/strong&gt;) also pointed out that the new code &lt;strong&gt;consumes less memory and is faster&lt;/strong&gt;. Ah! And he also wrote &lt;strong&gt;unit tests&lt;/strong&gt;
             
             </description>
         </item>

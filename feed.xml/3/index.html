@@ -10,13 +10,61 @@
         
         <description>Latest news from Bruno P. Kinoshita</description>
         
-        <lastBuildDate>2019-02-12T22:14:00+13:00</lastBuildDate>
-        <pubDate>2019-02-12T22:14:00+13:00</pubDate>
+        <lastBuildDate>2019-02-17T01:12:29+13:00</lastBuildDate>
+        <pubDate>2019-02-17T01:12:29+13:00</pubDate>
         <generator>PieCrust 3.2.1</generator>
         
         
         
 
+        
+        
+        
+        <item>
+            <title>Remember to synchronize when iterating streams from a synchronized Collection</title>
+            <link>/2017/12/03/remember-to-synchronize-when-iterating-streams-from-a-synchronized-collection</link>
+            
+            <author>kinow</author>
+            <dc:creator>kinow</dc:creator>
+            
+            
+            
+            <category>programming</category>
+            
+            <category>java</category>
+            
+            <category>opensource</category>
+            
+            <pubDate>2017-12-03T23:56:13+13:00</pubDate>
+            <guid>/2017/12/03/remember-to-synchronize-when-iterating-streams-from-a-synchronized-collection</guid>
+            <description>
+            
+            &lt;p&gt;When iterating collections created via &lt;code&gt;Collections.synchronizedList&lt;/code&gt; for instance, you are required
+to obtain a lock on the actual list before doing so. So you normally end up with code similar to:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;List&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;list&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Collections&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;synchronizedList&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;new&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;ArrayList&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;());&lt;/span&gt;
+&lt;span class=&#34;kd&#34;&gt;synchronized&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;list&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;
+  &lt;span class=&#34;n&#34;&gt;Iterator&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;i&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;list&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;iterator&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;();&lt;/span&gt; &lt;span class=&#34;c1&#34;&gt;// Must be in synchronized block&lt;/span&gt;
+  &lt;span class=&#34;k&#34;&gt;while&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;i&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;hasNext&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;())&lt;/span&gt;
+      &lt;span class=&#34;n&#34;&gt;foo&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;i&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;next&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;());&lt;/span&gt;
+&lt;span class=&#34;o&#34;&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;This requirement is &lt;a href=&#34;https://docs.oracle.com/javase/9/docs/api/java/util/Collections.html#synchronizedList-java.util.List-&#34;&gt;documented in the javadocs&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Since lambdas and streams are being more widely used, it is important to remind
+that when iterating via a stream we also need to obtain a lock on the synchronized
+collection created.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;List&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;list&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Collections&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;synchronizedList&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;new&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;ArrayList&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;());&lt;/span&gt;
+&lt;span class=&#34;kd&#34;&gt;synchronized&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;list&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;
+  &lt;span class=&#34;n&#34;&gt;list&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;stream&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;()&lt;/span&gt;
+    &lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;anyMatch&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(...)&lt;/span&gt;
+&lt;span class=&#34;o&#34;&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Here&amp;#8217;s an &lt;a href=&#34;https://github.com/zalando/nakadi/pull/786&#34;&gt;example from Zalando Nakadi Event Broker&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Happy hacking!&lt;/p&gt;
+            
+            </description>
+        </item>
         
         
         
@@ -768,55 +816,6 @@ when creating the Markdown instance.&lt;/p&gt;
 &lt;p&gt;In order to fix the build, you have to either add the transitive dependency to your pom.xml file, or correct your import statements. This is specially useful to prevent future issues due to other dependencies being added or updated, and changing the version of the transitive dependency.&lt;/p&gt;
 &lt;p&gt;Bonus points if you combine that with continuous integration and some service like Travis-CI.&lt;/p&gt;
 &lt;p&gt;&amp;hearts; Open Source&lt;/p&gt;
-            
-            </description>
-        </item>
-        
-        
-        
-        <item>
-            <title>My favourite Star Trek captain: Jean-Luc Picard</title>
-            <link>/2017/08/03/my-favourite-star-trek-captain-jean-luc-picard</link>
-            
-            <author>kinow</author>
-            <dc:creator>kinow</dc:creator>
-            
-            <category>blog</category>
-            
-            <category>science fiction</category>
-            
-            <category>illustrations</category>
-            
-            <pubDate>2017-08-03T21:52:03+12:00</pubDate>
-            <guid>/2017/08/03/my-favourite-star-trek-captain-jean-luc-picard</guid>
-            <description>
-            
-            &lt;p&gt;My favourite Star Trek captain: &lt;a href=&#34;http://www.startrek.com/database_article/picard-jean-luc&#34;&gt;Jean-Luc Picard&lt;/a&gt;.&lt;/p&gt;
-&lt;blockquote&gt;&amp;ldquo;Space, the final frontier. These are the voyages of the starship Enterprise. Its continuing mission: to explore strange new worlds, to seek out new life and new civilizations, to boldly go where no one has gone before!&amp;rdquo;&lt;/blockquote&gt;
-
-&lt;div class=&#39;row&#39;&gt;
-&lt;div class=&#34;ui fluid container&#34;&gt;
-&lt;figure&gt;
-&lt;a  href=&#34;/2017/08/03/my-favourite-star-trek-captain-jean-luc-picard/jeanlucpicard.jpg&#34; rel=&#34;prettyPhoto&#34; class=&#34;thumbnail&#34; title=&#34;Jean-Luc Picard&#34;&gt;
-&lt;img style=&#34;height: 400px;&#34; class=&#34;ui image&#34; src=&#34;/2017/08/03/my-favourite-star-trek-captain-jean-luc-picard/jeanlucpicard.jpg&#34; alt=&#34;Jean-Luc Picard&#34; /&gt;
-&lt;/a&gt;
-&lt;figcaption&gt;Jean-Luc Picard&lt;/figcaption&gt;
-&lt;/figure&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;div class=&#39;row&#39;&gt;
-&lt;div class=&#34;ui fluid container&#34;&gt;
-&lt;figure&gt;
-&lt;a  href=&#34;/2017/08/03/my-favourite-star-trek-captain-jean-luc-picard/jeanlucpicard-photo.jpg&#34; rel=&#34;prettyPhoto&#34; class=&#34;thumbnail&#34; title=&#34;Jean-Luc Picard&#34;&gt;
-&lt;img style=&#34;height: 400px;&#34; class=&#34;ui image&#34; src=&#34;/2017/08/03/my-favourite-star-trek-captain-jean-luc-picard/jeanlucpicard-photo.jpg&#34; alt=&#34;Jean-Luc Picard&#34; /&gt;
-&lt;/a&gt;
-&lt;figcaption&gt;Jean-Luc Picard&lt;/figcaption&gt;
-&lt;/figure&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;p&gt;2B pencil, rubber eraser, blending stump, and HB 0.3 mechanical pencil. Yellow-ish layer added adjusting LAB colour space in GIMP.&lt;/p&gt;
             
             </description>
         </item>

@@ -124,7 +124,7 @@
                             <h4>Blog Taxonomy</h4>
                             <nav id="tag-cloud" class="sidebar-box" role="complementary">
                               
-                              <span style="font-size: 22.5pt"><a href="/tag/apache%20software%20foundation">apache software foundation</a></span>&nbsp;(25)
+                              <span style="font-size: 23.0pt"><a href="/tag/apache%20software%20foundation">apache software foundation</a></span>&nbsp;(26)
                               
                               <span style="font-size: 12.5pt"><a href="/tag/articles">articles</a></span>&nbsp;(5)
                               
@@ -140,7 +140,7 @@
                               
                               <span style="font-size: 11.5pt"><a href="/tag/functional%20programming">functional programming</a></span>&nbsp;(3)
                               
-                              <span style="font-size: 16.5pt"><a href="/tag/illustrations">illustrations</a></span>&nbsp;(13)
+                              <span style="font-size: 17.0pt"><a href="/tag/illustrations">illustrations</a></span>&nbsp;(14)
                               
                               <span style="font-size: 27.5pt"><a href="/tag/java">java</a></span>&nbsp;(35)
                               
@@ -152,7 +152,7 @@
                               
                               <span style="font-size: 12.0pt"><a href="/tag/natural%20language%20processing">natural language processing</a></span>&nbsp;(4)
                               
-                              <span style="font-size: 29.5pt"><a href="/tag/opensource">opensource</a></span>&nbsp;(39)
+                              <span style="font-size: 30.0pt"><a href="/tag/opensource">opensource</a></span>&nbsp;(40)
                               
                               <span style="font-size: 26.5pt"><a href="/tag/programming">programming</a></span>&nbsp;(33)
                               
@@ -182,6 +182,76 @@
                         <h1 class='topic'>Home</h1>
                     </div>
                     
+                    
+                    <div class="ui raised padded container segment">
+                        <h2>
+                            <a href="/2017/06/03/securely-using-passwords-with-r" title="Permanent link">Securely using passwords with R</a>
+                        </h2>
+                        <small>kinow</small> @ <small>Jun 03, 2017&nbsp;20:21:39 (<span class='stardate' data-input-date='Jun 03, 2017'></span>)</small>
+                        <div class="entry">
+                            
+
+
+
+
+
+<a href="https://twitter.com/share" class="twitter-share-button" data-url="https://kinoshita.eti.br/2017/06/03/securely-using-passwords-with-r" data-text="Securely using passwords with R" data-via="kinow" data-hashtags="opensource">Tweet</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p='https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+                            
+                            <p>It is quite common to have code that needs to interact with another system, database, or third party application, and need to use some sort of credentials to securely communicate.</p>
+<p>Most of the code I wrote in <strong>R</strong>, or reviewed, had normally no borders (from a system analysis perspective) with other systems, or basically just interacted with the file system to retrieve NetCDF or JSON files.</p>
+<p>However, after I saw a comment in <em>Reddit</em> [1] some time ago about this, I decided to check what others used. With <strong>R Shiny</strong> becoming more popular, and moving more R code to the web, I think this will become a common requirement for R code.</p>
+<p>There is a blog post from <strong>RevolutionAnalytics</strong> [2] that does a nice summary of the options for that. The post is from 2015, but I do not think much changed now in 2017. From the blog post and comments, there are seven methods listed:</p>
+<ol>
+<li>Put <a href="https://github.com/ropensci/fishbaseapi/blob/80393023a958aee54e2daa58c337458db5480b84/config_template.yaml">credentials</a> in your source code</li>
+<li>Put credentials in a file in your project, but do not share this file (<em>#3</em>, <em>#4</em>, and <em>#5</em> are similar to this one)</li>
+<li>Put credentials in a <a href="https://csgillespie.github.io/efficientR/3-3-r-startup.html#rprofile">.Rprofile</a> file</li>
+<li><strong>Put credentials in a <a href="https://csgillespie.github.io/efficientR/3-3-r-startup.html#renviron">.Renviron</a> file</strong></li>
+<li>Put <a href="https://github.com/ropensci/fishbaseapi/blob/80393023a958aee54e2daa58c337458db5480b84/config_template.yaml">credentials</a> in a JSON or YAML file</li>
+<li>Put credentials in a secure store that you can access from R</li>
+<li>Ask the user for the credentials when the script is executed (possibly not useful for R Shiny applications)</li>
+</ol>
+<p><strong>My preferred way for R is the .Renviron (or a <a href="https://github.com/gaborcsardi/dotenv">dotEnv</a>) file</strong>. You basically store your password in this file, make sure you do not share this (a global gitignore could be helpful to prevent any accident) and read the variables when you start your code.</p>
+<div class="highlight"><pre><span></span><span class="c1">## Secrets</span>
+MYSQL_PASSWORD<span class="o">=</span>secret
+</pre></div>
+
+<p>If you would like to increase the security, you can combine it with a variation of <em>#6</em>. You use a .Renviron file, and use an encryption service like <a href="https://aws.amazon.com/kms/">Amazon KMS</a> (KMS stands for Key Management Service).</p>
+<p>With <a href="https://github.com/cardcorp/AWR.KMS">AWS KMS in R</a>, you can encrypt your values, put them encrypted in your .Renviron, and even if someone gets hold of your .Renviron file, you have an extra layer of protection, as the attacker would require access to your cloud environment to decrypt it too.</p>
+<div class="highlight"><pre><span></span><span class="c1">## Secrets</span>
+MYSQL_PASSWORD<span class="o">=</span>AQECAHga320J8WadplGCqqVAr4HNvDaFSQ<span class="o">+</span>NaiwIBhmm6qDSFwAAAGIwYAYJKoZIhvcNAQcGoFMwUQIBADBMBgkqhkiG9w0BBwEwHgYJYIZIAWUDBAEuMBEE99<span class="o">+</span>LoLdvYv8l41OhAAIBEIAfx49FFJCLeYrkfMfAw6XlnxP23MmDBdqP8dPp28OoAQ<span class="o">==</span>
+</pre></div>
+
+<h3>References</h3>
+<ul>
+<li>[1] <a href="https://www.reddit.com/r/rstats/comments/6aonwx/open_source_r_applications_and_hiding_database/">r/stats * Open source R applications and hiding database connection</a></li>
+<li>[2] <a href="http://blog.revolutionanalytics.com/2015/11/how-to-store-and-use-authentication-details-with-r.html">How to store and use webservice keys and authentication details with R</a></li>
+</ul>
+<p>&hearts; Open Source</p>
+                            
+                            
+                            
+                        </div>
+                        <p class="postmetadata">
+                            
+                            <small>tags 
+                             [&nbsp;<a
+                                href="/tag/r/"
+                                rel="tag">r</a>&nbsp;]&nbsp;
+                            
+                             [&nbsp;<a
+                                href="/tag/programming/"
+                                rel="tag">programming</a>&nbsp;]&nbsp;
+                            
+                             [&nbsp;<a
+                                href="/tag/security/"
+                                rel="tag">security</a>&nbsp;]&nbsp;
+                            
+                            </small>
+                            
+                            
+                        </p>
+                    </div>
                     
                     <div class="ui raised padded container segment">
                         <h2>
@@ -470,66 +540,6 @@ mailing list or watch GitHub repositories.</p>
                             
                             </small>
                             
-                            
-                        </p>
-                    </div>
-                    
-                    <div class="ui raised padded container segment">
-                        <h2>
-                            <a href="/2017/04/24/drawing-sketch-page-036" title="Permanent link">Drawing sketch: Page 036</a>
-                        </h2>
-                        <small>kinow</small> @ <small>Apr 24, 2017&nbsp;00:41:03 (<span class='stardate' data-input-date='Apr 24, 2017'></span>)</small>
-                        <div class="entry">
-                            
-
-
-
-
-
-<a href="https://twitter.com/share" class="twitter-share-button" data-url="https://kinoshita.eti.br/2017/04/24/drawing-sketch-page-036" data-text="Drawing sketch: Page 036" data-via="kinow" data-hashtags="opensource">Tweet</a>
-<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p='https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-                            
-                            <div class='row'>
-<div class="ui container" style='text-align: center;'>
-<figure>
-<a href="/2017/04/24/drawing-sketch-page-036/sketch-book-036.jpg" rel="prettyPhoto" class="thumbnail" title="Page 036">
-<img class="ui fluid image" src="/2017/04/24/drawing-sketch-page-036/sketch-book-036.jpg" alt="Page 036" />
-</a>
-<figcaption>Page 036</figcaption>
-</figure>
-</div>
-</div>
-
-<p>Almost ANZAC day. And almost time to switch back to coding Jenkins plug-ins.</p>
-<p>Normally sketch more in-between development cycles for Open Source projects, or
-contract works.</p>
-<ul>
-<li><a href="http://animals.nationalgeographic.com/animals/invertebrates/krill/">Krill</a>: Krill are small crustaceans of the order Euphausiacea, and are found in all the world&#8217;s oceans. The name krill comes from the Norwegian word krill, meaning &#8220;small fry of fish&#8221;, which is also often attributed to species of fish.</li>
-<li><a href="http://nzbirdsonline.org.nz/species/tui">Tui</a>: Tui are boisterous, medium-sized, common and widespread bird of forest and suburbia – unless you live in Canterbury. They look black from a distance, but in good light tui have a blue, green and bronze iridescent sheen, and distinctive white throat tufts (poi). They are usually very vocal, with a complicated mix of tuneful notes interspersed with coughs, grunts and wheezes. In flight, their bodies slant with the head higher than the tail, and their noisy whirring flight is interspersed with short glides.</li>
-<li><a href="http://www.goodreads.com/quotes/209171-at-bottom-you-see-we-are-not-homo-sapiens-as">Fatigue or Craziness</a>: Lots of crazy people on Queen Street during holidays.</li>
-</ul>
-                            
-                            
-                            
-                        </div>
-                        <p class="postmetadata">
-                            
-                            <small>tags 
-                             [&nbsp;<a
-                                href="/tag/illustrations/"
-                                rel="tag">illustrations</a>&nbsp;]&nbsp;
-                            
-                            </small>
-                            
-                            
-                            <br/>
-                            <small>posted in 
-                            [&nbsp;<a
-                                href="/blog"
-                                title="View all posts in blog"
-                                rel="category tag">blog</a>&nbsp;]
-                                &nbsp;category
-                            </small>
                             
                         </p>
                     </div>
