@@ -180,3 +180,7 @@ saving the file, the text changed in some strange way.
 </figure>
 </div>
 </div>
+
+Now just need to finish reading
+[how to report bugs to the Inkscape project](https://inkscape.org/contribute/report-bugs/)
+to send it to the developers.
