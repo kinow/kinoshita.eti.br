@@ -54,6 +54,8 @@ process with short commentaire.
 </div>
 </div>
 
+<!-- more -->
+
 <div class='row'>
 <div class="ui container" style='text-align: center;'>
 <figure>
