@@ -187,4 +187,4 @@ Now just need to finish reading
 [how to report bugs to the Inkscape project](https://inkscape.org/contribute/report-bugs/)
 to send it to the developers.
 
-_EDIT: https://gitlab.com/inkscape/inbox/issues/128_
+_EDIT: [https://gitlab.com/inkscape/inbox/issues/128](https://gitlab.com/inkscape/inbox/issues/128_)_
