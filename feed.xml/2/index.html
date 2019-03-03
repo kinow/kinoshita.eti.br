@@ -10,8 +10,8 @@
         
         <description>Latest news from Bruno P. Kinoshita</description>
         
-        <lastBuildDate>2019-03-02T21:17:10+13:00</lastBuildDate>
-        <pubDate>2019-03-02T21:17:10+13:00</pubDate>
+        <lastBuildDate>2019-03-03T23:53:32+13:00</lastBuildDate>
+        <pubDate>2019-03-03T23:53:32+13:00</pubDate>
         <generator>PieCrust 3.2.1</generator>
         
         
@@ -348,7 +348,7 @@ these articles are more brain-dumps, used by myself for later reference.&lt;/p&g
 &lt;img style=&#34;display: inline; width: 100%;&#34; class=&#34;ui image&#34; src=&#34;/2018/05/29/what-happens-when-you-create-a-new-dataset-in-apache-jena-fuseki/sequence-diagram.png&#34;  /&gt;
 &lt;/p&gt;
 
-&lt;h2&gt;ActionDatasets#execPostContainer() (Fuseki Core)&lt;/h2&gt;
+&lt;h3&gt;ActionDatasets#execPostContainer() (Fuseki Core)&lt;/h3&gt;
 &lt;p&gt;&lt;code&gt;ActionDatasets&lt;/code&gt;, as per the name, handles HTTP requests related to datasets. Such as when you
 create a new dataset. It is also an HTTP action. The concept in Jena, as far as I could tell,
 is similar to Jenkins&amp;#8217; actions, but simpler, without the UI/Jelly/Groovy part.&lt;/p&gt;
@@ -360,7 +360,7 @@ very interesting, &lt;a href=&#34;/2018/08/11/uuids-in-apache-jena&#34;&gt;wonde
 &lt;p&gt;Then it creates a &lt;code&gt;DatasetDescriptionRegistry&lt;/code&gt;, which is a registry to keep track
 of the datasets created. There is also some validation of parameters and state check, and then
 the transaction is started (&lt;code&gt;system.begin()&lt;/code&gt;).&lt;/p&gt;
-&lt;h2&gt;Model / (Core)&lt;/h2&gt;
+&lt;h3&gt;Model / (Core)&lt;/h3&gt;
 &lt;p&gt;I used &lt;code&gt;Model&lt;/code&gt; and &lt;code&gt;ModelFactory&lt;/code&gt; before when working with ontologies and Prot&amp;eacute;g&amp;eacute;.
 &lt;code&gt;ActionDatasets&lt;/code&gt; will create a &lt;code&gt;Model&lt;/code&gt;.&lt;/p&gt;
 &lt;blockquote&gt;    An RDF Model.
@@ -373,7 +373,7 @@ the transaction is started (&lt;code&gt;system.begin()&lt;/code&gt;).&lt;/p&gt;
 
 &lt;p&gt;It also gets a &lt;code&gt;StreamRDF&lt;/code&gt; from the model (i.e. &lt;code&gt;model.getGraph()&lt;/code&gt;), which will be used
 later by the &lt;code&gt;RDFParser&lt;/code&gt;.&lt;/p&gt;
-&lt;h2&gt;ActionDatasets#assemblerFromForm() (Fuseki)&lt;/h2&gt;
+&lt;h3&gt;ActionDatasets#assemblerFromForm() (Fuseki)&lt;/h3&gt;
 &lt;p&gt;In &lt;code&gt;#assemblerFromForm()&lt;/code&gt;, it will create a template, and then use
 &lt;code&gt;RDFParser&lt;/code&gt; to parse the template and load into &lt;code&gt;SteamRFF&lt;/code&gt;. The template looks like this:&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class=&#34;c&#34;&gt;# Licensed under the terms of http://www.apache.org/licenses/LICENSE-2.0&lt;/span&gt;
@@ -405,7 +405,7 @@ later by the &lt;code&gt;RDFParser&lt;/code&gt;.&lt;/p&gt;
 &lt;span class=&#34;nl&#34;&gt;&amp;lt;#dataset&amp;gt;&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;rdf&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;type&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;ja&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;DatasetTxnMem&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
-&lt;h2&gt;Persisting the dataset&lt;/h2&gt;
+&lt;h3&gt;Persisting the dataset&lt;/h3&gt;
 &lt;p&gt;Jena Fuseki will create a local copy of the template, using RIOT&amp;#8217;s &lt;code&gt;RDFDataMgr&lt;/code&gt;. For my environment, running from
 Eclipse, the file location was &lt;em&gt;/home/kinow/Development/java/jena/jena/jena-fuseki2/jena-fuseki-core/run/system_files/902154aa-2bb6-11b2-8053-024232e7b374&lt;/em&gt;.&lt;/p&gt;
 &lt;p&gt;Fuseki now will look for exactly one Service Name statement (http://jena.apache.org/fuseki#name). The
@@ -414,7 +414,7 @@ name will be validated for things like blank space, empty, &amp;#8216;/&amp;#821
 /home/kinow/Development/java/jena/jena/jena-fuseki2/jena-fuseki-core/run/configuration/aaa.ttl. But
 not without checking first it the file existed.&lt;/p&gt;
 &lt;p&gt;As this is a brand new file, the &lt;code&gt;Model&lt;/code&gt; instance will be written on the file now.&lt;/p&gt;
-&lt;h2&gt;DatasetAccessPoint (ARQ)&lt;/h2&gt;
+&lt;h3&gt;DatasetAccessPoint (ARQ)&lt;/h3&gt;
 &lt;p&gt;Funny, when I wrote it I immediately put this class under Fuseki Core, but it is actually
 in ARQ. &lt;strong&gt;Why not in Fuseki?&lt;/strong&gt;. Looks like ARQ has a Web layer too.&lt;/p&gt;
 &lt;p&gt;Fuseki&amp;#8217;s &lt;code&gt;FusekiBuilder#buildDataAccessPoint()&lt;/code&gt; creates the &lt;code&gt;DataAccessPoint&lt;/code&gt;. The &lt;code&gt;DataAccessPoint&lt;/code&gt;&amp;#8216;s
@@ -489,7 +489,7 @@ about certain parts of the Apache Jena code base.&lt;/p&gt;
 &lt;p&gt;This post will be useful to myself in the future, as a note-taking in a series, so that I
 remember how things work - you never know right? But hopefully this will be useful
 to other wanting to understand more about the code of Apache Jena. &lt;/p&gt;
-&lt;h2&gt;Where upload happens - SPARQL_Upload and Upload (Fuseki Core)&lt;/h2&gt;
+&lt;h3&gt;Where upload happens - SPARQL_Upload and Upload (Fuseki Core)&lt;/h3&gt;
 &lt;p&gt;Knowing a bit of the code base, I went straight to the &lt;code&gt;SPARQL_Upload&lt;/code&gt; class,
 from the Fuseki Core module. Set up a couple of breakpoints, uploaded my file,
 but nothing. Then tried on its package-neighbour class, &lt;code&gt;Upload&lt;/code&gt;.&lt;/p&gt;
@@ -506,7 +506,7 @@ If a dataset is found - it is in our case - then it hands the request over to
 the right class to handle it.&lt;/p&gt;
 &lt;p&gt;REST_Quads_RW will take care of the upload action, using the &lt;code&gt;Upload&lt;/code&gt; class where my
 breakpoint stopped.&lt;/p&gt;
-&lt;h2&gt;Upload#incomingData() (Fuseki Core)&lt;/h2&gt;
+&lt;h3&gt;Upload#incomingData() (Fuseki Core)&lt;/h3&gt;
 &lt;p&gt;&lt;code&gt;Upload#incomingData()&lt;/code&gt; starts by checking the Content Type from the request. In my case
 it is a &lt;code&gt;multipart/form-data&lt;/code&gt;. Then it calls its other method &lt;code&gt;#fileUploadWorker()&lt;/code&gt;.&lt;/p&gt;
 &lt;p&gt;&lt;code&gt;#fileUploadWorker()&lt;/code&gt; creates a &lt;code&gt;ServletFilterUpload&lt;/code&gt;, from Apache Commons FileUpload.
@@ -521,7 +521,7 @@ is the comment.&lt;/p&gt;
 
 &lt;p&gt;Well, in this case we are getting a &lt;code&gt;Lang:Turtle&lt;/code&gt;. So it now knows that it has a Turtle
 file, but it still needs to parse it.&lt;/p&gt;
-&lt;h2&gt;ActionLib#parse() (Fuseki Core)&lt;/h2&gt;
+&lt;h3&gt;ActionLib#parse() (Fuseki Core)&lt;/h3&gt;
 &lt;p&gt;&lt;code&gt;Upload&lt;/code&gt; calls &lt;code&gt;ActionLib#parse()&lt;/code&gt;, which uses &lt;code&gt;RDFParserBuilder&lt;/code&gt; to build a parser.
 It applies a nice fluent API design when doing that.&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;RDFParser&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;create&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;()&lt;/span&gt;
@@ -538,7 +538,7 @@ is closed&amp;#8230;&lt;/blockquote&gt;
 
 &lt;p&gt;So &lt;code&gt;RDFParserBuilder&lt;/code&gt; will call &lt;code&gt;RDFParser&lt;/code&gt;, which in turn will use the
 classes &lt;code&gt;LangTurtle&lt;/code&gt; and &lt;code&gt;LangTurtleBase&lt;/code&gt;.&lt;/p&gt;
-&lt;h2&gt;LangTurtle (ARQ)&lt;/h2&gt;
+&lt;h3&gt;LangTurtle (ARQ)&lt;/h3&gt;
 &lt;p&gt;ARQ is a low level module in Jena, responsible for parsing queries, and also
 some of the interaction with graphs and datasets.&lt;/p&gt;
 &lt;p&gt;&lt;code&gt;LangTurtle&lt;/code&gt; extends &lt;code&gt;LangTurtleBase&lt;/code&gt;. Their task starts by populating
@@ -560,7 +560,7 @@ other &lt;code&gt;StreamRDF&lt;/code&gt;&amp;#8216;s, such as &lt;code&gt;Parser
 &lt;code&gt;prefixMap&lt;/code&gt; populated earlier in &lt;code&gt;LangTurtle&lt;/code&gt;. For each &lt;code&gt;Triple&lt;/code&gt; that we have
 it will call the &lt;code&gt;DatasetGraph#add&lt;/code&gt; method, creating a new &lt;em&gt;Quad&lt;/em&gt; with the
 default graph name.&lt;/p&gt;
-&lt;h2&gt;Conclusion&lt;/h2&gt;
+&lt;h3&gt;Conclusion&lt;/h3&gt;
 &lt;p&gt;Finally, readers and streams are closed. An &lt;code&gt;UploadDetails&lt;/code&gt; object is created
 holding stats ollected in &lt;code&gt;StreamRDFCountingBase&lt;/code&gt;, which are also used for
 logging.&lt;/p&gt;
