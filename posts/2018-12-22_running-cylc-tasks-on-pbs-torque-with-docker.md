@@ -27,7 +27,7 @@ was acquired by Altair, an Open Source version OpenPBS was created, and later ab
 there is another fork called PBS Torque. I first encountered PBS at the S&atilde;o Paulo
 University, in Brazil, where they had a [PBS Torque cluster](http://www.usp.br/hpc/puma.php).
 
-## Running PBS Torque with Docker
+### Running PBS Torque with Docker
 
 Even though I have access to an environment with Cylc and with PBS, I decided to give it a try
 and see how hard it would be to reproduce it with Docker. One thing that I like about this
@@ -59,7 +59,7 @@ bash-4.1# su - testuser
 0.docker.example.com
 {% endgeshi %}
 
-## Running Cylc with Docker
+### Running Cylc with Docker
 
 You can also start an Ubuntu container with Cylc in one line.
 
@@ -106,7 +106,7 @@ Summary:
                                **************************** 
 {% endgeshi %}
 
-## Running PBS Torque and Cylc together with Docker
+### Running PBS Torque and Cylc together with Docker
 
 The repository [https://github.com/kinow/cylc-docker](https://github.com/kinow/cylc-docker)
 contains some Dockerfile's for running Cylc, including a new one where I combined
@@ -333,7 +333,7 @@ drwxr-xr-x 3 testuser testuser 4.0K Dec 22 02:34 ..
 It is possible now to confirm that `rsync` has synced the folders, and instead of the
 previous `-rw-------` permissions, both `job.out` and `job.err` have `-rw-r--r--` now.
 
-## Conclusion
+### Conclusion
 
 This was a good experiment, where I managed to publish some images to DockerHub for Cylc,
 though they still lack maturity, and are probably not suitable for production use. There

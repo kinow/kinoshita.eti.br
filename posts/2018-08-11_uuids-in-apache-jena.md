@@ -20,7 +20,7 @@ were used. This way I would either understand why Jena needed UUID's, or
 just be more educated in case I ever stumbled with a change in Jena that
 required related work.
 
-## Jena Core's _org.apache.jena.shared.uuid_
+### Jena Core's _org.apache.jena.shared.uuid_
 
 This package is small and simply contains: _factories_,
 
@@ -47,7 +47,7 @@ dataset is created. For the new dataset, Fuseki will create files in a temporary
 location. The name of the temporary location is created using an instance of
 `JenaUUID`.
 
-### _UUID_V1_ and _UUID_V4_
+#### _UUID_V1_ and _UUID_V4_
 
 Jena's `UUID_V1` is an implementation of Version 1 (_time based_),
 variant 2 (_DCE_). Which means it uses MAC address and
@@ -75,7 +75,7 @@ MAC address, but will also use the `os.version`, `user.name`, `java.version`,
 number of active threads, total memory, free memory, and the hash code
 of a newly created `Object`.
 
-## Transaction ID UUID (_TxnIdUuid_) &mdash; uses JenaUUID
+### Transaction ID UUID (_TxnIdUuid_) &mdash; uses JenaUUID
 
 Jena contains two implementations of `TxnId` (transaction identifiers),
 
@@ -89,14 +89,14 @@ As `TxnIdUuid` calls `JenaUUID#generate()`, it will use the default factory,
 `UUID_V1_Gen`. Then it will call `asUUID` to return a Java `UUID` object but
 with the same UUID.
 
-## Create a new dataset in Fuseki (_ActionDatasets_) &mdash; uses JenaUUID
+### Create a new dataset in Fuseki (_ActionDatasets_) &mdash; uses JenaUUID
 
 When you create a new dataset in Fuseki, as explained in the
 [previous post]({{pcurl('2018/05/29/what-happens-when-you-create-a-new-dataset-in-apache-jena-fuseki')}}),
 Fuseki will create some temporary files and folders. For at least one folder, it will
 use an instance of `JenaUUID`, in `ActionDatasets#execPostContainer()`.
 
-## Blank node IDs (_BlankNodeId_) &mdash; uses Java's UUID
+### Blank node IDs (_BlankNodeId_) &mdash; uses Java's UUID
 
 Blank nodes in Jena need an identifier too. It is possible to configure Jena
 to either return a JVM bound counter (similarly to how `TxnIdSimple` works),
@@ -111,7 +111,7 @@ Other methods related to blank nodes also use Java's `UUID`,
 - `BlankNodeAllocatorFixedSeedHash`
 - `BlankNodeAllocatorHash#freshSeed()`.
 
-## SPARQL functions, and _NodeFunctions_ &mdash; uses Java's UUID
+### SPARQL functions, and _NodeFunctions_ &mdash; uses Java's UUID
 
 SPARQL 1.1 contains functions [`UUID`](https://www.w3.org/TR/sparql11-query/#func-uuid) and
 [`STRUUID`](https://www.w3.org/TR/sparql11-query/#func-struuid). Apache Jena provides
@@ -126,7 +126,7 @@ SELECT (UUID() AS ?uuid) (StrUUID() AS ?strUuid) WHERE { }
 The function implementations use `NodeFunctions` methods `struuid` and `uuid`. Both methods in
 `NodeFunctions` use Java's `UUID`, and not `JenaUUID`.
 
-## Files and directories for databases / datasets &mdash; uses Java's UUID
+### Files and directories for databases / datasets &mdash; uses Java's UUID
 
 Files and directories created in Jena use Java's `UUID`,
 
@@ -134,7 +134,7 @@ Files and directories created in Jena use Java's `UUID`,
 - `TDBBuilder#create` methods and `ComponentIdMgr` constructor
 - `AbstractDataBag#getNewTemporaryFile()`.
 
-## Conclusion
+### Conclusion
 
 In Jena there are places where instances of `JenaUUID` are used to produce a
 UUID, and other places where Java's `UUID` is used.

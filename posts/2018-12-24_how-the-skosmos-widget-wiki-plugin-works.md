@@ -30,7 +30,7 @@ that has the plugin enabled.
 </div>
 </div>
 
-## Under the hood
+### Under the hood
 
 The plugin exposes a JavaScript callback via its `plugin.json` file. In the callback, it
 receives a `data` object, with the following properties.

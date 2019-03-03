@@ -24,7 +24,7 @@ these articles are more brain-dumps, used by myself for later reference.
 <img style="display: inline; width: 100%;" class="ui image" src="{{ assets['sequence-diagram'] }}"  />
 </p>
 
-## ActionDatasets#execPostContainer() (Fuseki Core)
+### ActionDatasets#execPostContainer() (Fuseki Core)
 
 `ActionDatasets`, as per the name, handles HTTP requests related to datasets. Such as when you
 create a new dataset. It is also an HTTP action. The concept in Jena, as far as I could tell,
@@ -41,7 +41,7 @@ Then it creates a `DatasetDescriptionRegistry`, which is a registry to keep trac
 of the datasets created. There is also some validation of parameters and state check, and then
 the transaction is started (`system.begin()`).
 
-## Model / (Core)
+### Model / (Core)
 
 I used `Model` and `ModelFactory` before when working with ontologies and Prot&eacute;g&eacute;.
 `ActionDatasets` will create a `Model`.
@@ -57,7 +57,7 @@ I used `Model` and `ModelFactory` before when working with ontologies and Prot&e
 It also gets a `StreamRDF` from the model (i.e. `model.getGraph()`), which will be used
 later by the `RDFParser`.
 
-## ActionDatasets#assemblerFromForm() (Fuseki)
+### ActionDatasets#assemblerFromForm() (Fuseki)
 
 In `#assemblerFromForm()`, it will create a template, and then use
 `RDFParser` to parse the template and load into `SteamRFF`. The template looks like this:
@@ -92,7 +92,7 @@ In `#assemblerFromForm()`, it will create a template, and then use
 <#dataset> rdf:type ja:DatasetTxnMem .
 {% endgeshi %}
 
-## Persisting the dataset
+### Persisting the dataset
 
 Jena Fuseki will create a local copy of the template, using RIOT's `RDFDataMgr`. For my environment, running from
 Eclipse, the file location was */home/kinow/Development/java/jena/jena/jena-fuseki2/jena-fuseki-core/run/system_files/902154aa-2bb6-11b2-8053-024232e7b374*.
@@ -106,7 +106,7 @@ not without checking first it the file existed.
 
 As this is a brand new file, the `Model` instance will be written on the file now.
 
-## DatasetAccessPoint (ARQ)
+### DatasetAccessPoint (ARQ)
 
 Funny, when I wrote it I immediately put this class under Fuseki Core, but it is actually
 in ARQ. **Why not in Fuseki?**. Looks like ARQ has a Web layer too.

@@ -25,7 +25,7 @@ This post will be useful to myself in the future, as a note-taking in a series, 
 remember how things work - you never know right? But hopefully this will be useful
 to other wanting to understand more about the code of Apache Jena. 
 
-## Where upload happens - SPARQL_Upload and Upload (Fuseki Core)
+### Where upload happens - SPARQL_Upload and Upload (Fuseki Core)
 
 Knowing a bit of the code base, I went straight to the `SPARQL_Upload` class,
 from the Fuseki Core module. Set up a couple of breakpoints, uploaded my file,
@@ -47,7 +47,7 @@ the right class to handle it.
 REST_Quads_RW will take care of the upload action, using the `Upload` class where my
 breakpoint stopped.
 
-## Upload#incomingData() (Fuseki Core)
+### Upload#incomingData() (Fuseki Core)
 
 `Upload#incomingData()` starts by checking the Content Type from the request. In my case
 it is a `multipart/form-data`. Then it calls its other method `#fileUploadWorker()`.
@@ -68,7 +68,7 @@ if ( lang == null )
 Well, in this case we are getting a `Lang:Turtle`. So it now knows that it has a Turtle
 file, but it still needs to parse it.
 
-## ActionLib#parse() (Fuseki Core)
+### ActionLib#parse() (Fuseki Core)
 
 `Upload` calls `ActionLib#parse()`, which uses `RDFParserBuilder` to build a parser.
 It applies a nice fluent API design when doing that.
@@ -89,7 +89,7 @@ is closed...</blockquote>
 So `RDFParserBuilder` will call `RDFParser`, which in turn will use the
 classes `LangTurtle` and `LangTurtleBase`.
 
-## LangTurtle (ARQ)
+### LangTurtle (ARQ)
 
 ARQ is a low level module in Jena, responsible for parsing queries, and also
 some of the interaction with graphs and datasets.
@@ -118,7 +118,7 @@ other `StreamRDF`'s, such as `ParserOutputDataset`.
 it will call the `DatasetGraph#add` method, creating a new *Quad* with the
 default graph name.
 
-## Conclusion
+### Conclusion
 
 Finally, readers and streams are closed. An `UploadDetails` object is created
 holding stats ollected in `StreamRDFCountingBase`, which are also used for

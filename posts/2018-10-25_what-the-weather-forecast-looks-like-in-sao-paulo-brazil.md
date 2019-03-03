@@ -18,7 +18,7 @@ help running the NWP models.
 
 <!-- more -->
 
-## Globo
+### Globo
 
 Globo is the main TV channel. When I was younger, it was also the main source
 of news and weather forecast. That, or you would have to open the newspaper and
@@ -136,7 +136,7 @@ look for the forecast summary.
 </div>
 </div>
 
-## Climatempo
+### Climatempo
 
 [Source](https://www.youtube.com/watch?v=TsdQtPYF8Qo)
 
@@ -180,7 +180,7 @@ main TV channels' forecasters.
 </div>
 </div>
 
-## Notes
+### Notes
 
 Brazil's NWP is driven by [INPE](https://inpe.br) (National Institute
 for Space Research) and its division [CPTEC](https://www.cptec.inpe.br/)
@@ -202,7 +202,7 @@ A small footnote. I have the impression that most forecasters are women, though
 there are some famous &ldquo;man of weather&rdquo; as they are called locally, known for
 being so long providing forecasts.
 
-## Conclusion
+### Conclusion
 
 There are so many channels, so many newspapers, and so many websites and apps
 in Brazil. There is no consensus on the presentation of the weather, but the

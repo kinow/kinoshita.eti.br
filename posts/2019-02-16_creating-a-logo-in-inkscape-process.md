@@ -16,7 +16,7 @@ a while to remember the shortcuts and how to merge objects.
 
 This logo is not actually used. It was an entry to a call for proposals.
 
-## The Process
+### The Process
 
 This post won't have much text. It will be more screen shots of the
 process with short commentaire.
@@ -166,7 +166,7 @@ process with short commentaire.
 </div>
 </div>
 
-## And a bug
+### And a bug
 
 During the step of making the text fancier, when I tried to add a ribbon with
 text and the bend effect, when moving the ribbon grouped with the text and after
