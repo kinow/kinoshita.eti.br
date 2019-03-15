@@ -30,6 +30,8 @@ that has the plugin enabled.
 </div>
 </div>
 
+<!-- more -->
+
 ### Under the hood
 
 The plugin exposes a JavaScript callback via its `plugin.json` file. In the callback, it
@@ -42,8 +44,6 @@ receives a `data` object, with the following properties.
 
 If the `pageType` is not `page`, or if there are no preferred labels, or if there is no
 JSON-LD data, the plugin is not activated.
-
-<!-- more -->
 
 When the plugin is activated, it will iterate through all entries in the graph, looking
 for one which `uri` starts with `wd:` (for wikidata). Here's what the `wikidata` object
