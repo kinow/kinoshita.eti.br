@@ -23,6 +23,8 @@ information to be able to hack the Cylc Scheduler (though you can and would have
 </a>
 </p>
 
+<!-- more -->
+
 At this point, the Suite Server program must have been initialized, with the
 objects that it requires, and with everything configured. So this method is the one
 that starts the whole work on the tasks &amp; proxies.
