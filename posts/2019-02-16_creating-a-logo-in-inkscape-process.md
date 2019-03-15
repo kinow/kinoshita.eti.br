@@ -1,5 +1,5 @@
 ---
-title: Creating a logo in Inkscape - Process
+title: Creating a logo in Inkscape - process
 time: '22:25:43'
 author: kinow
 tags:
