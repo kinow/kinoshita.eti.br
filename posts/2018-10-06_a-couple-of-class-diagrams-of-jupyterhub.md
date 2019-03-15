@@ -21,6 +21,8 @@ ORM diagram, below.
 </a>
 </p>
 
+<!-- more -->
+
 And the class diagram (which I removed `object` and a tried to make it simpler to interpret).
 
 <p style='text-align: center;'>
