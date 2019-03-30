@@ -10,13 +10,89 @@
         
         <description>Latest news from Bruno P. Kinoshita</description>
         
-        <lastBuildDate>2019-03-30T16:06:38+13:00</lastBuildDate>
-        <pubDate>2019-03-30T16:06:38+13:00</pubDate>
+        <lastBuildDate>2019-03-30T17:46:50+13:00</lastBuildDate>
+        <pubDate>2019-03-30T17:46:50+13:00</pubDate>
         <generator>PieCrust 3.2.1</generator>
         
         
         
 
+        
+        
+        
+        <item>
+            <title>Checking for transitive dependencies use with Maven Enforcer Plug-in</title>
+            <link>/2017/08/06/checking-for-transitive-dependencies-use-with-maven-enforcer-plugin</link>
+            
+            <author>kinow</author>
+            <dc:creator>kinow</dc:creator>
+            
+            
+            
+            <category>java</category>
+            
+            <category>programming</category>
+            
+            <category>opensource</category>
+            
+            <category>maven</category>
+            
+            <pubDate>2017-08-06T17:35:39+12:00</pubDate>
+            <guid>/2017/08/06/checking-for-transitive-dependencies-use-with-maven-enforcer-plugin</guid>
+            <description>
+            
+            &lt;p&gt;&lt;a href=&#34;http://maven.apache.org/enforcer/maven-enforcer-plugin/&#34;&gt;Maven Enforcer Plug-in&lt;/a&gt; &amp;ldquo;provides goals to control certain environmental constraints such as Maven version, JDK version and OS family along with many more built-in rules and user created rules&amp;rdquo;. There are several libraries that provide custom rules, or you can write your own.&lt;/p&gt;
+&lt;p&gt;One of these libraries is &lt;a href=&#34;https://github.com/ImmobilienScout24/illegal-transitive-dependency-check&#34;&gt;ImmobilienScout24/illegal-transitive-dependency-check&lt;/a&gt;, &amp;ldquo;an additional rule for the maven-enforcer-plugin that checks for classes referenced via transitive Maven dependencies&amp;rdquo;.&lt;/p&gt;
+&lt;p&gt;With the following example:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;&amp;lt;project&amp;gt;&lt;/span&gt;
+  ...
+  &lt;span class=&#34;nt&#34;&gt;&amp;lt;build&amp;gt;&lt;/span&gt;
+    &lt;span class=&#34;nt&#34;&gt;&amp;lt;plugins&amp;gt;&lt;/span&gt;
+      &lt;span class=&#34;nt&#34;&gt;&amp;lt;plugin&amp;gt;&lt;/span&gt;
+        &lt;span class=&#34;nt&#34;&gt;&amp;lt;groupId&amp;gt;&lt;/span&gt;org.apache.maven.plugins&lt;span class=&#34;nt&#34;&gt;&amp;lt;/groupId&amp;gt;&lt;/span&gt;
+        &lt;span class=&#34;nt&#34;&gt;&amp;lt;artifactId&amp;gt;&lt;/span&gt;maven-enforcer-plugin&lt;span class=&#34;nt&#34;&gt;&amp;lt;/artifactId&amp;gt;&lt;/span&gt;
+        &lt;span class=&#34;nt&#34;&gt;&amp;lt;version&amp;gt;&lt;/span&gt;1.3.1&lt;span class=&#34;nt&#34;&gt;&amp;lt;/version&amp;gt;&lt;/span&gt;
+        &lt;span class=&#34;nt&#34;&gt;&amp;lt;dependencies&amp;gt;&lt;/span&gt;
+          &lt;span class=&#34;nt&#34;&gt;&amp;lt;dependency&amp;gt;&lt;/span&gt;
+            &lt;span class=&#34;nt&#34;&gt;&amp;lt;groupId&amp;gt;&lt;/span&gt;de.is24.maven.enforcer.rules&lt;span class=&#34;nt&#34;&gt;&amp;lt;/groupId&amp;gt;&lt;/span&gt;
+            &lt;span class=&#34;nt&#34;&gt;&amp;lt;artifactId&amp;gt;&lt;/span&gt;illegal-transitive-dependency-check&lt;span class=&#34;nt&#34;&gt;&amp;lt;/artifactId&amp;gt;&lt;/span&gt;
+            &lt;span class=&#34;nt&#34;&gt;&amp;lt;version&amp;gt;&lt;/span&gt;1.7.4&lt;span class=&#34;nt&#34;&gt;&amp;lt;/version&amp;gt;&lt;/span&gt;
+          &lt;span class=&#34;nt&#34;&gt;&amp;lt;/dependency&amp;gt;&lt;/span&gt;
+        &lt;span class=&#34;nt&#34;&gt;&amp;lt;/dependencies&amp;gt;&lt;/span&gt;
+        &lt;span class=&#34;nt&#34;&gt;&amp;lt;executions&amp;gt;&lt;/span&gt;
+          &lt;span class=&#34;nt&#34;&gt;&amp;lt;execution&amp;gt;&lt;/span&gt;
+            &lt;span class=&#34;nt&#34;&gt;&amp;lt;id&amp;gt;&lt;/span&gt;enforce&lt;span class=&#34;nt&#34;&gt;&amp;lt;/id&amp;gt;&lt;/span&gt;
+            &lt;span class=&#34;nt&#34;&gt;&amp;lt;phase&amp;gt;&lt;/span&gt;verify&lt;span class=&#34;nt&#34;&gt;&amp;lt;/phase&amp;gt;&lt;/span&gt;
+            &lt;span class=&#34;nt&#34;&gt;&amp;lt;goals&amp;gt;&lt;/span&gt;
+              &lt;span class=&#34;nt&#34;&gt;&amp;lt;goal&amp;gt;&lt;/span&gt;enforce&lt;span class=&#34;nt&#34;&gt;&amp;lt;/goal&amp;gt;&lt;/span&gt;
+            &lt;span class=&#34;nt&#34;&gt;&amp;lt;/goals&amp;gt;&lt;/span&gt;
+            &lt;span class=&#34;nt&#34;&gt;&amp;lt;configuration&amp;gt;&lt;/span&gt;
+              &lt;span class=&#34;nt&#34;&gt;&amp;lt;rules&amp;gt;&lt;/span&gt;
+                &lt;span class=&#34;nt&#34;&gt;&amp;lt;illegalTransitiveDependencyCheck&lt;/span&gt; &lt;span class=&#34;na&#34;&gt;implementation=&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;de.is24.maven.enforcer.rules.IllegalTransitiveDependencyCheck&amp;quot;&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;&amp;gt;&lt;/span&gt;
+                  &lt;span class=&#34;nt&#34;&gt;&amp;lt;reportOnly&amp;gt;&lt;/span&gt;false&lt;span class=&#34;nt&#34;&gt;&amp;lt;/reportOnly&amp;gt;&lt;/span&gt;
+                  &lt;span class=&#34;nt&#34;&gt;&amp;lt;useClassesFromLastBuild&amp;gt;&lt;/span&gt;true&lt;span class=&#34;nt&#34;&gt;&amp;lt;/useClassesFromLastBuild&amp;gt;&lt;/span&gt;
+                  &lt;span class=&#34;nt&#34;&gt;&amp;lt;suppressTypesFromJavaRuntime&amp;gt;&lt;/span&gt;true&lt;span class=&#34;nt&#34;&gt;&amp;lt;/suppressTypesFromJavaRuntime&amp;gt;&lt;/span&gt;
+                  &lt;span class=&#34;nt&#34;&gt;&amp;lt;listMissingArtifacts&amp;gt;&lt;/span&gt;false&lt;span class=&#34;nt&#34;&gt;&amp;lt;/listMissingArtifacts&amp;gt;&lt;/span&gt;
+                &lt;span class=&#34;nt&#34;&gt;&amp;lt;/illegalTransitiveDependencyCheck&amp;gt;&lt;/span&gt;
+              &lt;span class=&#34;nt&#34;&gt;&amp;lt;/rules&amp;gt;&lt;/span&gt;
+            &lt;span class=&#34;nt&#34;&gt;&amp;lt;/configuration&amp;gt;&lt;/span&gt;
+          &lt;span class=&#34;nt&#34;&gt;&amp;lt;/execution&amp;gt;&lt;/span&gt;
+        &lt;span class=&#34;nt&#34;&gt;&amp;lt;/executions&amp;gt;&lt;/span&gt;
+      &lt;span class=&#34;nt&#34;&gt;&amp;lt;/plugin&amp;gt;&lt;/span&gt;
+    &lt;span class=&#34;nt&#34;&gt;&amp;lt;/plugins&amp;gt;&lt;/span&gt;
+  &lt;span class=&#34;nt&#34;&gt;&amp;lt;/build&amp;gt;&lt;/span&gt;
+  ...
+&lt;span class=&#34;nt&#34;&gt;&amp;lt;/project&amp;gt;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Running &lt;code&gt;mvn clean verify&lt;/code&gt; will execute the Maven Enforcer Plug-in &lt;code&gt;enforce&lt;/code&gt; goal, which will call the illegal transitive dependency check.&lt;/p&gt;
+&lt;p&gt;And the build will fail if your code is using (i.e. importing) any class that is not available in your first-level dependencies. For example, if in your pom.xml you added &lt;code&gt;commons-lang3&lt;/code&gt; and &lt;code&gt;commons-configuration&lt;/code&gt;, the latter which includes &lt;code&gt;commons-lang&lt;/code&gt; &lt;strong&gt;2.x&lt;/strong&gt;, and you used &lt;code&gt;org.apache.commons.lang.StringUtils&lt;/code&gt; instead of &lt;code&gt;org.apache.commons.lang3.StringUtils&lt;/code&gt;, the build would fail.&lt;/p&gt;
+&lt;p&gt;In order to fix the build, you have to either add the transitive dependency to your pom.xml file, or correct your import statements. This is specially useful to prevent future issues due to other dependencies being added or updated, and changing the version of the transitive dependency.&lt;/p&gt;
+&lt;p&gt;Bonus points if you combine that with continuous integration and some service like Travis-CI.&lt;/p&gt;
+&lt;p&gt;&amp;hearts; Open Source&lt;/p&gt;
+            
+            </description>
+        </item>
         
         
         
@@ -492,70 +568,6 @@ check some of the links below.&lt;/p&gt;
 &lt;li&gt;&lt;a href=&#34;https://github.com/twitter/twitter-text&#34;&gt;twitter-text&lt;/a&gt;, the Twitter Java (multi-language actually&amp;#8230;) text processing library.&lt;/li&gt;
 &lt;li&gt;Python&amp;#8217;s &lt;a href=&#34;https://docs.python.org/3/library/text.html&#34;&gt;text modules&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;&amp;hearts; Open Source&lt;/p&gt;
-            
-            </description>
-        </item>
-        
-        
-        
-        <item>
-            <title>When you don't realize you need a Comparable</title>
-            <link>/2017/05/15/when-you-dont-realize-you-need-a-comparable</link>
-            
-            <author>kinow</author>
-            <dc:creator>kinow</dc:creator>
-            
-            
-            
-            <category>apache software foundation</category>
-            
-            <category>java</category>
-            
-            <category>opensource</category>
-            
-            <category>programming</category>
-            
-            <pubDate>2017-05-15T23:07:39+12:00</pubDate>
-            <guid>/2017/05/15/when-you-dont-realize-you-need-a-comparable</guid>
-            <description>
-            
-            &lt;p&gt;&lt;a href=&#34;/2012/10/20/replacing-a-hashset-with-a-bitset&#34;&gt;In 2012, I wrote&lt;/a&gt; about how you always learn something new by following the &lt;a href=&#34;http://www.apache.org/foundation/mailinglists.html&#34;&gt;Apache dev mailing lists&lt;/a&gt;.&lt;/p&gt;
-&lt;p&gt;After about five years, I am still learning, and still getting impressed by the knowledge of other
-developers. Days ago I was massaging some code in &lt;a href=&#34;https://github.com/apache/jena/pull/237&#34;&gt;a pull request&lt;/a&gt;
-and a developer suggested me to simplify my code.&lt;/p&gt;
-&lt;p&gt;The suggestion was to make a class a &lt;a href=&#34;https://docs.oracle.com/javase/7/docs/api/java/lang/Comparable.html&#34;&gt;Comparable type&lt;/a&gt;
-to both simplify the code, and also have a better design. I immediately agreed, and looking back in hindsight,
-it was the most logical choice. Yet, I simply did not think about that.&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;// What the code was&lt;/span&gt;
-&lt;span class=&#34;k&#34;&gt;case&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;VSPACE_SORTKEY&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;:&lt;/span&gt;
-    &lt;span class=&#34;kt&#34;&gt;int&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;cmp&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;;&lt;/span&gt;
-    &lt;span class=&#34;n&#34;&gt;String&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;c1&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;nv1&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;getCollation&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;();&lt;/span&gt;
-    &lt;span class=&#34;n&#34;&gt;String&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;c2&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;nv2&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;getCollation&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;();&lt;/span&gt;
-    &lt;span class=&#34;k&#34;&gt;if&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;c1&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;!=&lt;/span&gt; &lt;span class=&#34;kc&#34;&gt;null&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;c2&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;!=&lt;/span&gt; &lt;span class=&#34;kc&#34;&gt;null&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;c1&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;equals&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;c2&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;))&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;
-        &lt;span class=&#34;c1&#34;&gt;// locales are parsed. Here we could think about caching if necessary&lt;/span&gt;
-        &lt;span class=&#34;n&#34;&gt;Locale&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;desiredLocale&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Locale&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;forLanguageTag&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;c1&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;);&lt;/span&gt;
-        &lt;span class=&#34;n&#34;&gt;Collator&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;collator&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Collator&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;getInstance&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;desiredLocale&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;);&lt;/span&gt;
-        &lt;span class=&#34;n&#34;&gt;cmp&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;collator&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;compare&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;nv1&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;getString&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(),&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;nv2&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;getString&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;());&lt;/span&gt;
-    &lt;span class=&#34;o&#34;&gt;}&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;else&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;
-        &lt;span class=&#34;n&#34;&gt;cmp&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;XSDFuncOp&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;compareString&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;nv1&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;nv2&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;;&lt;/span&gt;
-    &lt;span class=&#34;o&#34;&gt;}&lt;/span&gt;
-    &lt;span class=&#34;k&#34;&gt;return&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;cmp&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;;&lt;/span&gt;
-&lt;span class=&#34;o&#34;&gt;}&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;// What the code is now&lt;/span&gt;
-&lt;span class=&#34;k&#34;&gt;case&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;VSPACE_SORTKEY&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;:&lt;/span&gt;
-    &lt;span class=&#34;k&#34;&gt;return&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;((&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;NodeValueSortKey&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;nv1&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;).&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;compareTo&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;((&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;NodeValueSortKey&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;nv2&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;);&lt;/span&gt;
-&lt;span class=&#34;o&#34;&gt;}&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;This moved the logic to a method in the &lt;code&gt;NodeValueSortKey&lt;/code&gt; class. This reduced the complexity
-of the class with the &lt;code&gt;switch&lt;/code&gt; statement. And it also made it easier to write unit tests.&lt;/p&gt;
-&lt;p&gt;If you are not involved in Open Source projects yet, I keep my suggestion from five years ago.
-Find a project related to something you like, and start reading the code, lurk in the
-mailing list or watch GitHub repositories.&lt;/p&gt;
-&lt;p&gt;You can always learn more!&lt;/p&gt;
 &lt;p&gt;&amp;hearts; Open Source&lt;/p&gt;
             
             </description>

@@ -10,13 +10,65 @@
         
         <description>Latest news from Bruno P. Kinoshita</description>
         
-        <lastBuildDate>2019-03-30T16:06:38+13:00</lastBuildDate>
-        <pubDate>2019-03-30T16:06:38+13:00</pubDate>
+        <lastBuildDate>2019-03-30T17:46:50+13:00</lastBuildDate>
+        <pubDate>2019-03-30T17:46:50+13:00</pubDate>
         <generator>PieCrust 3.2.1</generator>
         
         
         
 
+        
+        
+        
+        <item>
+            <title>Exif Odd Offsets</title>
+            <link>/2017/12/25/exif-odd-offsets</link>
+            
+            <author>kinow</author>
+            <dc:creator>kinow</dc:creator>
+            
+            
+            
+            <category>programming</category>
+            
+            <category>java</category>
+            
+            <category>apache software foundation</category>
+            
+            <category>opensource</category>
+            
+            <pubDate>2017-12-25T21:43:33+13:00</pubDate>
+            <guid>/2017/12/25/exif-odd-offsets</guid>
+            <description>
+            
+            &lt;p&gt;A file format like JPEG may contain metadata in JFIF, &lt;a href=&#34;https://en.wikipedia.org/wiki/Exif&#34;&gt;Exif&lt;/a&gt;,
+or a vendor proprietary format. The Exif format is based - or uses parts of - on the TIFF format.&lt;/p&gt;
+&lt;p&gt;Within an Exif metadata block, you should see directories, with several entries. The entries have fields
+like description, value, and also an offset. The offset indicates the offset to the next entry.&lt;/p&gt;
+&lt;p&gt;The Exif specification defines that &lt;strong&gt;implementers must make sure to keep the offset an even number,
+within 4 bytes&lt;/strong&gt;.&lt;/p&gt;
+&lt;p&gt;I recently worked on &lt;a href=&#34;https://issues.apache.org/jira/browse/IMAGING-205&#34;&gt;IMAGING-205&lt;/a&gt;, a ticket
+about odd offsets in files with Exif metadata. This issue was exactly to address that when files
+were rewritten with Apache Commons Imaging, even though the image initially had no odd offsets,
+after the entries were rearranged, we could have odd offsets.&lt;/p&gt;
+&lt;p&gt;The fix was simply checking for odd offsets, adding +1, and later it would be put within the
+4 bytes limit.&lt;/p&gt;
+&lt;p style=&#39;text-align: center;&#39;&gt;
+&lt;img style=&#34;display: inline&#34; class=&#34;ui image&#34; src=&#34;/2017/12/25/exif-odd-offsets/screenshot.png&#34; alt=&#34;A screen shot of Eclipse with source code&#34; title=&#34;Locating the bug&#34; /&gt;
+&lt;br/&gt;
+&lt;small&gt;Locating the bug&lt;/small&gt;
+&lt;/p&gt;
+
+&lt;p&gt;One interesting point, however, is that this is in the standard, but not all software that read
+and write Exif follow the specification. So it is quite common to find images with odd offsets.&lt;/p&gt;
+&lt;p&gt;Which means you could take a picture with your phone, that contains some Exif metadata, and
+be surprised to analyze it with &lt;code&gt;exiftool&lt;/code&gt; and get warnings about odd offsets. Most viewers
+handle odd and even offsets, so it should work for most cases, unless you have a strict reader/viewer.&lt;/p&gt;
+&lt;p&gt;Happy hacking!&lt;/p&gt;
+&lt;p&gt;&amp;heart; Open Source&lt;/p&gt;
+            
+            </description>
+        </item>
         
         
         
@@ -739,82 +791,6 @@ when creating the Markdown instance.&lt;/p&gt;
 &lt;h3&gt;Conclusion&lt;/h3&gt;
 &lt;p&gt;I am not using any of these two plug-ins, but wanted to save it somewhere in case I needed to use them in the future, and also to share with others. Besides most common plug-ins (PMD, CheckStyle, FindBugs), I normally use at least some Maven Enforcer Plug-in rules, and the &lt;a href=&#34;https://www.owasp.org/index.php/OWASP_Dependency_Check&#34;&gt;OWASP plug-in&lt;/a&gt;.&lt;/p&gt;
 &lt;p&gt;While most of the time we spend writing code, preparing the infrastructure, and deploying and testing, I got bitten by some maven build bugs a few times, and had to spend days/weeks debugging some of these. So hope some of these posts save some hours of someone out there in a similar situation.&lt;/p&gt;
-&lt;p&gt;&amp;hearts; Open Source&lt;/p&gt;
-            
-            </description>
-        </item>
-        
-        
-        
-        <item>
-            <title>Checking for transitive dependencies use with Maven Enforcer Plug-in</title>
-            <link>/2017/08/06/checking-for-transitive-dependencies-use-with-maven-enforcer-plugin</link>
-            
-            <author>kinow</author>
-            <dc:creator>kinow</dc:creator>
-            
-            
-            
-            <category>java</category>
-            
-            <category>programming</category>
-            
-            <category>opensource</category>
-            
-            <category>maven</category>
-            
-            <pubDate>2017-08-06T17:35:39+12:00</pubDate>
-            <guid>/2017/08/06/checking-for-transitive-dependencies-use-with-maven-enforcer-plugin</guid>
-            <description>
-            
-            &lt;p&gt;&lt;a href=&#34;http://maven.apache.org/enforcer/maven-enforcer-plugin/&#34;&gt;Maven Enforcer Plug-in&lt;/a&gt; &amp;ldquo;provides goals to control certain environmental constraints such as Maven version, JDK version and OS family along with many more built-in rules and user created rules&amp;rdquo;. There are several libraries that provide custom rules, or you can write your own.&lt;/p&gt;
-&lt;p&gt;One of these libraries is &lt;a href=&#34;https://github.com/ImmobilienScout24/illegal-transitive-dependency-check&#34;&gt;ImmobilienScout24/illegal-transitive-dependency-check&lt;/a&gt;, &amp;ldquo;an additional rule for the maven-enforcer-plugin that checks for classes referenced via transitive Maven dependencies&amp;rdquo;.&lt;/p&gt;
-&lt;p&gt;With the following example:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;&amp;lt;project&amp;gt;&lt;/span&gt;
-  ...
-  &lt;span class=&#34;nt&#34;&gt;&amp;lt;build&amp;gt;&lt;/span&gt;
-    &lt;span class=&#34;nt&#34;&gt;&amp;lt;plugins&amp;gt;&lt;/span&gt;
-      &lt;span class=&#34;nt&#34;&gt;&amp;lt;plugin&amp;gt;&lt;/span&gt;
-        &lt;span class=&#34;nt&#34;&gt;&amp;lt;groupId&amp;gt;&lt;/span&gt;org.apache.maven.plugins&lt;span class=&#34;nt&#34;&gt;&amp;lt;/groupId&amp;gt;&lt;/span&gt;
-        &lt;span class=&#34;nt&#34;&gt;&amp;lt;artifactId&amp;gt;&lt;/span&gt;maven-enforcer-plugin&lt;span class=&#34;nt&#34;&gt;&amp;lt;/artifactId&amp;gt;&lt;/span&gt;
-        &lt;span class=&#34;nt&#34;&gt;&amp;lt;version&amp;gt;&lt;/span&gt;1.3.1&lt;span class=&#34;nt&#34;&gt;&amp;lt;/version&amp;gt;&lt;/span&gt;
-        &lt;span class=&#34;nt&#34;&gt;&amp;lt;dependencies&amp;gt;&lt;/span&gt;
-          &lt;span class=&#34;nt&#34;&gt;&amp;lt;dependency&amp;gt;&lt;/span&gt;
-            &lt;span class=&#34;nt&#34;&gt;&amp;lt;groupId&amp;gt;&lt;/span&gt;de.is24.maven.enforcer.rules&lt;span class=&#34;nt&#34;&gt;&amp;lt;/groupId&amp;gt;&lt;/span&gt;
-            &lt;span class=&#34;nt&#34;&gt;&amp;lt;artifactId&amp;gt;&lt;/span&gt;illegal-transitive-dependency-check&lt;span class=&#34;nt&#34;&gt;&amp;lt;/artifactId&amp;gt;&lt;/span&gt;
-            &lt;span class=&#34;nt&#34;&gt;&amp;lt;version&amp;gt;&lt;/span&gt;1.7.4&lt;span class=&#34;nt&#34;&gt;&amp;lt;/version&amp;gt;&lt;/span&gt;
-          &lt;span class=&#34;nt&#34;&gt;&amp;lt;/dependency&amp;gt;&lt;/span&gt;
-        &lt;span class=&#34;nt&#34;&gt;&amp;lt;/dependencies&amp;gt;&lt;/span&gt;
-        &lt;span class=&#34;nt&#34;&gt;&amp;lt;executions&amp;gt;&lt;/span&gt;
-          &lt;span class=&#34;nt&#34;&gt;&amp;lt;execution&amp;gt;&lt;/span&gt;
-            &lt;span class=&#34;nt&#34;&gt;&amp;lt;id&amp;gt;&lt;/span&gt;enforce&lt;span class=&#34;nt&#34;&gt;&amp;lt;/id&amp;gt;&lt;/span&gt;
-            &lt;span class=&#34;nt&#34;&gt;&amp;lt;phase&amp;gt;&lt;/span&gt;verify&lt;span class=&#34;nt&#34;&gt;&amp;lt;/phase&amp;gt;&lt;/span&gt;
-            &lt;span class=&#34;nt&#34;&gt;&amp;lt;goals&amp;gt;&lt;/span&gt;
-              &lt;span class=&#34;nt&#34;&gt;&amp;lt;goal&amp;gt;&lt;/span&gt;enforce&lt;span class=&#34;nt&#34;&gt;&amp;lt;/goal&amp;gt;&lt;/span&gt;
-            &lt;span class=&#34;nt&#34;&gt;&amp;lt;/goals&amp;gt;&lt;/span&gt;
-            &lt;span class=&#34;nt&#34;&gt;&amp;lt;configuration&amp;gt;&lt;/span&gt;
-              &lt;span class=&#34;nt&#34;&gt;&amp;lt;rules&amp;gt;&lt;/span&gt;
-                &lt;span class=&#34;nt&#34;&gt;&amp;lt;illegalTransitiveDependencyCheck&lt;/span&gt; &lt;span class=&#34;na&#34;&gt;implementation=&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;de.is24.maven.enforcer.rules.IllegalTransitiveDependencyCheck&amp;quot;&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;&amp;gt;&lt;/span&gt;
-                  &lt;span class=&#34;nt&#34;&gt;&amp;lt;reportOnly&amp;gt;&lt;/span&gt;false&lt;span class=&#34;nt&#34;&gt;&amp;lt;/reportOnly&amp;gt;&lt;/span&gt;
-                  &lt;span class=&#34;nt&#34;&gt;&amp;lt;useClassesFromLastBuild&amp;gt;&lt;/span&gt;true&lt;span class=&#34;nt&#34;&gt;&amp;lt;/useClassesFromLastBuild&amp;gt;&lt;/span&gt;
-                  &lt;span class=&#34;nt&#34;&gt;&amp;lt;suppressTypesFromJavaRuntime&amp;gt;&lt;/span&gt;true&lt;span class=&#34;nt&#34;&gt;&amp;lt;/suppressTypesFromJavaRuntime&amp;gt;&lt;/span&gt;
-                  &lt;span class=&#34;nt&#34;&gt;&amp;lt;listMissingArtifacts&amp;gt;&lt;/span&gt;false&lt;span class=&#34;nt&#34;&gt;&amp;lt;/listMissingArtifacts&amp;gt;&lt;/span&gt;
-                &lt;span class=&#34;nt&#34;&gt;&amp;lt;/illegalTransitiveDependencyCheck&amp;gt;&lt;/span&gt;
-              &lt;span class=&#34;nt&#34;&gt;&amp;lt;/rules&amp;gt;&lt;/span&gt;
-            &lt;span class=&#34;nt&#34;&gt;&amp;lt;/configuration&amp;gt;&lt;/span&gt;
-          &lt;span class=&#34;nt&#34;&gt;&amp;lt;/execution&amp;gt;&lt;/span&gt;
-        &lt;span class=&#34;nt&#34;&gt;&amp;lt;/executions&amp;gt;&lt;/span&gt;
-      &lt;span class=&#34;nt&#34;&gt;&amp;lt;/plugin&amp;gt;&lt;/span&gt;
-    &lt;span class=&#34;nt&#34;&gt;&amp;lt;/plugins&amp;gt;&lt;/span&gt;
-  &lt;span class=&#34;nt&#34;&gt;&amp;lt;/build&amp;gt;&lt;/span&gt;
-  ...
-&lt;span class=&#34;nt&#34;&gt;&amp;lt;/project&amp;gt;&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;Running &lt;code&gt;mvn clean verify&lt;/code&gt; will execute the Maven Enforcer Plug-in &lt;code&gt;enforce&lt;/code&gt; goal, which will call the illegal transitive dependency check.&lt;/p&gt;
-&lt;p&gt;And the build will fail if your code is using (i.e. importing) any class that is not available in your first-level dependencies. For example, if in your pom.xml you added &lt;code&gt;commons-lang3&lt;/code&gt; and &lt;code&gt;commons-configuration&lt;/code&gt;, the latter which includes &lt;code&gt;commons-lang&lt;/code&gt; &lt;strong&gt;2.x&lt;/strong&gt;, and you used &lt;code&gt;org.apache.commons.lang.StringUtils&lt;/code&gt; instead of &lt;code&gt;org.apache.commons.lang3.StringUtils&lt;/code&gt;, the build would fail.&lt;/p&gt;
-&lt;p&gt;In order to fix the build, you have to either add the transitive dependency to your pom.xml file, or correct your import statements. This is specially useful to prevent future issues due to other dependencies being added or updated, and changing the version of the transitive dependency.&lt;/p&gt;
-&lt;p&gt;Bonus points if you combine that with continuous integration and some service like Travis-CI.&lt;/p&gt;
 &lt;p&gt;&amp;hearts; Open Source&lt;/p&gt;
             
             </description>

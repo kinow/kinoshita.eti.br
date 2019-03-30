@@ -10,13 +10,46 @@
         
         <description>Latest news from Bruno P. Kinoshita</description>
         
-        <lastBuildDate>2019-03-30T16:06:38+13:00</lastBuildDate>
-        <pubDate>2019-03-30T16:06:38+13:00</pubDate>
+        <lastBuildDate>2019-03-30T17:46:50+13:00</lastBuildDate>
+        <pubDate>2019-03-30T17:46:50+13:00</pubDate>
         <generator>PieCrust 3.2.1</generator>
         
         
         
 
+        
+        
+        
+        <item>
+            <title>Drawing sketch: Cheese</title>
+            <link>/2016/03/20/drawing-sketch-cheese</link>
+            
+            <author>kinow</author>
+            <dc:creator>kinow</dc:creator>
+            
+            <category>blog</category>
+            
+            <category>illustrations</category>
+            
+            <pubDate>2016-03-20T11:13:03+13:00</pubDate>
+            <guid>/2016/03/20/drawing-sketch-cheese</guid>
+            <description>
+            
+            &lt;div class=&#39;row&#39;&gt;
+&lt;div class=&#34;ui container&#34; style=&#39;text-align: center;&#39;&gt;
+&lt;figure&gt;
+&lt;a href=&#34;/2016/03/20/drawing-sketch-cheese/cheese.png&#34; rel=&#34;prettyPhoto&#34; class=&#34;thumbnail&#34; title=&#34;Cheese&#34;&gt;
+&lt;img class=&#34;ui fluid image&#34; src=&#34;/2016/03/20/drawing-sketch-cheese/cheese.png&#34; alt=&#34;Cheese&#34; /&gt;
+&lt;/a&gt;
+&lt;figcaption&gt;Cheese&lt;/figcaption&gt;
+&lt;/figure&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;p&gt;For &lt;a href=&#34;https://www.reddit.com/r/redditgetsdrawn/comments/42izou/this_is_me_with_my_favourite_food_its_cheese/&#34;&gt;redditgetsdrawn&lt;/a&gt;&lt;/p&gt;
+            
+            </description>
+        </item>
         
         
         
@@ -637,58 +670,6 @@ png&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;filename&lt;span class=&#34;o&#34
 map.market&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;id&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;kp&#34;&gt;seq_along&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;extensionPoints&lt;span class=&#34;p&#34;&gt;),&lt;/span&gt; area&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;numberOfImplementations&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; group&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;namesOfTheExtensionPoints&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; color&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;numberOfImplementations&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; main&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;Jenkins Extension Points&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
 dev.off&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
-            
-            </description>
-        </item>
-        
-        
-        
-        <item>
-            <title>Writing a custom SchemaSpy command for Laravel 4</title>
-            <link>/2014/02/11/writing-a-custom-schemaspy-command-for-laravel-4</link>
-            
-            <author>kinow</author>
-            <dc:creator>kinow</dc:creator>
-            
-            <category>blog</category>
-            
-            <category>php</category>
-            
-            <pubDate>2014-02-11T13:15:33+13:00</pubDate>
-            <guid>/2014/02/11/writing-a-custom-schemaspy-command-for-laravel-4</guid>
-            <description>
-            
-            &lt;p&gt;This week I had to write my first custom command for &lt;a href=&#34;http://laravel.com/&#34;&gt;Laravel 4&lt;/a&gt;. 
-In &lt;a href=&#34;http://nestor-qa.org/&#34;&gt;Nestor-QA&lt;/a&gt;, &lt;a href=&#34;https://github.com/tooh&#34;&gt;Peter&lt;/a&gt; and I thought it would be useful to have 
-the database schema being automatically generated with 
-&lt;a href=&#34;http://schemaspy.sourceforge.net/&#34;&gt;SchemaSpy&lt;/a&gt; in our &lt;a href=&#34;http://builds.tupilabs.com/view/Nestor-QA/&#34;&gt;Jenkins box&lt;/a&gt;.&lt;/p&gt;
-&lt;p&gt;Thanks to &lt;a href=&#34;http://laravel.com/docs/artisan&#34;&gt;Artisan&lt;/a&gt; this task is much simpler than I thought. 
-The following command creates the &lt;code&gt;schemaspy&lt;/code&gt; command.&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;php artisan command:make SchemaSpyCommand --command=schemaspy
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;This will create the file &lt;code&gt;app/commands/SchemaSpyCommand.php&lt;/code&gt;. And all I had to do was 
-just fill in the options and write the exec command as the &lt;a href=&#34;http://laravel.com/docs/commands&#34;&gt;Laravel 4 docs&lt;/a&gt; explain. &lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;$this-&amp;gt;info(&#39;Creating SchemaSpy&#39;);
-
-$jar = $this-&amp;gt;option(&#34;jar&#34;);
-$dbtype = $this-&amp;gt;option(&#34;dbtype&#34;);
-$output = $this-&amp;gt;option(&#34;output&#34;);
-
-$commandLine = sprintf(&#34;java -jar %s -u none -t %s -o %s&#34;, $jar, $dbtype, $output);
-
-$this-&amp;gt;info(sprintf(&#34;Command line: [%s]&#34;, $commandLine));
-
-exec($commandLine);
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;That&amp;#8217;s how my final command looks. Now the final step is integrate it into the application by adding the line below to 
-&lt;code&gt;app/start/artisan.php&lt;/code&gt;.&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;Artisan::add(new SchemaSpyCommand);
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;And that&amp;#8217;s it, running &lt;code&gt;php artisan schemaspy --jar=/opt/schemaspy/schemaSpy_5.0.0.jar 
---dbtype=app/database/sqlite.properties --output=database-schema&lt;/code&gt; 
-creates the database schema docs in the &lt;code&gt;database-schema&lt;/code&gt; directory. &lt;/p&gt;
-&lt;p&gt;Check this &lt;a href=&#34;https://gist.github.com/kinow/8936667&#34;&gt;gist&lt;/a&gt; for the final code.&lt;/p&gt;
-&lt;p&gt;Happy coding!&lt;/p&gt;
             
             </description>
         </item>

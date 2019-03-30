@@ -110,11 +110,11 @@
                               
                               <span style="font-size: 23.0pt"><a href="/tag/jenkins">jenkins</a></span>&nbsp;(26)
                               
-                              <span style="font-size: 30.0pt"><a href="/tag/opensource">opensource</a></span>&nbsp;(40)
+                              <span style="font-size: 30.5pt"><a href="/tag/opensource">opensource</a></span>&nbsp;(41)
                               
-                              <span style="font-size: 26.5pt"><a href="/tag/programming">programming</a></span>&nbsp;(33)
+                              <span style="font-size: 27.0pt"><a href="/tag/programming">programming</a></span>&nbsp;(34)
                               
-                              <span style="font-size: 18.0pt"><a href="/tag/python">python</a></span>&nbsp;(16)
+                              <span style="font-size: 18.5pt"><a href="/tag/python">python</a></span>&nbsp;(17)
                               
                               <span style="font-size: 24.5pt"><a href="/tag/software%20quality">software quality</a></span>&nbsp;(29)
                               
@@ -130,6 +130,75 @@
                         <h1 class='topic'>Home</h1>
                     </div>
                     
+                    
+                    <div class="ui raised padded container segment">
+                        <h2 class="articlelink">
+                            <a href="/2017/12/25/exif-odd-offsets" title="Permanent link">Exif Odd Offsets</a>
+                        </h2>
+                        <small>kinow</small> @ <small>Dec 25, 2017&nbsp;21:43:33 (<span class='stardate' data-input-date='Dec 25, 2017'></span>)</small>
+                        <div class="entry">
+                            
+
+
+
+
+
+<a href="https://twitter.com/share" class="twitter-share-button" data-url="https://kinoshita.eti.br/2017/12/25/exif-odd-offsets" data-text="Exif Odd Offsets" data-via="kinow" data-hashtags="opensource">Tweet</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p='https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+                            
+                            <p>A file format like JPEG may contain metadata in JFIF, <a href="https://en.wikipedia.org/wiki/Exif">Exif</a>,
+or a vendor proprietary format. The Exif format is based - or uses parts of - on the TIFF format.</p>
+<p>Within an Exif metadata block, you should see directories, with several entries. The entries have fields
+like description, value, and also an offset. The offset indicates the offset to the next entry.</p>
+<p>The Exif specification defines that <strong>implementers must make sure to keep the offset an even number,
+within 4 bytes</strong>.</p>
+<p>I recently worked on <a href="https://issues.apache.org/jira/browse/IMAGING-205">IMAGING-205</a>, a ticket
+about odd offsets in files with Exif metadata. This issue was exactly to address that when files
+were rewritten with Apache Commons Imaging, even though the image initially had no odd offsets,
+after the entries were rearranged, we could have odd offsets.</p>
+<p>The fix was simply checking for odd offsets, adding +1, and later it would be put within the
+4 bytes limit.</p>
+<p style='text-align: center;'>
+<img style="display: inline" class="ui image" src="/2017/12/25/exif-odd-offsets/screenshot.png" alt="A screen shot of Eclipse with source code" title="Locating the bug" />
+<br/>
+<small>Locating the bug</small>
+</p>
+
+<p>One interesting point, however, is that this is in the standard, but not all software that read
+and write Exif follow the specification. So it is quite common to find images with odd offsets.</p>
+<p>Which means you could take a picture with your phone, that contains some Exif metadata, and
+be surprised to analyze it with <code>exiftool</code> and get warnings about odd offsets. Most viewers
+handle odd and even offsets, so it should work for most cases, unless you have a strict reader/viewer.</p>
+<p>Happy hacking!</p>
+<p>&heart; Open Source</p>
+                            
+                            
+                            
+                        </div>
+                        <p class="postmetadata">
+                            
+                            <small>tags 
+                             [&nbsp;<a
+                                href="/tag/programming/"
+                                rel="tag">programming</a>&nbsp;]&nbsp;
+                            
+                             [&nbsp;<a
+                                href="/tag/java/"
+                                rel="tag">java</a>&nbsp;]&nbsp;
+                            
+                             [&nbsp;<a
+                                href="/tag/apache%20software%20foundation/"
+                                rel="tag">apache software foundation</a>&nbsp;]&nbsp;
+                            
+                             [&nbsp;<a
+                                href="/tag/opensource/"
+                                rel="tag">opensource</a>&nbsp;]&nbsp;
+                            
+                            </small>
+                            
+                            
+                        </p>
+                    </div>
                     
                     <div class="ui raised padded container segment">
                         <h2 class="articlelink">
@@ -425,134 +494,6 @@ maximum line width&rdquo;</em>.</p>
                              [&nbsp;<a
                                 href="/tag/eclipse/"
                                 rel="tag">eclipse</a>&nbsp;]&nbsp;
-                            
-                            </small>
-                            
-                            
-                        </p>
-                    </div>
-                    
-                    <div class="ui raised padded container segment">
-                        <h2 class="articlelink">
-                            <a href="/2017/10/14/quickly-verifying-jar-signatures-for-asf-releases" title="Permanent link">Quickly Verifying jar Signatures For ASF Releases</a>
-                        </h2>
-                        <small>kinow</small> @ <small>Oct 14, 2017&nbsp;00:24:54 (<span class='stardate' data-input-date='Oct 14, 2017'></span>)</small>
-                        <div class="entry">
-                            
-
-
-
-
-
-<a href="https://twitter.com/share" class="twitter-share-button" data-url="https://kinoshita.eti.br/2017/10/14/quickly-verifying-jar-signatures-for-asf-releases" data-text="Quickly Verifying jar Signatures For ASF Releases" data-via="kinow" data-hashtags="opensource">Tweet</a>
-<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p='https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-                            
-                            <p>The release process within the Apache Software Foundation includes a series of steps. Amongst these
-steps is the <a href="https://www.apache.org/foundation/voting.html">voting process</a>. In Apache Commons, the
-<a href="https://commons.apache.org/releases/prepare.html">release instructions</a> includes a note on artefact
-signatures.</p>
-<blockquote>
-<p>During the course of the VOTE, make sure that one or more of the reviewers have verified the signatures and hash files included with the release artifacts. If no one specifically mentions having done that during the VOTE, ask on the dev list and make sure someone does this before you proceed with the release. </p>
-</blockquote>
-<p>Tired of always having to manually check several artefacts, or having to come up with the correct
-shell commands to iterate through a list of files, the other day I wrote a simple script to download
-the KEYS file, import it, download all the artefacts, then iterate through them and verify the
-signature.</p>
-<p>Here&#8217;s the script. Licensed under the GPL licence.</p>
-<div class="highlight"><pre><span></span><span class="ch">#!/usr/bin/env bash</span>
-
-<span class="nv">url</span><span class="o">=</span><span class="s2">&quot;&quot;</span>
-
-<span class="c1"># From: https://blog.mafr.de/2007/08/05/cmdline-options-in-shell-scripts/</span>
-<span class="nv">USAGE</span><span class="o">=</span><span class="s2">&quot;Usage: `basename </span><span class="nv">$0</span><span class="s2">` [-hv] https://repository.apache.org/.../commons/commons-configuration/2.2/&quot;</span>
-
-<span class="c1"># Parse command line options.</span>
-<span class="k">while</span> <span class="nb">getopts</span> hv: OPT<span class="p">;</span> <span class="k">do</span>
-    <span class="k">case</span> <span class="s2">&quot;</span><span class="nv">$OPT</span><span class="s2">&quot;</span> in
-        h<span class="o">)</span>
-            <span class="nb">echo</span> <span class="nv">$USAGE</span>
-            <span class="nb">exit</span> <span class="m">0</span>
-            <span class="p">;;</span>
-        v<span class="o">)</span>
-            <span class="nb">echo</span> <span class="s2">&quot;`basename </span><span class="nv">$0</span><span class="s2">` version 0.0.1&quot;</span>
-            <span class="nb">exit</span> <span class="m">0</span>
-            <span class="p">;;</span>
-        <span class="se">\?</span><span class="o">)</span>
-            <span class="c1"># getopts issues an error message</span>
-            <span class="nb">echo</span> <span class="nv">$USAGE</span> &gt;<span class="p">&amp;</span><span class="m">2</span>
-            <span class="nb">exit</span> <span class="m">1</span>
-            <span class="p">;;</span>
-    <span class="k">esac</span>
-<span class="k">done</span>
-
-<span class="c1"># Remove the switches we parsed above.</span>
-<span class="nb">shift</span> <span class="sb">`</span>expr <span class="nv">$OPTIND</span> - <span class="m">1</span><span class="sb">`</span>
-
-<span class="c1"># We want at least one non-option argument. </span>
-<span class="c1"># Remove this block if you don&#39;t need it.</span>
-<span class="k">if</span> <span class="o">[</span> <span class="nv">$#</span> -eq <span class="m">0</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
-    <span class="nb">echo</span> <span class="nv">$USAGE</span> &gt;<span class="p">&amp;</span><span class="m">2</span>
-    <span class="nb">exit</span> <span class="m">1</span>
-<span class="k">fi</span>
-
-<span class="c1"># Access additional arguments as usual through </span>
-<span class="c1"># variables $@, $*, $1, $2, etc. or using this loop:</span>
-<span class="nv">URL</span><span class="o">=</span><span class="nv">$1</span>
-
-<span class="nb">echo</span> <span class="s2">&quot;url: </span><span class="si">${</span><span class="nv">URL</span><span class="si">}</span><span class="s2">&quot;</span>
-
-<span class="c1"># Use a local temporary directory</span>
-<span class="nv">BUILD_DIR</span><span class="o">=</span><span class="k">$(</span>mktemp -d<span class="k">)</span>
-<span class="nb">pushd</span> <span class="s2">&quot;</span><span class="nv">$BUILD_DIR</span><span class="s2">&quot;</span>
-
-<span class="nb">echo</span> <span class="s2">&quot;build dir: </span><span class="si">${</span><span class="nv">BUILD_DIR</span><span class="si">}</span><span class="s2">&quot;</span>
-
-<span class="c1"># Download KEYS file</span>
-<span class="nv">KEYS_URL</span><span class="o">=</span>https://www.apache.org/dist/commons/KEYS
-
-<span class="nb">echo</span> <span class="s2">&quot;importing KEYS from: </span><span class="si">${</span><span class="nv">KEYS_URL</span><span class="si">}</span><span class="s2">&quot;</span>
-
-wget <span class="s2">&quot;</span><span class="nv">$KEYS_URL</span><span class="s2">&quot;</span>
-gpg --import KEYS
-
-<span class="c1"># Download JARs and signature files</span>
-<span class="nb">echo</span> <span class="s2">&quot;downloading all jars and signature files...&quot;</span>
-
-wget -r -nd -np -e <span class="nv">robots</span><span class="o">=</span>off --wait <span class="m">1</span> -R <span class="s2">&quot;index.html*&quot;</span> <span class="s2">&quot;</span><span class="si">${</span><span class="nv">URL</span><span class="si">}</span><span class="s2">&quot;</span>
-
-<span class="c1"># Check the files</span>
-<span class="k">for</span> x in *.jar<span class="p">;</span> <span class="k">do</span> gpg --verify <span class="s2">&quot;</span><span class="si">${</span><span class="nv">x</span><span class="si">}</span><span class="s2">&quot;</span>.asc<span class="p">;</span> <span class="k">done</span>
-
-<span class="c1"># EOF</span>
-</pre></div>
-
-<p>The script can be found at GitHub too: <a href="https://github.com/kinow/dork-scripts/tree/3c519a74f28c08310ce2e65f8e860d61fd0c5c07/gpg/asf-sigs">https://github.com/kinow/dork-scripts/tree/3c519a74f28c08310ce2e65f8e860d61fd0c5c07/gpg/asf-sigs</a></p>
-                            
-                            
-                            
-                        </div>
-                        <p class="postmetadata">
-                            
-                            <small>tags 
-                             [&nbsp;<a
-                                href="/tag/programming/"
-                                rel="tag">programming</a>&nbsp;]&nbsp;
-                            
-                             [&nbsp;<a
-                                href="/tag/shell%20script/"
-                                rel="tag">shell script</a>&nbsp;]&nbsp;
-                            
-                             [&nbsp;<a
-                                href="/tag/security/"
-                                rel="tag">security</a>&nbsp;]&nbsp;
-                            
-                             [&nbsp;<a
-                                href="/tag/opensource/"
-                                rel="tag">opensource</a>&nbsp;]&nbsp;
-                            
-                             [&nbsp;<a
-                                href="/tag/apache%20software%20foundation/"
-                                rel="tag">apache software foundation</a>&nbsp;]&nbsp;
                             
                             </small>
                             

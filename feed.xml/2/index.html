@@ -10,13 +10,58 @@
         
         <description>Latest news from Bruno P. Kinoshita</description>
         
-        <lastBuildDate>2019-03-30T16:06:38+13:00</lastBuildDate>
-        <pubDate>2019-03-30T16:06:38+13:00</pubDate>
+        <lastBuildDate>2019-03-30T17:46:50+13:00</lastBuildDate>
+        <pubDate>2019-03-30T17:46:50+13:00</pubDate>
         <generator>PieCrust 3.2.1</generator>
         
         
         
 
+        
+        
+        
+        <item>
+            <title>Cylc Scheduler Internals - Part 2</title>
+            <link>/2018/07/27/cylc-scheduler-internals-part-2</link>
+            
+            <author>kinow</author>
+            <dc:creator>kinow</dc:creator>
+            
+            
+            
+            <category>cylc</category>
+            
+            <category>python</category>
+            
+            <category>opensource</category>
+            
+            <pubDate>2018-07-27T00:25:37+12:00</pubDate>
+            <guid>/2018/07/27/cylc-scheduler-internals-part-2</guid>
+            <description>
+            
+            &lt;p&gt;This is part 2, in a series of posts about &lt;a href=&#34;https://cylc.github.io/cylc&#34;&gt;Cylc&lt;/a&gt;
+internals. The &lt;a href=&#34;/2018/07/14/cylc-scheduler-internals-part-1&#34;&gt;part 1&lt;/a&gt;
+had the beginning of the workflow. And here we will have the continuation, from
+the moment the method &lt;code&gt;configure()&lt;/code&gt; is called.&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;NB: this is a post to remember things, not really expecting to give someone enough
+information to be able to hack the Cylc Scheduler (though you can and would have fun!).&lt;/em&gt;&lt;/p&gt;
+&lt;p style=&#39;text-align: center;&#39;&gt;
+&lt;a href=&#34;/2018/07/27/cylc-scheduler-internals-part-2/cylc-scheduler_configure.png&#34;&gt;
+&lt;img style=&#34;display: inline; width: 100%;&#34; class=&#34;ui image&#34; src=&#34;/2018/07/27/cylc-scheduler-internals-part-2/cylc-scheduler_configure.png&#34;  /&gt;
+&lt;/a&gt;
+&lt;/p&gt;
+
+&lt;p&gt;The &lt;code&gt;configure&lt;/code&gt; method is responsible for configuring the Suite Server Program. Which
+means it will interact with the configuration singletons to retrieve the necessary
+configuration for the program.&lt;/p&gt;
+&lt;p&gt;It also interacts with other objects that store state, and also creates basic data structures
+and objects required for a suite program (e.g. Queues).&lt;/p&gt;
+&lt;p&gt;This is also where the &lt;strong&gt;contact file&lt;/strong&gt; is created, as well as the HTTP server.&lt;/p&gt;
+&lt;p&gt;You can download the &lt;a href=&#34;/2018/07/27/cylc-scheduler-internals-part-2/cylc-scheduler_configure-src.xml&#34;&gt;source file&lt;/a&gt; for the diagram used in this post, and edit it
+with &lt;a href=&#34;https://draw.io&#34;&gt;draw.io&lt;/a&gt;.&lt;/p&gt;
+            
+            </description>
+        </item>
         
         
         
@@ -797,58 +842,6 @@ and RHS appear in &lt;a href=&#34;https://issues.apache.org/jira/browse/JENA-153
 &lt;dt&gt;When ?&lt;/dt&gt;
 &lt;dd&gt;2018-02-08&lt;/dd&gt;
 &lt;/dl&gt;
-            
-            </description>
-        </item>
-        
-        
-        
-        <item>
-            <title>Exif Odd Offsets</title>
-            <link>/2017/12/25/exif-odd-offsets</link>
-            
-            <author>kinow</author>
-            <dc:creator>kinow</dc:creator>
-            
-            
-            
-            <category>programming</category>
-            
-            <category>java</category>
-            
-            <category>apache software foundation</category>
-            
-            <category>opensource</category>
-            
-            <pubDate>2017-12-25T21:43:33+13:00</pubDate>
-            <guid>/2017/12/25/exif-odd-offsets</guid>
-            <description>
-            
-            &lt;p&gt;A file format like JPEG may contain metadata in JFIF, &lt;a href=&#34;https://en.wikipedia.org/wiki/Exif&#34;&gt;Exif&lt;/a&gt;,
-or a vendor proprietary format. The Exif format is based - or uses parts of - on the TIFF format.&lt;/p&gt;
-&lt;p&gt;Within an Exif metadata block, you should see directories, with several entries. The entries have fields
-like description, value, and also an offset. The offset indicates the offset to the next entry.&lt;/p&gt;
-&lt;p&gt;The Exif specification defines that &lt;strong&gt;implementers must make sure to keep the offset an even number,
-within 4 bytes&lt;/strong&gt;.&lt;/p&gt;
-&lt;p&gt;I recently worked on &lt;a href=&#34;https://issues.apache.org/jira/browse/IMAGING-205&#34;&gt;IMAGING-205&lt;/a&gt;, a ticket
-about odd offsets in files with Exif metadata. This issue was exactly to address that when files
-were rewritten with Apache Commons Imaging, even though the image initially had no odd offsets,
-after the entries were rearranged, we could have odd offsets.&lt;/p&gt;
-&lt;p&gt;The fix was simply checking for odd offsets, adding +1, and later it would be put within the
-4 bytes limit.&lt;/p&gt;
-&lt;p style=&#39;text-align: center;&#39;&gt;
-&lt;img style=&#34;display: inline&#34; class=&#34;ui image&#34; src=&#34;/2017/12/25/exif-odd-offsets/screenshot.png&#34; alt=&#34;A screen shot of Eclipse with source code&#34; title=&#34;Locating the bug&#34; /&gt;
-&lt;br/&gt;
-&lt;small&gt;Locating the bug&lt;/small&gt;
-&lt;/p&gt;
-
-&lt;p&gt;One interesting point, however, is that this is in the standard, but not all software that read
-and write Exif follow the specification. So it is quite common to find images with odd offsets.&lt;/p&gt;
-&lt;p&gt;Which means you could take a picture with your phone, that contains some Exif metadata, and
-be surprised to analyze it with &lt;code&gt;exiftool&lt;/code&gt; and get warnings about odd offsets. Most viewers
-handle odd and even offsets, so it should work for most cases, unless you have a strict reader/viewer.&lt;/p&gt;
-&lt;p&gt;Happy hacking!&lt;/p&gt;
-&lt;p&gt;&amp;heart; Open Source&lt;/p&gt;
             
             </description>
         </item>

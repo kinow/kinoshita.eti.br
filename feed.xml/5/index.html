@@ -10,13 +10,77 @@
         
         <description>Latest news from Bruno P. Kinoshita</description>
         
-        <lastBuildDate>2019-03-30T16:06:38+13:00</lastBuildDate>
-        <pubDate>2019-03-30T16:06:38+13:00</pubDate>
+        <lastBuildDate>2019-03-30T17:46:50+13:00</lastBuildDate>
+        <pubDate>2019-03-30T17:46:50+13:00</pubDate>
         <generator>PieCrust 3.2.1</generator>
         
         
         
 
+        
+        
+        
+        <item>
+            <title>When you don't realize you need a Comparable</title>
+            <link>/2017/05/15/when-you-dont-realize-you-need-a-comparable</link>
+            
+            <author>kinow</author>
+            <dc:creator>kinow</dc:creator>
+            
+            
+            
+            <category>apache software foundation</category>
+            
+            <category>java</category>
+            
+            <category>opensource</category>
+            
+            <category>programming</category>
+            
+            <pubDate>2017-05-15T23:07:39+12:00</pubDate>
+            <guid>/2017/05/15/when-you-dont-realize-you-need-a-comparable</guid>
+            <description>
+            
+            &lt;p&gt;&lt;a href=&#34;/2012/10/20/replacing-a-hashset-with-a-bitset&#34;&gt;In 2012, I wrote&lt;/a&gt; about how you always learn something new by following the &lt;a href=&#34;http://www.apache.org/foundation/mailinglists.html&#34;&gt;Apache dev mailing lists&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;After about five years, I am still learning, and still getting impressed by the knowledge of other
+developers. Days ago I was massaging some code in &lt;a href=&#34;https://github.com/apache/jena/pull/237&#34;&gt;a pull request&lt;/a&gt;
+and a developer suggested me to simplify my code.&lt;/p&gt;
+&lt;p&gt;The suggestion was to make a class a &lt;a href=&#34;https://docs.oracle.com/javase/7/docs/api/java/lang/Comparable.html&#34;&gt;Comparable type&lt;/a&gt;
+to both simplify the code, and also have a better design. I immediately agreed, and looking back in hindsight,
+it was the most logical choice. Yet, I simply did not think about that.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;// What the code was&lt;/span&gt;
+&lt;span class=&#34;k&#34;&gt;case&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;VSPACE_SORTKEY&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;:&lt;/span&gt;
+    &lt;span class=&#34;kt&#34;&gt;int&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;cmp&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;;&lt;/span&gt;
+    &lt;span class=&#34;n&#34;&gt;String&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;c1&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;nv1&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;getCollation&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;();&lt;/span&gt;
+    &lt;span class=&#34;n&#34;&gt;String&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;c2&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;nv2&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;getCollation&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;();&lt;/span&gt;
+    &lt;span class=&#34;k&#34;&gt;if&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;c1&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;!=&lt;/span&gt; &lt;span class=&#34;kc&#34;&gt;null&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;c2&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;!=&lt;/span&gt; &lt;span class=&#34;kc&#34;&gt;null&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;c1&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;equals&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;c2&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;))&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;
+        &lt;span class=&#34;c1&#34;&gt;// locales are parsed. Here we could think about caching if necessary&lt;/span&gt;
+        &lt;span class=&#34;n&#34;&gt;Locale&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;desiredLocale&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Locale&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;forLanguageTag&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;c1&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;);&lt;/span&gt;
+        &lt;span class=&#34;n&#34;&gt;Collator&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;collator&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Collator&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;getInstance&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;desiredLocale&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;);&lt;/span&gt;
+        &lt;span class=&#34;n&#34;&gt;cmp&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;collator&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;compare&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;nv1&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;getString&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(),&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;nv2&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;getString&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;());&lt;/span&gt;
+    &lt;span class=&#34;o&#34;&gt;}&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;else&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;
+        &lt;span class=&#34;n&#34;&gt;cmp&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;XSDFuncOp&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;compareString&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;nv1&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;nv2&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;;&lt;/span&gt;
+    &lt;span class=&#34;o&#34;&gt;}&lt;/span&gt;
+    &lt;span class=&#34;k&#34;&gt;return&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;cmp&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;;&lt;/span&gt;
+&lt;span class=&#34;o&#34;&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;// What the code is now&lt;/span&gt;
+&lt;span class=&#34;k&#34;&gt;case&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;VSPACE_SORTKEY&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;:&lt;/span&gt;
+    &lt;span class=&#34;k&#34;&gt;return&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;((&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;NodeValueSortKey&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;nv1&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;).&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;compareTo&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;((&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;NodeValueSortKey&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;nv2&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;);&lt;/span&gt;
+&lt;span class=&#34;o&#34;&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;This moved the logic to a method in the &lt;code&gt;NodeValueSortKey&lt;/code&gt; class. This reduced the complexity
+of the class with the &lt;code&gt;switch&lt;/code&gt; statement. And it also made it easier to write unit tests.&lt;/p&gt;
+&lt;p&gt;If you are not involved in Open Source projects yet, I keep my suggestion from five years ago.
+Find a project related to something you like, and start reading the code, lurk in the
+mailing list or watch GitHub repositories.&lt;/p&gt;
+&lt;p&gt;You can always learn more!&lt;/p&gt;
+&lt;p&gt;&amp;hearts; Open Source&lt;/p&gt;
+            
+            </description>
+        </item>
         
         
         
@@ -726,42 +790,6 @@ clipboard. Then just paste into my browser, and that&amp;#8217;s that!&lt;/p&gt;
 &lt;li&gt;&lt;a href=&#34;http://tecadmin.net/install-go-on-ubuntu/&#34;&gt;How to Install Go 1.7 on Ubuntu 16.04 &amp;amp; 14.04&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&#34;http://garywoodfine.com/use-pbcopy-on-ubuntu/&#34;&gt;Use pbcopy on Ubuntu&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
-            
-            </description>
-        </item>
-        
-        
-        
-        <item>
-            <title>Proposed logos for OpenNLP</title>
-            <link>/2017/01/15/proposed-logos-for-opennlp</link>
-            
-            <author>kinow</author>
-            <dc:creator>kinow</dc:creator>
-            
-            <category>blog</category>
-            
-            <category>illustrations</category>
-            
-            <category>natural language processing</category>
-            
-            <pubDate>2017-01-15T20:42:03+13:00</pubDate>
-            <guid>/2017/01/15/proposed-logos-for-opennlp</guid>
-            <description>
-            
-            &lt;p&gt;A couple of logos submitted to &lt;a href=&#34;https://issues.apache.org/jira/browse/OPENNLP-6&#34;&gt;OPENNLP-6&lt;/a&gt;. Made with Inkscape, fonts from Google Fonts.&lt;/p&gt;
-&lt;div class=&#39;row&#39;&gt;
-&lt;div class=&#34;ui fluid container&#34;&gt;
-&lt;figure&gt;
-&lt;a  href=&#34;/2017/01/15/proposed-logos-for-opennlp/OpenNLP-logos.svg.png&#34; rel=&#34;prettyPhoto&#34; class=&#34;thumbnail&#34; title=&#34;Proposed logos for OpenNLP&#34;&gt;
-&lt;img style=&#34;height: 400px;&#34; class=&#34;ui image&#34; src=&#34;/2017/01/15/proposed-logos-for-opennlp/OpenNLP-logos.svg.png&#34; alt=&#34;Proposed logos for OpenNLP&#34; /&gt;
-&lt;/a&gt;
-&lt;figcaption&gt;Proposed logos for OpenNLP&lt;/figcaption&gt;
-&lt;/figure&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;p&gt;For more, check out &lt;a href=&#34;http://kinow.deviantart.com/art/Proposed-logos-for-Apache-OpenNLP-657512914&#34;&gt;my DeviantArt page&lt;/a&gt;.&lt;/p&gt;
             
             </description>
         </item>

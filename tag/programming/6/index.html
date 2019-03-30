@@ -110,11 +110,11 @@
                               
                               <span style="font-size: 23.0pt"><a href="/tag/jenkins">jenkins</a></span>&nbsp;(26)
                               
-                              <span style="font-size: 30.0pt"><a href="/tag/opensource">opensource</a></span>&nbsp;(40)
+                              <span style="font-size: 30.5pt"><a href="/tag/opensource">opensource</a></span>&nbsp;(41)
                               
-                              <span style="font-size: 26.5pt"><a href="/tag/programming">programming</a></span>&nbsp;(33)
+                              <span style="font-size: 27.0pt"><a href="/tag/programming">programming</a></span>&nbsp;(34)
                               
-                              <span style="font-size: 18.0pt"><a href="/tag/python">python</a></span>&nbsp;(16)
+                              <span style="font-size: 18.5pt"><a href="/tag/python">python</a></span>&nbsp;(17)
                               
                               <span style="font-size: 24.5pt"><a href="/tag/software%20quality">software quality</a></span>&nbsp;(29)
                               
@@ -127,6 +127,112 @@
                 
 
 Posts tagged with 'programming'
+
+
+
+
+<div class="ui raised padded container segment">
+    <h2><a href="/2017/01/08/apache-commons-lang-memoizer" title="Permanent link">Apache Commons Lang: Memoizer</a></h2>
+    <p><small>kinow</small> @ <small>Jan 08, 2017&nbsp;18:34:03</small></p>
+    
+    
+
+
+
+
+
+<a href="https://twitter.com/share" class="twitter-share-button" data-url="https://kinoshita.eti.br/2017/01/08/apache-commons-lang-memoizer" data-text="Apache Commons Lang: Memoizer" data-via="kinow" data-hashtags="opensource">Tweet</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p='https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+
+
+    <p>The current release of <a href="https://commons.apache.org/proper/commons-lang/">Apache Commons Lang</a>
+is <strong>3.5</strong>. The upcoming release, probably 3.6,
+will include a new feature, added in a
+<a href="https://github.com/apache/commons-lang/pull/203">pull request</a>:
+<strong>a Memoizer implementation</strong>. Check out the ticket <a href="https://issues.apache.org/jira/browse/LANG-740">LANG-740</a>
+for more about the implementation being added to [lang].</p>
+<p>The book <a href="http://jcip.net/">Java Concurrency in Practice</a> introduces readers to the Memoizer,
+and has also a <a href="http://jcip.net/listings/Memoizer.java">public domain implementation available for download</a>
+(besides that, the book has also lots of other interesting topics!).</p>
+<p>In summary, Memoizer is a simple cache, that will store the result of
+a computation. It receives a Computable object, responsible for doing something
+that will be stored by the Memoizer. Here&#8217;s a simple code to illustrate how that
+will work in your Java code.</p>
+<div class="highlight"><pre><span></span><span class="c1">// Computation to be stored in the cache</span>
+<span class="n">Computable</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">String</span><span class="o">&gt;</span> <span class="n">getFormattedCurrentDate</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Computable</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">String</span><span class="o">&gt;()</span> <span class="o">{</span>
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="n">String</span> <span class="nf">compute</span><span class="o">(</span><span class="n">String</span> <span class="n">fmt</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">InterruptedException</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="k">new</span> <span class="n">SimpleDateFormat</span><span class="o">(</span><span class="n">fmt</span><span class="o">).</span><span class="na">format</span><span class="o">(</span><span class="k">new</span> <span class="n">Date</span><span class="o">());</span>
+    <span class="o">}</span>
+<span class="o">};</span>
+
+<span class="c1">// Our memoizer</span>
+<span class="n">Memoizer</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">String</span><span class="o">&gt;</span> <span class="n">dateCache</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Memoizer</span><span class="o">&lt;&gt;(</span><span class="n">getFormattedCurrentDate</span><span class="o">);</span>
+
+<span class="c1">// To illustrate its use</span>
+<span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">10</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+    <span class="k">try</span> <span class="o">{</span>
+        <span class="c1">// S -&gt; Millisecond</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">dateCache</span><span class="o">.</span><span class="na">compute</span><span class="o">(</span><span class="s">&quot;HH:mm:ss:S Z dd/MM/YYYY&quot;</span><span class="o">));</span>
+        <span class="c1">// Regardless of this sleep call, we get the same result every iteration</span>
+        <span class="n">Thread</span><span class="o">.</span><span class="na">sleep</span><span class="o">(</span><span class="mi">1500</span><span class="o">);</span>
+    <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">InterruptedException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">e</span><span class="o">.</span><span class="na">printStackTrace</span><span class="o">();</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</pre></div>
+
+<p>The computable created (<em>getFormattedCurrentDate</em>) will be called only once, and stored in
+a map. The parameter passed in the <em>#compute()</em> method will be used as key in the map.
+So choose your parameter wisely :-) The output of the example will be similar to the following one.</p>
+<div class="highlight"><pre><span></span><span class="m">19</span>:15:57:854 +1300 <span class="m">08</span>/01/2017
+<span class="m">19</span>:15:57:854 +1300 <span class="m">08</span>/01/2017
+<span class="m">19</span>:15:57:854 +1300 <span class="m">08</span>/01/2017
+<span class="m">19</span>:15:57:854 +1300 <span class="m">08</span>/01/2017
+<span class="m">19</span>:15:57:854 +1300 <span class="m">08</span>/01/2017
+<span class="m">19</span>:15:57:854 +1300 <span class="m">08</span>/01/2017
+<span class="m">19</span>:15:57:854 +1300 <span class="m">08</span>/01/2017
+<span class="m">19</span>:15:57:854 +1300 <span class="m">08</span>/01/2017
+<span class="m">19</span>:15:57:854 +1300 <span class="m">08</span>/01/2017
+<span class="m">19</span>:15:57:854 +1300 <span class="m">08</span>/01/2017
+</pre></div>
+
+<p>In the example above I used a <em>for-loop</em> to illustrate what will happen. Even though we call
+the memoizer <em>#compute()</em> method several times, followed by
+<em>Thread#sleep()</em>; only one result, the first to be computed, will be returned.</p>
+<p>So that&#8217;s all for today. Hope you learned something about this new class, that must
+be available in the next release of Apache Commons Lang.</p>
+<p>Happy hacking!</p>
+<p>ps: [lang] uses Java 7, so that is why we do not have a functional instead of the Comparable</p><!-- html -->
+    
+<p class="postmetadata">
+    
+    <small>tags 
+     [&nbsp;<a
+        href="/tag/java"
+        rel="tag">java</a>&nbsp;]&nbsp;
+    
+     [&nbsp;<a
+        href="/tag/programming"
+        rel="tag">programming</a>&nbsp;]&nbsp;
+    
+     [&nbsp;<a
+        href="/tag/apache%20software%20foundation"
+        rel="tag">apache software foundation</a>&nbsp;]&nbsp;
+    
+    </small>
+    
+    
+    <br/>
+    <small>posted in 
+    [&nbsp;<a
+        href="/blog"
+        title="View all posts in blog"
+        rel="category tag">blog</a>&nbsp;]&nbsp;
+    category </small>
+    
+</p>
+</div>
 
 
 
@@ -425,79 +531,6 @@ Result: PASS
      [&nbsp;<a
         href="/tag/software%20quality"
         rel="tag">software quality</a>&nbsp;]&nbsp;
-    
-    </small>
-    
-    
-    <br/>
-    <small>posted in 
-    [&nbsp;<a
-        href="/blog"
-        title="View all posts in blog"
-        rel="category tag">blog</a>&nbsp;]&nbsp;
-    category </small>
-    
-</p>
-</div>
-
-
-
-
-<div class="ui raised padded container segment">
-    <h2><a href="/2016/08/24/revamping-frege-logo-part-2" title="Permanent link">Revamping Frege logo &mdash; part 2</a></h2>
-    <p><small>kinow</small> @ <small>Aug 24, 2016&nbsp;23:54:03</small></p>
-    
-    
-
-
-
-
-
-<a href="https://twitter.com/share" class="twitter-share-button" data-url="https://kinoshita.eti.br/2016/08/24/revamping-frege-logo-part-2" data-text="Revamping Frege logo &amp;mdash; part 2" data-via="kinow" data-hashtags="opensource">Tweet</a>
-<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p='https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-
-
-    <p>Last time I used Blender was around 2007 I think, in University. But the bad weather in
-Auckland gives me plenty of time to have fun checking out Blender again :-)</p>
-<p>Followed the following tutorials:</p>
-<ul>
-<li><a href="https://www.youtube.com/watch?v=GeKhH1aaXuM">How to create a 3D Logo in Blender</a></li>
-<li><a href="https://www.youtube.com/watch?v=LArn4TFNnmk">Blender Tutorial Spinning Logo</a></li>
-</ul>
-<p>Here are the work in progress, created only with the b&eacute;zier curve.</p>
-<p><img class="ui centered large image" src="/2016/08/24/revamping-frege-logo-part-2/Frege_logo_flat_colours.png" alt="Frege updated logo" /></p>
-<p><img class="ui centered large image" src="/2016/08/24/revamping-frege-logo-part-2/Screenshot_2016-08-14_20-19-35.png" alt="Frege 3D #1" /></p>
-<p><img class="ui centered large image" src="/2016/08/24/revamping-frege-logo-part-2/Screenshot_2016-08-14_20-39-46.png" alt="Frege 3D #2" /></p>
-<p><img class="ui centered large image" src="/2016/08/24/revamping-frege-logo-part-2/Screenshot_2016-08-14_20-41-15.png" alt="Frege 3D #3" /></p>
-<p><img class="ui centered large image" src="/2016/08/24/revamping-frege-logo-part-2/Screenshot_2016-08-14_20-41-34.png" alt="Frege 3D #4" /></p>
-<p><img class="ui centered large image" src="/2016/08/24/revamping-frege-logo-part-2/Screenshot_2016-08-14_20-57-02.png" alt="Frege 3D #5" /></p>
-<p><img class="ui centered large image" src="/2016/08/24/revamping-frege-logo-part-2/Screenshot_2016-08-23_22-07-54.png" alt="Frege 3D #6" /></p>
-<p><img class="ui centered large image" src="/2016/08/24/revamping-frege-logo-part-2/Screenshot_2016-08-23_22-30-24.png" alt="Frege 3D #7" /></p>
-<p>Here&#8217;s the result after the mesh was created, and some material applied.</p>
-<p><img class="ui centered large image" src="/2016/08/24/revamping-frege-logo-part-2/Frege3d1.png" alt="Frege 3D #8" /></p>
-<p>Then using a plane as background, replacing the lamp by a sun, and tweaking a few parameters.</p>
-<p><img class="ui centered image" src="/2016/08/24/revamping-frege-logo-part-2/Frege3d2.png" alt="Frege 3D #9" /></p>
-<p>And finally playing with animation. Not sure if there was a time line and animation controls in
-Blender the last time I used it, but the controls are not really complex.</p>
-<p>I had to combine both meshes into a single object, in order to add a bone and rotate it. That
-is why the logo got back to a single material. The angle of the camera could probably do with
-some tweaking as well.</p>
-<p><img class="ui centered image" src="/2016/08/24/revamping-frege-logo-part-2/ezgif.com-resize.gif" alt="Frege 3D #10" /></p>
-<p>But it was my very first time animating in Blender. Some day if I get access to one of those
-3D printers, I will check what are the requirements for printing this logo.</p>
-<p>Blender models can be downloaded <a href="https://github.com/kinow/kinoshita.eti.br/tree/master/posts/2016-08-24_revamping-frege-logo-part-2-assets">here</a>.</p>
-<p>Now back to programming :-)</p><!-- html -->
-    
-<p class="postmetadata">
-    
-    <small>tags 
-     [&nbsp;<a
-        href="/tag/programming"
-        rel="tag">programming</a>&nbsp;]&nbsp;
-    
-     [&nbsp;<a
-        href="/tag/illustrations"
-        rel="tag">illustrations</a>&nbsp;]&nbsp;
     
     </small>
     
