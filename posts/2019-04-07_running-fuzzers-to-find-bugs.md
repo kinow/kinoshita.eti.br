@@ -12,6 +12,17 @@ _NOTE: The comparison does not focus so much on how fuzzers work, which one is b
 
 Fuzzifying is a technique used in automated tests to find bugs in programs with unexpected data. fuzzer is the name given to the program used for running these tests. Some fuzzers also generate random data used for the tests.
 
+<div class='row'>
+<div class="ui container" style='text-align: center;'>
+<figure>
+<a href="https://www.deviantart.com/kinow/art/Stink-bug-792791397" rel="prettyPhoto" class="thumbnail">
+<img class="ui fluid image" src="{{assets['stink-bug-smaller']}}" />
+</a>
+<figcaption>A stink bug</figcaption>
+</figure>
+</div>
+</div>
+
 <!--more-->
 
 This technique is useful as programmers do not always write the code worrying about what if a user inputs binary data into a field that is expecting the name of a user? Crashes in programs due to unexpected data are used in security attacks.
