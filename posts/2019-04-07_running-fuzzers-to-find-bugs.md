@@ -15,7 +15,7 @@ Fuzzifying is a technique used in automated tests to find bugs in programs with 
 <div class='row'>
 <div class="ui container" style='text-align: center;'>
 <figure>
-<a href="https://www.deviantart.com/kinow/art/Stink-bug-792791397" rel="prettyPhoto" class="thumbnail">
+<a href="https://www.deviantart.com/kinow/art/Stink-bug-792791397">
 <img class="ui fluid image" src="{{assets['stink-bug-smaller']}}" />
 </a>
 <figcaption>A stink bug</figcaption>
