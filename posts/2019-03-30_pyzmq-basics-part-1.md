@@ -9,9 +9,10 @@ tags:
     - programming
 ---
 
-<p><a href="https://www.deviantart.com/kinow/art/Old-man-1-657521623" style="float: left;">
-<img class="ui fluid image" src="{{assets['old-man-1']}}" />
-</a>I am working [on a project](https://cylc.github.io) that is adopting [ZeroMQ](http://zeromq.org/).
+<a href="https://www.deviantart.com/kinow/art/Old-man-1-657521623" style="float: left;">
+<img class="ui fluid image" src="{{assets['old-man-1']}}" /></a>
+
+I am working [on a project](https://cylc.github.io) that is adopting [ZeroMQ](http://zeromq.org/).
 This post series is for self understanding of PyZMQ, a ZeroMQ
 [`libzmq`](https://github.com/zeromq/libzmq) binding for Python.</p>
 
