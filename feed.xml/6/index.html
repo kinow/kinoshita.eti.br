@@ -10,13 +10,85 @@
         
         <description>Latest news from Bruno P. Kinoshita</description>
         
-        <lastBuildDate>2019-04-07T19:03:06+12:00</lastBuildDate>
-        <pubDate>2019-04-07T19:03:06+12:00</pubDate>
+        <lastBuildDate>2019-04-07T21:33:32+12:00</lastBuildDate>
+        <pubDate>2019-04-07T21:33:32+12:00</pubDate>
         <generator>PieCrust 3.2.1</generator>
         
         
         
 
+        
+        
+        
+        <item>
+            <title>Using AWS MFA without a mobile phone</title>
+            <link>/2017/02/28/using-aws-mfa-without-a-mobile-phone</link>
+            
+            <author>kinow</author>
+            <dc:creator>kinow</dc:creator>
+            
+            <category>blog</category>
+            
+            <category>go</category>
+            
+            <category>aws</category>
+            
+            <category>security</category>
+            
+            <pubDate>2017-02-28T00:47:03+13:00</pubDate>
+            <guid>/2017/02/28/using-aws-mfa-without-a-mobile-phone</guid>
+            <description>
+            
+            &lt;p&gt;If you use AWS, the chances are that you use MFA - Multi-factor Authentication - to authenticate.
+I don&amp;#8217;t like to install apps in my mobile phone, unless I need to, so having bought a new phone
+recently, I decided to find a replacement for Google Authenticator.&lt;/p&gt;
+&lt;p&gt;There are several command line utilities, browser extensions, libraries, and tools (free and paid)
+that implement the TOTP - time-based one-time password -, the standard
+&lt;a href=&#34;http://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_mfa_enable_virtual.html&#34;&gt;required by Amazon&lt;/a&gt;
+for MFA authentication.&lt;/p&gt;
+&lt;p&gt;I decided to use a Go tool for the first time: &lt;a href=&#34;https://github.com/pcarrier/gauth&#34;&gt;gauth&lt;/a&gt;. Note that you
+won&amp;#8217;t be able to use it from home, in case you don&amp;#8217;t bring your laptop home. You can have one MFA device
+linked to your AWS account, so you may have to remove an existing one. Follow these instructions with care :^)&lt;/p&gt;
+&lt;h3&gt;Install Go&lt;/h3&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;sudo apt update &lt;span class=&#34;o&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; sudo apt upgrade -y
+&lt;span class=&#34;nb&#34;&gt;cd&lt;/span&gt; tmp/ &lt;span class=&#34;o&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; wget https://storage.googleapis.com/golang/go1.8.linux-amd64.tar.gz
+tar -zxvf go1.*.tar.gz
+sudo mv go /usr/local
+vim ~/.bashrc
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Add the following at the bottom of the file.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;GOROOT&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;/usr/local/go
+&lt;span class=&#34;nv&#34;&gt;GOPATH&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;$HOME&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;/go&amp;quot;&lt;/span&gt;
+&lt;span class=&#34;nv&#34;&gt;PATH&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;$GOPATH&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;/bin:&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;$GOROOT&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;/bin:&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;$PATH&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;And you can test it with &lt;code&gt;. ~/.bashrc &amp;amp;&amp;amp; go version&lt;/code&gt;.&lt;/p&gt;
+&lt;h3&gt;Install gauth&lt;/h3&gt;
+&lt;p&gt;Given your environment is correctly set up, you should be able to use the following command to install
+gauth, and have it available in your &lt;em&gt;$PATH&lt;/em&gt;.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;go get github.com/pcarrier/gauth
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Edit &lt;em&gt;~/.config/gauth.csv&lt;/em&gt; adding a value for the AWS MFA key.&lt;/p&gt;
+&lt;h3&gt;Getting the AWS MFA key&lt;/h3&gt;
+&lt;p&gt;To get the value that you must place in your &lt;em&gt;gauth.csv&lt;/em&gt; file, you must add a new MFA device. When asked to scan a QR code, look for an option to enter the manual value. That will give you a long string. That&amp;#8217;s the value you are looking for.&lt;/p&gt;
+&lt;h3&gt;Extra: Auto copy-paste from command line&lt;/h3&gt;
+&lt;p&gt;If you would like to quickly copy and paste, try creating an alias as described
+&lt;a href=&#34;https://gist.github.com/ehime/9fd8810442daf64686a34f885e18be01&#34;&gt;on this gist&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;I used these instructions, and can now run one command line, that will put the next MFA code in my
+clipboard. Then just paste into my browser, and that&amp;#8217;s that!&lt;/p&gt;
+&lt;p&gt;Happy hacking!&lt;/p&gt;
+&lt;h3&gt;References&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/pcarrier/gauth&#34;&gt;gauth: replace Google Authenticator&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_mfa_enable_virtual.html&#34;&gt;Enabling a Virtual Multi-factor Authentication (MFA) Device&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://tecadmin.net/install-go-on-ubuntu/&#34;&gt;How to Install Go 1.7 on Ubuntu 16.04 &amp;amp; 14.04&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://garywoodfine.com/use-pbcopy-on-ubuntu/&#34;&gt;Use pbcopy on Ubuntu&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+            
+            </description>
+        </item>
         
         
         
@@ -475,64 +547,6 @@ debug your application in Eclipse or whatever IDE you prefer.&lt;/p&gt;
 &lt;/div&gt;
 
 &lt;p&gt;For &lt;a href=&#34;http://kinow.deviantart.com/art/Uh-651490865&#34;&gt;redditgetsdrawn&lt;/a&gt;&lt;/p&gt;
-            
-            </description>
-        </item>
-        
-        
-        
-        <item>
-            <title>PermGen errors and java.lang.ClassCastException: com.sun.crypto.provider.AESCipher cannot be cast to javax.crypto.CipherSpi running Jenkins plug-in tests with PowerMock</title>
-            <link>/2016/12/19/permgen-errors-and-java-lang-classcastexception-com-sun-crypto-provider-aescipher-cannot-be-cast-to-javax-crypto-cipherspi-running-jenkins-plug-in-tests-with-powermock</link>
-            
-            <author>kinow</author>
-            <dc:creator>kinow</dc:creator>
-            
-            <category>blog</category>
-            
-            <category>jenkins</category>
-            
-            <category>software quality</category>
-            
-            <pubDate>2016-12-19T19:20:03+13:00</pubDate>
-            <guid>/2016/12/19/permgen-errors-and-java-lang-classcastexception-com-sun-crypto-provider-aescipher-cannot-be-cast-to-javax-crypto-cipherspi-running-jenkins-plug-in-tests-with-powermock</guid>
-            <description>
-            
-            &lt;p&gt;Recently while working on a Jenkins plugin some tests were failing with PermGen errors.
-Even though it worked in my notebook at home (with Java 8, thus no Permgen), it failed
-in a CloudBees hosted Jenkins job, and also on my Mac (with Java 7) at work.&lt;/p&gt;
-&lt;p&gt;As I could not change the settings in the CloudBees hosted Jenkins, I decided to spent some
-time investigating why these tests would require so much memory. Then I found
-&lt;a href=&#34;https://angus.nyc/2015/fixing-common-powermock-problems/&#34;&gt;this blog post about PowerMock&lt;/a&gt;.&lt;/p&gt;
-&lt;p&gt;I was not using the &lt;em&gt;@PrepareForTest&lt;/em&gt; annotation, but after adding it the issue was gone. So I
-assume it either prevents PowerMock from trying to dynamically load several classes, or instructs
-it to unload classes after the tests. But in anyway after adding it the issue was gone.&lt;/p&gt;
-&lt;p&gt;Then I got the following exception.&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;WARNING: Failed to instantiate Key&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;type&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;hudson.security.csrf.DefaultCrumbIssuer&lt;span class=&#34;nv&#34;&gt;$DescriptorImpl&lt;/span&gt;, &lt;span class=&#34;nv&#34;&gt;annotation&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=[&lt;/span&gt;none&lt;span class=&#34;o&#34;&gt;]]&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt; skipping this component
-com.google.inject.ProvisionException: Guice provision errors:
-
-&lt;span class=&#34;m&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt; Error injecting constructor, java.lang.ClassCastException: com.sun.crypto.provider.AESCipher cannot be cast to javax.crypto.CipherSpi
-  at hudson.security.csrf.DefaultCrumbIssuer&lt;span class=&#34;nv&#34;&gt;$DescriptorImpl&lt;/span&gt;.&amp;lt;init&amp;gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;DefaultCrumbIssuer.java:127&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
-
-&lt;span class=&#34;m&#34;&gt;1&lt;/span&gt; error
-    at com.google.inject.internal.ProviderToInternalFactoryAdapter.get&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;ProviderToInternalFactoryAdapter.java:52&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;And then thanks to &lt;a href=&#34;https://github.com/powermock/powermock/issues/294&#34;&gt;this issue&lt;/a&gt; I understood
-that PowerMock was mocking &lt;em&gt;javax.crypto&lt;/em&gt; classes. Turns out it is quite easy to tell
-PowerMock to ignore certain classes from being mocked, with the &lt;em&gt;@PowerMockIgnore&lt;/em&gt; annotation.&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;// snip&lt;/span&gt;
-&lt;span class=&#34;nd&#34;&gt;@RunWith&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;PowerMockRunner&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;class&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
-&lt;span class=&#34;nd&#34;&gt;@PowerMockIgnore&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;({&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;javax.crypto.*&amp;quot;&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;})&lt;/span&gt;
-&lt;span class=&#34;kd&#34;&gt;public&lt;/span&gt; &lt;span class=&#34;kd&#34;&gt;class&lt;/span&gt; &lt;span class=&#34;nc&#34;&gt;TestAbstractUnoChoiceParameter&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;
-&lt;span class=&#34;c1&#34;&gt;//&lt;/span&gt;
-&lt;span class=&#34;o&#34;&gt;}&lt;/span&gt;
-&lt;span class=&#34;c1&#34;&gt;// snip&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;Added a couple of notes to this &lt;a href=&#34;https://wiki.jenkins-ci.org/display/JENKINS/Mocking+in+Unit+Tests&#34;&gt;Jenkins Wiki page&lt;/a&gt;
-so that users facing similar issues can try these possible workarounds.&lt;/p&gt;
-&lt;p&gt;Hope that helps someone!&lt;/p&gt;
             
             </description>
         </item>

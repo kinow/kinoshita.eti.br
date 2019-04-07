@@ -10,13 +10,128 @@
         
         <description>Latest news from Bruno P. Kinoshita</description>
         
-        <lastBuildDate>2019-04-07T19:03:06+12:00</lastBuildDate>
-        <pubDate>2019-04-07T19:03:06+12:00</pubDate>
+        <lastBuildDate>2019-04-07T21:33:32+12:00</lastBuildDate>
+        <pubDate>2019-04-07T21:33:32+12:00</pubDate>
         <generator>PieCrust 3.2.1</generator>
         
         
         
 
+        
+        
+        
+        <item>
+            <title>Creating a Docker container to run as a command</title>
+            <link>/2018/08/04/creating-a-docker-container-to-run-as-a-command</link>
+            
+            <author>kinow</author>
+            <dc:creator>kinow</dc:creator>
+            
+            
+            
+            <category>cylc</category>
+            
+            <category>docker</category>
+            
+            <category>opensource</category>
+            
+            <pubDate>2018-08-04T22:00:36+12:00</pubDate>
+            <guid>/2018/08/04/creating-a-docker-container-to-run-as-a-command</guid>
+            <description>
+            
+            &lt;p&gt;For the past two weeks at work I have been assigned to work on PHP projects. Though I used
+PHP some time ago - especially with Code Igniter and Laravel - I have not used it in a few
+years. And have been doing mostly Java nowadays.&lt;/p&gt;
+&lt;p&gt;The complete project setup was done by co-workers. I had a PHP project, using Symfony, several
+bundles and libraries, and Postgres. But it required just running a few commands to set up
+AWS settings, and then fire up Docker Compose.&lt;/p&gt;
+&lt;p&gt;Besides Docker Compose starting a web container, and another Postgres container, we used the
+web container to run &lt;a href=&#34;https://getcomposer.org/&#34;&gt;Composer&lt;/a&gt;. In the past, I would see the PHP
+project mapped as a folder in the running container, and then composer would be executed
+in the host.&lt;/p&gt;
+&lt;p&gt;I noticed then that I could do the same to an image I created in 2016 to run
+&lt;a href=&#34;https://cylc.github.io/cylc/&#34;&gt;Cylc&lt;/a&gt;. The &lt;a href=&#34;https://github.com/kinow/docker/blob/d1cc1771ac53b8efd37b5e4c4401b74ebd294a2b/cylc/Dockerfile&#34;&gt;previous version&lt;/a&gt;
+would be used to start a container in a terminal, then run some commands
+while maintaining the state within the container.&lt;/p&gt;
+&lt;p&gt;The &lt;a href=&#34;https://github.com/kinow/cylc-docker&#34;&gt;new version&lt;/a&gt;
+now maps a volume to the version of cylc, installs the dependencies, and
+then allows the state to be maintained solely in the mapped volume.&lt;/p&gt;
+&lt;p&gt;Furthermore, the entrypoint of the image is the &lt;code&gt;cylc&lt;/code&gt; command. Which means that
+you do not have to execute a terminal in order to run commands to the container
+(or change the command/entrypoint).&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;...
+VOLUME &lt;span class=&#34;s2&#34;&gt;&amp;quot;/opt/cylc&amp;quot;&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;quot;/tmp&amp;quot;&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;quot;/run&amp;quot;&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;quot;/var/run&amp;quot;&lt;/span&gt; &lt;span class=&#34;c1&#34;&gt;# we have the state stored only in /opt/cylc&lt;/span&gt;
+WORKDIR &lt;span class=&#34;s2&#34;&gt;&amp;quot;/opt/cylc&amp;quot;&lt;/span&gt;
+ENV PATH /opt/cylc/bin:&lt;span class=&#34;nv&#34;&gt;$PATH&lt;/span&gt;
+WORKDIR /opt/cylc
+ENTRYPOINT &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;cylc&amp;quot;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; &lt;span class=&#34;c1&#34;&gt;# here&amp;#39;s the trick!&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;It uses the same approach from the PHP image I am using for Composer, with a few
+additional improvements from the &lt;a href=&#34;https://docs.docker.com/develop/develop-images/dockerfile_best-practices/&#34;&gt;Best practices for writing Dockerfiles&lt;/a&gt; documentation.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ docker run -ti -v &lt;span class=&#34;s2&#34;&gt;&amp;quot;&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;$(&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;pwd&lt;/span&gt; -P&lt;span class=&#34;k&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;&lt;/span&gt;/cylc:/opt/cylc cylc validate /opt/cylc/etc/examples/tutorial/oneoff/basic/
+Valid &lt;span class=&#34;k&#34;&gt;for&lt;/span&gt; cylc-7.7.2
+$ docker run -ti -v &lt;span class=&#34;s2&#34;&gt;&amp;quot;&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;$(&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;pwd&lt;/span&gt; -P&lt;span class=&#34;k&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;&lt;/span&gt;/cylc:/opt/cylc cylc register /opt/cylc/etc/examples/tutorial/oneoff/basic/
+REGISTER /opt/cylc/etc/examples/tutorial/oneoff/basic/
+$ docker run -ti -v &lt;span class=&#34;s2&#34;&gt;&amp;quot;&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;$(&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;pwd&lt;/span&gt; -P&lt;span class=&#34;k&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;&lt;/span&gt;/cylc:/opt/cylc cylc start --non-daemon --debug /opt/cylc/etc/examples/tutorial/oneoff/basic/
+            ._.                                                       
+            &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;                 The Cylc Suite Engine &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;7&lt;/span&gt;.7.2&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;         
+._____._. ._&lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;_____.           Copyright &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;C&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;m&#34;&gt;2008&lt;/span&gt;-2018 NIWA          
+&lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; .___&lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; .___&lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;  _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+&lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; !___&lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; !_! &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; !___.  This program comes with ABSOLUTELY NO WARRANTY&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+!_____!___. &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;_!_____!  see &lt;span class=&#34;sb&#34;&gt;`&lt;/span&gt;cylc warranty&lt;span class=&#34;sb&#34;&gt;`&lt;/span&gt;.  It is free software, you 
+      .___! &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;           are welcome to redistribute it under certain  
+      !_____!                conditions&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt; see &lt;span class=&#34;sb&#34;&gt;`&lt;/span&gt;cylc conditions&lt;span class=&#34;sb&#34;&gt;`&lt;/span&gt;.       
+&lt;span class=&#34;m&#34;&gt;2018&lt;/span&gt;-07-30T12:10:32Z INFO - Suite starting: &lt;span class=&#34;nv&#34;&gt;server&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;3714d1a17999:43040 &lt;span class=&#34;nv&#34;&gt;pid&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;1&lt;/span&gt;
+&lt;span class=&#34;m&#34;&gt;2018&lt;/span&gt;-07-30T12:10:32Z INFO - Cylc version: &lt;span class=&#34;m&#34;&gt;7&lt;/span&gt;.7.2
+&lt;span class=&#34;m&#34;&gt;2018&lt;/span&gt;-07-30T12:10:32Z INFO - Run mode: live
+&lt;span class=&#34;m&#34;&gt;2018&lt;/span&gt;-07-30T12:10:32Z INFO - Initial point: &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt;
+&lt;span class=&#34;m&#34;&gt;2018&lt;/span&gt;-07-30T12:10:32Z INFO - Final point: &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt;
+&lt;span class=&#34;m&#34;&gt;2018&lt;/span&gt;-07-30T12:10:32Z INFO - Cold Start &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt;
+&lt;span class=&#34;m&#34;&gt;2018&lt;/span&gt;-07-30T12:10:32Z DEBUG - &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;hello.1&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; -released to the task pool
+&lt;span class=&#34;m&#34;&gt;2018&lt;/span&gt;-07-30T12:10:32Z DEBUG - BEGIN TASK PROCESSING
+&lt;span class=&#34;m&#34;&gt;2018&lt;/span&gt;-07-30T12:10:32Z DEBUG - &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;hello.1&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; -waiting &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&amp;gt; queued
+&lt;span class=&#34;m&#34;&gt;2018&lt;/span&gt;-07-30T12:10:32Z DEBUG - &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt; task&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;s&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt; de-queued
+&lt;span class=&#34;m&#34;&gt;2018&lt;/span&gt;-07-30T12:10:32Z INFO - &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;hello.1&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; -submit-num&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;1&lt;/span&gt;, owner@host&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;localhost
+&lt;span class=&#34;m&#34;&gt;2018&lt;/span&gt;-07-30T12:10:32Z DEBUG - &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;hello.1&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; -queued &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&amp;gt; ready
+&lt;span class=&#34;m&#34;&gt;2018&lt;/span&gt;-07-30T12:10:32Z DEBUG - END TASK PROCESSING &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;took &lt;span class=&#34;m&#34;&gt;0&lt;/span&gt;.00642895698547 seconds&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
+&lt;span class=&#34;m&#34;&gt;2018&lt;/span&gt;-07-30T12:10:32Z DEBUG - &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;cylc&amp;#39;&lt;/span&gt;, &lt;span class=&#34;s1&#34;&gt;&amp;#39;jobs-submit&amp;#39;&lt;/span&gt;, &lt;span class=&#34;s1&#34;&gt;&amp;#39;--debug&amp;#39;&lt;/span&gt;, &lt;span class=&#34;s1&#34;&gt;&amp;#39;--&amp;#39;&lt;/span&gt;, &lt;span class=&#34;s1&#34;&gt;&amp;#39;/opt/cylc/etc/examples/tutorial/oneoff/basic/log/job&amp;#39;&lt;/span&gt;, &lt;span class=&#34;s1&#34;&gt;&amp;#39;1/hello/01&amp;#39;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
+&lt;span class=&#34;m&#34;&gt;2018&lt;/span&gt;-07-30T12:10:33Z DEBUG - &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;client-connect&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; root@3714d1a17999:cylc-message &lt;span class=&#34;nv&#34;&gt;privilege&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;full-control&amp;#39;&lt;/span&gt; 7b05596a-5971-4733-82de-28528f702ff0
+&lt;span class=&#34;m&#34;&gt;2018&lt;/span&gt;-07-30T12:10:33Z INFO - &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;client-command&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; put_messages root@3714d1a17999:cylc-message 7b05596a-5971-4733-82de-28528f702ff0
+&lt;span class=&#34;m&#34;&gt;2018&lt;/span&gt;-07-30T12:10:33Z DEBUG - &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;jobs-submit cmd&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; cylc jobs-submit --debug -- /opt/cylc/etc/examples/tutorial/oneoff/basic/log/job &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt;/hello/01
+    &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;jobs-submit ret_code&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; &lt;span class=&#34;m&#34;&gt;0&lt;/span&gt;
+    &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;jobs-submit out&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
+    &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;TASK JOB SUMMARY&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;2018&lt;/span&gt;-07-30T12:10:32Z&lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;1&lt;/span&gt;/hello/01&lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;61&lt;/span&gt;
+    &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;TASK JOB COMMAND&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;2018&lt;/span&gt;-07-30T12:10:32Z&lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;1&lt;/span&gt;/hello/01&lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;STDOUT&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; &lt;span class=&#34;m&#34;&gt;61&lt;/span&gt;
+&lt;span class=&#34;m&#34;&gt;2018&lt;/span&gt;-07-30T12:10:33Z INFO - &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;hello.1&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; -&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;current:ready&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt; submitted at &lt;span class=&#34;m&#34;&gt;2018&lt;/span&gt;-07-30T12:10:32Z
+&lt;span class=&#34;m&#34;&gt;2018&lt;/span&gt;-07-30T12:10:33Z INFO - &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;hello.1&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; -job&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;01&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; submitted to localhost:background&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;61&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
+&lt;span class=&#34;m&#34;&gt;2018&lt;/span&gt;-07-30T12:10:33Z DEBUG - &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;hello.1&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; -ready &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&amp;gt; submitted
+&lt;span class=&#34;m&#34;&gt;2018&lt;/span&gt;-07-30T12:10:33Z INFO - &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;hello.1&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; -health check settings: submission &lt;span class=&#34;nv&#34;&gt;timeout&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;None
+&lt;span class=&#34;m&#34;&gt;2018&lt;/span&gt;-07-30T12:10:33Z DEBUG - BEGIN TASK PROCESSING
+&lt;span class=&#34;m&#34;&gt;2018&lt;/span&gt;-07-30T12:10:33Z DEBUG - &lt;span class=&#34;m&#34;&gt;0&lt;/span&gt; task&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;s&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt; de-queued
+&lt;span class=&#34;m&#34;&gt;2018&lt;/span&gt;-07-30T12:10:33Z DEBUG - &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;hello.1&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; -forced spawning
+&lt;span class=&#34;m&#34;&gt;2018&lt;/span&gt;-07-30T12:10:33Z DEBUG - END TASK PROCESSING &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;took &lt;span class=&#34;m&#34;&gt;0&lt;/span&gt;.000992059707642 seconds&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
+&lt;span class=&#34;m&#34;&gt;2018&lt;/span&gt;-07-30T12:10:33Z INFO - &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;hello.1&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; -&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;current:submitted&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;&amp;gt; started at &lt;span class=&#34;m&#34;&gt;2018&lt;/span&gt;-07-30T12:10:33Z
+&lt;span class=&#34;m&#34;&gt;2018&lt;/span&gt;-07-30T12:10:33Z DEBUG - &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;hello.1&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; -submitted &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&amp;gt; running
+&lt;span class=&#34;m&#34;&gt;2018&lt;/span&gt;-07-30T12:10:33Z INFO - &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;hello.1&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; -health check settings: execution &lt;span class=&#34;nv&#34;&gt;timeout&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;None
+&lt;span class=&#34;m&#34;&gt;2018&lt;/span&gt;-07-30T12:10:34Z DEBUG - BEGIN TASK PROCESSING
+&lt;span class=&#34;m&#34;&gt;2018&lt;/span&gt;-07-30T12:10:34Z DEBUG - &lt;span class=&#34;m&#34;&gt;0&lt;/span&gt; task&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;s&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt; de-queued
+&lt;span class=&#34;m&#34;&gt;2018&lt;/span&gt;-07-30T12:10:34Z DEBUG - END TASK PROCESSING &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;took &lt;span class=&#34;m&#34;&gt;0&lt;/span&gt;.000984191894531 seconds&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
+&lt;span class=&#34;m&#34;&gt;2018&lt;/span&gt;-07-30T12:10:43Z DEBUG - &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;client-connect&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; root@3714d1a17999:cylc-message &lt;span class=&#34;nv&#34;&gt;privilege&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;full-control&amp;#39;&lt;/span&gt; 524d658e-9932-4135-9523-3c2ace3990cf
+&lt;span class=&#34;m&#34;&gt;2018&lt;/span&gt;-07-30T12:10:43Z INFO - &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;client-command&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; put_messages root@3714d1a17999:cylc-message 524d658e-9932-4135-9523-3c2ace3990cf
+&lt;span class=&#34;m&#34;&gt;2018&lt;/span&gt;-07-30T12:10:43Z INFO - &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;hello.1&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; -&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;current:running&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;&amp;gt; succeeded at &lt;span class=&#34;m&#34;&gt;2018&lt;/span&gt;-07-30T12:10:43Z
+&lt;span class=&#34;m&#34;&gt;2018&lt;/span&gt;-07-30T12:10:43Z DEBUG - &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;hello.1&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; -running &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&amp;gt; succeeded
+&lt;span class=&#34;m&#34;&gt;2018&lt;/span&gt;-07-30T12:10:43Z INFO - Suite shutting down - AUTOMATIC
+&lt;span class=&#34;m&#34;&gt;2018&lt;/span&gt;-07-30T12:10:44Z INFO - DONE
+$
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;If you have a utility in your computer that requires a few dependencies, but that
+can store the state/data in a mapped volume, the same kind of container may be
+useful.&lt;/p&gt;
+            
+            </description>
+        </item>
         
         
         
@@ -802,46 +917,6 @@ and RHS appear in &lt;a href=&#34;https://issues.apache.org/jira/browse/JENA-153
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
-            
-            </description>
-        </item>
-        
-        
-        
-        <item>
-            <title>R Shiny + Ansible = shiny.nzoss.org.nz</title>
-            <link>/2018/02/03/r-shiny-plus-ansible-equals-shinynzossorgnz</link>
-            
-            <author>kinow</author>
-            <dc:creator>kinow</dc:creator>
-            
-            <category>presentations</category>
-            
-            <category>r shiny</category>
-            
-            <category>r</category>
-            
-            <category>opensource</category>
-            
-            <pubDate>2018-02-03T17:23:03+13:00</pubDate>
-            <guid>/2018/02/03/r-shiny-plus-ansible-equals-shinynzossorgnz</guid>
-            <description>
-            
-            &lt;p&gt;&lt;strong&gt;R Shiny + Ansible = shiny.nzoss.org.nz&lt;/strong&gt;&lt;/p&gt;
-&lt;div class=&#39;row&#39;&gt;
-&lt;div class=&#34;ui embed&#34;&gt;
-&lt;iframe src=&#34;https://kinow.github.io/auckland-r-meetup-shiny-talk/&#34; frameborder=&#34;0&#34; allowfullscreen&gt;&lt;/iframe&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;dl&gt;
-&lt;dt&gt;Event&lt;/dt&gt;
-&lt;dd&gt;&lt;a href=&#34;https://www.meetup.com/Auckland-R-Users-Group-AKLRUG/events/247400612/&#34;&gt;R Shiny + Ansible = shiny.nzoss.org.nz&lt;/a&gt;&lt;/dd&gt;
-&lt;dt&gt;Where ?&lt;/dt&gt;
-&lt;dd&gt;&lt;a href=&#34;https://www.google.com/maps/search/?api=1&amp;query=38+Princes+Street%2C+The+University+of+Auckland%2C+Auckland%2C+nz&#34;&gt;Auckland, New Zealand&lt;/a&gt;&lt;/dd&gt;
-&lt;dt&gt;When ?&lt;/dt&gt;
-&lt;dd&gt;2018-02-08&lt;/dd&gt;
-&lt;/dl&gt;
             
             </description>
         </item>

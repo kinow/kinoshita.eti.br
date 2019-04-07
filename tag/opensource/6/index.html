@@ -110,9 +110,9 @@
                               
                               <span style="font-size: 23.0pt"><a href="/tag/jenkins">jenkins</a></span>&nbsp;(26)
                               
-                              <span style="font-size: 30.5pt"><a href="/tag/opensource">opensource</a></span>&nbsp;(41)
+                              <span style="font-size: 31.0pt"><a href="/tag/opensource">opensource</a></span>&nbsp;(42)
                               
-                              <span style="font-size: 27.0pt"><a href="/tag/programming">programming</a></span>&nbsp;(34)
+                              <span style="font-size: 27.5pt"><a href="/tag/programming">programming</a></span>&nbsp;(35)
                               
                               <span style="font-size: 18.5pt"><a href="/tag/python">python</a></span>&nbsp;(17)
                               
@@ -127,6 +127,124 @@
                 
 
 Posts tagged with 'opensource'
+
+
+
+
+<div class="ui raised padded container segment">
+    <h2><a href="/2017/08/12/two-other-maven-plugins-impsort-and-deptools" title="Permanent link">Two other Maven Plug-ins: impsort and deptools</a></h2>
+    <p><small>kinow</small> @ <small>Aug 12, 2017&nbsp;22:16:03</small></p>
+    
+    
+
+
+
+
+
+<a href="https://twitter.com/share" class="twitter-share-button" data-url="https://kinoshita.eti.br/2017/08/12/two-other-maven-plugins-impsort-and-deptools" data-text="Two other Maven Plug-ins: impsort and deptools" data-via="kinow" data-hashtags="opensource">Tweet</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p='https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+
+
+    <p>Last <a href="/2017/08/06/checking-for-transitive-dependencies-use-with-maven-enforcer-plugin">week I wrote</a> about the <a href="https://github.com/ImmobilienScout24/illegal-transitive-dependency-check">ImmobilienScout24/illegal-transitive-dependency-check</a> rule for Maven Enforcer Plug-in. There are two other Maven Plug-ins that can be useful.</p>
+<h3>mbknor/deptools</h3>
+<p>The <a href="https://github.com/mbknor/deptools">mbknor/deptools</a> is another rule for the Maven Enforcer Plug-in. It will scan your project dependency tree, looking for transitive dependencies. Whenever it finds a transitive dependency, it will keep track of the versions. And if, because of the way your dependencies and transitive dependencies are organised, you end up with a version that is not the newest, the build will fail.</p>
+<p>So, for example, if you have <code>commons-lang3</code> as transitive dependency of two other dependencies, but one is using 3.4 and the other 3.5. If for any reason you are using 3.4 instead of 3.5, you will have a build error.</p>
+<p>Here&#8217;s an example of the plug-in configuration.</p>
+<div class="highlight"><pre><span></span><span class="nt">&lt;project&gt;</span>
+  ...
+  <span class="nt">&lt;build&gt;</span>
+    <span class="nt">&lt;plugins&gt;</span>
+      <span class="nt">&lt;plugin&gt;</span>
+        <span class="nt">&lt;groupId&gt;</span>deptools.plugin<span class="nt">&lt;/groupId&gt;</span>
+        <span class="nt">&lt;artifactId&gt;</span>maven-deptools-plugin<span class="nt">&lt;/artifactId&gt;</span>
+        <span class="nt">&lt;version&gt;</span>1.3<span class="nt">&lt;/version&gt;</span>
+          <span class="nt">&lt;executions&gt;</span>
+              <span class="nt">&lt;execution&gt;</span>
+                  <span class="nt">&lt;phase&gt;</span>compile<span class="nt">&lt;/phase&gt;</span>
+                  <span class="nt">&lt;goals&gt;</span>
+                      <span class="nt">&lt;goal&gt;</span>version-checker<span class="nt">&lt;/goal&gt;</span>
+                  <span class="nt">&lt;/goals&gt;</span>
+              <span class="nt">&lt;/execution&gt;</span>
+          <span class="nt">&lt;/executions&gt;</span>
+        <span class="nt">&lt;/plugin&gt;</span>
+    <span class="nt">&lt;/plugins&gt;</span>
+  <span class="nt">&lt;/build&gt;</span>
+
+  <span class="nt">&lt;pluginRepositories&gt;</span>
+    <span class="nt">&lt;pluginRepository&gt;</span>
+      <span class="nt">&lt;id&gt;</span>mbk_mvn_repo<span class="nt">&lt;/id&gt;</span>
+      <span class="nt">&lt;name&gt;</span>mbk_mvn_repo<span class="nt">&lt;/name&gt;</span>
+      <span class="nt">&lt;url&gt;</span>https://raw.githubusercontent.com/mbknor/mbknor.github.com/master/m2repo/releases<span class="nt">&lt;/url&gt;</span>
+    <span class="nt">&lt;/pluginRepository&gt;</span>
+  <span class="nt">&lt;/pluginRepositories&gt;</span>
+  ...
+<span class="nt">&lt;/project&gt;</span>
+</pre></div>
+
+<p>Running <code>mvn clean verify</code> will execute the Maven Enforcer Plug-in <code>enforce</code> goal, which will call the deptools check. As you may have noticed, you also need to download the plug-in from GitHub, as it is not released to Maven Central.</p>
+<p>I do not use it for this reason, and also because I normally spend some time looking at the dependency tree anyway, but every now and then when I work on a new project I like quickly running it just to see what are the dependencies that are being shadowed by older versions.</p>
+<h3>revelc/impsort-maven-plugin</h3>
+<p>I only found about this plug-in in the last <a href="https://blogs.apache.org/foundation/entry/the-apache-news-round-up31">Apache News Round-up</a>. Where it was mentioned that <a href="https://github.com/apache/accumulo/blob/401411619239e301ad14216b3b9c88ee947ab072/pom.xml#L999">Apache Accumulo uses</a> this plug-in to standarize the order of imports in code.</p>
+<div class="highlight"><pre><span></span><span class="nt">&lt;project&gt;</span>
+  ...
+  <span class="nt">&lt;build&gt;</span>
+    <span class="nt">&lt;plugins&gt;</span>
+      <span class="nt">&lt;plugin&gt;</span>
+        <span class="nt">&lt;groupId&gt;</span>net.revelc.code<span class="nt">&lt;/groupId&gt;</span>
+        <span class="nt">&lt;artifactId&gt;</span>impsort-maven-plugin<span class="nt">&lt;/artifactId&gt;</span>
+        <span class="nt">&lt;version&gt;</span>1.0.0<span class="nt">&lt;/version&gt;</span>
+        <span class="nt">&lt;configuration&gt;</span>
+          <span class="nt">&lt;groups&gt;</span>java.,javax.,org.,com.<span class="nt">&lt;/groups&gt;</span>
+          <span class="nt">&lt;staticGroups&gt;</span>java,*<span class="nt">&lt;/staticGroups&gt;</span>
+          <span class="nt">&lt;excludes&gt;</span>
+            <span class="nt">&lt;exclude&gt;</span>**/thrift/*.java<span class="nt">&lt;/exclude&gt;</span>
+          <span class="nt">&lt;/excludes&gt;</span>
+        <span class="nt">&lt;/configuration&gt;</span>
+        <span class="nt">&lt;executions&gt;</span>
+          <span class="nt">&lt;execution&gt;</span>
+            <span class="nt">&lt;id&gt;</span>sort-imports<span class="nt">&lt;/id&gt;</span>
+            <span class="nt">&lt;goals&gt;</span>
+              <span class="nt">&lt;goal&gt;</span>sort<span class="nt">&lt;/goal&gt;</span><span class="c">&lt;!-- runs at process-sources phase by default --&gt;</span>
+            <span class="nt">&lt;/goals&gt;</span>
+          <span class="nt">&lt;/execution&gt;</span>
+        <span class="nt">&lt;/executions&gt;</span>
+      <span class="nt">&lt;/plugin&gt;</span>
+    <span class="nt">&lt;/plugins&gt;</span>
+  <span class="nt">&lt;/build&gt;</span>
+  ...
+<span class="nt">&lt;/project&gt;</span>
+</pre></div>
+
+<p>I am neutral on imports order, though in cases where you have several contributors submitting pull requests, it can probably be useful to reduce the number of interactions. In other words, if a user submits a pull request and you have an automated check, then the user would be automatically notified about changes that s/he needs to do in order for his pull request to be accepted.</p>
+<h3>Conclusion</h3>
+<p>I am not using any of these two plug-ins, but wanted to save it somewhere in case I needed to use them in the future, and also to share with others. Besides most common plug-ins (PMD, CheckStyle, FindBugs), I normally use at least some Maven Enforcer Plug-in rules, and the <a href="https://www.owasp.org/index.php/OWASP_Dependency_Check">OWASP plug-in</a>.</p>
+<p>While most of the time we spend writing code, preparing the infrastructure, and deploying and testing, I got bitten by some maven build bugs a few times, and had to spend days/weeks debugging some of these. So hope some of these posts save some hours of someone out there in a similar situation.</p>
+<p>&hearts; Open Source</p><!-- html -->
+    
+<p class="postmetadata">
+    
+    <small>tags 
+     [&nbsp;<a
+        href="/tag/java"
+        rel="tag">java</a>&nbsp;]&nbsp;
+    
+     [&nbsp;<a
+        href="/tag/programming"
+        rel="tag">programming</a>&nbsp;]&nbsp;
+    
+     [&nbsp;<a
+        href="/tag/opensource"
+        rel="tag">opensource</a>&nbsp;]&nbsp;
+    
+     [&nbsp;<a
+        href="/tag/maven"
+        rel="tag">maven</a>&nbsp;]&nbsp;
+    
+    </small>
+    
+    
+</p>
+</div>
 
 
 
@@ -416,87 +534,6 @@ Wendy mentioned that you would be a great person to speak to since you are close
 </pre></div>
 
 <p>That way the resulting text would be &#8220;There are 2 texts waiting for analysis today&#8221;, allowing you to proceed with the rest of your analysis. This is a very simple example, but hopefully you grokked how LookupTranslator works.</p>
-<p>&hearts; Open Source</p><!-- html -->
-    
-<p class="postmetadata">
-    
-    <small>tags 
-     [&nbsp;<a
-        href="/tag/apache%20software%20foundation"
-        rel="tag">apache software foundation</a>&nbsp;]&nbsp;
-    
-     [&nbsp;<a
-        href="/tag/java"
-        rel="tag">java</a>&nbsp;]&nbsp;
-    
-     [&nbsp;<a
-        href="/tag/opensource"
-        rel="tag">opensource</a>&nbsp;]&nbsp;
-    
-     [&nbsp;<a
-        href="/tag/programming"
-        rel="tag">programming</a>&nbsp;]&nbsp;
-    
-    </small>
-    
-    
-</p>
-</div>
-
-
-
-
-<div class="ui raised padded container segment">
-    <h2><a href="/2017/05/28/some-links-related-to-apache-commons-text" title="Permanent link">Some links related to Apache Commons Text</a></h2>
-    <p><small>kinow</small> @ <small>May 28, 2017&nbsp;19:50:39</small></p>
-    
-    
-
-
-
-
-
-<a href="https://twitter.com/share" class="twitter-share-button" data-url="https://kinoshita.eti.br/2017/05/28/some-links-related-to-apache-commons-text" data-text="Some links related to Apache Commons Text" data-via="kinow" data-hashtags="opensource">Tweet</a>
-<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p='https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-
-
-    <p><a href="http://commons.apache.org/proper/commons-text/">Apache Commons Text</a> is one of the most recent new components in Apache Commons. It &#8220;is a library focused on algorithms working on strings&#8221;. I recently collected some links
-under a bookmark folder that are in some way related to the project. In case you are interested,
-check some of the links below.</p>
-<ul>
-<li><a href="https://www.youtube.com/watch?v=bx3NOoroV-M">Morgan Wahl Text is More Complicated Than You Think Comparing and Sorting Unicode PyCon 2017</a> <iframe width="560" height="315" src="https://www.youtube.com/embed/bx3NOoroV-M?rel=0" frameborder="0" allowfullscreen></iframe><ul>
-<li>Q: test [text] to check if our methods are OK with some examples in this talk)</li>
-<li>Q: Canonical Decomposition, and code points comparisons; are we doing it? Are we doing it right?</li>
-<li>Q: Do we have casefolding?</li>
-<li>Q: Do we have multi-level sort?</li>
-<li>Q: CLDR</li>
-</ul>
-</li>
-<li><a href="https://www.youtube.com/watch?v=7m5JA3XaZ4k">Łukasz Langa Unicode what is the big deal PyCon 2017</a> <iframe width="560" height="315" src="https://www.youtube.com/embed/7m5JA3XaZ4k?rel=0" frameborder="0" allowfullscreen></iframe><ul>
-<li>Q: Quite sure we have an issue to guess the encoding for a text&#8230;. there is a GPL library for that? Under Mozilla perhaps?</li>
-</ul>
-</li>
-<li><a href="https://www.youtube.com/watch?v=kTS2b6pGElE">Jiaqi Liu Fuzzy Search Algorithms How and When to Use Them PyCon 2017</a> <iframe width="560" height="315" src="https://www.youtube.com/embed/kTS2b6pGElE?rel=0" frameborder="0" allowfullscreen></iframe><ul>
-<li>Q: Does OpenNLP have N-GRAM&#8217;s? Would it make sense to have that in [text]?</li>
-<li>Q: Where can we find some tokenizers? OpenNLP?</li>
-</ul>
-</li>
-<li><a href="http://www-igm.univ-mlv.fr/~berstel/Lothaire/">Lothaire&#8217;s Books</a> like &#8220;Combinatorics on Words&#8221; and &#8220;Algebraic Combinatorics&#8221;.</li>
-<li>Java tutorial lesson <a href="https://docs.oracle.com/javase/tutorial/i18n/text/">&#8220;Working with Text&#8221;</a></li>
-<li>Mitzi Morris&#8217; <a href="https://www.amazon.com/Text-Processing-Java-Mitzi-Morris/dp/0988208725">Text Processing in Java book</a></li>
-<li><a href="http://johannburkard.de/software/stringsearch/">StringSearch</a> java library.<ul>
-<li><blockquote>&#8220;The Java language lacks fast string searching algorithms. StringSearch provides implementations of the Boyer-Moore and the Shift-Or (bit-parallel) algorithms. These algorithms are easily five to ten times faster than the na&iuml;ve implementation found in java.lang.String&#8221;.</blockquote></li>
-</ul>
-</li>
-<li><a href="https://jakarta.apache.org/oro/">Jakarta Oro</a> (attic)<ul>
-<li><blockquote>The Jakarta-ORO Java classes are a set of text-processing Java classes that provide Perl5 compatible regular expressions, AWK-like regular expressions, glob expressions, and utility classes for performing substitutions, splits, filtering filenames, etc. This library is the successor to the OROMatcher, AwkTools, PerlTools, and TextTools libraries originally from ORO, Inc. Despite little activity in the form of new development initiatives, issue reports, questions, and suggestions are responded to quickly.</blockquote></li>
-<li>Discontinued, but is there anything useful in there? The attic has always interesting things after all&#8230;</li>
-</ul>
-</li>
-<li><a href="http://textprocessing.org/">TextProcessing blog</a> - A Text Processing Portal for Humans</li>
-<li><a href="https://github.com/twitter/twitter-text">twitter-text</a>, the Twitter Java (multi-language actually&#8230;) text processing library.</li>
-<li>Python&#8217;s <a href="https://docs.python.org/3/library/text.html">text modules</a></li>
-</ul>
 <p>&hearts; Open Source</p><!-- html -->
     
 <p class="postmetadata">

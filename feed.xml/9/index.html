@@ -10,13 +10,63 @@
         
         <description>Latest news from Bruno P. Kinoshita</description>
         
-        <lastBuildDate>2019-04-07T19:03:06+12:00</lastBuildDate>
-        <pubDate>2019-04-07T19:03:06+12:00</pubDate>
+        <lastBuildDate>2019-04-07T21:33:32+12:00</lastBuildDate>
+        <pubDate>2019-04-07T21:33:32+12:00</pubDate>
         <generator>PieCrust 3.2.1</generator>
         
         
         
 
+        
+        
+        
+        <item>
+            <title>Deploying WAR files to Tomcat with Jenkins</title>
+            <link>/2016/03/20/deploying-war-files-to-tomcat-with-jenkins</link>
+            
+            <author>kinow</author>
+            <dc:creator>kinow</dc:creator>
+            
+            <category>blog</category>
+            
+            <category>jenkins</category>
+            
+            <category>tomcat</category>
+            
+            <category>docker</category>
+            
+            <pubDate>2016-03-20T15:29:03+13:00</pubDate>
+            <guid>/2016/03/20/deploying-war-files-to-tomcat-with-jenkins</guid>
+            <description>
+            
+            &lt;p&gt;&lt;strong&gt;Table of Contents&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;#1-deploying-with-custom-scripts&#34;&gt;Deploying with custom scripts&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#2-deploying-with-a-build-tool&#34;&gt;Deploying with a build tool&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#3-deploying-with-a-build-server&#34;&gt;Deploying with a build server&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#final-thoughts&#34;&gt;Final thoughts&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;A co-worker asked me this week about how to deploy a WAR file to Tomcat with Jenkins. In my team we are
+currently maintaining and deploying about 10 Java web systems, but we have no consistent way of deploying
+the applications to Tomcat yet. In the past I used Ant, Maven, Cargo, Grunt, and Jenkins, so I
+decided to write this short post to show a few different ways it can be achieved, &amp;agrave; la
+&lt;a href=&#34;https://en.wikipedia.org/wiki/There&#39;s_more_than_one_way_to_do_it&#34;&gt;Perl&amp;#8217;s TMTOWTDI&lt;/a&gt; motto.&lt;/p&gt;
+&lt;h2&gt;&lt;a name=&#34;1-deploying-with-custom-scripts&#34; style=&#34;color: #222222;&#34;&gt;#1 Deploying with custom scripts&lt;/a&gt;&lt;/h2&gt;
+
+&lt;p&gt;At first you may be tempted to write your own script to deploy to Tomcat with some Shell, Perl, Python
+or Java. But I think I would choose this option only because either I needed some feature that is not
+available in the other options, or in order to call other tasks or debug some problem.&lt;/p&gt;
+&lt;p&gt;Example:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ docker run -d -p &lt;span class=&#34;m&#34;&gt;8888&lt;/span&gt;:8080 jeanblanchard/tomcat:8
+$ git clone https://github.com/spring-projects/spring-petclinic.git &lt;span class=&#34;o&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;cd&lt;/span&gt; spring-petclinic &lt;span class=&#34;o&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; mvn package
+$ curl --upload-file target/petclinic.war &lt;span class=&#34;s2&#34;&gt;&amp;quot;http://admin:admin@localhost:8888/manager/text/deploy?path=/spring-petclinic&amp;amp;update=true&amp;quot;&lt;/span&gt;
+OK - Deployed application at context path /spring-petclinic
+&lt;/pre&gt;&lt;/div&gt;
+
+
+            
+            </description>
+        </item>
         
         
         
@@ -592,84 +642,6 @@ less code to be tested (and one less place to look for bugs).&lt;/p&gt;
 &lt;a href=&#34;http://www.bioinformatics.org/sms/rev_comp.html&#34;&gt;DNA reverse complement&lt;/a&gt;. But you can also use this for replacing 
 special characters, spaces by _, and so it goes.&lt;/p&gt;
 &lt;p&gt;Happy hacking!&lt;/p&gt;
-            
-            </description>
-        </item>
-        
-        
-        
-        <item>
-            <title>Treemapping Jenkins Extension Points with R</title>
-            <link>/2014/05/19/treemapping-jenkins-extension-points-with-r</link>
-            
-            <author>kinow</author>
-            <dc:creator>kinow</dc:creator>
-            
-            <category>blog</category>
-            
-            <category>jenkins</category>
-            
-            <category>r</category>
-            
-            <pubDate>2014-05-19T00:51:33+12:00</pubDate>
-            <guid>/2014/05/19/treemapping-jenkins-extension-points-with-r</guid>
-            <description>
-            
-            &lt;p&gt;I have been playing with R and its packages for some time, and decided to study it a 
-bit harder. Last week I started reading the &lt;a href=&#34;http://adv-r.had.co.nz/&#34;&gt;Advanced R Programming&lt;/a&gt; 
-by Hadley Wickham. &lt;/p&gt;
-&lt;p&gt;One of the first chapters talks about the basic data structures in R. In order to 
-get my feet wet I thought about a simple example: &lt;a href=&#34;http://en.wikipedia.org/wiki/Treemapping&#34;&gt;treemapping&lt;/a&gt; 
-Jenkins extension points. &lt;/p&gt;
-&lt;p style=&#34;text-align: center;&#34;&gt;&lt;a href=&#34;/2014/05/19/treemapping-jenkins-extension-points-with-r/extension_points.png&#34;&gt;&lt;img src=&#34;/2014/05/19/treemapping-jenkins-extension-points-with-r/extension_points.png&#34; width=&#34;600px&#34; alt=&#34;Treemap graph&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;There is a &lt;a href=&#34;https://wiki.jenkins-ci.org/display/JENKINS/Extension+points&#34;&gt;Wiki page with the extension points in Jenkins&lt;/a&gt; (what parts of Jenkins can be customized) 
-and its implementations. That page is generated by a &lt;a href=&#34;https://ci.jenkins-ci.org/view/Infrastructure/job/infra_extension-indexer/&#34;&gt;Jenkins job&lt;/a&gt;. &lt;/p&gt;
-&lt;p&gt;That job outputs a JSON file that contains each available extension points, as well as 
-an array with its implementations. The R code below will produce two vectors, one with the 
-count of implementations of each extension point, and the other with the class name.&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;nExtensionPoints &lt;span class=&#34;o&#34;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&#34;kp&#34;&gt;length&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;extensionPointsJson&lt;span class=&#34;o&#34;&gt;$&lt;/span&gt;extensionPoints&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
-numberOfImplementations &lt;span class=&#34;o&#34;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&#34;kt&#34;&gt;vector&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;length &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; nExtensionPoints&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
-namesOfTheExtensionPoints &lt;span class=&#34;o&#34;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&#34;kt&#34;&gt;vector&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;length &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; nExtensionPoints&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
-&lt;span class=&#34;kr&#34;&gt;for&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;i &lt;span class=&#34;kr&#34;&gt;in&lt;/span&gt; &lt;span class=&#34;kp&#34;&gt;seq_along&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;extensionPoints&lt;span class=&#34;p&#34;&gt;))&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
-  extensionName &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; extensionPoints&lt;span class=&#34;p&#34;&gt;[[&lt;/span&gt;i&lt;span class=&#34;p&#34;&gt;]]&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;$&lt;/span&gt;className
-  lastIndexOfDot &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;kp&#34;&gt;regexpr&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;\\.[^\\.]*$&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; extensionName&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
-  namesOfTheExtensionPoints&lt;span class=&#34;p&#34;&gt;[[&lt;/span&gt;i&lt;span class=&#34;p&#34;&gt;]]&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;kp&#34;&gt;substr&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;extensionName&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; lastIndexOfDot&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;+1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;kp&#34;&gt;nchar&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;extensionName&lt;span class=&#34;p&#34;&gt;))&lt;/span&gt;
-  numberOfImplementations&lt;span class=&#34;p&#34;&gt;[[&lt;/span&gt;i&lt;span class=&#34;p&#34;&gt;]]&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;kp&#34;&gt;length&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;extensionPoints&lt;span class=&#34;p&#34;&gt;[[&lt;/span&gt;i&lt;span class=&#34;p&#34;&gt;]]&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;$&lt;/span&gt;implementations&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
-  &lt;span class=&#34;kp&#34;&gt;print&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;kp&#34;&gt;paste&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;namesOfTheExtensionPoints&lt;span class=&#34;p&#34;&gt;[[&lt;/span&gt;i&lt;span class=&#34;p&#34;&gt;]],&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;&amp;quot; -&amp;gt; &amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; numberOfImplementations&lt;span class=&#34;p&#34;&gt;[[&lt;/span&gt;i&lt;span class=&#34;p&#34;&gt;]]))&lt;/span&gt;
-&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;For creating the treemap I used the &lt;strong&gt;&lt;a href=&#34;http://flowingdata.com/2010/02/11/an-easy-way-to-make-a-treemap/&#34;&gt;portfolio package&lt;/a&gt;&lt;/strong&gt;, and the &lt;code&gt;map.market&lt;/code&gt; 
-function. The structures previously created and the next snippet of code are all that is 
-needed to create the treemap of the Jenkins extension points.&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;map.market&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;id&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;kp&#34;&gt;seq_along&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;extensionPoints&lt;span class=&#34;p&#34;&gt;),&lt;/span&gt; area&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;numberOfImplementations&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; group&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;namesOfTheExtensionPoints&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; color&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;numberOfImplementations&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; main&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;Jenkins Extension Points&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;You can also use the &lt;a href=&#34;https://wiki.jenkins-ci.org/display/JENKINS/R+Plugin&#34;&gt;Jenkins R Plug-in&lt;/a&gt; to produce this graph, 
-as in this &lt;a href=&#34;http://builds.tupilabs.com/job/backend-extension-points-treemap/2/&#34;&gt;sample job&lt;/a&gt;. 
-You can get the complete script in this &lt;a href=&#34;https://gist.github.com/kinow/d5a2221c32dce3aa1076&#34;&gt;gist&lt;/a&gt;, or just 
-copy it here.&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class=&#34;kn&#34;&gt;library&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;#39;rjson&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
-&lt;span class=&#34;kn&#34;&gt;library&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;#39;portfolio&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
-
-download.file&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;url&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;https://ci.jenkins-ci.org/view/Infrastructure/job/infra_extension-indexer/ws/extension-points.json&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; destfile&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;extension-points.json&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; method&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;wget&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
-extensionPointsJson &lt;span class=&#34;o&#34;&gt;&amp;lt;-&lt;/span&gt; fromJSON&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;kp&#34;&gt;paste&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;kp&#34;&gt;readLines&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;extension-points.json&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;),&lt;/span&gt; collapse&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;))&lt;/span&gt;
-extensionPoints &lt;span class=&#34;o&#34;&gt;&amp;lt;-&lt;/span&gt; extensionPointsJson&lt;span class=&#34;o&#34;&gt;$&lt;/span&gt;extensionPoints
-nExtensionPoints &lt;span class=&#34;o&#34;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&#34;kp&#34;&gt;length&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;extensionPointsJson&lt;span class=&#34;o&#34;&gt;$&lt;/span&gt;extensionPoints&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
-numberOfImplementations &lt;span class=&#34;o&#34;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&#34;kt&#34;&gt;vector&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;length &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; nExtensionPoints&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
-namesOfTheExtensionPoints &lt;span class=&#34;o&#34;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&#34;kt&#34;&gt;vector&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;length &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; nExtensionPoints&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
-&lt;span class=&#34;kr&#34;&gt;for&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;i &lt;span class=&#34;kr&#34;&gt;in&lt;/span&gt; &lt;span class=&#34;kp&#34;&gt;seq_along&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;extensionPoints&lt;span class=&#34;p&#34;&gt;))&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
-  extensionName &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; extensionPoints&lt;span class=&#34;p&#34;&gt;[[&lt;/span&gt;i&lt;span class=&#34;p&#34;&gt;]]&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;$&lt;/span&gt;className
-  lastIndexOfDot &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;kp&#34;&gt;regexpr&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;\\.[^\\.]*$&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; extensionName&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
-  namesOfTheExtensionPoints&lt;span class=&#34;p&#34;&gt;[[&lt;/span&gt;i&lt;span class=&#34;p&#34;&gt;]]&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;kp&#34;&gt;substr&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;extensionName&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; lastIndexOfDot&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;+1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;kp&#34;&gt;nchar&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;extensionName&lt;span class=&#34;p&#34;&gt;))&lt;/span&gt;
-  numberOfImplementations&lt;span class=&#34;p&#34;&gt;[[&lt;/span&gt;i&lt;span class=&#34;p&#34;&gt;]]&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;kp&#34;&gt;length&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;extensionPoints&lt;span class=&#34;p&#34;&gt;[[&lt;/span&gt;i&lt;span class=&#34;p&#34;&gt;]]&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;$&lt;/span&gt;implementations&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
-  &lt;span class=&#34;kp&#34;&gt;print&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;kp&#34;&gt;paste&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;namesOfTheExtensionPoints&lt;span class=&#34;p&#34;&gt;[[&lt;/span&gt;i&lt;span class=&#34;p&#34;&gt;]],&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;&amp;quot; -&amp;gt; &amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; numberOfImplementations&lt;span class=&#34;p&#34;&gt;[[&lt;/span&gt;i&lt;span class=&#34;p&#34;&gt;]]))&lt;/span&gt;
-&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
-png&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;filename&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;extension-points.png&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; width&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;2048&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; height&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;1536&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; units&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;px&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; bg&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;white&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
-map.market&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;id&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;kp&#34;&gt;seq_along&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;extensionPoints&lt;span class=&#34;p&#34;&gt;),&lt;/span&gt; area&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;numberOfImplementations&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; group&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;namesOfTheExtensionPoints&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; color&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;numberOfImplementations&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; main&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;Jenkins Extension Points&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
-dev.off&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
             
             </description>
         </item>
