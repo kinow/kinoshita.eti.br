@@ -1,5 +1,5 @@
 ---
-title: Running Fuzzers to find bugs
+title: Running fuzzers to find bugs
 time: '21:20:57'
 author: kinow
 tags:
