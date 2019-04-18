@@ -4,6 +4,8 @@ layout: page
 permalink: "/art/"
 ---
 
+_Drawing for fun, but commissions are welcome if I have the time._
+
 <div class="ui small images">
     <img src="/assets//pages/art/alonzo_and_lambda_by_kinow-d5tqvau.png">
     <img src="/assets//pages/art/jean-luc-picard-original-size.jpg">
