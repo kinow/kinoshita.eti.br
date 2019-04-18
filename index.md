@@ -28,6 +28,6 @@ Before that I used a Dell Inspiron N5110, i5-2430M (4 threads/2 cores/3MB cache)
 - Doing [illustrations](/art/) on the side, and I also have [Instagram](https://instagram.com/brunokinoshita) and
 [DeviantArt](https://deviantart.com/kinow/)
 - I am also into [books](/books), especially science fiction
-- And [theatre plays](/theatre)
+- And watching [theatre plays](/theatre)
 - Gave some [programming presentations](/presentations) in the past
 - CV as [PDF](/cv.pdf) and [HTML](/cv/)
