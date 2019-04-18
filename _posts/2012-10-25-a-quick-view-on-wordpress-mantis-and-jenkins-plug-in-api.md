@@ -43,27 +43,32 @@ time: '08:49:36'
 
 <p>Wordpress provides two hook types, action and filter. The <strong>action hook</strong> is used to execute some action when an event occurs. For instance, you can add an action for when the plug-in is activated.</p>
 
-{% geshi 'php' %}class MyPlugin {
+```php
+class MyPlugin {
      static function install() {
             // do not generate any output here
      }
 }
-register_activation_hook( __FILE__, array('MyPlugin', 'install') );{% endgeshi %}
+register_activation_hook( __FILE__, array('MyPlugin', 'install') );
+```
 
 <p>And the <strong>filter hook</strong> is used to modify content. For instance, you could want to modify the title of a post, so you could apply a filter on the function that displays the blog title. This filter could, say, upper case the title.</p>
 
-{% geshi 'php' %}<?php
+```php
+<?php
 function theme_slug_filter_the_content( $content ) {
     $custom_content = 'YOUR CONTENT GOES HERE';
     $custom_content .= $content;
     return $custom_content;
 }
 add_filter( 'the_content', 'theme_slug_filter_the_content' );
-?>{% endgeshi %}
+?>
+```
 
 <p>There is also the possibility to use <strong>pluggable functions</strong>. With them themes and plug-ins can define functions to be overriden by themes (or child themes) and plug-ins.</p>
 
-{% geshi 'php' %}if ( !function_exists( 'mytheme_nav_menu' ) ) :
+```php
+if ( !function_exists( 'mytheme_nav_menu' ) ) :
 function mytheme_nav_menu() {
     if ( current_theme_supports( 'menus' ) ) :
         wp_nav_menu( array( 'theme_location' =&gt; 'primary_nav', 'fallback_cb' =&gt; 'wp_list_pages' ) );
@@ -71,7 +76,8 @@ function mytheme_nav_menu() {
         wp_list_pages();
     endif;
 }
-endif;{% endgeshi %}
+endif;
+```
 
 <h4>Plug-ins configuration</h4>
 
@@ -106,7 +112,8 @@ endif;{% endgeshi %}
 
 <p>Certain actions in Mantis generate <strong>events</strong> (see: <em>$MANTIS_HOME/core/events_inc.php</em>). A plug-in can register functions for these events. This way, Mantis will call these functions when such event occurs.</p>
 
-{% geshi 'php' %}**
+```php
+**
  * requires MantisPlugin.class.php
  */
 require_once( config_get( 'class_path' ) . 'MantisPlugin.class.php' );
@@ -128,7 +135,8 @@ class XmlImportExportPlugin extends MantisPlugin {
 		);
 		return $hooks;
 	}
-}{% endgeshi %}
+}
+```
 
 <p>There is a plug-in that comes bundled with Mantis, the Core plug-in. This plug-in allows other plug-ins to use it to verify required compatibility with the plug-ins API.</p>
 
@@ -165,7 +173,8 @@ class XmlImportExportPlugin extends MantisPlugin {
 
 <p>There are several <strong>extension points</strong> in Jenkins (see: <a href="https://wiki.jenkins-ci.org/display/JENKINS/Extension+points" title="Jenkins Wiki page for Extension Points">Jenkins Wiki page for Extension Points</a>). Each one has a goal and is executed at certain point in Jenkins code. Normally your plug-in will have one extension point and one goal, but it is possible too that you use more than one extension point, create your own extension point or use other plug-ins too.</p>
 
-{% geshi 'java' %}public class HelloWorldBuilder extends Builder {
+```java
+public class HelloWorldBuilder extends Builder {
 
     private final String name;
 
@@ -192,7 +201,8 @@ class XmlImportExportPlugin extends MantisPlugin {
 
     // ...
 
-}{% endgeshi %}
+}
+```
 
 <p>When you initialize Jenkins, it scans the plug-ins directory and, for each plug-in found, it prepares a ClassLoader and call the initializion methods (if any) in the plug-in. There are methods for when the plug-in is stopping too.</p>
 

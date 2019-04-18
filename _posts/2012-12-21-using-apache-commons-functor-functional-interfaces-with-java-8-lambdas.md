@@ -21,7 +21,8 @@ category: 'functional programming'
 
 <p>Here is a simple example with one Predicate.</p>
 
-{% geshi 'java' %}List<Integer> numbers = Arrays.asList(1, 2, 3, 4);
+```java
+List<Integer> numbers = Arrays.asList(1, 2, 3, 4);
 
 UnaryPredicate<Integer> isEven = new UnaryPredicate<Integer>() {
     public boolean test(Integer obj) {
@@ -33,7 +34,8 @@ for( Integer number : numbers ) {
     if (isEven.test(number)) {
         System.out.print(number + " ");
     }
-}{% endgeshi %}
+}
+```
 
 <p>It prints only the the even numbers, those that pass by the predicate test.</p>
 
@@ -41,7 +43,8 @@ for( Integer number : numbers ) {
 
 <p>This modified version is using Java 8 lambdas</p>
 
-{% geshi 'java' %}List<Integer> numbers = Arrays.asList(1, 2, 3, 4);
+```java
+List<Integer> numbers = Arrays.asList(1, 2, 3, 4);
 
 UnaryPredicate<Integer> isEven = (Integer obj) -> { return obj % 2 == 0; };
  
@@ -49,13 +52,14 @@ for( Integer number : numbers ) {
     if (isEven.test(number)) {
         System.out.print(number + " ");
     }
-}{% endgeshi %}
+}
+```
 
 <p>The behaviour is the same. <strong>UnaryPredicate</strong> is a functional interface. Its only method is <code>boolean test(A obj);</code>. And when used in a lambda expression you just have to provide the right number of arguments and implement the closure code.</p>
 
 <p>The difference in the two code snippets are the way that the UnaryPredicate for even numbers is created. Below you can see the two ways of creating this predicate, with and without Java 8 lambdas.</p>
 
-{% geshi 'java' %}
+```java
 // pre-java-8
 UnaryPredicate isEven = new UnaryPredicate() {
     public boolean test(Integer obj) {
@@ -64,7 +68,8 @@ UnaryPredicate isEven = new UnaryPredicate() {
 };
 
 // with lambda-8
-UnaryPredicate isEven = (Integer obj) -> { return obj % 2 == 0; };{% endgeshi %}
+UnaryPredicate isEven = (Integer obj) -> { return obj % 2 == 0; };
+```
 
 <h3>Java 8 in Eclipse</h3>
 
@@ -76,20 +81,25 @@ UnaryPredicate isEven = (Integer obj) -> { return obj % 2 == 0; };{% endgeshi %}
 	<li>Disable the default <strong>Java Builder</strong> from your Eclipse project, as it doesn't work with Java 8</li>
 	<li>Create a new builder. When prompted with a screen that lets you browse for a program, select Java 8 javac (for me it was <em>/opt/java/jdk1.8.0/bin/javac</em>)</li>
 	<li>Add the arguments below to your builder: <br />
-{%geshi 'shell' %}-classpath %CLASSPATH%;commons-functor-1.0-SNAPSHOT-jar-with-dependencies.jar;.
+```shell
+-classpath %CLASSPATH%;commons-functor-1.0-SNAPSHOT-jar-with-dependencies.jar;.
 -source 8
 -d ${workspace_loc:/lambdas}/bin
-${workspace_loc:/Java8}/src/lambdas/*.java{%endgeshi%}
+${workspace_loc:/Java8}/src/lambdas/*.java
+```
 </li>
 </ul>
 
 <p>You have to include [functor]'s jar, as well as its dependencies. For the sake of convenience, I used <a href="http://maven.apache.org/plugins/maven-assembly-plugin/" title="maven-assembly-plugin">maven-assembly-plugin</a> to generate a jar with dependencies for [functor]. The code and the jar are available from this <a href="https://github.com/kinow/try-lambdas" title="try-lambdas GitHub repository">GitHub repository</a>. Or if you prefer generate your own [functor] jar with dependencies, check out the code from the repository as below.</p>
 
-{% geshi 'shell' %}svn checkout https://svn.apache.org/repos/asf/commons/sandbox/functor/trunk/ commons-functor{% endgeshi %}
+```shell
+svn checkout https://svn.apache.org/repos/asf/commons/sandbox/functor/trunk/ commons-functor
+```
 
 <p>And finally include the following to [functor] <em>pom.xml</em> before running <code>mvn clean assembly:assembly</code>.</p>
 
-{% geshi 'xml' %}<plugin>
+```xml
+<plugin>
   <artifactId>maven-assembly-plugin</artifactId>
   <version>2.3</version>
   <configuration>
@@ -97,6 +107,7 @@ ${workspace_loc:/Java8}/src/lambdas/*.java{%endgeshi%}
       <descriptorRef>jar-with-dependencies</descriptorRef>
     </descriptorRefs>
   </configuration>
-</plugin>{% endgeshi %}
+</plugin>
+```
 
 <p>Thanks for your time, hope you enjoyed it! :-)</p>

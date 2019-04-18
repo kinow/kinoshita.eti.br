@@ -19,23 +19,23 @@ The change was in the *CharEncoding* class. The issue was that this class has so
 
 <blockquote>A constant expression is an expression denoting a value of primitive type or a String that does not complete abruptly and is composed using only the following (...)</blockquote>
 
-{% geshi 'java' %}
+```java
 public class CharEncoding {
     // ...
     public static final String ISO_8859_1 = "ISO-8859-1";
     // ...
 }
-{% endgeshi %}
+```
 
 The code above contains a constant (*static final*) variable, that is a constant expression. So users can safely use it in switch statements, and the Java compiler won't complain about it.
 
-{% geshi 'java' %}
+```java
 public class CharEncoding {
     // ...
     public static final String ISO_8859_1 = StandardCharsets.ISO_8859_1.name();
     // ...
 }
-{% endgeshi %}
+```
 
 The code above is from the change that caused the regression. Any user that was using the ISO_8859_1 constant variable in a switch statement would get a compilation error (e.g. *case expressions must be constant expressions*) when updating to Apache Commons Lang 3.6. That is because the constant variable is not a constant expression.
 

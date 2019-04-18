@@ -19,7 +19,7 @@ The suggestion was to make a class a [Comparable type](https://docs.oracle.com/j
 to both simplify the code, and also have a better design. I immediately agreed, and looking back in hindsight,
 it was the most logical choice. Yet, I simply did not think about that.
 
-{% geshi 'java' %}
+```java
 // What the code was
 case VSPACE_SORTKEY :
     int cmp = 0;
@@ -35,14 +35,14 @@ case VSPACE_SORTKEY :
     }
     return cmp;
 }
-{% endgeshi %}
+```
 
-{% geshi 'java' %}
+```java
 // What the code is now
 case VSPACE_SORTKEY :
     return ((NodeValueSortKey) nv1).compareTo((NodeValueSortKey) nv2);
 }
-{% endgeshi %}
+```
 
 This moved the logic to a method in the `NodeValueSortKey` class. This reduced the complexity
 of the class with the `switch` statement. And it also made it easier to write unit tests.

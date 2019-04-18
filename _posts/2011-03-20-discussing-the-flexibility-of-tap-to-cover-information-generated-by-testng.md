@@ -35,7 +35,7 @@ time: '03:34:05'
 
 <p>Particularly, I would like to have this information in TestException. Maybe it could have a constructor public TestException(String message, Throwable t, String expected, String got, long lineNumber) and TestNG could fill this information for me :-). I know I'm being lazy, but I like the description of laziness in <a title="Larry Wall's Wikipedia entry" href="http://en.wikipedia.org/wiki/Larry_Wall">Larry Wall's WikiPedia entry</a>. The following test is expecting an exception that is never thrown, thus it raises an exception.</p>
 
-{% geshi 'java' %}
+```java
 package example1;
 
 import org.testng.Assert;
@@ -51,11 +51,12 @@ public class TestFoo
    Assert.assertTrue(1/0 > 0); // programmatic causing an error in the test
  }
 
-}{% endgeshi %}
+}
+```
 
 <p>And the TAP Stream with the exception in the 'backtrace' entry.</p>
 
-{%geshi 'shell' %}
+```shell
 1..1
 not ok 1 - example1.TestFoo#test
  ---
@@ -95,7 +96,8 @@ not ok 1 - example1.TestFoo#test
  \tat sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)\n\
  \tat java.lang.reflect.Method.invoke(Method.java:597)\n\tat org.testng.internal.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:74)\n\
  \tat org.testng.internal.Invoker.invokeMethod(Invoker.java:673)\n\t... 19 more\n&quot;
- ...{%endgeshi%}
+ ...
+```
 
 <p>As you can see, the Exception contains the information of what the test expected (java.lang.NullPointerException) and what the test actually got (java.lang.ArithmeticException).</p>
 
@@ -103,7 +105,7 @@ not ok 1 - example1.TestFoo#test
 
 <p>In order to use a data provider with TestNG you have to add parameters to your method. Look at the code below.</p>
 
-{% geshi 'java' %}
+```java
 package example1;
 
 import org.testng.Assert;
@@ -133,11 +135,12 @@ public class TestWithDataProvider
    Assert.assertNotNull(name);
  }
 
-}{% endgeshi %}
+}
+```
 
 <p>Running the test above results in the following TAP Stream:</p>
 
-{%geshi 'shell' %}
+```shell
 1..2
 ok 1 - example1.TestWithDataProvider#testName
  ---
@@ -172,7 +175,8 @@ ok 2 - example1.TestWithDataProvider#testName
  dump: '{param1=Murakami}'
  error: '~'
  backtrace: '~'
- ...{%endgeshi%}
+ ...
+```
 
 <p>As you can see, tap4j listeners output in the 'dump' entry the values for parameters used in the test. This way you have both the data obtained through Data Providers and what was passed as parameters during the test execution. One issue could be that this information can't be distinguished, i.e. you can't tell if the params are coming from a Data Provider or if they are parameters.</p>
 
@@ -180,7 +184,7 @@ ok 2 - example1.TestWithDataProvider#testName
 
 <p>The listener <a title="br.eti.kinoshita.tap4j.ext.testng.SuiteTAPReporter" href="https://github.com/kinow/tap4j/blob/master/src/main/java/org/tap4j/ext/testng/SuiteTAPReporter.java">br.eti.kinoshita.tap4j.ext.testng.SuiteTAPReporter</a> contains the logic to generate a TAP Stream for each TestNG group found in the test suite. There was a BUG in this listener that was fixed in tap4j version 1.4.5 (thanks again to Cesar). Let's use the following code taken from TestNG documentation site.</p>
 
-{% geshi 'java' %}
+```java
 package example1;
 
 import org.testng.annotations.BeforeClass;
@@ -203,11 +207,12 @@ public void aSlowTest() {
   System.out.println(&quot;Slow test&quot;);
 }
 
-}{% endgeshi %}
+}
+```
 
 <p>And let's create a XML suite for running this test with tap4j SuiteTAPReporter listener.</p>
 
-{%geshi 'xml'%}
+```xml
 <!DOCTYPE suite SYSTEM &quot;http://testng.org/testng-1.0.dtd&quot; >
   
 <suite name=&quot;ExampleSuite&quot; verbose=&quot;1&quot; >
@@ -219,13 +224,14 @@ public void aSlowTest() {
       <class name=&quot;example1.SimpleTest&quot; />
     </classes>
   </test>
-</suite>{%endgeshi%}
+</suite>
+```
 
 <p>Running this XML suite will produce three files in the test-output directory.</p>
 
 <p><pre><span style="text-decoration: underline;">ExampleSuite.tap</span></pre></p>
 
-{%geshi 'shell' %}
+```shell
 1..2
 ok 1 - example1.SimpleTest#aFastTest
  ---
@@ -260,11 +266,12 @@ ok 2 - example1.SimpleTest#aSlowTest
  dump: '~'
  error: '~'
  backtrace: '~'
- ...{%endgeshi%}
+ ...
+```
 
 <p><pre><span style="text-decoration: underline;">fast.tap</span></pre></p>
 
-{%geshi 'shell' %}
+```shell
 1..1
 ok 1 - example1.SimpleTest#aFastTest
  ---
@@ -282,11 +289,12 @@ ok 1 - example1.SimpleTest#aFastTest
  dump: '~'
  error: '~'
  backtrace: '~'
- ...{%endgeshi%}
+ ...
+```
 
 <p><pre><span style="text-decoration: underline;">slow.tap</span></pre></p>
 
-{%geshi 'shell' %}
+```shell
 1..1
 ok 1 - example1.SimpleTest#aSlowTest
  ---
@@ -304,7 +312,8 @@ ok 1 - example1.SimpleTest#aSlowTest
  dump: '~'
  error: '~'
  backtrace: '~'
- ...{%endgeshi%}
+ ...
+```
 
 <p>tap4j Listeners can generate TAP Streams for TestNG tests for each method, for each class, for each group and for each suite. Nice uhn? :-)</p>
 
@@ -312,7 +321,7 @@ ok 1 - example1.SimpleTest#aSlowTest
 
 <p>In TAP there are two directives: <strong>SKIP </strong>and <strong>TODO</strong>. SKIP is used to mark a test result as skipped, and TODO says that certain method is still not completely implemented. Tests that are skipped by TestNG are then marked as 'not ok' with the SKIP directive. Let's see some sample code.</p>
 
-{% geshi 'java' %}
+```java
 package example1;
 
 import org.testng.Assert;
@@ -335,13 +344,14 @@ public class SkipTest
  {
    Assert.assertTrue( System.currentTimeMillis() > 0 );
  }
-}{% endgeshi %}
+}
+```
 
 <p>In the code above we are intentionally making a mistake in the method aTestThatFails (we try to divide a number by zero). The method aDepedentMethod that depends on this method is then always skipped. Here is the output TAP Stream:</p>
 
 <p><pre><span style="text-decoration: underline;">example1.SkipTest.tap</span></pre></p>
 
-{%geshi 'shell' %}
+```shell
 1..2
 not ok 1 - example1.SkipTest#aDepedentMethod # SKIP TestNG test was skipped
  ---
@@ -389,7 +399,8 @@ not ok 2 - example1.SkipTest#aTestThatFails
  \tat org.testng.TestNG.runSuitesSequentially(TestNG.java:995)\n\tat org.testng.TestNG.runSuitesLocally(TestNG.java:920)\n\
  \tat org.testng.TestNG.run(TestNG.java:856)\n\tat org.testng.remote.RemoteTestNG.run(RemoteTestNG.java:110)\n\
  \tat org.testng.remote.RemoteTestNG.initAndRun(RemoteTestNG.java:205)\n\tat org.testng.remote.RemoteTestNG.main(RemoteTestNG.java:174)\n&quot;
- ...{%endgeshi%}
+ ...
+```
 
 <p>You can use <a title="br.eti.kinoshita.tap4j.ext.testng.TestTAPReporter" href="https://github.com/kinow/tap4j/blob/master/src/main/java/org/tap4j/ext/testng/TestTAPReporter.java">br.eti.kinoshita.tap4j.ext.testng.TestTAPReporter</a> or <a title="br.eti.kinoshita.tap4j.ext.testng.SuiteTAPReporter" href="https://github.com/kinow/tap4j/blob/master/src/main/java/org/tap4j/ext/testng/SuiteTAPReporter.java">br.eti.kinoshita.tap4j.ext.testng.SuiteTAPReporter</a>, as both listeners generate information on skipped tests.</p>
 

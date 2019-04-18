@@ -35,7 +35,9 @@ time: '14:26:08'
 	<li>TestLink doesn't store the stories correctly. In my test job in Jenkins, I had to use some Perl one liners to strip HTML and sanitize the string (take a look below)</li>
 </ul>
 
-{% geshi 'shell' %}echo $TESTLINK_TESTCASE_SUMMARY | perl -pe 's|\&lt;br \/\&gt;|\n|g' | perl -pe 's|\&lt;br\/\&gt;|\n|g' | perl -pe 's|\&lt;\/div\&gt;|\n|g' | sed -e 's/&lt;[a-zA-Z\/][^&gt;]*&gt;//g' | perl -MHTML::Entities -le 'while(&lt;&gt;) {print decode_entities($_);}' | perl -pe 's|^\s+||' | perl -pe 's|\xA0||g' &gt; &quot;$TESTLINK_TESTCASE_EASYB_FILENAME.story&quot;{% endgeshi %}
+```shell
+echo $TESTLINK_TESTCASE_SUMMARY | perl -pe 's|\&lt;br \/\&gt;|\n|g' | perl -pe 's|\&lt;br\/\&gt;|\n|g' | perl -pe 's|\&lt;\/div\&gt;|\n|g' | sed -e 's/&lt;[a-zA-Z\/][^&gt;]*&gt;//g' | perl -MHTML::Entities -le 'while(&lt;&gt;) {print decode_entities($_);}' | perl -pe 's|^\s+||' | perl -pe 's|\xA0||g' &gt; &quot;$TESTLINK_TESTCASE_EASYB_FILENAME.story&quot;
+```
 
 <div class='row'>
 <div class="ui container" style='text-align: center;'>

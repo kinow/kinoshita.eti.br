@@ -18,7 +18,7 @@ that before with C, C++, Perl, and Java, but never with Python.
 
 The code on GitHub used [NumPy](http://www.numpy.org/) and looked similar to this one.
 
-{% geshi 'python' %}
+```python
 import numpy as np
 
 parse_header = np.dtype( [ (('field_a', 'b1'), ('field_b', '17b1') ] )
@@ -26,7 +26,7 @@ parse_header = np.dtype( [ (('field_a', 'b1'), ('field_b', '17b1') ] )
 with open('input.dat', 'rb') as f:
     header = np.fromfile(f, dtype=parse_header, count=1)
     # ...
-{% endgeshi %}
+```
 
 And it indeed worked fine. But in the end I used the code - after contacting the author and letting
 him know what I was about to do - as reference together with an old specification document
@@ -38,7 +38,7 @@ From Construct's website:
 
 This is what the code with construct looked like.
 
-{% geshi 'python' %}
+```python
 from construct import *
 
 parse_header = Struct("parse_header",
@@ -61,7 +61,7 @@ parse_contents = Struct("parse_contents",
 with open('input.dat', 'rb') as f:
     parse_results = parse_contents.parse_stream(fid)
     # ...
-{% endgeshi %}
+```
 
 Writing the parser with NumPy or Construct would achieve the same result. However, in the end
 this came down to personal preference, and my point of view as Software Engineer. This is the

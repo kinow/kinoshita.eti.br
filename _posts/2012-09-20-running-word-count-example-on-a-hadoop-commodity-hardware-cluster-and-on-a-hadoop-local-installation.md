@@ -83,14 +83,16 @@ time: '21:49:38'
 
 <p>Using the web interface I retrieved the total time to execute each job, and using the following R script, plotted the graph below (for more on plotting R graphs, check this <a href="http://www.harding.edu/fmccown/r/" title="Link">link</a>).</p>
 
-{% geshi 'r' %}a1 = c(73, 75, 132, 248) # time in the cluster
+```r
+a1 = c(73, 75, 132, 248) # time in the cluster
 a2 = c(40, 48, 121, 224) # time running locally
 files = c(3, 8, 30, 66) # number of files used
 plot(x=files, xlab="Number of files", y=a1, ylab="Time (s)", col="red", type="o") # plot cluster line
 lines(y= a2, x=files, type="o", pch=22, lty=2, col="blue") # add the local line
 title(main="Hadoop Execution in seconds", col.name="black", font.main=2)
 g_range < - range(0, a1, files)
-legend(2, g_range[2], c("Cluster","Local"), cex=0.8, col=c("red","blue"), pch=21:22, lty=1:2) #legend{% endgeshi %}
+legend(2, g_range[2], c("Cluster","Local"), cex=0.8, col=c("red","blue"), pch=21:22, lty=1:2) #legend
+```
 
 <p style="text-align: center"><a href="http://www.kinoshita.eti.br/wp-content/uploads/2012/09/Rplot.png"><img src="http://www.kinoshita.eti.br/wp-content/uploads/2012/09/Rplot.png" alt="" title="Graph" width="550" height="400" class="aligncenter size-full wp-image-1019" /></a></p>
 

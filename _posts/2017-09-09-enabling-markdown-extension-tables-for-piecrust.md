@@ -16,12 +16,12 @@ You have to enable [Markdown extension tables](https://pythonhosted.org/Markdown
 PieCrust will [load it](https://github.com/ludovicchabant/PieCrust2/blob/6462e052045552d2ba164f4965370d84ddb54946/piecrust/formatting/markdownformatter.py#L29)
 when creating the Markdown instance.
 
-{% geshi 'yaml' %}
+```yaml
 # config.yml
 markdown:
   extensions:
     - tables
-{% endgeshi %}
+```
 
 Et, voil&agrave;! Happy blogging!
 

@@ -59,11 +59,11 @@ such as the content type.
 Ah, the content type is interesting too. It defaults to `RDFXML`, but what's interesting
 is the comment.
 
-{% geshi 'java' %}
+```java
 if ( lang == null )
     // Desperate.
     lang = RDFLanguages.RDFXML ;
-{% endgeshi %}
+```
 
 Well, in this case we are getting a `Lang:Turtle`. So it now knows that it has a Turtle
 file, but it still needs to parse it.
@@ -73,14 +73,14 @@ file, but it still needs to parse it.
 `Upload` calls `ActionLib#parse()`, which uses `RDFParserBuilder` to build a parser.
 It applies a nice fluent API design when doing that.
 
-{% geshi 'java' %}
+```java
 RDFParser.create()
     .errorHandler(errorHandler)
     .source(input)
     .lang(lang)
     .base(base)
     .parse(dest);
-{% endgeshi %}
+```
 
 <blockquote>Side note to self: the `RDFParser` has a `canUse` flag. It seems to indicate
 the parser can be used just once. Though it looks actually it works until the stream

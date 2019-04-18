@@ -26,19 +26,19 @@ There is a blog post from **RevolutionAnalytics** [2] that does a nice summary o
 
 **My preferred way for R is the .Renviron (or a [dotEnv](https://github.com/gaborcsardi/dotenv)) file**. You basically store your password in this file, make sure you do not share this (a global gitignore could be helpful to prevent any accident) and read the variables when you start your code.
 
-{% geshi 'r' %}
+```r
 ## Secrets
 MYSQL_PASSWORD=secret
-{% endgeshi %}
+```
 
 If you would like to increase the security, you can combine it with a variation of *#6*. You use a .Renviron file, and use an encryption service like [Amazon KMS](https://aws.amazon.com/kms/) (KMS stands for Key Management Service).
 
 With [AWS KMS in R](https://github.com/cardcorp/AWR.KMS), you can encrypt your values, put them encrypted in your .Renviron, and even if someone gets hold of your .Renviron file, you have an extra layer of protection, as the attacker would require access to your cloud environment to decrypt it too.
 
-{% geshi 'r' %}
+```r
 ## Secrets
 MYSQL_PASSWORD=AQECAHga320J8WadplGCqqVAr4HNvDaFSQ+NaiwIBhmm6qDSFwAAAGIwYAYJKoZIhvcNAQcGoFMwUQIBADBMBgkqhkiG9w0BBwEwHgYJYIZIAWUDBAEuMBEE99+LoLdvYv8l41OhAAIBEIAfx49FFJCLeYrkfMfAw6XlnxP23MmDBdqP8dPp28OoAQ==
-{% endgeshi %}
+```
 
 ### References
 

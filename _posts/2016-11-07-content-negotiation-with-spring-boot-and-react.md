@@ -12,10 +12,10 @@ A few days ago I had a bug in a system built with Spring Boot and React. The fro
 was using a REST client in React, built in a similar way to what is found in the documentation, and
 also in blogs.
 
-{% geshi 'javascript' %}
+```javascript
 import rest from 'rest';
 const Rest = () => rest.wrap(mime);
-{% endgeshi %}
+```
 
 However, for one of the Spring Boot application endpoints, the React component was not working. The
 response seemed to be OK in the Network tab, of the browser developer tools. But the component was
@@ -27,11 +27,11 @@ and returning what the frontend requested: a text plain version of, what looked 
 
 The quick fix was to request the content as JSON in React.
 
-{% geshi 'javascript' %}
+```javascript
 import rest from 'rest';
 import mime from 'rest/interceptor/mime';
 const Rest = () => rest.wrap(mime , { mime: 'application/json' } );
-{% endgeshi %}
+```
 
 Now we will revisit the backend to return the JSON content, as content, regardless of what
 the user asks :-)

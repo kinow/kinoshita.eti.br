@@ -42,13 +42,13 @@ The issue was that the OSM API returns two [entries for Auckland](https://nomina
 second is the one that we want (a Polygon). The application defaults to using the first element,
 so in order to change it you have to give a *which_result* argument.
 
-{% geshi 'python' %}
+```python
 #!/usr/bin/env python3
 
 import osmnx as ox
 G = ox.graph_from_place('Auckland, NZ', network_type='drive', which_result=2)
 ox.plot_graph(ox.project_graph(G))
-{% endgeshi %}
+```
 
 And after that, and after waiting a few minutes, you should get your map :-)
 

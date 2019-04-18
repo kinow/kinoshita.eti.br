@@ -19,7 +19,7 @@ did not help much.
 
 Here is the complete console output in Eclipse.
 
-{% geshi 'shell' %}
+```shell
 pydev debugger: starting (pid: 15124)
 timeout 10 ps -opid,args 13640  # return 1
 
@@ -70,7 +70,7 @@ timeout 10 ps -opid,args 13640  # return 1
 2018-07-10T01:00:48+12 DEBUG - 0 task(s) de-queued
 2018-07-10T01:00:48+12 DEBUG - END TASK PROCESSING (took 0.00175499916077 seconds)
 2018-07-10T01:00:49+12 WARNING - suite stalled
-{% endgeshi %}
+```
 
 As the current diagram I am working on has quite a few `if`'s and `else`'s, I decided
 to investigate why this error was occurring. Then, after some elimination I found that

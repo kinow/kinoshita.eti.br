@@ -10,12 +10,13 @@ time: '21:01:52'
 
 <p>But the world is full of good and talented people! Like the guys from <a title="99soft" href="http://www.99soft.org/">99soft</a>. They created <a title="Maven Fluido Skin" href="http://maven.apache.org/skins/maven-fluido-skin/">Maven Fluido Skin</a>, and donated it to <a title="Apache Software Foundation" href="http://apache.org/">Apache Software Foundation</a>. It's built on top of <a title="Twitter Bootstrap" href="http://twitter.github.com/bootstrap/">Twitter's Bootstrap</a> and available from Maven central repository. In order to use it in your Maven project, all that you have to do is add the following settings into your src/site/site.xml:</p>
 
-{% geshi 'xml' %}
+```xml
 <skin>
     <groupId>org.apache.maven.skins</groupId>
     <artifactId>maven-fluido-skin</artifactId>
     <version>1.2.1</version>
-</skin>{%endgeshi%}
+</skin>
+```
 
 <p>Here's a list of some projects using Maven Fluido Skin (hopefully, in the near future <a title="Apache Commons" href="http://commons.apache.org/">Apache Commons</a> and other projects will adopt this skin as default too :-)):</p>
 
@@ -33,7 +34,8 @@ time: '21:01:52'
 
 <p>You can find instructions for setting up the diagram generation in <a href="http://maven.apache.org/maven-1.x/plugins/javadoc/faq.html#classdiagrams">Apache Maven web site</a>, or looking at <a href="https://github.com/kinow/tap4j/blob/master/pom.xml">examples</a> (I prefer the latter). But basically, you will need graphviz installed, and something like the following XML snippet in your project pom.xml.</p>
 
-{% geshi 'xml' %}<plugin>
+```xml
+<plugin>
     <groupId>org.apache.maven.plugins</groupId>
     <artifactId>maven-javadoc-plugin</artifactId>
     <version>2.7</version>
@@ -61,7 +63,8 @@ time: '21:01:52'
             "Trebuchet MS" 
         </additionalparam>
     </configuration>
-</plugin>{% endgeshi %}
+</plugin>
+```
 
 <p>Here's how a diagram looks like (source: <a href="http://tap4j.org/apidocs/index.html">http://tap4j.org/apidocs/index.html</a>):</p>
 

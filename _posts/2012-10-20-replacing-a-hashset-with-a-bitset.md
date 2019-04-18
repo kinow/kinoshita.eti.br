@@ -13,7 +13,7 @@ time: '19:51:39'
 
 <p>A few days ago, I found <a href="https://issues.apache.org/jira/browse/LANG-839" title="LANG-839">an issue</a> where it was being proposed to replace an unnecessary <a href="http://docs.oracle.com/javase/6/docs/api/java/util/HashSet.html" title="HashSet">HashSet</a> in <a href="http://commons.apache.org/lang/api-release/org/apache/commons/lang3/ArrayUtils.html" title="ArrayUtils">ArrayUtils</a>#removeElements() by a <a href="http://docs.oracle.com/javase/6/docs/api/java/util/BitSet.html" title="BitSet">BitSet</a>. Here's how the code looked like: </p>
 
-{% geshi 'java' %}
+```java
 HashSet<Integer> toRemove = new HashSet<Integer>();
 for (Map.Entry<Character, MutableInt> e : occurrences.entrySet()) {
     Character v = e.getKey();
@@ -27,13 +27,13 @@ for (Map.Entry<Character, MutableInt> e : occurrences.entrySet()) {
     }
 }
 return (char[]) removeAll((Object)array, extractIndices(toRemove));
-{% endgeshi %}
+```
 
 <p style="text-align: center"><a href="{{assets.feather_small}}"><img src="{{ assets.feather_small}}" alt="" title="Apache Software Foundation" width="203" height="61" class="aligncenter size-full wp-image-1125" /></a></p>
 
 <p>The HashSet created at line 1, in the code above, was used to store the array index of the elements that should be removed. And at line 13 there is a call to removeAll method, passing the indexes to be removed. And here's how the new code looks like: </p>
 
-{% geshi 'java' %}
+```java
 BitSet toRemove = new BitSet();
 for (Map.Entry<Character, MutableInt> e : occurrences.entrySet()) {
     Character v = e.getKey();
@@ -47,7 +47,7 @@ for (Map.Entry<Character, MutableInt> e : occurrences.entrySet()) {
     }
 }
 return (char[]) removeAll(array, toRemove);
-{% endgeshi %}
+```
 
 <p>The first difference is at line 1. Instead of a HashSet, it is now using a BitSet. And at line 10, instead of adding a new element to the HashSet, now it "sets" a bit in the set (the bit at the specified position is now true). But there are important changes at line 13. The method removeAll was changed, and now the array doesn't require a cast anymore. And the it is not necessary to cast the elements from HashSet anymore, as now the bit in the index position of the set is set to true. So the extractIndices method could be removed.</p>
 

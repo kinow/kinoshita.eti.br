@@ -117,9 +117,9 @@ SPARQL 1.1 contains functions [`UUID`](https://www.w3.org/TR/sparql11-query/#fun
 [`STRUUID`](https://www.w3.org/TR/sparql11-query/#func-struuid). Apache Jena provides
 these two functions, and users can use them in queries such as
 
-{% geshi 'sql' %}
+```sql
 SELECT (UUID() AS ?uuid) (StrUUID() AS ?strUuid) WHERE { }
-{% endgeshi %} 
+```
 
 (but before users would have to call extra functions in a different namespace).
 

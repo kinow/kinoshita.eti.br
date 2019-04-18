@@ -11,7 +11,7 @@ It's not as complicated as I first thought.
 
 Had to use this technique to develop an Swing application for the JLPT certification exam.
 
-{%geshi 'java'%}
+```java
 public static void main(String[] args) {
 	JFrame frame = new JFrame();
 	frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -24,7 +24,8 @@ public static void main(String[] args) {
 	frame.pack();
 	frame.setLocationRelativeTo(null);
 	frame.setVisible(true);
-}{%endgeshi%}
+}
+```
 
 All you have to do is to use the hexadecimal representation of the characters instead of using plain text. And here is the result.
 

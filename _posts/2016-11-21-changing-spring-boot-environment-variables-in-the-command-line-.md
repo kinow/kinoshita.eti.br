@@ -17,10 +17,10 @@ is that?).
 Here's how it works. Say you have the following settings in your application's
 **application.properties**:
 
-{% geshi 'shell' %}
+```shell
 my.application.database.username=sa
 my.application.database.password=notasimplepassword
-{% endgeshi %}
+```
 
 And that you want to change these parameters in order to, for instance, create an application
 error, so that you can code and test what happens to the frontend application in that situation.
@@ -32,9 +32,9 @@ Furthermore, you do not need to edit your application.properties file, if you ar
 Mac OS. You can start the application and override environment variables at the same time
 with the following syntax.
 
-{% geshi 'shell' %}
+```shell
 $ MY_APPLICATION_DATABASE_USERNAME=olivei MY_APPLICATION_DATABASE_PASSWORD=7655432222a mvn clean spring-boot:run
-{% endgeshi %}
+```
 
 This way your application will start with the new values.
 
@@ -45,9 +45,9 @@ Happy hacking!
 As pointed by Stéphane Nicoll (thanks!), you could change the property values
 without having to use the upper case syntax.
 
-{% geshi 'shell' %}
+```shell
 mvn -Dmy.application.database.username=anotheruser clean spring-boot:run
-{% endgeshi %}
+```
 
 And he even included a link to [docs](http://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#boot-features-external-config)! ♥ the Internet and Open Source!
 

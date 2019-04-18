@@ -33,22 +33,22 @@ Here are the steps required to migrate your database from SQLite to MySQL (<sup>
 
 After tail'ing the Graphite webapp log file, 
 
-{% geshi 'shell' %}
+```shell
 tail f- storage/log/webapp/error.log
-{% endgeshi %}
+```
 
 I noticed the Python MySQLdb wasn't installed.
 
-{% geshi 'python' %}
+```python
 ImproperlyConfigured: Error loading MySQLdb module: No module named MySQLdb
-{% endgeshi %}
+```
 
 My server was an Ubuntu 13.04, so I installed the module simply with the following 
 command.
 
-{% geshi 'shell' %}
+```shell
 apt-get install python-mysqldb
-{% endgeshi %}
+```
 
 Hope that helps!
 

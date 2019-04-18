@@ -21,20 +21,20 @@ The `Secret.fromString` method is responsible for creating a cipher from a given
 * [Secret Javadoc](http://javadoc.jenkins-ci.org/hudson/util/Secret.html)
 * [Secret source code](https://github.com/jenkinsci/jenkins/blob/master/core/src/main/java/hudson/util/Secret.java)
 
-{% geshi 'java' %}
+```java
 public static Secret fromString(String data) {
     data = Util.fixNull(data);
     Secret s = decrypt(data);
     if(s==null) s=new Secret(data);
     return s;
 }
-{% endgeshi %}
+```
 
 The first line simply replaces a null string by an empty "", or keeps the current value of not null.
 
 After that, the decrypt method is called.
 
-{% geshi 'java' %}
+```java
 public static Secret decrypt(String data) {
     if(data==null)      return null;
     try {
@@ -54,7 +54,7 @@ public static Secret decrypt(String data) {
         return null;
     }
 }
-{% endgeshi %}
+```
 
 The `KEY.decrypt()` call will return a [`javax.crypto.Cipher`](http://docs.oracle.com/javase/8/docs/api/javax/crypto/Cipher.html). The Cipher class is handled in [CryptoConfidentialKey](https://github.com/jenkinsci/jenkins/blob/93dfe3377ec8d430818f5b9073f16c677343adb4/core/src/main/java/jenkins/security/CryptoConfidentialKey.java) in Jenkins API, where it defines the algorithm used to create the cipher: [AES](https://en.wikipedia.org/wiki/Advanced_Encryption_Standard).
 

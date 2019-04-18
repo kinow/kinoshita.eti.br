@@ -14,7 +14,7 @@ tags:
 
 I am working [on a project](https://cylc.github.io) that is adopting [ZeroMQ](http://zeromq.org/).
 This post series is for self understanding of PyZMQ, a ZeroMQ
-[`libzmq`](https://github.com/zeromq/libzmq) binding for Python.</p>
+[`libzmq`](https://github.com/zeromq/libzmq) binding for Python.
 
 <br style="clear: both" />
 
@@ -44,7 +44,7 @@ At its core, ZeroMQ handles sockets for you, but what you get when you create
 
 As example in this section, we will use two code snippets from the ZeroMQ documentation.
 
-{% geshi 'python' %}
+```python
 # helloworld_server.py
 import time
 import zmq
@@ -63,9 +63,9 @@ while True:
 
     #  Send reply back to client
     socket.send(b"World")
-{% endgeshi %}
+```
 
-{% geshi 'python' %}
+```python
 # helloworld_client.py
 #
 #   Hello World client in Python
@@ -90,7 +90,7 @@ for request in range(10):
     #  Get the reply.
     message = socket.recv()
     print("Received reply %s [ %s ]" % (request, message))
-{% endgeshi %}
+```
 
 You can start the server, and then start the client, and you should see
 the server printing the messages received, and in the client terminal you
@@ -124,7 +124,7 @@ But sending two _REQ_ messages, the second would return an error. So if you modi
 the example from the previous section to send two messages, first a "Hello", and
 then "World", you would get an error in your terminal.
 
-{% geshi 'bash' %}
+```bash
 Connecting to hello world server…
 Sending request 0 ...
 Traceback (most recent call last):
@@ -138,7 +138,7 @@ Traceback (most recent call last):
   File "zmq/backend/cython/socket.pyx", line 242, in zmq.backend.cython.socket._send_copy
   File "zmq/backend/cython/checkrc.pxd", line 25, in zmq.backend.cython.checkrc._check_rc
 zmq.error.ZMQError: Operation cannot be accomplished in current state
-{% endgeshi %}
+```
 
 That is because each combination of socket types has its own way to send and
 receive messages. These combinations are called **Messaging Patterns**, and they

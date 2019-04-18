@@ -22,7 +22,7 @@ displayed.
 
 ## To the code
 
-{% geshi 'java' %}
+```java
 import hudson.model.User
 import hudson.model.Hudson
 import hudson.security.AuthorizationStrategy
@@ -59,28 +59,28 @@ if (strategy != null && strategy instanceof com.michelin.cio.hudson.plugins.role
 
 return jobs
 // TODO: handle anonymous user ;-)
-{% endgeshi %}
+```
 
 And now let's dissect the code.
 
-{% geshi 'java' %}
+```java
 import hudson.model.User
 import hudson.model.Hudson
 import hudson.security.AuthorizationStrategy
 import hudson.security.Permission
 import com.michelin.cio.hudson.plugins.rolestrategy.RoleBasedAuthorizationStrategy
 import com.michelin.cio.hudson.plugins.rolestrategy.RoleMap
-{% endgeshi %}
+```
 
 You start by importing the classes that you need.
 
-{% geshi 'java' %}
+```java
 AuthorizationStrategy strategy = Hudson.getInstance().getAuthorizationStrategy();
 
 jobs = []
 user = User.current()
 userId = user.getId()
-{% endgeshi %}
+```
 
 The first line gets the current [AuthorizationStrategy](https://github.com/jenkinsci/jenkins/blob/f6e431b80c4d162560419fa51633224a9724bb0d/core/src/main/java/hudson/security/AuthorizationStrategy.java)
 used in Jenkins.
@@ -88,7 +88,7 @@ used in Jenkins.
 Then we create an empty array of jobs, which is the value returned by default. And get the current
 logged in user ID.
 
-{% geshi 'java' %}
+```java
 if (strategy != null && strategy instanceof com.michelin.cio.hudson.plugins.rolestrategy.RoleBasedAuthorizationStrategy) {
     roleStrategy = (RoleBasedAuthorizationStrategy) strategy;
     // not very straightforward to get the groups for a given user
@@ -112,7 +112,7 @@ if (strategy != null && strategy instanceof com.michelin.cio.hudson.plugins.role
 
 return jobs
 // TODO: handle anonymous user ;-)
-{% endgeshi %}
+```
 
 The final part simply iterates through each existing role, and then through the
 users in that role. I could not find a more elegant way of doing that, but in case

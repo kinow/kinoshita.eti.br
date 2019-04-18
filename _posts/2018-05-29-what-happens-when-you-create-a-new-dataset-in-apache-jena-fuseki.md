@@ -62,7 +62,7 @@ later by the `RDFParser`.
 In `#assemblerFromForm()`, it will create a template, and then use
 `RDFParser` to parse the template and load into `SteamRFF`. The template looks like this:
 
-{% geshi 'sparql' %}
+```sparql
 # Licensed under the terms of http://www.apache.org/licenses/LICENSE-2.0
 
 @prefix :        <#> .
@@ -90,7 +90,7 @@ In `#assemblerFromForm()`, it will create a template, and then use
 
 # Transactional, in-memory dataset. Initially empty.
 <#dataset> rdf:type ja:DatasetTxnMem .
-{% endgeshi %}
+```
 
 ### Persisting the dataset
 
@@ -129,7 +129,7 @@ And a `null` is returned, which means empty response.
 
 And here's some of the logs produced during this experiment.
 
-{% geshi 'shell' %}
+```shell
 [2018-05-28 21:11:43] Config     INFO  Load configuration: file:///home/kinow/Development/java/jena/jena/jena-fuseki2/jena-fuseki-core/run/configuration/ds2.ttl
 [2018-05-28 21:11:43] Config     INFO  Load configuration: file:///home/kinow/Development/java/jena/jena/jena-fuseki2/jena-fuseki-core/run/configuration/p1.ttl
 [2018-05-28 21:11:43] Config     INFO  Register: /ds2
@@ -144,7 +144,7 @@ And here's some of the logs produced during this experiment.
 [2018-05-28 22:16:17] Admin      INFO  [3] 200 OK (3,224.390 s)
 [2018-05-28 22:16:18] Admin      INFO  [4] GET http://localhost:3030/$/server
 [2018-05-28 22:16:18] Admin      INFO  [4] 200 OK (8 ms)
-{% endgeshi %}
+```
 
 So that's that.
 

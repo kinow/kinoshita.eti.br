@@ -22,7 +22,7 @@ the difference that it will run through all cylc's internal, only once, and
 allow you to debug and diagnostic parts nor related to cycling and graphs
 (as for these parts you would probably need a more elaborate example).
 
-{% geshi 'python' %}
+```python
 [scheduling]
     cycling mode = integer
     initial cycle point = 1
@@ -33,11 +33,11 @@ allow you to debug and diagnostic parts nor related to cycling and graphs
 [runtime]
     [[hello]]
         script = "sleep 10; echo PING"
-{% endgeshi %}
+```
 
 I also combine this suite with the following `global.rc`.
 
-{% geshi 'python' %}
+```python
 [editors] 
     terminal = vim 
     gui = gvim -f
@@ -46,7 +46,7 @@ I also combine this suite with the following `global.rc`.
     base port = 44444
     method = http
     maximum number of ports = 1
-{% endgeshi %}
+```
 
 With "base port" set to 44444, and the maximum number of ports to 1, I will
 be able to run only one task. But that way I can configure Wireshark and other

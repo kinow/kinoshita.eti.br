@@ -25,7 +25,7 @@ a computation. It receives a Computable object, responsible for doing something
 that will be stored by the Memoizer. Here's a simple code to illustrate how that
 will work in your Java code.
 
-{% geshi 'java' %}
+```java
 // Computation to be stored in the cache
 Computable<String, String> getFormattedCurrentDate = new Computable<String, String>() {
     @Override
@@ -48,13 +48,13 @@ for (int i = 0; i < 10; i++) {
         e.printStackTrace();
     }
 }
-{% endgeshi %}
+```
 
 The computable created (*getFormattedCurrentDate*) will be called only once, and stored in
 a map. The parameter passed in the *#compute()* method will be used as key in the map.
 So choose your parameter wisely :-) The output of the example will be similar to the following one.
 
-{% geshi 'shell' %}
+```shell
 19:15:57:854 +1300 08/01/2017
 19:15:57:854 +1300 08/01/2017
 19:15:57:854 +1300 08/01/2017
@@ -65,7 +65,7 @@ So choose your parameter wisely :-) The output of the example will be similar to
 19:15:57:854 +1300 08/01/2017
 19:15:57:854 +1300 08/01/2017
 19:15:57:854 +1300 08/01/2017
-{% endgeshi %}
+```
 
 In the example above I used a *for-loop* to illustrate what will happen. Even though we call
 the memoizer *#compute()* method several times, followed by

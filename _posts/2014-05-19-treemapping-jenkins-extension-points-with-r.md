@@ -25,7 +25,7 @@ That job outputs a JSON file that contains each available extension points, as w
 an array with its implementations. The R code below will produce two vectors, one with the 
 count of implementations of each extension point, and the other with the class name.
 
-{% geshi 'r' %}
+```r
 nExtensionPoints <- length(extensionPointsJson$extensionPoints)
 numberOfImplementations <- vector(length = nExtensionPoints)
 namesOfTheExtensionPoints <- vector(length = nExtensionPoints)
@@ -36,22 +36,22 @@ for (i in seq_along(extensionPoints)) {
   numberOfImplementations[[i]] = length(extensionPoints[[i]]$implementations)
   print(paste(namesOfTheExtensionPoints[[i]], " -> ", numberOfImplementations[[i]]))
 }
-{% endgeshi %}
+```
 
 For creating the treemap I used the **[portfolio package](http://flowingdata.com/2010/02/11/an-easy-way-to-make-a-treemap/)**, and the <code>map.market</code> 
 function. The structures previously created and the next snippet of code are all that is 
 needed to create the treemap of the Jenkins extension points.
 
-{% geshi 'r' %}
+```r
 map.market(id=seq_along(extensionPoints), area=numberOfImplementations, group=namesOfTheExtensionPoints, color=numberOfImplementations, main="Jenkins Extension Points")
-{% endgeshi %}
+```
 
 You can also use the [Jenkins R Plug-in](https://wiki.jenkins-ci.org/display/JENKINS/R+Plugin) to produce this graph, 
 as in this [sample job](http://builds.tupilabs.com/job/backend-extension-points-treemap/2/). 
 You can get the complete script in this [gist](https://gist.github.com/kinow/d5a2221c32dce3aa1076), or just 
 copy it here.
 
-{% geshi 'r' %}
+```r
 library('rjson')
 library('portfolio')
  
@@ -71,4 +71,4 @@ for (i in seq_along(extensionPoints)) {
 png(filename="extension-points.png", width=2048, height=1536, units="px", bg="white")
 map.market(id=seq_along(extensionPoints), area=numberOfImplementations, group=namesOfTheExtensionPoints, color=numberOfImplementations, main="Jenkins Extension Points")
 dev.off()
-{% endgeshi %}
+```

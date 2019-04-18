@@ -19,7 +19,7 @@ So, for example, if you have `commons-lang3` as transitive dependency of two oth
 
 Here's an example of the plug-in configuration.
 
-{% geshi 'xml' %}
+```xml
 <project>
   ...
   <build>
@@ -49,7 +49,7 @@ Here's an example of the plug-in configuration.
   </pluginRepositories>
   ...
 </project>
-{% endgeshi %}
+```
 
 Running `mvn clean verify` will execute the Maven Enforcer Plug-in `enforce` goal, which will call the deptools check. As you may have noticed, you also need to download the plug-in from GitHub, as it is not released to Maven Central.
 
@@ -59,7 +59,7 @@ I do not use it for this reason, and also because I normally spend some time loo
 
 I only found about this plug-in in the last [Apache News Round-up](https://blogs.apache.org/foundation/entry/the-apache-news-round-up31). Where it was mentioned that [Apache Accumulo uses](https://github.com/apache/accumulo/blob/401411619239e301ad14216b3b9c88ee947ab072/pom.xml#L999) this plug-in to standarize the order of imports in code.
 
-{% geshi 'xml' %}
+```xml
 <project>
   ...
   <build>
@@ -88,7 +88,7 @@ I only found about this plug-in in the last [Apache News Round-up](https://blogs
   </build>
   ...
 </project>
-{% endgeshi %}
+```
 
 I am neutral on imports order, though in cases where you have several contributors submitting pull requests, it can probably be useful to reduce the number of interactions. In other words, if a user submits a pull request and you have an automated check, then the user would be automatically notified about changes that s/he needs to do in order for his pull request to be accepted.
 

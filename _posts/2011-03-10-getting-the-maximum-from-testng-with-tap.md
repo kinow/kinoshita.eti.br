@@ -15,10 +15,12 @@ time: '01:24:38'
 
 <p>An output in TAP, or a TAP stream, is written in pure text in a human readable way. Like follows:</p>
 
-{%geshi 'shell'%}TAP version 13
+```shell
+TAP version 13
 1..2
 ok 1 Test 1
-not ok 2 Missing test parameter: url{%endgeshi%}
+not ok 2 Missing test parameter: url
+```
 
 <!--more-->
 
@@ -28,15 +30,18 @@ not ok 2 Missing test parameter: url{%endgeshi%}
 
 <p>The last thing I need explain to you before putting <a href="http://www.testng.org">TestNG</a> in the story, is <a href="http://yaml.org/">YAML</a>. YAML stands for YAML Ain't Markup Language. It is a data serialization standard, just like <a href="http://www.json.org/">JSON</a>. The main difference you will find between both APIs is that YAML can be a little more human friendly while JSON requires more symbols like {, }, [, ] and ". And it is said too that you can parse JSON with YAML, but the contrary is not always true. Let's see how YAML looks like.</p>
 
-{%geshi 'shell'%}---
+```shell
+---
 name: Bruno
 age: 26
 country: Brazil
-...{%endgeshi%}
+...
+```
 
 <p>TAP utilizes YAML to have '<i><a href="http://testanything.org/wiki/index.php/TAP_diagnostic_syntax">diagnostics</a></i>' of tests. This is the name used in TAP, but probably you will prefer think about it as a way to extend TAP by adding YAML to each test result.</p>
 
-{%geshi 'shell'%}TAP version 13
+```shell
+TAP version 13
 1..2
 ok 1 Test 1
 not ok 2 Missing test parameter: url
@@ -48,13 +53,15 @@ not ok 2 Missing test parameter: url
      wanted:      string
      extensions:
        screenshot:     /var/tmp/selenium/cath-xp/748344874_screenshot.jpg
-...{%endgeshi%}
+...
+```
 
 <h2><a name="hammertime">So it's hammer time!</a></h2>
 
 <p>Ok! So you got here either because you couldn't wait to see how you were going to use TAP, YAML and TestNG together, or because you read all the text (if you didn't, I recommend you try reading it later). I will assume here you are familiar with Java and can create a project in your favorite IDE, import libraries and set up a basic test project. I am an Eclipse and Maven user, so all these things are pretty easy for me ;-). Here is my sample test.</p>
 
-{%geshi 'java'%}package br.eti.kinoshita.testngtap;
+```java
+package br.eti.kinoshita.testngtap;
 
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -68,11 +75,13 @@ public class SampleTest
 		Assert.assertTrue( System.currentTimeMillis() > 1984 );
 	}
 	
-}{%endgeshi%}
+}
+```
 
 <p>This is a test that only checks if the current time in ms is greater than 1984. If so, it will follow the normal flow and output XML and HTML. Now I challenge you! How can you make this test output TAP? Drum roll... with two simple steps: a) add <a href="http://tap4j.sourceforge.net">tap4j</a> library into your project and b) add a <a href="http://testng.org/doc/documentation-main.html#testng-listeners">Listener</a> to your test.</p>
 
-{%geshi 'java'%}package br.eti.kinoshita.testngtap;
+```java
+package br.eti.kinoshita.testngtap;
 
 import org.testng.Assert;
 import org.testng.annotations.Listeners;
@@ -90,11 +99,13 @@ public class SampleTest
 		Assert.assertTrue( System.currentTimeMillis() > 1984 );
 	}
 	
-}{%endgeshi%}
+}
+```
 
 <p>Did you find the difference between the last code and the previous one? No? Come on, what about line 9? Yeah, that is the TAP listener. You can find more information about tap4j and TestNG integration <a href="http://tap4j.sourceforge.net/testng_support.html">here</a>. Run this test again and take a look at the output directories of TestNG. You will find some .tap files. These files contain the result of your tests alongside the diagnostic information about them. But wait! You may be asking yourself what is the point in outputting TestNG in another format? Well, apart of having integration with TAP and being able to share your test results with programs that are compatible with TAP (like Perl programs, or Smolder), you can also add customized information to your TAP Stream, transforming it into a perfect evidence for your automated tests, for instance. Look at the following code.</p>
 
-{%geshi 'java'%}package br.eti.kinoshita.testngtap;
+```java
+package br.eti.kinoshita.testngtap;
 
 import java.lang.reflect.Method;
 
@@ -123,11 +134,12 @@ public class SampleTest
 	}
 	
 }
-{%endgeshi%}
+```
 
 <p>ITestContext and Method are injected by TestNG during execution. Then you create a TAPAttribute object and add this attribute to the test context, along with an identifier for this attribute. After that you run your test again and take another look at the TAP streams that were generated. You will have two files, br.eti.kinoshita.testngtap.SampleTest.tap and br.eti.kinoshita.testngtap.SampleTest#sampleTest.tap. The first is a TAP Stream for your test class and the latter is a TAP stream for the method of your test class (it generates one TAP Stream for each method). With tap4j listeners you have support to generate TAP per method, per class, per suite or per group (thanks to Cesar Fernandes Almeida). Here is the output for the test class in TAP.</p>
 
-{%geshi 'shell'%}1..1
+```shell
+1..1
 ok 1 - br.eti.kinoshita.testngtap.SampleTest#sampleTest
   ---
   message: TestNG Test sampleTest
@@ -145,7 +157,8 @@ ok 1 - br.eti.kinoshita.testngtap.SampleTest#sampleTest
   dump: '{param1=org.testng.TestRunner@ff2413, param2=public void br.eti.kinoshita.testngtap.SampleTest.sampleTest(org.testng.ITestContext,java.lang.reflect.Method)}'
   error: '~'
   backtrace: '~'
-  ...{%endgeshi%}
+  ...
+```
 
 <p>Each attribute is added as an YAML entry under the 'extensions' entry. You have just gave voice to your TestNG tests. Now they can speak! They can add information to your test results. Perhaps you may be thinking: "Cool, but I don't know where am I going to use it, so I'm going stop reading this bible-like post and will find something more interesting on <a href="http://www.reddit.com">reddit</a>". Hold on, not so fast buddy.</p>
 

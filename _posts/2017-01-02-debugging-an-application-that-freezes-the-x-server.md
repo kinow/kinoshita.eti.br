@@ -29,14 +29,14 @@ Thankfully someone else blogged about a similar issue and saved me a lot of time
 Here's how I did it, following the instructions in
 [this blog post](http://www.geany.org/manual/gtk/gtk-faq/x462.html).
 
-{% geshi 'shell' %}
+```shell
 $ sudo apt-get install xnest -y
 $ cd krita_install/
 $ Xnest :10
 $ twm -display :10
 $ export DISPLAY=:10
 $ ./krita
-{% endgeshi %}
+```
 
 That's it. You should have Krita running in a separate window, with Xnest, and within
 this window the twm window manager running. So when it freezes, at least you can still

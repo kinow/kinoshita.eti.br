@@ -22,7 +22,7 @@ it to unload classes after the tests. But in anyway after adding it the issue wa
 
 Then I got the following exception.
 
-{% geshi 'shell' %}
+```shell
 WARNING: Failed to instantiate Key[type=hudson.security.csrf.DefaultCrumbIssuer$DescriptorImpl, annotation=[none]]; skipping this component
 com.google.inject.ProvisionException: Guice provision errors:
 
@@ -31,13 +31,13 @@ com.google.inject.ProvisionException: Guice provision errors:
 
 1 error
     at com.google.inject.internal.ProviderToInternalFactoryAdapter.get(ProviderToInternalFactoryAdapter.java:52)
-{% endgeshi %}
+```
 
 And then thanks to [this issue](https://github.com/powermock/powermock/issues/294) I understood
 that PowerMock was mocking *javax.crypto* classes. Turns out it is quite easy to tell
 PowerMock to ignore certain classes from being mocked, with the *@PowerMockIgnore* annotation.
 
-{% geshi 'java' %}
+```java
 // snip
 @RunWith(PowerMockRunner.class)
 @PowerMockIgnore({"javax.crypto.*" })
@@ -45,7 +45,7 @@ public class TestAbstractUnoChoiceParameter {
 //
 }
 // snip
-{% endgeshi %}
+```
 
 Added a couple of notes to this [Jenkins Wiki page](https://wiki.jenkins-ci.org/display/JENKINS/Mocking+in+Unit+Tests)
 so that users facing similar issues can try these possible workarounds.

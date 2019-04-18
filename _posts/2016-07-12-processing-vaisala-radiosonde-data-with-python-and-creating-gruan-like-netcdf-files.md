@@ -53,7 +53,7 @@ Not so easy to parse...
 [Construct](https://construct.readthedocs.io/) is a declarative parser for binary data.
 You can build a parser by simply saying what you expect to be in each field. For example.
 
-{% geshi 'python' %}
+```python
 pccora_header = Struct("pccora_header",
     ExprAdapter(String("copyright", 20),
         encoder = lambda obj, ctx: obj.encode(),
@@ -72,7 +72,7 @@ pccora_header = Struct("pccora_header",
     ),
     Bytes("reserved", 17)
 )
-{% endgeshi %}
+```
 
 This sample code parses the **Header** section of the Vaisala binary file. You define each field,
 with a short name, a data type and a length. You can also have expressions to encode
@@ -123,7 +123,7 @@ can grab any example GRUAN NetCDF (.nc) file and inspect with *ncdump*,
 For the file [](ftp://ftp.ncdc.noaa.gov/pub/data/gruan/processing/level2/RS92-GDP/version-002/TAT/2016/TAT-RS-01_2_RS92-GDP_002_20160104T000000_1-000-001.nc)
 for example, the **time** and **pressure** variables are described below.
 
-{% geshi 'python' %}
+```python
 dimensions:
   time = UNLIMITED ; // (5735 currently)
 variables:
@@ -155,7 +155,7 @@ variables:
     press:comment = "Barometric air pressure using silicon sensor up to 13.1 km, derived from GPS-altitude above" ;
     press:related_columns = "u_press " ;
     press:coordinates = "lon lat alt" ;
-{% endgeshi %}
+```
 
 You can see the unit used for time (in seconds) and that the time variable is related
 to the launch time. And pressure is using hPa. Both variables are mapped against
@@ -164,7 +164,7 @@ the time dimension - you can see that by looking at the parenthesis that follow 
 The following snippet contains an example of the metadata that is added to data
 uploaded to GRUAN.
 
-{% geshi 'python' %}
+```python
 // global attributes:
     :Conventions = "CF-1.4" ;
     :title = "RS92 GRUAN Data Product (Version 2)" ;
@@ -182,7 +182,7 @@ uploaded to GRUAN.
     :g.Product.History = "2016-01-04 13:10:41.000Z RS92-GDP: RS92 GRUAN Data Product with gruan_DP_calcRsDataProduct.pro (GRUAN IDL Library, 2012-08)" ;
     :g.Product.References = "Currently no references" ;
     :g.Product.Producer = "GRUAN Lead Centre (Lindenberg, DWD, Germany)" ;
-{% endgeshi %}
+```
 
 For my work, the pccora Python library handled the binary data. I created a local variable,
 **hires_data** that holds the high resolution data from the radiosonde. Then created a new
@@ -190,7 +190,7 @@ dataset, which is the NetCDF file.
 
 It might be easier to explain the rest after looking at some code.
 
-{% geshi 'python' %}
+```python
 hires_data = data['hires_data']
 
 dataset = Dataset(file, "w", format="NETCDF4_CLASSIC")
@@ -201,7 +201,7 @@ dataset.createDimension("time")
 dataset.setncattr('g.General.SiteWmoId', ident['wmo_block_number'] + ident['wmo_station_number'])
 dataset.setncattr('g.MeasuringSystem.Longitude', str('N/A' if None == ident['station_longitude'] else ident['station_longitude']) + ' degree east')
 dataset.setncattr('g.MeasuringSystem.Latitude', str(ident['station_latitude']) + ' degree north')
-{% endgeshi %}
+```
 
 In this example, a **time** dimension is added to our dataset, as well as some global attributes (metadata).
 
@@ -209,7 +209,7 @@ In another part of the code, we have to populate arrays with the values for the 
 logged during the time, and then create variables to persist this data in the NetCDF
 file.
 
-{% geshi 'python' %}
+```python
 # elapsed_time
 elapsed_time_variable = dataset.createVariable('elapsed_time', 'f4', ("time", ), zlib=True, fill_value=-32768)
 elapsed_time_variable.standard_name = 'elapsed_time'
@@ -217,7 +217,7 @@ elapsed_time_variable.units = 's'
 elapsed_time_variable.long_name = 'Elapsed time since sonde release'
 elapsed_time_variable.g_format_type = 'FLT'
 elapsed_time_variable[:] = elapsed_time
-{% endgeshi %}
+```
 
 In this example, **elapsed_time** is a simple Python array, with float values.
 

@@ -23,14 +23,14 @@ I found that while reading an
 [issue about race condition in the `IndexEngine`](https://github.com/pandas-dev/pandas/issues/21150),
 and after preparing a pull request for that.
 
-{% geshi 'python' %}
+```python
 from concurrent.futures import ThreadPoolExecutor
 import pandas as pd
 
 x = pd.date_range('2001', '2020')
 with ThreadPoolExecutor(2) as p:
     assert all(p.map(lambda x: x.is_unique, [x]*2))
-{% endgeshi %}
+```
 
 When you create an index like that, it will delegate most of the hard work to the `IndexEngine`.
 Inside the `IndexEngine`, the values passed for the index are stored, and then an empty

@@ -16,7 +16,7 @@ application errors.
 
 You can fix it by combining *depends_on* with a *healthcheck*. For example:
 
-{% geshi 'shell' %}
+```shell
 # File: docker-compose.yml
 version: '2.1'
 services:
@@ -47,7 +47,7 @@ services:
       - db
     ports:
       - "80:8080"
-{% endgeshi %}
+```
 
 In the example docker-compose.yml, there are two containers, *db* and *web*. web is running
 a Tomcat, and db is running Postgres. Web depends on db (see depends_on), and uses a condition

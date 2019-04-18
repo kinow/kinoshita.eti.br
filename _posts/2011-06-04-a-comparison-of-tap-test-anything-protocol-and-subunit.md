@@ -138,7 +138,7 @@ time: '02:04:45'
 <h2>Examples</h2>
 
 TAP: 
-{%geshi 'shell'%}
+```shell
 1..1
 not ok 1 Wrong length 
     ---
@@ -151,10 +151,11 @@ not ok 1 Wrong length
                 name: 1.txt 
                 file-type: text/plain 
                 file-size: 43 
-                content: c2FtcGxl ...{%endgeshi%}
+                content: c2FtcGxl ...
+```
 
 SubUnit (using Python + nose): 
-{%geshi 'shell'%}
+```shell
 time: 2011-05-23 22:49:38.856075Z
 test: my_test.SampleTestCase.runTest 
 failure: my_test.SampleTestCase.runTest 
@@ -162,7 +163,8 @@ failure: my_test.SampleTestCase.runTest
     Traceback (most recent call last): File "/media/windows/dev/java/qa_workspace/python_nose_tests/src/my_test.py", line
     11, in runTest self.assertEqual(len(s), 4, 'Wrong length') AssertionError: Wrong length 
 ] 
-time: 2011-05-2322:49:38.858163Z{%endgeshi%}
+time: 2011-05-2322:49:38.858163Z
+```
 
 <h2>Final considerations</h2>
 
@@ -189,13 +191,14 @@ such as TestNG and JUnit to add support for these formats in theirs tools or mak
     to the test result above it. Perl Test::More module produces diagnostics in this way by default. Below you find an
     example of these diagnostics.</p>
 
-{%geshi 'shell'%}
+```shell
 1..1 
 not ok 1 - There's a foo user 
 # Failed test 'There's a foo user' 
 # at /home/kinow/perl/workspace/tests_with_testmore/main.pl line 2. 
 # Since there's no foo, check that /etc/bar is set up right 
-# Looks like you failed 1 test of 1.{%endgeshi%}
+# Looks like you failed 1 test of 1.
+```
 
 <sup><a name="1"></a>1</sup>
 Available in TAP version 13, http://testanything.org/wiki/index.php/YAMLish.

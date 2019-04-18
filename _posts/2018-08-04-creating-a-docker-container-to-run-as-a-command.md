@@ -34,19 +34,19 @@ Furthermore, the entrypoint of the image is the `cylc` command. Which means that
 you do not have to execute a terminal in order to run commands to the container
 (or change the command/entrypoint).
 
-{% geshi 'shell' %}
+```shell
 ...
 VOLUME "/opt/cylc" "/tmp" "/run" "/var/run" # we have the state stored only in /opt/cylc
 WORKDIR "/opt/cylc"
 ENV PATH /opt/cylc/bin:$PATH
 WORKDIR /opt/cylc
 ENTRYPOINT ["cylc"] # here's the trick!
-{% endgeshi %}
+```
 
 It uses the same approach from the PHP image I am using for Composer, with a few
 additional improvements from the [Best practices for writing Dockerfiles](https://docs.docker.com/develop/develop-images/dockerfile_best-practices/) documentation.
 
-{% geshi 'shell' %}
+```shell
 $ docker run -ti -v "$(pwd -P)"/cylc:/opt/cylc cylc validate /opt/cylc/etc/examples/tutorial/oneoff/basic/
 Valid for cylc-7.7.2
 $ docker run -ti -v "$(pwd -P)"/cylc:/opt/cylc cylc register /opt/cylc/etc/examples/tutorial/oneoff/basic/
@@ -102,7 +102,7 @@ $ docker run -ti -v "$(pwd -P)"/cylc:/opt/cylc cylc start --non-daemon --debug /
 2018-07-30T12:10:43Z INFO - Suite shutting down - AUTOMATIC
 2018-07-30T12:10:44Z INFO - DONE
 $
-{% endgeshi %}
+```
 
 If you have a utility in your computer that requires a few dependencies, but that
 can store the state/data in a mapped volume, the same kind of container may be

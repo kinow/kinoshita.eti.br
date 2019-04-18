@@ -19,7 +19,7 @@ I learned about the Requests [Session Objects](http://docs.python-requests.org/e
 You create a session, as in ORM/JPA, where you can define a context, with certain properties
 and control an orthogonal behavior.
 
-{% geshi 'python' %}
+```python
 import requests
 
 def get(session, url):
@@ -42,7 +42,7 @@ with requests.Session() as s:
     r = post(s, 'https://portal.login.url', data)
 
     r = get(s, 'https://portal.home.url')
-{% endgeshi %}
+```
 
 Besides the session object, that gives you ability to add headers to all requests,
 you won't have to worry about redirects. The library by default takes care

@@ -17,7 +17,9 @@ time: '16:09:33'
 
 <!--more-->
 
-{% geshi 'shell' %}gcovr -x -r samples/src > coverage.xml{% endgeshi %}
+```shell
+gcovr -x -r samples/src > coverage.xml
+```
 
 <p><a href="{{assets.screenshot_0031}}"><img src="{{assets.screenshot_0031}}" alt="" title="Calling gcovr in Jenkins" width="1016" height="608" class="aligncenter size-full wp-image-1107" /></a></p>
 

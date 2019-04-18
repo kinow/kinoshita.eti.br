@@ -165,7 +165,8 @@ gcc version 4.7.1 (Debian 4.7.1-8)</li>
 
 <p>Hope it helps you using Stacks. Kudos to all developers and contributors of this great tool.</p>
 
-{% geshi 'r' %}disk=c(2.6,3.5,3.5,3.7,3.7,3.7,3.7)
+```r
+disk=c(2.6,3.5,3.5,3.7,3.7,3.7,3.7)
 db=c(0.0008,1.7,1.7,1.7,1.7,1.8,1.8)
 x=(1:7)
 plot(x=x, xlab="Tutorial Step (1 to 7)", y=disk, ylab="Disk Usage (GB)", col="red", type="o",ylim=c(0,6),xlim=c(0,8))
@@ -176,7 +177,8 @@ abline(h=c(0:5), col="grey10", lty="dotted")
 df = data.frame(disk,db)
 totals=rowSums(df,na.rm=T)
 lines(x=x, y=totals, type="o", pch=22, lty=2, col="green") 
-legend(0,6,c("DB", "Disk", "Total"), cex=0.6,col=c("red", "blue", "green"),pch=21:23,lty=1,y.intersp=0.2,x.intersp=0.2,pt.lwd=1,adj=0,inset=c(0.5,0.5)){% endgeshi %}
+legend(0,6,c("DB", "Disk", "Total"), cex=0.6,col=c("red", "blue", "green"),pch=21:23,lty=1,y.intersp=0.2,x.intersp=0.2,pt.lwd=1,adj=0,inset=c(0.5,0.5))
+```
 
 <h4>References</h4>
 

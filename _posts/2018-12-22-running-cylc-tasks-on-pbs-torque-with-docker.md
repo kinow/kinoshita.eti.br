@@ -45,25 +45,25 @@ You can get PBS Torque up and running with one line if you have Docker and a goo
 connection - Docker is in the same category as NPM, Maven, etc (though I find the way Maven
 manages common dependencies [saner](https://dev.to/leoat12/the-nodemodules-problem-29dc)).
 
-{% geshi 'shell' %}
+```shell
 $ docker run -d -h docker.example.com -p 10022:22 --privileged --name torque agaveapi/torque
 f18f2cc2a2f90f56d1b74370060a272d5faf5b39dfc295a2025c78e469950194
-{% endgeshi %}
+```
 
 And from here you can submit a job after having access to the `testuser` user in the container.
 
-{% geshi 'shell' %}
+```shell
 $ docker exec -t -i torque /bin/bash
 bash-4.1# su - testuser
 [testuser@docker ~]$ qsub /home/testuser/torque.submit
 0.docker.example.com
-{% endgeshi %}
+```
 
 ### Running Cylc with Docker
 
 You can also start an Ubuntu container with Cylc in one line.
 
-{% geshi 'shell' %}
+```shell
 $ docker run -t -i -v ~/Development/python/workspace/cylc-docker/standalone/cylc:/opt/cylc --entrypoint /bin/bash kinow/cylc-standalone:0.1 
 root@58118e44f171:/opt/cylc# cylc check-software
 Checking your software...
@@ -104,7 +104,7 @@ Summary:
                                   Core requirements: ok                                  
                                 Full-functionality: not ok                                
                                **************************** 
-{% endgeshi %}
+```
 
 ### Running PBS Torque and Cylc together with Docker
 
@@ -114,7 +114,7 @@ the PBS Torque image, with the Cylc standalone image, with SSH between both. The
 `docker-compose.yml` configuration to initialize a mini cluster of two computers, with
 SSH and trusted configured, and shared volume/file system.
 
-{% geshi 'shell' %}
+```shell
 $ cd cylc-docker/pbs
 $ ssh-keygen -t rsa -f ./id_rsa -N "" -q
 $ export CYLC_SSH_PUBKEY=$(cat id_rsa.pub)
@@ -146,16 +146,16 @@ pbs     | 2018-12-22 02:29:10,079 INFO success: sshd entered RUNNING state, proc
 pbs     | 2018-12-22 02:29:10,079 INFO success: pbsserver entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
 pbs     | 2018-12-22 02:29:10,079 INFO success: trqauthd entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
 
-{% endgeshi %}
+```
 
 This should start two containers, `cylc`, and `pbs`, and with an example `suite.rc`.
 
-{% geshi 'shell' %}
+```shell
 $ docker-compose exec cylc /bin/bash
 bash-4.1# su - testuser
 testuser@f85bd666bced:~$ cylc register pbs1 ./suites/pbs1/
 REGISTER pbs1: ./suites/pbs1/
-{% endgeshi %}
+```
 
 The example suite has one task that runs on a PBS remote node. In the output of running the suite
 below, you can tell the tasks are being executed in different computers, by different owners, through
@@ -164,7 +164,7 @@ Cylc and PBS.
 The task `a` has `[a.1] -submit-num=1, owner@host=pbs` in the logs, and `b` has
 `[b.1] -submit-num=1, owner@host=7ce742eb050c`.
 
-{% geshi 'shell' %}
+```shell
 testuser@7ce742eb050c:~$ cylc run --no-detach pbs1
             ._.                                                       
             | |              The Cylc Suite Engine [7.8.0-dirty]      
@@ -199,7 +199,7 @@ testuser@7ce742eb050c:~$ cylc run --no-detach pbs1
 2018-12-22T02:36:43Z INFO - [b.1] -(current:running)> succeeded at 2018-12-22T02:36:43Z
 2018-12-22T02:36:43Z INFO - Suite shutting down - AUTOMATIC
 2018-12-22T02:36:44Z INFO - DONE
-{% endgeshi %}
+```
 
 <div class='row'>
 <div class="ui container" style='text-align: center;'>
@@ -220,22 +220,22 @@ Docker volumes (in the real world this is normally done via NFS).
 The issue was related to the retrieval of remote logs. So we need to change `~/.cylc/global.rc`
 in order to get it working.
 
-{% geshi 'shell' %}
+```shell
 # File: global.rc
 
 [hosts]
 [[pbs]]
 retrieve job logs command = rsync -v -rltgoD --chmod=Du=rwx,Dgo=rx,Fu=rw,Fgo=r
-{% endgeshi %}
+```
 
 The first thing I noticed debugging it, was that when I copied the command it had an
 extra space, and it failed to execute. However, nothing appeared in the logs (!).
 
 Then I managed to print the `rsync` command executed.
 
-{% geshi 'shell' %}
+```shell
 sync -v -rltgoD --chmod=Du=rwx,Dgo=rx,Fu=rw,Fgo=r '--rsh=ssh -oBatchMode=yes -oConnectTimeout=10' -v --include=/1 --include=/1/a --include=/1/a/01 '--include=/1/a/01/**' '--exclude=/**' 'pbs:$HOME/cylc-run/pbs1/log/job/' /home/testuser/cylc-run/pbs1/log/job/
-{% endgeshi %}
+```
 
 The thing that got me here as that it wasn't `rsync`'ing the logs from PBS Torque spool, but rather
 the logs that were already synced via Docker shared volume (or NFS in other environments).
@@ -244,7 +244,7 @@ The Cylc suite contains a PBS directive `-W umask=0077`, which forces the logs
 to be readable only by the owner. It is possible to confirm it in the output
 logs. But only because it is using an empty directory.
 
-{% geshi 'shell' %}
+```shell
 testuser@7ce742eb050c:~$ ls -lah /home/testuser/cylc-run/pbs1/log/job/1/a/01/
 total 24K
 drwxrwxr-x 2 testuser testuser 4.0K Dec 22 02:36 .
@@ -254,12 +254,12 @@ drwxrwxr-x 3 testuser testuser 4.0K Dec 22 02:34 ..
 -rw------- 1 testuser testuser    0 Dec 22 02:36 job.err
 -rw------- 1 testuser testuser  147 Dec 22 02:36 job.out
 -rw-rw-r-- 1 testuser testuser  231 Dec 22 02:36 job.status
-{% endgeshi %}
+```
 
 Even though the `rsync` command was executed, it had no effect. We can confirm it by running it
 in the `cylc` node.
 
-{% geshi 'shell' %}
+```shell
 testuser@7ce742eb050c:~$ rsync -v -rltgoD --chmod=Du=rwx,Dgo=rx,Fu=rw,Fgo=r '--rsh=ssh -oBatchMode=yes -oConnectTimeout=10' -v --include=/1 --include=/1/a --include=/1/a/01 '--include=/1/a/01/**' '--exclude=/**' 'pbs:$HOME/cylc-run/pbs1/log/job/' /home/testuser/cylc-run/pbs1/log/job/
 opening connection using: ssh -oBatchMode=yes -oConnectTimeout=10 pbs rsync --server --sender -vvlogDtre.iLsfx . "$HOME/cylc-run/pbs1/log/job/"  (10 args)
 receiving incremental file list
@@ -283,14 +283,14 @@ total: matches=0  hash_hits=0  false_alarms=0 data=0
 
 sent 97 bytes  received 935 bytes  688.00 bytes/sec
 total size is 1,888  speedup is 1.83
-{% endgeshi %}
+```
 
 `rsync` realizes that the files are already up to date, and does not change the permission
 of the files. If we run this against a different empty folder, `rsync` will adjust the
 permissions. In the next example first a directory `test` is created, and `rsync` command
 is changed to use this new local folder.
 
-{% geshi 'shell' %}
+```shell
 testuser@7ce742eb050c:~$ mkdir ~/test
 testuser@7ce742eb050c:~$ rsync -v -rltgoD --chmod=Du=rwx,Dgo=rx,Fu=rw,Fgo=r '--rsh=ssh -oBatchMode=yes -oConnectTimeout=10' -v --include=/1 --include=/1/a --include=/1/a/01 '--include=/1/a/01/**' '--exclude=/**' 'pbs:$HOME/cylc-run/pbs1/log/job/' /home/testuser/test                  
 opening connection using: ssh -oBatchMode=yes -oConnectTimeout=10 pbs rsync --server --sender -vvlogDtre.iLsfx . "$HOME/cylc-run/pbs1/log/job/"  (10 args)
@@ -328,7 +328,7 @@ drwxr-xr-x 3 testuser testuser 4.0K Dec 22 02:34 ..
 -rw-r--r-- 1 testuser testuser    0 Dec 22 02:36 job.err
 -rw-r--r-- 1 testuser testuser  147 Dec 22 02:36 job.out
 -rw-r--r-- 1 testuser testuser  231 Dec 22 02:36 job.status
-{% endgeshi %}
+```
 
 It is possible now to confirm that `rsync` has synced the folders, and instead of the
 previous `-rw-------` permissions, both `job.out` and `job.err` have `-rw-r--r--` now.

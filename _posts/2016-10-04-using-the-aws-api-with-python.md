@@ -20,7 +20,7 @@ The awscli is a dependency for using boto3. After you install it, you need to ru
 
 I followed the tutorials, but got all sorts of different issues. Then after debugging some locally installed dependencies, in special awscli files, I found that the following settings work for my environment.
 
-{% geshi 'shell' %}
+```shell
 # File: config
 [profile default]
 region = ap-southeast-2
@@ -35,20 +35,20 @@ region = ap-southeast-2
 source_profile = default
 role_arn = arn:aws:iam::456:role/Sysops
 mfa_serial = arn:aws:iam::789:mfa/user@domain.blabla
-{% endgeshi %}
+```
 
 and
 
-{% geshi 'shell' %}
+```shell
 # File: credentials
 [default]
 aws_access_key_id = YOU_KEY_ID
 aws_secret_access_key = YOUR_SECRET
-{% endgeshi %}
+```
 
 And once it is done you can, for example, confirm it is working with some S3 commands in Python.
 
-{% geshi 'python' %}
+```python
 #!/usr/bin/env python3
 
 import os
@@ -71,7 +71,7 @@ if not found:
 
 file_location = os.path.dirname(os.path.realpath(__file__)) + os.path.sep + 'samplefile.txt'
 s3.meta.client.upload_file(Filename=file_location, Bucket=name, Key='book.txt')
-{% endgeshi %}
+```
 
 The AWS files in this example are using MFA too, the multi-factor authentication. So the first time you run this code you may be asked to generate a token, which will be cached for a short time.
 

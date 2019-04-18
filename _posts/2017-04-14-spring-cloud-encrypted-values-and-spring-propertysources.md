@@ -43,7 +43,7 @@ your application looks for a property called XPTO, and if it has been encrypted,
 find the value in the decrypted propery source, regardless of whether you tried to override it or
 not.
 
-{% geshi 'shell' %}
+```shell
 # Property sources listed in Eclipse IDE
 
 [
@@ -70,7 +70,7 @@ not.
   springCloudClientHostInfo,
   defaultProperties
 ]
-{% endgeshi %}
+```
 
 So in case you have encrypted values in your Spring application (and you are using Spring Cloud, 
 of course) remember that these values will have higher priority, and can only be overriden by other

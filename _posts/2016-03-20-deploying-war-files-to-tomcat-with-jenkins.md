@@ -30,12 +30,12 @@ available in the other options, or in order to call other tasks or debug some pr
 
 Example:
 
-{% geshi 'bash' %}
+```bash
 $ docker run -d -p 8888:8080 jeanblanchard/tomcat:8
 $ git clone https://github.com/spring-projects/spring-petclinic.git && cd spring-petclinic && mvn package
 $ curl --upload-file target/petclinic.war "http://admin:admin@localhost:8888/manager/text/deploy?path=/spring-petclinic&update=true"
 OK - Deployed application at context path /spring-petclinic
-{% endgeshi %}
+```
 
 <!-- more -->
 
@@ -70,13 +70,13 @@ via SSH in the server, copying the file and stop/starting the services
 
 Example:
 
-{% geshi 'bash' %}
+```bash
 $ git clone https://github.com/spring-projects/spring-petclinic.git && cd spring-petclinic
-{% endgeshi %}
+```
 
 Add the following to the pom.xml file, under the right XML tags, of course.
 
-{% geshi 'xml' %}
+```xml
 <!-- from https://gist.github.com/mdread/5900034 -->
 <plugins>
     <plugin>
@@ -136,14 +136,14 @@ Add the following to the pom.xml file, under the right XML tags, of course.
         </properties>
     </profile>
 </profiles>
-{% endgeshi %}
+```
 
 And finally start Tomcat and call the Cargo Maven plug-in.
 
-{% geshi 'bash' %}
+```bash
 $ docker run -d -p 8888:8080 jeanblanchard/tomcat:8
 $ mvn package org.codehaus.cargo:cargo-maven2-plugin:deploy -Ptest -Dcargo.hostname=localhost -Dcargo.servlet.port=8888 -Dcargo.tomcat.manager.url=http://localhost:8888/manager/text -Dcargo.remote.username=admin -Dcargo.remote.password=admin
-{% endgeshi %}
+```
 
 What I like about this approach is that using profiles and environments with Maven, you can have pre-defined
 variables per profile, but also overwrite them when necessary. For example in the previous command line,
@@ -191,7 +191,7 @@ settings.
 Instead of a screenshot, here is the config.xml file for my example job - easier to diff your job
 configuration.
 
-{% geshi 'xml' %}
+```xml
 <?xml version='1.0' encoding='UTF-8'?>
 <project>
   <actions/>
@@ -244,11 +244,11 @@ configuration.
   </publishers>
   <buildWrappers/>
 </project>
-{% endgeshi %}
+```
 
 When running this job, you should see in the end of the console output, something similar to this.
 
-{% geshi 'bash' %}
+```bash
 [INFO] Building war: /tmp/1/jobs/deploy01/workspace/target/petclinic.war
 [INFO] ------------------------------------------------------------------------
 [INFO] BUILD SUCCESS
@@ -261,7 +261,7 @@ Deploying /tmp/1/jobs/deploy01/workspace/target/petclinic.war to container Tomca
   [/tmp/1/jobs/deploy01/workspace/target/petclinic.war] is not deployed. Doing a fresh deployment.
   Deploying [/tmp/1/jobs/deploy01/workspace/target/petclinic.war]
 Finished: SUCCESS
-{% endgeshi %}
+```
 
 You can chain several jobs, creating a pipeline with one job to build, one for functional tests, and
 another job to deploy.

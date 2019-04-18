@@ -21,7 +21,7 @@ A Groovy script in the `$JENKINS_ROOT_DIR/init.groovy.d/` directory is executed 
 Jenkins initialization. This way you can increase the global logger level with a script
 as the following below.
 
-{% geshi 'java' %}
+```java
 import java.util.logging.ConsoleHandler
 import java.util.logging.LogManager
 import java.util.logging.Logger
@@ -30,6 +30,6 @@ import java.util.logging.Level
 def logger = Logger.getLogger("")
 logger.setLevel(Level.FINEST)
 logger.addHandler (new ConsoleHandler())
-{% endgeshi %}
+```
 
 Happy logging!

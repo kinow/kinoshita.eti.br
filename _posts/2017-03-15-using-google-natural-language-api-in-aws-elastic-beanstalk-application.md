@@ -33,7 +33,7 @@ with a [FixedCredentialsProvider](http://googleapis.github.io/gax-java/0.2.0/api
 
 Of course reading code is way easier than reading this workaround description.
 
-{% geshi 'java' %}
+```java
 // File: GoogleNaturalLanguageService.java
 // ...
     // envvar or property used to specify the Google Application Credentials
@@ -96,7 +96,7 @@ Of course reading code is way easier than reading this workaround description.
         this.languageServiceClient.close();
     }
 // ...
-{% endgeshi %}
+```
 
 That way you should be able to use the API with AWS Elastic Beanstalk
 without having to hack your environment to provide the GOOGLE_APPLICATION_CREDENTIALS

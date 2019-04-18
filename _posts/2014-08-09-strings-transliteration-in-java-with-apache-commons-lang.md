@@ -22,10 +22,10 @@ Turns out that [Apache Commons Lang](http://commons.apache.org), which I use in 
 provided this feature. What means that I will be able to reduce the length of my code, what also means 
 less code to be tested (and one less place to look for bugs).
 
-{% geshi 'java' %}
+```java
 String s = StringUtils.replaceChars("ATGCATGC", "GTCA", "CAGT"); // "TACGTACG"
 System.out.println(s);
-{% endgeshi %}
+```
 
 What the code above does, is replace G by C, T by A, C by G and A by T. This process is part of finding the 
 [DNA reverse complement](http://www.bioinformatics.org/sms/rev_comp.html). But you can also use this for replacing 

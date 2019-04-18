@@ -49,7 +49,7 @@ When the plugin is activated, it will iterate through all entries in the graph, 
 for one which `uri` starts with `wd:` (for wikidata). Here's what the `wikidata` object
 will look like.
 
-{% geshi 'javascript' %}
+```javascript
 {
   "uri": "wd:Q27275",
   "type": "http://wikiba.se/ontology#Item",
@@ -102,7 +102,7 @@ will look like.
     "value": "Point(63.9 45.3)"
   }
 }
-{% endgeshi %}
+```
 
 Now the plugin will iterate the `graph` object once again, looking for entries
 which the object type is `schema:Article`, and the `schema:isPartOf` ends with
@@ -112,14 +112,14 @@ This list is then iterated, building a reverse dictionary `keyLangUriValue`
 with the language as key, and the URI as value. `keyLangUriValue` will look
 something like the next example.
 
-{% geshi 'javascript' %}
+```javascript
 {
   "ace": "https://ace.wikipedia.org/wiki/Asia_Teung%C3%B6h",
   "af": "https://af.wikipedia.org/wiki/Sentraal-Asi%C3%AB",
   "am": "https://am.wikipedia.org/wiki/%E1%88%98%E1%8A%AB%E1%8A%A8%E1%88%88%E1%8A%9B_%E1%8A%A5%E1%88%B5%E1%8B%AB",
   //...
 }
-{% endgeshi %}
+```
 
 Now comes the penultimate step. The plugin has access to some global variables,
 including `languageOrder`, which contains the list of languages available in the

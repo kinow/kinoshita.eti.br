@@ -24,7 +24,7 @@ signature.
 
 Here's the script. Licensed under the GPL licence.
 
-{% geshi 'shell' %}
+```shell
 #!/usr/bin/env bash
 
 url=""
@@ -90,7 +90,7 @@ wget -r -nd -np -e robots=off --wait 1 -R "index.html*" "${URL}"
 for x in *.jar; do gpg --verify "${x}".asc; done
 
 # EOF
-{% endgeshi %}
+```
 
 The script can be found at GitHub too: [https://github.com/kinow/dork-scripts/tree/3c519a74f28c08310ce2e65f8e860d61fd0c5c07/gpg/asf-sigs](https://github.com/kinow/dork-scripts/tree/3c519a74f28c08310ce2e65f8e860d61fd0c5c07/gpg/asf-sigs)
 

@@ -20,9 +20,9 @@ of adding the header to the Markdown file.
 Here's the shell script part, that allows you to add a header to a file, in place (i.e.
 it will alter and save the change your file).
 
-{% geshi 'shell' %}
+```shell
 sed -i 1i"----\nlayout: page\ntitle: API Installation\n----\n\n" ./docs/documentation/api/api.md
-{% endgeshi %}
+```
 
 Here the first argument to sed, *-i* is for in place. Then that strange *1i*
 means that it will insert something before the first line, once. Then we have our header,

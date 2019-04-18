@@ -34,7 +34,7 @@ console.
 Further investigation led me to the History docker (the one that shows undo steps)
 [constructor](https://github.com/KDE/krita/blob/9e2b8c5b07deccd4a616ad7930a91e8cc784a85b/plugins/dockers/historydocker/HistoryDock.cpp#L33).
 
-{% geshi 'c++' %}
+```c++
     QVBoxLayout *vl = new QVBoxLayout(page); // layout being set to page
     m_undoView = new KisUndoView(this);
     vl->addWidget(m_undoView);
@@ -48,7 +48,7 @@ Further investigation led me to the History docker (the one that shows undo step
 
     setWidget(page);
     setWindowTitle(i18n("Undo History"));
-{% endgeshi %}
+```
 
 Here the QWidget created receives both QHBoxLayout and QVBoxLayout. Again, searching the Internet
 a little bit, then came across this post with a good example of a QWidget with
@@ -56,7 +56,7 @@ QHBoxLayout and QVBoxLayout. Here's what the constructor looks after the
 [patch](https://bugs.kde.org/show_bug.cgi?id=378313)
 has been [applied](https://github.com/KDE/krita/commit/1d2343c0cacfb0b105fbe86c2bcef975a09b1041).
 
-{% geshi 'c++' %}
+```c++
     QVBoxLayout *vl = new QVBoxLayout(page); // layout being set to page
     m_undoView = new KisUndoView(this);
     vl->addWidget(m_undoView);
@@ -71,7 +71,7 @@ has been [applied](https://github.com/KDE/krita/commit/1d2343c0cacfb0b105fbe86c2
 
     setWidget(page);
     setWindowTitle(i18n("Undo History"));
-{% endgeshi %}
+```
 
 That's it. Learned something new in Qt. Not as important and useful as learning about
 [signals and slots](http://doc.qt.io/qt-4.8/signalsandslots.html), but now I can focus

@@ -14,13 +14,13 @@ syntax, etc.
 I decided to check some projects I contribute to, and the first issue I found was in
 [Apache Jena](https://jena.apache.org):
 
-{% geshi 'shell' %}
+```shell
 kinow@localhost:~/Development/java/jena/jena/apache-jena/bin$ shellcheck arq
 
 In arq line 8:
     case "$OSTYPE" in
           ^-- SC2039: In POSIX sh, OSTYPE is not supported.
-{% endgeshi %}
+```
 
 So, in summary, the `OSTYPE` variable should not be available in POSIX shell. The case in question, where
 `OSTYPE` is being used, checks for the Darwin OS type (i.e. Mac OS). Knowing how things get weird when you

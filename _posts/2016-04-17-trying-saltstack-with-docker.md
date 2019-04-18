@@ -23,17 +23,17 @@ API (necessary for the Jenkins plug-in).
 This post describes the steps that I took to have a running Salt Master with the API
 enabled. First you need to create some directories and files to use with the image.
 
-{% geshi 'shell' %}
+```shell
 shell$ mkdir ~/master && cd ~/master
 shell$ mkdir -p config/master.d/
 shell$ vim config/master.d/api.conf
-{% endgeshi %}
+```
 
 The api.conf contains the SaltStack API configuration. You can change port, user
 and other settings if necessary. Just remember to add a credential in Jenkins
 for the plug-in.
 
-{% geshi 'shell' %}
+```shell
 # File: api.conf
 external_auth:
   pam:
@@ -50,37 +50,37 @@ rest_cherrypy:
   static_path: /assets
   app: /opt/molten/index.html
   app_path: /molten
-{% endgeshi %}
+```
 
 The image also conveniently provides a script that is executed before the
 entry point (if provided). So we can also create a user for the API automatically
 when the image is created.
 
-{% geshi 'shell' %}
+```shell
 shell$ vim config/before-exec.sh
-{% endgeshi %}
+```
 
-{% geshi 'shell' %}
+```shell
 #!/bin/bash
 # File: before-exec.sh
 useradd saltapiuser
 echo -e "nosecret\nnosecret\n" | passwd saltapiuser
 exit 0
-{% endgeshi %}
+```
 
 Also make the script executable.
 
-{% geshi 'shell' %}
+```shell
 chmod +x config/before-exec.sh
-{% endgeshi %}
+```
 
 And finally start the container.
 
-{% geshi 'shell' %}
+```shell
 docker run --name salt-master -v $PWD/config:/config \
     -p 4505:4505 -p 4506:4506 -p 443:443 -p 8000:8000 \
     bbinet/salt-master
-{% endgeshi %}
+```
 
 Once the container is running, you can go to http://localhost:8000 and
 log in as saltapiuser:nosecret, and also configure your plug-in

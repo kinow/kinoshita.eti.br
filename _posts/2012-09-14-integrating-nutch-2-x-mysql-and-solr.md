@@ -26,11 +26,15 @@ time: '00:02:31'
 
 <!--more-->
 
-{%geshi 'xml' %}<field name="_version_" type="long" indexed="true" stored="true"/>{%endgeshi%}
+```xml
+<field name="_version_" type="long" indexed="true" stored="true"/>
+```
 
 <p>Restart Apache Solr and run the following command and your index will be reset.</p>
 
-{%geshi 'shell' %}curl http://localhost:8983/solr/collection1/update?commit=true -H "Content-Type: text/xml" --data-binary "<delete><query>*:*</query></delete>"{%endgeshi%}
+```shell
+curl http://localhost:8983/solr/collection1/update?commit=true -H "Content-Type: text/xml" --data-binary "<delete><query>*:*</query></delete>"
+```
 
 <p>Hope it helps if you are creating a similar set up. In the next posts we will explain how to set up Apache Nutch 2.x branch in Eclipse. It is very helpful for writing and debugging plug-ins.</p>
 

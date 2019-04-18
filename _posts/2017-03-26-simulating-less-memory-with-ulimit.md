@@ -22,7 +22,7 @@ Searching the web I found some suggestions that `ulimit` could work. After playi
 `ulimit` and `htop`, and verifying the amount of memory necessary to open two files in two windows
 in Krita, I came up with the following settings.
 
-{% geshi 'shell' %}
+```shell
 # 2550 mb in kb
 ulimit -v 2550000
 
@@ -33,7 +33,7 @@ ulimit -m 2000000
 ulimit -a
 
 gdb $HOME/Development/cpp/workspace/krita_install/bin/krita
-{% endgeshi %}
+```
 
 Then after copying a few layers from one window to another, I successfully reproduced the issue,
 and could include a backtrace in the Krita issue tracking system.

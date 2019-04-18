@@ -35,21 +35,21 @@ analyse its execution flow.
 
 You can do that by exporting these two variables before running CMake.
 
-{% geshi 'shell' %}
+```shell
 export CXX=/opt/afl-2.05b/afl-g++
 export CC=/opt/afl-2.05b/afl-gcc
-{% endgeshi %}
+```
 
 After this you can run CMake and GNU make again. That should create a binary instrumented mapserv,
 that can be tested with afl.
 
-{% geshi 'shell' %}
+```shell
 cd /home/kinow/Development/cpp/workspace/mapserver/
 mkdir build && cd build
 cmake ..
 make
 ./mapserv -v
-{% endgeshi %}
+```
 
 ## Creating a shapefile mapfile
 
@@ -72,7 +72,7 @@ that I used for this experiment.
 I used [QGIS](http://www.qgis.org/en/site/) to load the shapefile, take a look at the map,
 and get the bounding area and projection. Here's the final mapfile.
 
-{% geshi 'shell' %}
+```shell
 MAP
   IMAGETYPE      JPEG
   EXTENT         -97.238976 41.619778 -82.122902 49.385620
@@ -109,16 +109,16 @@ MAP
     END
   END
 END
-{% endgeshi %}
+```
 
 Then you can finally execute MapServer binary program and output to a local image file.
 
-{% geshi 'shell' %}
+```shell
 export MS_ERRORFILE="stderr"
 export MS_MAPFILE=/home/kinow/Development/cpp/workspace/mapserver/nztopo1.map
 
 ./mapserv -nh QUERY_STRING="VERSION=1.1.0&REQUEST=GetMap&LAYERS=nz-coastlines-and-islands-polygons-topo-150k&SRS=EPSG:4167&SERVICE=WMS&TEMPLATE=OpenLayers&BBOX=165.869,-52.6209,183.846,-29.2313&FORMAT=image/jpeg&HEIGHT=800&WIDTH=800" 2>/dev/null > /tmp/nzmap.jpg
-{% endgeshi %}
+```
 
 ## Running afl
 
@@ -126,12 +126,12 @@ I decided to use a RAM disk while running afl as suggested
 [in this blog post](http://www.cipherdyne.org/blog/2014/12/ram-disks-and-saving-your-ssd-from-afl-fuzzing.html)
 to avoid a lot of writes in my SSD disk. Then moved MapServer there and fired afl.
 
-{% geshi 'shell' %}
+```shell
 cd /tmp/afl-ramdisk/mapserver
 mkdir fuzz-input fuzz-output
 
 /opt/afl-2.05b/afl-fuzz -m 500 -i fuzz-input/ -o fuzz-output/ -t 2000 ./mapserv QUERY_STRING="VERSION=1.1.0&REQUEST=GetMap&LAYERS=nz-coastlines-and-islands-polygons-topo-150k&SRS=EPSG:4167&SERVICE=WMS&TEMPLATE=OpenLayers&BBOX=165.869,-52.6209,183.846,-29.2313&FORMAT=image/jpeg&HEIGHT=800&WIDTH=800"
-{% endgeshi %}
+```
 
 <div class='row'>
 <div class="span6 offset3" style='text-align: center;'>
@@ -151,11 +151,11 @@ variations of parameters.
 During the next days I will give it another go at work, and will investigate how to test MapServer without having to write
 a wrapper in Shell or C/C++. You can still test other programs that are shipped with MapServer though.
 
-{% geshi 'shell' %}
+```shell
 cd /tmp/afl-ramdisk/mapserver
 
 /opt/afl-2.05b/afl-fuzz -m 512 -i fuzz-input -o fuzz-output -f /tmp/afl-ramdisk/input ./shp2img -m @@ -l nz-coastlines-and-islands-polygons-topo-150k -i image/jpeg -o /tmp/afl-ramdisk/nzmap.jpg -e 165.869 -52.6209 183.846 -29.2313
-{% endgeshi %}
+```
 
 I hope it helps you get started with afl in case you are learning about it too :-) Happy hacking!
 

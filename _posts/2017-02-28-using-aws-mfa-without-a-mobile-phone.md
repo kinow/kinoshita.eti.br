@@ -24,21 +24,21 @@ linked to your AWS account, so you may have to remove an existing one. Follow th
 
 ### Install Go
 
-{% geshi 'shell' %}
+```shell
 sudo apt update && sudo apt upgrade -y
 cd tmp/ && wget https://storage.googleapis.com/golang/go1.8.linux-amd64.tar.gz
 tar -zxvf go1.*.tar.gz
 sudo mv go /usr/local
 vim ~/.bashrc
-{% endgeshi %}
+```
 
 Add the following at the bottom of the file.
 
-{% geshi 'shell' %}
+```shell
 GOROOT=/usr/local/go
 GOPATH="$HOME/go"
 PATH="$GOPATH/bin:$GOROOT/bin:$PATH"
-{% endgeshi %}
+```
 
 And you can test it with `. ~/.bashrc && go version`.
 
@@ -47,9 +47,9 @@ And you can test it with `. ~/.bashrc && go version`.
 Given your environment is correctly set up, you should be able to use the following command to install
 gauth, and have it available in your *$PATH*.
 
-{% geshi 'shell' %}
+```shell
 go get github.com/pcarrier/gauth
-{% endgeshi %}
+```
 
 Edit *~/.config/gauth.csv* adding a value for the AWS MFA key.
 

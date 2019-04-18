@@ -17,20 +17,20 @@ Here's some code before being formatted by Eclipse's default formatter rules.
 
 <small>Code adapted from: blog post <a href="http://javadeau.lawesson.se/2016/10/java-8-streams-in-hibernate-and-beyond.html"><i>Java d'eau &dash; Java 8: Streams in Hibernate and Beyond</i></a></small>
 
-{% geshi 'java' %}
+```java
 session.createQuery("SELECT h FROM Hare h", Hare.class)
     .stream()
     .filter(h -> h.getId() == 1)
     .map(Hare::getName)
     .forEach(System.out::println);
-{% endgeshi %}
+```
 
 Then after formatting.
 
-{% geshi 'java' %}
+```java
 session.createQuery("SELECT h FROM Hare h", Hare.class).stream().filter(h -> h.getId() == 1).map(Hare::getName)
                 .forEach(System.out::println);
-{% endgeshi %}
+```
 
 Which doesn't look very appealing, ay? You can change this behaviour at least in two ways.
 The first by telling the formatter to ignore this block, through a special formatter tag in your code.
@@ -46,7 +46,7 @@ the preferences *Java* &rarr; *Code Style* &rarr; *Formatter* &rarr; *Edit* &rar
 
 Then formatting the following code won't change a thing in the block surrounded by the formatter tags.
 
-{% geshi 'java' %}
+```java
 /* @Formatter:off */
 session.createQuery("SELECT h FROM Hare h", Hare.class)
     .stream()
@@ -54,7 +54,7 @@ session.createQuery("SELECT h FROM Hare h", Hare.class)
     .map(Hare::getName)
     .forEach(System.out::println);
 /* @Formatter:on */
-{% endgeshi %}
+```
 
 But having to type these tags can become annoying, and cause more commits and pull requests to be
 unnecessarily created. So an alternative approach can be to change the formatter
@@ -76,13 +76,13 @@ maximum line width&rdquo;*.
 
 Once it is done, your code will look like the following no matter what.
 
-{% geshi 'java' %}
+```java
 session.createQuery("SELECT h FROM Hare h", Hare.class)
     .stream()
     .filter(h -> h.getId() == 1)
     .map(Hare::getName)
     .forEach(System.out::println);
-{% endgeshi %}
+```
 
 Happy coding!
 

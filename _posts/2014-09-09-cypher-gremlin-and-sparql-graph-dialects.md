@@ -30,7 +30,7 @@ three languages.
 
 First we create the graph.
 
-{% geshi 'SQL' %}
+```SQL
 create (matrix1:Movie {id : '603', title : 'The Matrix', year : '1999-03-31'}),
  (matrix2:Movie {id : '604', title : 'The Matrix Reloaded', year : '2003-05-07'}),
  (matrix3:Movie {id : '605', title : 'The Matrix Revolutions', year : '2003-10-27'}),
@@ -48,16 +48,16 @@ create (matrix1:Movie {id : '603', title : 'The Matrix', year : '1999-03-31'}),
  (matrix1)<-[:ACTS_IN {role : 'Trinity'}]-(trinity),
  (matrix2)<-[:ACTS_IN {role : 'Trinity'}]-(trinity),
  (matrix3)<-[:ACTS_IN {role : 'Trinity'}]-(trinity)
-{% endgeshi %}
+```
 
 <code>Added 6 labels, created 6 nodes, set 21 properties, created 9 relationships, returned 0 rows in 2791 ms</code>
 
 And execute a simple query.
 
-{% geshi 'SQL' %}
+```SQL
 MATCH (a:Actor { name:"Keanu Reeves" })
 RETURN a
-{% endgeshi %}
+```
 
 <code>(9:Actor {name:"Keanu Reeves"})</code>
 
@@ -65,7 +65,7 @@ RETURN a
 
 Again, let's start by creating our graph.
 
-{% geshi 'sql' %}
+```sql
 g = new TinkerGraph();
 matrix1 = g.addVertex(["_id":603,"title":"The Matrix", "year": "1999-03-31"]);
 matrix2 = g.addVertex(["_id":604,"title":"The Matrix Reloaded", "year": "2003-05-07"]);
@@ -84,13 +84,13 @@ morpheus.addEdge("actsIn", matrix3);
 trinity.addEdge("actsIn", matrix1); 
 trinity.addEdge("actsIn", matrix2); 
 trinity.addEdge("actsIn", matrix3); 
-{% endgeshi %}
+```
 
 And execute a simple query.
 
-{% geshi 'sql' %}
+```sql
 g.V.has('name', 'Keanu Reeves').map
-{% endgeshi %}
+```
 
 <code>gremlin> g.V.has('name', 'Keanu Reeves').map
 ==>{name=Keanu Reeves}
@@ -103,7 +103,7 @@ Quite similar to neo4j.
 Let's load our example (thanks to [Kendall G. Clark](https://twitter.com/kendall)). I used 
 [Fuseki](http://jena.apache.org/documentation/serving_data/) to run these queries.
 
-{% geshi 'xml' %}
+```xml
 @prefix :          <http://example.org/matrix/> .
 
  :m1 a :Movie; :title "The Matrix"; :year "1999-03-31".
@@ -123,17 +123,17 @@ Let's load our example (thanks to [Kendall G. Clark](https://twitter.com/kendall
  :trinity :hasRole [:as "Trinity"; :in :m1].
  :trinity :hasRole [:as "Trinity"; :in :m2].
  :trinity :hasRole [:as "Trinity"; :in :m2].
-{% endgeshi %}
+```
 
 And finally the SPARQL query.
 
-{% geshi 'sql' %}
+```sql
 SELECT ?a WHERE {
    ?a a <http://example.org/matrix/Actor> .
    ?a <http://example.org/matrix/name> ?name .
    FILTER(?name  = "Keanu Reeves")
 }
-{% endgeshi %}
+```
 
 Returning the Keanu Reeves actor instance.
 

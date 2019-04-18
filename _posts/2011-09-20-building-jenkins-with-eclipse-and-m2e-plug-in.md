@@ -20,7 +20,7 @@ time: '17:50:04'
 
 <p>The solution for this issue was adding a rule for each plug-in execution. This rule must contain a version or version range and declare whether this plug-in execution must be executed or ignored by m2e. You have two ways of adding these rules. You could a) Google for an example, b) replace group, artifact name and version. Or you could a) open pom.xml and select the tab "pom.xml" (this will open the XML source of your pom.xml) b) go to the line marked with an error in Eclipse, leave your mouse pointer over it and select the option "Permanently mark goal...", choose the parent pom.xml (jenkins/pom.xml) and save all documents.</p>
 
-{% geshi 'xml' %}
+```xml
 <plugin>
   <groupid>org.eclipse.m2e</groupid>
   <artifactid>lifecycle-mapping</artifactid>
@@ -46,7 +46,8 @@ time: '17:50:04'
      </pluginexecutions>
    </lifecyclemappingmetadata>
   </configuration>
-</plugin>{%endgeshi%}
+</plugin>
+```
 
 <h2>2. Conflicting Maven repository ids</h2>
 
@@ -54,7 +55,7 @@ time: '17:50:04'
 
 <p>The solution for this issue was changing the repository id from maven.jenkins-ci.org to maven.jenkins-ci.org-snapshots.</p>
 
-{% geshi 'xml' %}
+```xml
 <repository><!-- only until we release ant and javadoc plugins -->
   <id>maven.jenkins-ci.org-snapshots</id>
   <url>http://maven.jenkins-ci.org/content/repositories/snapshots/</url>
@@ -64,13 +65,15 @@ time: '17:50:04'
   <snapshots>
     <enabled>true</enabled>
   </snapshots>
-</repository>{%endgeshi%}
+</repository>
+```
 
-{% geshi 'xml' %}
+```xml
 <snapshotRepository>
   <id>maven.jenkins-ci.org-snapshots</id>
   <url>http://maven.jenkins-ci.org:8081/content/repositories/snapshots</url>
-</snapshotRepository>{%endgeshi%}
+</snapshotRepository>
+```
 
 <h2>3. maven-localizer-plugin</h2>
 
@@ -78,7 +81,7 @@ time: '17:50:04'
 
 <p>The solution for this issue was to add the generated sources manually in jenkins/pom.xml under the build-helper-maven-plugin plug-in configuration.</p>
 
-{% geshi 'xml' %}
+```xml
 <plugin>
   <groupId>org.codehaus.mojo</groupId>
   <artifactId>build-helper-maven-plugin</artifactId>
@@ -99,7 +102,8 @@ time: '17:50:04'
    </configuration>
   </execution>
   </executions>
-</plugin>{% endgeshi %}
+</plugin>
+```
 
 <h2>Removing remaining Eclipse errors and warnings</h2>
 

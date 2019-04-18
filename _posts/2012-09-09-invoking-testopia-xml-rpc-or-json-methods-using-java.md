@@ -32,7 +32,7 @@ time: '16:08:09'
 
 <p>We haven't released this API to Maven central yet, as we still have to polish the code, add tests and more methods. But you can already start playing with this API, the code is at GitHub, <a href="http://www.github.com/kinow/testopia-java-driver" title="Testopia Java Driver">http://www.github.com/kinow/testopia-java-driver</a> [8], and here's a Snippet of code to get you started with the API.</p>
 
-{% geshi 'java' %}
+```java
 TestopiaAPI api = new URL("http://localhost/bugzilla-4.2.1/xmlrpc.cgi");
 api.login("root", "pass");
 TestRun testCaseRun = api.getTestRun(1);
@@ -41,7 +41,8 @@ for(TestCase testCase : testCases) {
   Status status = Status.BLOCKED;
   testCase.setStatusId(status.getValue());
   api.update(testCase, testCase.getRunId(), testCase.getBuildId(), testCase.getEnvId());
-}{%endgeshi%}
+}
+```
 
 <p>Have fun!</p>
 

@@ -15,7 +15,7 @@ One of these libraries is [ImmobilienScout24/illegal-transitive-dependency-check
 
 With the following example:
 
-{% geshi 'xml' %}
+```xml
 <project>
   ...
   <build>
@@ -55,7 +55,7 @@ With the following example:
   </build>
   ...
 </project>
-{% endgeshi %}
+```
 
 Running `mvn clean verify` will execute the Maven Enforcer Plug-in `enforce` goal, which will call the illegal transitive dependency check.
 

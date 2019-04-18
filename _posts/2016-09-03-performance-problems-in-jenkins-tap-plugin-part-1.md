@@ -14,7 +14,7 @@ time: '23:28:03'
 [BioPerl](http://bioperl.org/) has over 21K tests. That should be enough for giving an initial idea of CPU, memory and disk usage for the plug-in.
 
 
-{% geshi 'shell' %}
+```shell
 git clone https://github.com/bioperl/bioperl-live.git
 cd bioperl-live
 sudo cpanm  -vv --installdeps --notest .
@@ -27,7 +27,7 @@ prove -r t/ -a tests.tar.gz
 All tests successful.
 Files=325, Tests=21095, 94 wallclock secs ( 2.47 usr  0.55 sys + 88.29 cusr  3.85 csys = 95.16 CPU)
 Result: PASS
-{% endgeshi %}
+```
 
 When the test results are parsed, the plug-in also copies TAP files over to the master, in a folder called *tap-master-files*.
 
@@ -43,10 +43,10 @@ The image shows one of the screens in YourKit profiler, where it is possible to 
 
 One build.xml for the BioPerl project gets over 80K entries for the TestResult object.
 
-{% geshi 'shell' %}
+```shell
 grep "org.tap4j.model.TestResult" builds/1/build.xml -o | wc -l
 84522
-{% endgeshi %}
+```
 
 This happens because each TAP file may contain multiple test results (lines with test results). Each of these test results gets turned into a Java object and loaded by the plug-in. So when loading the test result pages, Jenkins needs to wait until all these objects have been parsed, deserialized and read into the memory.
 

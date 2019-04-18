@@ -11,14 +11,14 @@ tags:
 In Java you have the [NumberFormatException](https://docs.oracle.com/javase/9/docs/api/java/text/NumberFormat.html)
 to help you formatting and parsing numbers for any locale. Said that, here's some code.
 
-{% geshi 'shell' %}
+```shell
 BigDecimal negative = new BigDecimal("-1234.56");
 
 DecimalFormat nf = (DecimalFormat) NumberFormat.getCurrencyInstance(Locale.UK);
 String formattedNegative = nf.format(negative);
 
 System.out.println(formattedNegative);
-{% endgeshi %}
+```
 
 The output for this code is **-£1,234.56**. That's expected, as the locale is set to
 UK, so the currency symbol used is for British Pounds. And as the number is negative, you
@@ -29,14 +29,14 @@ So far so good.
 
 What about the following code, with nothing different except for the locale set to **US**.
 
-{% geshi 'shell' %}
+```shell
 BigDecimal negative = new BigDecimal("-1234.56");
 
 DecimalFormat nf = (DecimalFormat) NumberFormat.getCurrencyInstance(Locale.US); // <--- US now
 String formattedNegative = nf.format(negative);
 
 System.out.println(formattedNegative);
-{% endgeshi %}
+```
 
 Some could intuitively expect **-$1,234.56**. However, **the output is actually ($1,234.56)**.
 

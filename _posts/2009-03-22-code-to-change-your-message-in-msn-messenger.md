@@ -11,7 +11,7 @@ I've always wanted to know how does the code to show what was I listening to loo
 
 Basically, you just send a message to the MSN UI API with a defined data structure. And to remove the message, just send again with an empty string.
 
-{% geshi 'c'%}
+```c
 /*
 Bruno de Paula Kinoshita
 original src code:
@@ -67,4 +67,5 @@ int main(int argc, char *argv[])
     setNowPlaying ( title );
     
     return EXIT_SUCCESS;
-}{%endgeshi%}
+}
+```
