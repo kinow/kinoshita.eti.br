@@ -11,11 +11,7 @@ tags:
 
 Fuzzifying is a technique used in automated tests to find bugs in programs with unexpected data. fuzzer is the name given to the program used for running these tests. Some fuzzers also generate random data used for the tests.
 
-<div class="ui image">
-<a href="https://www.deviantart.com/kinow/art/Stink-bug-792791397">
 <img class="ui fluid image" src="/assets/posts{{page.path | remove: ".md" | remove: "_posts" }}/stink-bug-smaller.png" />
-</a>
-</div>
 
 <!--more-->
 
