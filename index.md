@@ -18,7 +18,7 @@ Feel free to get in touch via <a href="https://twitter.com/kinow">Twitter <i cla
 or <a href="https://github.com/kinow">GitHub <i class="github icon"></i></a>. Refer to my CV for further information.
 
 My current computer is a Lenovo Thinkpad T530, i7-3720QM (8 threads/4 cores/6 MB cache), 16 GB 1600 MHz,
-128 GB SSD disk + 500 GB 5200 RPM magnetic disk. My operating system is a Linux Ubuntu 18.04 LTS with
+128 GB SSD disk + 500 GB 5200 RPM magnetic disk. My operating system is a Linux Ubuntu 18.04.2 LTS with
 Xubuntu packages installed, some IDE's for different programming languages, some VM's and containers,
 as well as illustration tools.
 
