@@ -39,8 +39,7 @@ South Africa, Fiji, Japan, and United States. And, as many Brazilians
 Japan, and my mom's parents are half Brazilian natives and half French (I think).-->
 
 Feel free to get in touch via <a href="https://twitter.com/kinow">Twitter <i class="twitter icon"></i></a>
-or <a href="https://github.com/kinow">GitHub <i class="github icon"></i></a>. For further information, 
-you can check my CV.
+or <a href="https://github.com/kinow">GitHub <i class="github icon"></i></a>. Refer to my CV for further information.
 
 <!--That's all folks! Valeu!-->
 
@@ -78,7 +77,7 @@ and illustration tools.
 Before that I used a Dell Inspiron N5110, i5-2430M (4 threads/2 cores/3MB cache), 6 GB 1333 MHz,
 128 GB SSD disk + 500 GB 5200 RPM. Also using Ubuntu, but 14.04.1 LTS with Xubuntu.
 
-- Doing some [Art](/art/) on the side, and I have also an [Instagram](https://instagram.com/brunokinoshita) and
+- Doing [illustrations](/art/) on the side, and I also have [Instagram](https://instagram.com/brunokinoshita) and
 [DeviantArt](https://deviantart.com/kinow/)
 - I am also into [books](/books), especially science fiction
 - And [theatre plays](/theatre)
