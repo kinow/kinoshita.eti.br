@@ -2,9 +2,8 @@
 title: Illustrations
 layout: page
 permalink: "/art/"
+note: "Drawing for fun, but commissions are welcome if I have the time."
 ---
-
-_Drawing for fun, but commissions are welcome if I have the time._
 
 <div class="ui small images">
     <img src="/assets//pages/art/alonzo_and_lambda_by_kinow-d5tqvau.png">

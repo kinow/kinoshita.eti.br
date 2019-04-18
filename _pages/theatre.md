@@ -2,9 +2,8 @@
 title: Theatre
 layout: page
 permalink: "/theatre/"
+note: "These are some plays I have watched. Suggestions are welcome."
 ---
-
-These are some plays I have watched. Suggestions are welcome.
 
 <div class="ui stackable three column equal width grid">
     <div class="column">

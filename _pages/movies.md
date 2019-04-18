@@ -2,9 +2,8 @@
 title: 'Movies'
 layout: page
 permalink: "/movies/"
+note: "Some of the movies I have watched so far. Suggestions are welcome."
 ---
-
-Some of the movies I have watched so far. Suggestions are welcome.
 
 * 10,000 BC (2008)
 * 100 Yen Love (2014)
