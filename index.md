@@ -1,8 +1,10 @@
 ---
 layout: page
 title: Home
+note: 
 ---
 
+_Content licensed under the Creative Commons Attribution-NonCommercial 4.0 International License_.
 
 <img class="ui small image" src="/assets/pages/about/bruno-3.png" style="float: left; margin: 0 1em 0.5em 0 ">
 
