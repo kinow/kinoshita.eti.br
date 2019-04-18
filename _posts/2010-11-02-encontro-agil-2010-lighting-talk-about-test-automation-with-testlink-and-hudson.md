@@ -18,11 +18,7 @@ On November 6th (next Saturday) <a title="Anderson Santos" href="http://anderson
 <figure>
 <a href="{{assets['header2']}}" rel="prettyPhoto" class="thumbnail" title="">
 <img class="ui fluid image" src="{{assets['header2']}}" alt="=" />
-</a>
-<figcaption></figcaption>
-</figure>
-</div>
-</div>
+
 
 In our demonstration we will be using TestLink 1.9 HEAD version, Hudson 1.366 and <a title="TestLink Hudson Plug-in" href="http://wiki.hudson-ci.org/display/HUDSON/TestLink+Plugin">TestLink Hudson Plug-in</a> 2.0-SNAPSHOT. This TestLink Hudson Plug-in version is still not released as we are finishing to code the integration between the plug-in and TAP through <a title="tap4j" href="http://tap4j.sourceforge.net/">tap4j</a>, an implementation of <a title="Test Anything Protocol" href="http://www.testanything.org">TAP - Test Anything Protocol</a>.
 

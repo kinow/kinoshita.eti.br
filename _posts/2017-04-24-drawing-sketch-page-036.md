@@ -12,11 +12,7 @@ time: '00:41:03'
 <figure>
 <a href="{{assets['sketch-book-036']}}" rel="prettyPhoto" class="thumbnail" title="Page 036">
 <img class="ui fluid image" src="{{assets['sketch-book-036']}}" alt="Page 036" />
-</a>
-<figcaption>Page 036</figcaption>
-</figure>
-</div>
-</div>
+
 
 Almost ANZAC day. And almost time to switch back to coding Jenkins plug-ins.
 

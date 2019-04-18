@@ -201,16 +201,9 @@ testuser@7ce742eb050c:~$ cylc run --no-detach pbs1
 2018-12-22T02:36:44Z INFO - DONE
 ```
 
-<div class='row'>
-<div class="ui container" style='text-align: center;'>
-<figure>
-<a href="{{assets['cylcpbs-screenshot']}}" rel="prettyPhoto" class="thumbnail">
+
 <img class="ui fluid image" src="{{assets['cylcpbs-screenshot']}}" />
-</a>
-<figcaption>Running Cylc tasks on PBS with Docker</figcaption>
-</figure>
-</div>
-</div>
+
 
 ## Reproducing the issue
 

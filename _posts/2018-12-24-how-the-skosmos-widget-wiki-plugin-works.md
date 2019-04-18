@@ -19,16 +19,9 @@ Here's an image of the plugin in action. Or you can go to
 [a live instance of Skosmos](http://finto.fi/yso-paikat/en/page/p107650)
 that has the plugin enabled.
 
-<div class='row'>
-<div class="ui container" style='text-align: center;'>
-<figure>
-<a href="{{assets['skosmos-widget-wiki-screenshot']}}" rel="prettyPhoto" class="thumbnail">
+
 <img class="ui fluid image" src="{{assets['skosmos-widget-wiki-screenshot']}}" />
-</a>
-<figcaption>Skosmos Widget Wiki plugin in action</figcaption>
-</figure>
-</div>
-</div>
+
 
 <!-- more -->
 

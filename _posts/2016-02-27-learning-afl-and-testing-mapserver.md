@@ -63,11 +63,7 @@ that I used for this experiment.
 <figure>
 <a href="{{assets.qgis_settings}}" rel="prettyPhoto" class="thumbnail" title="QGIS Bounding Area settings">
 <img class="span12" src="{{assets.qgis_settings}}" alt="QGIS Bounding Area settings" />
-</a>
-<figcaption>QGIS Bounding Area settings</i></figcaption>
-</figure>
-</div>
-</div>
+
 
 I used [QGIS](http://www.qgis.org/en/site/) to load the shapefile, take a look at the map,
 and get the bounding area and projection. Here's the final mapfile.
@@ -138,11 +134,7 @@ mkdir fuzz-input fuzz-output
 <figure>
 <a href="{{assets.afl_testing_mapserver}}" rel="prettyPhoto" class="thumbnail" title="afl testing MapServer">
 <img class="span12" src="{{assets.afl_testing_mapserver}}" alt="afl testing MapServer" />
-</a>
-<figcaption>afl testing MapServer</figcaption>
-</figure>
-</div>
-</div>
+
 
 However, it is not mutating the program input as I didn't use "@@" nor a dictionary. When you use @@, afl will replace
 it by the location of a file that it generated. Or by using "-x" you can provide a dictionary used to generate

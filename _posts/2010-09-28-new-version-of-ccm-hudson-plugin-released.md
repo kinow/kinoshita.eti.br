@@ -15,11 +15,7 @@ Yesterday I released a new version of <a title="CCM Hudson Plugin" href="http://
 <figure>
 <a href="{{ assets['clipart-man-spraying-giant-bug-with-aerosol-can-300x189'] }}" rel="prettyPhoto" class="thumbnail" title="">
 <img class="ui fluid image" src="{{ assets['clipart-man-spraying-giant-bug-with-aerosol-can'] }}" alt="=" />
-</a>
-<figcaption></figcaption>
-</figure>
-</div>
-</div>
+
 
 Both bugs were reported by <a title="Sven Borman" href="http://nl.linkedin.com/pub/sven-borman/0/b16/814/">Sven Borman</a>. The <a title="CCM Hudson Plugin BUG 7522" href="http://issues.hudson-ci.org/browse/HUDSON-7522">first BUG</a> referred to a problem executing <a title="CCM Hudson Plugin" href="http://wiki.hudson-ci.org/display/HUDSON/CCM+Plugin">CCM Hudson Plugin</a> in distributed environments. Although I've read the documentation for <a title="Making Hudson plugins behave in distribitued environments" href="http://wiki.hudson-ci.org/display/HUDSON/Making+your+plugin+behave+in+distributed+Hudson">making plugins behave in distributed environments</a> I forgot to use the Callable interfaces to execute some parts of the code in the Slave and then serialize the result back to the master node.
 

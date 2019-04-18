@@ -18,11 +18,7 @@ time: '14:26:08'
 <figure>
 <a href="{{assets.tl_bdd}}" rel="prettyPhoto" class="thumbnail" title="TestLink BDD">
 <img class="ui fluid image" src="{{assets.tl_bdd}}" alt="TestLink BDD" />
-</a>
-<figcaption>TestLink BDD</figcaption>
-</figure>
-</div>
-</div>
+
 
 <p>There are many ways to use BDD. In some of them you write code like Java, Ruby or Perl, and in others you write a DSL. I started working with JBehave, but for this integration, I preferred to use a <a href="http://en.wikipedia.org/wiki/Domain-specific_language" title="DSL">DSL</a> - as TestLink doesn't maintain source code, only test cases -, so I switched to <a href="http://www.easyb.org" title="easyb">easyb</a>.</p>
 
@@ -44,11 +40,7 @@ echo $TESTLINK_TESTCASE_SUMMARY | perl -pe 's|\&lt;br \/\&gt;|\n|g' | perl -pe '
 <figure>
 <a href="{{assets.jenkins_bdd}}" rel="prettyPhoto" class="thumbnail" title="Jenkins BDD">
 <img class="ui fluid image" src="{{assets.jenkins_bdd}}" alt="Jenkins BDD" />
-</a>
-<figcaption>Jenkins BDD</figcaption>
-</figure>
-</div>
-</div>
+
 
 <p>I'm working on a <a href="{{ pcurl('2012/10/25/a-quick-view-on-wordpress-mantis-and-jenkins-plug-in-api') }}" title="A quick view on WordPress, Mantis and Jenkins plug-in API">Plug-in API proposal</a> for TestLink, and I can already imagine a few places where we could use a plug-in and that would help in the BDD integration.</p>
 

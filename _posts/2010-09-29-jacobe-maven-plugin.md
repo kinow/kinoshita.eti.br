@@ -16,11 +16,7 @@ This is what Jacobe does, basically.
 <figure>
 <a href="{{assets.jacobe_big}}" rel="prettyPhoto" class="thumbnail" title="">
 <img class="ui fluid image" src="{{assets.jacobe_big}}" alt="=" />
-</a>
-<figcaption></figcaption>
-</figure>
-</div>
-</div>
+
 
 Jacobe itself is an executable but TIOBE provides an Ant task that lets you call Jacobe from an Ant build file. But wait a minute! What about Maven? Yeah, exactly. Jacobe lacked of Maven support. I talked to the guys from TIOBE and they kindly let me implement a Maven Plugin for Jacobe.
 

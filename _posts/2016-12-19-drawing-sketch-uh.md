@@ -14,11 +14,7 @@ Sketch.
 <figure>
 <a href="{{assets.progress}}" rel="prettyPhoto" class="thumbnail" title="Uh! progress">
 <img class="ui fluid image" src="{{assets.progress}}" alt="Uh! progress" />
-</a>
-<figcaption>Uh! progress</figcaption>
-</figure>
-</div>
-</div>
+
 
 And final work here.
 
@@ -27,10 +23,6 @@ And final work here.
 <figure>
 <a  href="{{assets.uh}}" rel="prettyPhoto" class="thumbnail" title="Uh!">
 <img style="height: 400px;" class="ui image" src="{{assets.uh}}" alt="Uh!" />
-</a>
-<figcaption>Uh!</figcaption>
-</figure>
-</div>
-</div>
+
 
 For [redditgetsdrawn](http://kinow.deviantart.com/art/Uh-651490865)

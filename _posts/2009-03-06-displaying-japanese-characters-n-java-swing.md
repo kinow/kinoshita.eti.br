@@ -34,10 +34,6 @@ All you have to do is to use the hexadecimal representation of the characters in
 <figure>
 <a href="{{assets.kino}}" rel="prettyPhoto" class="thumbnail" title="">
 <img class="ui fluid image" src="{{assets.kino}}" alt="=" />
-</a>
-<figcaption></figcaption>
-</figure>
-</div>
-</div>
+
 
 Banzai!

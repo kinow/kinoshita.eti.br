@@ -12,11 +12,7 @@ time: '21:39:03'
 <figure>
 <a href="{{assets.mascot}}" rel="prettyPhoto" class="thumbnail" title="Kumamoto Kenjinkai mascot">
 <img class="ui fluid image" src="{{assets.mascot}}" alt="Kumamoto Kenjinkai mascot" />
-</a>
-<figcaption>Kumamoto Kenjinkai mascot</figcaption>
-</figure>
-</div>
-</div>
+
 
 For Brazilian Kumamoto Kenjinkai. Done with Macromedia Freehand MX, some long time ago.
 

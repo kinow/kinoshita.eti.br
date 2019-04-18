@@ -17,10 +17,6 @@ You can check the full article in TestingExperience site. It is available in PDF
 <figure>
 <a href="{{assets.cover_schatten}}" rel="prettyPhoto" class="thumbnail" title="">
 <img class="ui fluid image" src="{{assets.cover_schatten}}" alt="=" />
-</a>
-<figcaption></figcaption>
-</figure>
-</div>
-</div>
+
 
 Happy reading.

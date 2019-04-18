@@ -59,11 +59,7 @@ master branch in GitHub.
 <figure>
 <a  href="{{assets['JENKINS-42655-diff']}}" rel="prettyPhoto" class="thumbnail" title="Screen shot">
 <img style="height: 400px;" class="ui image" src="{{assets['JENKINS-42655-diff']}}" alt="Screen shot" />
-</a>
-<figcaption>Screen shot</figcaption>
-</figure>
-</div>
-</div>
+
 
 *Now we use the script-security-plugin. So we need to wrap that around the script-security-plugin's tags. Will report an issue for job-dsl-plugin, and will probably submit a pull request in the next days too. There's not much left we can change in the plug-in code for that Piotr Tempes, so I'm afraid you will have to:*
 

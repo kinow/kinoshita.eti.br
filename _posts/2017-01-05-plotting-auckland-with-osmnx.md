@@ -12,11 +12,7 @@ time: '10:39:03'
 <figure>
 <a  href="{{assets.figure_1}}" rel="prettyPhoto" class="thumbnail" title="Auckland">
 <img style="height: 400px;" class="ui image" src="{{assets.figure_1}}" alt="Auckland" />
-</a>
-<figcaption>Auckland</figcaption>
-</figure>
-</div>
-</div>
+
 
 A couple of days ago I saw [a thread in reddit](https://www.reddit.com/r/gis/comments/5lnjxs/creating_squaremile_figureground_diagrams_of/)
 about OSMnx. It is a utilty for interacting with the OpenStreeMap (OSM)

@@ -33,11 +33,7 @@ for Jena and listed the issues that I thought I could contribute to.
 <figure>
 <a href="{{assets.jena_trello}}" rel="prettyPhoto" class="thumbnail" title="Jena Trello card">
 <img src="{{assets.jena_trello}}" alt="Jena Trello card" />
-</a>
-<figcaption>Jena Trello card</i></figcaption>
-</figure>
-</div>
-</div>
+
 
 I annotate easy issues with a "lhf" suffix for Low Hanging Fruit issues, and delete issues from 
 the card once I submit a patch or update it (and include it in another card for the 
@@ -52,11 +48,7 @@ some of them have already been fixed. Other issues included documentation proble
 <figure>
 <a href="{{assets.jena_jira}}" rel="prettyPhoto" class="thumbnail" title="Jena JIRA activity summary">
 <img src="{{assets.jena_jira}}" alt="Jena JIRA activity summary" />
-</a>
-<figcaption>Jena JIRA activity summary</figcaption>
-</figure>
-</div>
-</div>
+
 
 The picture above shows the past 30 days activity summary in JIRA for Jena. The red line shows 
 issues created, and the green line issues resolved. [Andy Seaborne](https://github.com/afs) 

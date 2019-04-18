@@ -26,115 +26,45 @@ look for the forecast summary.
 
 [Source](https://www.youtube.com/watch?v=dBcOLbpTGRE)
 
-<div class='row'>
-<div class="ui container" style='text-align: center;'>
-<figure>
-<a href="{{assets['01']}}" rel="prettyPhoto" class="thumbnail">
+
 <img class="ui fluid image" src="{{assets['01']}}" />
-</a>
-<figcaption>Nowadays most TV presentations include a smart TV, with touch controls</figcaption>
-</figure>
-</div>
-</div>
 
-<div class='row'>
-<div class="ui container" style='text-align: center;'>
-<figure>
-<a href="{{assets['01']}}" rel="prettyPhoto" class="thumbnail">
+
+
 <img class="ui fluid image" src="{{assets['02']}}" />
-</a>
-<figcaption>They have heaps of cameras, and normally show important parts of the city</figcaption>
-</figure>
-</div>
-</div>
 
-<div class='row'>
-<div class="ui container" style='text-align: center;'>
-<figure>
-<a href="{{assets['01']}}" rel="prettyPhoto" class="thumbnail">
+
+
 <img class="ui fluid image" src="{{assets['03']}}" />
-</a>
-<figcaption>Main cities, or cities with events are normally displayed with min, max, and precipitation</figcaption>
-</figure>
-</div>
-</div>
 
-<div class='row'>
-<div class="ui container" style='text-align: center;'>
-<figure>
-<a href="{{assets['01']}}" rel="prettyPhoto" class="thumbnail">
+
+
 <img class="ui fluid image" src="{{assets['04']}}" />
-</a>
-<figcaption>The satellite images are now used too, but it varies from channel to channel</figcaption>
-</figure>
-</div>
-</div>
 
-<div class='row'>
-<div class="ui container" style='text-align: center;'>
-<figure>
-<a href="{{assets['01']}}" rel="prettyPhoto" class="thumbnail">
+
+
 <img class="ui fluid image" src="{{assets['05']}}" />
-</a>
-<figcaption>The main TV channels have choppers that always display the weather and traffic in the morning</figcaption>
-</figure>
-</div>
-</div>
 
-<div class='row'>
-<div class="ui container" style='text-align: center;'>
-<figure>
-<a href="{{assets['01']}}" rel="prettyPhoto" class="thumbnail">
+
+
 <img class="ui fluid image" src="{{assets['06']}}" />
-</a>
-<figcaption>Icons and regions marked in the map are also used, though without legend. Closed caption is available, but it is normally a little off, as most TV news are live, so people rely on the forecaster</figcaption>
-</figure>
-</div>
-</div>
 
-<div class='row'>
-<div class="ui container" style='text-align: center;'>
-<figure>
-<a href="{{assets['01']}}" rel="prettyPhoto" class="thumbnail">
+
+
 <img class="ui fluid image" src="{{assets['07']}}" />
-</a>
-<figcaption></figcaption>
-</figure>
-</div>
-</div>
 
-<div class='row'>
-<div class="ui container" style='text-align: center;'>
-<figure>
-<a href="{{assets['01']}}" rel="prettyPhoto" class="thumbnail">
+
+
 <img class="ui fluid image" src="{{assets['08']}}" />
-</a>
-<figcaption></figcaption>
-</figure>
-</div>
-</div>
 
-<div class='row'>
-<div class="ui container" style='text-align: center;'>
-<figure>
-<a href="{{assets['01']}}" rel="prettyPhoto" class="thumbnail">
+
+
 <img class="ui fluid image" src="{{assets['09']}}" />
-</a>
-<figcaption>Oh, they always mention the daylight saving time changes in the news the weeks before and days after</figcaption>
-</figure>
-</div>
-</div>
 
-<div class='row'>
-<div class="ui container" style='text-align: center;'>
-<figure>
-<a href="{{assets['01']}}" rel="prettyPhoto" class="thumbnail">
+
+
 <img class="ui fluid image" src="{{assets['10']}}" />
-</a>
-<figcaption></figcaption>
-</figure>
-</div>
-</div>
+
 
 ### Climatempo
 
@@ -147,38 +77,17 @@ They normally display the weather by Climatempo.
 They have an online channel with some videos, but I still prefer the presentation from the
 main TV channels' forecasters.
 
-<div class='row'>
-<div class="ui container" style='text-align: center;'>
-<figure>
-<a href="{{assets['01']}}" rel="prettyPhoto" class="thumbnail">
+
 <img class="ui fluid image" src="{{assets['11']}}" />
-</a>
-<figcaption></figcaption>
-</figure>
-</div>
-</div>
 
-<div class='row'>
-<div class="ui container" style='text-align: center;'>
-<figure>
-<a href="{{assets['01']}}" rel="prettyPhoto" class="thumbnail">
+
+
 <img class="ui fluid image" src="{{assets['12']}}" />
-</a>
-<figcaption></figcaption>
-</figure>
-</div>
-</div>
 
-<div class='row'>
-<div class="ui container" style='text-align: center;'>
-<figure>
-<a href="{{assets['01']}}" rel="prettyPhoto" class="thumbnail">
+
+
 <img class="ui fluid image" src="{{assets['13']}}" />
-</a>
-<figcaption></figcaption>
-</figure>
-</div>
-</div>
+
 
 ### Notes
 

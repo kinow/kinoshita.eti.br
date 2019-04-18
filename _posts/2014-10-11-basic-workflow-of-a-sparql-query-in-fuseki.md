@@ -30,11 +30,7 @@ of what happens when you submit a SPARQL query to Fuseki.
 <figure>
 <a href="{{assets.drawing1}}" rel="prettyPhoto" class="thumbnail" title="Fuseki SPARQL query work flow">
 <img src="{{assets.drawing1}}" alt="Fuseki SPARQL query work flow" />
-</a>
-<figcaption>Jena JDBC</figcaption>
-</figure>
-</div>
-</div>
+
 
 My understanding is that Fuseki is just a web layer, handling a bunch of validations, logging, 
 error handling, and relying on the ARQ module, that is who actually handles the requests. 

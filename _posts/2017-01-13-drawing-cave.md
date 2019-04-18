@@ -12,8 +12,4 @@ time: '02:11:03'
 <figure>
 <a  href="{{assets['cave_by_kinow-daugn02']}}" rel="prettyPhoto" class="thumbnail" title="Cave">
 <img style="height: 400px;" class="ui image" src="{{assets['cave_by_kinow-daugn02']}}" alt="Cave" />
-</a>
-<figcaption>Cave</figcaption>
-</figure>
-</div>
-</div>
+

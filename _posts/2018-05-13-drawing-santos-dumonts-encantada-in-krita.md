@@ -13,11 +13,7 @@ tags:
 <figure>
 <a  href="{{assets['encantada']}}" rel="prettyPhoto" class="thumbnail" title="A Encantada">
 <img style="height: 400px;" class="ui image" src="{{assets['encantada']}}" alt="A Encantada" />
-</a>
-<figcaption>A Encantada</i></figcaption>
-</figure>
-</div>
-</div>
+
 
 With Krita 4.x released, and the [Krita monthly challange](https://forum.kde.org/viewtopic.php?f=277&t=152338&p=398403#p398403)
 of May still open for submission, I decided to give it a go and try this new version to create
@@ -42,11 +38,7 @@ They are great! And used the built-in chalk brush for most of the colours.
 <figure>
 <a  href="{{assets['side-by-side']}}" rel="prettyPhoto" class="thumbnail" title="Line art">
 <img style="height: 400px;" class="ui image" src="{{assets['side-by-side']}}" alt="Line art" />
-</a>
-<figcaption>Line art</i></figcaption>
-</figure>
-</div>
-</div>
+
 
 I enjoy line art much more than colours, but for the monthly challenge, I tried to use
 some colours. I used the original photo to create the palette for the painting.
@@ -56,11 +48,7 @@ some colours. I used the original photo to create the palette for the painting.
 <figure>
 <a  href="{{assets['lineart']}}" rel="prettyPhoto" class="thumbnail" title="Line art">
 <img style="height: 400px;" class="ui image" src="{{assets['lineart']}}" alt="Line art" />
-</a>
-<figcaption>Line art</i></figcaption>
-</figure>
-</div>
-</div>
+
 
 It had been a few months since I used either my Wacom tablet or Krita for painting. But I
 was glad to remember some shortcuts. Krita interface is also quite intuitive. In a few

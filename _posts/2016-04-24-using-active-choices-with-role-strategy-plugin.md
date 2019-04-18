@@ -139,11 +139,7 @@ In this section we have just simple screenshots, showing the script in the job c
 <figure>
 <a href="{{assets.screenshot01}}" rel="prettyPhoto" class="thumbnail" title="Screenshot 01">
 <img class="ui fluid image" src="{{assets.screenshot01}}" alt="Screenshot 01" />
-</a>
-<figcaption>Screenshot 01</figcaption>
-</figure>
-</div>
-</div>
+
 
 And the resulting screen. The parameter **DeployAPP** will be available during the build,
 and can be used to trigger other jobs or pipelines.
@@ -153,11 +149,7 @@ and can be used to trigger other jobs or pipelines.
 <figure>
 <a href="{{assets.screenshot02}}" rel="prettyPhoto" class="thumbnail" title="Screenshot 02">
 <img class="ui fluid image" src="{{assets.screenshot02}}" alt="Screenshot 02" />
-</a>
-<figcaption>Screenshot 02</figcaption>
-</figure>
-</div>
-</div>
+
 
 ## Where can you find this script?
 
