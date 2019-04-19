@@ -14,7 +14,7 @@ In this post I won't talk about what are UUID's, or how they work in Java.
 about it. _(or if you would rather, read the [RFC 4122](http://www.ietf.org/rfc/rfc4122.txt))_
 
 I found out that Jena had UUID implementations after writing a 
-[previous post]({{pcurl('2018/05/29/what-happens-when-you-create-a-new-dataset-in-apache-jena-fuseki')}}).
+[previous post]({% post_url 2018-05-29-what-happens-when-you-create-a-new-dataset-in-apache-jena-fuseki %}).
 And then decided to look into which UUID's Jena has, and where these UUID's
 were used. This way I would either understand why Jena needed UUID's, or
 just be more educated in case I ever stumbled with a change in Jena that
@@ -94,7 +94,7 @@ with the same UUID.
 ### Create a new dataset in Fuseki (_ActionDatasets_) &mdash; uses JenaUUID
 
 When you create a new dataset in Fuseki, as explained in the
-[previous post]({{pcurl('2018/05/29/what-happens-when-you-create-a-new-dataset-in-apache-jena-fuseki')}}),
+[previous post]({% post_url 2018-05-29-what-happens-when-you-create-a-new-dataset-in-apache-jena-fuseki %}),
 Fuseki will create some temporary files and folders. For at least one folder, it will
 use an instance of `JenaUUID`, in `ActionDatasets#execPostContainer()`.
 

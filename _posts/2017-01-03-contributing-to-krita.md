@@ -10,7 +10,8 @@ category: 'blog'
 time: '11:40:03'
 ---
 
-As I mentioned in the [last post]({{ pcurl('2017/01/02/debugging-an-application-that-freezes-the-x-server') }}), I have been learning Qt and using C and C++ again.
+As I mentioned in the [last post]({% post_url 2017-01-02-debugging-an-application-that-freezes-the-x-server %}),
+I have been learning Qt and using C and C++ again.
 Since I used C and C++ more during university (about 10 years ago, phew), decided
 to read real code.
 

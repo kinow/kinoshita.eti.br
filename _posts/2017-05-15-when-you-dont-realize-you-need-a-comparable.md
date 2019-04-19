@@ -9,11 +9,14 @@ tags:
 time: '23:07:39'
 ---
 
-[In 2012, I wrote]({{ pcurl('2012/10/20/replacing-a-hashset-with-a-bitset') }}) about how you always learn something new by following the [Apache dev mailing lists](http://www.apache.org/foundation/mailinglists.html).
+[In 2012, I wrote]({% post_url 2012-10-20-replacing-a-hashset-with-a-bitset %}) about how you always learn something
+new by following the [Apache dev mailing lists](http://www.apache.org/foundation/mailinglists.html).
 
 After about five years, I am still learning, and still getting impressed by the knowledge of other
 developers. Days ago I was massaging some code in [a pull request](https://github.com/apache/jena/pull/237)
 and a developer suggested me to simplify my code.
+
+<!--more-->
 
 The suggestion was to make a class a [Comparable type](https://docs.oracle.com/javase/7/docs/api/java/lang/Comparable.html)
 to both simplify the code, and also have a better design. I immediately agreed, and looking back in hindsight,

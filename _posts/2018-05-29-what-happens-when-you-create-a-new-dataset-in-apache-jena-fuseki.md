@@ -10,7 +10,7 @@ tags:
     - opensource
 ---
 
-<a href="{{ pcurl('2018/05/27/what-happens-when-you-upload-a-turtle-file-in-apache-jena-fuseki') }}">Last post</a>
+<a href="{% post_url 2018-05-27-what-happens-when-you-upload-a-turtle-file-in-apache-jena-fuseki %}">Last post</a>
 was about what happens when you upload a Turtle file to Apache Jena Fuseki. And now today's post will be about
 what happens when you create a new dataset in Apache Jena Fuseki.
 
@@ -20,9 +20,9 @@ It will be more based on what I find interesting.
 Oh, the dataset created is **an in-memory dataset**. Here's a simplified sequence diagram. Again,
 these articles are more brain-dumps, used by myself for later reference.
 
-<p style='text-align: center;'>
 <img style="display: inline; width: 100%;" class="ui image" src="/assets/posts{{page.path | remove: ".md" | remove: "_posts" }}/sequence-diagram.png"  />
-</p>
+
+<!--more-->
 
 ### ActionDatasets#execPostContainer() (Fuseki Core)
 
@@ -35,7 +35,7 @@ called `system`. (wonder how well it works if you try to deploy Jena Fuseki with
 [<sup>1</sup>](https://markmail.org/message/xpfcgccuwgycdopw) [<sup>2</sup>](https://afs.github.io/rdf-delta/ha-fuseki.html)).
 
 Its first task is to create an *UUID*, using `JenaUUID` (from Jena Core). This class looks
-very interesting, [wonder how it works]({{pcurl('2018/08/11/uuids-in-apache-jena')}}).
+very interesting, [wonder how it works]({% post_url 2018-08-11-uuids-in-apache-jena %}).
 
 Then it creates a `DatasetDescriptionRegistry`, which is a registry to keep track
 of the datasets created. There is also some validation of parameters and state check, and then

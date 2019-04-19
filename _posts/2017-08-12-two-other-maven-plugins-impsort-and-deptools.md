@@ -9,7 +9,9 @@ tags:
 time: '22:16:03'
 ---
 
-Last [week I wrote]({{pcurl('2017/08/06/checking-for-transitive-dependencies-use-with-maven-enforcer-plugin')}}) about the [ImmobilienScout24/illegal-transitive-dependency-check](https://github.com/ImmobilienScout24/illegal-transitive-dependency-check) rule for Maven Enforcer Plug-in. There are two other Maven Plug-ins that can be useful.
+Last [week I wrote]({% post_url 2017-08-06-checking-for-transitive-dependencies-use-with-maven-enforcer-plugin %})
+about the [ImmobilienScout24/illegal-transitive-dependency-check](https://github.com/ImmobilienScout24/illegal-transitive-dependency-check)
+rule for Maven Enforcer Plug-in. There are two other Maven Plug-ins that can be useful.
 
 ### mbknor/deptools
 
