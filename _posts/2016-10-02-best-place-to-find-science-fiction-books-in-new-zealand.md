@@ -2,7 +2,7 @@
 date: 2016-10-02 21:57:03 +1300
 layout: post
 tags:
-- science-fiction
+- science fiction
 - books
 title: Best place to find science fiction books in New Zealand
 ---

@@ -3,7 +3,7 @@ date: 2018-10-06 21:43:44 +1300
 layout: post
 tags:
 - python
-- jupyterhub
+- cylc
 - opensource
 title: A couple of class diagrams of JupyterHub
 ---

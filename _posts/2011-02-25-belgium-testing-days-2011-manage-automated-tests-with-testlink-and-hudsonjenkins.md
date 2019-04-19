@@ -3,7 +3,7 @@ date: 2011-02-25 09:16:17 +1300
 layout: post
 tags:
 - software quality
-- events
+- presentations
 - jenkins
 title: 'Belgium Testing Days 2011: Manage automated tests with TestLink and Hudson/Jenkins'
 ---

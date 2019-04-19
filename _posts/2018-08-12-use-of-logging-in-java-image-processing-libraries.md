@@ -4,7 +4,6 @@ layout: post
 tags:
 - apache software foundation
 - java
-- apache commons
 - image processing
 - opensource
 title: Use of Logging in Java Image Processing libraries

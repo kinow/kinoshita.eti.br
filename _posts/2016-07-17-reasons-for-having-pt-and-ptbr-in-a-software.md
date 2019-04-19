@@ -3,6 +3,7 @@ date: 2016-07-17 14:14:03 +1300
 layout: post
 tags:
 - skosmos
+- vocabulary server
 - translation
 - semantic web
 title: Reasons for having pt and pt-BR in a software

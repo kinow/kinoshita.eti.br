@@ -3,7 +3,7 @@ date: 2011-03-25 13:46:19 +1300
 layout: post
 tags:
 - software quality
-- events
+- presentations
 title: Belgium Testing Days 2011 Pictures
 ---
 

@@ -2,7 +2,7 @@
 date: 2011-09-07 00:36:11 +1300
 layout: post
 tags:
-- events
+- presentations
 - software quality
 title: Missed JCertif
 ---

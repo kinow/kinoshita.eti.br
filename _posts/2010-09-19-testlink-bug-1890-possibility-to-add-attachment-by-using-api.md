@@ -3,7 +3,7 @@ date: 2010-09-19 20:44:38 +1300
 layout: post
 tags:
 - testlink
-- open source
+- opensource
 - software quality
 title: 'TestLink BUG-1890: Possibility to add attachment by using API'
 ---

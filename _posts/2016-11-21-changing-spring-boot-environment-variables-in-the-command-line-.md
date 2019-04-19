@@ -4,7 +4,6 @@ layout: post
 tags:
 - shell script
 - java
-- spring
 title: Changing Spring Boot environment variables in the command line
 ---
 
