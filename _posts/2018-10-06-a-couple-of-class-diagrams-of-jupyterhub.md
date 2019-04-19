@@ -16,8 +16,8 @@ This post contains only two class diagrams created with PyCharm. One is actually
 ORM diagram, below.
 
 <p style='text-align: center;'>
-<a href="{{ assets['jupyterhub-sqlalchemy-graph'] }}">
-<img style="display: inline; width: 100%;" class="ui image" src="{{ assets['jupyterhub-sqlalchemy-graph'] }}"  />
+<a href="/assets/posts{{page.path | remove: ".md" | remove: "_posts" }}/jupyterhub-sqlalchemy-graph.png">
+<img style="display: inline; width: 100%;" class="ui image" src="/assets/posts{{page.path | remove: ".md" | remove: "_posts" }}/jupyterhub-sqlalchemy-graph.png"  />
 </a>
 </p>
 
@@ -26,8 +26,8 @@ ORM diagram, below.
 And the class diagram (which I removed `object` and a tried to make it simpler to interpret).
 
 <p style='text-align: center;'>
-<a href="{{ assets['jupyterhub-class-diagram'] }}">
-<img style="display: inline; width: 100%;" class="ui image" src="{{ assets['jupyterhub-class-diagram'] }}"  />
+<a href="/assets/posts{{page.path | remove: ".md" | remove: "_posts" }}/jupyterhub-class-diagram.png">
+<img style="display: inline; width: 100%;" class="ui image" src="/assets/posts{{page.path | remove: ".md" | remove: "_posts" }}/jupyterhub-class-diagram.png"  />
 </a>
 </p>
 

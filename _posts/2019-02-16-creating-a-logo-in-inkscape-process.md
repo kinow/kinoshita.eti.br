@@ -26,52 +26,52 @@ process with short commentaire.
 <!--more-->
 
 
-<img class="ui fluid image" src="{{assets['02']}}" />
+<img class="ui fluid image" src="/assets/posts{{page.path | remove: ".md" | remove: "_posts" }}/02.png" />
 
 
 
-<img class="ui fluid image" src="{{assets['03']}}" />
+<img class="ui fluid image" src="/assets/posts{{page.path | remove: ".md" | remove: "_posts" }}/03.png" />
 
 
 
 
-<img class="ui fluid image" src="{{assets['04']}}" />
+<img class="ui fluid image" src="/assets/posts{{page.path | remove: ".md" | remove: "_posts" }}/04.png" />
 
 
 
-<img class="ui fluid image" src="{{assets['05']}}" />
+<img class="ui fluid image" src="/assets/posts{{page.path | remove: ".md" | remove: "_posts" }}/05.png" />
 
 
 
-<img class="ui fluid image" src="{{assets['06']}}" />
+<img class="ui fluid image" src="/assets/posts{{page.path | remove: ".md" | remove: "_posts" }}/06.png" />
 
 
 
-<img class="ui fluid image" src="{{assets['07']}}" />
+<img class="ui fluid image" src="/assets/posts{{page.path | remove: ".md" | remove: "_posts" }}/07.png" />
 
 
 
-<img class="ui fluid image" src="{{assets['08']}}" />
+<img class="ui fluid image" src="/assets/posts{{page.path | remove: ".md" | remove: "_posts" }}/08.png" />
 
 
 
-<img class="ui fluid image" src="{{assets['09']}}" />
+<img class="ui fluid image" src="/assets/posts{{page.path | remove: ".md" | remove: "_posts" }}/09.png" />
 
 
 
-<img class="ui fluid image" src="{{assets['10']}}" />
+<img class="ui fluid image" src="/assets/posts{{page.path | remove: ".md" | remove: "_posts" }}/10.png" />
 
 
 
-<img class="ui fluid image" src="{{assets['11']}}" />
+<img class="ui fluid image" src="/assets/posts{{page.path | remove: ".md" | remove: "_posts" }}/11.png" />
 
 
 
-<img class="ui fluid image" src="{{assets['12']}}" />
+<img class="ui fluid image" src="/assets/posts{{page.path | remove: ".md" | remove: "_posts" }}/12.png" />
 
 
 
-<img class="ui fluid image" src="{{assets['13']}}" />
+<img class="ui fluid image" src="/assets/posts{{page.path | remove: ".md" | remove: "_posts" }}/13.png" />
 
 
 ### And a bug
@@ -81,7 +81,7 @@ text and the bend effect, when moving the ribbon grouped with the text and after
 saving the file, the text changed in some strange way.
 
 
-<img class="ui fluid image" src="{{assets['bug']}}" />
+<img class="ui fluid image" src="/assets/posts{{page.path | remove: ".md" | remove: "_posts" }}/bug.png" />
 
 
 Now just need to finish reading

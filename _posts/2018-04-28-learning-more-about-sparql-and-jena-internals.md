@@ -11,7 +11,7 @@ tags:
 ---
 
 <p style='text-align: center;'>
-<a href="https://kinow.deviantart.com/art/O-Corvo-742473382"><img style="display: inline; width: 600px;" class="ui image" src="{{assets['ocorvo']}}" alt="O Corvo" /></a>
+<a href="https://kinow.deviantart.com/art/O-Corvo-742473382"><img style="display: inline; width: 600px;" class="ui image" src="/assets/posts{{page.path | remove: ".md" | remove: "_posts" }}/ocorvo.png" alt="O Corvo" /></a>
 <br/>
 <small><a href="https://kinow.deviantart.com/art/O-Corvo-742473382">O Corvo</a></small>
 </p>

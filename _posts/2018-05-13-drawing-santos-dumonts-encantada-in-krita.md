@@ -11,8 +11,8 @@ tags:
 <div class='row'>
 <div class="ui fluid container">
 <figure>
-<a  href="{{assets['encantada']}}" rel="prettyPhoto" class="thumbnail" title="A Encantada">
-<img style="height: 400px;" class="ui image" src="{{assets['encantada']}}" alt="A Encantada" />
+<a  href="/assets/posts{{page.path | remove: ".md" | remove: "_posts" }}/encantada.png" rel="prettyPhoto" class="thumbnail" title="A Encantada">
+<img style="height: 400px;" class="ui image" src="/assets/posts{{page.path | remove: ".md" | remove: "_posts" }}/encantada.png" alt="A Encantada" />
 
 
 With Krita 4.x released, and the [Krita monthly challange](https://forum.kde.org/viewtopic.php?f=277&t=152338&p=398403#p398403)
@@ -36,8 +36,8 @@ They are great! And used the built-in chalk brush for most of the colours.
 <div class='row'>
 <div class="ui fluid container">
 <figure>
-<a  href="{{assets['side-by-side']}}" rel="prettyPhoto" class="thumbnail" title="Line art">
-<img style="height: 400px;" class="ui image" src="{{assets['side-by-side']}}" alt="Line art" />
+<a  href="/assets/posts{{page.path | remove: ".md" | remove: "_posts" }}/side-by-side.png" rel="prettyPhoto" class="thumbnail" title="Line art">
+<img style="height: 400px;" class="ui image" src="/assets/posts{{page.path | remove: ".md" | remove: "_posts" }}/side-by-side.png" alt="Line art" />
 
 
 I enjoy line art much more than colours, but for the monthly challenge, I tried to use
@@ -46,8 +46,8 @@ some colours. I used the original photo to create the palette for the painting.
 <div class='row'>
 <div class="ui fluid container">
 <figure>
-<a  href="{{assets['lineart']}}" rel="prettyPhoto" class="thumbnail" title="Line art">
-<img style="height: 400px;" class="ui image" src="{{assets['lineart']}}" alt="Line art" />
+<a  href="/assets/posts{{page.path | remove: ".md" | remove: "_posts" }}/lineart.png" rel="prettyPhoto" class="thumbnail" title="Line art">
+<img style="height: 400px;" class="ui image" src="/assets/posts{{page.path | remove: ".md" | remove: "_posts" }}/lineart.png" alt="Line art" />
 
 
 It had been a few months since I used either my Wacom tablet or Krita for painting. But I
@@ -62,31 +62,31 @@ I am sure you will be glad with the results.
 
 <div class='row'>
 <div class="ui fluid container">
-<img style="height: 400px;" class="ui image" src="{{assets['Screenshot_2018-05-12_23-16-21']}}" alt="Screen shot" />
+<img style="height: 400px;" class="ui image" src="/assets/posts{{page.path | remove: ".md" | remove: "_posts" }}/Screenshot_2018-05-12_23-16-21.png" alt="Screen shot" />
 </div>
 </div>
 
 <div class='row'>
 <div class="ui fluid container">
-<img style="height: 400px;" class="ui image" src="{{assets['Screenshot from 2018-05-12 22-42-51']}}" alt="Screen shot" />
+<img style="height: 400px;" class="ui image" src="/assets/posts{{page.path | remove: ".md" | remove: "_posts" }}/Screenshot from 2018-05-12 22-42-51.png" alt="Screen shot" />
 </div>
 </div>
 
 <div class='row'>
 <div class="ui fluid container">
-<img style="height: 400px;" class="ui image" src="{{assets['Screenshot from 2018-05-13 00-11-38']}}" alt="Screen shot" />
+<img style="height: 400px;" class="ui image" src="/assets/posts{{page.path | remove: ".md" | remove: "_posts" }}/Screenshot from 2018-05-13 00-11-38.png" alt="Screen shot" />
 </div>
 </div>
 
 <div class='row'>
 <div class="ui fluid container">
-<img style="height: 400px;" class="ui image" src="{{assets['Screenshot from 2018-05-13 00-38-24']}}" alt="Screen shot" />
+<img style="height: 400px;" class="ui image" src="/assets/posts{{page.path | remove: ".md" | remove: "_posts" }}/Screenshot from 2018-05-13 00-38-24.png" alt="Screen shot" />
 </div>
 </div>
 
 <div class='row'>
 <div class="ui fluid container">
-<img style="height: 400px;" class="ui image" src="{{assets['Screenshot from 2018-05-13 01-24-27']}}" alt="Screen shot" />
+<img style="height: 400px;" class="ui image" src="/assets/posts{{page.path | remove: ".md" | remove: "_posts" }}/Screenshot from 2018-05-13 01-24-27.png" alt="Screen shot" />
 </div>
 </div>
 

@@ -20,8 +20,8 @@ you run `cylc start my.suite`), I will use the following diagram, followed by a 
 to highlight certain parts. The code used was based on [Cylc 7.7.1](https://github.com/cylc/cylc/tree/7.7.1).
 
 <p style='text-align: center;'>
-<a href="{{ assets['cylc-scheduler_cli-workflow'] }}">
-<img style="display: inline; width: 100%;" class="ui image" src="{{ assets['cylc-scheduler_cli-workflow'] }}"  />
+<a href="/assets/posts{{page.path | remove: ".md" | remove: "_posts" }}/cylc-scheduler_cli-workflow.png">
+<img style="display: inline; width: 100%;" class="ui image" src="/assets/posts{{page.path | remove: ".md" | remove: "_posts" }}/cylc-scheduler_cli-workflow.png"  />
 </a>
 </p>
 
@@ -53,5 +53,5 @@ connections with the right endpoints available only after the `configure` method
 Lastly, we have `configure` and `run` methods, which are two very important methods to be discussed
 in the next part of this series, as they are quite extensive, and deserve their own diagrams.
 
-You can download the <a href="{{ assets['cylc-scheduler_cli-workflow-src'] }}">source file</a> for the diagram used in this post, and edit it
+You can download the <a href="/assets/posts{{page.path | remove: ".md" | remove: "_posts" }}/cylc-scheduler_cli-workflow-src.png">source file</a> for the diagram used in this post, and edit it
 with [draw.io](https://draw.io).

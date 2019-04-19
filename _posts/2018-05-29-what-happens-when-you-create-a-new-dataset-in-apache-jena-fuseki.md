@@ -21,7 +21,7 @@ Oh, the dataset created is **an in-memory dataset**. Here's a simplified sequenc
 these articles are more brain-dumps, used by myself for later reference.
 
 <p style='text-align: center;'>
-<img style="display: inline; width: 100%;" class="ui image" src="{{ assets['sequence-diagram'] }}"  />
+<img style="display: inline; width: 100%;" class="ui image" src="/assets/posts{{page.path | remove: ".md" | remove: "_posts" }}/sequence-diagram.png"  />
 </p>
 
 ### ActionDatasets#execPostContainer() (Fuseki Core)

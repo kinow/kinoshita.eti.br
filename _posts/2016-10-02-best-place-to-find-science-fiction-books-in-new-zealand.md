@@ -14,7 +14,7 @@ I found that small secondhand bookstores are the best places to find good books 
 
 But last week I remembered my wife telling me about this web site, [https://www.hardtofind.co.nz/](https://www.hardtofind.co.nz/). I found several books from [my Wish List](http://kinoshita.eti.br/books/#my-wish-list) there, and also other Stephen King books recommended by the bookstore clerk from Queenstown.
 
-<img class="ui centered image" src="{{assets['books-hard-to-find-store']}}" alt="Books from Hard To Find bookstore" />
+<img class="ui centered image" src="/assets/posts{{page.path | remove: ".md" | remove: "_posts" }}/books-hard-to-find-store.png" alt="Books from Hard To Find bookstore" />
 
 If you are into science fiction, Asimov, Neal Stephenson, Peter H. Hamilton, Piers Anthony, Arthur C. Clarke, Stephen King, etc, I am sure you will enjoy going to the Hard To Find store in Onehunga. It is near the Dress Smart. So during week if you stop by Dress Smart, you can hop on their free bus from the city centre and later enjoy checking out the store too.
 

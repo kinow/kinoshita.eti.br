@@ -48,7 +48,7 @@ monitoring of jobs. Job = control of a single job. JobArray = bulk submission.
 * a job has the valid states UNDETERMINED, QUEUED, QUEUED_HELD, RUNNING,
 SUSPENDED, REQUEUED, REQUEUED_HELD, DONE, and FAILED
 
-<img class="ui centered large bordered image" src="{{assets['drmaav2_screen']}}" alt="DRMAA Job States" />
+<img class="ui centered large bordered image" src="/assets/posts{{page.path | remove: ".md" | remove: "_posts" }}/drmaav2_screen.png" alt="DRMAA Job States" />
 
 * <blockquote>If a DRMAA job state has no representation in the underlying DRMS, the DRMAA implementation MAY
 never report it</blockquote>

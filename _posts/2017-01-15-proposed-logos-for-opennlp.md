@@ -13,8 +13,8 @@ A couple of logos submitted to [OPENNLP-6](https://issues.apache.org/jira/browse
 <div class='row'>
 <div class="ui fluid container">
 <figure>
-<a  href="{{assets['OpenNLP-logos.svg']}}" rel="prettyPhoto" class="thumbnail" title="Proposed logos for OpenNLP">
-<img style="height: 400px;" class="ui image" src="{{assets['OpenNLP-logos.svg']}}" alt="Proposed logos for OpenNLP" />
+<a  href="/assets/posts{{page.path | remove: ".md" | remove: "_posts" }}/OpenNLP-logos.svg.png" rel="prettyPhoto" class="thumbnail" title="Proposed logos for OpenNLP">
+<img style="height: 400px;" class="ui image" src="/assets/posts{{page.path | remove: ".md" | remove: "_posts" }}/OpenNLP-logos.svg.png" alt="Proposed logos for OpenNLP" />
 
 
 For more, check out [my DeviantArt page](http://kinow.deviantart.com/art/Proposed-logos-for-Apache-OpenNLP-657512914).

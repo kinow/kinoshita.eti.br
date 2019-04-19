@@ -18,8 +18,8 @@ continue right after the `continue()` method returns, going on with the next met
 information to be able to hack the Cylc Scheduler (though you can and would have fun!).*
 
 <p style='text-align: center;'>
-<a href="{{ assets['cylc-scheduler_run'] }}">
-<img style="display: inline; width: 100%;" class="ui image" src="{{ assets['cylc-scheduler_run'] }}"  />
+<a href="/assets/posts{{page.path | remove: ".md" | remove: "_posts" }}/cylc-scheduler_run.png">
+<img style="display: inline; width: 100%;" class="ui image" src="/assets/posts{{page.path | remove: ".md" | remove: "_posts" }}/cylc-scheduler_run.png"  />
 </a>
 </p>
 
@@ -41,6 +41,6 @@ The graph was created from the initial execution of a suite that was starting fr
 scratch (they can also be reinitialized). If there are multiple tasks waiting,
 or if a suite was restarted, the diagram would look considerably different.
 
-You can download the <a href="{{ assets['cylc-scheduler_run-src'] }}">source file</a> for the diagram used in this post, and edit it
+You can download the <a href="/assets/posts{{page.path | remove: ".md" | remove: "_posts" }}/cylc-scheduler_run-src.png">source file</a> for the diagram used in this post, and edit it
 with [draw.io](https://draw.io).
 

@@ -12,7 +12,7 @@ format: markdown
 
 <p style='text-align: center;'>
 <a href="https://kinow.deviantart.com/art/Grey-Warbler-702099183?ga_submit_new=10%3A1504263729">
-<img style="display: inline" class="ui image" src="{{assets['GreyWarbler']}}" alt="NZ Grey Warbler (riroriro)" title="NZ Grey Warbler (riroriro)" />
+<img style="display: inline" class="ui image" src="/assets/posts{{page.path | remove: ".md" | remove: "_posts" }}/GreyWarbler.png" alt="NZ Grey Warbler (riroriro)" title="NZ Grey Warbler (riroriro)" />
 </a>
 <br/>
 <small><a href="http://nzbirdsonline.org.nz/species/grey-warbler">New Zealand Grey Warbler (riroriro)</a></small>

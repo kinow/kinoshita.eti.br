@@ -24,7 +24,7 @@ required related work.
 
 This package is small and simply contains: _factories_,
 
-<a href="https://www.deviantart.com/kinow/art/Zatoichi-Crying-from-A-Tale-of-Zatoichi-758902187"><img style="float: right; height: 300px;" class="ui image" src="{{assets['zatoichi_crying']}}" alt="Zatoichi Crying" /></a>
+<a href="https://www.deviantart.com/kinow/art/Zatoichi-Crying-from-A-Tale-of-Zatoichi-758902187"><img style="float: right; height: 300px;" class="ui image" src="/assets/posts{{page.path | remove: ".md" | remove: "_posts" }}/zatoichi_crying.png" alt="Zatoichi Crying" /></a>
 
 - `UUIDFactory`: interface for a factory of UUID's
 - `UUID_V1_Gen`: a factory for `UUID_V1`

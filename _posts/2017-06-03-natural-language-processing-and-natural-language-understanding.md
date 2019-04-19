@@ -15,8 +15,8 @@ NLU can be seen as a subfield of NLP. NLP englobes all techniques used for parsi
 <div class='row'>
 <div class="ui fluid container">
 <figure>
-<a  href="{{assets['nlp-nlu']}}" rel="prettyPhoto" class="thumbnail" title="NLP, NLU, and NLG">
-<img style="height: 400px;" class="ui image" src="{{assets['nlp-nlu']}}" alt="NLP, NLU, and NLG" />
+<a  href="/assets/posts{{page.path | remove: ".md" | remove: "_posts" }}/nlp-nlu.png" rel="prettyPhoto" class="thumbnail" title="NLP, NLU, and NLG">
+<img style="height: 400px;" class="ui image" src="/assets/posts{{page.path | remove: ".md" | remove: "_posts" }}/nlp-nlu.png" alt="NLP, NLU, and NLG" />
 
 
 When you are processing a language, it does not mean you are understanding the language. You may simply have rules, statistics, or some heuristics built to extract the information you need for some work.
@@ -34,8 +34,8 @@ NLP is an extremely interesting topic. 2001: A Space Odissey, Star Trek, The Fou
 <div class='row'>
 <div class="ui fluid container">
 <figure>
-<a  href="{{assets['spock-nlp']}}" rel="prettyPhoto" class="thumbnail" title="NLP and Spock">
-<img style="height: 300px;" class="ui image" src="{{assets['spock-nlp']}}" alt="NLP and Spock" />
+<a  href="/assets/posts{{page.path | remove: ".md" | remove: "_posts" }}/spock-nlp.png" rel="prettyPhoto" class="thumbnail" title="NLP and Spock">
+<img style="height: 300px;" class="ui image" src="/assets/posts{{page.path | remove: ".md" | remove: "_posts" }}/spock-nlp.png" alt="NLP and Spock" />
 
 
 &hearts; NLP

@@ -17,8 +17,8 @@ the moment the method `configure()` is called.
 information to be able to hack the Cylc Scheduler (though you can and would have fun!).*
 
 <p style='text-align: center;'>
-<a href="{{ assets['cylc-scheduler_configure'] }}">
-<img style="display: inline; width: 100%;" class="ui image" src="{{ assets['cylc-scheduler_configure'] }}"  />
+<a href="/assets/posts{{page.path | remove: ".md" | remove: "_posts" }}/cylc-scheduler_configure.png">
+<img style="display: inline; width: 100%;" class="ui image" src="/assets/posts{{page.path | remove: ".md" | remove: "_posts" }}/cylc-scheduler_configure.png"  />
 </a>
 </p>
 
@@ -31,6 +31,6 @@ and objects required for a suite program (e.g. Queues).
 
 This is also where the **contact file** is created, as well as the HTTP server.
 
-You can download the <a href="{{ assets['cylc-scheduler_configure-src'] }}">source file</a> for the diagram used in this post, and edit it
+You can download the <a href="/assets/posts{{page.path | remove: ".md" | remove: "_posts" }}/cylc-scheduler_configure-src.png">source file</a> for the diagram used in this post, and edit it
 with [draw.io](https://draw.io).
 

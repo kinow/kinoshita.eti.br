@@ -8,7 +8,7 @@ tags:
     - opensource
 ---
 
-<a href="https://www.deviantart.com/kinow/art/Woman-looking-01-743551195"><img style="float: left; height: 300px;" class="ui image" src="{{assets['woman-looking-01']}}" alt="Woman looking" /></a>
+<a href="https://www.deviantart.com/kinow/art/Woman-looking-01-743551195"><img style="float: left; height: 300px;" class="ui image" src="/assets/posts{{page.path | remove: ".md" | remove: "_posts" }}/woman-looking-01.png" alt="Woman looking" /></a>
 
 Pandas provides high-performance data structures in Python. I think in Java there are
 similar data structures in projects like Apache Commons Collections,

@@ -15,15 +15,15 @@ My favourite Star Trek captain: [Jean-Luc Picard](http://www.startrek.com/databa
 <div class='row'>
 <div class="ui fluid container">
 <figure>
-<a  href="{{assets['jeanlucpicard']}}" rel="prettyPhoto" class="thumbnail" title="Jean-Luc Picard">
-<img style="height: 400px;" class="ui image" src="{{assets['jeanlucpicard']}}" alt="Jean-Luc Picard" />
+<a  href="/assets/posts{{page.path | remove: ".md" | remove: "_posts" }}/jeanlucpicard.png" rel="prettyPhoto" class="thumbnail" title="Jean-Luc Picard">
+<img style="height: 400px;" class="ui image" src="/assets/posts{{page.path | remove: ".md" | remove: "_posts" }}/jeanlucpicard.png" alt="Jean-Luc Picard" />
 
 
 <div class='row'>
 <div class="ui fluid container">
 <figure>
-<a  href="{{assets['jeanlucpicard-photo']}}" rel="prettyPhoto" class="thumbnail" title="Jean-Luc Picard">
-<img style="height: 400px;" class="ui image" src="{{assets['jeanlucpicard-photo']}}" alt="Jean-Luc Picard" />
+<a  href="/assets/posts{{page.path | remove: ".md" | remove: "_posts" }}/jeanlucpicard-photo.png" rel="prettyPhoto" class="thumbnail" title="Jean-Luc Picard">
+<img style="height: 400px;" class="ui image" src="/assets/posts{{page.path | remove: ".md" | remove: "_posts" }}/jeanlucpicard-photo.png" alt="Jean-Luc Picard" />
 
 
 2B pencil, rubber eraser, blending stump, and HB 0.3 mechanical pencil. Yellow-ish layer added adjusting LAB colour space in GIMP.

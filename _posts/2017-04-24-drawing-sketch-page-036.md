@@ -10,8 +10,8 @@ time: '00:41:03'
 <div class='row'>
 <div class="ui container" style='text-align: center;'>
 <figure>
-<a href="{{assets['sketch-book-036']}}" rel="prettyPhoto" class="thumbnail" title="Page 036">
-<img class="ui fluid image" src="{{assets['sketch-book-036']}}" alt="Page 036" />
+<a href="/assets/posts{{page.path | remove: ".md" | remove: "_posts" }}/sketch-book-036.png" rel="prettyPhoto" class="thumbnail" title="Page 036">
+<img class="ui fluid image" src="/assets/posts{{page.path | remove: ".md" | remove: "_posts" }}/sketch-book-036.png" alt="Page 036" />
 
 
 Almost ANZAC day. And almost time to switch back to coding Jenkins plug-ins.
