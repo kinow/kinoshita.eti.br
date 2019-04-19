@@ -29,5 +29,5 @@ Before that I had a Dell Inspiron N5110, i5-2430M (4 threads/2 cores/3MB cache),
 [DeviantArt](https://deviantart.com/kinow/)
 - I am also into [books](/books/), especially science fiction
 - And watching [theatre plays](/theatre/), and all sorts of [movies](/movies/)
-- Gave some [programming presentations](/presentations/) in the past
+- Gave some [programming presentations](/tags#presentations) in the past
 - CV as [PDF](/cv.pdf) and [HTML](/cv/)
