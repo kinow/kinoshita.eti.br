@@ -6,6 +6,7 @@ tags:
     - cylc
     - python
     - opensource
+note: "NB: this is a post to remember things, not really expecting to give someone enough information to be able to hack the Cylc Scheduler (though you can and would have fun!)."
 ---
 
 This is part 2, in a series of posts about [Cylc](https://cylc.github.io/cylc)
@@ -13,9 +14,6 @@ internals. The [part 1]({{pcurl('2018/07/14/cylc-scheduler-internals-part-1')}})
 had the beginning of the workflow. [part 2]({{pcurl('2018/07/27/cylc-scheduler-internals-part-2')}})
 documented from the moment the method `configure()` is called. This post will
 continue right after the `continue()` method returns, going on with the next method: `run()`.
-
-*NB: this is a post to remember things, not really expecting to give someone enough
-information to be able to hack the Cylc Scheduler (though you can and would have fun!).*
 
 <p style='text-align: center;'>
 <a href="/assets/posts{{page.path | remove: ".md" | remove: "_posts" }}/cylc-scheduler_run.png">
@@ -41,6 +39,6 @@ The graph was created from the initial execution of a suite that was starting fr
 scratch (they can also be reinitialized). If there are multiple tasks waiting,
 or if a suite was restarted, the diagram would look considerably different.
 
-You can download the <a href="/assets/posts{{page.path | remove: ".md" | remove: "_posts" }}/cylc-scheduler_run-src.png">source file</a> for the diagram used in this post, and edit it
+You can download the <a href="/assets/posts{{page.path | remove: ".md" | remove: "_posts" }}/cylc-scheduler_run-src.xml">source file</a> for the diagram used in this post, and edit it
 with [draw.io](https://draw.io).
 
