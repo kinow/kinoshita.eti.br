@@ -13,7 +13,7 @@ As I am more a computer geek, rather than a bioinformatics one, I will focus on 
 
 <p><em>I will be using tutorials available on the Internet and hosting my code in <a href="http://www.github.com/kinow" alt="GitHub kinow" title="GitHub kinow">GitHub/kinow</a>. Hammer time!
 
-<!-- more -->
+<!--more-->
 
 <p style="text-align: center"><a href="{{ assets.stacks_logo_300_156 }}"><img src="{{ assets.stacks_logo_300_156 }}" alt="" title="stacks_logo" width="300" height="156" class="aligncenter size-medium wp-image-1058" /></a></p>
 

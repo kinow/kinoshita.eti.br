@@ -15,7 +15,7 @@ time: '22:10:02'
 
 <p>TestLink Java API is a small Java project created to act as an interface between <a href="http://www.teamst.org" title="TestLink">TestLink</a> XML-RPC API and a client program written in Java.</p> 
 
-<!-- more -->
+<!--more-->
 
 <h2>Starting on the wrong foot</h2>
 

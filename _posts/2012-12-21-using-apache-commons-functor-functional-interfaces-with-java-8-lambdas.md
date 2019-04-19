@@ -15,7 +15,7 @@ category: 'functional programming'
 
 <p>After the example with [functor] in Java 8, I will explain how I am running Java 8 in Eclipse (it's kind of a <a href="http://www.speaklikeabrazilian.com/expression/define?e=Gambiarra" title="Gambiarra">gambiarra</a>, but works well).</p>
 
-<!-- more -->
+<!--more-->
 
 ## Example using Apache Commons Functor
 

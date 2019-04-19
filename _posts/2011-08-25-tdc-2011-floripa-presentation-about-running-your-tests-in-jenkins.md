@@ -15,7 +15,7 @@ time: '03:34:46'
 
 <p>Putting the weather aside, TDC was great! Basically, there were many nice, easy-going people gathering together to talk about subjects like Java, SOA, Arduino, Testing, Agile and more. I had the chance to talk with skilled and experienced people, see different talks and catch up Guilherme Motta (<a title="@gfcmotta" href="http://www.twitter.com/gfcmotta">@gfcmotta</a>) from <a title="ThoughtWorks" href="http://www.thoughtworks.com">ThoughtWorks</a>, who I have met in Porto Alegre in the beginning of this year. He gave an interesting talk about crowd testing using games as example, but varying with applications in different areas too.</p>
 
-<!-- more -->
+<!--more-->
 
 <p>Now I just finished uploading my (few) slides used during presentation to slideshare and scribd. The examples that I used during the presentation were MyBatis, Spring petclinic example (which runs only in tomcat 6.0.29, so they could do with integration tests in different servlet containers) and a lua project with Lua Test More and Jenkins tap-plugin. Below you will find a link to my presentation and some other useful stuff for Jenkins and testing. Specially the Selenium projects.</p>
 

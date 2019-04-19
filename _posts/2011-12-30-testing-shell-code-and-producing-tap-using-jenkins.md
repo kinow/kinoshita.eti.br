@@ -21,7 +21,7 @@ Here's what is necessary.
 	<li><a title="Bast git repository" href="https://github.com/sstephenson/bats">Bats git repository URL</a></li>
 	<li><a title="Baden Baden" href="http://www.badenbaden.com.br/">Baden Baden Red Ale beer</a> (it's Friday, almost new years' eve, c'mon)</li>
 </ul>
-<!-- more -->
+<!--more-->
 Install Jenkins, tap plug-in and git plug-in. Create a new free style build. Add Bats git repository url under SCM. This way Jenkins will retrieve Bats code from Github (you don't need to install it if you don't want to). Add a build step which executes the following shell code: <tt>./bin/bats test/bats.bats &gt; test.t</tt>
 <p style="text-align: center;"><a href="{{ assets.Screenshot_at_2011_12_30_233256 }}"><img class="size-medium wp-image-883 aligncenter" title="Screenshot at 2011-12-30 23:32:56" src="{{ assets.Screenshot_at_2011_12_30_233256_300_198 }}" alt="" width="300" height="198" /></a></p>
 Before executing the build, you have to check the option to publish TAP results in the end of the configuration screen. That's it. Execute your job, chug the remaining of your beer and now you can go to bed... or just refresh Hacker News and Reddit once more...

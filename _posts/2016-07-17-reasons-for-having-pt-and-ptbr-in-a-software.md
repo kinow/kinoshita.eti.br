@@ -25,7 +25,7 @@ Today I saw a message in the LanguageTool mailing list discussing whether having
 Portuguese page would make sense, or if it would be better to have just Portuguese, and then
 add rules for special cases.
 
-<!-- more -->
+<!--more-->
 
 I started writing the reply to that message, then realised it was getting lengthy,
 and repeating things I said before for the SKOSMOS project. So I decided to write this

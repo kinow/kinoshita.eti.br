@@ -21,7 +21,7 @@ ORM diagram, below.
 </a>
 </p>
 
-<!-- more -->
+<!--more-->
 
 And the class diagram (which I removed `object` and a tried to make it simpler to interpret).
 

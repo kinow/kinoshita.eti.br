@@ -13,7 +13,7 @@ The first programming language that I had contact with was Perl. I was a 16 year
 <p style="text-align: center;"><a href="{{ assets.larry_wall }}"><img class="aligncenter size-full wp-image-740" title="Bruno and Larry @ II Sao Paulo Perl Workshop" src="{{ assets.larry_wall }}" alt="" width="560" height="315" /></a></p>
 Well, what was my idea of Perl before the event? I thought it was an old programming language, very powerful, but over complicated. And what do I think of Perl now? I think it is an old programming language, very powerful, but may be complicated.
 
-<!-- more -->
+<!--more-->
 
 Being an old programming language does not mean that it cannot dispute with newer programming languages such as <a href="http://www.ruby-lang.org">Ruby</a>, <a title="Python" href="http://www.python.org">Python</a>, <a title="Scala" href="http://www.scala-lang.org">Scala</a> or <a title="Go" href="http://www.golang.org">Go</a>. Actually, it means that it is old, has a plethora of examples, good documentation and a vast and supportive community (a quick note here, Perl is the programming languages with more existing modules). Larry said during his talk that Perl won't die, but evolve with time and have its place among other programming languages.
 

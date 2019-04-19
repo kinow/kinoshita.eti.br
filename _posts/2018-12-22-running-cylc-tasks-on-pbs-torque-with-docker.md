@@ -34,7 +34,7 @@ and see how hard it would be to reproduce it with Docker. One thing that I like 
 approach is the possibility to share the work with others online. I believe it improves
 communication, agility, and can be useful for posterity.
 
-<!-- more -->
+<!--more-->
 
 I had some experience with PBS Torque on Docker, because of some
 [old work](https://github.com/biouno/pbs-plugin/wiki) for another Open Source project called

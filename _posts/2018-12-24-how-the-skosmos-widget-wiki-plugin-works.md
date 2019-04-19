@@ -23,7 +23,7 @@ that has the plugin enabled.
 <img class="ui fluid image" src="/assets/posts{{page.path | remove: ".md" | remove: "_posts" }}/skosmos-widget-wiki-screenshot.png" />
 
 
-<!-- more -->
+<!--more-->
 
 ### Under the hood
 

@@ -16,7 +16,7 @@ presented in one of the main TV channels, as well as some screenshots from an
 online video of other local institutions that either provide the forecast, or
 help running the NWP models.
 
-<!-- more -->
+<!--more-->
 
 ### Globo
 

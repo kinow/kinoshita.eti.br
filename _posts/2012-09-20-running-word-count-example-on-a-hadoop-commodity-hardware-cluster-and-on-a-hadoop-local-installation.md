@@ -11,7 +11,7 @@ time: '21:49:38'
 
 <p>But first, let's review the hardware configurations:</p>
 
-<!-- more -->
+<!--more-->
 
 <hr />
 

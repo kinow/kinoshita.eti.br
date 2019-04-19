@@ -16,7 +16,7 @@ time: '17:50:04'
 
 <p>The first thing I've noticed were the messages regarding the execution of some Maven plug-ins in the project life cycle. m2e delegates the execution of Maven plug-ins to an external executor. As not all Maven plug-ins have an existing executor for m2e you will receive a message similar to "Plugin execution not covered by lifecycle configuration: ...".</p>
 
-<!-- more -->
+<!--more-->
 
 <p>The solution for this issue was adding a rule for each plug-in execution. This rule must contain a version or version range and declare whether this plug-in execution must be executed or ignored by m2e. You have two ways of adding these rules. You could a) Google for an example, b) replace group, artifact name and version. Or you could a) open pom.xml and select the tab "pom.xml" (this will open the XML source of your pom.xml) b) go to the line marked with an error in Eclipse, leave your mouse pointer over it and select the option "Permanently mark goal...", choose the parent pom.xml (jenkins/pom.xml) and save all documents.</p>
 

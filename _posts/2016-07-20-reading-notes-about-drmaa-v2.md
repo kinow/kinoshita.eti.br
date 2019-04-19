@@ -20,7 +20,7 @@ This post contains my reading notes for DRMAA v2, and a short analysis of how
 this new specification could be used in a new tentative to integrate
 Jenkins and several grid computing implementations in a single plug-in.
 
-<!-- more -->
+<!--more-->
 
 ### Notes about the new specification
 

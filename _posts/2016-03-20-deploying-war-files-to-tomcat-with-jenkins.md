@@ -37,7 +37,7 @@ $ curl --upload-file target/petclinic.war "http://admin:admin@localhost:8888/man
 OK - Deployed application at context path /spring-petclinic
 ```
 
-<!-- more -->
+<!--more-->
 
 ### Pros
 

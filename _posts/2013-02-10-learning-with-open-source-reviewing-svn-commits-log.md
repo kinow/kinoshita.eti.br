@@ -19,7 +19,7 @@ time: '13:02:45'
 
 <p style='text-align: center'><a href="{{assets.feather_small}}"><img src="{{assets.feather_small}}" alt="Apache Software Foundation" width="203" height="61" class="alignnone size-full wp-image-1125" /></a></p>
 
-<!-- more -->
+<!--more-->
 
 <p>Matt merged my branch, but also reviewed all my work. I'm no big fan of pair programming with two keyboards and all (as I've seen in some "<em>Agile</em>" companies round here in Brazil). But this kind or pair programming is, IMO, one of the most powerful techniques for learning how to code.</p>
 

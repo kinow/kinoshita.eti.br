@@ -13,7 +13,7 @@ In 2010 I started working as Software Quality Engineer with <a title="Anderson S
 
 He motivated me to start giving talks, going to more conferences and contributing more actively to Open Source projects. Since then, I've given almost 10 talks, including one in <a title="Belgium Testing Days" href="http://www.belgiumtestingdays.com">Belgium Testing Days</a>, another one in<a title="Oracle JavaOne" href="http://www.oracle.com/javaone/lad-pt/"> Oracle JavaOne</a> and in March next year I will be in America for a talk in <a title="STP Con" href="http://www.stpcon.com/">STPCON</a>. I also missed <a title="JCertif" href="http://www.jcertif.com">JCertif</a> conference in Congo due to visa problems and learned some lessons from it (so sorry Max :)
 
-<!-- more -->
+<!--more-->
 
 I've also joined few Open Source projects, including <a title="TestLink" href="http://www.teamst.org">TestLink</a>, <a title="Jenkins CI" href="http://www.jenkins-ci.org">Jenkins</a>, created <a title="tap4j" href="http://www.tap4j.org">tap4j</a>, <a title="TestLink Java API" href="http://testlinkjavaapi.sourceforge.net">testlink-java-api</a>, Jenkins <a title="Jenkins CCM Plug-in" href="http://wiki.jenkins-ci.org/display/JENKINS/CCM+Plugin">CCM</a>, <a title="Jenkins TestLink Plug-in" href="http://wiki.jenkins-ci.org/display/JENKINS/TestLink+Plugin">TestLink</a> and <a title="Jenkins TAP Plug-in" href="http://wiki.jenkins-ci.org/display/JENKINS/TAP+Plugin">TAP</a> plug-ins. Was included as contributor to <a title="Apache Functor" href="http://commons.apache.org/sandbox/functor/">Apache Functor</a> project due to some minor contributions. And what is the most important thing: I had a lot of fun doing all of this! And learned so much!
 

@@ -37,7 +37,7 @@ altitude, temperature, latitude, longitude, relative humidity, among others. Equ
 like the radiosonde send the data back to a ground-level station via radio,
 normally in a short and constant interval.
 
-<!-- more -->
+<!--more-->
 
 The data that I had to parse was Vaisala radiosonde data. But in an older format. The documentation for the format
 can be found online at [http://badc.nerc.ac.uk/data/ukmo-rad-hires/pc-coradata.html](http://badc.nerc.ac.uk/data/ukmo-rad-hires/pc-coradata.html).
