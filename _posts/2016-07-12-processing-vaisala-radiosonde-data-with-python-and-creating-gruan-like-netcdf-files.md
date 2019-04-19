@@ -30,7 +30,7 @@ mobile phone, that is launched with a balloon into the atmosphere.
 I was lucky to be given the chance to release one of these balloons carrying a newer
 version of this equipment.
 
-<img class="ui centered large bordered image" src="/assets/posts{{page.path | remove: ".md" | remove: "_posts" }}/balloon-launch.png" alt="Radiosonde balloon launch" />
+<img class="ui centered large bordered image" src="/assets/posts{{page.path | remove: ".md" | remove: "_posts" }}/balloon-launch.jpg" alt="Radiosonde balloon launch" />
 
 The balloon can carry equipments for measuring different things, like air pressure,
 altitude, temperature, latitude, longitude, relative humidity, among others. Equipments

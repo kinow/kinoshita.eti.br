@@ -23,6 +23,8 @@ I found that while reading an
 [issue about race condition in the `IndexEngine`](https://github.com/pandas-dev/pandas/issues/21150),
 and after preparing a pull request for that.
 
+<!--more-->
+
 ```python
 from concurrent.futures import ThreadPoolExecutor
 import pandas as pd

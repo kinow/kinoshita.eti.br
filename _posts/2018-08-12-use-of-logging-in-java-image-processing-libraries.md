@@ -15,6 +15,8 @@ for the [existing `Debug`](https://github.com/apache/commons-imaging/blob/d2ec76
 class. This class was the issue of discussion during a
 [previous 1.0 release vote thread](https://markmail.org/thread/ak3hcka7piykxixz#query:+page:1+mid:ppgxbhjx3opqlixj+state:results).
 
+<!--more-->
+
 Initially I tried simply changing the class a bit, and make it configurable, so that we could keep it -
 as there is a valid use case for having a class that collects information during the image processing
 algorithms were applied.

@@ -16,6 +16,8 @@ The complete project setup was done by co-workers. I had a PHP project, using Sy
 bundles and libraries, and Postgres. But it required just running a few commands to set up
 AWS settings, and then fire up Docker Compose.
 
+<!--more-->
+
 Besides Docker Compose starting a web container, and another Postgres container, we used the
 web container to run [Composer](https://getcomposer.org/). In the past, I would see the PHP
 project mapped as a folder in the running container, and then composer would be executed

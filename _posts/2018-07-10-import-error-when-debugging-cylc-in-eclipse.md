@@ -17,6 +17,8 @@ which was a bit enigmatic as I never heard about that function, but it seemed to
 something internal, or at least not from the project code base. And searching the Internet
 did not help much.
 
+<!--more-->
+
 Here is the complete console output in Eclipse.
 
 ```shell

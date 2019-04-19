@@ -16,11 +16,9 @@ the moment the method `configure()` is called.
 *NB: this is a post to remember things, not really expecting to give someone enough
 information to be able to hack the Cylc Scheduler (though you can and would have fun!).*
 
-<p style='text-align: center;'>
-<a href="/assets/posts{{page.path | remove: ".md" | remove: "_posts" }}/cylc-scheduler_configure.png">
 <img style="display: inline; width: 100%;" class="ui image" src="/assets/posts{{page.path | remove: ".md" | remove: "_posts" }}/cylc-scheduler_configure.png"  />
-</a>
-</p>
+
+<!--more-->
 
 The `configure` method is responsible for configuring the Suite Server Program. Which
 means it will interact with the configuration singletons to retrieve the necessary

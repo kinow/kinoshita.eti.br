@@ -19,11 +19,9 @@ Instead of going at length on what happens (and there is quite a bit happening w
 you run `cylc start my.suite`), I will use the following diagram, followed by a few paragraphs
 to highlight certain parts. The code used was based on [Cylc 7.7.1](https://github.com/cylc/cylc/tree/7.7.1).
 
-<p style='text-align: center;'>
-<a href="/assets/posts{{page.path | remove: ".md" | remove: "_posts" }}/cylc-scheduler_cli-workflow.png">
 <img style="display: inline; width: 100%;" class="ui image" src="/assets/posts{{page.path | remove: ".md" | remove: "_posts" }}/cylc-scheduler_cli-workflow.png"  />
-</a>
-</p>
+
+<!--more-->
 
 When a Cylc command like `cylc start` is invoked, it actually gets translated into
 `bin/cylc-$command_name`. `cylc-start` is a Shell file, that will simply call `cylc-run`.

@@ -25,12 +25,7 @@ I'm still investigating if/how we gonna need to use inference and reasoners, loo
 at the issues, and learning my way through its code base. The following is my initial mapping 
 of what happens when you submit a SPARQL query to Fuseki.
 
-<div class='row'>
-<div class="span6 offset3" style='text-align: center;'>
-<figure>
-<a href="{{assets.drawing1}}" rel="prettyPhoto" class="thumbnail" title="Fuseki SPARQL query work flow">
-<img src="{{assets.drawing1}}" alt="Fuseki SPARQL query work flow" />
-
+<img src="/assets/posts{{page.path | remove: ".md" | remove: "_posts" }}/drawing1.png" alt="Fuseki SPARQL query work flow" />
 
 My understanding is that Fuseki is just a web layer, handling a bunch of validations, logging, 
 error handling, and relying on the ARQ module, that is who actually handles the requests. 

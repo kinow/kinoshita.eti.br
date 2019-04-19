@@ -14,6 +14,8 @@ an example that has proved to be useful for debugging certain parts of the code.
 It is an extremely simple suite, similar to what is in cylc's documentation. It
 sleeps for N seconds, and prints a message.
 
+<!--more-->
+
 What makes it extra simpler, is that it cycles through integers, and has
 a limit of 1 maximum active points.
 

@@ -16,10 +16,6 @@ I am working [on a project](https://cylc.github.io) that is adopting [ZeroMQ](ht
 This post series is for self understanding of PyZMQ, a ZeroMQ
 [`libzmq`](https://github.com/zeromq/libzmq) binding for Python.
 
-<br style="clear: both" />
-
-<!--more-->
-
 ## What is ZeroMQ?
 
 ZeroMQ (or 0MQ, or ØMQ) is an Open Source library that provides building blocks for
@@ -29,6 +25,8 @@ TCP and UDP.
 
 It is optimized for performance, and has been used in many applications, giving users
 a solid foundation to be used in their projects.
+
+<!--more-->
 
 The maintainers of the project provide low level C++ projects such as `libzmq` (GPL v3),
 `zyre`, `czmq`, etc. But the most important project to get started with is `libzmq`.

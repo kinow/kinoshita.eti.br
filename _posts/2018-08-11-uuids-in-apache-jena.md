@@ -20,6 +20,8 @@ were used. This way I would either understand why Jena needed UUID's, or
 just be more educated in case I ever stumbled with a change in Jena that
 required related work.
 
+<!--more-->
+
 ### Jena Core's _org.apache.jena.shared.uuid_
 
 This package is small and simply contains: _factories_,

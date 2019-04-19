@@ -49,7 +49,7 @@ I had to combine both meshes into a single object, in order to add a bone and ro
 is why the logo got back to a single material. The angle of the camera could probably do with
 some tweaking as well.
 
-<img class="ui centered image" src="/assets/posts{{page.path | remove: ".md" | remove: "_posts" }}/ezgif.com-resize.png" alt="Frege 3D #10" />
+<img class="ui centered image" src="/assets/posts{{page.path | remove: ".md" | remove: "_posts" }}/ezgif.com-resize.gif" alt="Frege 3D #10" />
 
 But it was my very first time animating in Blender. Some day if I get access to one of those
 3D printers, I will check what are the requirements for printing this logo.
