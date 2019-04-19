@@ -1,12 +1,12 @@
 ---
-title: "Some links related to Apache Commons Text"
-author: kinow
-tags: 
-    - apache software foundation
-    - java
-    - opensource
-    - programming
-time: '19:50:39'
+date: 2017-05-28 19:50:39 +1300
+layout: post
+tags:
+- apache software foundation
+- java
+- opensource
+- programming
+title: Some links related to Apache Commons Text
 ---
 
 [Apache Commons Text](http://commons.apache.org/proper/commons-text/) is one of the most recent new components in Apache Commons. It "is a library focused on algorithms working on strings". I recently collected some links

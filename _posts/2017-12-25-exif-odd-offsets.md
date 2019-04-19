@@ -1,12 +1,12 @@
 ---
+date: 2017-12-25 21:43:33 +1300
+layout: post
+tags:
+- programming
+- java
+- apache software foundation
+- opensource
 title: Exif Odd Offsets
-time: '21:43:33'
-author: kinow
-tags: 
-    - programming
-    - java
-    - apache software foundation
-    - opensource
 ---
 
 A file format like JPEG may contain metadata in JFIF, [Exif](https://en.wikipedia.org/wiki/Exif),
@@ -42,4 +42,3 @@ handle odd and even offsets, so it should work for most cases, unless you have a
 Happy hacking!
 
 &heart; Open Source
-

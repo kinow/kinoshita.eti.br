@@ -1,11 +1,11 @@
 ---
-title: Cylc Scheduler Internals - Part 1
-time: '22:42:47'
-author: kinow
+date: 2018-07-14 22:42:47 +1300
+layout: post
 tags:
-    - cylc
-    - python
-    - opensource
+- cylc
+- python
+- opensource
+title: Cylc Scheduler Internals - Part 1
 ---
 
 This is the first post in a series of three (or maybe four later) based on diagrams

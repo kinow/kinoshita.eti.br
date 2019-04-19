@@ -1,10 +1,9 @@
 ---
-title: 'Modeling observation data in SOS (Sensor Observation Service)'
-author: kinow
+date: 2015-06-23 13:40:03 +1300
+layout: post
 tags:
-    - sensor web
-category: 'blog'
-time: '13:40:03'
+- sensor web
+title: Modeling observation data in SOS (Sensor Observation Service)
 ---
 
 This week NZ Herald published an [article](http://www.nzherald.co.nz/technology/news/article.cfm?c_id=5&objectid=11469418)

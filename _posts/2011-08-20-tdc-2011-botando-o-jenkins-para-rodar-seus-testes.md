@@ -1,12 +1,11 @@
 ---
-title: The Developers Conference (TDC) 2011 Botando o Jenkins para rodar seus testes
-author: kinow
+date: 2011-08-20 22:45:03 +1300
+layout: post
 tags:
-    - testlink
-    - jenkins
-    - opensource
-category: 'presentations'
-time: '22:45:03'
+- testlink
+- jenkins
+- opensource
+title: The Developers Conference (TDC) 2011 Botando o Jenkins para rodar seus testes
 ---
 
 <strong>Botando o Jenkins para rodar seus testes</strong>

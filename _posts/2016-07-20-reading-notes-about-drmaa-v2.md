@@ -1,11 +1,10 @@
 ---
-title: 'Reading notes about DRMAA v2'
-author: kinow
+date: 2016-07-20 19:59:03 +1300
+layout: post
 tags:
-    - programming
-    - grid computing
-category: 'blog'
-time: '19:59:03'
+- programming
+- grid computing
+title: Reading notes about DRMAA v2
 ---
 
 The DRMAA v2 specification draft is ready to be published, and is in [public

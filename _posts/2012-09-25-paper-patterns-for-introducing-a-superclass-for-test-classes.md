@@ -1,11 +1,10 @@
 ---
-title: 'Paper: Patterns for Introducing a Superclass for Test Classes'
-author: kinow
-time: '17:58:09'
+date: 2012-09-25 17:58:09 +1300
+layout: post
 tags:
-    - software quality
-    - articles
-category: 'articles'
+- software quality
+- articles
+title: 'Paper: Patterns for Introducing a Superclass for Test Classes'
 ---
 
 Few days ago we had [SugarLoafPlop 2012](http://www.dimap.ufrn.br/sugarloafplop2012/) in [Natal - RN](http://maps.google.com.br/maps?q=natal+-+rn&hl=en&sll=-23.682803,-46.595546&sspn=0.653971,1.352692&hnear=Natal+-+Rio+Grande+do+Norte&t=m&z=11) 

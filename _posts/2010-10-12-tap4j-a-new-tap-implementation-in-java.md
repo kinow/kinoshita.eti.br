@@ -1,14 +1,13 @@
 ---
-title: 'tap4j - A new TAP implementation in Java'
-id: 471
-author: kinow
-tags: 
-    - test anything protocol
-    - java
-    - software quality
-category: 'blog'
-time: '09:45:49'
+date: 2010-10-12 09:45:49 +1300
+layout: post
+tags:
+- test anything protocol
+- java
+- software quality
+title: tap4j - A new TAP implementation in Java
 ---
+
 A month ago I started a project to help me in my new version of the <a title="TestLink Hudson Plug-in" href="http://wiki.hudson-ci.org/display/HUDSON/TestLink+Plugin">TestLink Hudson plug-in</a>. The plugin now relies heavily on Apache Maven for test execution. After reading a post on <a title="TestLink Forum" href="http://www.teamst.org/forum/">TestLink forum</a> about an automation done using TAP, I googled to learn what that acronym stood for.
 
 <a title="Test Anything Protocol" href="http://www.testanything.org">TAP</a> is the abbreviation of Test Anything Protocol.It is a protocol to produce information about test execution and used mainly by the Perl community. For instance, you can test your system using <a title="PHPUnit" href="www.phpunit.de">PHPUnit</a>, <a title="JUnit" href="http://www.junit.org">JUnit</a>, <a title="Selenium" href="http://www.seleniumhq.org">Selenium</a> or even a C class and produce what they call a TAP Stream. This stream's content is like follows:

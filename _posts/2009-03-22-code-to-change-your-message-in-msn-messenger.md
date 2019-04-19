@@ -1,12 +1,11 @@
 ---
-title: 'Code to change your message in MSN messenger'
-id: 100
-author: kinow
-tags: 
-    - c++
-category: 'blog'
-time: '14:31:18'
+date: 2009-03-22 14:31:18 +1300
+layout: post
+tags:
+- c++
+title: Code to change your message in MSN messenger
 ---
+
 I've always wanted to know how does the code to show what was I listening to looked like. I found it after installing XMPlay and XMPlay MSN Plug-in. The plug-in zip had the plug-in itself and its source code. And what a neat source code (-:.
 
 Basically, you just send a message to the MSN UI API with a defined data structure. And to remove the message, just send again with an empty string.

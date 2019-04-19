@@ -1,14 +1,14 @@
 ---
-title: 'Processing Vaisala Radiosonde data with Python, and creating GRUAN-like NetCDF files'
-author: kinow
+date: 2016-07-12 21:18:03 +1300
+layout: post
 tags:
-    - python
-    - netcdf
-    - climate
-    - radiosonde
-    - gruan
-category: 'blog'
-time: '21:18:03'
+- python
+- netcdf
+- climate
+- radiosonde
+- gruan
+title: Processing Vaisala Radiosonde data with Python, and creating GRUAN-like NetCDF
+  files
 ---
 
 One of my last projects involved parsing a few GB's of data that was in a certain binary format,

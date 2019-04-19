@@ -1,10 +1,9 @@
 ---
-title: 'Drawing Archer'
-author: kinow
+date: 2017-06-27 00:09:03 +1300
+layout: post
 tags:
-    - illustrations
-category: 'blog'
-time: '00:09:03'
+- illustrations
+title: Drawing Archer
 ---
 
 Archer, from [redditgetsdrawn](https://www.reddit.com/r/redditgetsdrawn/comments/4cwiyf/flinging_arrows_in_humid_louisiana_yesterday_my/).

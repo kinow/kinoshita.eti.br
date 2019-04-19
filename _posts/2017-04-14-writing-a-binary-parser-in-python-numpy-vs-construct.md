@@ -1,12 +1,11 @@
 ---
-title: 'Writing a binary parser in Python: NumPy vs. Construct'
-author: kinow
+date: 2017-04-14 19:21:03 +1300
+layout: post
 tags:
-    - python
-    - programming
-    - opensource
-category: 'blog'
-time: '19:21:03'
+- python
+- programming
+- opensource
+title: 'Writing a binary parser in Python: NumPy vs. Construct'
 ---
 
 Some time ago I worked with researchers to write a parser for an old data format. The data

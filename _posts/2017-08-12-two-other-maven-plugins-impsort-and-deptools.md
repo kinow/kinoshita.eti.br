@@ -1,12 +1,12 @@
 ---
-title: "Two other Maven Plug-ins: impsort and deptools"
-author: kinow
-tags: 
-    - java
-    - programming
-    - opensource
-    - maven
-time: '22:16:03'
+date: 2017-08-12 22:16:03 +1300
+layout: post
+tags:
+- java
+- programming
+- opensource
+- maven
+title: 'Two other Maven Plug-ins: impsort and deptools'
 ---
 
 Last [week I wrote]({% post_url 2017-08-06-checking-for-transitive-dependencies-use-with-maven-enforcer-plugin %})

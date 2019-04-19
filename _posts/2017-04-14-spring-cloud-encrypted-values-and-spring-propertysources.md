@@ -1,12 +1,11 @@
 ---
-title: 'Spring Cloud encrypted values and Spring PropertySources'
-author: kinow
+date: 2017-04-14 11:21:03 +1300
+layout: post
 tags:
-    - java
-    - programming
-    - opensource
-category: 'blog'
-time: '11:21:03'
+- java
+- programming
+- opensource
+title: Spring Cloud encrypted values and Spring PropertySources
 ---
 
 As I could not find any documentation for that, I decided to write it as a note to myself

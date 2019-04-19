@@ -1,13 +1,12 @@
 ---
-title: 'Ranges in Apache Commons Functor'
-id: 903
-author: kinow
-tags: 
-    - apache software foundation
-    - functional programming
-category: blog
-time: '19:54:36'
+date: 2012-01-22 19:54:36 +1300
+layout: post
+tags:
+- apache software foundation
+- functional programming
+title: Ranges in Apache Commons Functor
 ---
+
 This is a long post. So here is a <strong>TL;DR</strong>:
 <ul>
 	<li>Apache Commons Functor has no Double or Float Range (yet)</li>

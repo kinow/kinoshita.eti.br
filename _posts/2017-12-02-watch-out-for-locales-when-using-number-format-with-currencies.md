@@ -1,11 +1,11 @@
 ---
+date: 2017-12-02 22:51:00 +1300
+layout: post
+tags:
+- programming
+- java
+- apache software foundation
 title: Watch out for Locales when using NumberFormat with currencies
-time: '22:51:00'
-author: kinow
-tags: 
-    - programming
-    - java
-    - apache software foundation
 ---
 
 In Java you have the [NumberFormatException](https://docs.oracle.com/javase/9/docs/api/java/text/NumberFormat.html)

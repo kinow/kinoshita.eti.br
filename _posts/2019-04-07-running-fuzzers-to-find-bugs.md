@@ -1,12 +1,15 @@
 ---
-layout: post
-title: "Running fuzzers to find bugs"
 date: 2019-04-07 21:20:57 +1300
-note: "The comparison does not focus so much on how fuzzers work, which one is best than the other, etc. It looks only into its advertised features, whether it is maintained by a group or individual ([bus factor](https://en.wikipedia.org/wiki/Bus_factor) is always important), and the license."
+layout: post
+note: The comparison does not focus so much on how fuzzers work, which one is best
+  than the other, etc. It looks only into its advertised features, whether it is maintained
+  by a group or individual ([bus factor](https://en.wikipedia.org/wiki/Bus_factor)
+  is always important), and the license.
 tags:
-    - opensource
-    - security
-    - programming
+- opensource
+- security
+- programming
+title: Running fuzzers to find bugs
 ---
 
 Fuzzifying is a technique used in automated tests to find bugs in programs with unexpected data. fuzzer is the name given to the program used for running these tests. Some fuzzers also generate random data used for the tests.
@@ -147,4 +150,3 @@ There are several different fuzzers, many more than the ones listed here. I will
 - [Fuzzing D code with LDC, Programming blog of Johan Engelen. D, C++, LLVM, LDC, ... ](https://johanengelen.github.io/ldc/2018/01/14/Fuzzing-with-LDC.html)
 - [Fuzzing Adobe Reader for exploitable vulns (fun != profit), kciredor's information security blog](https://kciredor.com/fuzzing-adobe-reader-for-exploitable-vulns-fun-not-profit.html)
 - [The Fuzzing Project, by Hanno Böck](https://fuzzing-project.org/)
-

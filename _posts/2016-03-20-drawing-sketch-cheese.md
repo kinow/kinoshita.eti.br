@@ -1,10 +1,9 @@
 ---
-title: 'Drawing sketch: Cheese'
-author: kinow
+date: 2016-03-20 11:13:03 +1300
+layout: post
 tags:
-    - illustrations
-category: 'blog'
-time: '11:13:03'
+- illustrations
+title: 'Drawing sketch: Cheese'
 ---
 
 <div class='row'>

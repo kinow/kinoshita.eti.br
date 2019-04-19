@@ -1,12 +1,11 @@
 ---
+date: 2012-09-25 16:08:03 +1300
+layout: post
+tags:
+- bioinformatics
 title: 'Bioinformatics tools: Stacks'
-id: 1026
-author: kinow
-tags: 
-    - bioinformatics
-category: 'bioinformatics'
-time: '16:08:03'
 ---
+
 It is the first post about <strong>bioinformatics tools</strong>, but I will try to post more about other tools such as MrBayes, Structure, maybe some next generation sequencing tools too, and Bioperl, Biojava, and so on.
 
 As I am more a computer geek, rather than a bioinformatics one, I will focus on requirements for running these tools on clusters and the requirements to install them on your machine. The instructions require that you have an intermediary knowledge on *nix OS and sometimes a bit of programming experience.</em></p>

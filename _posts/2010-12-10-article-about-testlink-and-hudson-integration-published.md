@@ -1,15 +1,14 @@
 ---
-title: 'Article about TestLink and Hudson integration published'
-id: 512
-author: kinow
-tags: 
-    - jenkins
-    - testlink
-    - articles
-    - software quality
-category: 'articles'
-time: '10:52:22'
+date: 2010-12-10 10:52:22 +1300
+layout: post
+tags:
+- jenkins
+- testlink
+- articles
+- software quality
+title: Article about TestLink and Hudson integration published
 ---
+
 Since September I've been working on a project to integrate TestLink and Hudson. The project consists basically in a Hudson Plug-in that uses <a title="TestLink java api" href="http://testlinkjavaapi.sourceforge.net/">TestLink Java API</a> to retrieve information of Automated Test Cases created in <a title="TestLink" href="http://www.teamst.org">TestLink</a>. You can read more about the plug-in in the following address: <a title="TestLink Hudson Plug-in" href="http://wiki.hudson-ci.org/display/HUDSON/TestLink+Plugin">http://wiki.hudson-ci.org/display/HUDSON/TestLink+Plugin</a>.
 
 I wrote an article in conjunction with <a title="Anderson dos Santos" href="http://andersonxp.tumblr.com/">Anderson dos Santos</a> about this Plug-in. The article was published by <a title="Testing Experience" href="http://www.testingexperience.com/">Testing Experience</a> in its December issue. The issue's topic is Open Source Tools. You can download the whole magazine from <a title="Testing Experience" href="http://www.testingexperience.com/">Testing Experience website</a> (I highly recommend downloading the magazine, there are some great articles there!).

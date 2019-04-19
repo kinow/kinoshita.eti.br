@@ -1,9 +1,9 @@
 ---
+date: 2017-12-01 23:26:09 +1300
+layout: post
+tags:
+- programming
 title: What Are Identification Keys
-time: '23:26:09'
-author: kinow
-tags: 
-    - programming
 ---
 
 >In biology, an identification key is a printed or computer-aided device that aids the identification of biological entities, such as plants, animals, fossils, microorganisms, and pollen grains. Identification keys are also used in many other scientific and technical fields to identify various kinds of entities, such as diseases, soil types, minerals, or archaeological and anthropological artifacts
@@ -41,4 +41,3 @@ the local species.
 * [Clues to Bird ID (PDF)](http://www.birds.cornell.edu/bbimages/PDFs/Clues2Bird%20ID.pdf)
 
 Have fun!
-

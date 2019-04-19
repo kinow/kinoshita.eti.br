@@ -1,14 +1,13 @@
 ---
+date: 2010-09-19 20:44:38 +1300
+layout: post
+tags:
+- testlink
+- open source
+- software quality
 title: 'TestLink BUG-1890: Possibility to add attachment by using API'
-id: 434
-author: kinow
-tags: 
-    - testlink
-    - open source
-    - software quality
-category: 'blog'
-time: '20:44:38'
 ---
+
 With the help of <a title="Francisco Mancardi's Linkedin." href="http://it.linkedin.com/pub/francisco-mancardi/18/441/2b9">Francisco Mancardi</a> I wrote a code that was merged into the <a title="TestLink" href="http://www.teamst.org/">TestLink</a> repository trunk. Now you're going to be able to upload attachments such as, for instance, test evidences to your TestLink :-). I hope you like it.
 
 <div class='row'>

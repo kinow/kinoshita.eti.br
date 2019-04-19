@@ -1,11 +1,11 @@
 ---
-title: 'PermGen errors and java.lang.ClassCastException: com.sun.crypto.provider.AESCipher cannot be cast to javax.crypto.CipherSpi running Jenkins plug-in tests with PowerMock'
-author: kinow
+date: 2016-12-19 19:20:03 +1300
+layout: post
 tags:
-    - jenkins
-    - software quality
-category: 'blog'
-time: '19:20:03'
+- jenkins
+- software quality
+title: 'PermGen errors and java.lang.ClassCastException: com.sun.crypto.provider.AESCipher
+  cannot be cast to javax.crypto.CipherSpi running Jenkins plug-in tests with PowerMock'
 ---
 
 Recently while working on a Jenkins plugin some tests were failing with PermGen errors.

@@ -1,12 +1,12 @@
 ---
-title: PyZMQ Basics - Part 1
-time: '16:32:17'
-author: kinow
+date: 2019-03-30 16:32:17 +1300
+layout: post
 tags:
-    - zmq
-    - python
-    - opensource
-    - programming
+- zmq
+- python
+- opensource
+- programming
+title: PyZMQ Basics - Part 1
 ---
 
 <a href="https://www.deviantart.com/kinow/art/Old-man-1-657521623" style="float: left;">

@@ -1,13 +1,13 @@
 ---
-title: "Finding Base64 implementations in Apache Software Foundation projects"
-author: kinow
-tags: 
-    - java
-    - programming
-    - opensource
-    - apache software foundation
-time: '20:23:03'
+date: 2017-09-01 20:23:03 +1300
 format: markdown
+layout: post
+tags:
+- java
+- programming
+- opensource
+- apache software foundation
+title: Finding Base64 implementations in Apache Software Foundation projects
 ---
 
 <p style='text-align: center;'>

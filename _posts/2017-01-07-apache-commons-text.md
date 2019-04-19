@@ -1,12 +1,11 @@
 ---
-title: 'Apache Commons Text'
-author: kinow
+date: 2017-01-07 20:39:03 +1300
+layout: post
 tags:
-    - java
-    - programming
-    - apache software foundation
-category: 'blog'
-time: '20:39:03'
+- java
+- programming
+- apache software foundation
+title: Apache Commons Text
 ---
 
 There is a new component in Apache Commons: Apache Commons Text. The 1.0 release might be announced

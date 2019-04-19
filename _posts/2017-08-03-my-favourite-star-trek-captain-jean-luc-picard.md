@@ -1,11 +1,10 @@
 ---
-title: 'My favourite Star Trek captain: Jean-Luc Picard'
-author: kinow
+date: 2017-08-03 21:52:03 +1300
+layout: post
 tags:
-    - science fiction
-    - illustrations
-category: 'blog'
-time: '21:52:03'
+- science fiction
+- illustrations
+title: 'My favourite Star Trek captain: Jean-Luc Picard'
 ---
 
 My favourite Star Trek captain: [Jean-Luc Picard](http://www.startrek.com/database_article/picard-jean-luc).

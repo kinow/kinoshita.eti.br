@@ -1,12 +1,11 @@
 ---
-title: 'Trying SaltStack with Docker'
-author: kinow
+date: 2016-04-17 22:06:03 +1300
+layout: post
 tags:
-    - jenkins
-    - docker
-    - saltstack
-category: 'blog'
-time: '22:06:03'
+- jenkins
+- docker
+- saltstack
+title: Trying SaltStack with Docker
 ---
 
 Some weeks ago I started learning [SaltStack](http://saltstack.com/) for a project at work. But I couldn't
@@ -87,4 +86,3 @@ log in as saltapiuser:nosecret, and also configure your plug-in
 in Jenkins.
 
 Happy hacking!
-

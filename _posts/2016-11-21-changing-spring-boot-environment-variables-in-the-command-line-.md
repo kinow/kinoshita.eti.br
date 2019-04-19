@@ -1,12 +1,11 @@
 ---
-title: 'Changing Spring Boot environment variables in the command line'
-author: kinow
+date: 2016-11-21 21:26:03 +1300
+layout: post
 tags:
-    - shell script
-    - java
-    - spring
-category: 'blog'
-time: '21:26:03'
+- shell script
+- java
+- spring
+title: Changing Spring Boot environment variables in the command line
 ---
 
 This week while helping developers and testers to experiment with a backend application,

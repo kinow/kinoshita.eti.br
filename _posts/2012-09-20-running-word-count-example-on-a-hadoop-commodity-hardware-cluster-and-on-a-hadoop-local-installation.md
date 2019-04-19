@@ -1,12 +1,12 @@
 ---
-title: 'Running word-count example on a Hadoop commodity-hardware cluster and on a Hadoop local installation'
-id: 1012
-author: kinow
-tags: 
-    - big data
-category: 'data analysis'
-time: '21:49:38'
+date: 2012-09-20 21:49:38 +1300
+layout: post
+tags:
+- big data
+title: Running word-count example on a Hadoop commodity-hardware cluster and on a
+  Hadoop local installation
 ---
+
 <p>Last weekend I spent some hours assembling old computer parts to create my commodity hardware cluster for running Hadoop. I already had a local installation in my notebook, so I thought it would be cool to run the word-count example in both scenarios to see what would be the results.</p>
 
 <p>But first, let's review the hardware configurations:</p>

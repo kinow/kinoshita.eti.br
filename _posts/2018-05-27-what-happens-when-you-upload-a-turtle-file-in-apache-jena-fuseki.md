@@ -1,12 +1,12 @@
 ---
-title: What happens when you upload a Turtle file in Apache Jena Fuseki
-time: '22:42:55'
-author: kinow
+date: 2018-05-27 22:42:55 +1300
+layout: post
 tags:
-    - apache software foundation
-    - jena
-    - opensource
-    - programming
+- apache software foundation
+- jena
+- opensource
+- programming
+title: What happens when you upload a Turtle file in Apache Jena Fuseki
 ---
 
 I am working on [an issue for Skosmos](https://github.com/NatLibFi/Skosmos/issues/738)

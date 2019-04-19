@@ -1,14 +1,13 @@
 ---
-title: 'Adding coverage reports in Jenkins with GoogleTest and gcovr'
-id: 1103
-author: kinow
-tags: 
-    - jenkins
-    - c++
-    - test anything protocol
-category: 'jenkins'
-time: '16:09:33'
+date: 2012-10-16 16:09:33 +1300
+layout: post
+tags:
+- jenkins
+- c++
+- test anything protocol
+title: Adding coverage reports in Jenkins with GoogleTest and gcovr
 ---
+
 After the [last post]({% post_url 2012-10-11-jenkins-testlink-and-gtest-in-5-minutes-or-so %}) about
 [GoogleTest](http://code.google.com/p/googletest/) and [TestLink](http://www.teamst.org) using
 [Jenkins TestLink Plug-in](https://wiki.jenkins-ci.org/display/JENKINS/TestLink+Plugin), I received an e-mail

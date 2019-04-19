@@ -1,11 +1,11 @@
 ---
+date: 2017-12-03 23:56:13 +1300
+layout: post
+tags:
+- programming
+- java
+- opensource
 title: Remember to synchronize when iterating streams from a synchronized Collection
-time: '23:56:13'
-author: kinow
-tags: 
-    - programming
-    - java
-    - opensource
 ---
 
 When iterating collections created via `Collections.synchronizedList` for instance, you are required

@@ -1,11 +1,11 @@
 ---
-title: 'Missing menus in new installation of TestLink 1.9.8'
-author: kinow
+date: 2013-10-27 12:42:33 +1300
+layout: post
 tags:
-    - testlink
-category: 'blog'
-time: '12:42:33'
+- testlink
+title: Missing menus in new installation of TestLink 1.9.8
 ---
+
 I recently installed TestLink 1.9.8 and noticed that the menus and some other parts 
 of the UI we missing. Looking at <code>/var/log/testlink/userlog1.log</code> (the location 
 may change depending on your settings) I realized that there was something wrong 

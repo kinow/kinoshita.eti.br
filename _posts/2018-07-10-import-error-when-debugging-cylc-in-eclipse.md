@@ -1,11 +1,11 @@
 ---
-title: ImportError when debugging cylc in Eclipse
-time: '00:47:13'
-author: kinow
+date: 2018-07-10 00:47:13 +1300
+layout: post
 tags:
-    - cylc
-    - python
-    - opensource
+- cylc
+- python
+- opensource
+title: ImportError when debugging cylc in Eclipse
 ---
 
 Since I started reading cylc's source code in Eclipse to create some

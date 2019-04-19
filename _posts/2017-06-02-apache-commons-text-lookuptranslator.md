@@ -1,12 +1,12 @@
 ---
-title: "Apache Commons Text LookupTranslator"
-author: kinow
-tags: 
-    - apache software foundation
-    - java
-    - opensource
-    - programming
-time: '22:50:39'
+date: 2017-06-02 22:50:39 +1300
+layout: post
+tags:
+- apache software foundation
+- java
+- opensource
+- programming
+title: Apache Commons Text LookupTranslator
 ---
 
 [Apache Commons Text](http://commons.apache.org/proper/commons-text/) includes several algorithms for text processing. Today's post is about one of the classes available since the 1.0 release, the [LookupTranslator](http://commons.apache.org/proper/commons-text/apidocs/org/apache/commons/text/translate/LookupTranslator.html).

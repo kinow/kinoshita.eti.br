@@ -1,13 +1,12 @@
 ---
-title: 'Cypher, Gremlin and SPARQL: Graph dialects'
-author: kinow
+date: 2014-09-09 10:14:33 +1300
+layout: post
 tags:
-    - graphs
-    - neo4j
-    - gremlin
-    - sparql
-category: 'blog'
-time: '10:14:33'
+- graphs
+- neo4j
+- gremlin
+- sparql
+title: 'Cypher, Gremlin and SPARQL: Graph dialects'
 ---
 
 When I was younger and my older brother was living in Germany, I asked him if he 

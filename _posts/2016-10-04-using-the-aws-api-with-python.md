@@ -1,11 +1,10 @@
 ---
-title: 'Using the AWS API with Python'
-author: kinow
+date: 2016-10-04 21:15:03 +1300
+layout: post
 tags:
-    - python
-    - aws
-category: 'blog'
-time: '21:15:03'
+- python
+- aws
+title: Using the AWS API with Python
 ---
 
 Amazon Web Services provides a series of cloud services. When you access the web interface, most - if not all - of the actions you do there are actually translated into API calls.

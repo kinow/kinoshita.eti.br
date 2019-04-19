@@ -1,10 +1,9 @@
 ---
-title: 'Using Requests Session Objects for web scraping'
-author: kinow
+date: 2016-11-25 01:24:03 +1300
+layout: post
 tags:
-    - python
-category: 'blog'
-time: '01:24:03'
+- python
+title: Using Requests Session Objects for web scraping
 ---
 
 I had to write a Python script some months ago, that would retrieve Solar energy

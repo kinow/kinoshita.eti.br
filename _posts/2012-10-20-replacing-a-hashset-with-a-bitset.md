@@ -1,14 +1,14 @@
 ---
-title: 'Replacing a HashSet with a BitSet'
-id: 1111
-author: kinow
-tags: 
-    - apache software foundation
-    - java
-    - opensource
-    - programming
-time: '19:51:39'
+date: 2012-10-20 19:51:39 +1300
+layout: post
+tags:
+- apache software foundation
+- java
+- opensource
+- programming
+title: Replacing a HashSet with a BitSet
 ---
+
 <p>I always read the messages in the <a href="http://www.apache.org/foundation/mailinglists.html" title="Apache mailing lists">Apache dev mailing lists</a>, including Apache Commons <a href="http://commons.apache.org/mail-lists.html" title="Apache Commons mailing lists">dev mailing list</a>. And you should too. There are always interesting discussions. Sometimes you participate, other times you only watch what's happening, but in the end <strong>you always learn something new</strong>.</p>
 
 <p>A few days ago, I found <a href="https://issues.apache.org/jira/browse/LANG-839" title="LANG-839">an issue</a> where it was being proposed to replace an unnecessary <a href="http://docs.oracle.com/javase/6/docs/api/java/util/HashSet.html" title="HashSet">HashSet</a> in <a href="http://commons.apache.org/lang/api-release/org/apache/commons/lang3/ArrayUtils.html" title="ArrayUtils">ArrayUtils</a>#removeElements() by a <a href="http://docs.oracle.com/javase/6/docs/api/java/util/BitSet.html" title="BitSet">BitSet</a>. Here's how the code looked like: </p>

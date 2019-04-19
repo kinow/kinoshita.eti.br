@@ -1,13 +1,12 @@
 ---
-title: 'Building Jenkins with Eclipse and m2e plug-in'
-id: 810
-author: kinow
-tags: 
-    - java
-    - jenkins
-category: 'jenkins'
-time: '17:50:04'
+date: 2011-09-20 17:50:04 +1300
+layout: post
+tags:
+- java
+- jenkins
+title: Building Jenkins with Eclipse and m2e plug-in
 ---
+
 <p>Yesterday I finally managed to build <a title="Jenkins" href="http://www.jenkins-ci.org">Jenkins</a> using <a title="Eclipse" href="http://www.eclipse.org/">Eclipse</a> and <a title="m2e plug-in" href="http://eclipse.org/m2e/">m2e plug-in</a>. With <a title="Eclipse Indigo" href="http://www.eclipse.org/indigo">Eclipse Indigo</a> release came a new version of the <a title="Maven" href="http://maven.apache.org">Maven</a> plug-in for Eclipse (former <a title="M2Eclipse" href="http://m2eclipse.sonatype.org/">M2Eclipse</a>), m2e. Since I started using Eclipse Indigo and this new plug-in I hadn't been able to build Jenkins in Eclipse anymore.</p>
 
 <p>I've been having a terrible fever and thought that it would be a good thing to stop playing <a href="http://www.minecraft.net" title="Minecraft">Minecraft</a> for a while and find a way to build Jenkins in Eclipse + m2e :-).</p>

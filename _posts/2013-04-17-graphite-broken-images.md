@@ -1,13 +1,12 @@
 ---
-title: 'Graphite: Broken images'
-id: 1294
-author: kinow
+date: 2013-04-17 11:36:38 +1300
+layout: post
 tags:
-    - monitoring
-    - python
-category: 'blog'
-time: '11:36:38'
+- monitoring
+- python
+title: 'Graphite: Broken images'
 ---
+
 <p>This morning I was setting up a <a href="http://graphite.wikidot.com/" title="Graphite">Graphite </a>server to collect metrics with <a href="https://github.com/etsy/statsd/" title="statsd">statsd</a>, <a href="http://logstash.net/" title="LogStash">LogStash </a>and <a href="https://github.com/jmxtrans/jmxtrans" title="jmxtrans">jmxtrans</a>. After following the instructions from @jgeurst, I've successfully installed Graphite.</p>
 
 <p>I had previously installed another test box, so I decided to take a deeper look at the settings, write a <a href="https://puppetlabs.com/" title="Puppet">puppet</a> manifest and prepare this new box to become a production server. However, after browsing the webapp, all graphs were broken.</p>

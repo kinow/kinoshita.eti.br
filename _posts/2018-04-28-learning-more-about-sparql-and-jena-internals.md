@@ -1,13 +1,13 @@
 ---
-title: Learning more about SPARQL and Jena internals
-time: '18:20:28'
-author: kinow
+date: 2018-04-28 18:20:28 +1300
+layout: post
 tags:
-    - jena
-    - apache software foundation
-    - java
-    - sparql
-    - opensource
+- jena
+- apache software foundation
+- java
+- sparql
+- opensource
+title: Learning more about SPARQL and Jena internals
 ---
 
 <p style='text-align: center;'>
@@ -39,4 +39,3 @@ while I try to improve my knowledge of SPARQL and Jena internals.
 	- Oracle post for SQL, but this part applies to SPARQL, at least terminology-wise. LHS
 	and RHS appear in [some SPARQL related tickets](https://issues.apache.org/jira/browse/JENA-1534)
 	/documentation too
-

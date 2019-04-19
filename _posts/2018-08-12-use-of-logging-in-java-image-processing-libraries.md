@@ -1,13 +1,13 @@
 ---
-title: Use of Logging in Java Image Processing libraries
-time: '17:55:44'
-author: kinow
+date: 2018-08-12 17:55:44 +1300
+layout: post
 tags:
-    - apache software foundation
-    - java
-    - apache commons
-    - image processing
-    - opensource
+- apache software foundation
+- java
+- apache commons
+- image processing
+- opensource
+title: Use of Logging in Java Image Processing libraries
 ---
 
 For [IMAGING-154](https://issues.apache.org/jira/browse/IMAGING-154) I was trying to think in a solution

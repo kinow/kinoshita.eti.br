@@ -1,12 +1,11 @@
 ---
-title: 'Writing code to integrate Java projects to Testopia'
-id: 953
-author: kinow
-tags: 
-    - java
-category: 'blog'
-time: '17:16:25'
+date: 2012-05-18 17:16:25 +1300
+layout: post
+tags:
+- java
+title: Writing code to integrate Java projects to Testopia
 ---
+
 <em>Peter Florijn</em> and I are writing a <a href="http://www.jenkins-ci.org" title="Jenkins CI">Jenkins</a> plug-in to <em>integrate several test tools into Jenkins</em>, something similar to what is done in <a href="https://wiki.jenkins-ci.org/display/JENKINS/TestLink+Plugin" title="Jenkins TestLink Plug-in">TestLink plug-in</a>. It's still an idea being explored, and the whole project is subjected to changes without warning. The code is at <a href="https://github.com/kinow/testthemall" title="https://github.com/kinow/testthemall">https://github.com/kinow/testthemall</a>.
 
 The first tool that we are integrating is not <a href="http://www.teamst.org" title="TestLink">TestLink</a>, but <a href="http://www.mozilla.org/projects/testopia/" title="Mozilla Testopia">Mozilla Testopia</a>. As part of the process to integrate these tools, many Java API's to interface the existing external APIs will be created, like it was done in TestLink with <a href="https://sourceforge.net/projects/testlinkjavaapi/" title="TestLink Java API">TestLink Java API</a>.

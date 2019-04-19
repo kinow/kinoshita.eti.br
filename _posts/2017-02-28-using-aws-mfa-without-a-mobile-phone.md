@@ -1,12 +1,11 @@
 ---
-title: 'Using AWS MFA without a mobile phone'
-author: kinow
+date: 2017-02-28 00:47:03 +1300
+layout: post
 tags:
-    - go
-    - aws
-    - security
-category: 'blog'
-time: '00:47:03'
+- go
+- aws
+- security
+title: Using AWS MFA without a mobile phone
 ---
 
 If you use AWS, the chances are that you use MFA - Multi-factor Authentication - to authenticate.

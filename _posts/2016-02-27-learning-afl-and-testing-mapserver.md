@@ -1,13 +1,12 @@
 ---
-title: 'Learning afl and testing MapServer'
-author: kinow
+date: 2016-02-27 23:21:03 +1300
+layout: post
 tags:
-    - software quality
-    - fuzzers
-    - security
-    - software quality
-category: 'blog'
-time: '23:21:03'
+- software quality
+- fuzzers
+- security
+- software quality
+title: Learning afl and testing MapServer
 ---
 
 [afl](http://lcamtuf.coredump.cx/afl/) is a fuzzer, an application that combines a series of algorithms
@@ -160,4 +159,3 @@ https://fuzzing-project.org/tutorial3.html</a></sup>
 <sup><a name="2">2</a> 
 <a href="https://www.nettitude.co.uk/fuzzing-with-american-fuzzy-lop-afl/">
 https://www.nettitude.co.uk/fuzzing-with-american-fuzzy-lop-afl/</a></sup>
-

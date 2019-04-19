@@ -1,11 +1,10 @@
 ---
-title: 'Best place to find science fiction books in New Zealand'
-author: kinow
+date: 2016-10-02 21:57:03 +1300
+layout: post
 tags:
-    - science-fiction
-    - books
-category: 'blog'
-time: '21:57:03'
+- science-fiction
+- books
+title: Best place to find science fiction books in New Zealand
 ---
 
 Since I moved to New Zealand it has been hard to find good science fiction sections in the local book stores. I really miss the Livraria Cultura at Avenida Paulista, or the Saraiva Megastores. Whitcoulls and Paper Plus do a good job, but they have very few series, only recent releases, and you do not feel that cool environment while you browse the books.

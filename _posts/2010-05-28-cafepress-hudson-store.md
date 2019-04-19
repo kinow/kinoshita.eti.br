@@ -1,12 +1,11 @@
 ---
-title: 'CafePress Hudson Store'
-id: 295
-author: kinow
-tags: 
-    - jenkins
-category: 'blog'
-time: '14:38:22'
+date: 2010-05-28 14:38:22 +1300
+layout: post
+tags:
+- jenkins
+title: CafePress Hudson Store
 ---
+
 If you use Hudson as build trigger, continuous integration system or crontab replacement, you can contribute to Hudson buying from <a title="CafePress Hudson Store" href="http://www.cafepress.com/hudson_ci/">CafePress Hudson Store</a>. I bought a polo shirt few months ago. It was my first acquisition from CafePress and I was worried about quality and the difference in sizes from US and Brazil.
 
 <div class='row'>

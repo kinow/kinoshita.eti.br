@@ -1,11 +1,10 @@
 ---
-title: 'Basic workflow of a SPARQL query in Fuseki'
-author: kinow
+date: 2014-10-11 20:36:33 +1300
+layout: post
 tags:
-    - sparql
-    - jena
-category: 'blog'
-time: '20:36:33'
+- sparql
+- jena
+title: Basic workflow of a SPARQL query in Fuseki
 ---
 
 Before using any library or tool in a customer project, specially when it is an Open Source one, 

@@ -1,14 +1,13 @@
 ---
-title: 'TDC 2011 Floripa presentation about running your tests in Jenkins'
-id: 792
-author: kinow
-tags: 
-    - software quality
-    - events
-    - jenkins
-category: 'jenkins'
-time: '03:34:46'
+date: 2011-08-25 03:34:46 +1300
+layout: post
+tags:
+- software quality
+- events
+- jenkins
+title: TDC 2011 Floripa presentation about running your tests in Jenkins
 ---
+
 <p>Last weekend I attended TDC (<a title="The Developers Conference" href="http://www.thedevelopersconference.com.br">The Developers Conference</a>) 2011 in Florian&oacute;polis, in the south of Brazil. It was my first time in Florian&oacute;polis, but the weather was cloudy and cold, so I couldn't check out one of the prettiest cities in Brazil :-( Bummer.</p>
 
 <p style="text-align: center;"><a title="The Developers Conference" href="http://www.thedevelopersconference.com.br"><img class="aligncenter size-full wp-image-793" title="banner-TDC2011-180x36" src="{{ assets.banner_TDC2011_floripapng }}" alt="" width="180" height="36" /></a></p>

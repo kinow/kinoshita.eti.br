@@ -1,13 +1,12 @@
 ---
-title: 'New version of CCM Hudson Plugin released'
-id: 454
-author: kinow
-tags: 
-    - software quality
-    - jenkins
-category: 'jenkins'
-time: '08:55:53'
+date: 2010-09-28 08:55:53 +1300
+layout: post
+tags:
+- software quality
+- jenkins
+title: New version of CCM Hudson Plugin released
 ---
+
 Yesterday I released a new version of <a title="CCM Hudson Plugin" href="http://wiki.hudson-ci.org/display/HUDSON/CCM+Plugin">CCM Hudson Plugin</a>. In this version, 1.0.1, there are two bugs fixed (7522 and 7531). For a more detailed background on these two issues check out <a title="Hudson JIRA" href="http://issues.hudson-ci.org">Hudson JIRA</a>.
 
 <div class='row'>

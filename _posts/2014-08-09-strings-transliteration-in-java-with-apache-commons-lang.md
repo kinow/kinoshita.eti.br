@@ -1,12 +1,11 @@
 ---
-title: 'Strings transliteration in Java with Apache Commons Lang'
-author: kinow
+date: 2014-08-09 12:49:33 +1300
+layout: post
 tags:
-    - java
-    - apache software foundation
-    - bioinformatics
-category: 'blog'
-time: '12:49:33'
+- java
+- apache software foundation
+- bioinformatics
+title: Strings transliteration in Java with Apache Commons Lang
 ---
 
 [Rosalind](http://rosalind.info) is a website with a curated set of exercices for bioinformatics, organized hierarchily. 

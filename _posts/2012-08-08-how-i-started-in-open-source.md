@@ -1,12 +1,11 @@
 ---
-title: 'How I started in Open Source'
-id: 968
-author: kinow
-tags: 
-    - apache software foundation
-category: 'open source'
-time: '10:18:13'
+date: 2012-08-08 10:18:13 +1300
+layout: post
+tags:
+- apache software foundation
+title: How I started in Open Source
 ---
+
 <p>I was studying at <a href="http://www.mackenzie.br" title="Mackenzie Presbyterian University">Mackenzie Presbyterian University</a> when I met <a href="http://www.ime.usp.br/~rbrito" title="Rogerio Brito">Professor Rogerio Brito</a>. Most of my friends were terrified of him. Maybe because of the class name "<em>Structured Programming I</em>". Or maybe because of what Brito taught us at class.</p>
 
 <p>My degree was in computing, <em>Bachelor in System Information</em>. Although it is related to <em>Computer Science</em>, we don't have the same classes. In Computer Science you have more math, statistics and even physics, while in System Information you have administration, strategic planning, law and others related to business.</p>

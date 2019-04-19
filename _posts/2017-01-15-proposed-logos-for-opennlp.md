@@ -1,11 +1,10 @@
 ---
-title: 'Proposed logos for OpenNLP'
-author: kinow
+date: 2017-01-15 20:42:03 +1300
+layout: post
 tags:
-    - illustrations
-    - natural language processing
-category: 'blog'
-time: '20:42:03'
+- illustrations
+- natural language processing
+title: Proposed logos for OpenNLP
 ---
 
 A couple of logos submitted to [OPENNLP-6](https://issues.apache.org/jira/browse/OPENNLP-6). Made with Inkscape, fonts from Google Fonts.

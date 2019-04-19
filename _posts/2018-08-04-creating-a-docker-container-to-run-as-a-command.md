@@ -1,11 +1,11 @@
 ---
-title: Creating a Docker container to run as a command
-time: '22:00:36'
-author: kinow
+date: 2018-08-04 22:00:36 +1300
+layout: post
 tags:
-    - cylc
-    - docker
-    - opensource
+- cylc
+- docker
+- opensource
+title: Creating a Docker container to run as a command
 ---
 
 For the past two weeks at work I have been assigned to work on PHP projects. Though I used

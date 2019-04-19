@@ -1,11 +1,10 @@
 ---
-title: 'Contributing to Apache Jena'
-author: kinow
+date: 2015-01-01 18:49:03 +1300
+layout: post
 tags:
-    - jena
-    - apache software foundation
-category: 'blog'
-time: '18:49:03'
+- jena
+- apache software foundation
+title: Contributing to Apache Jena
 ---
 
 As I mentioned in my [previous post]({% post_url 2014-10-11-basic-workflow-of-a-sparql-query-in-fuseki %}), 

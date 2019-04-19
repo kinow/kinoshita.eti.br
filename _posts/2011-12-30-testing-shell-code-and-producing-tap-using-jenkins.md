@@ -1,14 +1,13 @@
 ---
-title: 'Testing shell code and producing TAP using Jenkins?'
-id: 880
-author: kinow
-tags: 
-    - jenkins
-    - test anything protocol
-    - software quality
-category: 'jenkins'
-time: '22:41:40'
+date: 2011-12-30 22:41:40 +1300
+layout: post
+tags:
+- jenkins
+- test anything protocol
+- software quality
+title: Testing shell code and producing TAP using Jenkins?
 ---
+
 Definitely reading <a title="Hacker News" href="http://news.ycombinator.com/">Hacker News</a> before going to bed is a bad idea :-) Same goes for <a title="Reddit" href="http://www.reddit.com">Reddit</a>. So, I found a link about <a title="Bats" href="https://github.com/sstephenson/bats">Bats</a>, a tool to execute tests in Shell and output <a title="Test Anything Protocol" href="http://testanything.org">TAP</a> - Test Anything Protocol. Then I thought; why not ask the author to include Bats under the list of <a title="TAP Producers" href="http://testanything.org/wiki/index.php/TAP_Producers#SH_.2F_Shell_Script">Producers</a> in <a title="Test Anything Protocol" href="http://testanything.org">testanything.org</a>?
 
 But you know what? Why not execute execute locally first to check if that's working... moreover, why not use <a title="Jenkins TAP Plug-in" href="https://wiki.jenkins-ci.org/display/JENKINS/TAP+Plugin">Jenkins TAP Plug-in</a> and see what happens?

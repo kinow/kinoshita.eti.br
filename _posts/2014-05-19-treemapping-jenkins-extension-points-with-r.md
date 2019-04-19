@@ -1,11 +1,10 @@
 ---
-title: 'Treemapping Jenkins Extension Points with R'
-author: kinow
+date: 2014-05-19 00:51:33 +1300
+layout: post
 tags:
-    - jenkins
-    - r
-category: 'blog'
-time: '00:51:33'
+- jenkins
+- r
+title: Treemapping Jenkins Extension Points with R
 ---
 
 I have been playing with R and its packages for some time, and decided to study it a 

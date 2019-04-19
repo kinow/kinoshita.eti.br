@@ -1,12 +1,12 @@
 ---
-title: "When you don't realize you need a Comparable"
-author: kinow
-tags: 
-    - apache software foundation
-    - java
-    - opensource
-    - programming
-time: '23:07:39'
+date: 2017-05-15 23:07:39 +1300
+layout: post
+tags:
+- apache software foundation
+- java
+- opensource
+- programming
+title: When you don't realize you need a Comparable
 ---
 
 [In 2012, I wrote]({% post_url 2012-10-20-replacing-a-hashset-with-a-bitset %}) about how you always learn something

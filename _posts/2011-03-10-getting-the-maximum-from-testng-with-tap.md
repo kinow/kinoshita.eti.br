@@ -1,14 +1,13 @@
 ---
-title: 'Getting the maximum from TestNG with TAP'
-id: 536
-author: kinow
-tags: 
-    - test anything protocol
-    - java
-    - software quality
-category: 'blog'
-time: '01:24:38'
+date: 2011-03-10 01:24:38 +1300
+layout: post
+tags:
+- test anything protocol
+- java
+- software quality
+title: Getting the maximum from TestNG with TAP
 ---
+
 <p>Strangely enough, today I decided start to write about <a href="http://www.testanything.org">TAP</a> (Test Anything Protocol) and received a mail from a <a href="http://www.linkedin.com">Linkedin</a> Group with a white paper about data integration in information systems. Well, let me first explain what is TAP, or Test Anything Protocol. This protocol was created in the beginning of Perl to log test results and is still being used by Perl and other languages (<a href="https://github.com/sebastianbergmann/phpunit/">PHPUnit</a> can output TAP too, for instance).</p>
 
 <p>Now, if you already know about TAP and YAML, or if you are like me and like trying things out before reading a long text, then go to the <a href="#hammertime">hands on part</a> of this post.</p>

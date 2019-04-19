@@ -1,11 +1,10 @@
 ---
-title: 'Revamping Frege logo'
-author: kinow
+date: 2016-08-16 23:54:03 +1300
+layout: post
 tags:
-    - programming
-    - illustrations
-category: 'blog'
-time: '23:54:03'
+- programming
+- illustrations
+title: Revamping Frege logo
 ---
 
 For a while I had been wanting to try adding a flat colour to the Frege

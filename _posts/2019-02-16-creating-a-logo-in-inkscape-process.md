@@ -1,12 +1,12 @@
 ---
-title: Creating a logo in Inkscape - process
-time: '22:25:43'
-author: kinow
+date: 2019-02-16 22:25:43 +1300
+layout: post
 tags:
-    - inkscape
-    - apache software foundation
-    - opensource
-    - illustrations
+- inkscape
+- apache software foundation
+- opensource
+- illustrations
+title: Creating a logo in Inkscape - process
 ---
 
 This weekend I spent some computer time not writing or reading code,

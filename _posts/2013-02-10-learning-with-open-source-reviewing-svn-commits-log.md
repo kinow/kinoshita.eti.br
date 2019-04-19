@@ -1,14 +1,13 @@
 ---
-title: 'Learning with Open Source: Reviewing SVN commits log'
-id: 1270
-author: kinow
+date: 2013-02-10 13:02:45 +1300
+layout: post
 tags:
-    - apache software foundation
-    - functional programming
-    - java
-category: 'open source'
-time: '13:02:45'
+- apache software foundation
+- functional programming
+- java
+title: 'Learning with Open Source: Reviewing SVN commits log'
 ---
+
 <p>Last year I became an <a href="http://www.apache.org" title="Apache">Apache</a> committer, and dedicated most of my time learning the <a href="http://incubator.apache.org/learn/theapacheway.html" title="The Apache Way">Apache way</a>, reading different mailing lists and getting used to the things a committer is supposed to know (voting process, keeping everything in the mailing list, and so it goes) and getting used to <a href="http://commons.apache.org/functor" title="Apache Commons Functor">[functor]</a> API.</p>
 
 <p>In 2013 I hope I can help in the release of [functor], since Java and <a href="http://reddit.com/r/functionalprogramming">functional programming</a> are getting a lot more of attention recently, probably due to the <a href="http://openjdk.java.net/projects/lambda/" title="Project Lambda">project lambda</a>. But I also want to start contributing with the other components from commons (like <a href="http://commons.apache.org/math/" title="Apache Commons Math">math</a>, <a href="http://commons.apache.org/io/" title="Apache Commons IO">io</a>, <a href="http://commons.apache.org/jcs/" title="Apache Commons JCS">jcs</a>) and other top level projects (<a href="http://hadoop.apache.org/" title="Apache Hadoop">hadoop</a>, <a href="http://nutch.apache.org/" title="Apache Nutch">nutch</a>, <a href="http://lucene.apache.org/" title="Apache Lucene">lucene</a>).</p>

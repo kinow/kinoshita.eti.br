@@ -1,12 +1,11 @@
 ---
-title: 'Performance problems in Jenkins TAP Plug-in &mdash; part 1'
-author: kinow
+date: 2016-09-03 23:28:03 +1300
+layout: post
 tags:
-    - programming
-    - jenkins
-    - software quality
-category: 'blog'
-time: '23:28:03'
+- programming
+- jenkins
+- software quality
+title: Performance problems in Jenkins TAP Plug-in &mdash; part 1
 ---
 
 [JENKINS-17887](https://issues.jenkins-ci.org/browse/JENKINS-17887) reports performance problems in the [Jenkins TAP Plug-in](https://wiki.jenkins-ci.org/display/JENKINS/TAP+Plugin). It also lists a series of suggestions on how to improve the Jenkins TAP Plug-in performance. On this initial post, we will get a general idea of how the plug-in performs for large projects.

@@ -1,10 +1,9 @@
 ---
-title: 'Drawing vector art: Kumamoto Kenjinkai mascot'
-author: kinow
+date: 2016-04-19 21:39:03 +1300
+layout: post
 tags:
-    - illustrations
-category: 'blog'
-time: '21:39:03'
+- illustrations
+title: 'Drawing vector art: Kumamoto Kenjinkai mascot'
 ---
 
 <div class='row'>
@@ -15,4 +14,3 @@ time: '21:39:03'
 
 
 For Brazilian Kumamoto Kenjinkai. Done with Macromedia Freehand MX, some long time ago.
-

@@ -1,11 +1,10 @@
 ---
-title: 'Content negotiation with Spring Boot and React'
-author: kinow
+date: 2016-11-07 20:07:03 +1300
+layout: post
 tags:
-    - java
-    - spring
-category: 'blog'
-time: '20:07:03'
+- java
+- spring
+title: Content negotiation with Spring Boot and React
 ---
 
 A few days ago I had a bug in a system built with Spring Boot and React. The frontend application

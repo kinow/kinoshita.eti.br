@@ -1,10 +1,9 @@
 ---
-title: 'Writing a custom SchemaSpy command for Laravel 4'
-author: kinow
+date: 2014-02-11 13:15:33 +1300
+layout: post
 tags:
-    - php
-category: 'blog'
-time: '13:15:33'
+- php
+title: Writing a custom SchemaSpy command for Laravel 4
 ---
 
 This week I had to write my first custom command for [Laravel 4](http://laravel.com/). 

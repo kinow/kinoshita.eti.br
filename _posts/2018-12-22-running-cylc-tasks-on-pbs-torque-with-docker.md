@@ -1,13 +1,13 @@
 ---
-title: Running Cylc tasks on PBS Torque with Docker
-time: '11:32:28'
-author: kinow
+date: 2018-12-22 11:32:28 +1300
+layout: post
 tags:
-    - cylc
-    - python
-    - pbs
-    - hpc
-    - docker
+- cylc
+- python
+- pbs
+- hpc
+- docker
+title: Running Cylc tasks on PBS Torque with Docker
 ---
 
 A few days ago I saw [a post](https://groups.google.com/forum/#!topic/cylc/dP2I1Gxqi20) at the

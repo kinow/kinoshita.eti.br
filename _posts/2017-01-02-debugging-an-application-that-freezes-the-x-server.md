@@ -1,13 +1,12 @@
 ---
-title: 'Debugging an application that freezes the X server'
-author: kinow
+date: 2017-01-02 00:39:03 +1300
+layout: post
 tags:
-    - c++
-    - krita
-    - opensource
-    - programming
-category: 'blog'
-time: '00:39:03'
+- c++
+- krita
+- opensource
+- programming
+title: Debugging an application that freezes the X server
 ---
 
 Some time ago, I decided to start writing C++ again, and picked Krita for that.

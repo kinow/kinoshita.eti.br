@@ -1,10 +1,9 @@
 ---
-title: 'Checking the operating system type in shell script'
-author: kinow
+date: 2016-11-05 23:27:03 +1300
+layout: post
 tags:
-    - shell script
-category: 'blog'
-time: '23:27:03'
+- shell script
+title: Checking the operating system type in shell script
 ---
 
 Last week I learned about a tool called [ShellCheck](https://github.com/koalaman/shellcheck), a tool

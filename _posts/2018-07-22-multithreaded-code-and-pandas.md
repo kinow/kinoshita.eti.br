@@ -1,11 +1,11 @@
 ---
-title: Multithreaded code and Pandas
-time: '13:22:14'
-author: kinow
+date: 2018-07-22 13:22:14 +1300
+layout: post
 tags:
-    - python
-    - pandas
-    - opensource
+- python
+- pandas
+- opensource
+title: Multithreaded code and Pandas
 ---
 
 <a href="https://www.deviantart.com/kinow/art/Woman-looking-01-743551195"><img style="float: left; height: 300px;" class="ui image" src="/assets/posts{{page.path | remove: ".md" | remove: "_posts" }}/woman-looking-01.png" alt="Woman looking" /></a>

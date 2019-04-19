@@ -1,12 +1,11 @@
 ---
-title: 'Fix laggy Flash (Pepper) in Chrome'
-id: 1291
-author: kinow
+date: 2013-03-31 11:32:10 +1300
+layout: post
 tags:
-    - linux
-category: 'blog'
-time: '11:32:10'
+- linux
+title: Fix laggy Flash (Pepper) in Chrome
 ---
+
 <p>My chrome died twice this morning. Checking the system logs I found some segmentation errors. Since it was not so recent version, I updated to the latest version of Chrome. But after that my Flash player was laggy/slowly, and I couldn't listen to <a href="http://tunein.com/radio/Live-Ireland-Channel-1-s17895/#" title="Live Ireland Channel 1">Live Ireland Channel 1</a> no more :-( (I listen to either this radio or r/electrohouse on reddit.tv while I'm programming... I know, I'm a bit weird).</p>
 
 <p>If you are having the same problem, here's the list of actions that I did to fix it.</p>

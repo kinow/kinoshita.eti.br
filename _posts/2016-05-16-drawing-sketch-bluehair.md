@@ -1,10 +1,9 @@
 ---
-title: 'Drawing sketch: Blue Hair'
-author: kinow
+date: 2016-05-16 11:13:03 +1300
+layout: post
 tags:
-    - illustrations
-category: 'blog'
-time: '11:13:03'
+- illustrations
+title: 'Drawing sketch: Blue Hair'
 ---
 
 <div class='row'>

@@ -1,10 +1,10 @@
 ---
-title: "Natural Language Processing and Natural Language Understanding"
-author: kinow
-tags: 
-    - natural language processing
-    - programming
-time: '12:30:39'
+date: 2017-06-03 12:30:39 +1300
+layout: post
+tags:
+- natural language processing
+- programming
+title: Natural Language Processing and Natural Language Understanding
 ---
 
 I used [**Natural Language Processing**](https://en.wikipedia.org/wiki/Natural_language_processing) (NLP) tools in a few projects in the past years. But only recently, while involved with a [chatbot](https://en.wikipedia.org/wiki/Chatbot) project, I noticed the term [**Natural Language Understanding**](https://en.wikipedia.org/wiki/Natural_language_understanding) (NLU).

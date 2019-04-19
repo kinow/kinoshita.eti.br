@@ -1,11 +1,11 @@
 ---
-title: A couple of class diagrams of JupyterHub
-time: '21:43:44'
-author: kinow
+date: 2018-10-06 21:43:44 +1300
+layout: post
 tags:
-    - python
-    - jupyterhub
-    - opensource
+- python
+- jupyterhub
+- opensource
+title: A couple of class diagrams of JupyterHub
 ---
 
 Started on a new project last Monday. One of the tasks in this project involves a new design
@@ -35,4 +35,3 @@ I enjoyed the parts of the code and the part of the system design that I could r
 But that's all for now, until I have more time to learn more about the project and the code.
 
 _p.s. there are spawners and other implementation classes in other GitHub repositories... so a more complete diagram may come later on_
-

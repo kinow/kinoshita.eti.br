@@ -1,14 +1,13 @@
 ---
-title: 'Using Apache Commons Functor functional interfaces with Java 8 lambdas'
-id: 1217
-author: kinow
+date: 2012-12-21 15:08:14 +1300
+layout: post
 tags:
-    - apache software foundation
-    - java
-    - functional programming
-time: '15:08:14'
-category: 'functional programming'
+- apache software foundation
+- java
+- functional programming
+title: Using Apache Commons Functor functional interfaces with Java 8 lambdas
 ---
+
 <p><a href='http://commons.apache.org/sandbox/functor/'>Apache Commons Functor</a> (hereon [functor]) is an <a href='http://commons.apache.org/'>Apache Commons</a> component that provides a functional programming API and several patterns implemented (visitor, generator, aggregator, etc). <a href="http://openjdk.java.net/projects/lambda/" title="Java 8 lambda">Java 8</a> has several nice new features, including lambda expressions and <a href="http://datumedge.blogspot.com.br/2012/06/java-8-lambdas.html">functional interfaces</a>. In Java 8, lambdas or lambdas expressions are <a href="http://tronicek.blogspot.com.br/2007/12/closures-closure-is-form-of-anonymous_28.html">closures</a> that can be evaluated and behave like anonymous methods.</p>
 
 <p>Functional interfaces are interfaces with only one method. These interfaces can be used in lambdas and save you a lot of time from writing anonymous classes or even implementing the interfaces. [functor] provides several functional interfaces (thanks to <a href="https://issues.apache.org/jira/browse/FUNCTOR-20">Matt Benson</a>). It hasn't been released yet, but there are some new examples in the project site, in the <a href="http://svn.apache.org/viewvc/commons/proper/functor/trunk/" title="[functor] SVN trunk">trunk of the SVN</a>. I will use one of these examples to show how [functor] functional interfaces can be used in conjunction with Java 8 lambdas.</p>

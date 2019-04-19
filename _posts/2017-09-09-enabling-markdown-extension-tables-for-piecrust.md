@@ -1,11 +1,11 @@
 ---
+date: 2017-09-09 20:35:01 +1300
+layout: post
+tags:
+- programming
+- python
+- opensource
 title: Enabling Markdown Extension Tables For Piecrust
-time: '20:35:01'
-author: kinow
-tags: 
-    - programming
-    - python
-    - opensource
 ---
 
 [PieCrust](https://github.com/ludovicchabant/PieCrust2) is a Python static site generator.

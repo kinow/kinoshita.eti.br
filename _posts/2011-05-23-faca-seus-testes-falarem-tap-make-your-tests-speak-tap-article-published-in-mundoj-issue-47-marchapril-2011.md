@@ -1,14 +1,14 @@
 ---
-title: 'Faça seus Testes Falarem TAP (Make your Tests Speak TAP) article published in MundoJ, issue 47, March/April 2011'
-id: 657
-author: kinow
+date: 2011-05-23 19:19:04 +1300
+layout: post
 tags:
-    - test anything protocol
-    - software quality
-    - articles
-category: 'articles'
-time: '19:19:04'
+- test anything protocol
+- software quality
+- articles
+title: Faça seus Testes Falarem TAP (Make your Tests Speak TAP) article published
+  in MundoJ, issue 47, March/April 2011
 ---
+
 This is my first article for a Brazilian magazine! :-D It was published in this month's issue of <a href="http://www.mundoj.com.br">MundoJ</a> magazine (previously called MundoJava).
 
 <p style="text-align: center;"><a href="{{ assets.ed47p }}"><img class="size-full wp-image-659 center" title="MundoJ issue 47" src="{{ assets.ed47p }}" alt="" width="99" height="130" /></a></p>

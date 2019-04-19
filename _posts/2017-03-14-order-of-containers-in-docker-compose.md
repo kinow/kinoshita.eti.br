@@ -1,10 +1,9 @@
 ---
-title: 'Order of containers in Docker Compose'
-author: kinow
+date: 2017-03-14 21:22:03 +1300
+layout: post
 tags:
-    - docker
-category: 'blog'
-time: '21:22:03'
+- docker
+title: Order of containers in Docker Compose
 ---
 
 In Docker Compose you are able to control the startup order of the containers via

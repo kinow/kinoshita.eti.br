@@ -1,12 +1,11 @@
 ---
-title: 'Reasons for having pt and pt-BR in a software'
-author: kinow
+date: 2016-07-17 14:14:03 +1300
+layout: post
 tags:
-    - skosmos
-    - translation
-    - semantic web
-category: 'blog'
-time: '14:14:03'
+- skosmos
+- translation
+- semantic web
+title: Reasons for having pt and pt-BR in a software
 ---
 
 Some time ago I found some spare time to work on a different Open Source project:

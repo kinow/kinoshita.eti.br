@@ -1,15 +1,15 @@
 ---
-title: 'Encontro Ágil 2010 - Lighting talk about Test Automation with TestLink and Hudson'
-id: 484
-author: kinow
-tags: 
-    - jenkins
-    - testlink
-    - software quality
-    - presentations
-category: 'jenkins'
-time: '11:45:09'
+date: 2010-11-02 11:45:09 +1300
+layout: post
+tags:
+- jenkins
+- testlink
+- software quality
+- presentations
+title: Encontro Ágil 2010 - Lighting talk about Test Automation with TestLink and
+  Hudson
 ---
+
 On November 6th (next Saturday) <a title="Anderson Santos" href="http://andersonxp.tumblr.com/">Anderson Santos</a> and I will present a Test Automation solution built on <a title="TestLink" href="http://www.teamst.org/">TestLink</a> and <a title="Hudson" href="http://www.hudson-ci.org">Hudson</a> at <a title="Encontro &Aacute;gil 2010" href="http://www.encontroagil.com.br/">Encontro &Aacute;gil 2010</a>. This meeting is for intended for the Agile community and will be hold at <a title="IME-USP" href="www.ime.usp.br">IME-USP</a> (Instituto de Matem&aacute;tica e Estat&iacute;stica - Universidade de S&aacute;o Paulo).
 
 <hr class="space" />

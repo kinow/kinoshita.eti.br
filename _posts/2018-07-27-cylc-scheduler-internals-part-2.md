@@ -1,11 +1,11 @@
 ---
-title: Cylc Scheduler Internals - Part 2
-time: '00:25:37'
-author: kinow
+date: 2018-07-27 00:25:37 +1300
+layout: post
 tags:
-    - cylc
-    - python
-    - opensource
+- cylc
+- python
+- opensource
+title: Cylc Scheduler Internals - Part 2
 ---
 
 This is part 2, in a series of posts about [Cylc](https://cylc.github.io/cylc)
@@ -31,4 +31,3 @@ This is also where the **contact file** is created, as well as the HTTP server.
 
 You can download the <a href="/assets/posts{{page.path | remove: ".md" | remove: "_posts" }}/cylc-scheduler_configure-src.png">source file</a> for the diagram used in this post, and edit it
 with [draw.io](https://draw.io).
-

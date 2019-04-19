@@ -1,10 +1,10 @@
 ---
-title: What the weather forecast looks like in Sao Paulo, Brazil
-time: '19:34:11'
-author: kinow
+date: 2018-10-25 19:34:11 +1300
+layout: post
 tags:
-    - numerical weather forecast
-    - weather forecast
+- numerical weather forecast
+- weather forecast
+title: What the weather forecast looks like in Sao Paulo, Brazil
 ---
 
 I grew up watching the weather forecast in Sao Paulo, Brazil. Where it is

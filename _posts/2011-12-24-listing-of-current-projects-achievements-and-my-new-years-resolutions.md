@@ -1,12 +1,11 @@
 ---
-title: 'Listing of current projects, achievements and my New Year''s resolutions'
-id: 873
-author: kinow
-tags: 
-    - testlink
-category: 'blog'
-time: '14:08:56'
+date: 2011-12-24 14:08:56 +1300
+layout: post
+tags:
+- testlink
+title: Listing of current projects, achievements and my New Year's resolutions
 ---
+
 Tis' the end of 2011! Yay! Throughout this year I've heard people repeatedly saying that I had too much on my plate, and that I should quit some projects, stop giving talks, start surfing again amongst other things. Now, looking back, although I'm quite happy with my achievements in 2011, I can see their point.
 
 In 2010 I started working as Software Quality Engineer with <a title="Anderson Santos" href="http://andersonxp.tumblr.com/">Anderson Santos</a>. He was the greatest supporter of many of my ideas, so although we stopped working together in 2011, I'm still grateful to him for all he taught, for his advices and for spending some time guiding me.

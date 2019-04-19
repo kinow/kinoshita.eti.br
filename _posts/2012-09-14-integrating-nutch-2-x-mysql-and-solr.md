@@ -1,12 +1,12 @@
 ---
-title: 'Integrating Nutch 2.x, MySQL and Solr'
-id: 991
-author: kinow
-tags: 
-    - apache software foundation
-    - web crawling
-time: '00:02:31'
+date: 2012-09-14 00:02:31 +1300
+layout: post
+tags:
+- apache software foundation
+- web crawling
+title: Integrating Nutch 2.x, MySQL and Solr
 ---
+
 <p>Right now we are working on a new project using <a href="http://nutch.apache.org" title="Apache Nutch">Apache Nutch</a> 2.x, <a href="http://hadoop.apache.org" title="Apache Hadoop">Apache Hadoop</a>, <a href="http://solr.apache.org" title="Apache Solr">Apache Solr</a> 4 and a lot of other cool tools/modules/API's/etc. After following the instructions found on <a href="http://nlp.solutions.asia/?p=180" title="http://nlp.solutions.asia/?p=180">http://nlp.solutions.asia/?p=180</a>, I've successfully connected Apache Nutch, MySQL and Apache Solr.</p>
 
 <p><img src="{{ assets.mysql_hadoop_solr_nutch }}" alt="mysql_hadoop_solr_nutch" title="mysql_hadoop_solr_nutch" width="800" class="aligncenter size-medium wp-image-994" /></p>

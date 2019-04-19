@@ -1,12 +1,11 @@
 ---
-title: 'Jacobe Maven Plugin'
-id: 461
-author: kinow
-tags: 
-    - java
-category: 'blog'
-time: '16:43:25'
+date: 2010-09-29 16:43:25 +1300
+layout: post
+tags:
+- java
+title: Jacobe Maven Plugin
 ---
+
 When I started working in the <a title="TestLink java api" href="http://code.google.com/p/testlink-api-java-client/">TestLink java api</a> with Daniel Padilla, he mentioned in some of his mails a tool called Jacobe. After I googled for this tool I found it in <a title="TIOBE" href="http://www.tiobe.com">TIOBE</a>'s website. <a title="TIOBE Jacobe" href="http://www.tiobe.com/index.php/content/products/jacobe/Jacobe.html">Jacobe</a> is a tool of TIOBE that beautifies your Java code, according to some rules that you can specify in one configuration file.
 
 This is what Jacobe does, basically.

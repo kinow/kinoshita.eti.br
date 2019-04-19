@@ -1,13 +1,12 @@
 ---
-title: 'A quick view on Wordpress, Mantis and Jenkins plug-in API'
-id: 1130
-author: kinow
+date: 2012-10-25 08:49:36 +1300
+layout: post
 tags:
-    - jenkins
-    - testlink
-category: 'blog'
-time: '08:49:36'
+- jenkins
+- testlink
+title: A quick view on Wordpress, Mantis and Jenkins plug-in API
 ---
+
 <p>I'm preparing a <em>plug-in API proposal for <a href="http://www.teamst.org" title="TestLink">TestLink</a></em>, and thought that the best way to learn how to write a good plug-in API would be by looking at other application's plug-in API's.</p>
 
 <p style="text-align: center"><img src="{{ assets.testlink_logo_2}} " alt="" title="TestLink" width="283" height="170" class="aligncenter size-full wp-image-1153" /></p>

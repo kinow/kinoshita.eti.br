@@ -1,12 +1,12 @@
 ---
-title: 'Too many SQL variables exception in Graphite with SQLite3'
-author: kinow
+date: 2013-07-04 13:54:53 +1300
+layout: post
 tags:
-    - monitoring
-    - python
-category: 'blog'
-time: '13:54:53'
+- monitoring
+- python
+title: Too many SQL variables exception in Graphite with SQLite3
 ---
+
 Having run [Graphite](http://graphite.wikidot.com/) for a while, today I found a rather annoying issue. We were using 
 [events](https://code.launchpad.net/~lucio.torre/graphite/add-events/+merge/69142), and everything was working perfectly fine so far. But for the 24 last hours, 
 the graph was blank. 

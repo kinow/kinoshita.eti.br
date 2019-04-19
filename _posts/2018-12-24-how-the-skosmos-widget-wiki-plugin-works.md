@@ -1,12 +1,12 @@
 ---
-title: How the Skosmos Widget Wiki plugin works
-time: '15:43:43'
-author: kinow
+date: 2018-12-24 15:43:43 +1300
+layout: post
 tags:
-    - php
-    - skosmos
-    - semantic web
-    - vocabulary server
+- php
+- skosmos
+- semantic web
+- vocabulary server
+title: How the Skosmos Widget Wiki plugin works
 ---
 
 Skosmos can be extended through plugins, or widgets (a widget is a plugin for Skosmos).

@@ -1,12 +1,11 @@
 ---
-title: 'Deploying WAR files to Tomcat with Jenkins'
-author: kinow
+date: 2016-03-20 15:29:03 +1300
+layout: post
 tags:
-    - jenkins
-    - tomcat
-    - docker
-category: 'blog'
-time: '15:29:03'
+- jenkins
+- tomcat
+- docker
+title: Deploying WAR files to Tomcat with Jenkins
 ---
 
 **Table of Contents**

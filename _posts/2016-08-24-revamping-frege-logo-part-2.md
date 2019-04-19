@@ -1,11 +1,10 @@
 ---
-title: 'Revamping Frege logo &mdash; part 2'
-author: kinow
+date: 2016-08-24 23:54:03 +1300
+layout: post
 tags:
-    - programming
-    - illustrations
-category: 'blog'
-time: '23:54:03'
+- programming
+- illustrations
+title: Revamping Frege logo &mdash; part 2
 ---
 
 Last time I used Blender was around 2007 I think, in University. But the bad weather in

@@ -1,12 +1,11 @@
 ---
+date: 2011-06-15 23:35:08 +1300
+layout: post
+tags:
+- perl
 title: 'Why am I learning Perl? '
-id: 737
-author: kinow
-tags: 
-    - perl
-category: 'blog'
-time: '23:35:08'
 ---
+
 Last month I attended the <a title="II Sao Paulo Perl Workshop" href="http://www.perlworkshop.com.br">II Sao Paulo Perl Workshop</a>, where I had the privilege of learning with the great talks performed by <a title="Bryan D Foy" href="http://www252.pair.com/~comdog/">bryan d foy</a>, <a title="Brad FitzPatrick" href="http://bradfitz.com/">Brad FitzPatrick</a> and <a title="Larry Wall" href="http://www.wall.org/~larry/">Larry Wall</a>. For being a Java programmer, you can imagine how lost I was feeling there.
 
 The first programming language that I had contact with was Perl. I was a 16 years old <a title="Slackware Linux" href="http://www.slackware.com">Slackware</a> aficionado at that time, and was dying to have a web site with a guestbook . We did not have any cheap hosting services in Brazil that offered a <a title="PHP" href="http://www.php.net">PHP</a> environment, but there were few companies that offered a free host with ads, and with Perl. I don't remember which script I used, only that I found it in <a title="HotScripts.com" href="http://www.hotscripts.com">HotScripts.com</a> and that it stored the guestbook entries in disk. Now, ten years after, here I am playing with Perl again! :-D

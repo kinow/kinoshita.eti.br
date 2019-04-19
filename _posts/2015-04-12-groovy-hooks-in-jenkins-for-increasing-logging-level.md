@@ -1,11 +1,10 @@
 ---
-title: 'Groovy Hooks in Jenkins for increasing logging level'
-author: kinow
+date: 2015-04-12 11:30:03 +1300
+layout: post
 tags:
-    - jenkins
-    - groovy
-category: 'blog'
-time: '11:30:03'
+- jenkins
+- groovy
+title: Groovy Hooks in Jenkins for increasing logging level
 ---
 
 Yesterday, while debugging a problem we had in the [BioUno](http://biouno.org) update center, 

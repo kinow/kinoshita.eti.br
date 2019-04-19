@@ -1,10 +1,9 @@
 ---
-title: 'Plotting Auckland with OSMnx'
-author: kinow
+date: 2017-01-05 10:39:03 +1300
+layout: post
 tags:
-    - gis
-category: 'blog'
-time: '10:39:03'
+- gis
+title: Plotting Auckland with OSMnx
 ---
 
 <div class='row'>

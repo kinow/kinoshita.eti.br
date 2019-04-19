@@ -1,10 +1,9 @@
 ---
-title: 'Some Linux commands I used this week'
-author: kinow
+date: 2016-05-06 23:26:03 +1300
+layout: post
 tags:
-    - linux
-category: 'blog'
-time: '23:26:03'
+- linux
+title: Some Linux commands I used this week
 ---
 
 These are some commands I used on Linux servers this week. Adding them here in case someone else

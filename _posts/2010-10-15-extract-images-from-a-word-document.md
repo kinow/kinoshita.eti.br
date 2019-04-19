@@ -1,12 +1,11 @@
 ---
-title: 'Extract images from a Word document'
-id: 481
-author: kinow
-tags: 
-    - visual basic
-category: 'blog'
-time: '16:10:26'
+date: 2010-10-15 16:10:26 +1300
+layout: post
+tags:
+- visual basic
+title: Extract images from a Word document
 ---
+
 Some time ago I was asked by my boss to get all the images out of a Word document and save them in a separated directory. In this <a title="Extract images from word" href="http://www.gmayor.com/extract_images_from_word.htm">site</a> the author gives you several different ways of extracting images from a Word document. However what I wanted was a quick and dirt way of having these images extracted without macros or having to open and save the document in HTML format.
 
 So I wrote this quick and dirt word images extractor. It has two versions, one where you need to pass the .doc file as parameter and another one that gives you an input dialog box to point out where is the file. You can get the VBScripts from <a title="http://github.com/kinow/word-images-extractor" href="http://github.com/kinow/word-images-extractor">http://github.com/kinow/word-images-extractor</a>.

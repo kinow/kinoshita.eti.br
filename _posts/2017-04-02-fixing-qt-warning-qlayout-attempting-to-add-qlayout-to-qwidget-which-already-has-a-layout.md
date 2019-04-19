@@ -1,13 +1,13 @@
 ---
-title: 'Fixing Qt warning "QLayout: Attempting to add QLayout "" to QWidget "", which already has a layout"'
-author: kinow
+date: 2017-04-02 12:01:03 +1300
+layout: post
 tags:
-    - c++
-    - krita
-    - programming
-    - opensource
-category: 'blog'
-time: '12:01:03'
+- c++
+- krita
+- programming
+- opensource
+title: 'Fixing Qt warning "QLayout: Attempting to add QLayout "" to QWidget "", which
+  already has a layout"'
 ---
 
 If you ever started Krita 3.x in your command line, and had a look at the console output,

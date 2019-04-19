@@ -1,12 +1,11 @@
 ---
-title: 'Using Google Natural Language API in an AWS Elastic Beanstalk application'
-author: kinow
+date: 2017-03-15 13:18:03 +1300
+layout: post
 tags:
-    - aws
-    - natural language processing
-    - google-cloud
-category: 'blog'
-time: '13:18:03'
+- aws
+- natural language processing
+- google-cloud
+title: Using Google Natural Language API in an AWS Elastic Beanstalk application
 ---
 
 Besides providing an API for users and developers, Google also provides a series of

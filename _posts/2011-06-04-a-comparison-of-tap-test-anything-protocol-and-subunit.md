@@ -1,12 +1,10 @@
 ---
-title: 'A comparison of TAP (Test Anything Protocol) and SubUnit'
-id: 654
-author: kinow
-tags: 
-    - test anything protocol
-    - software quality
-category: 'blog'
-time: '02:04:45'
+date: 2011-06-04 02:04:45 +1300
+layout: post
+tags:
+- test anything protocol
+- software quality
+title: A comparison of TAP (Test Anything Protocol) and SubUnit
 ---
 
 <p>
@@ -249,4 +247,3 @@ Python Package Index for python-subunit 0.0.6,
 <a href="http://en.wikipedia.org/wiki/Perl#History">http://en.wikipedia.org/wiki/Perl#History</a>
 * automake - Interfacing with a test protocol like TAP or subunit (GSoC)
 <a href="http://www.google-melange.com/gsoc/proposal/review/google/gsoc2011/slattarini/1">http://www.google-melange.com/gsoc/proposal/review/google/gsoc2011/slattarini/1</a>
-

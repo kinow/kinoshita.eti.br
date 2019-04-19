@@ -1,10 +1,9 @@
 ---
-title: 'Drawing sketch: Uh!'
-author: kinow
+date: 2016-12-19 19:40:03 +1300
+layout: post
 tags:
-    - illustrations
-category: 'blog'
-time: '19:40:03'
+- illustrations
+title: 'Drawing sketch: Uh!'
 ---
 
 Sketch.

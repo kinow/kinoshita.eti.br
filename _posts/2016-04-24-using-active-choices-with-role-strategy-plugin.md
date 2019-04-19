@@ -1,10 +1,9 @@
 ---
-title: 'Using Active Choices with Role Strategy Plug-in'
-author: kinow
+date: 2016-04-24 16:05:03 +1300
+layout: post
 tags:
-    - jenkins
-category: 'blog'
-time: '16:05:03'
+- jenkins
+title: Using Active Choices with Role Strategy Plug-in
 ---
 
 Having worked in Open Source for a few years, one of my favorite things is when you can

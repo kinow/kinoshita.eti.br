@@ -1,12 +1,11 @@
 ---
-title: 'Invoking Testopia XML-RPC or JSON methods using Java'
-id: 983
-author: kinow
-tags: 
-    - java
-category: 'blog'
-time: '16:08:09'
+date: 2012-09-09 16:08:09 +1300
+layout: post
+tags:
+- java
+title: Invoking Testopia XML-RPC or JSON methods using Java
 ---
+
 <p>Most <a href="http://www.teamst.org" title="TestLink">TestLink</a> [1] users are aware that there is an external API, maybe for the external API token being displayed in the user profile section. Today after a meeting with <a href="http://twitter.com/peterflorijn" title="Peter Florijn">Peter Florijn</a> [2], I realized that the same may not be true for <a href="http://www.mozilla.org/projects/testopia/" title="Testopia">Testopia</a>  [3] users.</p>
 
 <p>I am quite new to Testopia, and there are many features that I haven't used yet. But if I understand it correctly, the database is interfaced by several Perl scripts that are, by its turns, exposed as Web Service (most of them). The web services are available via a JSON and a XML-RPC API (what is very useful, TestLink supports supports only XML-RPC).</p>

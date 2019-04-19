@@ -1,12 +1,12 @@
 ---
-title: "How to remove the signature from e-mails with NLP?"
-author: kinow
-tags: 
-    - python
-    - programming
-    - natural language processing
-    - opensource
-time: '13:59:33'
+date: 2017-06-14 13:59:33 +1300
+layout: post
+tags:
+- python
+- programming
+- natural language processing
+- opensource
+title: How to remove the signature from e-mails with NLP?
 ---
 
 Some time ago I stumbled across [EmailParser](https://github.com/mynameisvinn/EmailParser), a Python utility to remove e-mail signatures. Here's a sample input e-mail from the project documentation.

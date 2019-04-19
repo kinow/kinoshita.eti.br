@@ -1,12 +1,12 @@
 ---
-title: "Backward compatibility and switch statement with constant expressions"
-author: kinow
-tags: 
-    - java
-    - programming
-    - apache software foundation
-    - opensource
-time: '17:35:39'
+date: 2017-06-10 17:35:39 +1300
+layout: post
+tags:
+- java
+- programming
+- apache software foundation
+- opensource
+title: Backward compatibility and switch statement with constant expressions
 ---
 
 Maintaining Open Source software can be challenging. Making sure you keep backward compatibility (not only binary) can be even more challenging. [Apache Commons Lang](https://commons.apache.org/proper/commons-lang/) 3.6 release is happening right now thanks to [Benedikt Ritter](http://www.benediktritter.de/), and it is on its fourth Release Candidate (i.e. RC4).

@@ -1,10 +1,9 @@
 ---
-title: 'Drawing sketch: Page 036'
-author: kinow
+date: 2017-04-24 00:41:03 +1300
+layout: post
 tags:
-    - illustrations
-category: 'blog'
-time: '00:41:03'
+- illustrations
+title: 'Drawing sketch: Page 036'
 ---
 
 <img class="ui fluid image" src="/assets/posts{{page.path | remove: ".md" | remove: "_posts" }}/sketch-book-036.jpg" alt="Page 036" />

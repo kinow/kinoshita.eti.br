@@ -1,14 +1,13 @@
 ---
+date: 2011-10-23 22:10:02 +1300
+layout: post
+tags:
+- testlink
+- java
+- software quality
 title: 'Practical test doubles: adding stubs to TestLink Java API'
-id: 838
-author: kinow
-tags: 
-    - testlink
-    - java
-    - software quality
-category: 'blog'
-time: '22:10:02'
 ---
+
 <p><em>"<strong>Test Double</strong> is a generic term for any case where you replace a production object for testing purposes"</em> [<a href="#1">1</a>]. There are different types of Test Doubles: <strong>Dummy</strong>, <strong>Fake</strong>, <strong>Stubs</strong>, <strong>Spies</strong> and <strong>Mocks</strong>. In this post we will see a practical example of adding stubs to <a href="testlinkjavaapi.sourceforge.net" title="TestLink Java API">TestLink Java API</a>.</p>
 
 <p>Stubs are objects that return canned answers to calls during tests [1]. This is useful specially when you have a system that communicates with different resources such as databases, web services, XML-RPC services and so on.</p>

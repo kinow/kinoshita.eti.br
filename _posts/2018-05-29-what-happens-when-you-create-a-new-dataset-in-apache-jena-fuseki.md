@@ -1,13 +1,13 @@
 ---
-title: What happens when you create a new dataset in Apache Jena Fuseki
-time: '18:59:04'
-author: kinow
+date: 2018-05-29 18:59:04 +1300
+layout: post
 tags:
-    - jena
-    - apache software foundation
-    - java
-    - sparql
-    - opensource
+- jena
+- apache software foundation
+- java
+- sparql
+- opensource
+title: What happens when you create a new dataset in Apache Jena Fuseki
 ---
 
 <a href="{% post_url 2018-05-27-what-happens-when-you-upload-a-turtle-file-in-apache-jena-fuseki %}">Last post</a>

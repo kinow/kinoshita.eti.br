@@ -1,12 +1,11 @@
 ---
-title: 'Displaying Japanese characters in Java Swing'
-id: 61
-author: kinow
-tags: 
-    - java
-category: 'blog'
-time: '12:10:07'
+date: 2009-03-06 12:10:07 +1300
+layout: post
+tags:
+- java
+title: Displaying Japanese characters in Java Swing
 ---
+
 It's not as complicated as I first thought.
 
 Had to use this technique to develop an Swing application for the JLPT certification exam.

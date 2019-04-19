@@ -1,10 +1,9 @@
 ---
-title: 'Drawing Terra Celta vocal Elcio'
-author: kinow
+date: 2017-01-04 19:40:03 +1300
+layout: post
 tags:
-    - illustrations
-category: 'blog'
-time: '19:40:03'
+- illustrations
+title: Drawing Terra Celta vocal Elcio
 ---
 
 [Terra Celta band](http://www.terracelta.com.br/)'s vocal, Elcio.

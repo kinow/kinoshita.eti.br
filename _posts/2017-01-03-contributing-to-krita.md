@@ -1,13 +1,12 @@
 ---
-title: 'Contributing to Krita'
-author: kinow
+date: 2017-01-03 11:40:03 +1300
+layout: post
 tags:
-    - c++
-    - krita
-    - programming
-    - opensource
-category: 'blog'
-time: '11:40:03'
+- c++
+- krita
+- programming
+- opensource
+title: Contributing to Krita
 ---
 
 As I mentioned in the [last post]({% post_url 2017-01-02-debugging-an-application-that-freezes-the-x-server %}),

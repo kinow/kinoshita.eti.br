@@ -1,11 +1,11 @@
 ---
-title: Drawing Santos Dumont's "Encantada" in Krita
-time: '02:38:12'
-author: kinow
+date: 2018-05-13 02:38:12 +1300
+layout: post
 tags:
-    - opensource
-    - illustrations
-    - krita
+- opensource
+- illustrations
+- krita
+title: Drawing Santos Dumont's "Encantada" in Krita
 ---
 
 <img style="height: 400px;" class="ui image" src="/assets/posts{{page.path | remove: ".md" | remove: "_posts" }}/encantada.png" alt="A Encantada" />

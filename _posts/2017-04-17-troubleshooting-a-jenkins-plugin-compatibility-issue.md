@@ -1,13 +1,12 @@
 ---
-title: 'Troubleshooting a Jenkins Plug-in compatibility issue'
-author: kinow
+date: 2017-04-17 21:01:03 +1300
+layout: post
 tags:
-    - jenkins
-    - java
-    - programming
-    - opensource
-category: 'blog'
-time: '21:01:03'
+- jenkins
+- java
+- programming
+- opensource
+title: Troubleshooting a Jenkins Plug-in compatibility issue
 ---
 
 This post is probably different from others. I will give a TL;DR, but will then

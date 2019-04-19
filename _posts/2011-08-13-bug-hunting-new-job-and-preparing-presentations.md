@@ -1,12 +1,11 @@
 ---
-title: 'Bug hunting, new job and preparing presentations'
-id: 780
-author: kinow
-tags: 
-    - software quality
-category: 'blog'
-time: '01:29:58'
+date: 2011-08-13 01:29:58 +1300
+layout: post
+tags:
+- software quality
+title: Bug hunting, new job and preparing presentations
 ---
+
 It's been a while since the last time I posted something here. The reason is that I have been busy fixing bugs in <a title="Jenkins TestLink Plug-in" href="https://wiki.jenkins-ci.org/display/JENKINS/TestLink+Plugin">Jenkins TestLink Plug-in</a>, <a title="TestLink" href="http://www.teamst.org">TestLink</a>, <a title="TestLink Java API" href="http://testlinkjavaapi.sourceforge.net/">TestLink Java API</a>, <a title="tap4j" href="http://www.tap4j.org">tap4j</a>, <a title="Jenkins TAP Plug-in" href="https://wiki.jenkins-ci.org/display/JENKINS/TAP+Plugin">Jenkins TAP Plug-in</a> and other Open Source projects.
 
 Recently I left <a title="Sysmap Solutions" href="http://www.sysmap.com.br">Sysmap Solutions</a>, where I was a consultant, to have my labor card signed by <a title="Lojas Riachuelo" href="http://www.lojasriachuelo.com.br">Lojas Riachuelo</a>, a famous Brazilian fashion retailer (like C&amp;A, Zara, H&amp;M and so on), part of Guararapes group.

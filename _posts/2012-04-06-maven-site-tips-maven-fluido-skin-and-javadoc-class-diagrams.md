@@ -1,11 +1,11 @@
 ---
+date: 2012-04-06 21:01:52 +1300
+layout: post
+tags:
+- java
 title: 'Maven site tips: Maven Fluido Skin and Javadoc class diagrams'
-id: 934
-author: kinow
-tags: 
-    - java
-time: '21:01:52'
 ---
+
 <p>I have been using Maven sites for a while, and am very happy with it. I didn't like to have to update my projects after Maven 3, but that was all right, Maven 3 brought many new cool things. However, there were two things that annoyed me: lack of a nice and modern skin, and browsing Javadoc of complex code. The thought of creating a custom Maven skin even crossed my mind, but I never had time to read about it.</p>
 
 <p>But the world is full of good and talented people! Like the guys from <a title="99soft" href="http://www.99soft.org/">99soft</a>. They created <a title="Maven Fluido Skin" href="http://maven.apache.org/skins/maven-fluido-skin/">Maven Fluido Skin</a>, and donated it to <a title="Apache Software Foundation" href="http://apache.org/">Apache Software Foundation</a>. It's built on top of <a title="Twitter Bootstrap" href="http://twitter.github.com/bootstrap/">Twitter's Bootstrap</a> and available from Maven central repository. In order to use it in your Maven project, all that you have to do is add the following settings into your src/site/site.xml:</p>

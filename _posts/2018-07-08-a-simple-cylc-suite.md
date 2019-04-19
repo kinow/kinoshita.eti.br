@@ -1,11 +1,11 @@
 ---
-title: A simple cylc suite
-time: '18:59:13'
-author: kinow
+date: 2018-07-08 18:59:13 +1300
+layout: post
 tags:
-    - cylc
-    - python
-    - opensource
+- cylc
+- python
+- opensource
+title: A simple cylc suite
 ---
 
 I have been writing more suites for [cylc](https://cylc.github.io/cylc/) lately, and found
@@ -57,4 +57,3 @@ tools to default to 44444/HTTP, for ease of debugging.
 Then initialize the suite with something like: `cylc start --non-daemon --debug /home/kinow/Development/python/workspace/example-suite/`
 
 Happy cycling!
-

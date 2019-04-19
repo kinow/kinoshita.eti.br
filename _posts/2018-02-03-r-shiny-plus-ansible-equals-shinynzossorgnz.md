@@ -1,12 +1,11 @@
 ---
-title: 'R Shiny + Ansible = shiny.nzoss.org.nz'
-author: kinow
+date: 2018-02-03 17:23:03 +1300
+layout: post
 tags:
-    - r shiny
-    - r
-    - opensource
-category: 'presentations'
-time: '17:23:03'
+- r shiny
+- r
+- opensource
+title: R Shiny + Ansible = shiny.nzoss.org.nz
 ---
 
 <strong>R Shiny + Ansible = shiny.nzoss.org.nz</strong>

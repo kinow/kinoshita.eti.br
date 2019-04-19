@@ -1,11 +1,11 @@
 ---
-title: 'The Apache Way and on writing software reviews'
-author: kinow
+date: 2013-09-29 14:53:53 +1300
+layout: post
 tags:
-    - apache software foundation
-category: 'blog'
-time: '14:53:53'
+- apache software foundation
+title: The Apache Way and on writing software reviews
 ---
+
 The [Apache Way](http://www.apache.org/foundation/how-it-works.html) is the philosophy behind 
 Apache Software Foundation and is shared by all of its projects. It is composed by a set of principles:
 

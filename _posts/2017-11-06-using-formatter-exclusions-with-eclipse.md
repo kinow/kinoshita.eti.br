@@ -1,12 +1,12 @@
 ---
+date: 2017-11-06 21:56:56 +1300
+layout: post
+tags:
+- programming
+- java
+- opensource
+- eclipse
 title: Using formatter exclusions with Eclipse
-time: '21:56:56'
-author: kinow
-tags: 
-    - programming
-    - java
-    - opensource
-    - eclipse
 ---
 
 Sometimes when you are formatting your code in Eclipse, you may want to prevent

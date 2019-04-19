@@ -1,12 +1,12 @@
 ---
-title: UUID's in Apache Jena
-time: '19:02:16'
-author: kinow
+date: 2018-08-11 19:02:16 +1300
+layout: post
 tags:
-    - apache software foundation
-    - java
-    - jena
-    - opensource
+- apache software foundation
+- java
+- jena
+- opensource
+title: UUID's in Apache Jena
 ---
 
 In this post I won't talk about what are UUID's, or how they work in Java.

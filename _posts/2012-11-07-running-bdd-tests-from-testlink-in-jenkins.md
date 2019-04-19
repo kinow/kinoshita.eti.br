@@ -1,14 +1,13 @@
 ---
-title: 'Running BDD tests from TestLink in Jenkins'
-id: 1204
-author: kinow
-tags: 
-    - testlink
-    - jenkins
-    - software quality
-category: 'jenkins'
-time: '14:26:08'
+date: 2012-11-07 14:26:08 +1300
+layout: post
+tags:
+- testlink
+- jenkins
+- software quality
+title: Running BDD tests from TestLink in Jenkins
 ---
+
 Last night and this morning I spent some time working on running
 [BDD](http://en.wikipedia.org/wiki/Behavior-driven_development) tests that were created in
 [TestLink](http://www.teamst.org) in [Jenkins](http://jenkins-ci.org), using

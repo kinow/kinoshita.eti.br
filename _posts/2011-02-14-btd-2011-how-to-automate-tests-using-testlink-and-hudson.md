@@ -1,12 +1,11 @@
 ---
-title: Belgium Testing Days (BTD) 2011 How To Automate Tests Using Testlink And Hudson
-author: kinow
+date: 2011-02-14 22:18:03 +1300
+layout: post
 tags:
-    - testlink
-    - jenkins
-    - opensource
-category: 'presentations'
-time: '22:18:03'
+- testlink
+- jenkins
+- opensource
+title: Belgium Testing Days (BTD) 2011 How To Automate Tests Using Testlink And Hudson
 ---
 
 <strong>How To Automate Tests Using Testlink And Hudson</strong>
@@ -25,5 +24,3 @@ time: '22:18:03'
 <dt>When ?</dt>
 <dd>2011-02-14</dd>
 </dl>
-
-

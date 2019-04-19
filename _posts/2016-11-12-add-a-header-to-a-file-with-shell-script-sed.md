@@ -1,10 +1,9 @@
 ---
-title: 'Add a header to a file with Shell script (sed)'
-author: kinow
+date: 2016-11-12 01:55:03 +1300
+layout: post
 tags:
-    - shell script
-category: 'blog'
-time: '01:55:03'
+- shell script
+title: Add a header to a file with Shell script (sed)
 ---
 
 Today I was re-generating the documentation for a REST API written in PHP, with

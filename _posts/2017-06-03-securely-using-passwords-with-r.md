@@ -1,11 +1,11 @@
 ---
-title: "Securely using passwords with R"
-author: kinow
-tags: 
-    - r
-    - programming
-    - security
-time: '20:21:39'
+date: 2017-06-03 20:21:39 +1300
+layout: post
+tags:
+- r
+- programming
+- security
+title: Securely using passwords with R
 ---
 
 It is quite common to have code that needs to interact with another system, database, or third party application, and need to use some sort of credentials to securely communicate.

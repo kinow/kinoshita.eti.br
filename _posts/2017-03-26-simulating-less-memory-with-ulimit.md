@@ -1,13 +1,12 @@
 ---
-title: 'Simulating less memory with ulimit'
-author: kinow
+date: 2017-03-26 11:14:03 +1300
+layout: post
 tags:
-    - c++
-    - krita
-    - programming
-    - opensource
-category: 'blog'
-time: '11:14:03'
+- c++
+- krita
+- programming
+- opensource
+title: Simulating less memory with ulimit
 ---
 
 These days I was trying to reproduce [a bug in Krita](https://bugs.kde.org/show_bug.cgi?id=376382)

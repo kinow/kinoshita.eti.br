@@ -1,12 +1,11 @@
 ---
-title: 'Apache Commons Lang: Memoizer'
-author: kinow
+date: 2017-01-08 18:34:03 +1300
+layout: post
 tags:
-    - java
-    - programming
-    - apache software foundation
-category: 'blog'
-time: '18:34:03'
+- java
+- programming
+- apache software foundation
+title: 'Apache Commons Lang: Memoizer'
 ---
 
 The current release of [Apache Commons Lang](https://commons.apache.org/proper/commons-lang/)

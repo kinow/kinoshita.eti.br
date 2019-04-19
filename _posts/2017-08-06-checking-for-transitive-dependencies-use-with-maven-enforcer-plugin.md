@@ -1,12 +1,12 @@
 ---
-title: "Checking for transitive dependencies use with Maven Enforcer Plug-in"
-author: kinow
-tags: 
-    - java
-    - programming
-    - opensource
-    - maven
-time: '17:35:39'
+date: 2017-08-06 17:35:39 +1300
+layout: post
+tags:
+- java
+- programming
+- opensource
+- maven
+title: Checking for transitive dependencies use with Maven Enforcer Plug-in
 ---
 
 [Maven Enforcer Plug-in](http://maven.apache.org/enforcer/maven-enforcer-plugin/) &ldquo;provides goals to control certain environmental constraints such as Maven version, JDK version and OS family along with many more built-in rules and user created rules&rdquo;. There are several libraries that provide custom rules, or you can write your own.

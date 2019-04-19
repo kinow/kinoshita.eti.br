@@ -1,13 +1,13 @@
 ---
+date: 2017-10-14 00:24:54 +1300
+layout: post
+tags:
+- programming
+- shell script
+- security
+- opensource
+- apache software foundation
 title: Quickly Verifying jar Signatures For ASF Releases
-time: '00:24:54'
-author: kinow
-tags: 
-    - programming
-    - shell script
-    - security
-    - opensource
-    - apache software foundation
 ---
 
 The release process within the Apache Software Foundation includes a series of steps. Amongst these
@@ -93,5 +93,3 @@ for x in *.jar; do gpg --verify "${x}".asc; done
 ```
 
 The script can be found at GitHub too: [https://github.com/kinow/dork-scripts/tree/3c519a74f28c08310ce2e65f8e860d61fd0c5c07/gpg/asf-sigs](https://github.com/kinow/dork-scripts/tree/3c519a74f28c08310ce2e65f8e860d61fd0c5c07/gpg/asf-sigs)
-
-

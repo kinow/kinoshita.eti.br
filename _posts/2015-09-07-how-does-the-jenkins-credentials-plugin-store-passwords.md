@@ -1,11 +1,10 @@
 ---
-title: 'How does the Jenkins Credentials Plug-in store passwords?'
-author: kinow
+date: 2015-09-07 01:25:03 +1300
+layout: post
 tags:
-    - jenkins
-    - security
-category: 'blog'
-time: '01:25:03'
+- jenkins
+- security
+title: How does the Jenkins Credentials Plug-in store passwords?
 ---
 
 [Jenkins Credentials Plug-in](https://wiki.jenkins-ci.org/display/JENKINS/Credentials+Plugin) manages credentials stored in Jenkins. These credentials can be used in many jobs and by plug-ins for executing SSH commands, authenticating to systems, or running other commands that need some sort of authentication or authorisation.
@@ -63,6 +62,3 @@ Jenkins has also a [ConfidentialStore](https://github.com/jenkinsci/jenkins/blob
 It is a bit late, so it is all for today. In summary: the credentials plug-in gives you a central place to manage credentials, but it is up to plug-in developers to use it. Sensitive values can be encrypted with AES on disk. So it is important that your file permissions, ACL and system auditing processes are in place and well maintained and monitored.
 
 Happy hacking!
-
-
-

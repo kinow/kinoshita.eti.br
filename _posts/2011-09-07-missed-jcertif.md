@@ -1,13 +1,12 @@
 ---
-title: 'Missed JCertif'
-id: 806
-author: kinow
-tags: 
-    - events
-    - software quality
-category: 'blog'
-time: '00:36:11'
+date: 2011-09-07 00:36:11 +1300
+layout: post
+tags:
+- events
+- software quality
+title: Missed JCertif
 ---
+
 <p>Unfortunately I missed JCertif last weekend. My visa was in Brazzaville but I couldn't board in a flight from Johannesburg to Congo without it. Max Bonbhel kindly tried to fax me the visa, but the last flight to Congo closed and I had to come back to Brazil sooner. :-(</p>
 
 <p>Here is the slides that I was going to use there. Hope you take some time to read about TAP, SubUnit and other test protocols. There are two special points to pay attention to, one single format and extensibility.</p>

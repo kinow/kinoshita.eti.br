@@ -1,12 +1,14 @@
 ---
-title: Cylc Scheduler Internals - Part 3
-time: '18:27:37'
-author: kinow
+date: 2018-08-18 18:27:37 +1300
+layout: post
+note: 'NB: this is a post to remember things, not really expecting to give someone
+  enough information to be able to hack the Cylc Scheduler (though you can and would
+  have fun!).'
 tags:
-    - cylc
-    - python
-    - opensource
-note: "NB: this is a post to remember things, not really expecting to give someone enough information to be able to hack the Cylc Scheduler (though you can and would have fun!)."
+- cylc
+- python
+- opensource
+title: Cylc Scheduler Internals - Part 3
 ---
 
 This is the part 3, in a series of posts about [Cylc](https://cylc.github.io/cylc)

@@ -1,15 +1,14 @@
 ---
-title: 'Jenkins, TestLink and GTest in 5 minutes (or so)'
-id: 1075
-author: kinow
-tags: 
-    - jenkins
-    - testlink
-    - c++
-    - software quality
-category: 'jenkins'
-time: '23:44:59'
+date: 2012-10-11 23:44:59 +1300
+layout: post
+tags:
+- jenkins
+- testlink
+- c++
+- software quality
+title: Jenkins, TestLink and GTest in 5 minutes (or so)
 ---
+
 <p>This is a 5 minutes guide on creating a job for a C++ project in <a href="http://www.jenkins-ci.org" title="Jenkins CI">Jenkins</a> with <a href="http://code.google.com/p/googletest" title="GoogleTest">GoogleTest</a> and reporting the test results back to <a href="http://www.teamst.org" title="TestLink">TestLink</a>, with <a href="https://wiki.jenkins-ci.org/display/JENKINS/TestLink+Plugin" title="Jenkins TestLink Plug-in">testlink-plugin</a>. </p>
 
 <h2>The test project with GoogleTest</h2>
