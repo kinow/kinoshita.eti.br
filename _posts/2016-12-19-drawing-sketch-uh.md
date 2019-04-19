@@ -8,20 +8,10 @@ title: 'Drawing sketch: Uh!'
 
 Sketch.
 
-<div class='row'>
-<div class="ui container" style='text-align: center;'>
-<figure>
-<a href="{{assets.progress}}" rel="prettyPhoto" class="thumbnail" title="Uh! progress">
-<img class="ui fluid image" src="{{assets.progress}}" alt="Uh! progress" />
-
+<img class="ui fluid image" src="/assets/posts{{page.path | remove: ".md" | remove: "_posts" }}/progress.jpg">
 
 And final work here.
 
-<div class='row'>
-<div class="ui fluid container">
-<figure>
-<a  href="{{assets.uh}}" rel="prettyPhoto" class="thumbnail" title="Uh!">
-<img style="height: 400px;" class="ui image" src="{{assets.uh}}" alt="Uh!" />
-
+<img style="height: 400px;" class="ui image" src="/assets/posts{{page.path | remove: ".md" | remove: "_posts" }}/uh.jpg">
 
 For [redditgetsdrawn](http://kinow.deviantart.com/art/Uh-651490865)

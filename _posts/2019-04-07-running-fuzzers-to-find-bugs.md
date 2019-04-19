@@ -9,6 +9,7 @@ tags:
 - opensource
 - security
 - programming
+- fuzzing
 title: Running fuzzers to find bugs
 ---
 

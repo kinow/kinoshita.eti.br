@@ -13,7 +13,10 @@ in the past with Jenkins and .NET, and also maintains the blog
 [Jenkins.NET](http://jenkinsheaven.blogspot.co.nz/).
 
 A couple of days ago he sent me an interesting question. He asked me if that would be possible
-to use Active Choices Plug-in with the [Role Strategy Plug-in](https://wiki.jenkins-ci.org/display/JENKINS/Role+Strategy+Plugin). This plug-in lets you define roles, define which permissions a role has, and then assign users to the roles.
+to use Active Choices Plug-in with the [Role Strategy Plug-in](https://wiki.jenkins-ci.org/display/JENKINS/Role+Strategy+Plugin).
+This plug-in lets you define roles, define which permissions a role has, and then assign users to the roles.
+
+<!--more-->
 
 The idea was to show a set of parameters that would vary according to the user roles. So, say that the user
 is a tester. Then s/he would see certain parameters. But if s/he was a manager, other parameters would be
@@ -133,21 +136,12 @@ Eclipse, but that's in Portuguese only).
 
 In this section we have just simple screenshots, showing the script in the job configuration.
 
-<div class='row'>
-<div class="ui container" style='text-align: center;'>
-<figure>
-<a href="{{assets.screenshot01}}" rel="prettyPhoto" class="thumbnail" title="Screenshot 01">
-<img class="ui fluid image" src="{{assets.screenshot01}}" alt="Screenshot 01" />
-
+<img class="ui fluid image" src="/assets/posts{{page.path | remove: ".md" | remove: "_posts" }}/screenshot01.png" alt="Screenshot 01" />
 
 And the resulting screen. The parameter **DeployAPP** will be available during the build,
 and can be used to trigger other jobs or pipelines.
 
-<div class='row'>
-<div class="ui container" style='text-align: center;'>
-<figure>
-<a href="{{assets.screenshot02}}" rel="prettyPhoto" class="thumbnail" title="Screenshot 02">
-<img class="ui fluid image" src="{{assets.screenshot02}}" alt="Screenshot 02" />
+<img class="ui fluid image" src="/assets/posts{{page.path | remove: ".md" | remove: "_posts" }}/screenshot02.png"/>
 
 
 ## Where can you find this script?

@@ -118,4 +118,4 @@ title: Building Jenkins with Eclipse and m2e plug-in
 
 <p>Now you can follow the instructions in Jenkins Wiki for building Jenkins and have fun in your Eclipse. There still seems to have few issues to be solved. I can't see the version number in the footer, and the default plug-ins are missing. Time to go back to Minecraft now :D!</p>
 
-<p>Cheers :-)</p>
+<p>Cheers</p>

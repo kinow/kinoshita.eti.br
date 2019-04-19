@@ -28,11 +28,6 @@ public static void main(String[] args) {
 
 All you have to do is to use the hexadecimal representation of the characters instead of using plain text. And here is the result.
 
-<div class='row'>
-<div class="ui container" style='text-align: center;'>
-<figure>
-<a href="{{assets.kino}}" rel="prettyPhoto" class="thumbnail" title="">
-<img class="ui fluid image" src="{{assets.kino}}" alt="=" />
-
+<img class="ui image" src="/assets/posts{{page.path | remove: ".md" | remove: "_posts" }}/kino.png" alt="=" />
 
 Banzai!

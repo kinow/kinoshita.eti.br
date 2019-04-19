@@ -6,27 +6,30 @@ tags:
 title: 'Bioinformatics tools: Stacks'
 ---
 
-It is the first post about <strong>bioinformatics tools</strong>, but I will try to post more about other tools such as MrBayes, Structure, maybe some next generation sequencing tools too, and Bioperl, Biojava, and so on.
+It is the first post about **bioinformatics tools**, but I will try to post more about other tools such
+as MrBayes, Structure, maybe some next generation sequencing tools too, and Bioperl, Biojava, and so on.
 
-As I am more a computer geek, rather than a bioinformatics one, I will focus on requirements for running these tools on clusters and the requirements to install them on your machine. The instructions require that you have an intermediary knowledge on *nix OS and sometimes a bit of programming experience.</em></p>
+As I am more a computer geek, rather than a bioinformatics one, I will focus on requirements for running these tools
+on clusters and the requirements to install them on your machine. The instructions require that you have an
+intermediary knowledge on *nix OS and sometimes a bit of programming experience.</em>
 
-<p><em>I will be using tutorials available on the Internet and hosting my code in <a href="http://www.github.com/kinow" alt="GitHub kinow" title="GitHub kinow">GitHub/kinow</a>. Hammer time!
+<em>I will be using tutorials available on the Internet and hosting my code in <a href="http://www.github.com/kinow" alt="GitHub kinow" title="GitHub kinow">GitHub/kinow</a>. Hammer time!
 
 <!--more-->
 
-<p style="text-align: center"><a href="{{ assets.stacks_logo_300_156 }}"><img src="{{ assets.stacks_logo_300_156 }}" alt="" title="stacks_logo" width="300" height="156" class="aligncenter size-medium wp-image-1058" /></a></p>
+<img class="ui fluid image" src="/assets/posts{{page.path | remove: ".md" | remove: "_posts" }}/stacks_logo_300_156.png">
 
-<p><strong>Stacks</strong> is hosted at <a href="http://www.uoregon.edu/" alt="Oregon University" title="Oregon University">Oregon University</a>, so if you are googling about it right now, probably a query including both 'stacks' and 'oregon' may give you better results (it's good to know when you forget the web address). This is the stacks homepage: <a href="http://creskolab.uoregon.edu/stacks/">http://creskolab.uoregon.edu/stacks/</a>.</p>
+**Stacks** is hosted at <a href="http://www.uoregon.edu/" alt="Oregon University" title="Oregon University">Oregon University</a>, so if you are googling about it right now, probably a query including both 'stacks' and 'oregon' may give you better results (it's good to know when you forget the web address). This is the stacks homepage: <a href="http://creskolab.uoregon.edu/stacks/">http://creskolab.uoregon.edu/stacks/</a>.
 
 <blockquote cite="http://creskolab.uoregon.edu/stacks/">"Stacks is a software pipeline for building loci out of a set of short-read sequenced samples. Stacks was developed for the purpose of building genetic maps from RAD-Tag Illumina sequence data, but can also be readily applied to population studies, and phylogeography."</blockquote>
 
-<p>I will follow the tutorial <a href="http://creskolab.uoregon.edu/stacks/pe_tut.php" alt="Stacks tutorial" title="Stacks tutorial">"building mini-contigs from paired-end sequences"</a> to demonstrate how to use Stacks, and for each step executed I'll post the directory and database sizes, as well as the processing time. My hardware is an Intel i5 quad core 2.30 GHz with 6GB of memory, running Debian 6.</p>
+I will follow the tutorial <a href="http://creskolab.uoregon.edu/stacks/pe_tut.php" alt="Stacks tutorial" title="Stacks tutorial">"building mini-contigs from paired-end sequences"</a> to demonstrate how to use Stacks, and for each step executed I'll post the directory and database sizes, as well as the processing time. My hardware is an Intel i5 quad core 2.30 GHz with 6GB of memory, running Debian 6.
 
 <!--more-->
 
-<h2>Installing on your local computer</h2>
+## Installing on your local computer
 
-<p>The installation is quite simple. However, Stacks come with a Web application, and during its pipeline analysis sometimes it uploads data to a database. So in our set up I'm going to use an Apache HTTP web server and MySQL database. Here's a list of things you should have installed in your machine: </p>
+The installation is quite simple. However, Stacks come with a Web application, and during its pipeline analysis sometimes it uploads data to a database. So in our set up I'm going to use an Apache HTTP web server and MySQL database. Here's a list of things you should have installed in your machine: 
 
 <ul>
 <li><a href="http://httpd.apache.org" title="Apache httpd">Apache HTTP web server</a> (you could try NGINX, or others too, but you would need a PHP interpreter) - my version: Apache/2.2.22 (Debian)</li>
@@ -46,18 +49,18 @@ Thread model: posix
 gcc version 4.7.1 (Debian 4.7.1-8)</li>
 </ul>
 
-<p>Install Stacks with the classic <em>./configure</em>, <em>make</em>, <em>make install</em>. It will put several utilities and Perl scripts in your PATH. For testing if the installation worked, try running <em>ustacks</em>. You may need to update your Apache HTTP settings to include a virtual directory to the stacks web folder. In my computer this folder is located at <em>/usr/local/share/stacks/php</em>.</p>
+Install Stacks with the classic `./configure`, `make`, `make install`. It will put several utilities and Perl scripts in your PATH. For testing if the installation worked, try running `ustacks`. You may need to update your Apache HTTP settings to include a virtual directory to the stacks web folder. In my computer this folder is located at `/usr/local/share/stacks/php`.
 
-<h2>Installing on your cluster</h2>
+## Installing on your cluster
 
-<p>Stacks uses <strong>OpenMP</strong> for running over multiple CPU's. I have a small commodity-hardware cluster that is quite handy for MapReduce and MPI processing, but for this case I will have to use only one machine. So I'm using my notebook with four cores, and using <a href="http://ganglia.sourceforge.net" title="Ganglia">Ganglia</a> and htop/free for monitoring CPU and memory usage.</p>
+Stacks uses **OpenMP** for running over multiple CPU's. I have a small commodity-hardware cluster that is quite handy for MapReduce and MPI processing, but for this case I will have to use only one machine. So I'm using my notebook with four cores, and using <a href="http://ganglia.sourceforge.net" title="Ganglia">Ganglia</a> and htop/free for monitoring CPU and memory usage.
 
-<h2>Following the Stacks tutorial</h2>
+## Following the Stacks tutorial
 
-<p>The tutorial requires that you download samples and create some directories and a database. Here's the status of my system before the analysis.</p>
+The tutorial requires that you download samples and create some directories and a database. Here's the status of my system before the analysis.
 
-<p><strong>Database size: 880KB</strong></p>
-<p><strong>Directory size: 2.6 GB</strong></p>
+**Database size: 880KB**
+**Directory size: 2.6 GB**
 <code>kinow@chuva:~/Desktop/pe_tut$ du -h
 4.0K	./stacks
 4.0K	./assembled
@@ -66,10 +69,10 @@ gcc version 4.7.1 (Debian 4.7.1-8)</li>
 4.0K	./pairs
 2.6G	.</code>
 
-<p>After these steps, you start your pipeline with the <em>denovo_map.pl</em> script. The denovo_map.pl script took 23 minutes to finish, and here's the new status of my system.</p>
+After these steps, you start your pipeline with the `denovo_map.pl` script. The denovo_map.pl script took 23 minutes to finish, and here's the new status of my system.
 
-<p><strong>Database size: 1.7 GB</strong></p>
-<p><strong>Directory size: 3.5 GB</strong></p>
+**Database size: 1.7 GB**
+**Directory size: 3.5 GB**
 <code>kinow@chuva:~/Desktop/pe_tut$ du -h
 971M	./stacks
 4.0K	./assembled
@@ -78,10 +81,10 @@ gcc version 4.7.1 (Debian 4.7.1-8)</li>
 4.0K	./pairs
 3.5G	.</code>
 
-<p>The next step is the <em>export_sql.pl</em> script. It took 31 minutes to finish.</p>
+The next step is the `export_sql.pl` script. It took 31 minutes to finish.
 
-<p><strong>Database size: 1.7 GB</strong></p>
-<p><strong>Directory size: 3.5 GB</strong></p>
+**Database size: 1.7 GB**
+**Directory size: 3.5 GB**
 <code>kinow@chuva:~/Desktop/pe_tut$ du -h
 971M	./stacks
 4.0K	./assembled
@@ -90,10 +93,10 @@ gcc version 4.7.1 (Debian 4.7.1-8)</li>
 4.0K	./pairs
 3.5G	.</code>
 
-<p>Half way to go. Now execute the <em>sort_read_pairs.pl</em> script. This was the longest and the one that consumed more memory, it took 49 minutes to finish.</p>
+Half way to go. Now execute the `sort_read_pairs.pl` script. This was the longest and the one that consumed more memory, it took 49 minutes to finish.
 
-<p><strong>Database size: 1.7 GB</strong></p>
-<p><strong>Directory size: 3.7 GB</strong></p>
+**Database size: 1.7 GB**
+**Directory size: 3.7 GB**
 <code>kinow@chuva:~/Desktop/pe_tut$ du -h
 971M	./stacks
 4.0K	./assembled
@@ -102,10 +105,10 @@ gcc version 4.7.1 (Debian 4.7.1-8)</li>
 170M	./pairs
 3.7G	.</code>
 
-<p>It's time to get the contigs with Velvet now with <em>exec_velvet.pl</em>. Don't worry, this one is faster, only 15 minutes.</p>
+It's time to get the contigs with Velvet now with `exec_velvet.pl`. Don't worry, this one is faster, only 15 minutes.
 
-<p><strong>Database size: 1.7 GB</strong></p>
-<p><strong>Directory size: 3.7 GB</strong></p>
+**Database size: 1.7 GB**
+**Directory size: 3.7 GB**
 <code>kinow@chuva:~/Desktop/pe_tut$ du -h
 971M	./stacks
 3.4M	./assembled
@@ -114,10 +117,10 @@ gcc version 4.7.1 (Debian 4.7.1-8)</li>
 170M	./pairs
 3.7G	.</code>
 
-<p>Last two scripts to execute. First <em>load_sequences.pl</em>, that apparently loads some data into the database. It took 3 minutes to finish.</p>
+Last two scripts to execute. First `load_sequences.pl`, that apparently loads some data into the database. It took 3 minutes to finish.
 
-<p><strong>Database size: 1.8 GB</strong></p>
-<p><strong>Directory size: 3.7 GB</strong></p>
+**Database size: 1.8 GB**
+**Directory size: 3.7 GB**
 <code>kinow@chuva:~/Desktop/pe_tut$ du -h
 971M	./stacks
 3.4M	./assembled
@@ -126,10 +129,10 @@ gcc version 4.7.1 (Debian 4.7.1-8)</li>
 170M	./pairs
 3.7G	.</code>
 
-<p>And finally <em>index_radtags.pl</em> which took only 1 minute.</p>
+And finally `index_radtags.pl` which took only 1 minute.
 
-<p><strong>Database size: 1.8 GB</strong></p>
-<p><strong>Directory size: 3.7 GB</strong></p>
+**Database size: 1.8 GB**
+**Directory size: 3.7 GB**
 <code>kinow@chuva:~/Desktop/pe_tut$ du -h
 971M	./stacks
 3.4M	./assembled
@@ -138,31 +141,31 @@ gcc version 4.7.1 (Debian 4.7.1-8)</li>
 170M	./pairs
 3.7G	.</code>
 
-<h2>CPU, memory and disk usage</h2>
+## CPU, memory and disk usage
 
-<p>I was using Ganglia for monitoring Hadoop jobs, so I saved the graphs for the timeframe of the pipeline execution. I started to execute this analysis at 10AM, and finished about 2 and a half hours later (the process is not automated, so sometimes I had to check the output and documentation before executing the next step).</p>
+I was using Ganglia for monitoring Hadoop jobs, so I saved the graphs for the timeframe of the pipeline execution. I started to execute this analysis at 10AM, and finished about 2 and a half hours later (the process is not automated, so sometimes I had to check the output and documentation before executing the next step).
 
-<p>Following you'll find the raw graphs and another version with legends to help understand what was being executed.</p>
+Following you'll find the raw graphs and another version with legends to help understand what was being executed.
 
-<h3>CPU usage</h3>
+### CPU usage
 
-<p style="text-align: center"><a href="{{ assets.cpu }}"><img src="{{ assets.cpu }}" alt="" title="CPU usage" width="747" height="418" class="aligncenter size-full wp-image-1043" /></a></p>
+<img class="ui fluid image" src="/assets/posts{{page.path | remove: ".md" | remove: "_posts" }}/cpu.png">
 
-<p style="text-align: center"><a href="{{ assets.cpu_legends }}"><img src="{{ assets.cpu_legends }}" alt="" title="CPU usage with legends" width="747" height="418" class="aligncenter size-full wp-image-1050" /></a></p>
+<img class="ui fluid image" src="/assets/posts{{page.path | remove: ".md" | remove: "_posts" }}/cpu_legends.png">
 
-<h3>Memory usage</h3>
+### Memory usage
 
-<p style="text-align: center"><a href="{{ assets.memory }}"><img src="{{ assets.memory }}" alt="" title="Memory usage" width="747" height="430" class="aligncenter size-full wp-image-1048" /></a></p>
+<img class="ui fluid image" src="/assets/posts{{page.path | remove: ".md" | remove: "_posts" }}/memory.png">
 
-<p style="text-align: center"><a href="{{ assets.memory_legends }}"><img src="{{ assets.memory_legends }}" alt="" title="Memory usage with legends" width="747" height="430" class="aligncenter size-full wp-image-1052" /></a></p>
+<img class="ui fluid image" src="/assets/posts{{page.path | remove: ".md" | remove: "_posts" }}/memory_legends.png">
 
-<h3>Disk usage</h3>
+### Disk usage
 
-<p>I thought the disk graphs from Ganglia wouldn't represent the disk usage very well, specially since my disk has about 500GB, so it's harder to see the changes. So I used some R to plot a graph that I hope can demonstrate the usage for this tutorial. <strong>It is important to highlight that we are using samples from a tutorial, and your analysis may produce high or lower disk usage.</strong></p>
+I thought the disk graphs from Ganglia wouldn't represent the disk usage very well, specially since my disk has about 500GB, so it's harder to see the changes. So I used some R to plot a graph that I hope can demonstrate the usage for this tutorial. **It is important to highlight that we are using samples from a tutorial, and your analysis may produce high or lower disk usage.**
 
-<p style="text-align: center"><a href="{{ assets.disk }}"><img src="{{ assets.disk }}" alt="" title="Disk Usage" width="824" height="630" class="aligncenter size-full wp-image-1055" /></a></p>
+<img class="ui fluid image" src="/assets/posts{{page.path | remove: ".md" | remove: "_posts" }}/disk.png">
 
-<p>Hope it helps you using Stacks. Kudos to all developers and contributors of this great tool.</p>
+Hope it helps you using Stacks. Kudos to all developers and contributors of this great tool.
 
 ```r
 disk=c(2.6,3.5,3.5,3.7,3.7,3.7,3.7)
@@ -179,7 +182,7 @@ lines(x=x, y=totals, type="o", pch=22, lty=2, col="green")
 legend(0,6,c("DB", "Disk", "Total"), cex=0.6,col=c("red", "blue", "green"),pch=21:23,lty=1,y.intersp=0.2,x.intersp=0.2,pt.lwd=1,adj=0,inset=c(0.5,0.5))
 ```
 
-<h4>References</h4>
+#### References
 
 <ul>
 <li>Stacks - <a href="http://creskolab.uoregon.edu/stacks/">http://creskolab.uoregon.edu/stacks/</a></li>

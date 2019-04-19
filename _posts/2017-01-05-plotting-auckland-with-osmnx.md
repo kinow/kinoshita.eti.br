@@ -6,12 +6,7 @@ tags:
 title: Plotting Auckland with OSMnx
 ---
 
-<div class='row'>
-<div class="ui fluid container">
-<figure>
-<a  href="{{assets.figure_1}}" rel="prettyPhoto" class="thumbnail" title="Auckland">
-<img style="height: 400px;" class="ui image" src="{{assets.figure_1}}" alt="Auckland" />
-
+<img style="height: 400px;" class="ui image" src="/assets/posts{{page.path | remove: ".md" | remove: "_posts" }}/figure_1.png" alt="Auckland" />
 
 A couple of days ago I saw [a thread in reddit](https://www.reddit.com/r/gis/comments/5lnjxs/creating_squaremile_figureground_diagrams_of/)
 about OSMnx. It is a utilty for interacting with the OpenStreeMap (OSM)
@@ -21,6 +16,8 @@ With it you can do things like <q>visualize cul-de-sacs or one-way streets, plot
 plot the OSM data as in the graph above.
 
 The source code is hosted at GitHub: [https://github.com/gboeing/osmnx](https://github.com/gboeing/osmnx).
+
+<!--more-->
 
 <blockquote cite="https://github.com/gboeing/osmnx">OSMnx is a Python 2+3 package that lets you download spatial geometries and construct, project, visualize, and analyze street networks from OpenStreetMap's APIs. Users can download and construct walkable, drivable, or bikable urban networks with a single line of Python code, and then easily analyze and visualize them.</blockquote>
 

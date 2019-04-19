@@ -18,6 +18,8 @@ project is still under development and we expect 1000 queries per day by the fir
 2015 and 1000000 near the end of 2015. We also have few entries in TDB, but expect to grow this 
 number to a few million before 2016.
 
+<!--more-->
+
 When I work for companies and we use Open Source Software (OSS) in a project, I always 
 prepare assessment reports to include in the deliveries. In this report I justify the choice 
 of Open Source Software (as well as commercial software). Sometimes I 
@@ -27,11 +29,7 @@ I use [Trello](https://trello.com) to triage issues in OSS projects (and for sev
 things). I have a board with several cards for Open Source. About a month ago I set up one 
 for Jena and listed the issues that I thought I could contribute to. 
 
-<div class='row'>
-<div class="span6 offset3" style='text-align: center;'>
-<figure>
-<a href="{{assets.jena_trello}}" rel="prettyPhoto" class="thumbnail" title="Jena Trello card">
-<img src="{{assets.jena_trello}}" alt="Jena Trello card" />
+<img src="/assets/posts{{page.path | remove: ".md" | remove: "_posts" }}/jena_trello.png">
 
 
 I annotate easy issues with a "lhf" suffix for Low Hanging Fruit issues, and delete issues from 
@@ -42,11 +40,7 @@ Most of the issues I included in the card for Jena had been created over two yea
 been updated in a while. When you test these issues against the current code, usually you find that 
 some of them have already been fixed. Other issues included documentation problems, and minor features. I didn't find any blocker issue that would impede us to use Jena in production.
 
-<div class='row'>
-<div class="span6 offset3" style='text-align: center;'>
-<figure>
-<a href="{{assets.jena_jira}}" rel="prettyPhoto" class="thumbnail" title="Jena JIRA activity summary">
-<img src="{{assets.jena_jira}}" alt="Jena JIRA activity summary" />
+<img src="/assets/posts{{page.path | remove: ".md" | remove: "_posts" }}/jena_jira.png">
 
 
 The picture above shows the past 30 days activity summary in JIRA for Jena. The red line shows 

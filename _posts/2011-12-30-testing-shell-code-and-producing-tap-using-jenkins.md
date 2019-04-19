@@ -12,6 +12,8 @@ Definitely reading <a title="Hacker News" href="http://news.ycombinator.com/">Ha
 
 But you know what? Why not execute execute locally first to check if that's working... moreover, why not use <a title="Jenkins TAP Plug-in" href="https://wiki.jenkins-ci.org/display/JENKINS/TAP+Plugin">Jenkins TAP Plug-in</a> and see what happens?
 
+<!--more-->
+
 Here's what is necessary.
 <ul>
 	<li><a title="Jenkins CI" href="http://www.jenkins-ci.org">Jenkins</a> (duh)</li>
@@ -22,10 +24,15 @@ Here's what is necessary.
 </ul>
 <!--more-->
 Install Jenkins, tap plug-in and git plug-in. Create a new free style build. Add Bats git repository url under SCM. This way Jenkins will retrieve Bats code from Github (you don't need to install it if you don't want to). Add a build step which executes the following shell code: <tt>./bin/bats test/bats.bats &gt; test.t</tt>
-<p style="text-align: center;"><a href="{{ assets.Screenshot_at_2011_12_30_233256 }}"><img class="size-medium wp-image-883 aligncenter" title="Screenshot at 2011-12-30 23:32:56" src="{{ assets.Screenshot_at_2011_12_30_233256_300_198 }}" alt="" width="300" height="198" /></a></p>
+
+<img class="ui fluid image" src="/assets/posts{{page.path | remove: ".md" | remove: "_posts" }}/Screenshot_at_2011_12_30_233256.png">
+
 Before executing the build, you have to check the option to publish TAP results in the end of the configuration screen. That's it. Execute your job, chug the remaining of your beer and now you can go to bed... or just refresh Hacker News and Reddit once more...
-<p style="text-align: center;"><a href="{{ assets.Screenshot_at_2011_12_30_233313 }}"><img class="size-medium wp-image-884 aligncenter" title="Screenshot at 2011-12-30 23:33:13" src="{{ assets.Screenshot_at_2011_12_30_233313_300_198 }}" alt="" width="300" height="198" /></a></p>
-<p style="text-align: center;"><a href="{{ assets.Screenshot_at_2011_12_30_233323 }}"><img class="aligncenter size-medium wp-image-894" title="Screenshot at 2011-12-30 23:33:23" src="{{ assets.Screenshot_at_2011_12_30_233323_300_198 }}" alt="" width="300" height="198" /></a></p>
-<p>Bats is a very nice TAP producer for Shell. Haven't had time to play with the other producers for Shell, or explore Bats thoroughly, but it looks very promising. Hope to see more people writing tests for shell code.</p>
+
+<img class="ui fluid image" src="/assets/posts{{page.path | remove: ".md" | remove: "_posts" }}/Screenshot_at_2011_12_30_233313.png">
+
+<img class="ui fluid image" src="/assets/posts{{page.path | remove: ".md" | remove: "_posts" }}/Screenshot_at_2011_12_30_233323.png">
+
+Bats is a very nice TAP producer for Shell. Haven't had time to play with the other producers for Shell, or explore Bats thoroughly, but it looks very promising. Hope to see more people writing tests for shell code.
 
 Cheers -B

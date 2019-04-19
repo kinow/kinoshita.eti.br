@@ -6,21 +6,21 @@ tags:
 title: Invoking Testopia XML-RPC or JSON methods using Java
 ---
 
-<p>Most <a href="http://www.teamst.org" title="TestLink">TestLink</a> [1] users are aware that there is an external API, maybe for the external API token being displayed in the user profile section. Today after a meeting with <a href="http://twitter.com/peterflorijn" title="Peter Florijn">Peter Florijn</a> [2], I realized that the same may not be true for <a href="http://www.mozilla.org/projects/testopia/" title="Testopia">Testopia</a>  [3] users.</p>
+Most <a href="http://www.teamst.org" title="TestLink">TestLink</a> [1] users are aware that there is an external API, maybe for the external API token being displayed in the user profile section. Today after a meeting with <a href="http://twitter.com/peterflorijn" title="Peter Florijn">Peter Florijn</a> [2], I realized that the same may not be true for <a href="http://www.mozilla.org/projects/testopia/" title="Testopia">Testopia</a>  [3] users.
 
-<p>I am quite new to Testopia, and there are many features that I haven't used yet. But if I understand it correctly, the database is interfaced by several Perl scripts that are, by its turns, exposed as Web Service (most of them). The web services are available via a JSON and a XML-RPC API (what is very useful, TestLink supports supports only XML-RPC).</p>
+I am quite new to Testopia, and there are many features that I haven't used yet. But if I understand it correctly, the database is interfaced by several Perl scripts that are, by its turns, exposed as Web Service (most of them). The web services are available via a JSON and a XML-RPC API (what is very useful, TestLink supports supports only XML-RPC).
 
-<p>The communication between different programming languages and the external API's is accomplished by a client API. In TestLink you have <a href="http://testlinkjavaapi.sourceforge.net/" title="TestLink Java API">testlink-java-api</a> [4] and <a href="http://code.google.com/p/testlink-api-java-client/" title="TestLink API Java Client">testlink-api-java-client</a> [5].</p>
+The communication between different programming languages and the external API's is accomplished by a client API. In TestLink you have <a href="http://testlinkjavaapi.sourceforge.net/" title="TestLink Java API">testlink-java-api</a> [4] and <a href="http://code.google.com/p/testlink-api-java-client/" title="TestLink API Java Client">testlink-api-java-client</a> [5].
 
-<p>Testopia has a Java client too, available in <a href="http://bzr.mozilla.org/bugzilla/extensions/testopia/2.2-bugzilla-3.2/files/head:/testopia/contrib/drivers/java/" title="Testopia source repository">Testopia source repository</a> [6] and can be used to integrate your existing Java code with Testopia.</p>
+Testopia has a Java client too, available in <a href="http://bzr.mozilla.org/bugzilla/extensions/testopia/2.2-bugzilla-3.2/files/head:/testopia/contrib/drivers/java/" title="Testopia source repository">Testopia source repository</a> [6] and can be used to integrate your existing Java code with Testopia.
 
 <!--more-->
 
-<p style="text-align: center;"><a href="{{ assets.testopia_java_300_120 }}"><img src="{{ assets.testopia_java_300_120 }}" alt="" title="testopia_java" width="300" height="120" class="aligncenter size-medium wp-image-986" /></a></p>
+<img src="/assets/posts{{page.path | remove: ".md" | remove: "_posts" }}/testopia_java_300_120.png">
 
-<p>Peter and I have been working on <a href="https://wiki.jenkins-ci.org/display/JENKINS/Testopia+Plugin" title="Jenkins Testopia Plug-in">Jenkins Testopia Plug-in</a> [7], released few weeks ago and with its new version being released at this very moment. It's been fun to write this new plug-in, and we are using a type of Scrum to manage the project, what makes it even more interesting.</p>
+Peter and I have been working on <a href="https://wiki.jenkins-ci.org/display/JENKINS/Testopia+Plugin" title="Jenkins Testopia Plug-in">Jenkins Testopia Plug-in</a> [7], released few weeks ago and with its new version being released at this very moment. It's been fun to write this new plug-in, and we are using a type of Scrum to manage the project, what makes it even more interesting.
 
-<p>During the project feature definition and initial structure, we created a new implementation, motivated by the following reasons (in no special order):</p>
+During the project feature definition and initial structure, we created a new implementation, motivated by the following reasons (in no special order):
 
 <ul>
 <li>Provide an API for Maven developers</li>
@@ -29,7 +29,7 @@ title: Invoking Testopia XML-RPC or JSON methods using Java
 <li>Test doubles, so we could increase test coverage without the need of a Testopia instance running</li>
 </ul>
 
-<p>We haven't released this API to Maven central yet, as we still have to polish the code, add tests and more methods. But you can already start playing with this API, the code is at GitHub, <a href="http://www.github.com/kinow/testopia-java-driver" title="Testopia Java Driver">http://www.github.com/kinow/testopia-java-driver</a> [8], and here's a Snippet of code to get you started with the API.</p>
+We haven't released this API to Maven central yet, as we still have to polish the code, add tests and more methods. But you can already start playing with this API, the code is at GitHub, <a href="http://www.github.com/kinow/testopia-java-driver" title="Testopia Java Driver">http://www.github.com/kinow/testopia-java-driver</a> [8], and here's a Snippet of code to get you started with the API.
 
 ```java
 TestopiaAPI api = new URL("http://localhost/bugzilla-4.2.1/xmlrpc.cgi");
@@ -43,7 +43,7 @@ for(TestCase testCase : testCases) {
 }
 ```
 
-<p>Have fun!</p>
+Have fun!
 
 - [1] http://www.teamst.org
 - [2] http://twitter.com/peterflorijn

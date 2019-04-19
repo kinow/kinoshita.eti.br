@@ -3,7 +3,7 @@ date: 2016-02-27 23:21:03 +1300
 layout: post
 tags:
 - software quality
-- fuzzers
+- fuzzing
 - security
 - software quality
 title: Learning afl and testing MapServer
@@ -57,11 +57,7 @@ creating a single layer mapfile. LINZ provides shapefiles for New Zealand
 ([here's an example](https://data.linz.govt.nz/layer/1153-nz-coastlines-and-islands-polygons-topo-150k/))
 that I used for this experiment.
 
-<div class='row'>
-<div class="span6 offset3" style='text-align: center;'>
-<figure>
-<a href="{{assets.qgis_settings}}" rel="prettyPhoto" class="thumbnail" title="QGIS Bounding Area settings">
-<img class="span12" src="{{assets.qgis_settings}}" alt="QGIS Bounding Area settings" />
+<img class="ui image" src="/assets/posts{{page.path | remove: ".md" | remove: "_posts" }}/qgis_settings.png">
 
 
 I used [QGIS](http://www.qgis.org/en/site/) to load the shapefile, take a look at the map,
@@ -128,11 +124,7 @@ mkdir fuzz-input fuzz-output
 /opt/afl-2.05b/afl-fuzz -m 500 -i fuzz-input/ -o fuzz-output/ -t 2000 ./mapserv QUERY_STRING="VERSION=1.1.0&REQUEST=GetMap&LAYERS=nz-coastlines-and-islands-polygons-topo-150k&SRS=EPSG:4167&SERVICE=WMS&TEMPLATE=OpenLayers&BBOX=165.869,-52.6209,183.846,-29.2313&FORMAT=image/jpeg&HEIGHT=800&WIDTH=800"
 ```
 
-<div class='row'>
-<div class="span6 offset3" style='text-align: center;'>
-<figure>
-<a href="{{assets.afl_testing_mapserver}}" rel="prettyPhoto" class="thumbnail" title="afl testing MapServer">
-<img class="span12" src="{{assets.afl_testing_mapserver}}" alt="afl testing MapServer" />
+<img class="ui image" src="/assets/posts{{page.path | remove: ".md" | remove: "_posts" }}/afl_testing_mapserver.png">
 
 
 However, it is not mutating the program input as I didn't use "@@" nor a dictionary. When you use @@, afl will replace
