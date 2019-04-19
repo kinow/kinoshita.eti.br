@@ -8,7 +8,7 @@ category: 'blog'
 time: '18:49:03'
 ---
 
-As I mentioned in my [previous post]({{pcposturl(2014, 10, 11, "basic-workflow-of-a-sparql-query-in-fuseki")}}), 
+As I mentioned in my [previous post]({% post_url 2014-10-11-basic-workflow-of-a-sparql-query-in-fuseki %}), 
 I am using [Apache Jena](http://jena.apache.org) for a project of a customer. I had never used 
 any triple store, nor a SPARQL Endpoint server before. But for being involved with the Apache 
 Software Foundation, and since the company itself is using several Apache components, it was only 
