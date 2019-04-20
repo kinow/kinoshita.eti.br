@@ -11,9 +11,6 @@ date: '2016-03-30 16:33:33 +13:00'
         <a href="#books">Books</a>
     </li>
     <li>
-        <a href="#what-i-am-reading-at-the-moment">What I am reading at the moment</a>
-    </li>
-    <li>
         <a href="#my-tsundoku-list">My Tsundoku list</a>
     </li>
     <li>
@@ -96,47 +93,6 @@ date: '2016-03-30 16:33:33 +13:00'
                 </a> (2010)
             </td>
             <td>Bruno P. Kinoshita and C&eacute;sar Fernandes de Almeida</td>
-        </tr>
-    </tbody>
-</table>
-
-<a href="#top">Back to top</a>
-
-<h2><a name="what-i-am-reading-at-the-moment">What I am reading at the moment</a></h2>
-
-<p>Normally I read one of two fiction books, and one technical. I try to always carry the fiction books, and sometimes manage to read one in one weekend, but lately I have not had a lot of time to read. And sometimes, even though I am reading a book, if you ask me which book I am reading, I can tell you the story, but have no idea about the title.</p>
-
-<table class="ui celled striped table">
-    <colgroup>
-        <col width="50%" />
-        <col width="50%" />
-    </colgroup>
-    <thead>
-        <tr>
-            <th>Title</th>
-            <th>Author</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td>R for Data Science</td>
-            <td>Garrett Grolemund and Hadley Wickham</td>
-        </tr>
-        <tr>
-            <td>Triste fim de Policarpo Quaresma</td>
-            <td>Lima Barreto</td>
-        </tr>
-        <tr>
-            <td>Seven New Zealand Novellas</td>
-            <td>Peter Simpson</td>
-        </tr>
-        <tr>
-            <td>Cryptonomicon</td>
-            <td>Neal Stephenson</td>
-        </tr>
-        <tr>
-            <td>Any Human Heart</td>
-            <td>William Boyd</td>
         </tr>
     </tbody>
 </table>
