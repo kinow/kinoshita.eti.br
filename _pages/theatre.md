@@ -151,4 +151,25 @@ note: "These are some plays I have watched. Suggestions are welcome."
             </div>
         </div>
     </div>
+    <div class="column">
+        <div class="ui raised card">
+            <div class="content">
+                <div class="right floated meta">April, 2019</div>
+                <div class="header">Woman of Citrus</div>
+            </div>
+            <div class="image">
+                <img src="/assets/pages/theatre/Bment_1200.jpg" >
+            </div>
+            <div class="content">
+                <div class="description">
+                    Woman of Citrus a big pot of movement, rhyming words and absurd character comedy. With a focus on her mixed-race heritage, navigating her sense of self growing up in small-town Kerikeri, New Zealand and exploring her own sense of cultural appropriation(...)
+                </div>
+            </div>
+            <div class="extra content">
+                <div class="right floated author">
+                    Basement Theatre, Auckland, New Zealand
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
