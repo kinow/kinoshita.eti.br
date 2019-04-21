@@ -13,7 +13,7 @@ be used with QGIS, gvSIG, ArcGIS, etc.
 
 <iframe src="https://www.google.com/maps/d/embed?mid=1DrJDEfcCWzVbbNlW0qz1qk2VXCFyGcnB" width="640" height="480"></iframe>
 
-## Countries Visited
+## Countries I Have Visited
 
 <iframe src="https://www.google.com/maps/d/embed?mid=1vZjY8fA1xph2D9c095OGqF8WNyk5VZDR" width="640" height="480"></iframe>
 
