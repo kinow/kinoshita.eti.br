@@ -26,43 +26,43 @@ look for the forecast summary.
 [Source](https://www.youtube.com/watch?v=dBcOLbpTGRE)
 
 
-<img class="ui fluid image" src="/assets/posts{{page.path | remove: ".md" | remove: "_posts" }}/01.png" />
+<img class="ui fluid image" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/01.png" />
 
 
 
-<img class="ui fluid image" src="/assets/posts{{page.path | remove: ".md" | remove: "_posts" }}/02.png" />
+<img class="ui fluid image" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/02.png" />
 
 
 
-<img class="ui fluid image" src="/assets/posts{{page.path | remove: ".md" | remove: "_posts" }}/03.png" />
+<img class="ui fluid image" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/03.png" />
 
 
 
-<img class="ui fluid image" src="/assets/posts{{page.path | remove: ".md" | remove: "_posts" }}/04.png" />
+<img class="ui fluid image" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/04.png" />
 
 
 
-<img class="ui fluid image" src="/assets/posts{{page.path | remove: ".md" | remove: "_posts" }}/05.png" />
+<img class="ui fluid image" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/05.png" />
 
 
 
-<img class="ui fluid image" src="/assets/posts{{page.path | remove: ".md" | remove: "_posts" }}/06.png" />
+<img class="ui fluid image" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/06.png" />
 
 
 
-<img class="ui fluid image" src="/assets/posts{{page.path | remove: ".md" | remove: "_posts" }}/07.png" />
+<img class="ui fluid image" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/07.png" />
 
 
 
-<img class="ui fluid image" src="/assets/posts{{page.path | remove: ".md" | remove: "_posts" }}/08.png" />
+<img class="ui fluid image" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/08.png" />
 
 
 
-<img class="ui fluid image" src="/assets/posts{{page.path | remove: ".md" | remove: "_posts" }}/09.png" />
+<img class="ui fluid image" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/09.png" />
 
 
 
-<img class="ui fluid image" src="/assets/posts{{page.path | remove: ".md" | remove: "_posts" }}/10.png" />
+<img class="ui fluid image" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/10.png" />
 
 
 ### Climatempo
@@ -77,15 +77,15 @@ They have an online channel with some videos, but I still prefer the presentatio
 main TV channels' forecasters.
 
 
-<img class="ui fluid image" src="/assets/posts{{page.path | remove: ".md" | remove: "_posts" }}/11.png" />
+<img class="ui fluid image" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/11.png" />
 
 
 
-<img class="ui fluid image" src="/assets/posts{{page.path | remove: ".md" | remove: "_posts" }}/12.png" />
+<img class="ui fluid image" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/12.png" />
 
 
 
-<img class="ui fluid image" src="/assets/posts{{page.path | remove: ".md" | remove: "_posts" }}/13.png" />
+<img class="ui fluid image" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/13.png" />
 
 
 ### Notes

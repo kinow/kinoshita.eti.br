@@ -18,7 +18,7 @@ something else. So I decided to dig down the rabbit hole and start learning more
 about certain parts of the Apache Jena code base.
 
 <p style='text-align: center;'>
-<img style="display: inline; width: 600px;" class="ui image" src="/assets/posts{{page.path | remove: ".md" | remove: "_posts" }}/browser.png"  />
+<img style="display: inline; width: 600px;" class="ui image" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/browser.png"  />
 </p>
 
 This post will be useful to myself in the future, as a note-taking in a series, so that I
@@ -36,7 +36,7 @@ that when I run the application in Eclipse, it is running with Jetty, serving
 servlets (there is no framework like Wicket, Struts, etc, involved).
 
 <p style='text-align: center;'>
-<img style="display: inline; width: 600px;" class="ui image" src="/assets/posts{{page.path | remove: ".md" | remove: "_posts" }}/class-hierarchy.png"  />
+<img style="display: inline; width: 600px;" class="ui image" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/class-hierarchy.png"  />
 </p>
 
 Several filters are applied to the HTTP request too, like Cross Origin, Shiro, and
@@ -107,7 +107,7 @@ And also a `StreamRDFCountingBase` to keep track of statistics to display
 back to the user.
 
 <p style='text-align: center;'>
-<img style="display: inline; width: 600px;" class="ui image" src="/assets/posts{{page.path | remove: ".md" | remove: "_posts" }}/eclipse.png"  />
+<img style="display: inline; width: 600px;" class="ui image" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/eclipse.png"  />
 </p>
 
 `StreamRDFCountingBase` extends `StreamRDFWrapper`, and wraps - as per name -

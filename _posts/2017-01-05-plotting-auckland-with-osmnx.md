@@ -6,7 +6,7 @@ tags:
 title: Plotting Auckland with OSMnx
 ---
 
-<img style="height: 400px;" class="ui image" src="/assets/posts{{page.path | remove: ".md" | remove: "_posts" }}/figure_1.png" alt="Auckland" />
+<img style="height: 400px;" class="ui image" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/figure_1.png" alt="Auckland" />
 
 A couple of days ago I saw [a thread in reddit](https://www.reddit.com/r/gis/comments/5lnjxs/creating_squaremile_figureground_diagrams_of/)
 about OSMnx. It is a utilty for interacting with the OpenStreeMap (OSM)

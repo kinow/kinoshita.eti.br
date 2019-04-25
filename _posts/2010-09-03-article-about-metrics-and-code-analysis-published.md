@@ -11,7 +11,7 @@ I wrote an article about a quality analysis job done for a client of <a title="S
 
 You can check the full article in TestingExperience site. It is available in PDF format for members, the registration if free though.
 
-<img class="ui fluid image" src="/assets/posts{{page.path | remove: ".md" | remove: "_posts" }}/cover_schatten.jpg">
+<img class="ui fluid image" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/cover_schatten.jpg">
 
 
 Happy reading.

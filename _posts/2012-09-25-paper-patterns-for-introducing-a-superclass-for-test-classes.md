@@ -11,7 +11,7 @@ Few days ago we had [SugarLoafPlop 2012](http://www.dimap.ufrn.br/sugarloafplop2
 
 It is a conference on <a href="http://en.wikipedia.org/wiki/Pattern_language" title="Pattern Language">pattern languages</a> of programming. About six months ago I saw a tweet by <a href="https://twitter.com/emguerra" title="Eduardo Guerra">Eduardo Guerra</a> asking if anyone had some cases where certain patterns were applied. It was a big coincidence, since I was working on <a href="http://commons.apache.org/sandbox/functor/" title="Apache Commons Functor">Apache Commons Functor</a> and some <a href="http://www.jenkins-ci.org" title="Jenkins-CI">Jenkins plugins</a>, both projects with cases that could be used in his paper.
 
-<img class="ui image" src="/assets/posts{{page.path | remove: ".md" | remove: "_posts" }}/sugarloaf2012_300_146.jpg">
+<img class="ui image" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/sugarloaf2012_300_146.jpg">
 
 So I joined Guerra and gave my small contribution to the paper that <a href="http://www.dimap.ufrn.br/sugarloafplop2012/pages/acceptedpapers.html" title="accepted papers">has been accepted</a> for this edition of SugarLoafPlop. Guerra also went there to give a talk and participate in an open discussion about several papers, including ours.
 

@@ -21,57 +21,57 @@ This logo is not actually used. It was an entry to a call for proposals.
 This post won't have much text. It will be more screen shots of the
 process with short commentaire.
 
-<img class="ui fluid image" src="/assets/posts{{page.path | remove: ".md" | remove: "_posts" }}/01.png" />
+<img class="ui fluid image" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/01.png" />
 
 <!--more-->
 
 
-<img class="ui fluid image" src="/assets/posts{{page.path | remove: ".md" | remove: "_posts" }}/02.png" />
+<img class="ui fluid image" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/02.png" />
 
 
 
-<img class="ui fluid image" src="/assets/posts{{page.path | remove: ".md" | remove: "_posts" }}/03.png" />
+<img class="ui fluid image" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/03.png" />
 
 
 
 
-<img class="ui fluid image" src="/assets/posts{{page.path | remove: ".md" | remove: "_posts" }}/04.png" />
+<img class="ui fluid image" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/04.png" />
 
 
 
-<img class="ui fluid image" src="/assets/posts{{page.path | remove: ".md" | remove: "_posts" }}/05.png" />
+<img class="ui fluid image" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/05.png" />
 
 
 
-<img class="ui fluid image" src="/assets/posts{{page.path | remove: ".md" | remove: "_posts" }}/06.png" />
+<img class="ui fluid image" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/06.png" />
 
 
 
-<img class="ui fluid image" src="/assets/posts{{page.path | remove: ".md" | remove: "_posts" }}/07.png" />
+<img class="ui fluid image" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/07.png" />
 
 
 
-<img class="ui fluid image" src="/assets/posts{{page.path | remove: ".md" | remove: "_posts" }}/08.png" />
+<img class="ui fluid image" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/08.png" />
 
 
 
-<img class="ui fluid image" src="/assets/posts{{page.path | remove: ".md" | remove: "_posts" }}/09.png" />
+<img class="ui fluid image" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/09.png" />
 
 
 
-<img class="ui fluid image" src="/assets/posts{{page.path | remove: ".md" | remove: "_posts" }}/10.png" />
+<img class="ui fluid image" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/10.png" />
 
 
 
-<img class="ui fluid image" src="/assets/posts{{page.path | remove: ".md" | remove: "_posts" }}/11.png" />
+<img class="ui fluid image" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/11.png" />
 
 
 
-<img class="ui fluid image" src="/assets/posts{{page.path | remove: ".md" | remove: "_posts" }}/12.png" />
+<img class="ui fluid image" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/12.png" />
 
 
 
-<img class="ui fluid image" src="/assets/posts{{page.path | remove: ".md" | remove: "_posts" }}/13.png" />
+<img class="ui fluid image" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/13.png" />
 
 
 ### And a bug
@@ -81,7 +81,7 @@ text and the bend effect, when moving the ribbon grouped with the text and after
 saving the file, the text changed in some strange way.
 
 
-<img class="ui fluid image" src="/assets/posts{{page.path | remove: ".md" | remove: "_posts" }}/bug.png" />
+<img class="ui fluid image" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/bug.png" />
 
 
 Now just need to finish reading

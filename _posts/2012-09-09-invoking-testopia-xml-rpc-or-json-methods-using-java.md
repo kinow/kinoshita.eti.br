@@ -16,7 +16,7 @@ Testopia has a Java client too, available in <a href="http://bzr.mozilla.org/bug
 
 <!--more-->
 
-<img src="/assets/posts{{page.path | remove: ".md" | remove: "_posts" }}/testopia_java_300_120.png">
+<img src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/testopia_java_300_120.png">
 
 Peter and I have been working on <a href="https://wiki.jenkins-ci.org/display/JENKINS/Testopia+Plugin" title="Jenkins Testopia Plug-in">Jenkins Testopia Plug-in</a> [7], released few weeks ago and with its new version being released at this very moment. It's been fun to write this new plug-in, and we are using a type of Scrum to manage the project, what makes it even more interesting.
 

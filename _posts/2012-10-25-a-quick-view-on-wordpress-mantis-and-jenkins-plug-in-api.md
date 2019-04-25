@@ -9,7 +9,7 @@ title: A quick view on Wordpress, Mantis and Jenkins plug-in API
 
 <p>I'm preparing a <em>plug-in API proposal for <a href="http://www.teamst.org" title="TestLink">TestLink</a></em>, and thought that the best way to learn how to write a good plug-in API would be by looking at other application's plug-in API's.</p>
 
-<img class="ui image" src="/assets/posts{{page.path | remove: ".md" | remove: "_posts" }}/testlink_logo_2.jpg ">
+<img class="ui image" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/testlink_logo_2.jpg ">
 
 <p>This post contains information that I gathered for creating this new API, but that may also be useful for other programmers. I used <a href="#wp">Wordpress</a>, <a href="#mantis">Mantis</a> and <a href="#jenkins">Jenkins</a> in this study. Let me know if you find any mistakes or if you have any other suggestions.</p>
 
@@ -21,7 +21,7 @@ title: A quick view on Wordpress, Mantis and Jenkins plug-in API
 
 <p><a href="http://www.wordpress.org" title="http://www.wordpress.org">http://www.wordpress.org</a></p>
 
-<img class="ui image" src="/assets/posts{{page.path | remove: ".md" | remove: "_posts" }}/wordpress_logo_notext_rgb_300_300.png">
+<img class="ui image" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/wordpress_logo_notext_rgb_300_300.png">
 
 <ul>
 	<li>Supported programming languages: PHP</li>
@@ -88,7 +88,7 @@ endif;
 
 <p><a href="http://www.mantisbt.org/" title="http://www.mantisbt.org">http://www.mantisbt.org/</a></p>
 
-<img class="ui image" src="/assets/posts{{page.path | remove: ".md" | remove: "_posts" }}/Mantis_logo.gif">
+<img class="ui image" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/Mantis_logo.gif">
 
 <ul>
 	<li>Supported programming languages: PHP</li>
@@ -153,7 +153,7 @@ class XmlImportExportPlugin extends MantisPlugin {
 
 <p><a href="http://www.jenkins-ci.org" title="http://www.jenkins-ci.org">http://www.jenkins-ci.org</a></p>
 
-<img class="ui image" src="/assets/posts{{page.path | remove: ".md" | remove: "_posts" }}/Jenkins1_300_224.png">
+<img class="ui image" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/Jenkins1_300_224.png">
 
 <ul>
 	<li>Supported programming languages: Java, Ruby, Groovy, Python (work in progress)</li>

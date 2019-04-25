@@ -28,6 +28,6 @@ public static void main(String[] args) {
 
 All you have to do is to use the hexadecimal representation of the characters instead of using plain text. And here is the result.
 
-<img class="ui image" src="/assets/posts{{page.path | remove: ".md" | remove: "_posts" }}/kino.png" alt="=" />
+<img class="ui image" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/kino.png" alt="=" />
 
 Banzai!

@@ -15,7 +15,7 @@ One of the first chapters talks about the basic data structures in R. In order t
 get my feet wet I thought about a simple example: [treemapping](http://en.wikipedia.org/wiki/Treemapping) 
 Jenkins extension points. 
 
-<img class="ui image" src="/assets/posts{{page.path | remove: ".md" | remove: "_posts" }}/extension_points.png">
+<img class="ui image" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/extension_points.png">
 
 <!--more-->
 

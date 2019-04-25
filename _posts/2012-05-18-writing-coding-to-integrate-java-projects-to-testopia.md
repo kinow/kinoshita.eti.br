@@ -10,13 +10,13 @@ title: Writing code to integrate Java projects to Testopia
 
 The first tool that we are integrating is not <a href="http://www.teamst.org" title="TestLink">TestLink</a>, but <a href="http://www.mozilla.org/projects/testopia/" title="Mozilla Testopia">Mozilla Testopia</a>. As part of the process to integrate these tools, many Java API's to interface the existing external APIs will be created, like it was done in TestLink with <a href="https://sourceforge.net/projects/testlinkjavaapi/" title="TestLink Java API">TestLink Java API</a>.
 
-<img class="ui left floated image" src="/assets/posts{{page.path | remove: ".md" | remove: "_posts" }}/Jenkins1_300_224.png">
+<img class="ui left floated image" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/Jenkins1_300_224.png">
 
 Installing Testopia is very easy and straightforward. <a href="http://blog.marcweigand.de/2011/02/20/how-to-setup-bugzilla-with-testopia-on-a-new-debian-squeeze-60/" title="http://blog.marcweigand.de/2011/02/20/how-to-setup-bugzilla-with-testopia-on-a-new-debian-squeeze-60/">This</a> was the best guide that I could find, and worked without errors at my Debian Squeeze. I only had to move the directories from <code>/var/www</code> to my home directory (I use my PHP Eclipse workspace as Apache home).
 
 Testopia has a XML-RPC APi, just like TestLink, however it lacks an user friendly documentation and examples. I migrated the Java driver from Ant to Maven, for the sake of commodity. But the XML-RPC server is complaining that I have to log-in before listing the test cases of a test plan.
 
-<img class="ui right floated image" src="/assets/posts{{page.path | remove: ".md" | remove: "_posts" }}/testopia_128_128.png">
+<img class="ui right floated image" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/testopia_128_128.png">
 
 If you are interested in using Java and Testopia, here's the link for the java project with Maven support: <a href="https://github.com/kinow/testopia-java-driver" title="https://github.com/kinow/testopia-java-driver">https://github.com/kinow/testopia-java-driver</a>. I will update the project with examples, more tests and will try to clean up the code. Probably I will use either GitHub pages or a Wiki somewhere to document how to use Testopia and Java. 
 

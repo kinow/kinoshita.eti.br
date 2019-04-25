@@ -26,7 +26,7 @@ mobile phone, that is launched with a balloon into the atmosphere.
 I was lucky to be given the chance to release one of these balloons carrying a newer
 version of this equipment.
 
-<img class="ui centered large bordered image" src="/assets/posts{{page.path | remove: ".md" | remove: "_posts" }}/balloon-launch.jpg" alt="Radiosonde balloon launch" />
+<img class="ui centered large bordered image" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/balloon-launch.jpg" alt="Radiosonde balloon launch" />
 
 The balloon can carry equipments for measuring different things, like air pressure,
 altitude, temperature, latitude, longitude, relative humidity, among others. Equipments
@@ -85,7 +85,7 @@ converts the Vaisala binary data into a NetCDF that is close to what GRUAN produ
 
 ### What is GRUAN, and why should I care?
 
-<img class="ui centered large bordered image" src="/assets/posts{{page.path | remove: ".md" | remove: "_posts" }}/sherlock1.png" alt="OG Sherlock Kush" />
+<img class="ui centered large bordered image" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/sherlock1.png" alt="OG Sherlock Kush" />
 
 This part of the post is more climate and research-oriented. So if you are more geek-savvy, feel free
 to jump to the next section.
@@ -228,6 +228,6 @@ during the whole profiling of a radiosonde. You can see that as the radiosonde
 goes up in the atmosphere, the temperature decreases, but then increases again.
 Which is [normal when you move beyond the tropopause](http://www.windows2universe.org/kids_space/temp_profile.html).
 
-<img class="ui centered large bordered image" src="/assets/posts{{page.path | remove: ".md" | remove: "_posts" }}/radiosonde_plot.png" alt="Radiosonde temperature NetCDF" />
+<img class="ui centered large bordered image" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/radiosonde_plot.png" alt="Radiosonde temperature NetCDF" />
 
 That's all for today!

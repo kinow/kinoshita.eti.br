@@ -36,7 +36,7 @@ But several objects get created in memory, and persisted into the build.xml job 
 
 The build page with the graph, and the other two test result pages are rendering in more than 10 seconds in my computer. But the CPU load is OK, so a closer look at the memory use would probably be more interesting.
 
-<img class="ui centered image" src="/assets/posts{{page.path | remove: ".md" | remove: "_posts" }}/JENKINS-17887-yourkit1.png" alt="JENKINS-17887 YourKit profiler" />
+<img class="ui centered image" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/JENKINS-17887-yourkit1.png" alt="JENKINS-17887 YourKit profiler" />
 
 The image shows one of the screens in YourKit profiler, where it is possible to see that **org.tap4j.plugin.model.TapTestResultResult** has over 6 million objects.
 

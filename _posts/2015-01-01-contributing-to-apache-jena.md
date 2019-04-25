@@ -29,7 +29,7 @@ I use [Trello](https://trello.com) to triage issues in OSS projects (and for sev
 things). I have a board with several cards for Open Source. About a month ago I set up one 
 for Jena and listed the issues that I thought I could contribute to. 
 
-<img src="/assets/posts{{page.path | remove: ".md" | remove: "_posts" }}/jena_trello.png">
+<img src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/jena_trello.png">
 
 
 I annotate easy issues with a "lhf" suffix for Low Hanging Fruit issues, and delete issues from 
@@ -40,7 +40,7 @@ Most of the issues I included in the card for Jena had been created over two yea
 been updated in a while. When you test these issues against the current code, usually you find that 
 some of them have already been fixed. Other issues included documentation problems, and minor features. I didn't find any blocker issue that would impede us to use Jena in production.
 
-<img src="/assets/posts{{page.path | remove: ".md" | remove: "_posts" }}/jena_jira.png">
+<img src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/jena_jira.png">
 
 
 The picture above shows the past 30 days activity summary in JIRA for Jena. The red line shows 

@@ -19,7 +19,7 @@ Instead of going at length on what happens (and there is quite a bit happening w
 you run `cylc start my.suite`), I will use the following diagram, followed by a few paragraphs
 to highlight certain parts. The code used was based on [Cylc 7.7.1](https://github.com/cylc/cylc/tree/7.7.1).
 
-<img style="display: inline; width: 100%;" class="ui image" src="/assets/posts{{page.path | remove: ".md" | remove: "_posts" }}/cylc-scheduler_cli-workflow.png"  />
+<img style="display: inline; width: 100%;" class="ui image" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/cylc-scheduler_cli-workflow.png"  />
 
 <!--more-->
 

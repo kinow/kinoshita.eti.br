@@ -16,7 +16,7 @@ title: 'Learning with Open Source: Reviewing SVN commits log'
 
 <p><a href="https://issues.apache.org/jira/browse/FUNCTOR-14" title="Apache Commons Functor - Issue 14">FUNCTOR-14</a> was created to enhance the <a href="http://commons.apache.org/functor/apidocs/org/apache/commons/functor/generator/package-summary.html">generators API</a> in [functor]. I'd worked on <a href="http://svn.apache.org/viewvc/commons/proper/functor/branches/generators-FUNCTOR-14/">a branch</a> for this issue, but needed some review in order to be able to merge it with the trunk. That's where you can see why Open Source is so awesome. Another Apache member, Matt Benson, created <a href="http://svn.apache.org/viewvc/commons/proper/functor/branches/FUNCTOR-14-mm/">another branch</a> to work on the project structure, but also to review the generator API.</p>
 
-<img class="ui image" src="/assets/posts{{page.path | remove: ".md" | remove: "_posts" }}/feather_small.gif">
+<img class="ui image" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/feather_small.gif">
 
 <!--more-->
 

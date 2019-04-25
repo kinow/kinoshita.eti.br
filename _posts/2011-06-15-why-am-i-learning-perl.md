@@ -10,7 +10,7 @@ Last month I attended the <a title="II Sao Paulo Perl Workshop" href="http://www
 
 The first programming language that I had contact with was Perl. I was a 16 years old <a title="Slackware Linux" href="http://www.slackware.com">Slackware</a> aficionado at that time, and was dying to have a web site with a guestbook . We did not have any cheap hosting services in Brazil that offered a <a title="PHP" href="http://www.php.net">PHP</a> environment, but there were few companies that offered a free host with ads, and with Perl. I don't remember which script I used, only that I found it in <a title="HotScripts.com" href="http://www.hotscripts.com">HotScripts.com</a> and that it stored the guestbook entries in disk. Now, ten years after, here I am playing with Perl again! :-D
 
-<img class="ui fluid image" src="/assets/posts{{page.path | remove: ".md" | remove: "_posts" }}/larry_wall.jpg">
+<img class="ui fluid image" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/larry_wall.jpg">
 
 Well, what was my idea of Perl before the event? I thought it was an old programming language, very powerful, but over complicated. And what do I think of Perl now? I think it is an old programming language, very powerful, but may be complicated.
 

@@ -14,11 +14,11 @@ Submitted to the project as [pull request #299](https://github.com/Frege/frege/p
 
 Current logo.
 
-<img class="ui centered large image" src="/assets/posts{{page.path | remove: ".md" | remove: "_posts" }}/Frege_logo.png" alt="Frege current logo" />
+<img class="ui centered large image" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/Frege_logo.png" alt="Frege current logo" />
 
 And the updated logo.
 
-<img class="ui centered large image" src="/assets/posts{{page.path | remove: ".md" | remove: "_posts" }}/Frege_logo_flat_colours.png" alt="Frege updated logo" />
+<img class="ui centered large image" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/Frege_logo_flat_colours.png" alt="Frege updated logo" />
 
 The colour used was Flamingo (#EF4836), found in [Flat UI Color Picker](http://www.flatuicolorpicker.com/).
 

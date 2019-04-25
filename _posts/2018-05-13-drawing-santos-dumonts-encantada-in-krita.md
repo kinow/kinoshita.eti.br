@@ -8,7 +8,7 @@ tags:
 title: Drawing Santos Dumont's "Encantada" in Krita
 ---
 
-<img style="height: 400px;" class="ui image" src="/assets/posts{{page.path | remove: ".md" | remove: "_posts" }}/encantada.png" alt="A Encantada" />
+<img style="height: 400px;" class="ui image" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/encantada.png" alt="A Encantada" />
 
 
 With Krita 4.x released, and the [Krita monthly challange](https://forum.kde.org/viewtopic.php?f=277&t=152338&p=398403#p398403)
@@ -29,13 +29,13 @@ I started by preparing the canvas with the original image and an onion layer, an
 the lineart. I used [David Revoy's brushes](https://www.davidrevoy.com/article340/krita-4-0-brushes).
 They are great! And used the built-in chalk brush for most of the colours.
 
-<img style="height: 400px;" class="ui image" src="/assets/posts{{page.path | remove: ".md" | remove: "_posts" }}/side-by-side.jpg" alt="Line art" />
+<img style="height: 400px;" class="ui image" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/side-by-side.jpg" alt="Line art" />
 
 
 I enjoy line art much more than colours, but for the monthly challenge, I tried to use
 some colours. I used the original photo to create the palette for the painting.
 
-<img style="height: 400px;" class="ui image" src="/assets/posts{{page.path | remove: ".md" | remove: "_posts" }}/lineart.jpg" alt="Line art" />
+<img style="height: 400px;" class="ui image" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/lineart.jpg" alt="Line art" />
 
 
 It had been a few months since I used either my Wacom tablet or Krita for painting. But I
@@ -48,15 +48,15 @@ with other editors.
 
 I am sure you will be glad with the results.
 
-<img style="height: 400px;" class="ui image" src="/assets/posts{{page.path | remove: ".md" | remove: "_posts" }}/Screenshot_2018-05-12_23-16-21.png" alt="Screen shot" />
+<img style="height: 400px;" class="ui image" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/Screenshot_2018-05-12_23-16-21.png" alt="Screen shot" />
 
-<img style="height: 400px;" class="ui image" src="/assets/posts{{page.path | remove: ".md" | remove: "_posts" }}/Screenshot from 2018-05-12 22-42-51.png" alt="Screen shot" />
+<img style="height: 400px;" class="ui image" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/Screenshot from 2018-05-12 22-42-51.png" alt="Screen shot" />
 
-<img style="height: 400px;" class="ui image" src="/assets/posts{{page.path | remove: ".md" | remove: "_posts" }}/Screenshot from 2018-05-13 00-11-38.png" alt="Screen shot" />
+<img style="height: 400px;" class="ui image" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/Screenshot from 2018-05-13 00-11-38.png" alt="Screen shot" />
 
-<img style="height: 400px;" class="ui image" src="/assets/posts{{page.path | remove: ".md" | remove: "_posts" }}/Screenshot from 2018-05-13 00-38-24.png" alt="Screen shot" />
+<img style="height: 400px;" class="ui image" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/Screenshot from 2018-05-13 00-38-24.png" alt="Screen shot" />
 
-<img style="height: 400px;" class="ui image" src="/assets/posts{{page.path | remove: ".md" | remove: "_posts" }}/Screenshot from 2018-05-13 01-24-27.png" alt="Screen shot" />
+<img style="height: 400px;" class="ui image" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/Screenshot from 2018-05-13 01-24-27.png" alt="Screen shot" />
 
 Oh! I also need to find some more time another day to try the newly released
 [Krita's Python scripting](https://docs.krita.org/Introduction_to_Python_Scripting)!

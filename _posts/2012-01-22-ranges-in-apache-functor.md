@@ -24,7 +24,7 @@ This post is about ranges in <a title="Apache Commons Functor" href="http://comm
 
 Yesterday I finished to port <a title="Matlab sigmf membership function" href="http://www.mathworks.com/help/toolbox/fuzzy/sigmf.html">sigmf</a> function to nebular, including some tests that compare nebular's output to Matlab sigmf function. However, here comes the issue with ranges, sequences and generators. The idea is to plot a graph similar to the one below.
 
-<img class="ui image" src="/assets/posts{{page.path | remove: ".md" | remove: "_posts" }}/sigmf_300_160.gif">
+<img class="ui image" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/sigmf_300_160.gif">
 
 The x axis contains values from 0 to 10, increasing by 0.1. In Matlab, I would execute the following command to produce the x vector.
 

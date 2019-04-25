@@ -28,7 +28,7 @@ title: 'Maven site tips: Maven Fluido Skin and Javadoc class diagrams'
 	<li><a title="TestLink Java API" href="http://testlinkjavaapi.sf.net">TestLink Java API</a></li>
 </ul></p>
 
-<img class="ui fluid image" src="/assets/posts{{page.path | remove: ".md" | remove: "_posts" }}/fluido_skin_300_135.png">
+<img class="ui fluid image" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/fluido_skin_300_135.png">
 
 <p>Regarding the Javadoc browsing, there's a nice trick too: add class diagrams. I have seen a new Javadoc template in Apache Commons mailing list, but it was a work in progress, so for now I will stick with class diagrams. These diagrams are generated when you execute the javadoc or the site goals, using <a title="Graphviz" href="http://www.graphviz.org/">graphviz</a>. And there is more. You can click on the diagram classes, as they have a link to the Java class that they reference to.</p>
 
@@ -68,7 +68,7 @@ title: 'Maven site tips: Maven Fluido Skin and Javadoc class diagrams'
 
 <p>Here's how a diagram looks like (source: <a href="http://tap4j.org/apidocs/index.html">http://tap4j.org/apidocs/index.html</a>):</p>
 
-<img class="ui fluid image" src="/assets/posts{{page.path | remove: ".md" | remove: "_posts" }}/javadoc_graphviz_300_135.png">
+<img class="ui fluid image" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/javadoc_graphviz_300_135.png">
 
 <p>Have fun! :-) and remember to check if your CI machine has graphviz installed too, otherwise you will have 404 in your Javadoc pages ;-)</p>
 

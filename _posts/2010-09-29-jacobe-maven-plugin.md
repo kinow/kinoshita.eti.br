@@ -10,7 +10,7 @@ When I started working in the <a title="TestLink java api" href="http://code.goo
 
 This is what Jacobe does, basically.
 
-<img class="ui fluid image" src="/assets/posts{{page.path | remove: ".md" | remove: "_posts" }}/jacobe_big.jpg">
+<img class="ui fluid image" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/jacobe_big.jpg">
 
 Jacobe itself is an executable but TIOBE provides an Ant task that lets you call Jacobe from an Ant build file. But wait a minute! What about Maven? Yeah, exactly. Jacobe lacked of Maven support. I talked to the guys from TIOBE and they kindly let me implement a Maven Plugin for Jacobe.
 

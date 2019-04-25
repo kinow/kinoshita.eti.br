@@ -6,7 +6,7 @@ tags:
 title: 'Drawing sketch: Page 036'
 ---
 
-<img class="ui fluid image" src="/assets/posts{{page.path | remove: ".md" | remove: "_posts" }}/sketch-book-036.jpg" alt="Page 036" />
+<img class="ui fluid image" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/sketch-book-036.jpg" alt="Page 036" />
 
 Almost ANZAC day. And almost time to switch back to coding Jenkins plug-ins.
 

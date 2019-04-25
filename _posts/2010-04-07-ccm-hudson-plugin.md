@@ -7,7 +7,7 @@ tags:
 title: CCM Hudson Plugin
 ---
 
-<img class="ui left floated image" src="/assets/posts{{page.path | remove: ".md" | remove: "_posts" }}/hudson.png">
+<img class="ui left floated image" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/hudson.png">
 
 CCM is a tool developed by Jonas Blunck (<a href="http://www.blunck.se/">http://www.blunck.se</a>). It's able to calculate the cyclomatic complexity (McCabe) of a .NET Project or Solution.
 

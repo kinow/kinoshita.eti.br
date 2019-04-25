@@ -16,7 +16,7 @@ Brazil is not only Samba, there is (good) celtic music in there too :-)
 <div class="ui fluid container">
 <figure>
 <a  href="/assets/posts{{page.path | remove: ".md" | remove: "_posts" }}/terra-celta-elcio.png" rel="prettyPhoto" class="thumbnail" title="Terra Celta vocal Elcio">
-<img style="height: 400px;" class="ui image" src="/assets/posts{{page.path | remove: ".md" | remove: "_posts" }}/terra-celta-elcio.png" alt="Terra Celta vocal Elcio" />
+<img style="height: 400px;" class="ui image" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/terra-celta-elcio.png" alt="Terra Celta vocal Elcio" />
 
 
 [http://kinow.deviantart.com/art/Terra-Celta-s-vocal-Elcio-655240481](http://kinow.deviantart.com/art/Terra-Celta-s-vocal-Elcio-655240481)
