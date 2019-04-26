@@ -151,6 +151,27 @@ note: "These are some plays I have watched. Suggestions are welcome."
     <div class="column">
         <div class="ui raised card">
             <div class="content">
+                <div class="right floated meta">June, 2018</div>
+                <div class="header">I Gan't Belive It</div>
+            </div>
+            <div class="image">
+                <img src="/assets/pages/theatre/tofiga.jpg" >
+            </div>
+            <div class="content">
+                <div class="description">
+                    Tofiga brings a whole now look and feel into Pacific humour. With backup band and sharing about his own experiences as a New Zealand born Samoan.
+                </div>
+            </div>
+            <div class="extra content">
+                <div class="right floated author">
+                    SkyCity Theatre, Auckland, New Zealand
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="column">
+        <div class="ui raised card">
+            <div class="content">
                 <div class="right floated meta">April, 2019</div>
                 <div class="header">The Goblin Market</div>
             </div>
