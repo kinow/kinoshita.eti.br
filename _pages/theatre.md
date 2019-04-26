@@ -190,4 +190,25 @@ note: "These are some plays I have watched. Suggestions are welcome."
             </div>
         </div>
     </div>
+    <div class="column">
+        <div class="ui raised card">
+            <div class="content">
+                <div class="right floated meta">April, 2019</div>
+                <div class="header">Sorry Bout It</div>
+            </div>
+            <div class="image">
+                <img src="/assets/pages/theatre/tofiga.jpg" >
+            </div>
+            <div class="content">
+                <div class="description">
+                    Tofiga Fepuleai is proud to present his brand new show "Sorry Bout It" designed to showcase all his hidden talents as well as bring back some of his iconic crowd favourites.
+                </div>
+            </div>
+            <div class="extra content">
+                <div class="right floated author">
+                    Victoria Convention Centre, Auckland, New Zealand
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
