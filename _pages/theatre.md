@@ -230,7 +230,7 @@ note: "These are some plays I have watched. Suggestions are welcome."
             </div>
             <div class="extra content">
                 <div class="right floated author">
-                    Victoria Convention Centre, Auckland, New Zealand
+                    Victory Convention Centre, Auckland, New Zealand
                 </div>
             </div>
         </div>
