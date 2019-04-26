@@ -9,6 +9,24 @@ note: "These are some plays I have watched. Suggestions are welcome."
     <div class="column">
         <div class="ui raised card">
             <div class="content">
+                <div class="right floated meta">2008</div>
+                <div class="header">Improv&aacute;vel</div>
+            </div>
+            <div class="content">
+                <div class="description">
+                    A cada semana um espet&aacute;culo diferente. No espet&aacute;culo Improv&aacute;vel, a plateia sugere temas, os artistas improvisam, a m&uacute;sica e a ilumina&ccedil;&atilde;o acompanham e um mestre de cerim&ocirc;nias conduz os jogos para tirar o maior n&uacute;mero de risadas do p&uacute;blico.
+                </div>
+            </div>
+            <div class="extra content">
+                <div class="right floated author">
+                    Teatro Jardim S&atilde;o Paulo, S&atilde;o Paulo, Brazil
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="column">
+        <div class="ui raised card">
+            <div class="content">
                 <div class="right floated meta">March, 2008</div>
                 <div class="header">Bartleby</div>
             </div>
