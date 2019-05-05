@@ -504,6 +504,6 @@ date: '2016-03-30 16:33:33 +13:00'
 
 <p>ps: some technical books I read the digital book, but for the rest I need to touch/feel/smell the paper, and preferably buy and stash it.</p>
 
-{% include books/short_stories.html %}
+{% include books/short-stories.html %}
 
 {% include books/zines.html %}
