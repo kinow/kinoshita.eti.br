@@ -14,7 +14,8 @@
         </tr>
     </thead>
     <tbody>
-        {% for short_story in site.data.short-stories %}
+        {% assign short_stories = site.data.short-stories | sort_natural: "author" %}
+        {% for short_story in short_stories %}
         <tr>
             {%- if short_story.link -%}
             <td><a href="{{ short_story.link }}">{{ short_story.title }}</a></td>
