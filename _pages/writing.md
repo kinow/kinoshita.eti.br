@@ -4,7 +4,7 @@ layout: page
 date: '2019-05-06 20:30:33 +13:00'
 ---
 
-Books I wrote or helped to. Tables sorted by author name.
+Tables sorted by author name.
 
 <table class="ui celled striped table">
     <colgroup>
