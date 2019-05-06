@@ -1,0 +1,31 @@
+<h2>
+    <a name="books">Books</a>
+</h2>
+
+<table class="ui celled striped table">
+    <colgroup>
+        <col width="50%" />
+        <col width="50%" />
+    </colgroup>
+    <thead style="">
+        <tr>
+            <th>Title</th>
+            <th>Author</th>
+        </tr>
+    </thead>
+    <tbody>
+        {%- assign books = site.data.books | sort_natural: "author" -%}
+        {%- for book in books -%}
+        <tr>
+            {%- if book.link -%}
+            <td><a href="{{ book.link }}">{{ book.title }}</a></td>
+            {%- else -%}
+            <td>{{ book.title }}</td>
+            {%- endif -%}
+            <td>{{ book.author }}</td>
+        </tr>
+        {%- endfor -%}
+    </tbody>
+</table>
+
+<a href="#top">Back to top</a>
