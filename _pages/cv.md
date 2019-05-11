@@ -1,14 +1,13 @@
 ---
-title: 'Curriculum Vitae'
+title: 'CV'
 layout: page
-permalink: "/cv/"
 ---
 
  I am an honest, and focused Software Engineer that is always trying to deliver solutions with quality. I am very calm and easy-going, and enjoy a challenging work environment, Open Source, and learning about different cultures. 
 
-I have worked in many different projects for the past ten years, in fields such as telecommunications, banking, credit, retail, insurance, and start-ups. Occupied different positions including programmer, quality engineer, devops, architect, full stack developer, and big data engineer. 
+I have worked in many different projects for the past ten years, in industries such as telecommunications, banking, credit, retail, insurance, and start-ups. Occupied different positions including programmer, quality engineer, devops, architect, full stack developer, and big data engineer. 
 
-I am fluent in English and Portuguese, with good understanding of Spanish, and basic of Japanese.
+I am fluent in English and Portuguese, with good understanding of Spanish, and basic of Japanese. Attended Te Reo Māori beginner classes to learn basic vocabulary and pronunciation.
 
 
 ## <i class="fa fa-chevron-right"></i> Skills
