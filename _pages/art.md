@@ -31,7 +31,9 @@ just drop me a message.
     <a href="/art/o-corvo/">
     	<img src="/assets/pages/art/o-corvo.png">
     </a>
-    <img src="/assets/pages/art/southern-royal-albatross.png">
+    <a href="/art/southern-royal-albatross/">
+    	<img src="/assets/pages/art/southern-royal-albatross.png">
+    </a>
     <img src="/assets/pages/art/terra_celta_s_vocal_elcio_by_kinow-dau42sh.png">
 </div>
 
