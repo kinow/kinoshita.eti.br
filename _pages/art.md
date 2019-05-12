@@ -15,7 +15,9 @@ note: "Drawing for fun, but commissions are welcome if I have the time."
     <a href="/art/daienny-lima/">
         <img src="/assets/pages/art/daienny-lima-compare.jpg">
     </a>
-    <img src="/assets/pages/art/stink-bug-smaller.png">
+    <a href="/art/stink-bug/">
+        <img src="/assets/pages/art/stink-bug-smaller.png">
+    </a>
 </div>
 
 Drawing <a href="http://kinow.deviantart.com/gallery/">comics, logos and illustrations</a>
