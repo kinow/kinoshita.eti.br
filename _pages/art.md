@@ -28,7 +28,9 @@ just drop me a message.
 	<a href="/art/dog/">
     	<img src="/assets/pages/art/dog.png">
     </a>
-    <img src="/assets/pages/art/o-corvo.png">
+    <a href="/art/o-corvo/">
+    	<img src="/assets/pages/art/o-corvo.png">
+    </a>
     <img src="/assets/pages/art/southern-royal-albatross.png">
     <img src="/assets/pages/art/terra_celta_s_vocal_elcio_by_kinow-dau42sh.png">
 </div>
