@@ -6,7 +6,9 @@ note: "Drawing for fun, but commissions are welcome if I have the time."
 ---
 
 <div class="ui small images">
-    <img src="/assets//pages/art/alonzo_and_lambda_by_kinow-d5tqvau.png">
+    <a href="/art/alonzo-and-lambda/">
+    	<img src="/assets//pages/art/alonzo_and_lambda_by_kinow-d5tqvau.png">
+    </a>
     <img src="/assets//pages/art/jean-luc-picard-original-size.jpg">
     <img src="/assets//pages/art/daienny-lima-compare.jpg">
     <img src="/assets//pages/art/stink-bug-smaller.png">

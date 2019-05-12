@@ -1,0 +1,9 @@
+---
+title: Alonzo and Lambda
+layout: page
+note: "Alonzo Church was an American mathematician and logician who made major contributions to mathematical logic and the foundations of theoretical computer science. He is best known for the lambda calculus, Church–Turing thesis, proving the undecidability of the Entscheidungsproblem, Frege–Church ontology, and the Church–Rosser theorem. He also worked on philosophy of language."
+---
+
+<div class="ui images">
+    <img src="/assets//pages/art/alonzo_and_lambda_by_kinow-d5tqvau.png">
+</div>
