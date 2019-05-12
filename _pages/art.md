@@ -25,7 +25,9 @@ is my hobby. If you have any question, or would like to use my work,
 just drop me a message.
 
 <div class="ui small images">
-    <img src="/assets/pages/art/dog.png">
+	<a href="/art/dog/">
+    	<img src="/assets/pages/art/dog.png">
+    </a>
     <img src="/assets/pages/art/o-corvo.png">
     <img src="/assets/pages/art/southern-royal-albatross.png">
     <img src="/assets/pages/art/terra_celta_s_vocal_elcio_by_kinow-dau42sh.png">
