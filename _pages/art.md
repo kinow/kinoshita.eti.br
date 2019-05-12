@@ -12,7 +12,9 @@ note: "Drawing for fun, but commissions are welcome if I have the time."
     <a href="/art/jean-luc-picard/">
         <img src="/assets/pages/art/jean-luc-picard-original-size.jpg">
     </a>
-    <img src="/assets/pages/art/daienny-lima-compare.jpg">
+    <a href="/art/daienny-lima/">
+        <img src="/assets/pages/art/daienny-lima-compare.jpg">
+    </a>
     <img src="/assets/pages/art/stink-bug-smaller.png">
 </div>
 
