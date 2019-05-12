@@ -34,7 +34,9 @@ just drop me a message.
     <a href="/art/southern-royal-albatross/">
     	<img src="/assets/pages/art/southern-royal-albatross.png">
     </a>
-    <img src="/assets/pages/art/terra_celta_s_vocal_elcio_by_kinow-dau42sh.png">
+    <a href="/art/terra-celta-elcio/">
+    	<img src="/assets/pages/art/terra_celta_s_vocal_elcio_by_kinow-dau42sh.png">
+    </a>
 </div>
 
 I am specially interested in: academic works (papers, thesis), natural history, books, news articles,
