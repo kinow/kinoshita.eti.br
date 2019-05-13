@@ -46,4 +46,7 @@ and technology related content.
     <a href="/art/plane1/">
         <img src="/assets/pages/art/plane1.png">
     </a>
+    <a href="/art/simone/">
+        <img src="/assets/pages/art/simone.png">
+    </a>
 </div>
