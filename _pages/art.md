@@ -41,3 +41,9 @@ just drop me a message.
 
 I am specially interested in: academic works (papers, thesis), natural history, books, news articles,
 and technology related content.
+
+<div class="ui small images">
+    <a href="/art/plane1/">
+        <img src="/assets/pages/art/plane1.png">
+    </a>
+</div>
