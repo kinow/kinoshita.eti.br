@@ -49,4 +49,7 @@ and technology related content.
     <a href="/art/simone/">
         <img src="/assets/pages/art/simone.png">
     </a>
+    <a href="/art/green-skull/">
+        <img src="/assets/pages/art/green-skull-full.png">
+    </a>
 </div>
