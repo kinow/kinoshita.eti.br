@@ -52,4 +52,7 @@ and technology related content.
     <a href="/art/green-skull/">
         <img src="/assets/pages/art/green-skull-full.png">
     </a>
+    <a href="/art/domestic-violence/">
+        <img src="/assets/pages/art/domestic-violence.png">
+    </a>
 </div>
