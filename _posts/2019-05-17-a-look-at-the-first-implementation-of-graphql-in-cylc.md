@@ -41,29 +41,32 @@ Every time the main loop runs, it calls a method (`Scheduler.update_data_structu
 structures used by Cylc, including the data structures used by the GraphQL engine in Cylc. Other methods
 that are responsible for updating the state of Tasks are now updating the state of Jobs too.
 
-- figure states updating
-
 The method `update_data_structure` uses `WsDataMgr`, another new object being added. `WsDataMgr`
 is where the Workflow Tasks, their parent Tasks, Task Families, and other objects required for
-the Workflow such as Prerequisits and Conditions are calculated, and organized into dictionaries.
+the Workflow such as Prerequisites and Conditions are calculated, and organized into dictionaries.
 
-- figure updating the data structure
+<img class="ui fluid image" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/graphql.svg.png.jpg" />
 
 These dictionaries are kept in memory, updated periodically by `Scheduler`, and accessed by the
-Web layer.
+PyZMQ layer.
 
-## Web layer
+## PyZMQ layer
 
 After the initial run of the main loop, we are ready to serve GraphQL data from our workflow
 in Cylc. That is done by the `SuiteRuntimeServer`, a PyZMQ server. It got a new method
-`pb_entire_workflow` that populates the `PbEntireWorkflow` object, and serializesit back to the client.
+`pb_entire_workflow` that populates the `PbEntireWorkflow` object, and serializes it back to the client.
 
-This method will be consumed by the Vue.js client in the future, with Apollo GraphQL client, to
-display the workflow graph to end users.
-
-- figure pyzmq
+This method will be used by another project that uses [Python Graphene](https://github.com/graphql-python/graphene)
+and [Tornado](https://github.com/tornadoweb/tornado) for the backend, and
+[Vue.js](https://github.com/vuejs/vue) for the frontend. 
 
 ## Conclusion
+
+Cylc uses a SQLite database for part of the workflow state (e.g. recovery) but for
+the GraphQL we are not really accessing any database directly.
+
+So the implementation in Cylc is probably different than what most blogs and tutorials
+use as example.
 
 It is still early work, and many things may change, but Cylc 8 is getting near its first alpha release
 with GraphQL. Check out [https://github.com/cylc/cylc-flow](https://github.com/cylc/cylc-flow) for more.
