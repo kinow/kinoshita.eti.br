@@ -5,6 +5,10 @@ tags:
 - cylc
 - graphql
 title: A look at the first implementation of GraphQL in Cylc
+note: This is based on a WIP pull request, and what is being described
+  here may be outdated by the time the pull request has been reviewed
+  and merged. But it should still give you an idea of what
+  we are working on.
 ---
 
 <img class="ui image" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/fancy-hands2.png" style="float: right; width: 40%;" />
