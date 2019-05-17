@@ -22,8 +22,6 @@ few things need to be done in a different way due to the jump from Desktop GUI t
 
 <!--more-->
 
-{% include toc.html %}
-
 ## Protobuf model
 
 The current implementation is under review in a pull request at the moment. It includes
