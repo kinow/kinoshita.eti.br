@@ -20,8 +20,7 @@ note: "Drawing for fun, but commissions are welcome if I have the time."
     </a>
 </div>
 
-Drawing <a href="http://kinow.deviantart.com/gallery/">comics, logos and illustrations</a>
-is my hobby. If you have any question, or would like to use my work,
+Drawing comics, logos and illustrations is my hobby. If you have any question, or would like to use my work,
 just drop me a message.
 
 <div class="ui small images">
@@ -56,3 +55,6 @@ and technology related content.
         <img src="/assets/pages/art/domestic-violence.png">
     </a>
 </div>
+
+You can find more on my <a href="http://kinow.deviantart.com/gallery/">DeviantArt</a> and on my
+<a href="https://www.instagram.com/brunokinoshita/">Instagram</a>.
