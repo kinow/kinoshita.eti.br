@@ -58,3 +58,9 @@ and technology related content.
 
 You can find more on my <a href="http://kinow.deviantart.com/gallery/">DeviantArt</a> and on my
 <a href="https://www.instagram.com/brunokinoshita/">Instagram</a>.
+
+<div class="ui small images">
+    <a href="/art/royal-spoonbill/">
+        <img src="/assets/pages/art/royal-spoonbill.png">
+    </a>
+</div>
