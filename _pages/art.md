@@ -63,4 +63,7 @@ You can find more on my <a href="http://kinow.deviantart.com/gallery/">DeviantAr
     <a href="/art/royal-spoonbill/">
         <img src="/assets/pages/art/royal-spoonbill.png">
     </a>
+    <a href="/art/old-hands/">
+        <img src="/assets/pages/art/old-hands.png">
+    </a>
 </div>
