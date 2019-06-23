@@ -38,6 +38,8 @@ class MovieLens(object):
         }
 
     def login(self, username, password):
+        if not username or not password:
+            raise ValueError("Must provide non-empty credentials")
         headers = self.headers.copy()
         headers['Referer'] = 'https://movielens.org/login'
         url = "%s/%s" % (self.base_url, "sessions")
