@@ -32,7 +32,6 @@ class MovieLens(object):
             'Cache-Control': 'no-cache',
             'Connection': 'keep-alive',
             'Content-Type': 'application/json;charset=utf-8',
-            'DNT': '1',
             'Host': 'movielens.org',
             'Pragma': 'no-cache',
             'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.10; rv:42.0) Gecko/20100101 Firefox/42.0'
