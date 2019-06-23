@@ -4,4 +4,4 @@ layout: page
 note: "From a reference photograph."
 ---
 
-<img src="/assets/pages/art/old-hands.png">
+<img src="/assets/pages/art/images/old-hands.png">

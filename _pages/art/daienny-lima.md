@@ -4,4 +4,4 @@ layout: page
 note: "Drawing made from a Photo in a magazine"
 ---
 
-<img src="/assets/pages/art/daienny-lima-compare.jpg">
+<img src="/assets/pages/art/images/daienny-lima-compare.jpg">

@@ -4,4 +4,4 @@ layout: page
 note: "A Corvo is a Crow in Portuguese. A Crow is a bird of the genus Corvus, or more broadly is a synonym for all of Corvus. They look like Ravens, but Crows are bigger."
 ---
 
-<img src="/assets/pages/art/o-corvo.png">
+<img src="/assets/pages/art/images/o-corvo.png">
