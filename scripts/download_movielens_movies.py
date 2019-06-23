@@ -44,7 +44,7 @@ class MovieLens(object):
         payload = {'userName': username, 'password': password}
         r = requests.post(url, data=json.dumps(payload), headers=headers, timeout=self.timeout)
         if not r.cookies:
-            raise Exception(f"No Cookie set after auth! Response: {r.json()}")
+            raise Exception("No Cookie set after auth! Response: " + str(r.json()))
         return r.cookies
 
     def explore(self, params, cookies):
