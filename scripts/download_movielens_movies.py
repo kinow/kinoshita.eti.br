@@ -17,7 +17,7 @@ import getpass
 USER = os.environ.get("movielens_user")
 PASS = os.environ.get("movielens_pass")
 
-if PASS == None or PASS == '':
+if not PASS:
     PASS = getpass.getpass("Enter password:")
 
 class MovieLens(object):
