@@ -27,14 +27,14 @@ class MovieLens(object):
         self.timeout = 30.0 #seconds
         self.headers = {
             'Accept': 'application/json, text/plain, */*',
-            'Accept-Encoding': 'gzip, deflate',
+            'Accept-Encoding': 'gzip, deflate, br',
             'Accept-Language': 'en-US,en;q=0.5',
             'Cache-Control': 'no-cache',
             'Connection': 'keep-alive',
             'Content-Type': 'application/json;charset=utf-8',
             'Host': 'movielens.org',
             'Pragma': 'no-cache',
-            'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.10; rv:42.0) Gecko/20100101 Firefox/42.0'
+            'User-Agent': 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:67.0) Gecko/20100101 Firefox/67.0'
         }
 
     def login(self, username, password):
