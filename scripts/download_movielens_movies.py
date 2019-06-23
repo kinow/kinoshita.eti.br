@@ -85,7 +85,7 @@ def main():
     cookies = ml.login(USER, PASS)
     movies = ml.list_all_rated_movies(cookies)
     movies = sorted(movies, key=cmp_to_key(locale.strcoll))  # locale-aware sort order
-    movies_html_file = dotenv_path = join(dirname(__file__), '../pages/movies.html')
+    movies_html_file = dotenv_path = join(dirname(__file__), '../_pages/movies.md')
     header = """---
 title: 'Movies'
 author: kinow
