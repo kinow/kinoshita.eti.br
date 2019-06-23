@@ -83,7 +83,6 @@ def main():
     locale.setlocale(locale.LC_ALL, 'pt_BR.UTF-8')
     ml = MovieLens()
     cookies = ml.login(USER, PASS)
-    print(str(cookies))
     movies = ml.list_all_rated_movies(cookies)
     movies = sorted(movies, key=cmp_to_key(locale.strcoll))  # locale-aware sort order
     movies_html_file = dotenv_path = join(dirname(__file__), '../pages/movies.html')
