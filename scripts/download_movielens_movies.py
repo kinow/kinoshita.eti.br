@@ -38,10 +38,11 @@ class MovieLens(object):
         }
 
     def login(self, username, password):
-        self.headers['Referer'] = 'https://movielens.org/login'
+        headers = self.headers.copy()
+        headers['Referer'] = 'https://movielens.org/login'
         url = "%s/%s" % (self.base_url, "sessions")
         payload = {'userName': username, 'password': password}
-        r = requests.post(url, data=json.dumps(payload), headers=self.headers, timeout=self.timeout)
+        r = requests.post(url, data=json.dumps(payload), headers=headers, timeout=self.timeout)
         if not r.cookies:
             raise Exception(f"No Cookie set after auth! Response: {r.json()}")
         return r.cookies
