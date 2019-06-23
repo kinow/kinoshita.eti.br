@@ -43,6 +43,8 @@ class MovieLens(object):
         url = "%s/%s" % (self.base_url, "sessions")
         payload = {'userName': username, 'password': password}
         r = requests.post(url, data=json.dumps(payload), headers=self.headers, timeout=self.timeout)
+        if not r.cookies:
+            raise Exception(f"No Cookie set after auth! Response: {r.json()}")
         return r.cookies
 
     def explore(self, params, cookies):
@@ -79,6 +81,7 @@ def main():
     locale.setlocale(locale.LC_ALL, 'pt_BR.UTF-8')
     ml = MovieLens()
     cookies = ml.login(USER, PASS)
+    print(str(cookies))
     movies = ml.list_all_rated_movies(cookies)
     movies = sorted(movies, key=cmp_to_key(locale.strcoll))  # locale-aware sort order
     movies_html_file = dotenv_path = join(dirname(__file__), '../pages/movies.html')
