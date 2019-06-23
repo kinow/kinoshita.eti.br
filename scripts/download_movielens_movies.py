@@ -88,13 +88,10 @@ def main():
     movies_html_file = dotenv_path = join(dirname(__file__), '../_pages/movies.md')
     header = """---
 title: 'Movies'
-author: kinow
-tags: {  }
-date: '2017-04-17'
-time: '23:30:33'
+layout: page
+permalink: "/movies/"
+note: "Some of the movies I have watched so far. Suggestions are welcome."
 ---
-
-Feel free to suggest me some good movies that may be missing from my list!
 
 """
     with open(movies_html_file, 'w+') as outfile:
