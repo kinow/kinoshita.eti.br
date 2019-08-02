@@ -66,4 +66,28 @@ You can find more on my <a href="http://kinow.deviantart.com/gallery/">DeviantAr
     <a href="/art/old-hands/">
         <div class="ui image sprite-thumbs-thumb-old-hands"></div>
     </a>
+    <a href="/art/cave/">
+        <div class="ui image sprite-thumbs-thumb-cave"></div>
+    </a>
+</div>
+
+<div class="ui images">
+    <a href="/art/doggo-white/">
+        <div class="ui image sprite-thumbs-thumb-doggo-white"></div>
+    </a>
+    <a href="/art/galpao-bras/">
+        <div class="ui image sprite-thumbs-thumb-galpao-bras"></div>
+    </a>
+    <a href="/art/kelvin-diesel-engine/">
+        <div class="ui image sprite-thumbs-thumb-kelvin-diesel-engine"></div>
+    </a>
+    <a href="/art/woman-looking-01/">
+        <div class="ui image sprite-thumbs-thumb-woman-looking-01"></div>
+    </a>
+</div>
+
+<div class="ui images">
+    <a href="/art/zatoichi-crying-1/">
+        <div class="ui image sprite-thumbs-thumb-zatoichi-crying-1"></div>
+    </a>
 </div>
