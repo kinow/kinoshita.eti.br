@@ -121,11 +121,11 @@ default graph name.
 ### Conclusion
 
 Finally, readers and streams are closed. An `UploadDetails` object is created
-holding stats ollected in `StreamRDFCountingBase`, which are also used for
+holding stats collected in `StreamRDFCountingBase`, which are also used for
 logging.
 
 `Upload#incomingPath()` will return the `UploadDetails`. If there are no errors
-then the transaction will be commited. It involves again classes from ARQ and
+then the transaction will be committed. It involves again classes from ARQ and
 TDB (for journaling), but that will be for another post.
 
 The final method called in the `Upload` class will be `detailsJson()`, which
