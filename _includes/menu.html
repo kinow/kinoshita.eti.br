@@ -1,15 +1,13 @@
 <a class="kinoshita item" href="/">
     Kinoshita
 </a>
-<a class="item" href="/blog/">
-    <i class="newspaper outline icon"></i>
-    Blog
+{% for item in site.navigation %}
+{%- assign class = '' -%}
+{%- if page.url contains item.url -%}
+    {%- assign class = 'current' -%}
+{%- endif -%}
+<a href="{{ item.url }}" class="item {{ class }}">
+    <i class="{{ item.icon }} outline icon"></i>
+    {{ item.text }}
 </a>
-<a class="item" href="/art/">
-    <i class="images outline icon"></i>
-    Illustrations
-</a>
-<a class="item" href="/maps/">
-    <i class="map outline icon"></i>
-    Maps
-</a>
+{% endfor %}
