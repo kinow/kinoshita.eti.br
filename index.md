@@ -14,9 +14,6 @@ workflow meta-scheduler written in Python, and used by many countries to drive t
 weather prediction) forecast. Also an **Apache Software Foundation member**, and involved with Commons,
 Jena, OpenNLP, and other Open Source projects.
 
-Feel free to get in touch via <a href="https://twitter.com/kinow">Twitter <i class="twitter icon"></i></a>
-or <a href="https://github.com/kinow">GitHub <i class="github icon"></i></a>. Refer to my CV for further information.
-
 My current computer is a Lenovo Thinkpad T530, i7-3720QM (8 threads/4 cores/6 MB cache), 16 GB 1600 MHz,
 128 GB SSD disk + 500 GB 5200 RPM magnetic disk. My operating system is a Linux Ubuntu 18.04.2 LTS with
 Xubuntu packages installed, some IDE's for different programming languages, some VM's and containers,
@@ -30,4 +27,7 @@ Before that I had a Dell Inspiron N5110, i5-2430M (4 threads/2 cores/3MB cache),
 - I am also into [books](/books/), especially science fiction
 - And watching [theatre plays](/theatre/), and all sorts of [movies](/movies/)
 - Gave some [programming presentations](/tags#presentations) in the past
-- CV as [PDF](/cv.pdf) and [HTML](/cv/)
+
+Feel free to get in touch via <a href="https://twitter.com/kinow">Twitter <i class="twitter icon"></i></a>
+or <a href="https://github.com/kinow">GitHub <i class="github icon"></i></a>. CV available
+[here as PDF](/cv.pdf) and [here as HTML](/cv/).
