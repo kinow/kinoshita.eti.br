@@ -4,7 +4,7 @@ title: Home
 note: "Content licensed under the Creative Commons Attribution-NonCommercial 4.0 International License."
 ---
 
-<img class="ui small image" src="/assets/pages/about/bruno-3.png" style="float: left; margin: 0 1em 0.5em 0 ">
+<img class="ui small image" src="/assets/pages/about/bruno-3.png" style="float: left; margin: 1em 1em 0 0;">
 
 I am **Bruno P. Kinoshita**, born in 84 in **Sao Paulo city**, Sao Paulo state, **Brazil**. 
 And I am a typical _Paulistano_, but now based in the **Auckland** CBD, **New Zealand**.
