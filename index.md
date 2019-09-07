@@ -28,6 +28,6 @@ Before that I had a Dell Inspiron N5110, i5-2430M (4 threads/2 cores/3MB cache),
 - And watching [theatre plays](/theatre/), and all sorts of [movies](/movies/)
 - Gave some [programming presentations](/tags#presentations) in the past
 
-Feel free to get in touch via <a href="https://twitter.com/kinow">Twitter <i class="twitter icon"></i></a>
-or <a href="https://github.com/kinow">GitHub <i class="github icon"></i></a>. CV available
+Feel free to get in touch via [Twitter <i class="twitter icon"></i>](https://twitter.com/kinow)
+or [GitHub <i class="github icon"></i>](https://github.com/kinow). CV available
 [here as PDF](/cv.pdf) and [here as HTML](/cv/).
