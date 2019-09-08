@@ -18,9 +18,9 @@ weather prediction) forecast. Also an **Apache Software Foundation member**, and
 Jena, OpenNLP, and other Open Source projects.
 
 My current computer is a Lenovo Thinkpad T530, i7-3720QM (8 threads/4 cores/6 MB cache), 16 GB 1600 MHz,
-128 GB SSD disk + 500 GB 5200 RPM magnetic disk. My operating system is a Linux Ubuntu 18.04.2 LTS with
-Xubuntu packages installed, some IDE's for different programming languages, some VM's and containers,
-as well as illustration tools.
+128 GB SSD disk + 500 GB 5200 RPM magnetic disk. It is installed with Linux Ubuntu 18.04.2 LTS and
+Xubuntu packages. As well as some IDE's for different programming languages, VM's, containers,
+and illustration tools.
 
 Before that I had a Dell Inspiron N5110, i5-2430M (4 threads/2 cores/3MB cache), 6 GB 1333 MHz,
 250 GB SSD disk + 500 GB 5200 RPM. Also using Ubuntu, but 14.04.1 LTS with Xubuntu.
