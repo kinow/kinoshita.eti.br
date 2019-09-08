@@ -25,7 +25,7 @@ and illustration tools.
 Before that I had a Dell Inspiron N5110, i5-2430M (4 threads/2 cores/3MB cache), 6 GB 1333 MHz,
 250 GB SSD disk + 500 GB 5200 RPM. Also using Ubuntu, but 14.04.1 LTS with Xubuntu.
 
-- I do [illustrations](/art/) when I have time, and have [Instagram](https://instagram.com/brunokinoshita/) and
+- I do [illustrations](/art/) when I have time, and post them to [Instagram](https://instagram.com/brunokinoshita/) and
 [DeviantArt](https://deviantart.com/kinow/)
 - I am also into [books](/books/), especially science fiction
 - And watching [theatre plays](/theatre/), and all sorts of [movies](/movies/)
