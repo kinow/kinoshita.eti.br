@@ -7,6 +7,7 @@ note: "Content licensed under the Creative Commons Attribution-NonCommercial 4.0
 [comment]: <>  without this markdown wraps it in a p tag
 <figure>
     <img class="ui small image left-aligned" src="/assets/pages/about/bruno-3.png" alt="Bruno P. Kinoshita picture">
+    <figcaption class="hidden">Bruno P. Kinoshita picture</figcaption>
 </figure>
 
 I am **Bruno P. Kinoshita**, born in 84 in **Sao Paulo city**, Sao Paulo state, **Brazil**. 
