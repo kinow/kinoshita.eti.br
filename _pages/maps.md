@@ -15,7 +15,7 @@ be used with QGIS, gvSIG, ArcGIS, etc.
 
 ## Countries I Have Visited
 
-<iframe src="https://www.google.com/maps/d/embed?mid=1vZjY8fA1xph2D9c095OGqF8WNyk5VZDR" width="640" height="480"></iframe>
+<iframe src="/maps/countries/index.html" width="640" height="480"></iframe>
 
 ## My iNaturalist Observations
 
