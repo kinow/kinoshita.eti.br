@@ -8,7 +8,7 @@ date: '2019-05-06 20:30:33 +13:00'
 
 ### “Ladrar na descida”
 
-<2015
+<small><2015</small>
 
 <p>
 Ouvi um latido<br/>
@@ -21,7 +21,7 @@ Puta que o pariu... fodeo
 
 ### “Magreza gorda”
 
-13 Aug 2018
+<small>13 Aug 2018</small>
 
 <p>
 Ela me pergunta se trouxe algo gordo<br/>
