@@ -17,6 +17,21 @@ Pensei comigo naquele instante<br/>
 Puta que o pariu... fodeo
 </p>
 
+### “Magreza gorda”
+
+<p>
+Ela me pergunta se trouxe algo gordo<br/>
+<br/>
+Não<br/>
+<br/>
+Croissant magro com queijo amarelo magro<br/>
+Torta magra feita com frango magro<br/>
+Sanduíches de atum magros<br/>
+E bolo de chocolate magro<br/>
+<br/>
+Uma fineza
+</p>
+
 ## Books
 
 <table class="ui celled striped table">
