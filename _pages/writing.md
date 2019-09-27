@@ -8,6 +8,8 @@ date: '2019-05-06 20:30:33 +13:00'
 
 ### “Ladrar na descida”
 
+<2015
+
 <p>
 Ouvi um latido<br/>
 O cão parecia grande<br/>
@@ -18,6 +20,8 @@ Puta que o pariu... fodeo
 </p>
 
 ### “Magreza gorda”
+
+13 Aug 2018
 
 <p>
 Ela me pergunta se trouxe algo gordo<br/>
