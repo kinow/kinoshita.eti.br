@@ -2,18 +2,18 @@
 title: Maps
 layout: page
 permalink: "/maps/"
-note: "Under construction!"
+note: "Maps built with QGIS, with additional plug-ins, icons, and styles."
 ---
 
-In the meantime, check out [https://maps.nzoss.org.nz](https://maps.nzoss.org.nz). It was
-[built](https://github.com/kinow/nz-osm-server) with Ansible and provides OpenStreetMaps base layers that can
-be used with QGIS, gvSIG, ArcGIS, etc.
+Check out [http://maps.nzoss.org.nz](http://maps.nzoss.org.nz). It was
+[built](https://github.com/kinow/nz-osm-server) with Ansible and provides an OpenStreetMaps
+base layer server in New Zealand that can be used with QGIS, gvSIG, ArcGIS, etc.
 
-## Free Books in Auckland
+## Free books in Auckland
 
 <iframe src="/maps/free-books/index.html" width="640" height="480"></iframe>
 
-## Countries I Have Visited
+## Countries I have visited
 
 <iframe src="/maps/countries/index.html" width="640" height="480"></iframe>
 
