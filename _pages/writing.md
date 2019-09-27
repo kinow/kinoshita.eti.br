@@ -36,6 +36,10 @@ E bolo de chocolate magro<br/>
 Uma fineza
 </p>
 
+## Short stories
+
+- [A reformed Caipora](/writing/short-stories/a-reformed-caipora/)
+
 ## Books
 
 <table class="ui celled striped table">
