@@ -4,7 +4,20 @@ layout: page
 date: '2019-05-06 20:30:33 +13:00'
 ---
 
-Tables sorted by author name.
+## Poetry
+
+### “Ladrar na descida”
+
+<p>
+Ouvi um latido<br/>
+O cão parecia grande<br/>
+Um rapaz passou por mim<br/>
+Corrido<br/>
+Pensei comigo naquele instante<br/>
+Puta que o pariu... fodeo
+</p>
+
+## Books
 
 <table class="ui celled striped table">
     <colgroup>
