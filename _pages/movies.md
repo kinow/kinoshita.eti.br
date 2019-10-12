@@ -893,6 +893,7 @@ note: "Some of the movies I have watched so far. Suggestions are welcome."
 * The Chronicles of Riddick (2004)
 * The Cloverfield Paradox (2018)
 * The Colony (2013)
+* The Crimes That Bind (2018)
 * The Croods (2013)
 * The Crow (1994)
 * The Curious Case of Benjamin Button (2008)
