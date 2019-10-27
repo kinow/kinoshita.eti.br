@@ -13,6 +13,6 @@ note: "This page contains geek things like video-games, manga, illustrations, la
 
 ### Manga
 
-- https://github.com/inorichi/tachiyomi
+- [https://github.com/inorichi/tachiyomi](https://github.com/inorichi/tachiyomi)
 
 ### Languages
