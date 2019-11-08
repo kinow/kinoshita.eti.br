@@ -1,8 +1,8 @@
 ---
 layout: post
 tags:
-- reddit
-- functionalprogramming
+- javascript
+- vuejs
 title: Dynamic breadcrumbs with Vue Router nested routes and Vuetify Breadcrumb component
 ---
 
