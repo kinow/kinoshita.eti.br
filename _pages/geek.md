@@ -5,16 +5,22 @@ permalink: "/geek/"
 note: "This page contains geek things like video-games, manga, illustrations, languages, math, etc."
 ---
 
-### Phantasy Star 1
+### Games
+
+#### Phantasy Star 1
 
 - Best site with maps, weapons guides, and walkthrough: https://www.pscave.com/
 
-#### New community game
+##### New community game
 
 What would be necessary to create a new PS game, based or similar to PS1? I reckon re-using the game
 resources would be enough, just a good plot and characters being necessary.
 
-### Final Fantasy Tactics
+#### Final Fantasy Tactics
+
+#### Wesnoth
+
+#### Path of Exile
 
 ### Manga
 
