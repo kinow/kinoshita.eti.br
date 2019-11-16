@@ -1,0 +1,8 @@
+---
+title: Obāchan
+layout: page
+note: |
+    "Obāchan" study in charcoal done during course at @studioone.toitu. Reference photo from reddit by u/thehypocrisyofreddit
+---
+
+<img src="/assets/pages/art/images/obachan.png">
