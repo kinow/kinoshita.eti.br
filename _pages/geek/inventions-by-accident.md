@@ -17,6 +17,10 @@ note: "Interesting and useful things invented by accident"
 
 >When Stanford University physics professor Fernando Sanford created his "electric photography" he also unknowingly generated and detected X-rays. From 1886 to 1888 he had studied in the Hermann Helmholtz laboratory in Berlin, where he became familiar with the cathode rays generated in vacuum tubes when a voltage was applied across separate electrodes, as previously studied by Heinrich Hertz and Philipp Lenard. His letter of January 6, 1893 (describing his discovery as "electric photography") to The Physical Review was duly published and an article entitled Without Lens or Light, Photographs Taken With Plate and Object in Darkness appeared in the San Francisco Examiner.
 
+### 1903, [laminated glass](https://en.wikipedia.org/wiki/Laminated_glass#History)
+
+>Laminated glass was invented in 1903 by the French chemist Édouard Bénédictus (1878-1930), inspired by a laboratory accident. A glass flask had become coated with the plastic cellulose nitrate and when dropped shattered but did not break into pieces. However, it was not until 1909 that Benedictus filed a patent, after hearing about a car accident where two women were severely injured by glass debris.
+
 ### 1905, [popsicles](https://en.wikipedia.org/wiki/Ice_pop#History)
 
 >Epperson claimed to have first created an ice pop in 1905, at the age of 11, when he accidentally left a glass of powdered lemonade soda and water with a mixing stick in it on his porch during a cold night, a story still printed on the back of Popsicle treat boxes. 
