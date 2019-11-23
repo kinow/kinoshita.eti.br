@@ -17,6 +17,10 @@ note: "Interesting and useful things invented by accident"
 
 >In 1869, while studying the structure of the pancreas under a microscope, Paul Langerhans, a medical student in Berlin, identified some previously unnoticed tissue clumps scattered throughout the bulk of the pancreas. The function of the "little heaps of cells", later known as the islets of Langerhans, initially remained unknown, but Édouard Laguesse later suggested they might produce secretions that play a regulatory role in digestion. Paul Langerhans' son, Archibald, also helped to understand this regulatory role. The term "insulin" originates from insula, the Latin word for islet/island.
 
+### 1879, [saccharin](https://en.wikipedia.org/wiki/Saccharin#History)
+
+>Saccharin was produced first in 1879, by Constantin Fahlberg, a chemist working on coal tar derivatives in Ira Remsen's laboratory at Johns Hopkins University. Fahlberg noticed a sweet taste on his hand one evening, and connected this with the compound benzoic sulfimide on which he had been working that day.
+
 ### 1886, [x-ray image](https://en.wikipedia.org/wiki/X-ray#Pre-R%C3%B6ntgen_observations_and_research)
 
 >When Stanford University physics professor Fernando Sanford created his "electric photography" he also unknowingly generated and detected X-rays. From 1886 to 1888 he had studied in the Hermann Helmholtz laboratory in Berlin, where he became familiar with the cathode rays generated in vacuum tubes when a voltage was applied across separate electrodes, as previously studied by Heinrich Hertz and Philipp Lenard. His letter of January 6, 1893 (describing his discovery as "electric photography") to The Physical Review was duly published and an article entitled Without Lens or Light, Photographs Taken With Plate and Object in Darkness appeared in the San Francisco Examiner.
