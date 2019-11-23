@@ -1,5 +1,5 @@
 ---
-title: Geek
+title: Inventions by Accident
 layout: page
 permalink: "/geek/inventions-by-accident"
 note: "Interesting and useful things invented by accident"
