@@ -9,6 +9,10 @@ note: "Interesting and useful things invented by accident"
 
 >While Walker was preparing a lighting mixture on one occasion, a match which had been dipped in it took fire by an accidental friction upon the hearth. He at once appreciated the practical value of the discovery, and started making friction matches.
 
+### 1859, [vaseline](https://en.wikipedia.org/wiki/Vaseline#History)
+
+>In 1859, Chesebrough went to the oil fields in Titusville, Pennsylvania, and learned of a residue called "rod wax" that had to be periodically removed from oil rig pumps. The oil workers had been using the substance to heal cuts and burns. Chesebrough took samples of the rod wax back to Brooklyn, extracted the usable petroleum jelly, and began manufacturing the medicinal product he called Vaseline.
+
 ### 1886, [x-ray image](https://en.wikipedia.org/wiki/X-ray#Pre-R%C3%B6ntgen_observations_and_research)
 
 >When Stanford University physics professor Fernando Sanford created his "electric photography" he also unknowingly generated and detected X-rays. From 1886 to 1888 he had studied in the Hermann Helmholtz laboratory in Berlin, where he became familiar with the cathode rays generated in vacuum tubes when a voltage was applied across separate electrodes, as previously studied by Heinrich Hertz and Philipp Lenard. His letter of January 6, 1893 (describing his discovery as "electric photography") to The Physical Review was duly published and an article entitled Without Lens or Light, Photographs Taken With Plate and Object in Darkness appeared in the San Francisco Examiner.
