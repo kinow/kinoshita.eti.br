@@ -6,6 +6,7 @@ note: "This page contains geek things like video-games, manga, illustrations, la
 ---
 
 - [Inventions by accident](/geek/inventions-by-accident)
+- [Crazy treatments](/geek/crazy-treatments)
 
 ### Games
 
