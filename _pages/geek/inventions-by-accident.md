@@ -5,6 +5,10 @@ permalink: "/geek/inventions-by-accident"
 note: "Interesting and useful things invented by accident"
 ---
 
+### 1826, [friction matches](https://en.wikipedia.org/wiki/Match#Friction_matches)
+
+>While Walker was preparing a lighting mixture on one occasion, a match which had been dipped in it took fire by an accidental friction upon the hearth. He at once appreciated the practical value of the discovery, and started making friction matches.
+
 ### 1886, [x-ray image](https://en.wikipedia.org/wiki/X-ray#Pre-R%C3%B6ntgen_observations_and_research)
 
 >When Stanford University physics professor Fernando Sanford created his "electric photography" he also unknowingly generated and detected X-rays. From 1886 to 1888 he had studied in the Hermann Helmholtz laboratory in Berlin, where he became familiar with the cathode rays generated in vacuum tubes when a voltage was applied across separate electrodes, as previously studied by Heinrich Hertz and Philipp Lenard. His letter of January 6, 1893 (describing his discovery as "electric photography") to The Physical Review was duly published and an article entitled Without Lens or Light, Photographs Taken With Plate and Object in Darkness appeared in the San Francisco Examiner.
