@@ -61,6 +61,10 @@ note: "Interesting and useful things invented by accident"
 >
 >Six years later, in 1951, Coover was transferred to Kodak’s chemical plant in Kingsport, Tennessee. That’s when he re-discovered the cyanoacrylates and recognized in them a new potential. He had been overseeing the work of a group of Kodak chemists who were researching heat-resistant polymers for jet airplane canopies. They tested cyanoacrylate monomers and this time, Coover realized these sticky adhesives had unique properties in that they required no heat or pressure to bond. He and his team tried the substance on various items in the lab and each time, the items became permanently bonded together. 
 
+### 1945, [microwave food heating](https://en.wikipedia.org/wiki/Microwave_oven#Discovery)
+
+>In 1945, the heating effect of a high-power microwave beam was accidentally discovered by Percy Spencer, an American self-taught engineer from Howland, Maine. Employed by Raytheon at the time, he noticed that microwaves from an active radar set he was working on started to melt a chocolate bar he had in his pocket. The first food deliberately cooked with Spencer's microwave was popcorn, and the second was an egg, which exploded in the face of one of the experimenters.
+
 ### 1968, [post-it notes](https://en.wikipedia.org/wiki/Post-it_Note#History)
 
 >In 1968, Dr. Spencer Silver, a scientist at 3M in the United States, was attempting to develop a super-strong adhesive. Instead, he accidentally created a "low-tack", reusable, pressure-sensitive adhesive. For five years, Silver promoted his "solution without a problem" within 3M both informally and through seminars, but failed to gain acceptance. In 1974, a colleague who had attended one of his seminars, Art Fry, came up with the idea of using the adhesive to anchor his bookmark in his hymn book. Fry then utilized 3M's officially sanctioned "permitted bootlegging" policy to develop the idea. The original notes' yellow color was chosen by accident, as the lab next-door to the Post-It team had only yellow scrap paper to use.
