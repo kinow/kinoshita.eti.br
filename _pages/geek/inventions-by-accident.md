@@ -5,6 +5,10 @@ permalink: "/geek/inventions-by-accident"
 note: "Interesting and useful things invented by accident"
 ---
 
+### 1886, [x-ray image](https://en.wikipedia.org/wiki/X-ray#Pre-R%C3%B6ntgen_observations_and_research)
+
+>When Stanford University physics professor Fernando Sanford created his "electric photography" he also unknowingly generated and detected X-rays. From 1886 to 1888 he had studied in the Hermann Helmholtz laboratory in Berlin, where he became familiar with the cathode rays generated in vacuum tubes when a voltage was applied across separate electrodes, as previously studied by Heinrich Hertz and Philipp Lenard. His letter of January 6, 1893 (describing his discovery as "electric photography") to The Physical Review was duly published and an article entitled Without Lens or Light, Photographs Taken With Plate and Object in Darkness appeared in the San Francisco Examiner.
+
 ### 1928, [penicillin](https://en.wikipedia.org/wiki/Penicillin#Discovery)
 
 >in his laboratory in the basement of St Mary's Hospital in London (now part of Imperial College), Fleming noticed a Petri dish containing Staphylococci that had been mistakenly left open was contaminated by blue-green mould from an open window, which formed a visible growth. There was a halo of inhibited bacterial growth around the mould. Fleming concluded that the mould released a substance that repressed the growth and caused lysing of the bacteria.
