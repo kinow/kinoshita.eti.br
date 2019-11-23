@@ -25,6 +25,12 @@ note: "Interesting and useful things invented by accident"
 
 >When Stanford University physics professor Fernando Sanford created his "electric photography" he also unknowingly generated and detected X-rays. From 1886 to 1888 he had studied in the Hermann Helmholtz laboratory in Berlin, where he became familiar with the cathode rays generated in vacuum tubes when a voltage was applied across separate electrodes, as previously studied by Heinrich Hertz and Philipp Lenard. His letter of January 6, 1893 (describing his discovery as "electric photography") to The Physical Review was duly published and an article entitled Without Lens or Light, Photographs Taken With Plate and Object in Darkness appeared in the San Francisco Examiner.
 
+### 1896, [radioactivity](https://en.wikipedia.org/wiki/Radioactive_decay#History_of_discovery)
+
+>Radioactivity was discovered in 1896 by the French scientist Henri Becquerel, while working with phosphorescent materials. These materials glow in the dark after exposure to light, and he suspected that the glow produced in cathode ray tubes by X-rays might be associated with phosphorescence. He wrapped a photographic plate in black paper and placed various phosphorescent salts on it. All results were negative until he used uranium salts. The uranium salts caused a blackening of the plate in spite of the plate being wrapped in black paper. These radiations were given the name "Becquerel Rays".
+>
+>It soon became clear that the blackening of the plate had nothing to do with phosphorescence, as the blackening was also produced by non-phosphorescent salts of uranium and by metallic uranium. It became clear from these experiments that there was a form of invisible radiation that could pass through paper and was causing the plate to react as if exposed to light. 
+
 ### 1903, [laminated glass](https://en.wikipedia.org/wiki/Laminated_glass#History)
 
 >Laminated glass was invented in 1903 by the French chemist Édouard Bénédictus (1878-1930), inspired by a laboratory accident. A glass flask had become coated with the plastic cellulose nitrate and when dropped shattered but did not break into pieces. However, it was not until 1909 that Benedictus filed a patent, after hearing about a car accident where two women were severely injured by glass debris.
