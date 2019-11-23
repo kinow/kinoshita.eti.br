@@ -33,6 +33,10 @@ note: "Interesting and useful things invented by accident"
 
 >PTFE was accidentally discovered in 1938 by Roy J. Plunkett while he was working in New Jersey for DuPont. As Plunkett attempted to make a new chlorofluorocarbon refrigerant, the tetrafluoroethylene gas in its pressure bottle stopped flowing before the bottle's weight had dropped to the point signaling "empty." Since Plunkett was measuring the amount of gas used by weighing the bottle, he became curious as to the source of the weight, and finally resorted to sawing the bottle apart. He found the bottle's interior coated with a waxy white material that was oddly slippery. Analysis showed that it was polymerized perfluoroethylene, with the iron from the inside of the container having acted as a catalyst at high pressure. Kinetic Chemicals patented the new fluorinated plastic (analogous to the already known polyethylene) in 1941, and registered the Teflon trademark in 1945.
 
+### 1941, [velcro](https://en.wikipedia.org/wiki/Velcro#History)
+
+>Swiss electrical engineer George de Mestral invented his first touch fastener when, in 1941, he went for a walk in the woods and wondered why burdock seeds clung to his coat and dog. He discovered it could be turned into something useful. He patented it in 1955, and subsequently refined and developed its practical manufacture until its commercial introduction in the late 1950s. 
+
 ### 1942, [superglue](https://web.archive.org/web/20090503111504/http://web.mit.edu/invent/iow/coover.html)
 
 >During World War II, Coover was part of a team conducting research with chemicals known as cyanoacrylates in an effort to find a way to make a clear plastic that could be used for precision gunsights for soldiers. While working with the chemicals, the researchers discovered that they were extremely sticky, and this property made them very difficult to work with. Moisture causes the chemicals to polymerize, and since virtually all objects have a thin layer of moisture on them, bonding would occur in virtually every testing instance. They rejected them and moved on with their research. 
