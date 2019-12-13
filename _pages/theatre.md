@@ -238,6 +238,27 @@ note: "These are some plays I have watched. Suggestions are welcome."
     <div class="column">
         <div class="ui raised card">
             <div class="content">
+                <div class="right floated meta">August, 2019</div>
+                <div class="header">Twelfth Night</div>
+            </div>
+            <div class="image">
+                <img src="/assets/pages/theatre/image.png" alt="Play photo" />
+            </div>
+            <div class="content">
+                <div class="description">
+                    Twelfth Night, or What You Will is a romantic comedy by William Shakespeare, believed to have been written around 1601–1602 as a Twelfth Night's entertainment for the close of the Christmas season.
+                </div>
+            </div>
+            <div class="extra content">
+                <div class="right floated author">
+                    Pop Up Globe, Auckland, New Zealand
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="column">
+        <div class="ui raised card">
+            <div class="content">
                 <div class="right floated meta">December, 2019</div>
                 <div class="header">A Frickin Dangerous Space-mas</div>
             </div>
