@@ -235,4 +235,25 @@ note: "These are some plays I have watched. Suggestions are welcome."
             </div>
         </div>
     </div>
+    <div class="column">
+        <div class="ui raised card">
+            <div class="content">
+                <div class="right floated meta">December, 2019</div>
+                <div class="header">A Frickin Dangerous Space-mas</div>
+            </div>
+            <div class="image">
+                <img src="/assets/pages/theatre/a-frickindangerousspace-mas.png" alt="Play photo" />
+            </div>
+            <div class="content">
+                <div class="description">
+                    A Frickin Dangerous Space-mas invites you aboard for a space adventure starring a killer cast alongside some of Aotearoa’s most beloved household names and local celebs. It’s going to be out of this world!
+                </div>
+            </div>
+            <div class="extra content">
+                <div class="right floated author">
+                    Basement Theatre, Auckland, New Zealand
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
