@@ -13,7 +13,7 @@ note: "These are some plays I have watched. Suggestions are welcome."
                 <div class="header">Improv&aacute;vel</div>
             </div>
             <div class="image">
-                <img src="/assets/pages/theatre/image.png" >
+                <img src="/assets/pages/theatre/image.png" alt="Play photo" />
             </div>
             <div class="content">
                 <div class="description">
@@ -34,7 +34,7 @@ note: "These are some plays I have watched. Suggestions are welcome."
                 <div class="header">Bartleby</div>
             </div>
             <div class="image">
-                <img src="/assets/pages/theatre/bartleby-paulista2008.jpg" >
+                <img src="/assets/pages/theatre/bartleby-paulista2008.jpg" alt="Play photo" />
             </div>
             <div class="content">
                 <div class="description">
@@ -55,7 +55,7 @@ note: "These are some plays I have watched. Suggestions are welcome."
                 <div class="header">Trair e co&ccedil;ar &eacute; s&oacute; come&ccedil;ar</div>
             </div>
             <div class="image">
-                <img src="/assets/pages/theatre/image.png" >
+                <img src="/assets/pages/theatre/image.png" alt="Play photo" />
             </div>
             <div class="content">
                 <div class="description">
@@ -76,7 +76,7 @@ note: "These are some plays I have watched. Suggestions are welcome."
                 <div class="header">Decameron ‐ A Arte de Fornicar</div>
             </div>
             <div class="image">
-                <img src="/assets/pages/theatre/decameron-augusta2010.jpg" >
+                <img src="/assets/pages/theatre/decameron-augusta2010.jpg" alt="Play photo" />
             </div>
             <div class="content">
                 <div class="description">
@@ -97,7 +97,7 @@ note: "These are some plays I have watched. Suggestions are welcome."
                 <div class="header">Acredite, Um Esp&iacute;rito Baixou em Mim</div>
             </div>
             <div class="image">
-                <img src="/assets/pages/theatre/image.png" >
+                <img src="/assets/pages/theatre/image.png" alt="Play photo" />
             </div>
             <div class="content">
                 Com&eacute;dia que conta a hist&oacute;ria de um homossexual assumido, inconformado com a pr&oacute;pria morte, que foge do c&eacute;u para viver novas experi&ecirc;ncias e acaba criando uma grande confus&aacute;o ap&oacute;s incorporar num machista radical.
@@ -116,7 +116,7 @@ note: "These are some plays I have watched. Suggestions are welcome."
                 <div class="header">The Mooncake and The Kumara</div>
             </div>
             <div class="image">
-                <img src="/assets/pages/theatre/mooncake-kumara-q2017.jpg" >
+                <img src="/assets/pages/theatre/mooncake-kumara-q2017.jpg" alt="Play photo" />
             </div>
             <div class="content">
                 <div class="description">
@@ -137,7 +137,7 @@ note: "These are some plays I have watched. Suggestions are welcome."
                 <div class="header">Blonde Poison</div>
             </div>
             <div class="image">
-                <img src="/assets/pages/theatre/blonde-poison-herald2017.jpg" >
+                <img src="/assets/pages/theatre/blonde-poison-herald2017.jpg" alt="Play photo" />
             </div>
             <div class="content">
                 <div class="description">
@@ -158,7 +158,7 @@ note: "These are some plays I have watched. Suggestions are welcome."
                 <div class="header">I Gan't Belive It</div>
             </div>
             <div class="image">
-                <img src="/assets/pages/theatre/tofiga.jpg" >
+                <img src="/assets/pages/theatre/tofiga.jpg" alt="Play photo" />
             </div>
             <div class="content">
                 <div class="description">
@@ -179,7 +179,7 @@ note: "These are some plays I have watched. Suggestions are welcome."
                 <div class="header">The Goblin Market</div>
             </div>
             <div class="image">
-                <img src="/assets/pages/theatre/goblin-hero-201904.jpg" >
+                <img src="/assets/pages/theatre/goblin-hero-201904.jpg" alt="Play photo" />
             </div>
             <div class="content">
                 <div class="description">
@@ -200,7 +200,7 @@ note: "These are some plays I have watched. Suggestions are welcome."
                 <div class="header">Woman of Citrus</div>
             </div>
             <div class="image">
-                <img src="/assets/pages/theatre/Bment_1200.jpg" >
+                <img src="/assets/pages/theatre/Bment_1200.jpg" alt="Play photo" />
             </div>
             <div class="content">
                 <div class="description">
@@ -221,7 +221,7 @@ note: "These are some plays I have watched. Suggestions are welcome."
                 <div class="header">Sorry Bout It</div>
             </div>
             <div class="image">
-                <img src="/assets/pages/theatre/tofiga.jpg" >
+                <img src="/assets/pages/theatre/tofiga.jpg" alt="Play photo" />
             </div>
             <div class="content">
                 <div class="description">
