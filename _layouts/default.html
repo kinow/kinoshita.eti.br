@@ -1,43 +1,21 @@
 <!DOCTYPE html>
 <html lang="{{ page.lang | default: site.lang | default: 'en' }}">
 <head>
-{%include head.html%}
-{%- if page.styles -%}
-{% for style in page.styles %}
-<link rel="stylesheet" type="text/css" href="{{ style }}">
-{% endfor %}
-{%- endif -%}
+  {%include head.html%}
+  {%- if page.styles -%}
+  {% for style in page.styles %}
+  <link rel="stylesheet" type="text/css" href="{{ style }}">
+  {% endfor %}
+  {%- endif -%}
 </head>
 <body>
-<div id="toc" class="ui vertical inverted sidebar menu left">
-    {% include menu.html %}
+<div id="wrapper">
+  <div id="sidebar">
+    {%- include menu.html -%}
+  </div>
+  <div id="content">
+    {{ content }}
+  </div>
 </div>
-<div class="ui fixed inverted main menu">
-    <div class="ui container">
-        <a class="launch icon item">
-            <i class="content icon"></i>
-        </a>
-    </div>
-</div>
-<div class="pusher">
-    <div class="full height">
-        <div class="toc">
-            {%- include sidebar.html -%}
-        </div>
-        <div class="article">
-            <div class="ui basic segment">
-                {{ content }}
-            </div>
-        </div>
-    </div>
-</div>
-{%- if page.scripts -%}
-{% for script in page.scripts %}
-<script src="{{ script }}" type="text/javascript"></script>
-{% endfor %}
-{% endif %}
-<script src="https://code.jquery.com/jquery-3.4.0.slim.min.js" type="text/javascript"></script>
-<script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js" type="text/javascript"></script>
-<script src="{{ site.url}}/assets/js/main.js" type="text/javascript"></script>
 </body>
 </html>
