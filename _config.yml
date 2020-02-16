@@ -24,7 +24,6 @@ url: "https://kinoshita.eti.br" # the base hostname & protocol for your site, e.
 markdown: kramdown
 
 plugins:
-  - jekyll-paginate
   - jekyll-seo-tag
   - jekyll-feed
   - jekyll-sitemap
@@ -32,7 +31,6 @@ plugins:
 whitelist:
   - jekyll-feed
   - jekyll-seo-tag
-  - jekyll-paginate
 
 show_excerpts: true
 excerpt_separator: "<!--more-->"
@@ -65,12 +63,23 @@ compress_html:
 envs: development
 
 permalink: /:year/:month/:day/:title:output_ext
-paginate: 5 # amount of posts to show
-paginate_path: "/blog/page:num/"
 timezone: # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
 
 sass:
   style: compact # possible values: nested expanded compact compressed
+
+pagination:
+  enabled: true
+  debug: false
+  per_page: 5
+  permalink: '/page/:num/'
+  title: ':title - page :num'
+  limit: 0
+  sort_field: 'date'
+  sort_reverse: true
+  # Optional, the default category to use, omit or just leave this as 'posts' to get a backwards-compatible behavior (all posts)
+  # category: 'posts'
+
 
 # Exclude from processing.
 # The following items will not be processed, by default. Create a custom list
