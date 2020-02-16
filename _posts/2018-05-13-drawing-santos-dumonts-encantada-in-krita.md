@@ -10,13 +10,14 @@ title: Drawing Santos Dumont's "Encantada" in Krita
 
 <img style="height: 400px;" class="ui image" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/encantada.png" alt="A Encantada" />
 
-
 With Krita 4.x released, and the [Krita monthly challenge](https://forum.kde.org/viewtopic.php?f=277&t=152338&p=398403#p398403)
 of May still open for submission, I decided to give it a go and try this new version to create
 an artwork to for the challenge. The topic of this month's challenge is **Home**.
 
 My submission was [Santos Dumont's house in Petropolis, Rio de Janeiro](https://www.google.co.nz/maps/place/Casa+de+Santos+Dumont/@-22.5103512,-43.1864205,17z/data=!3m1!4b1!4m5!3m4!1s0x70145eaee05ea9b:0x33f52a8860f58db9!8m2!3d-22.5103562!4d-43.1842318), called
 [*Encantada*]((https://en.wikipedia.org/wiki/Alberto_Santos-Dumont#A_Encantada)).
+
+<!--more-->
 
 And I am happy to report that **Krita 4.x looks much faster**! And I had no crashes, bugs,
 nor any lags while painting.
