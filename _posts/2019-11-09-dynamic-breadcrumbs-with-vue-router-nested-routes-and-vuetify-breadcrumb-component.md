@@ -9,10 +9,6 @@ title: Dynamic breadcrumbs with Vue Router nested routes and Vuetify Breadcrumb 
 Vue Router supports nested routes, which allow developers to create a hierarchical navigation structure.
 This is handy if you want to create breadcrumbs based on this hierarchy dynamically.
 
-<img class="ui image" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/breadcrumbs.png" />
-
-<!--more-->
-
 Here's how you should create your nested routes:
 
 ```js
@@ -72,6 +68,8 @@ const routes = [
 ]
 ```
 
+<!--more-->
+
 The tricky part is that you need to remember that the parent breadcrumb must not have a component rendering anything,
 but instead simply use `<router-view></router-view>` instead, to display the children routes. And have a child route
 with the `path: '''`.
@@ -104,5 +102,6 @@ with some modifications. You may want to tweak it to your application.
   }
 ``` 
 
+<img class="ui image" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/breadcrumbs.png" />
 
 Working example can be found [here](https://codepen.io/kinow/pen/vYYrWeG).
