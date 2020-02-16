@@ -8,8 +8,6 @@ tags:
 title: Drawing Santos Dumont's "Encantada" in Krita
 ---
 
-<img style="height: 400px;" class="ui image" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/encantada.png" alt="A Encantada" />
-
 With Krita 4.x released, and the [Krita monthly challenge](https://forum.kde.org/viewtopic.php?f=277&t=152338&p=398403#p398403)
 of May still open for submission, I decided to give it a go and try this new version to create
 an artwork to for the challenge. The topic of this month's challenge is **Home**.
