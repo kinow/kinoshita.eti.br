@@ -9,7 +9,7 @@ title: Dynamic breadcrumbs with Vue Router nested routes and Vuetify Breadcrumb 
 Vue Router supports nested routes, which allow developers to create a hierarchical navigation structure.
 This is handy if you want to create breadcrumbs based on this hierarchy dynamically.
 
-<img class="ui fluid image" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/breadcrumbs.png" />
+<img class="ui image" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/breadcrumbs.png" />
 
 <!--more-->
 

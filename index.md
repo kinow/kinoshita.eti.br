@@ -6,25 +6,12 @@ note: "Content licensed under the Creative Commons Attribution-NonCommercial 4.0
 
 [comment]: <>  without this markdown wraps it in a p tag
 <figure>
-    <img class="ui small image left-aligned" src="/assets/pages/about/bruno-3.png" alt="Bruno P. Kinoshita picture">
+    <img class="left-aligned" style="width: 180px;" src="/assets/pages/about/bruno-3.png" alt="Bruno P. Kinoshita picture">
     <figcaption class="hidden">Bruno P. Kinoshita picture</figcaption>
 </figure>
 
 I am **Bruno P. Kinoshita**, born in 84 in **Sao Paulo city**, Sao Paulo state, **Brazil**. 
 And I am a typical _Paulistano_, but now based in the **Auckland** CBD, **New Zealand**.
-
-Working with [**NIWA**](https://niwa.co.nz) on [**Cylc**](https://cylc.github.io), an Open Source cyclic
-workflow meta-scheduler written in Python, and used by many countries to drive their NWP (numeric
-weather prediction) forecast. Also an **Apache Software Foundation member**, and involved with Commons,
-Jena, OpenNLP, and other Open Source projects.
-
-My current computer is a Lenovo Thinkpad T530, i7-3720QM (8 threads/4 cores/6 MB cache), 16 GB 1600 MHz,
-128 GB SSD disk + 500 GB 5200 RPM magnetic disk. It is installed with Linux Ubuntu 18.04.2 LTS and
-Xubuntu packages. As well as some IDE's for different programming languages, VM's, containers,
-and illustration tools.
-
-Before that I had a Dell Inspiron N5110, i5-2430M (4 threads/2 cores/3MB cache), 6 GB 1333 MHz,
-250 GB SSD disk + 500 GB 5200 RPM. Also using Ubuntu, but 14.04.1 LTS with Xubuntu.
 
 - I do [illustrations](/art/) when I have time, and post them to [Instagram](https://instagram.com/brunokinoshita/) and
 [DeviantArt](https://deviantart.com/kinow/)
