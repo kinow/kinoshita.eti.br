@@ -4,7 +4,7 @@
   <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.6.1 -->
-<title>Page 16 of 31 for Blog - page 16 | Bruno P. Kinoshita</title>
+<title>Page 16 of 27 for Blog - page 16 | Bruno P. Kinoshita</title>
 <meta name="generator" content="Jekyll v3.8.5" />
 <meta property="og:title" content="Blog - page 16" />
 <meta property="og:locale" content="en_US" />
@@ -169,172 +169,294 @@
 
 <div class="blog"><div class="post">
   <h3 class="post-header">
-    <a class="post-link" href="/2016/09/03/performance-problems-in-jenkins-tap-plugin-part-1.html">
-      Performance problems in Jenkins TAP Plug-in &amp;mdash; part 1
+    <a class="post-link" href="/2015/06/23/modeling-observation-data-in-sos.html">
+      Modeling observation data in SOS (Sensor Observation Service)
     </a>
-  </h3><span class="post-meta">Sep 3, 201656<span>&mdash; star date: -306248.63</span></span><p><a href="https://issues.jenkins-ci.org/browse/JENKINS-17887">JENKINS-17887</a> reports performance problems in the <a href="https://wiki.jenkins-ci.org/display/JENKINS/TAP+Plugin">Jenkins TAP Plug-in</a>. It also lists a series of suggestions on how to improve the Jenkins TAP Plug-in performance. On this initial post, we will get a general idea of how the plug-in performs for large projects.</p>
+  </h3><span class="post-meta">Jun 23, 2015<span>&mdash; star date: -307443.84</span></span><p>This week NZ Herald published an <a href="http://www.nzherald.co.nz/technology/news/article.cfm?c_id=5&amp;objectid=11469418">article</a>
+about a device created by an Irish farmer enterpreneur that sends a message to a farmer when the cow is about to give birth.
+The device monitors “heightened tail moviment”.</p>
 
-<p><a href="http://bioperl.org/">BioPerl</a> has over 21K tests. That should be enough for giving an initial idea of CPU, memory and disk usage for the plug-in.</p>
+<p>In this post I will try to apply what I am learning following the <a href="http://www.ogcnetwork.net/SOS_2_0/tutorial">SOS Tutorial</a>
+(the Open Geospatial Consortium standard for Sensor Observation Service). Feel free to drop me a message via
+<a href="https://twitter.com/kinow">@kinow</a> if you find any mistakes or have any suggestions.</p>
 
-<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git clone https://github.com/bioperl/bioperl-live.git
-<span class="nb">cd </span>bioperl-live
-<span class="nb">sudo </span>cpanm  <span class="nt">-vv</span> <span class="nt">--installdeps</span> <span class="nt">--notest</span> <span class="nb">.</span>
-<span class="nb">sudo </span>cpanm Set::Scalar Graph::Directed XML::LibXML XML::SAX <span class="se">\</span>
-    SVG XML::Parser::PerlSAX Convert::Binary::C XML::SAX::Writer <span class="se">\</span>
-    XML::DOM::XPath Spreadsheet::ParseExcel XML::SAX::Writer <span class="se">\</span>
-    XML::DOM HTML::TableExtract XML::Simple Test::Pod DBI
-prove <span class="nt">-r</span> t/ <span class="nt">-a</span> tests.tar.gz
+<h2 id="modeling-the-tail-moviment-observation-data-in-sos">Modeling the tail moviment observation data in SOS</h2>
 
-All tests successful.
-<span class="nv">Files</span><span class="o">=</span>325, <span class="nv">Tests</span><span class="o">=</span>21095, 94 wallclock secs <span class="o">(</span> 2.47 usr  0.55 sys + 88.29 cusr  3.85 csys <span class="o">=</span> 95.16 CPU<span class="o">)</span>
-Result: PASS
+<p>SOS is a standard designed to provide access to observation data. There are several server implementations, such as Kisters KiWIS, 
+istSOS and 52North SOS.</p>
+
+<p>The standard mentions and utilises several other standards, such as SensorML, WFS, XML, WMS, etc. The SOS Tutorial on
+how to model your observation data for SOS starts by defining <em>procedure</em>, <em>observed property</em>, <em>feature of interest</em>,
+<em>phenomenon and result times</em>, and the <em>result value</em>.</p>
+
+<p>Let’s try to model the data from the tail moviment sensors in the following table.</p>
+
+<table class="table table-bordered">
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+<th>Our example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<th>Procedure</th>
+<td>The process that has generated the observation, such as a sensor, from the O&amp;M specification. In our example that could be a sensor identification</td>
+<td>moocall_001</td>
+</tr>
+<tr>
+<th>Observed Property</th>
+<td>A property which is observed (look at NASA SWEET ontology for existing values)</td>
+<td>Heightned tail moviment</td>
+</tr>
+<tr>
+<th>Feature of Interest</th>
+<td>A feature that carries the property which is observed</td>
+<td>Pregnant cow</td>
+</tr>
+<tr>
+<th>Phenomenon and Result Times</th>
+<td>The phenomenon time is when the data has been taken, and the result time when it has been created. If both are the same, the resultTime can point to the phenomenonTime</td>
+<td>20150623142000</td>
+</tr>
+<tr>
+<th>Result value</th>
+<td>This is the result of the observation. Can be a OM_Measurement if numeric, OM_TruthObservation, etc (O&amp;M)</td>
+<td>3 (supposing we have a scale from 1 to 5)</td>
+</tr>
+</tbody>
+</table>
+
+<p>In the next post I will try to show how to load this model and some dummy data into a fresh installation of
+52North SOS server.</p>
+</div>
+<div class="post">
+  <h3 class="post-header">
+    <a class="post-link" href="/2015/04/12/groovy-hooks-in-jenkins-for-increasing-logging-level.html">
+      Groovy Hooks in Jenkins for increasing logging level
+    </a>
+  </h3><span class="post-meta">Apr 12, 2015<span>&mdash; star date: -307641.1</span></span><p>Yesterday, while debugging a problem we had in the <a href="http://biouno.org">BioUno</a> update center, 
+I realized that after <a href="https://wiki.jenkins-ci.org/display/JENKINS/Logging">increasing the logging level in the WEB interface</a>, 
+the messages that I needed weren’t being displayed in the logs.</p>
+
+<p>It happened because some of the logging happened during Jenkins initialization, and before I could adjust the log level.</p>
+
+<p>The solution was to use a <a href="https://wiki.jenkins-ci.org/display/JENKINS/Groovy+Hook+Script">Groovy Hook Script</a>. 
+If you are familiar with Linux init scripts, the idea is quite similar.</p>
+
+<p>A Groovy script in the <code class="language-plaintext highlighter-rouge">$JENKINS_ROOT_DIR/init.groovy.d/</code> directory is executed during
+Jenkins initialization. This way you can increase the global logger level with a script
+as the following below.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">java.util.logging.ConsoleHandler</span>
+<span class="kn">import</span> <span class="nn">java.util.logging.LogManager</span>
+<span class="kn">import</span> <span class="nn">java.util.logging.Logger</span>
+<span class="kn">import</span> <span class="nn">java.util.logging.Level</span>
+
+<span class="n">def</span> <span class="n">logger</span> <span class="o">=</span> <span class="nc">Logger</span><span class="o">.</span><span class="na">getLogger</span><span class="o">(</span><span class="s">""</span><span class="o">)</span>
+<span class="n">logger</span><span class="o">.</span><span class="na">setLevel</span><span class="o">(</span><span class="nc">Level</span><span class="o">.</span><span class="na">FINEST</span><span class="o">)</span>
+<span class="n">logger</span><span class="o">.</span><span class="na">addHandler</span> <span class="o">(</span><span class="k">new</span> <span class="nc">ConsoleHandler</span><span class="o">())</span>
 </code></pre></div></div>
 
-<p>When the test results are parsed, the plug-in also copies TAP files over to the master, in a folder called <em>tap-master-files</em>.</p>
+<p>Happy logging!</p>
+</div>
+<div class="post">
+  <h3 class="post-header">
+    <a class="post-link" href="/2015/01/01/contributing-to-apache-jena.html">
+      Contributing to Apache Jena
+    </a>
+  </h3><span class="post-meta">Jan 1, 2015<span>&mdash; star date: -307915.07</span></span><p>As I mentioned in my <a href="/2014/10/11/basic-workflow-of-a-sparql-query-in-fuseki.html">previous post</a>, 
+I am using <a href="http://jena.apache.org">Apache Jena</a> for a project of a customer. I had never used 
+any triple store, nor a SPARQL Endpoint server before. But for being involved with the Apache 
+Software Foundation, and since the company itself is using several Apache components, it was only 
+natural Jena to be our first choice.</p>
 
-<p>The BioPerl tests are not really big, just <strong>1.7M</strong>. It gets doubled as there will be the workspace copy, and the tap-master-files directory copy, so <strong>3.4M</strong>.</p>
+<p>It has served us very well so far. At the moment we have less than 100 queries per day, but the 
+project is still under development and we expect 1000 queries per day by the first quarter of 
+2015 and 1000000 near the end of 2015. We also have few entries in TDB, but expect to grow this 
+number to a few million before 2016.</p>
 
-<p>But several objects get created in memory, and persisted into the build.xml job file. BioPerl generates a build.xml file with <strong>11M</strong>. So <strong>less than 15M</strong>. But the build.xml contains objects that are read via XStream by Jenkins and into the memory.</p>
+<a class="post-link" href="/2015/01/01/contributing-to-apache-jena.html">Continue reading</a></div>
+<div class="post">
+  <h3 class="post-header">
+    <a class="post-link" href="/2014/10/11/basic-workflow-of-a-sparql-query-in-fuseki.html">
+      Basic workflow of a SPARQL query in Fuseki
+    </a>
+  </h3><span class="post-meta">Oct 11, 2014<span>&mdash; star date: -308139.73</span></span><p>Before using any library or tool in a customer project, specially when it is an Open Source one, 
+there are many things that I like to look at before deploying it. Basically, I look at the 
+features, documentation, community, open issues (in special blockers or criticals), the time 
+to release fixes and new features and, obviously, the license.</p>
 
-<p>The build page with the graph, and the other two test result pages are rendering in more than 10 seconds in my computer. But the CPU load is OK, so a closer look at the memory use would probably be more interesting.</p>
+<p>At the moment I’m using <a href="http://jena.apache.org">Apache Jena</a> to work with ontologies, SPARQL 
+and data matching and enrichment for a customer.</p>
 
-<p><img class="ui centered image" src="/assets/posts/2016-09-03-performance-problems-in-jenkins-tap-plug-in-mdash-part-1/JENKINS-17887-yourkit1.png" alt="JENKINS-17887 YourKit profiler" /></p>
+<p>Jena is fantastic, and similar tools include <a href="http://www.w3.org/wiki/VirtuosoUniversalServer">Virtuoso</a>, 
+<a href="http://stardog.com/">StarDog</a>, <a href="http://www.ontotext.com/products/ontotext-graphdb-owlim/">GraphDB</a>, 
+<a href="http://4store.org/">4Store</a> and others. From looking at the code and its community and documentation, 
+Jena seems like a great choice.</p>
 
-<p>The image shows one of the screens in YourKit profiler, where it is possible to see that <strong>org.tap4j.plugin.model.TapTestResultResult</strong> has over 6 million objects.</p>
+<p>I’m still investigating if/how we gonna need to use inference and reasoners, looking 
+at the issues, and learning my way through its code base. The following is my initial mapping 
+of what happens when you submit a SPARQL query to Fuseki.</p>
 
-<p>One build.xml for the BioPerl project gets over 80K entries for the TestResult object.</p>
+<p><img src="/assets/posts/2014-10-11-basic-workflow-of-a-sparql-query-in-fuseki/drawing1.png" alt="Fuseki SPARQL query work flow" /></p>
 
-<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">grep</span> <span class="s2">"org.tap4j.model.TestResult"</span> builds/1/build.xml <span class="nt">-o</span> | <span class="nb">wc</span> <span class="nt">-l</span>
-84522
+<p>My understanding is that Fuseki is just a web layer, handling a bunch of validations, logging, 
+error handling, and relying on the ARQ module, that is who actually handles the requests. 
+I also think a new Fuseki server is baking in the project git repo, so stay tuned for an 
+updated version of this graph soon.</p>
+
+<p>Happy hacking!</p>
+</div>
+<div class="post">
+  <h3 class="post-header">
+    <a class="post-link" href="/2014/09/09/cypher-gremlin-and-sparql-graph-dialects.html">
+      Cypher, Gremlin and SPARQL: Graph dialects
+    </a>
+  </h3><span class="post-meta">Sep 9, 2014<span>&mdash; star date: -308230.14</span></span><p>When I was younger and my older brother was living in Germany, I asked him if he 
+had learned German. He said that he did, and explained that there are several 
+dialects, and he was quite proud for some people told him that he was using the 
+Bavarian dialect correctly.</p>
+
+<p>Even though <a href="http://www.neo4j.org/learn/cypher">Cypher</a>, 
+<a href="http://gremlindocs.com/">Gremlin</a> and <a href="http://en.wikipedia.org/wiki/SPARQL">SPARQL</a> 
+are all query languages, I think we can consider them dialects of a common graph language. 
+Cypher is the query language used in <a href="http://www.neo4j.org/">neo4j</a>, a graph database. 
+Gremlin is part of the <a href="http://www.tinkerpop.com/">Tinkerpop</a>, an open source project 
+that contains graph server, graph algorithms, graph language, among other sub-projects. 
+And last but not least, SPARQL is used to query <a href="http://en.wikipedia.org/wiki/Resource_Description_Framework">RDF documents</a>.</p>
+
+<p>Let’s use the example of the Matrix movie provided by neo4j to take a look at the 
+three languages.</p>
+
+<h2 id="cypher">Cypher</h2>
+
+<p>First we create the graph.</p>
+
+<pre><code class="language-SQL">create (matrix1:Movie {id : '603', title : 'The Matrix', year : '1999-03-31'}),
+ (matrix2:Movie {id : '604', title : 'The Matrix Reloaded', year : '2003-05-07'}),
+ (matrix3:Movie {id : '605', title : 'The Matrix Revolutions', year : '2003-10-27'}),
+
+ (neo:Actor {name:'Keanu Reeves'}),
+ (morpheus:Actor {name:'Laurence Fishburne'}),
+ (trinity:Actor {name:'Carrie-Anne Moss'}),
+
+ (matrix1)&lt;-[:ACTS_IN {role : 'Neo'}]-(neo),
+ (matrix2)&lt;-[:ACTS_IN {role : 'Neo'}]-(neo),
+ (matrix3)&lt;-[:ACTS_IN {role : 'Neo'}]-(neo),
+ (matrix1)&lt;-[:ACTS_IN {role : 'Morpheus'}]-(morpheus),
+ (matrix2)&lt;-[:ACTS_IN {role : 'Morpheus'}]-(morpheus),
+ (matrix3)&lt;-[:ACTS_IN {role : 'Morpheus'}]-(morpheus),
+ (matrix1)&lt;-[:ACTS_IN {role : 'Trinity'}]-(trinity),
+ (matrix2)&lt;-[:ACTS_IN {role : 'Trinity'}]-(trinity),
+ (matrix3)&lt;-[:ACTS_IN {role : 'Trinity'}]-(trinity)
+</code></pre>
+
+<p><code>Added 6 labels, created 6 nodes, set 21 properties, created 9 relationships, returned 0 rows in 2791 ms</code></p>
+
+<p>And execute a simple query.</p>
+
+<pre><code class="language-SQL">MATCH (a:Actor { name:"Keanu Reeves" })
+RETURN a
+</code></pre>
+
+<p><code>(9:Actor {name:"Keanu Reeves"})</code></p>
+
+<h2 id="gremlin">Gremlin</h2>
+
+<p>Again, let’s start by creating our graph.</p>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">g</span> <span class="o">=</span> <span class="k">new</span> <span class="n">TinkerGraph</span><span class="p">();</span>
+<span class="n">matrix1</span> <span class="o">=</span> <span class="k">g</span><span class="p">.</span><span class="n">addVertex</span><span class="p">([</span><span class="nv">"_id"</span><span class="p">:</span><span class="mi">603</span><span class="p">,</span><span class="nv">"title"</span><span class="p">:</span><span class="nv">"The Matrix"</span><span class="p">,</span> <span class="nv">"year"</span><span class="p">:</span> <span class="nv">"1999-03-31"</span><span class="p">]);</span>
+<span class="n">matrix2</span> <span class="o">=</span> <span class="k">g</span><span class="p">.</span><span class="n">addVertex</span><span class="p">([</span><span class="nv">"_id"</span><span class="p">:</span><span class="mi">604</span><span class="p">,</span><span class="nv">"title"</span><span class="p">:</span><span class="nv">"The Matrix Reloaded"</span><span class="p">,</span> <span class="nv">"year"</span><span class="p">:</span> <span class="nv">"2003-05-07"</span><span class="p">]);</span>
+<span class="n">matrix3</span> <span class="o">=</span> <span class="k">g</span><span class="p">.</span><span class="n">addVertex</span><span class="p">([</span><span class="nv">"_id"</span><span class="p">:</span><span class="mi">605</span><span class="p">,</span><span class="nv">"title"</span><span class="p">:</span><span class="nv">"The Matrix Revolutions"</span><span class="p">,</span> <span class="nv">"year"</span><span class="p">:</span> <span class="nv">"2003-10-27"</span><span class="p">]);</span>
+
+<span class="n">neo</span> <span class="o">=</span> <span class="k">g</span><span class="p">.</span><span class="n">addVertex</span><span class="p">([</span><span class="nv">"name"</span><span class="p">:</span> <span class="nv">"Keanu Reeves"</span><span class="p">]);</span>
+<span class="n">morpheus</span> <span class="o">=</span> <span class="k">g</span><span class="p">.</span><span class="n">addVertex</span><span class="p">([</span><span class="nv">"name"</span><span class="p">:</span> <span class="nv">"Laurence Fishburne"</span><span class="p">]);</span>
+<span class="n">trinity</span> <span class="o">=</span> <span class="k">g</span><span class="p">.</span><span class="n">addVertex</span><span class="p">([</span><span class="nv">"name"</span><span class="p">:</span> <span class="nv">"Carrie-Anne Moss"</span><span class="p">]);</span>
+
+<span class="n">neo</span><span class="p">.</span><span class="n">addEdge</span><span class="p">(</span><span class="nv">"actsIn"</span><span class="p">,</span> <span class="n">matrix1</span><span class="p">);</span> 
+<span class="n">neo</span><span class="p">.</span><span class="n">addEdge</span><span class="p">(</span><span class="nv">"actsIn"</span><span class="p">,</span> <span class="n">matrix2</span><span class="p">);</span> 
+<span class="n">neo</span><span class="p">.</span><span class="n">addEdge</span><span class="p">(</span><span class="nv">"actsIn"</span><span class="p">,</span> <span class="n">matrix3</span><span class="p">);</span> 
+<span class="n">morpheus</span><span class="p">.</span><span class="n">addEdge</span><span class="p">(</span><span class="nv">"actsIn"</span><span class="p">,</span> <span class="n">matrix1</span><span class="p">);</span> 
+<span class="n">morpheus</span><span class="p">.</span><span class="n">addEdge</span><span class="p">(</span><span class="nv">"actsIn"</span><span class="p">,</span> <span class="n">matrix2</span><span class="p">);</span> 
+<span class="n">morpheus</span><span class="p">.</span><span class="n">addEdge</span><span class="p">(</span><span class="nv">"actsIn"</span><span class="p">,</span> <span class="n">matrix3</span><span class="p">);</span> 
+<span class="n">trinity</span><span class="p">.</span><span class="n">addEdge</span><span class="p">(</span><span class="nv">"actsIn"</span><span class="p">,</span> <span class="n">matrix1</span><span class="p">);</span> 
+<span class="n">trinity</span><span class="p">.</span><span class="n">addEdge</span><span class="p">(</span><span class="nv">"actsIn"</span><span class="p">,</span> <span class="n">matrix2</span><span class="p">);</span> 
+<span class="n">trinity</span><span class="p">.</span><span class="n">addEdge</span><span class="p">(</span><span class="nv">"actsIn"</span><span class="p">,</span> <span class="n">matrix3</span><span class="p">);</span> 
 </code></pre></div></div>
 
-<p>This happens because each TAP file may contain multiple test results (lines with test results). Each of these test results gets turned into a Java object and loaded by the plug-in. So when loading the test result pages, Jenkins needs to wait until all these objects have been parsed, deserialized and read into the memory.</p>
+<p>And execute a simple query.</p>
 
-<p>The next post will continue on code improvements, and another benchmark.</p>
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">g</span><span class="p">.</span><span class="n">V</span><span class="p">.</span><span class="n">has</span><span class="p">(</span><span class="s1">'name'</span><span class="p">,</span> <span class="s1">'Keanu Reeves'</span><span class="p">).</span><span class="k">map</span>
+</code></pre></div></div>
 
-<p>Happy profiling!</p>
+<p><code>gremlin&gt; g.V.has('name', 'Keanu Reeves').map
+==&gt;{name=Keanu Reeves}
+gremlin&gt;</code></p>
+
+<p>Quite similar to neo4j.</p>
+
+<h2 id="sparql">SPARQL</h2>
+
+<p>Let’s load our example (thanks to <a href="https://twitter.com/kendall">Kendall G. Clark</a>). I used 
+<a href="http://jena.apache.org/documentation/serving_data/">Fuseki</a> to run these queries.</p>
+
+<div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code>@prefix :          <span class="nt">&lt;http:</span><span class="err">//example.org/matrix</span><span class="nt">/&gt;</span> .
+
+ :m1 a :Movie; :title "The Matrix"; :year "1999-03-31".
+ :m2 a :Movie; :title "The Matrix Reloaded"; :year "2003-05-07".
+ :m3 a :Movie; :title "The Matrix Revolutions"; :year "2003-10-27".
+ 
+ :neo a :Actor; :name "Keanu Reeves".
+ :morpheus a :Actor; :name "Laurence Fishburne".
+ :trinity a :Actor; :name "Carrie-Anne Moss".
+ 
+ :neo :hasRole [:as "Neo"; :in :m1].
+ :neo :hasRole [:as "Neo"; :in :m2].
+ :neo :hasRole [:as "Neo"; :in :m2].
+ :morpheus :hasRole [:as "Morpheus"; :in :m1].
+ :morpheus :hasRole [:as "Morpheus"; :in :m2].
+ :morpheus :hasRole [:as "Morpheus"; :in :m2].
+ :trinity :hasRole [:as "Trinity"; :in :m1].
+ :trinity :hasRole [:as "Trinity"; :in :m2].
+ :trinity :hasRole [:as "Trinity"; :in :m2].
+</code></pre></div></div>
+
+<p>And finally the SPARQL query.</p>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">SELECT</span> <span class="o">?</span><span class="n">a</span> <span class="k">WHERE</span> <span class="err">{</span>
+   <span class="o">?</span><span class="n">a</span> <span class="n">a</span> <span class="o">&lt;</span><span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">example</span><span class="p">.</span><span class="n">org</span><span class="o">/</span><span class="n">matrix</span><span class="o">/</span><span class="n">Actor</span><span class="o">&gt;</span> <span class="p">.</span>
+   <span class="o">?</span><span class="n">a</span> <span class="o">&lt;</span><span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">example</span><span class="p">.</span><span class="n">org</span><span class="o">/</span><span class="n">matrix</span><span class="o">/</span><span class="n">name</span><span class="o">&gt;</span> <span class="o">?</span><span class="n">name</span> <span class="p">.</span>
+   <span class="n">FILTER</span><span class="p">(</span><span class="o">?</span><span class="n">name</span>  <span class="o">=</span> <span class="nv">"Keanu Reeves"</span><span class="p">)</span>
+<span class="err">}</span>
+</code></pre></div></div>
+
+<p>Returning the Keanu Reeves actor instance.</p>
+
+<pre>-----------------------------------
+| a                               |
+===================================
+| &lt;http://example.org/matrix/neo&gt; |
+-----------------------------------</pre>
+
+<p>SPARQL supports inference (or I must say that OWL, RDFS and the reasoners do), 
+but it is easier to define the depth of a search in the graph using neo4j. As for 
+Gremlin, it has native support to Groovy and Java. There is a common denominator 
+for these three languages, but what makes them really powerful are their unique features.</p>
+
+<p>I hope you enjoyed, and that this post gave you a quick overview of some of the existing 
+graph languages. Make sure you ponder the pros and cons of each server/language, and 
+make the best decision for your project. Take a look at <a href="http://en.wikipedia.org/wiki/Graph_database#APIs_and_Graph_Query.2FProgramming_Languages">other graph query languages</a> too.</p>
+
+<p>Happy hacking!</p>
+
+<hr />
+
+<p>This post has been updated as suggested by <a href="https://twitter.com/kendall">@kendall</a> (Thank you!).
+You can check the diff at <a href="https://github.com/kinow/kinoshita.eti.br/commits/master/site/_content/posts/2014-09-09_cypher-gremlin-and-sparql-graph-dialects.html">GitHub</a></p>
 </div>
-<div class="post">
-  <h3 class="post-header">
-    <a class="post-link" href="/2016/08/24/revamping-frege-logo-part-2.html">
-      Revamping Frege logo &amp;mdash; part 2
-    </a>
-  </h3><span class="post-meta">Aug 24, 201657<span>&mdash; star date: -306273.22</span></span><p>Last time I used Blender was around 2007 I think, in University. But the bad weather in
-Auckland gives me plenty of time to have fun checking out Blender again :-)</p>
-
-<p>Followed the following tutorials:</p>
-
-<ul>
-  <li><a href="https://www.youtube.com/watch?v=GeKhH1aaXuM">How to create a 3D Logo in Blender</a></li>
-  <li><a href="https://www.youtube.com/watch?v=LArn4TFNnmk">Blender Tutorial Spinning Logo</a></li>
-</ul>
-
-<p>Here are the work in progress, created only with the bézier curve.</p>
-
-<p><img class="ui centered large image" src="/assets/posts/2016-08-24-revamping-frege-logo-mdash-part-2/Frege_logo_flat_colours.png" alt="Frege updated logo" /></p>
-
-<p><img class="ui centered large image" src="/assets/posts/2016-08-24-revamping-frege-logo-mdash-part-2/Screenshot_2016-08-14_20-19-35.png" alt="Frege 3D #1" /></p>
-
-<p><img class="ui centered large image" src="/assets/posts/2016-08-24-revamping-frege-logo-mdash-part-2/Screenshot_2016-08-14_20-39-46.png" alt="Frege 3D #2" /></p>
-
-<p><img class="ui centered large image" src="/assets/posts/2016-08-24-revamping-frege-logo-mdash-part-2/Screenshot_2016-08-14_20-41-15.png" alt="Frege 3D #3" /></p>
-
-<p><img class="ui centered large image" src="/assets/posts/2016-08-24-revamping-frege-logo-mdash-part-2/Screenshot_2016-08-14_20-41-34.png" alt="Frege 3D #4" /></p>
-
-<p><img class="ui centered large image" src="/assets/posts/2016-08-24-revamping-frege-logo-mdash-part-2/Screenshot_2016-08-14_20-57-02.png" alt="Frege 3D #5" /></p>
-
-<p><img class="ui centered large image" src="/assets/posts/2016-08-24-revamping-frege-logo-mdash-part-2/Screenshot_2016-08-23_22-07-54.png" alt="Frege 3D #6" /></p>
-
-<p><img class="ui centered large image" src="/assets/posts/2016-08-24-revamping-frege-logo-mdash-part-2/Screenshot_2016-08-23_22-30-24.png" alt="Frege 3D #7" /></p>
-
-<p>Here’s the result after the mesh was created, and some material applied.</p>
-
-<p><img class="ui centered large image" src="/assets/posts/2016-08-24-revamping-frege-logo-mdash-part-2/Frege3d1.png" alt="Frege 3D #8" /></p>
-
-<p>Then using a plane as background, replacing the lamp by a sun, and tweaking a few parameters.</p>
-
-<p><img class="ui centered image" src="/assets/posts/2016-08-24-revamping-frege-logo-mdash-part-2/Frege3d2.png" alt="Frege 3D #9" /></p>
-
-<p>And finally playing with animation. Not sure if there was a time line and animation controls in
-Blender the last time I used it, but the controls are not really complex.</p>
-
-<p>I had to combine both meshes into a single object, in order to add a bone and rotate it. That
-is why the logo got back to a single material. The angle of the camera could probably do with
-some tweaking as well.</p>
-
-<p><img class="ui centered image" src="/assets/posts/2016-08-24-revamping-frege-logo-mdash-part-2/ezgif.com-resize.gif" alt="Frege 3D #10" /></p>
-
-<p>But it was my very first time animating in Blender. Some day if I get access to one of those
-3D printers, I will check what are the requirements for printing this logo.</p>
-
-<p>Blender models can be downloaded <a href="https://github.com/kinow/kinoshita.eti.br/tree/master/posts/2016-08-24_revamping-frege-logo-part-2-assets">here</a>.</p>
-
-<p>Now back to programming :-)</p>
-</div>
-<div class="post">
-  <h3 class="post-header">
-    <a class="post-link" href="/2016/08/16/revamping-frege-logo.html">
-      Revamping Frege logo
-    </a>
-  </h3><span class="post-meta">Aug 16, 201658<span>&mdash; star date: -306295.08</span></span><p>For a while I had been wanting to try adding a flat colour to the Frege
-logo. This weekend had some bit of spare time, and here is the result.</p>
-
-<p>Submitted to the project as <a href="https://github.com/Frege/frege/pull/299/files">pull request #299</a>.</p>
-
-<p>Current logo.</p>
-
-<p><img class="ui centered large image" src="/assets/posts/2016-08-16-revamping-frege-logo/Frege_logo.png" alt="Frege current logo" /></p>
-
-<p>And the updated logo.</p>
-
-<p><img class="ui centered large image" src="/assets/posts/2016-08-16-revamping-frege-logo/Frege_logo_flat_colours.png" alt="Frege updated logo" /></p>
-
-<p>The colour used was Flamingo (#EF4836), found in <a href="http://www.flatuicolorpicker.com/">Flat UI Color Picker</a>.</p>
-
-<p>Perhaps not exactly revamping, since all I did was just change a colour. There were
-adjustments to the bézier curves as well, to better align them, but I updated both
-logos, not just the new one :-)</p>
-</div>
-<div class="post">
-  <h3 class="post-header">
-    <a class="post-link" href="/2016/07/20/reading-notes-about-drmaa-v2.html">
-      Reading notes about DRMAA v2
-    </a>
-  </h3><span class="post-meta">Jul 20, 201659<span>&mdash; star date: -306368.85</span></span><p>The DRMAA v2 specification draft is ready to be published, and is in <a href="https://redmine.ogf.org/boards/36/topics/494">public
-comment</a> until 31st July this year.
-I used DRMAA v1 to integrate Jenkins and PBS some time ago, but it was not a
-very elegant solution.</p>
-
-<p>And in the end integrating other grid computing implementations like SGE would
-not be very simple.</p>
-
-<p>This post contains my reading notes for DRMAA v2, and a short analysis of how
-this new specification could be used in a new tentative to integrate
-Jenkins and several grid computing implementations in a single plug-in.</p>
-
-<a class="post-link" href="/2016/07/20/reading-notes-about-drmaa-v2.html">Continue reading</a></div>
-<div class="post">
-  <h3 class="post-header">
-    <a class="post-link" href="/2016/07/17/reasons-for-having-pt-and-ptbr-in-a-software.html">
-      Reasons for having pt and pt-BR in a software
-    </a>
-  </h3><span class="post-meta">Jul 17, 201660<span>&mdash; star date: -306377.05</span></span><p>Some time ago I found some spare time to work on a different Open Source project:
-<a href="http://skosmos.org/">SKOSMOS</a>. SKOSMOS is a web based SKOS browser and publishing
-tool, used to create vocabularies using the SKOS ontology.</p>
-
-<p>I decided to help with translation, but there was no Brazilian Portuguese option,
-only Portuguese. I used a few arguments to suggest that having Brazilian Portuguese
-would be a good thing.</p>
-
-<p>Another Open Source project that I use in a side project is
-<a href="https://www.languagetool.org/">LanguageTool</a>. LanguageTool is used for
-proof-reading, and uses rules to find spelling and grammar errors.</p>
-
-<p>Today I saw a message in the LanguageTool mailing list discussing whether having a Brazilian
-Portuguese page would make sense, or if it would be better to have just Portuguese, and then
-add rules for special cases.</p>
-
-<a class="post-link" href="/2016/07/17/reasons-for-having-pt-and-ptbr-in-a-software.html">Continue reading</a></div>
 <!-- Pagination links -->
   <div class="pagination">
     <p>
@@ -343,7 +465,7 @@ add rules for special cases.</p>
         <i class="left chevron icon"></i>Previous
       </a>
       
-      <span class="page_number ">Page: 16 of 31</span>
+      <span class="page_number ">Page: 16 of 27</span>
       
       <a href="/blog/page/17/" class="next">
         Next<i class="right chevron icon"></i>

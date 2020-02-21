@@ -4,7 +4,7 @@
   <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.6.1 -->
-<title>Page 18 of 31 for Blog - page 18 | Bruno P. Kinoshita</title>
+<title>Page 18 of 27 for Blog - page 18 | Bruno P. Kinoshita</title>
 <meta name="generator" content="Jekyll v3.8.5" />
 <meta property="og:title" content="Blog - page 18" />
 <meta property="og:locale" content="en_US" />
@@ -169,190 +169,133 @@
 
 <div class="blog"><div class="post">
   <h3 class="post-header">
-    <a class="post-link" href="/2016/04/17/trying-saltstack-with-docker.html">
-      Trying SaltStack with Docker
+    <a class="post-link" href="/2013/07/04/too-many-sql-variables-in-graphite-with-sqlite3.html">
+      Too many SQL variables exception in Graphite with SQLite3
     </a>
-  </h3><span class="post-meta">Apr 17, 201666<span>&mdash; star date: -306628.42</span></span><p>Some weeks ago I started learning <a href="http://saltstack.com/">SaltStack</a> for a project at work. But I couldn’t
-find a good Docker image for that and I had to ask the Ops team for some VM’s. We
-are having a rainy weekend in Auckland, so I decided to have another look at the
-<a href="https://wiki.jenkins-ci.org/display/JENKINS/saltstack-plugin">Jenkins SaltStack Plug-in</a>.</p>
+  </h3><span class="post-meta">Jul 4, 2013<span>&mdash; star date: -309410.96</span></span><p>Having run <a href="http://graphite.wikidot.com/">Graphite</a> for a while, today I found a rather annoying issue. We were using 
+<a href="https://code.launchpad.net/~lucio.torre/graphite/add-events/+merge/69142">events</a>, and everything was working perfectly fine so far. But for the 24 last hours, 
+the graph was blank.</p>
 
-<p>But now since I was at home, I couldn’t use the VM’s that I had access to at
-work. So decided to look again at Docker or Vagrant images. After playing
-with a few images, I found <a href="https://hub.docker.com/r/bbinet/salt-master/">bbinet/salt-master</a>.
-It not only sets up a master, but also provides an easy way to enable the cherrypy
-API (necessary for the Jenkins plug-in).</p>
+<p>Actually, in the dashboard, the graph was <em>missing</em>, being displayed as a gray box. 
+Enabling the web inspector in Google Chrome I got the graph URL. Opening the link in 
+a new tab gave me the exception message: <strong>too many SQL variables</strong> (<sup>1</sup>).</p>
 
-<p>This post describes the steps that I took to have a running Salt Master with the API
-enabled. First you need to create some directories and files to use with the image.</p>
+<p>After some research, I found out this was a bug in SQLite. After trying to hack the code, 
+and being concerned about using a patched version of Graphite and having to update it 
+later, I decided to switch database.</p>
 
-<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>shell<span class="nv">$ </span><span class="nb">mkdir</span> ~/master <span class="o">&amp;&amp;</span> <span class="nb">cd</span> ~/master
-shell<span class="nv">$ </span><span class="nb">mkdir</span> <span class="nt">-p</span> config/master.d/
-shell<span class="nv">$ </span>vim config/master.d/api.conf
-</code></pre></div></div>
+<p>But to avoid losing the graphs, users and other settings, including the events, I 
+migrated the SQLite database to a MySQL server. This MySQL server was already installed in 
+the server machine, since this machine hosted a <a href="http://www.zabbix.com/">Zabbix</a> server too.</p>
 
-<p>The api.conf contains the SaltStack API configuration. You can change port, user
-and other settings if necessary. Just remember to add a credential in Jenkins
-for the plug-in.</p>
-
-<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># File: api.conf</span>
-external_auth:
-  pam:
-    saltapiuser:
-      - .<span class="k">*</span>
-      - <span class="s1">'@runner'</span>
-      - <span class="s1">'@wheel'</span>
-      - <span class="s1">'@jobs'</span>
-rest_cherrypy:
-  port: 8000
-  host: 0.0.0.0
-  disable_ssl: True
-  static: /opt/molten
-  static_path: /assets
-  app: /opt/molten/index.html
-  app_path: /molten
-</code></pre></div></div>
-
-<p>The image also conveniently provides a script that is executed before the
-entry point (if provided). So we can also create a user for the API automatically
-when the image is created.</p>
-
-<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>shell<span class="nv">$ </span>vim config/before-exec.sh
-</code></pre></div></div>
-
-<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">#!/bin/bash</span>
-<span class="c"># File: before-exec.sh</span>
-useradd saltapiuser
-<span class="nb">echo</span> <span class="nt">-e</span> <span class="s2">"nosecret</span><span class="se">\n</span><span class="s2">nosecret</span><span class="se">\n</span><span class="s2">"</span> | passwd saltapiuser
-<span class="nb">exit </span>0
-</code></pre></div></div>
-
-<p>Also make the script executable.</p>
-
-<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">chmod</span> +x config/before-exec.sh
-</code></pre></div></div>
-
-<p>And finally start the container.</p>
-
-<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker run <span class="nt">--name</span> salt-master <span class="nt">-v</span> <span class="nv">$PWD</span>/config:/config <span class="se">\</span>
-    <span class="nt">-p</span> 4505:4505 <span class="nt">-p</span> 4506:4506 <span class="nt">-p</span> 443:443 <span class="nt">-p</span> 8000:8000 <span class="se">\</span>
-    bbinet/salt-master
-</code></pre></div></div>
-
-<p>Once the container is running, you can go to http://localhost:8000 and
-log in as saltapiuser:nosecret, and also configure your plug-in
-in Jenkins.</p>
-
-<p>Happy hacking!</p>
-</div>
-<div class="post">
-  <h3 class="post-header">
-    <a class="post-link" href="/2016/04/08/geek-vacation-2016.html">
-      Geek Vacation 2016
-    </a>
-  </h3><span class="post-meta">Apr 8, 201667<span>&mdash; star date: -306653.01</span></span><p>I just had a two week vacation, and I tried to use my time to rest, play some music, and
-complete a geek todo-list.</p>
-
-<p>The list included things that I used some time ago but wanted to
-refresh my memory, things that I already used but never spent time reading the manuals, and
-other things that I saw somewhere but never actually used in any project.</p>
-
-<p>Here the complete list, with the items that were completed highlighted. Some links with
-pointers to what I used to study.</p>
+<p>Here are the steps required to migrate your database from SQLite to MySQL (<sup>2</sup>).</p>
 
 <ul>
-  <li>gdb, strace, ptrace, etc, sysdig, dtrace (looked for links at <a href="https://news.ycombinator.com/">HackerNews</a> and <a href="https://www.reddit.com/">reddit</a>) ✔</li>
-  <li>geodesy (<a href="https://en.wikipedia.org/wiki/Geodesy">Wikipedia</a>, some PDF’s) ✔</li>
-  <li>QGIS (<a href="http://www.bostongis.com/?content_name=qgis">Boston GIS docs</a> and <a href="http://youtube.com">YouTube</a> videos) ✔</li>
-  <li>SRS &amp; CRS (<a href="https://en.wikipedia.org/wiki/Spatial_reference_system">Wikipedia</a>) ✔</li>
-  <li>BioPython (<a href="http://biopython.org/">project page</a>) ✔</li>
-  <li>BioConda (<a href="https://bioconda.github.io/">project page</a>) ✔</li>
-  <li>Weaver &amp; asm (<a href="https://commons.apache.org/proper/commons-weaver/">project page</a> and <a href="https://en.wikipedia.org/wiki/ObjectWeb_ASM">Wikipedia</a>) ✔</li>
-  <li>afl (project page, and some <a href="http://kinoshita.eti.br/2016/02/27/learning-afl-and-testing-mapserver.html">tests with MapServer</a>) ✔</li>
-  <li>WFS (<a href="https://en.wikipedia.org/wiki/Web_Feature_Service">Wikipedia</a>, <a href="http://docs.geoserver.org/latest/en/user/services/wfs/reference.html">GeoServer</a> and <a href="http://mapserver.org/ogc/wfs_server.html">MapServer</a>) ✔</li>
-  <li>SaltStack (<a href="http://saltstack.com/">project page</a>, <a href="https://wiki.jenkins-ci.org/display/JENKINS/saltstack-plugin">Jenkins Plug-ins for SaltStack</a>, and a few tests with VM’s and Docker) ✔</li>
-  <li>InfluxDB (<a href="https://influxdata.com/">project page</a>) ✔</li>
-  <li>rr (<a href="http://rr-project.org/">project page</a> and some local tests) ✔</li>
-  <li>ZeroMQ (<a href="http://zeromq.org/">project page</a>, <a href="https://github.com/saltstack/salt/blob/90b0a42a21dc11ca118ffbb679e0871f234c17bc/salt/transport/zeromq.py">SaltStack source code</a>) ✔</li>
-  <li>netty (<a href="http://netty.io/">project page</a>) ✔</li>
-  <li>RethinkDB (<a href="https://rethinkdb.com/">project page</a>, and a <a href="https://github.com/kinow/jira-rethinkdb">test project</a>) ✔</li>
-  <li>C++ (templates, abstractions in C++, etc) (<a href="http://www.codeproject.com/Articles/257589/An-Idiots-Guide-to-Cplusplus-Templates-Part">just this article to remember syntax</a>) ✔</li>
-  <li>Linear programming (<a href="http://benalexkeen.com/linear-programming-with-python-and-pulp/">PuLP docs</a>) ✔</li>
-  <li>AKKA (<a href="http://akka.io/">project page</a>) ✔</li>
-  <li>Frege (<a href="https://github.com/Frege/frege">project page</a> (reading their <a href="https://www.gitbook.com/book/dierk/fregegoodness/details">new book</a>))</li>
-  <li>JVM internals (played a little with <a href="http://asm.ow2.org/">asm</a>, <a href="http://docs.oracle.com/javase/7/docs/technotes/tools/windows/javap.html">javap</a>)</li>
-  <li>Java Concurrency (started re-reading <a href="http://jcip.net/">Java Concurrency in Practice</a>, but still in the initial chapters)</li>
-  <li>PostGIS (<a href="postgis.net/">project page</a>)</li>
-  <li>Krita (<a href="https://krita.org/">project page</a> and <a href="http://www.davidrevoy.com/article193/guide-building-krita-on-linux-for-cats">David Revoy’s tutorials</a>)</li>
-  <li>Scala (<a href="http://www.scala-lang.org/">project page</a>)</li>
-  <li>Minecraft Forge (<a href="http://www.minecraftforge.net/forum/">project forum</a>)</li>
-  <li>Graphs in Jenkins, cylc, Spark, Jena and clue/graph (didn’t have time for this one)</li>
+  <li>Download <strong>sqlite3_mysql</strong> python script from <a href="http://www.redmine.org/boards/2/topics/12793">http://www.redmine.org/boards/2/topics/12793</a></li>
+  <li>Stop Apache/Nginx</li>
+  <li>mysql -u user -p -e “create database redmine graphite set utf8;”</li>
+  <li>
+    <table>
+      <tbody>
+        <tr>
+          <td>sqlite3 graphite.db .dump</td>
+          <td>sqlite3-to-mysql.py</td>
+          <td>mysql -uroot -pyourpass graphite</td>
+        </tr>
+      </tbody>
+    </table>
+  </li>
+  <li>Start Apache again</li>
 </ul>
 
-<p>Going to have less spare time now for Open Source and learning the rest of the stuff on this list,
-but there’s always some books to read, and things to learn anyway right ¯\<em>(ツ)</em>/¯</p>
-</div>
-<div class="post">
-  <h3 class="post-header">
-    <a class="post-link" href="/2016/03/20/deploying-war-files-to-tomcat-with-jenkins.html">
-      Deploying WAR files to Tomcat with Jenkins
-    </a>
-  </h3><span class="post-meta">Mar 20, 201668<span>&mdash; star date: -306702.19</span></span><p><strong>Table of Contents</strong></p>
+<p>After tail’ing the Graphite webapp log file,</p>
 
-<ul>
-  <li><a href="#1-deploying-with-custom-scripts">Deploying with custom scripts</a></li>
-  <li><a href="#2-deploying-with-a-build-tool">Deploying with a build tool</a></li>
-  <li><a href="#3-deploying-with-a-build-server">Deploying with a build server</a></li>
-  <li><a href="#final-thoughts">Final thoughts</a></li>
-</ul>
-
-<p>A co-worker asked me this week about how to deploy a WAR file to Tomcat with Jenkins. In my team we are
-currently maintaining and deploying about 10 Java web systems, but we have no consistent way of deploying
-the applications to Tomcat yet. In the past I used Ant, Maven, Cargo, Grunt, and Jenkins, so I
-decided to write this short post to show a few different ways it can be achieved, à la
-<a href="https://en.wikipedia.org/wiki/There's_more_than_one_way_to_do_it">Perl’s TMTOWTDI</a> motto.</p>
-
-<h2><a name="1-deploying-with-custom-scripts" style="color: #222222;">#1 Deploying with custom scripts</a></h2>
-
-<p>At first you may be tempted to write your own script to deploy to Tomcat with some Shell, Perl, Python
-or Java. But I think I would choose this option only because either I needed some feature that is not
-available in the other options, or in order to call other tasks or debug some problem.</p>
-
-<p>Example:</p>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>docker run <span class="nt">-d</span> <span class="nt">-p</span> 8888:8080 jeanblanchard/tomcat:8
-<span class="nv">$ </span>git clone https://github.com/spring-projects/spring-petclinic.git <span class="o">&amp;&amp;</span> <span class="nb">cd </span>spring-petclinic <span class="o">&amp;&amp;</span> mvn package
-<span class="nv">$ </span>curl <span class="nt">--upload-file</span> target/petclinic.war <span class="s2">"http://admin:admin@localhost:8888/manager/text/deploy?path=/spring-petclinic&amp;update=true"</span>
-OK - Deployed application at context path /spring-petclinic
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">tail </span>f- storage/log/webapp/error.log
 </code></pre></div></div>
 
-<a class="post-link" href="/2016/03/20/deploying-war-files-to-tomcat-with-jenkins.html">Continue reading</a></div>
-<div class="post">
-  <h3 class="post-header">
-    <a class="post-link" href="/2016/03/19/drawing-sketch-cheese.html">
-      Drawing sketch: Cheese
-    </a>
-  </h3><span class="post-meta">Mar 19, 201669<span>&mdash; star date: -306704.92</span></span><p><img class="ui fluid image" src="/assets/posts/2016-03-19-drawing-sketch-cheese/cheese.png" /></p>
+<p>I noticed the Python MySQLdb wasn’t installed.</p>
 
-<p>For <a href="https://www.reddit.com/r/redditgetsdrawn/comments/42izou/this_is_me_with_my_favourite_food_its_cheese/">redditgetsdrawn</a></p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">ImproperlyConfigured</span><span class="p">:</span> <span class="n">Error</span> <span class="n">loading</span> <span class="n">MySQLdb</span> <span class="n">module</span><span class="p">:</span> <span class="n">No</span> <span class="n">module</span> <span class="n">named</span> <span class="n">MySQLdb</span>
+</code></pre></div></div>
+
+<p>My server was an Ubuntu 13.04, so I installed the module simply with the following 
+command.</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>apt-get <span class="nb">install </span>python-mysqldb
+</code></pre></div></div>
+
+<p>Hope that helps!</p>
+
+<p><small><sup>1</sup> You may have to enable *DEBUG* in your Django settings for seeing the exception in your browser</small></p>
+<p><small><sup>2</sup> Zabbix needed some minor tweaks in order to use [MariaDB](https://mariadb.org/), but probably you can give it a try too</small></p>
 </div>
 <div class="post">
   <h3 class="post-header">
-    <a class="post-link" href="/2016/02/27/learning-afl-and-testing-mapserver.html">
-      Learning afl and testing MapServer
+    <a class="post-link" href="/2013/04/17/graphite-broken-images.html">
+      Graphite: Broken images
     </a>
-  </h3><span class="post-meta">Feb 27, 201670<span>&mdash; star date: -306767.76</span></span><p><a href="http://lcamtuf.coredump.cx/afl/">afl</a> is a fuzzer, an application that combines a series of algorithms
-in order to try invoking programs with several different input values. It then analyses the application
-execution flow given different test case scenarios. 
-You can read more about fuzzing at <a href="https://www.owasp.org/index.php/Fuzzing">this OWASP page</a>, or in other
-blogs that I also used while learning about afl <a href="&quot;#1&quot;">1</a> <a href="&quot;#2&quot;">2</a></p>
+  </h3><span class="post-meta">Apr 17, 2013<span>&mdash; star date: -309627.4</span></span><p>This morning I was setting up a <a href="http://graphite.wikidot.com/" title="Graphite">Graphite </a>server to collect metrics with <a href="https://github.com/etsy/statsd/" title="statsd">statsd</a>, <a href="http://logstash.net/" title="LogStash">LogStash </a>and <a href="https://github.com/jmxtrans/jmxtrans" title="jmxtrans">jmxtrans</a>. After following the instructions from @jgeurst, I've successfully installed Graphite.</p>
 
-<p>At work we are using MapServer for serving WFS and WMS. And I am using it for the
-<a href="http://maps.nzoss.org.nz">NZ OpenStreetMap maps</a> too. MapServer is written in C++ and is normally
-exposed as a CGI script, so I thought it was worth learning about afl and trying it on MapServer,
-as in case it finds any interesting bug I can submit it to the MapServer project.</p>
+<p>I had previously installed another test box, so I decided to take a deeper look at the settings, write a <a href="https://puppetlabs.com/" title="Puppet">puppet</a> manifest and prepare this new box to become a production server. However, after browsing the webapp, all graphs were broken.</p>
 
-<a class="post-link" href="/2016/02/27/learning-afl-and-testing-mapserver.html">Continue reading</a></div>
+<p>After googling a while, reading forums and bugs, I decided to open the <em>$GRAPHITE_HOME/webapp/graphite/render/views.py</em>, adding <em>log.rendering(...)</em> statements (not the most elegant solution, I know).</p>
+
+<p>By following the program workflow I found out it was entering a block after checking if it should remotely render the image. This feature is turned on/off by <strong>REMOTE_RENDERING</strong> = True/False, in local_settings.py.</p>
+
+<p>After setting this to <em>False</em> the problem was solved.</p>
+</div>
+<div class="post">
+  <h3 class="post-header">
+    <a class="post-link" href="/2013/03/31/fix-laggy-flash-pepper-in-chrome.html">
+      Fix laggy Flash (Pepper) in Chrome
+    </a>
+  </h3><span class="post-meta">Mar 31, 2013<span>&mdash; star date: -309671.23</span></span><p>My chrome died twice this morning. Checking the system logs I found some segmentation errors. Since it was not so recent version, I updated to the latest version of Chrome. But after that my Flash player was laggy/slowly, and I couldn't listen to <a href="http://tunein.com/radio/Live-Ireland-Channel-1-s17895/#" title="Live Ireland Channel 1">Live Ireland Channel 1</a> no more :-( (I listen to either this radio or r/electrohouse on reddit.tv while I'm programming... I know, I'm a bit weird).</p>
+
+<p>If you are having the same problem, here's the list of actions that I did to fix it.</p>
+
+<p>TL;DR: Disable the Pepper Flash, as well as the Gnash or other flash libraries installed, download flash plug-in from <a href="http://get.adobe.com/flashplayer/" title="http://get.adobe.com/flashplayer/">http://get.adobe.com/flashplayer/</a> and enable it.</p>
+
+<ul>
+	<li>Went to chrome:plugins and disabled the Pepper Flash.</li>
+	<li>Now I was back at using the Gnash flash plug-in previously installed. Now, although I could watch to Youtube videos, my radio wasn't playing yet.</li>
+	<li>Disabled all Flash plug-ins, went to <a href="http://get.adobe.com/flashplayer/" title="http://get.adobe.com/flashplayer/">http://get.adobe.com/flashplayer/</a> and got the latest version (tar.gz, since I'm using Debian).</li>
+	<li>Copied the libflashplayer.so to <em>/opt/google/chrome/plugins</em></li>
+	<li>Re-enabled the Shockwave Flash plug-in (you have to expand the details section, in order to be able to choose which version you want to enable</li>
+</ul>
+
+<p>And now I'm happily writing this blog and code, listening to Salonika - Dublin City Ramblers.</p>
+
+<p>Cheers</p>
+</div>
+<div class="post">
+  <h3 class="post-header">
+    <a class="post-link" href="/2013/02/10/learning-with-open-source-reviewing-svn-commits-log.html">
+      Learning with Open Source: Reviewing SVN commits log
+    </a>
+  </h3><span class="post-meta">Feb 10, 2013<span>&mdash; star date: -309813.7</span></span><p>Last year I became an <a href="http://www.apache.org" title="Apache">Apache</a> committer, and dedicated most of my time learning the <a href="http://incubator.apache.org/learn/theapacheway.html" title="The Apache Way">Apache way</a>, reading different mailing lists and getting used to the things a committer is supposed to know (voting process, keeping everything in the mailing list, and so it goes) and getting used to <a href="http://commons.apache.org/functor" title="Apache Commons Functor">[functor]</a> API.</p>
+
+<p>In 2013 I hope I can help in the release of [functor], since Java and <a href="http://reddit.com/r/functionalprogramming">functional programming</a> are getting a lot more of attention recently, probably due to the <a href="http://openjdk.java.net/projects/lambda/" title="Project Lambda">project lambda</a>. But I also want to start contributing with the other components from commons (like <a href="http://commons.apache.org/math/" title="Apache Commons Math">math</a>, <a href="http://commons.apache.org/io/" title="Apache Commons IO">io</a>, <a href="http://commons.apache.org/jcs/" title="Apache Commons JCS">jcs</a>) and other top level projects (<a href="http://hadoop.apache.org/" title="Apache Hadoop">hadoop</a>, <a href="http://nutch.apache.org/" title="Apache Nutch">nutch</a>, <a href="http://lucene.apache.org/" title="Apache Lucene">lucene</a>).</p>
+
+<h4>Reviewing SVN commits log</h4>
+
+<p><a href="https://issues.apache.org/jira/browse/FUNCTOR-14" title="Apache Commons Functor - Issue 14">FUNCTOR-14</a> was created to enhance the <a href="http://commons.apache.org/functor/apidocs/org/apache/commons/functor/generator/package-summary.html">generators API</a> in [functor]. I'd worked on <a href="http://svn.apache.org/viewvc/commons/proper/functor/branches/generators-FUNCTOR-14/">a branch</a> for this issue, but needed some review in order to be able to merge it with the trunk. That's where you can see why Open Source is so awesome. Another Apache member, Matt Benson, created <a href="http://svn.apache.org/viewvc/commons/proper/functor/branches/FUNCTOR-14-mm/">another branch</a> to work on the project structure, but also to review the generator API.</p>
+
+<p><img class="ui image" src="/assets/posts/2013-02-10-learning-with-open-source-reviewing-svn-commits-log/feather_small.gif" /></p>
+
+<a class="post-link" href="/2013/02/10/learning-with-open-source-reviewing-svn-commits-log.html">Continue reading</a></div>
+<div class="post">
+  <h3 class="post-header">
+    <a class="post-link" href="/2013/01/17/git-clone-fails-with-fatal-unable-to-find-remote-helper-for-https.html">
+      git clone fails with fatal: Unable to find remote helper for &#39;https&#39;
+    </a>
+  </h3><span class="post-meta">Jan 17, 2013<span>&mdash; star date: -309871.23</span></span><p>I've been working in a client site without Internet connection, and behind a troll proxy. There is an internal yum repository, but many dependencies are missing.</p>
+
+<p>There weren't git-all, git or git-core packages there, so I had to download and install from sources. I didn't pay attention to the <code>./configure</code> output and proceeded with <code>make</code> and <code>make install</code>.</p>
+
+<p>Git was installed and ready to rock, but in my first <code>git clone https://</code> (SSH ports are blocked) I received: <strong>fatal: Unable to find remote helper for 'https'</strong>.</p>
+
+<p>Turns out that I was missing libcurl-devel, though I did have curl. After installing libcurl-devel and installing from sources again all worked fine.</p>
+</div>
 <!-- Pagination links -->
   <div class="pagination">
     <p>
@@ -361,7 +304,7 @@ as in case it finds any interesting bug I can submit it to the MapServer project
         <i class="left chevron icon"></i>Previous
       </a>
       
-      <span class="page_number ">Page: 18 of 31</span>
+      <span class="page_number ">Page: 18 of 27</span>
       
       <a href="/blog/page/19/" class="next">
         Next<i class="right chevron icon"></i>

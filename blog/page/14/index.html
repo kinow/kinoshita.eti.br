@@ -4,7 +4,7 @@
   <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.6.1 -->
-<title>Page 14 of 31 for Blog - page 14 | Bruno P. Kinoshita</title>
+<title>Page 14 of 27 for Blog - page 14 | Bruno P. Kinoshita</title>
 <meta name="generator" content="Jekyll v3.8.5" />
 <meta property="og:title" content="Blog - page 14" />
 <meta property="og:locale" content="en_US" />
@@ -169,200 +169,214 @@
 
 <div class="blog"><div class="post">
   <h3 class="post-header">
-    <a class="post-link" href="/2017/01/01/debugging-an-application-that-freezes-the-x-server.html">
-      Debugging an application that freezes the X server
+    <a class="post-link" href="/2016/07/20/reading-notes-about-drmaa-v2.html">
+      Reading notes about DRMAA v2
     </a>
-  </h3><span class="post-meta">Jan 1, 2017<span>&mdash; star date: -305915.07</span></span><p>Some time ago, I decided to start writing C++ again, and picked Krita for that.
-Krita is written in C++ and Qt. The <a href="https://bugs.kde.org/show_bug.cgi?id=366741">bug I was working on</a>
-involved a memory issue when changing the UI.</p>
+  </h3><span class="post-meta">Jul 20, 201654<span>&mdash; star date: -306368.85</span></span><p>The DRMAA v2 specification draft is ready to be published, and is in <a href="https://redmine.ogf.org/boards/36/topics/494">public
+comment</a> until 31st July this year.
+I used DRMAA v1 to integrate Jenkins and PBS some time ago, but it was not a
+very elegant solution.</p>
 
-<p>The problem was that this UI change would result in, not only Krita, but the whole
-X server freezing. My set up was basically Ubuntu 16.04.1 LTS, with Eclipse, Qt5,
-and the latest version of Krita checked out via git.</p>
+<p>And in the end integrating other grid computing implementations like SGE would
+not be very simple.</p>
 
-<p>Initially I spent some time looking at the logs, tracing the binary, even downloaded
-some Qt utility tools to look at the events and what was happening with the application
-when it froze.</p>
+<p>This post contains my reading notes for DRMAA v2, and a short analysis of how
+this new specification could be used in a new tentative to integrate
+Jenkins and several grid computing implementations in a single plug-in.</p>
 
-<p>However, eventually I realized I was going to spend more time on this part of the
-issue, rather than on the memory bug. So decided to look for a work-around.</p>
+<a class="post-link" href="/2016/07/20/reading-notes-about-drmaa-v2.html">Continue reading</a></div>
+<div class="post">
+  <h3 class="post-header">
+    <a class="post-link" href="/2016/07/17/reasons-for-having-pt-and-ptbr-in-a-software.html">
+      Reasons for having pt and pt-BR in a software
+    </a>
+  </h3><span class="post-meta">Jul 17, 201655<span>&mdash; star date: -306377.05</span></span><p>Some time ago I found some spare time to work on a different Open Source project:
+<a href="http://skosmos.org/">SKOSMOS</a>. SKOSMOS is a web based SKOS browser and publishing
+tool, used to create vocabularies using the SKOS ontology.</p>
 
-<p>Thankfully someone else blogged about a similar issue and saved me a lot of time :-)
-Here’s how I did it, following the instructions in
-<a href="http://www.geany.org/manual/gtk/gtk-faq/x462.html">this blog post</a>.</p>
+<p>I decided to help with translation, but there was no Brazilian Portuguese option,
+only Portuguese. I used a few arguments to suggest that having Brazilian Portuguese
+would be a good thing.</p>
 
-<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">sudo </span>apt-get <span class="nb">install </span>xnest <span class="nt">-y</span>
-<span class="nv">$ </span><span class="nb">cd </span>krita_install/
-<span class="nv">$ </span>Xnest :10
-<span class="nv">$ </span>twm <span class="nt">-display</span> :10
-<span class="nv">$ </span><span class="nb">export </span><span class="nv">DISPLAY</span><span class="o">=</span>:10
-<span class="nv">$ </span>./krita
+<p>Another Open Source project that I use in a side project is
+<a href="https://www.languagetool.org/">LanguageTool</a>. LanguageTool is used for
+proof-reading, and uses rules to find spelling and grammar errors.</p>
+
+<p>Today I saw a message in the LanguageTool mailing list discussing whether having a Brazilian
+Portuguese page would make sense, or if it would be better to have just Portuguese, and then
+add rules for special cases.</p>
+
+<a class="post-link" href="/2016/07/17/reasons-for-having-pt-and-ptbr-in-a-software.html">Continue reading</a></div>
+<div class="post">
+  <h3 class="post-header">
+    <a class="post-link" href="/2016/07/12/processing-vaisala-radiosonde-data-with-python-and-creating-gruan-like-netcdf-files.html">
+      Processing Vaisala Radiosonde data with Python, and creating GRUAN-like NetCDF files
+    </a>
+  </h3><span class="post-meta">Jul 12, 201656<span>&mdash; star date: -306390.71</span></span><p>One of my last projects involved parsing a few GB’s of data that was in a certain binary format,
+and convert it into NetCDF files. In this post I will describe what was done, what I learned about radiosonde,
+<a href="http://www.dwd.de/EN/research/international_programme/gruan/home.html">GRUAN</a> and other geek stuff. Ready?</p>
+
+<h3 id="vaisala-radiosonde-data">Vaisala Radiosonde data</h3>
+
+<p>When I was told the data was in some binary format, I thought it would be similar to
+parsing a flat file. That this would contain a fixed length entry, with the same
+kind of item repeated multiple times.</p>
+
+<p>Well, not exactly.</p>
+
+<p>The files had been generated by an instrument made by <a href="http://www.vaisala.com">Vaisala</a>, a Finnish company. This
+instrument is called a <strong>radiosonde</strong>. It is an instrument about the size of an old
+mobile phone, that is launched with a balloon into the atmosphere.</p>
+
+<p>I was lucky to be given the chance to release one of these balloons carrying a newer
+version of this equipment.</p>
+
+<p><img class="ui centered large bordered image" src="/assets/posts/2016-07-12-processing-vaisala-radiosonde-data-with-python-and-creating-gruan-like-netcdf-files/balloon-launch.jpg" alt="Radiosonde balloon launch" /></p>
+
+<p>The balloon can carry equipments for measuring different things, like air pressure,
+altitude, temperature, latitude, longitude, relative humidity, among others. Equipments
+like the radiosonde send the data back to a ground-level station via radio,
+normally in a short and constant interval.</p>
+
+<a class="post-link" href="/2016/07/12/processing-vaisala-radiosonde-data-with-python-and-creating-gruan-like-netcdf-files.html">Continue reading</a></div>
+<div class="post">
+  <h3 class="post-header">
+    <a class="post-link" href="/2016/05/06/some-linux-commands-i-used-this-week.html">
+      Some Linux commands I used this week
+    </a>
+  </h3><span class="post-meta">May 6, 201657<span>&mdash; star date: -306573.77</span></span><p>These are some commands I used on Linux servers this week. Adding them here in case someone else
+find them interesting, and also due to my bad memory :-)</p>
+
+<h2 id="listing-latest-installed-packages-in-sles">Listing latest installed packages in SLES</h2>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>rpm <span class="nt">-qa</span> <span class="nt">--last</span>
 </code></pre></div></div>
 
-<p>That’s it. You should have Krita running in a separate window, with Xnest, and within
-this window the twm window manager running. So when it freezes, at least you can still
-debug your application in Eclipse or whatever IDE you prefer.</p>
+<p>This will display the last packages installed. Useful when there are packages being updated, and you
+need to confirm what changed, and when.</p>
+
+<h2 id="listing-packages-in-sles-and-origin-repository">Listing packages in SLES and origin repository</h2>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>rpm <span class="nt">-qa</span> <span class="nt">--qf</span> <span class="s1">'%-30{DISTRIBUTION} %{NAME}\n'</span>| <span class="nb">sort</span>
+</code></pre></div></div>
+
+<p>The output will have two columns. The first containing the repository name, and the second column with
+the package name. For example.</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>devel:languages:R:base / SLE_11_SP2 R-base
+devel:languages:R:base / SLE_11_SP2 R-base-devel
+home:flacco:sles / SLE_11_SP3 php53-phar
+home:happenpappen / SLE_11_SP2 nodejs
+</code></pre></div></div>
+
+<h2 id="grep-for-content-in-xml-tags">Grep for content in XML tags</h2>
+
+<p>Be it for web services, or for finding things in Jenkins XML files. Being able to grep the tag attribute
+or tag name might be useful. Look at the following example that uses the 
+<a href="https://msdn.microsoft.com/en-us/library/ms762271%28v=vs.85%29.aspx">books XML provided by Microsoft for testing</a>.</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">grep</span> <span class="nt">-oP</span> <span class="s2">"(?&lt;=&lt;genre&gt;).*?(?=&lt;/genre&gt;)"</span> books.xml | <span class="nb">sort</span> | <span class="nb">uniq</span>
+</code></pre></div></div>
+
+<p>Which will outputs the following.</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Computer
+Fantasy
+Horror
+Romance
+Science Fiction
+</code></pre></div></div>
+
+<h2 id="find-python-site-packages-directory">Find Python site packages directory</h2>
+
+<p>Sometimes you have Anaconda, but also the system installation, and maybe even other Python distributions.
+Knowing where Python is looking for site packages can be helpful to confirm the package exists, and also
+to inspect its sources.</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>python <span class="nt">-c</span> <span class="s2">"from distutils.sysconfig import get_python_lib; print(get_python_lib())"</span>
+</code></pre></div></div>
+
+<p>An example of the output of the script.</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>/usr/lib/python2.7/dist-packages
+</code></pre></div></div>
+
+<h2 id="force-no-cache-via-curl-for-a-list-of-files">Force no-cache via curl for a list of files</h2>
+
+<p>Useful when you have a proxy like squid caching some requests from an application and you
+want to flush the cache and get the latest content (which will be cached again, but then
+you can fix it once confirmed).</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>curl <span class="nt">--silent</span> <span class="nt">-H</span> <span class="s1">'Cache-Control: no-cache'</span> http://systemcachingvalues.local/somedoc.html
+</code></pre></div></div>
+
+<h2 id="find-to-which-servers-a-linux-process-is-talking-to">Find to which servers a Linux process is talking to</h2>
+
+<p>You have to find the pid of the process that you would like to investigate (e.g. 6364) and have
+<a href="http://linux.die.net/man/1/strace">strace</a> installed.</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>strace <span class="nt">-p</span> 6364 <span class="nt">-f</span> <span class="nt">-e</span> <span class="nv">trace</span><span class="o">=</span>network <span class="nt">-o</span> output.txt
+</code></pre></div></div>
+
+<p>The command above creates output.txt with the trace information. Then you can grep for
+the IP addresses with the following regex.</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">grep</span> <span class="nt">-E</span> <span class="nt">-o</span> <span class="s2">"(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)</span><span class="se">\.</span><span class="s2">(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)</span><span class="se">\.</span><span class="s2">(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)</span><span class="se">\.</span><span class="s2">(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)"</span> output.txt
+</code></pre></div></div>
+
+<p>Which will output something similar to the following example.</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>127.0.1.1
+127.0.1.1
+127.0.1.1
+192.168.20.4
+10.10.0.12
+...
+</code></pre></div></div>
+
+<p>And finally, you can call dig to get the server name, and also remove duplicates.</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">grep</span> <span class="nt">-E</span> <span class="nt">-o</span> <span class="s2">"(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)</span><span class="se">\.</span><span class="s2">(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)</span><span class="se">\.</span><span class="s2">(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)</span><span class="se">\.</span><span class="s2">(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)"</span> output.txt | xargs <span class="nt">-l</span> dig +noall +answer +nocmd <span class="nt">-x</span> | <span class="nb">awk</span> <span class="s1">'{ print $5}'</span> | <span class="nb">sort</span> | <span class="nb">uniq</span>
+</code></pre></div></div>
+
+<p>Which gives you the following.</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ec2-52-13-43-205.compute-1.amazonaws.com.
+ec2-52-32-244-147.compute-1.amazonaws.com.
+ec2-52-44-11-85.compute-1.amazonaws.com.
+ec2-52-55-36-20.us-west-2.compute.amazonaws.com.
+ec2-52-11-19-24.us-west-2.compute.amazonaws.com.
+ec2-52-2-21-13.compute-1.amazonaws.com.
+ec2-54-33-249-49.us-west-2.compute.amazonaws.com.
+ec2-54-180-165-17.us-west-2.compute.amazonaws.com.
+ec2-54-2-177-91.compute-1.amazonaws.com.
+ec2-54-8-163-15.compute-1.amazonaws.com.
+syd11s01-in-f124.1e110.net.
+syd11s02-in-f5.1e110.net.
+syd12s02-in-f3.1e110.net.
+...
+</code></pre></div></div>
+
+<p>That’s all for today.</p>
 
 <p>Happy hacking!</p>
 </div>
 <div class="post">
   <h3 class="post-header">
-    <a class="post-link" href="/2016/12/19/drawing-sketch-uh.html">
-      Drawing sketch: Uh!
+    <a class="post-link" href="/2016/04/24/using-active-choices-with-role-strategy-plugin.html">
+      Using Active Choices with Role Strategy Plug-in
     </a>
-  </h3><span class="post-meta">Dec 19, 201647<span>&mdash; star date: -306950.82</span></span><p>Sketch.</p>
+  </h3><span class="post-meta">Apr 24, 201658<span>&mdash; star date: -306609.29</span></span><p>Having worked in Open Source for a few years, one of my favorite things is when you can
+share experience with other people that you meet. <a href="https://github.com/agray">Andrew Gray</a>
+has worked with .NET and Jenkins for years, and we met through Open Source. He has helped me
+in the past with Jenkins and .NET, and also maintains the blog
+<a href="http://jenkinsheaven.blogspot.co.nz/">Jenkins.NET</a>.</p>
 
-<p><img class="ui fluid image" src="/assets/posts/2016-12-19-drawing-sketch-uh/progress.jpg" /></p>
+<p>A couple of days ago he sent me an interesting question. He asked me if that would be possible
+to use Active Choices Plug-in with the <a href="https://wiki.jenkins-ci.org/display/JENKINS/Role+Strategy+Plugin">Role Strategy Plug-in</a>.
+This plug-in lets you define roles, define which permissions a role has, and then assign users to the roles.</p>
 
-<p>And final work here.</p>
-
-<p><img style="height: 400px;" class="ui image" src="/assets/posts/2016-12-19-drawing-sketch-uh/uh.jpg" /></p>
-
-<p>For <a href="http://kinow.deviantart.com/art/Uh-651490865">redditgetsdrawn</a></p>
-</div>
-<div class="post">
-  <h3 class="post-header">
-    <a class="post-link" href="/2016/12/19/permgen-errors-and-java-lang-classcastexception-com-sun-crypto-provider-aescipher-cannot-be-cast-to-javax-crypto-cipherspi-running-jenkins-plug-in-tests-with-powermock.html">
-      PermGen errors and java.lang.ClassCastException: com.sun.crypto.provider.AESCipher cannot be cast to javax.crypto.CipherSpi running Jenkins plug-in tests with PowerMock
-    </a>
-  </h3><span class="post-meta">Dec 19, 201648<span>&mdash; star date: -306950.82</span></span><p>Recently while working on a Jenkins plugin some tests were failing with PermGen errors.
-Even though it worked in my notebook at home (with Java 8, thus no Permgen), it failed
-in a CloudBees hosted Jenkins job, and also on my Mac (with Java 7) at work.</p>
-
-<p>As I could not change the settings in the CloudBees hosted Jenkins, I decided to spent some
-time investigating why these tests would require so much memory. Then I found
-<a href="https://angus.nyc/2015/fixing-common-powermock-problems/">this blog post about PowerMock</a>.</p>
-
-<p>I was not using the <em>@PrepareForTest</em> annotation, but after adding it the issue was gone. So I
-assume it either prevents PowerMock from trying to dynamically load several classes, or instructs
-it to unload classes after the tests. But in anyway after adding it the issue was gone.</p>
-
-<p>Then I got the following exception.</p>
-
-<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>WARNING: Failed to instantiate Key[type<span class="o">=</span>hudson.security.csrf.DefaultCrumbIssuer<span class="nv">$DescriptorImpl</span>, <span class="nv">annotation</span><span class="o">=[</span>none]]<span class="p">;</span> skipping this component
-com.google.inject.ProvisionException: Guice provision errors:
-
-1<span class="o">)</span> Error injecting constructor, java.lang.ClassCastException: com.sun.crypto.provider.AESCipher cannot be cast to javax.crypto.CipherSpi
-  at hudson.security.csrf.DefaultCrumbIssuer<span class="nv">$DescriptorImpl</span>.&lt;init&gt;<span class="o">(</span>DefaultCrumbIssuer.java:127<span class="o">)</span>
-
-1 error
-    at com.google.inject.internal.ProviderToInternalFactoryAdapter.get<span class="o">(</span>ProviderToInternalFactoryAdapter.java:52<span class="o">)</span>
-</code></pre></div></div>
-
-<p>And then thanks to <a href="https://github.com/powermock/powermock/issues/294">this issue</a> I understood
-that PowerMock was mocking <em>javax.crypto</em> classes. Turns out it is quite easy to tell
-PowerMock to ignore certain classes from being mocked, with the <em>@PowerMockIgnore</em> annotation.</p>
-
-<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// snip</span>
-<span class="nd">@RunWith</span><span class="o">(</span><span class="nc">PowerMockRunner</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
-<span class="nd">@PowerMockIgnore</span><span class="o">({</span><span class="s">"javax.crypto.*"</span> <span class="o">})</span>
-<span class="kd">public</span> <span class="kd">class</span> <span class="nc">TestAbstractUnoChoiceParameter</span> <span class="o">{</span>
-<span class="c1">//</span>
-<span class="o">}</span>
-<span class="c1">// snip</span>
-</code></pre></div></div>
-
-<p>Added a couple of notes to this <a href="https://wiki.jenkins-ci.org/display/JENKINS/Mocking+in+Unit+Tests">Jenkins Wiki page</a>
-so that users facing similar issues can try these possible workarounds.</p>
-
-<p>Hope that helps someone!</p>
-</div>
-<div class="post">
-  <h3 class="post-header">
-    <a class="post-link" href="/2016/11/24/using-requests-session-objects-for-web-scraping.html">
-      Using Requests Session Objects for web scraping
-    </a>
-  </h3><span class="post-meta">Nov 24, 201649<span>&mdash; star date: -306024.59</span></span><p>I had to write a Python script some months ago, that would retrieve Solar energy
-data from a web site. It was basically a handful of HTTP calls, parse the response
-that was mainly in JSON, and store the results as JSON and CSV for processing later.</p>
-
-<p>Since it was such a small task, I used the <a href="http://docs.python-requests.org">Requests</a>
-module instead of a complete web scraper. The HTTP requests had to be made with a
-time out, and also pass certain headers. I started customizing each call, until
-I learned about the Requests <a href="http://docs.python-requests.org/en/master/user/advanced/">Session Objects</a>.</p>
-
-<p>You create a session, as in ORM/JPA, where you can define a context, with certain properties
-and control an orthogonal behavior.</p>
-
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">requests</span>
-
-<span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="n">session</span><span class="p">,</span> <span class="n">url</span><span class="p">):</span>
-    <span class="s">"""Utility method to HTTP GET a URL"""</span>
-    <span class="n">response</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">response</span>
-
-<span class="k">def</span> <span class="nf">post</span><span class="p">(</span><span class="n">session</span><span class="p">,</span> <span class="n">url</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
-    <span class="s">"""Utility method to HTTP POST a URL with data parameters"""</span>
-    <span class="n">response</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">!=</span> <span class="n">requests</span><span class="o">.</span><span class="n">codes</span><span class="o">.</span><span class="n">ok</span><span class="p">:</span>
-        <span class="n">response</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>
-    <span class="k">return</span> <span class="n">response</span>
-
-<span class="k">with</span> <span class="n">requests</span><span class="o">.</span><span class="n">Session</span><span class="p">()</span> <span class="k">as</span> <span class="n">s</span><span class="p">:</span>
-    <span class="c1"># x-test header will be sent with every request
-</span>    <span class="n">s</span><span class="o">.</span><span class="n">headers</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s">'x-test'</span><span class="p">:</span> <span class="s">'true'</span><span class="p">})</span>
-
-    <span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s">'user'</span><span class="p">:</span> <span class="n">user</span><span class="p">,</span> <span class="s">'password'</span><span class="p">:</span> <span class="n">password</span><span class="p">,</span> <span class="s">'rememberne'</span><span class="p">:</span> <span class="s">'false'</span><span class="p">}</span>
-    <span class="n">r</span> <span class="o">=</span> <span class="n">post</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="s">'https://portal.login.url'</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
-
-    <span class="n">r</span> <span class="o">=</span> <span class="n">get</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="s">'https://portal.home.url'</span><span class="p">)</span>
-</code></pre></div></div>
-
-<p>Besides the session object, that gives you ability to add headers to all requests,
-you won’t have to worry about redirects. The library by default takes care
-<a href="https://github.com/kennethreitz/requests/blob/dfad00a6e84bc75b12468ca29ccf4f971c813fc8/requests/sessions.py#L110">of that</a>
-with a <a href="https://github.com/kennethreitz/requests/blob/dfad00a6e84bc75b12468ca29ccf4f971c813fc8/requests/models.py#L54">default limit of up to 30</a>.</p>
-
-<p>Happy hacking!</p>
-</div>
-<div class="post">
-  <h3 class="post-header">
-    <a class="post-link" href="/2016/11/21/changing-spring-boot-environment-variables-in-the-command-line.html">
-      Changing Spring Boot environment variables in the command line
-    </a>
-  </h3><span class="post-meta">Nov 21, 201650<span>&mdash; star date: -306032.79</span></span><p>This week while helping developers and testers to experiment with a backend application,
-some of them found useful to learn a simple trick to change Spring Boot properties
-when you can run the application locally (our testers build, compile, change the code, how cool
-is that?).</p>
-
-<p>Here’s how it works. Say you have the following settings in your application’s
-<strong>application.properties</strong>:</p>
-
-<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>my.application.database.username<span class="o">=</span>sa
-my.application.database.password<span class="o">=</span>notasimplepassword
-</code></pre></div></div>
-
-<p>And that you want to change these parameters in order to, for instance, create an application
-error, so that you can code and test what happens to the frontend application in that situation.</p>
-
-<p>You replace <em>dots</em> by <em>underscores</em>, and put all your words in upper case. So the variables
-above would be: MY_APPLICATION_DATABASE_USERNAME and MY_APPLICATION_DATABASE_PASSWORD.</p>
-
-<p>Furthermore, you do not need to edit your application.properties file, if you are on Linux or
-Mac OS. You can start the application and override environment variables at the same time
-with the following syntax.</p>
-
-<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ MY_APPLICATION_DATABASE_USERNAME</span><span class="o">=</span>olivei <span class="nv">MY_APPLICATION_DATABASE_PASSWORD</span><span class="o">=</span>7655432222a mvn clean spring-boot:run
-</code></pre></div></div>
-
-<p>This way your application will start with the new values.</p>
-
-<p>Happy hacking!</p>
-
-<p><strong>–EDIT–</strong></p>
-
-<p>As pointed by Stéphane Nicoll (thanks!), you could change the property values
-without having to use the upper case syntax.</p>
-
-<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mvn <span class="nt">-Dmy</span>.application.database.username<span class="o">=</span>anotheruser clean spring-boot:run
-</code></pre></div></div>
-
-<p>And he even included a link to <a href="http://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#boot-features-external-config">docs</a>! ♥ the Internet and Open Source!</p>
-
-<blockquote class="twitter-tweet" data-lang="en"><p lang="en" dir="ltr"><a href="https://twitter.com/kinow">@kinow</a> you can also specify them as command-line arguments (no need for the upper case thing)<a href="https://t.co/zBKpgcXN1C">https://t.co/zBKpgcXN1C</a><br /><br />or `-Drun.arguments`</p>&mdash; Stéphane Nicoll (@snicoll) <a href="https://twitter.com/snicoll/status/800965565120708608">November 22, 2016</a></blockquote>
-<script async="" src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
-
-</div>
+<a class="post-link" href="/2016/04/24/using-active-choices-with-role-strategy-plugin.html">Continue reading</a></div>
 <!-- Pagination links -->
   <div class="pagination">
     <p>
@@ -371,7 +385,7 @@ without having to use the upper case syntax.</p>
         <i class="left chevron icon"></i>Previous
       </a>
       
-      <span class="page_number ">Page: 14 of 31</span>
+      <span class="page_number ">Page: 14 of 27</span>
       
       <a href="/blog/page/15/" class="next">
         Next<i class="right chevron icon"></i>

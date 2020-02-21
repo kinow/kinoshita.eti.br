@@ -4,7 +4,7 @@
   <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.6.1 -->
-<title>Page 15 of 31 for Blog - page 15 | Bruno P. Kinoshita</title>
+<title>Page 15 of 27 for Blog - page 15 | Bruno P. Kinoshita</title>
 <meta name="generator" content="Jekyll v3.8.5" />
 <meta property="og:title" content="Blog - page 15" />
 <meta property="og:locale" content="en_US" />
@@ -169,200 +169,241 @@
 
 <div class="blog"><div class="post">
   <h3 class="post-header">
-    <a class="post-link" href="/2016/11/11/add-a-header-to-a-file-with-shell-script-sed.html">
-      Add a header to a file with Shell script (sed)
+    <a class="post-link" href="/2016/04/17/trying-saltstack-with-docker.html">
+      Trying SaltStack with Docker
     </a>
-  </h3><span class="post-meta">Nov 11, 201651<span>&mdash; star date: -306060.11</span></span><p>Today I was re-generating the documentation for a REST API written in PHP, with
-Laravel. To generate the documentation, one would have to call a Laravel command first.
-That command would create a Markdown page. And since in this project I am using Jekyll
-for the project site, the final step was adding a header to the file, so that Jekyll
-can recognize that content as a blog post.</p>
+  </h3><span class="post-meta">Apr 17, 201659<span>&mdash; star date: -306628.42</span></span><p>Some weeks ago I started learning <a href="http://saltstack.com/">SaltStack</a> for a project at work. But I couldn’t
+find a good Docker image for that and I had to ask the Ops team for some VM’s. We
+are having a rainy weekend in Auckland, so I decided to have another look at the
+<a href="https://wiki.jenkins-ci.org/display/JENKINS/saltstack-plugin">Jenkins SaltStack Plug-in</a>.</p>
 
-<p>Laravel allows you to add custom commands to your project, so I decided to write a command
-that would call the other command that generates the documentation, and add an extra step
-of adding the header to the Markdown file.</p>
+<p>But now since I was at home, I couldn’t use the VM’s that I had access to at
+work. So decided to look again at Docker or Vagrant images. After playing
+with a few images, I found <a href="https://hub.docker.com/r/bbinet/salt-master/">bbinet/salt-master</a>.
+It not only sets up a master, but also provides an easy way to enable the cherrypy
+API (necessary for the Jenkins plug-in).</p>
 
-<p>Here’s the shell script part, that allows you to add a header to a file, in place (i.e.
-it will alter and save the change your file).</p>
+<p>This post describes the steps that I took to have a running Salt Master with the API
+enabled. First you need to create some directories and files to use with the image.</p>
 
-<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sed</span> <span class="nt">-i</span> 1i<span class="s2">"----</span><span class="se">\n</span><span class="s2">layout: page</span><span class="se">\n</span><span class="s2">title: API Installation</span><span class="se">\n</span><span class="s2">----</span><span class="se">\n\n</span><span class="s2">"</span> ./docs/documentation/api/api.md
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>shell<span class="nv">$ </span><span class="nb">mkdir</span> ~/master <span class="o">&amp;&amp;</span> <span class="nb">cd</span> ~/master
+shell<span class="nv">$ </span><span class="nb">mkdir</span> <span class="nt">-p</span> config/master.d/
+shell<span class="nv">$ </span>vim config/master.d/api.conf
 </code></pre></div></div>
 
-<p>Here the first argument to sed, <em>-i</em> is for in place. Then that strange <em>1i</em>
-means that it will insert something before the first line, once. Then we have our header,
-and finally the file.</p>
+<p>The api.conf contains the SaltStack API configuration. You can change port, user
+and other settings if necessary. Just remember to add a credential in Jenkins
+for the plug-in.</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># File: api.conf</span>
+external_auth:
+  pam:
+    saltapiuser:
+      - .<span class="k">*</span>
+      - <span class="s1">'@runner'</span>
+      - <span class="s1">'@wheel'</span>
+      - <span class="s1">'@jobs'</span>
+rest_cherrypy:
+  port: 8000
+  host: 0.0.0.0
+  disable_ssl: True
+  static: /opt/molten
+  static_path: /assets
+  app: /opt/molten/index.html
+  app_path: /molten
+</code></pre></div></div>
+
+<p>The image also conveniently provides a script that is executed before the
+entry point (if provided). So we can also create a user for the API automatically
+when the image is created.</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>shell<span class="nv">$ </span>vim config/before-exec.sh
+</code></pre></div></div>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">#!/bin/bash</span>
+<span class="c"># File: before-exec.sh</span>
+useradd saltapiuser
+<span class="nb">echo</span> <span class="nt">-e</span> <span class="s2">"nosecret</span><span class="se">\n</span><span class="s2">nosecret</span><span class="se">\n</span><span class="s2">"</span> | passwd saltapiuser
+<span class="nb">exit </span>0
+</code></pre></div></div>
+
+<p>Also make the script executable.</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">chmod</span> +x config/before-exec.sh
+</code></pre></div></div>
+
+<p>And finally start the container.</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker run <span class="nt">--name</span> salt-master <span class="nt">-v</span> <span class="nv">$PWD</span>/config:/config <span class="se">\</span>
+    <span class="nt">-p</span> 4505:4505 <span class="nt">-p</span> 4506:4506 <span class="nt">-p</span> 443:443 <span class="nt">-p</span> 8000:8000 <span class="se">\</span>
+    bbinet/salt-master
+</code></pre></div></div>
+
+<p>Once the container is running, you can go to http://localhost:8000 and
+log in as saltapiuser:nosecret, and also configure your plug-in
+in Jenkins.</p>
 
 <p>Happy hacking!</p>
 </div>
 <div class="post">
   <h3 class="post-header">
-    <a class="post-link" href="/2016/11/07/content-negotiation-with-spring-boot-and-react.html">
-      Content negotiation with Spring Boot and React
+    <a class="post-link" href="/2016/04/08/geek-vacation-2016.html">
+      Geek Vacation 2016
     </a>
-  </h3><span class="post-meta">Nov 7, 201652<span>&mdash; star date: -306071.04</span></span><p>A few days ago I had a bug in a system built with Spring Boot and React. The frontend application
-was using a REST client in React, built in a similar way to what is found in the documentation, and
-also in blogs.</p>
+  </h3><span class="post-meta">Apr 8, 201660<span>&mdash; star date: -306653.01</span></span><p>I just had a two week vacation, and I tried to use my time to rest, play some music, and
+complete a geek todo-list.</p>
 
-<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="nx">rest</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">rest</span><span class="dl">'</span><span class="p">;</span>
-<span class="kd">const</span> <span class="nx">Rest</span> <span class="o">=</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="nx">rest</span><span class="p">.</span><span class="nx">wrap</span><span class="p">(</span><span class="nx">mime</span><span class="p">);</span>
-</code></pre></div></div>
+<p>The list included things that I used some time ago but wanted to
+refresh my memory, things that I already used but never spent time reading the manuals, and
+other things that I saw somewhere but never actually used in any project.</p>
 
-<p>However, for one of the Spring Boot application endpoints, the React component was not working. The
-response seemed to be OK in the Network tab, of the browser developer tools. But the component was
-failing and complaining when parsing the response.</p>
-
-<p>Turns out that the frontend was sending the request with the header <code class="language-plaintext highlighter-rouge">Accept: text/plain, application/json</code>.
-And Spring Boot was just using its <a href="https://spring.io/blog/2013/05/11/content-negotiation-using-spring-mvc">default content negotiation</a>
-and returning what the frontend requested: a text plain version of, what looked like, JSON.</p>
-
-<p>The quick fix was to request the content as JSON in React.</p>
-
-<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="nx">rest</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">rest</span><span class="dl">'</span><span class="p">;</span>
-<span class="k">import</span> <span class="nx">mime</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">rest/interceptor/mime</span><span class="dl">'</span><span class="p">;</span>
-<span class="kd">const</span> <span class="nx">Rest</span> <span class="o">=</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="nx">rest</span><span class="p">.</span><span class="nx">wrap</span><span class="p">(</span><span class="nx">mime</span> <span class="p">,</span> <span class="p">{</span> <span class="na">mime</span><span class="p">:</span> <span class="dl">'</span><span class="s1">application/json</span><span class="dl">'</span> <span class="p">}</span> <span class="p">);</span>
-</code></pre></div></div>
-
-<p>Now we will revisit the backend to return the JSON content, as content, regardless of what
-the user asks :-)</p>
-
-<p>Happy hacking!</p>
-</div>
-<div class="post">
-  <h3 class="post-header">
-    <a class="post-link" href="/2016/11/05/checking-the-operating-system-type-in-shell-script.html">
-      Checking the operating system type in shell script
-    </a>
-  </h3><span class="post-meta">Nov 5, 201653<span>&mdash; star date: -306076.5</span></span><p>Last week I learned about a tool called <a href="https://github.com/koalaman/shellcheck">ShellCheck</a>, a tool
-for static analysis of shell scripts. It reports errors like missing double quotes, use of deprecated
-syntax, etc.</p>
-
-<p>I decided to check some projects I contribute to, and the first issue I found was in
-<a href="https://jena.apache.org">Apache Jena</a>:</p>
-
-<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kinow@localhost:~/Development/java/jena/jena/apache-jena/bin<span class="nv">$ </span>shellcheck arq
-
-In arq line 8:
-    <span class="k">case</span> <span class="s2">"</span><span class="nv">$OSTYPE</span><span class="s2">"</span> <span class="k">in</span>
-          ^-- SC2039: In POSIX sh, OSTYPE is not supported.
-</code></pre></div></div>
-
-<p>So, in summary, the <code class="language-plaintext highlighter-rouge">OSTYPE</code> variable should not be available in POSIX shell. The case in question, where
-<code class="language-plaintext highlighter-rouge">OSTYPE</code> is being used, checks for the Darwin OS type (i.e. Mac OS). Knowing how things get weird when you
-use different operating systems, I decided to check and learn how <code class="language-plaintext highlighter-rouge">OSTYPE</code> works. Here’s what I found.</p>
+<p>Here the complete list, with the items that were completed highlighted. Some links with
+pointers to what I used to study.</p>
 
 <ul>
-  <li>In Ubuntu, with /bin/bash, OSTYPE works fine (linux-gnu)</li>
-  <li>In Ubuntu, with /bin/sh, OSTYPE is not set</li>
-  <li>In Mac OS, with /bin/sh, OSTYPE is set (darwin15)</li>
+  <li>gdb, strace, ptrace, etc, sysdig, dtrace (looked for links at <a href="https://news.ycombinator.com/">HackerNews</a> and <a href="https://www.reddit.com/">reddit</a>) ✔</li>
+  <li>geodesy (<a href="https://en.wikipedia.org/wiki/Geodesy">Wikipedia</a>, some PDF’s) ✔</li>
+  <li>QGIS (<a href="http://www.bostongis.com/?content_name=qgis">Boston GIS docs</a> and <a href="http://youtube.com">YouTube</a> videos) ✔</li>
+  <li>SRS &amp; CRS (<a href="https://en.wikipedia.org/wiki/Spatial_reference_system">Wikipedia</a>) ✔</li>
+  <li>BioPython (<a href="http://biopython.org/">project page</a>) ✔</li>
+  <li>BioConda (<a href="https://bioconda.github.io/">project page</a>) ✔</li>
+  <li>Weaver &amp; asm (<a href="https://commons.apache.org/proper/commons-weaver/">project page</a> and <a href="https://en.wikipedia.org/wiki/ObjectWeb_ASM">Wikipedia</a>) ✔</li>
+  <li>afl (project page, and some <a href="http://kinoshita.eti.br/2016/02/27/learning-afl-and-testing-mapserver.html">tests with MapServer</a>) ✔</li>
+  <li>WFS (<a href="https://en.wikipedia.org/wiki/Web_Feature_Service">Wikipedia</a>, <a href="http://docs.geoserver.org/latest/en/user/services/wfs/reference.html">GeoServer</a> and <a href="http://mapserver.org/ogc/wfs_server.html">MapServer</a>) ✔</li>
+  <li>SaltStack (<a href="http://saltstack.com/">project page</a>, <a href="https://wiki.jenkins-ci.org/display/JENKINS/saltstack-plugin">Jenkins Plug-ins for SaltStack</a>, and a few tests with VM’s and Docker) ✔</li>
+  <li>InfluxDB (<a href="https://influxdata.com/">project page</a>) ✔</li>
+  <li>rr (<a href="http://rr-project.org/">project page</a> and some local tests) ✔</li>
+  <li>ZeroMQ (<a href="http://zeromq.org/">project page</a>, <a href="https://github.com/saltstack/salt/blob/90b0a42a21dc11ca118ffbb679e0871f234c17bc/salt/transport/zeromq.py">SaltStack source code</a>) ✔</li>
+  <li>netty (<a href="http://netty.io/">project page</a>) ✔</li>
+  <li>RethinkDB (<a href="https://rethinkdb.com/">project page</a>, and a <a href="https://github.com/kinow/jira-rethinkdb">test project</a>) ✔</li>
+  <li>C++ (templates, abstractions in C++, etc) (<a href="http://www.codeproject.com/Articles/257589/An-Idiots-Guide-to-Cplusplus-Templates-Part">just this article to remember syntax</a>) ✔</li>
+  <li>Linear programming (<a href="http://benalexkeen.com/linear-programming-with-python-and-pulp/">PuLP docs</a>) ✔</li>
+  <li>AKKA (<a href="http://akka.io/">project page</a>) ✔</li>
+  <li>Frege (<a href="https://github.com/Frege/frege">project page</a> (reading their <a href="https://www.gitbook.com/book/dierk/fregegoodness/details">new book</a>))</li>
+  <li>JVM internals (played a little with <a href="http://asm.ow2.org/">asm</a>, <a href="http://docs.oracle.com/javase/7/docs/technotes/tools/windows/javap.html">javap</a>)</li>
+  <li>Java Concurrency (started re-reading <a href="http://jcip.net/">Java Concurrency in Practice</a>, but still in the initial chapters)</li>
+  <li>PostGIS (<a href="postgis.net/">project page</a>)</li>
+  <li>Krita (<a href="https://krita.org/">project page</a> and <a href="http://www.davidrevoy.com/article193/guide-building-krita-on-linux-for-cats">David Revoy’s tutorials</a>)</li>
+  <li>Scala (<a href="http://www.scala-lang.org/">project page</a>)</li>
+  <li>Minecraft Forge (<a href="http://www.minecraftforge.net/forum/">project forum</a>)</li>
+  <li>Graphs in Jenkins, cylc, Spark, Jena and clue/graph (didn’t have time for this one)</li>
 </ul>
 
-<p>I checked the shells to make sure they were not pointing to symbolic links - some distributions
-use a different default shell, and replace /bin/bash and/or /bin/sh by a link to another
-shell. Looks like Mac OS has a POSIX shell that behaves different than Ubuntu’s.</p>
-
-<p>Instead of trying to find a way to use <code class="language-plaintext highlighter-rouge">OSTYPE</code>, I decided to spend some time looking at
-how other projects do the same thing. And the best example I could find was
-<a href="https://git.kernel.org/cgit/git/git.git/tree/config.mak.uname">git</a>.</p>
-
-<p>Instead of relying on <code class="language-plaintext highlighter-rouge">OSTYPE</code>, git uses <code class="language-plaintext highlighter-rouge">uname</code>.</p>
-
-<p>I will spend some time during the next days working on a proposal to replace the <code class="language-plaintext highlighter-rouge">OSTYPE</code>
-from Apache Jena scripts, but then may have to submit more changes for the other issues
-found by ShellCheck.</p>
-
-<p>Happy hacking!</p>
+<p>Going to have less spare time now for Open Source and learning the rest of the stuff on this list,
+but there’s always some books to read, and things to learn anyway right ¯\<em>(ツ)</em>/¯</p>
 </div>
 <div class="post">
   <h3 class="post-header">
-    <a class="post-link" href="/2016/10/04/using-the-aws-api-with-python.html">
-      Using the AWS API with Python
+    <a class="post-link" href="/2016/03/20/deploying-war-files-to-tomcat-with-jenkins.html">
+      Deploying WAR files to Tomcat with Jenkins
     </a>
-  </h3><span class="post-meta">Oct 4, 201654<span>&mdash; star date: -306161.2</span></span><p>Amazon Web Services provides a series of cloud services. When you access the web interface, most - if not all - of the actions you do there are actually translated into API calls.</p>
+  </h3><span class="post-meta">Mar 20, 201661<span>&mdash; star date: -306702.19</span></span><p><strong>Table of Contents</strong></p>
 
-<p>They also provide SDK’s in several programming languages. With these SDK’s you are able to call the same API used by the web interface. Python has <a href="https://github.com/boto/boto3">boto</a> (or boto3) which lets you to automate several tasks in AWS.</p>
+<ul>
+  <li><a href="#1-deploying-with-custom-scripts">Deploying with custom scripts</a></li>
+  <li><a href="#2-deploying-with-a-build-tool">Deploying with a build tool</a></li>
+  <li><a href="#3-deploying-with-a-build-server">Deploying with a build server</a></li>
+  <li><a href="#final-thoughts">Final thoughts</a></li>
+</ul>
 
-<p>But before you start using the API, you will need to <a href="https://web.archive.org/web/20160818112016/http://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSGettingStartedGuide/AWSCredentials.html">set up your access key</a>.</p>
+<p>A co-worker asked me this week about how to deploy a WAR file to Tomcat with Jenkins. In my team we are
+currently maintaining and deploying about 10 Java web systems, but we have no consistent way of deploying
+the applications to Tomcat yet. In the past I used Ant, Maven, Cargo, Grunt, and Jenkins, so I
+decided to write this short post to show a few different ways it can be achieved, à la
+<a href="https://en.wikipedia.org/wiki/There's_more_than_one_way_to_do_it">Perl’s TMTOWTDI</a> motto.</p>
 
-<p>It is likely that with time you will have different roles, and may have different permissions with each role. You have to configure your local environment so that you can either use the command line Python utility (installed via <code class="language-plaintext highlighter-rouge">pip install awscli</code>) or with boto.</p>
+<h2><a name="1-deploying-with-custom-scripts" style="color: #222222;">#1 Deploying with custom scripts</a></h2>
 
-<p>The awscli is a dependency for using boto3. After you install it, you need to run <code class="language-plaintext highlighter-rouge">aws configure</code>. It will create the <em>~/.aws/config</em> and <em>~/.aws/credentials</em> files. You can tweak these files to support multiple roles.</p>
+<p>At first you may be tempted to write your own script to deploy to Tomcat with some Shell, Perl, Python
+or Java. But I think I would choose this option only because either I needed some feature that is not
+available in the other options, or in order to call other tasks or debug some problem.</p>
 
-<p>I followed the tutorials, but got all sorts of different issues. Then after debugging some locally installed dependencies, in special awscli files, I found that the following settings work for my environment.</p>
+<p>Example:</p>
 
-<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># File: config</span>
-<span class="o">[</span>profile default]
-region <span class="o">=</span> ap-southeast-2
-
-<span class="o">[</span>profile profile1]
-region <span class="o">=</span> ap-southeast-2
-source_profile <span class="o">=</span> default
-role_arn <span class="o">=</span> arn:aws:iam::123:role/Developer
-
-<span class="o">[</span>profile profile2]
-region <span class="o">=</span> ap-southeast-2
-source_profile <span class="o">=</span> default
-role_arn <span class="o">=</span> arn:aws:iam::456:role/Sysops
-mfa_serial <span class="o">=</span> arn:aws:iam::789:mfa/user@domain.blabla
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>docker run <span class="nt">-d</span> <span class="nt">-p</span> 8888:8080 jeanblanchard/tomcat:8
+<span class="nv">$ </span>git clone https://github.com/spring-projects/spring-petclinic.git <span class="o">&amp;&amp;</span> <span class="nb">cd </span>spring-petclinic <span class="o">&amp;&amp;</span> mvn package
+<span class="nv">$ </span>curl <span class="nt">--upload-file</span> target/petclinic.war <span class="s2">"http://admin:admin@localhost:8888/manager/text/deploy?path=/spring-petclinic&amp;update=true"</span>
+OK - Deployed application at context path /spring-petclinic
 </code></pre></div></div>
 
-<p>and</p>
-
-<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># File: credentials</span>
-<span class="o">[</span>default]
-aws_access_key_id <span class="o">=</span> YOU_KEY_ID
-aws_secret_access_key <span class="o">=</span> YOUR_SECRET
-</code></pre></div></div>
-
-<p>And once it is done you can, for example, confirm it is working with some S3 commands in Python.</p>
-
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">#!/usr/bin/env python3
-</span>
-<span class="kn">import</span> <span class="nn">os</span>
-<span class="kn">import</span> <span class="nn">boto3</span>
-
-<span class="n">session</span> <span class="o">=</span> <span class="n">boto3</span><span class="o">.</span><span class="n">Session</span><span class="p">(</span><span class="n">profile_name</span><span class="o">=</span><span class="s">'profile2'</span><span class="p">)</span>
-<span class="n">s3</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">resource</span><span class="p">(</span><span class="s">'s3'</span><span class="p">)</span>
-
-<span class="n">found</span> <span class="o">=</span> <span class="bp">False</span>
-
-<span class="n">name</span> <span class="o">=</span> <span class="s">'mysuperduperbucket'</span>
-
-<span class="k">for</span> <span class="n">bucket</span> <span class="ow">in</span> <span class="n">s3</span><span class="o">.</span><span class="n">buckets</span><span class="o">.</span><span class="nb">all</span><span class="p">():</span>
-    <span class="k">if</span> <span class="n">bucket</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="n">name</span><span class="p">:</span>
-        <span class="n">found</span> <span class="o">=</span> <span class="bp">True</span>
-
-<span class="k">if</span> <span class="ow">not</span> <span class="n">found</span><span class="p">:</span>
-    <span class="k">print</span><span class="p">(</span><span class="s">"Creating bucket..."</span><span class="p">)</span>
-    <span class="n">s3</span><span class="o">.</span><span class="n">create_bucket</span><span class="p">(</span><span class="n">Bucket</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
-
-<span class="n">file_location</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">realpath</span><span class="p">(</span><span class="n">__file__</span><span class="p">))</span> <span class="o">+</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">sep</span> <span class="o">+</span> <span class="s">'samplefile.txt'</span>
-<span class="n">s3</span><span class="o">.</span><span class="n">meta</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">upload_file</span><span class="p">(</span><span class="n">Filename</span><span class="o">=</span><span class="n">file_location</span><span class="p">,</span> <span class="n">Bucket</span><span class="o">=</span><span class="n">name</span><span class="p">,</span> <span class="n">Key</span><span class="o">=</span><span class="s">'book.txt'</span><span class="p">)</span>
-</code></pre></div></div>
-
-<p>The AWS files in this example are using MFA too, the multi-factor authentication. So the first time you run this code you may be asked to generate a token, which will be cached for a short time.</p>
-
-<p>That’s it for today.</p>
-
-<p>Happy hacking!</p>
-</div>
+<a class="post-link" href="/2016/03/20/deploying-war-files-to-tomcat-with-jenkins.html">Continue reading</a></div>
 <div class="post">
   <h3 class="post-header">
-    <a class="post-link" href="/2016/10/02/best-place-to-find-science-fiction-books-in-new-zealand.html">
-      Best place to find science fiction books in New Zealand
+    <a class="post-link" href="/2016/02/27/learning-afl-and-testing-mapserver.html">
+      Learning afl and testing MapServer
     </a>
-  </h3><span class="post-meta">Oct 2, 201655<span>&mdash; star date: -306166.67</span></span><p>Since I moved to New Zealand it has been hard to find good science fiction sections in the local book stores. I really miss the Livraria Cultura at Avenida Paulista, or the Saraiva Megastores. Whitcoulls and Paper Plus do a good job, but they have very few series, only recent releases, and you do not feel that cool environment while you browse the books.</p>
+  </h3><span class="post-meta">Feb 27, 201662<span>&mdash; star date: -306767.76</span></span><p><a href="http://lcamtuf.coredump.cx/afl/">afl</a> is a fuzzer, an application that combines a series of algorithms
+in order to try invoking programs with several different input values. It then analyses the application
+execution flow given different test case scenarios. 
+You can read more about fuzzing at <a href="https://www.owasp.org/index.php/Fuzzing">this OWASP page</a>, or in other
+blogs that I also used while learning about afl <a href="&quot;#1&quot;">1</a> <a href="&quot;#2&quot;">2</a></p>
 
-<p>I found that small secondhand bookstores are the best places to find good books - not only science fiction - in New Zealand. Devonport has one, near the waterfront. Auckland has Jason books too, right in the CBD. Wellington, Dunedin and Queenstown too (the Queenstown one is on the second level in a small mall, you have to check it out!).</p>
+<p>At work we are using MapServer for serving WFS and WMS. And I am using it for the
+<a href="http://maps.nzoss.org.nz">NZ OpenStreetMap maps</a> too. MapServer is written in C++ and is normally
+exposed as a CGI script, so I thought it was worth learning about afl and trying it on MapServer,
+as in case it finds any interesting bug I can submit it to the MapServer project.</p>
 
-<p>But last week I remembered my wife telling me about this web site, <a href="https://www.hardtofind.co.nz/">https://www.hardtofind.co.nz/</a>. I found several books from <a href="http://kinoshita.eti.br/books/#my-wish-list">my Wish List</a> there, and also other Stephen King books recommended by the bookstore clerk from Queenstown.</p>
+<a class="post-link" href="/2016/02/27/learning-afl-and-testing-mapserver.html">Continue reading</a></div>
+<div class="post">
+  <h3 class="post-header">
+    <a class="post-link" href="/2015/09/07/how-does-the-jenkins-credentials-plugin-store-passwords.html">
+      How does the Jenkins Credentials Plug-in store passwords?
+    </a>
+  </h3><span class="post-meta">Sep 7, 2015<span>&mdash; star date: -307235.62</span></span><p><a href="https://wiki.jenkins-ci.org/display/JENKINS/Credentials+Plugin">Jenkins Credentials Plug-in</a> manages credentials stored in Jenkins. These credentials can be used in many jobs and by plug-ins for executing SSH commands, authenticating to systems, or running other commands that need some sort of authentication or authorisation.</p>
 
-<p><img class="ui centered image" src="/assets/posts/2016-10-02-best-place-to-find-science-fiction-books-in-new-zealand/books-hard-to-find-store.jpg" alt="Books from Hard To Find bookstore" /></p>
+<p>I recently used its API for the first time in the <a href="https://github.com/biouno/figshare-plugin">BioUno figshare Plug-in</a> to store OAuth 1.0 credentials (consumer key, consumer secret, token key, token secret). This <a href="http://biouno.org/2015/09/05/using_jenkins_credentials_plugin_to_create_the_biouno_figshare_plugin/">blog post</a> has more details about how we used the plug-in, but this post is specifically on how the passwords are stored by Jenkins.</p>
 
-<p>If you are into science fiction, Asimov, Neal Stephenson, Peter H. Hamilton, Piers Anthony, Arthur C. Clarke, Stephen King, etc, I am sure you will enjoy going to the Hard To Find store in Onehunga. It is near the Dress Smart. So during week if you stop by Dress Smart, you can hop on their free bus from the city centre and later enjoy checking out the store too.</p>
+<h2 id="secret-and-ciphers">Secret and ciphers</h2>
 
-<p>It is a two story house, with lots of rooms, with science fiction, New Zealand, maritime sports, arts, poetry, health, etc.</p>
+<p>Jenkins stores its configuration on disk as XML using the XStream library. Plug-in developers using the Credentials Plug-in API must use the <strong>Secret</strong> class to encrypt sensitive information.</p>
 
-<p>Happy reading!</p>
+<p>The <code class="language-plaintext highlighter-rouge">Secret.fromString</code> method is responsible for creating a cipher from a given String. As in the Secret Javadoc,  <em>“this is not meant as a protection against code running in the same VM, nor against an attacker who has local file system access on Jenkins master”</em>. But at least makes things more complicated :-)</p>
+
+<ul>
+  <li><a href="http://javadoc.jenkins-ci.org/hudson/util/Secret.html">Secret Javadoc</a></li>
+  <li><a href="https://github.com/jenkinsci/jenkins/blob/master/core/src/main/java/hudson/util/Secret.java">Secret source code</a></li>
+</ul>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">static</span> <span class="nc">Secret</span> <span class="nf">fromString</span><span class="o">(</span><span class="nc">String</span> <span class="n">data</span><span class="o">)</span> <span class="o">{</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="nc">Util</span><span class="o">.</span><span class="na">fixNull</span><span class="o">(</span><span class="n">data</span><span class="o">);</span>
+    <span class="nc">Secret</span> <span class="n">s</span> <span class="o">=</span> <span class="n">decrypt</span><span class="o">(</span><span class="n">data</span><span class="o">);</span>
+    <span class="k">if</span><span class="o">(</span><span class="n">s</span><span class="o">==</span><span class="kc">null</span><span class="o">)</span> <span class="n">s</span><span class="o">=</span><span class="k">new</span> <span class="nc">Secret</span><span class="o">(</span><span class="n">data</span><span class="o">);</span>
+    <span class="k">return</span> <span class="n">s</span><span class="o">;</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>The first line simply replaces a null string by an empty “”, or keeps the current value of not null.</p>
+
+<p>After that, the decrypt method is called.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">static</span> <span class="nc">Secret</span> <span class="nf">decrypt</span><span class="o">(</span><span class="nc">String</span> <span class="n">data</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">if</span><span class="o">(</span><span class="n">data</span><span class="o">==</span><span class="kc">null</span><span class="o">)</span>      <span class="k">return</span> <span class="kc">null</span><span class="o">;</span>
+    <span class="k">try</span> <span class="o">{</span>
+        <span class="kt">byte</span><span class="o">[]</span> <span class="n">in</span> <span class="o">=</span> <span class="nc">Base64</span><span class="o">.</span><span class="na">decode</span><span class="o">(</span><span class="n">data</span><span class="o">.</span><span class="na">toCharArray</span><span class="o">());</span>
+        <span class="nc">Secret</span> <span class="n">s</span> <span class="o">=</span> <span class="n">tryDecrypt</span><span class="o">(</span><span class="no">KEY</span><span class="o">.</span><span class="na">decrypt</span><span class="o">(),</span> <span class="n">in</span><span class="o">);</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">s</span><span class="o">!=</span><span class="kc">null</span><span class="o">)</span>    <span class="k">return</span> <span class="n">s</span><span class="o">;</span>
+
+        <span class="c1">// try our historical key for backward compatibility</span>
+        <span class="nc">Cipher</span> <span class="n">cipher</span> <span class="o">=</span> <span class="n">getCipher</span><span class="o">(</span><span class="s">"AES"</span><span class="o">);</span>
+        <span class="n">cipher</span><span class="o">.</span><span class="na">init</span><span class="o">(</span><span class="nc">Cipher</span><span class="o">.</span><span class="na">DECRYPT_MODE</span><span class="o">,</span> <span class="n">getLegacyKey</span><span class="o">());</span>
+        <span class="k">return</span> <span class="nf">tryDecrypt</span><span class="o">(</span><span class="n">cipher</span><span class="o">,</span> <span class="n">in</span><span class="o">);</span>
+    <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="nc">GeneralSecurityException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="kc">null</span><span class="o">;</span>
+    <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="nc">UnsupportedEncodingException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">throw</span> <span class="k">new</span> <span class="nf">Error</span><span class="o">(</span><span class="n">e</span><span class="o">);</span> <span class="c1">// impossible</span>
+    <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="nc">IOException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="kc">null</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>The <code class="language-plaintext highlighter-rouge">KEY.decrypt()</code> call will return a <a href="http://docs.oracle.com/javase/8/docs/api/javax/crypto/Cipher.html"><code class="language-plaintext highlighter-rouge">javax.crypto.Cipher</code></a>. The Cipher class is handled in <a href="https://github.com/jenkinsci/jenkins/blob/93dfe3377ec8d430818f5b9073f16c677343adb4/core/src/main/java/jenkins/security/CryptoConfidentialKey.java">CryptoConfidentialKey</a> in Jenkins API, where it defines the algorithm used to create the cipher: <a href="https://en.wikipedia.org/wiki/Advanced_Encryption_Standard">AES</a>.</p>
+
+<p>Jenkins has also a <a href="https://github.com/jenkinsci/jenkins/blob/93dfe3377ec8d430818f5b9073f16c677343adb4/core/src/main/java/jenkins/security/ConfidentialStore.java#L63">ConfidentialStore</a>, that is required to create the cipher. This class must be initialized before someone tries to create or read a cipher. This extra step also increases security, though access to the JVM is still a problem.</p>
+
+<p>It is a bit late, so it is all for today. In summary: the credentials plug-in gives you a central place to manage credentials, but it is up to plug-in developers to use it. Sensitive values can be encrypted with AES on disk. So it is important that your file permissions, ACL and system auditing processes are in place and well maintained and monitored.</p>
+
+<p>Happy hacking!</p>
 </div>
 <!-- Pagination links -->
   <div class="pagination">
@@ -372,7 +413,7 @@ aws_secret_access_key <span class="o">=</span> YOUR_SECRET
         <i class="left chevron icon"></i>Previous
       </a>
       
-      <span class="page_number ">Page: 15 of 31</span>
+      <span class="page_number ">Page: 15 of 27</span>
       
       <a href="/blog/page/16/" class="next">
         Next<i class="right chevron icon"></i>

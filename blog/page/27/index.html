@@ -4,7 +4,7 @@
   <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.6.1 -->
-<title>Page 27 of 31 for Blog - page 27 | Bruno P. Kinoshita</title>
+<title>Page 27 of 27 for Blog - page 27 | Bruno P. Kinoshita</title>
 <meta name="generator" content="Jekyll v3.8.5" />
 <meta property="og:title" content="Blog - page 27" />
 <meta property="og:locale" content="en_US" />
@@ -14,7 +14,6 @@
 <meta property="og:url" content="https://kinoshita.eti.br/blog/page/27/" />
 <meta property="og:site_name" content="Bruno P. Kinoshita" />
 <link rel="prev" href="https://kinoshita.eti.br/blog/page/26/" />
-<link rel="next" href="https://kinoshita.eti.br/blog/page/28/" />
 <script type="application/ld+json">
 {"headline":"Blog - page 27","description":"Bruno P. Kinoshita personal home page","@type":"WebPage","url":"https://kinoshita.eti.br/blog/page/27/","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
@@ -169,107 +168,102 @@
 
 <div class="blog"><div class="post">
   <h3 class="post-header">
-    <a class="post-link" href="/2011/06/15/why-am-i-learning-perl.html">
-      Why am I learning Perl? 
+    <a class="post-link" href="/2009/03/22/code-to-change-your-message-in-msn-messenger.html">
+      Code to change your message in MSN messenger
     </a>
-  </h3><span class="post-meta">Jun 15, 2011<span>&mdash; star date: -311465.75</span></span><p>Last month I attended the <a title="II Sao Paulo Perl Workshop" href="http://www.perlworkshop.com.br">II Sao Paulo Perl Workshop</a>, where I had the privilege of learning with the great talks performed by <a title="Bryan D Foy" href="http://www252.pair.com/~comdog/">bryan d foy</a>, <a title="Brad FitzPatrick" href="http://bradfitz.com/">Brad FitzPatrick</a> and <a title="Larry Wall" href="http://www.wall.org/~larry/">Larry Wall</a>. For being a Java programmer, you can imagine how lost I was feeling there.</p>
+  </h3><span class="post-meta">Mar 22, 2009<span>&mdash; star date: -313695.89</span></span><p>I’ve always wanted to know how does the code to show what was I listening to looked like. I found it after installing XMPlay and XMPlay MSN Plug-in. The plug-in zip had the plug-in itself and its source code. And what a neat source code (-:.</p>
 
-<p>The first programming language that I had contact with was Perl. I was a 16 years old <a title="Slackware Linux" href="http://www.slackware.com">Slackware</a> aficionado at that time, and was dying to have a web site with a guestbook . We did not have any cheap hosting services in Brazil that offered a <a title="PHP" href="http://www.php.net">PHP</a> environment, but there were few companies that offered a free host with ads, and with Perl. I don’t remember which script I used, only that I found it in <a title="HotScripts.com" href="http://www.hotscripts.com">HotScripts.com</a> and that it stored the guestbook entries in disk. Now, ten years after, here I am playing with Perl again! :-D</p>
+<p>Basically, you just send a message to the MSN UI API with a defined data structure. And to remove the message, just send again with an empty string.</p>
 
-<p><img class="ui fluid image" src="/assets/posts/2011-06-15-why-am-i-learning-perl/larry_wall.jpg" /></p>
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/*
+Bruno de Paula Kinoshita
+original src code:
+XMPlay MSN Plugin (c) 2005-2006 Elliott Sales de Andrade
+*/</span>
 
-<p>Well, what was my idea of Perl before the event? I thought it was an old programming language, very powerful, but over complicated. And what do I think of Perl now? I think it is an old programming language, very powerful, but may be complicated.</p>
+<span class="cp">#include &lt;cstdlib&gt;
+#include &lt;iostream&gt;
+#include &lt;windows.h&gt;
+</span>
+<span class="n">using</span> <span class="n">namespace</span> <span class="n">std</span><span class="p">;</span>
 
-<a class="post-link" href="/2011/06/15/why-am-i-learning-perl.html">Continue reading</a></div>
-<div class="post">
-  <h3 class="post-header">
-    <a class="post-link" href="/2011/06/03/a-comparison-of-tap-test-anything-protocol-and-subunit.html">
-      A comparison of TAP (Test Anything Protocol) and SubUnit
-    </a>
-  </h3><span class="post-meta">Jun 3, 2011<span>&mdash; star date: -311498.63</span></span><p>
-    I have been playing with <a href="http://www.testanything.org">TAP</a> for some time and even implemented a <a href="http://www.tap4j.org">Java API</a> to let <a href="http://www.testng.org">TestNG</a>, <a href="http://www.junit.org">JUnit</a> and other Test Frameworks to produce and consume TAP. TAP is a standard
-    format for test output that first appeared with Perl 1 in 1987. It is human and machine readable, easy to be
-    serialized, language independent and extensible<sup><a href="#1">1</a></sup> through the use of <a href="http://www.yaml.org">YAML</a>.
-</p>
+<span class="k">typedef</span> <span class="k">struct</span> <span class="p">{</span>
+<span class="n">BOOL</span> <span class="n">showCues</span><span class="p">;</span>
+<span class="n">BOOL</span> <span class="n">keepOnClose</span><span class="p">;</span>
+<span class="p">}</span> <span class="n">MSNStuff</span><span class="p">;</span>
+<span class="k">static</span> <span class="n">MSNStuff</span> <span class="n">msnConf</span><span class="p">;</span>
 
-<p>
-    Some days ago while I was designing a plug-in to show TAP test results in <a href="http://www.jenkins-ci.org">Jenkins</a>
-    I stumbled across a message in <a href="http://jenkins.361315.n4.nabble.com/Jenkins-dev-f387835.html">Jenkins
-        dev-list</a> where Max Magee and Nick Wiesmueller were discussing about a way of showing more details about the test
-    executions. I thought that the TAP Plug-in would fit perfectly, until one of the users, <a href="https://launchpad.net/~lifeless">Robert Collins</a>, mentioned <a href="https://launchpad.net/subunit">SubUnit</a>.
-</p>
+<span class="kt">void</span> <span class="nf">setNowPlaying</span><span class="p">(</span> <span class="kt">char</span> <span class="o">*</span><span class="n">title</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="kt">wchar_t</span> <span class="o">*</span><span class="n">lpMsn</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">strLen</span> <span class="o">=</span> <span class="mi">20</span><span class="p">;</span>
+    <span class="n">HWND</span> <span class="n">xmpwin</span><span class="p">;</span>
+    <span class="n">HWND</span> <span class="n">msnui</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
+    
+    <span class="n">lpMsn</span> <span class="o">=</span> <span class="p">(</span><span class="kt">wchar_t</span><span class="o">*</span><span class="p">)</span><span class="n">calloc</span><span class="p">(</span><span class="mi">1024</span><span class="p">,</span><span class="mi">1024</span><span class="p">);</span>
+    <span class="c1">// stuff for MSN before...</span>
+    <span class="n">memcpy</span><span class="p">(</span><span class="n">lpMsn</span><span class="p">,</span> <span class="n">L</span><span class="o">&amp;</span><span class="n">quot</span><span class="p">;</span><span class="err">\</span><span class="o">&amp;</span><span class="err">#</span><span class="mi">92</span><span class="p">;</span><span class="o">&amp;</span><span class="err">#</span><span class="mi">48</span><span class="p">;</span><span class="n">Music</span><span class="err">\</span><span class="o">&amp;</span><span class="err">#</span><span class="mi">92</span><span class="p">;</span><span class="o">&amp;</span><span class="err">#</span><span class="mi">48</span><span class="p">;</span><span class="mi">1</span><span class="err">\</span><span class="o">&amp;</span><span class="err">#</span><span class="mi">92</span><span class="p">;</span><span class="o">&amp;</span><span class="err">#</span><span class="mi">48</span><span class="p">;{</span><span class="mi">0</span><span class="p">}</span><span class="err">\</span><span class="o">&amp;</span><span class="err">#</span><span class="mi">92</span><span class="p">;</span><span class="o">&amp;</span><span class="err">#</span><span class="mi">48</span><span class="p">;</span><span class="o">&amp;</span><span class="n">quot</span><span class="p">;,</span> <span class="mi">17</span><span class="o">*</span><span class="mi">2</span><span class="p">);</span>
+    <span class="c1">// actual title...</span>
+    <span class="n">strLen</span><span class="o">=</span><span class="n">MultiByteToWideChar</span><span class="p">(</span><span class="nb">false</span><span class="o">?</span><span class="n">CP_UTF8</span><span class="o">:</span><span class="n">CP_ACP</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="n">title</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="n">lpMsn</span><span class="o">+</span><span class="mi">17</span><span class="p">,</span><span class="mi">492</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">;</span><span class="err">Â </span> <span class="cm">/* 1024/2 - 20 */</span>
+    <span class="c1">// stuff for MSN after...</span>
+    <span class="n">memcpy</span><span class="p">(</span><span class="n">lpMsn</span> <span class="o">+</span> <span class="mi">17</span> <span class="o">+</span> <span class="n">strLen</span><span class="p">,</span> <span class="n">L</span><span class="o">&amp;</span><span class="n">quot</span><span class="p">;</span><span class="err">\</span><span class="o">&amp;</span><span class="err">#</span><span class="mi">92</span><span class="p">;</span><span class="o">&amp;</span><span class="err">#</span><span class="mi">48</span><span class="p">;</span><span class="o">&amp;</span><span class="n">quot</span><span class="p">;,</span> <span class="mi">3</span><span class="o">*</span><span class="mi">2</span><span class="p">);</span>
+    <span class="n">strLen</span> <span class="o">+=</span> <span class="mi">20</span><span class="p">;</span>
+    
+    <span class="n">COPYDATASTRUCT</span> <span class="n">msndata</span><span class="p">;</span>
+    <span class="n">msndata</span><span class="p">.</span><span class="n">dwData</span> <span class="o">=</span> <span class="mh">0x547</span><span class="p">;</span>
+    <span class="n">msndata</span><span class="p">.</span><span class="n">lpData</span> <span class="o">=</span> <span class="p">(</span><span class="kt">void</span><span class="o">*</span><span class="p">)</span><span class="n">lpMsn</span><span class="p">;</span>
+    <span class="n">msndata</span><span class="p">.</span><span class="n">cbData</span> <span class="o">=</span> <span class="n">strLen</span> <span class="o">*</span> <span class="mi">2</span><span class="p">;</span>
+    
+    <span class="k">while</span> <span class="p">(</span> <span class="n">msnui</span> <span class="o">=</span> <span class="n">FindWindowEx</span><span class="p">(</span><span class="nb">NULL</span><span class="p">,</span> <span class="n">msnui</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">quot</span><span class="p">;</span><span class="n">MsnMsgrUIManager</span><span class="o">&amp;</span><span class="n">quot</span><span class="p">;,</span> <span class="nb">NULL</span><span class="p">)</span> <span class="p">)</span>
+        <span class="n">SendMessage</span><span class="p">(</span><span class="n">msnui</span><span class="p">,</span> <span class="n">WM_COPYDATA</span><span class="p">,</span> <span class="p">(</span><span class="n">WPARAM</span><span class="p">)</span><span class="n">xmpwin</span><span class="p">,</span> <span class="p">(</span><span class="n">LPARAM</span><span class="p">)</span><span class="o">&amp;</span><span class="n">amp</span><span class="p">;</span><span class="n">msndata</span><span class="p">);</span>
+<span class="p">}</span>
 
-<p>
-    Shame on me, but I hadn't heard of SubUnit until that message. Max Magee and I exchanged some messages after that,
-    talking about a initial design and analysis for the TAP Plug-in<sup><a href="#2">2</a></sup>. Here is the initial
-    idea:
-<p>
-<ul>
-    <li>The plug-in will be able to parse one or more test formats (maybe SubUnit, TAP and the formats available in
-        xUnit?).</li>
-    <li>The test results will be displayed the same way JUnit tests are displayed in Jenkins (I think Jenkins
-        supports JUnit format by default, but you can use objects and create test results data, independently of the
-        test framework that you are using).</li>
-    <li>There will be a table containing the Test Name, Description and Status and an expandable section.</li>
-    <li>Inside this expandable section will be available all the details about the test.</li>
-    <li>In case there are images within the test details, they should be displayed as a lightbox gallery.<sup><a href="#3">3</a></sup></li>
-</ul>
-<p>
-    Although I have worked with TAP and spent some good time writing the tap4j port for Java, I am not convinced it is
-    the best solution for this issue yet. Hence I am posting this initial comparison between TAP and SubUnit hoping that
-    more people will contribute with the design of this solution. My goal is not only having a super cool plug-in for
-    Jenkins, but ease integration of test results in different tools and collaborate with both TAP and SubUnit. Another
-    objective that I have in mind is improving the way that test results are displayed in Jenkins and enabling it to be
-    an alternative for tools like <a href="http://sourceforge.net/projects/smolder/">Smolder</a>, <a href="https://launchpad.net/testrepository">TestRepository</a> or <a href="https://launchpad.net/tribunal">Tribunal</a>.
-    Because I believe the tasks done by these tools could be all done in my favorite CI Server, and it would increase
-    the productivity of Build &amp; Release professionals :-))
-</p>
-
-
-
-</p></p>
-<a class="post-link" href="/2011/06/03/a-comparison-of-tap-test-anything-protocol-and-subunit.html">Continue reading</a></div>
-<div class="post">
-  <h3 class="post-header">
-    <a class="post-link" href="/2011/05/23/faca-seus-testes-falarem-tap-make-your-tests-speak-tap-article-published-in-mundoj-issue-47-marchapril-2011.html">
-      Faça seus Testes Falarem TAP (Make your Tests Speak TAP) article published in MundoJ, issue 47, March/April 2011
-    </a>
-  </h3><span class="post-meta">May 23, 2011<span>&mdash; star date: -311526.03</span></span><p>This is my first article for a Brazilian magazine! :-D It was published in this month’s issue of <a href="http://www.mundoj.com.br">MundoJ</a> magazine (previously called MundoJava).</p>
-
-<p><img class="ui left floated image" src="/assets/posts/2011-05-23-faça-seus-testes-falarem-tap-make-your-tests-speak-tap-article-published-in-mundoj-issue-47-march-april-2011/ed47p.jpg" /></p>
-
-<p>In this article Cesar Fernandes de Almeida, <a href="http://andersonxp.tumblr.com/">Anderson dos Santos</a> and I discuss how to make your Java tests output <a href="http://www.testanything.org">TAP</a> (Test Anything Protocol) Streams. This test protocol has been used by Perl developers since Perl’s first version (1983~) but hasn’t been used by many Java developers yet, unfortunately. We hope it incentives other Java developers to use TAP for their tests. There is an alternative to TAP too, <a href="https://launchpad.net/subunit">SubUnit</a>, which was pointed out for me by <a href="https://launchpad.net/~lifeless">Robert Collins</a> in the <a href="http://jenkins.361315.n4.nabble.com/Jenkins-dev-f387835.html">Jenkins dev-list</a> few weeks ago. Now I am preparing a comparison between TAP and SubUnit as an analysis before developing a plug-in for Jenkins to show detailed test results (such as exception, images, raw test, error line, etc).</p>
-
-<p>Throughout the article we explain how to use <a href="http://www.tap4j.org">tap4j</a> to generate TAP Streams with <a href="http://www.testng.org">TestNG</a>, however it is possible to use the same approach to generate TAP Streams with <a href="http://www.junit.org">JUnit</a>.</p>
-
-<p>Now I will translate the article to send it to <a href="http://search.cpan.org/~patl/">Patrick LeBoutillier</a>, who contributed to this article answering patiently my questions by mail and writing <a href="http://search.cpan.org/~patl/metatap-0.01/">metatap</a>, a utility that lets you check if a TAP Stream is valid, according to the program parameters. This utility is being used in tap4j for integration tests between Perl and Java.</p>
-
-<p>Unfortunately I’m not allowed to redistribute the article, not even an English version of it :-(</p>
-
-<p>Cheers :)</p>
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span><span class="n">argv</span><span class="p">[])</span>
+<span class="p">{</span>
+    <span class="kt">char</span> <span class="o">*</span><span class="n">title</span><span class="p">;</span>
+    
+    <span class="k">if</span> <span class="p">(</span> <span class="n">argc</span> <span class="o">==</span> <span class="mi">1</span> <span class="p">)</span>
+        <span class="n">title</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">quot</span><span class="p">;</span><span class="o">&amp;</span><span class="n">quot</span><span class="p">;;</span>
+    <span class="k">else</span>
+        <span class="n">title</span> <span class="o">=</span> <span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span>
+    
+    <span class="n">setNowPlaying</span> <span class="p">(</span> <span class="n">title</span> <span class="p">);</span>
+    
+    <span class="k">return</span> <span class="n">EXIT_SUCCESS</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
 </div>
 <div class="post">
   <h3 class="post-header">
-    <a class="post-link" href="/2011/03/25/belgium-testing-days-2011-pictures.html">
-      Belgium Testing Days 2011 Pictures
+    <a class="post-link" href="/2009/03/06/displaying-japanese-characters-n-java-swing.html">
+      Displaying Japanese characters in Java Swing
     </a>
-  </h3><span class="post-meta">Mar 25, 2011<span>&mdash; star date: -311687.67</span></span><p>Here are some pictures of the event. The presentation is available in <a title="Belgium Testing Days" href="http://www.belgiumtestingdays.com">http://www.belgiumtestingdays.com</a>.</p>
+  </h3><span class="post-meta">Mar 6, 2009<span>&mdash; star date: -313739.73</span></span><p>It’s not as complicated as I first thought.</p>
 
-<p>(Sorry, after migrating the server I lost some pictures. Will upload it again soon!)</p>
+<p>Had to use this technique to develop an Swing application for the JLPT certification exam.</p>
 
-<p>Cheers!</p>
-</div>
-<div class="post">
-  <h3 class="post-header">
-    <a class="post-link" href="/2011/03/22/testlink-and-hudson-now-jenkins-short-tutorial-in-automated-software-testing-magazine-issue-march-2011.html">
-      TestLink and Hudson (now Jenkins) short tutorial in Automated Software Testing Magazine, issue March 2011
-    </a>
-  </h3><span class="post-meta">Mar 22, 2011<span>&mdash; star date: -311695.89</span></span><p><a href="http://www.automatedtestinginstitute.com/home/ASTMagazine/2011/AutomatedSoftwareTestingMagazine_March2011.pdf"><img class="ui left floated image" src="/assets/posts/2011-03-22-testlink-and-hudson-now-jenkins-short-tutorial-in-automated-software-testing-magazine-issue-march-2011/March11Cover_small.jpg" /></a></p>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="nc">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+	<span class="nc">JFrame</span> <span class="n">frame</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">JFrame</span><span class="o">();</span>
+	<span class="n">frame</span><span class="o">.</span><span class="na">setDefaultCloseOperation</span><span class="o">(</span><span class="nc">JFrame</span><span class="o">.</span><span class="na">EXIT_ON_CLOSE</span><span class="o">);</span>
+	<span class="nc">Container</span> <span class="n">container</span> <span class="o">=</span> <span class="n">frame</span><span class="o">.</span><span class="na">getContentPane</span><span class="o">();</span>
+	<span class="nc">JLabel</span> <span class="n">japanese</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">JLabel</span><span class="o">(</span> <span class="s">"Kino\u304D\u306E"</span> <span class="o">);</span>
+	<span class="n">japanese</span><span class="o">.</span><span class="na">setToolTipText</span><span class="o">(</span> <span class="s">"This is Japanese"</span> <span class="o">);</span>
+	<span class="nc">Font</span> <span class="n">f</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Font</span><span class="o">(</span><span class="s">"Arial Unicode MS"</span><span class="o">,</span> <span class="nc">Font</span><span class="o">.</span><span class="na">BOLD</span><span class="o">,</span> <span class="mi">16</span><span class="o">);</span>
+	<span class="n">japanese</span><span class="o">.</span><span class="na">setFont</span><span class="o">(</span><span class="n">f</span><span class="o">);</span>
+	<span class="n">container</span><span class="o">.</span><span class="na">add</span><span class="o">(</span> <span class="n">japanese</span> <span class="o">);</span>
+	<span class="n">frame</span><span class="o">.</span><span class="na">pack</span><span class="o">();</span>
+	<span class="n">frame</span><span class="o">.</span><span class="na">setLocationRelativeTo</span><span class="o">(</span><span class="kc">null</span><span class="o">);</span>
+	<span class="n">frame</span><span class="o">.</span><span class="na">setVisible</span><span class="o">(</span><span class="kc">true</span><span class="o">);</span>
+<span class="o">}</span>
+</code></pre></div></div>
 
-<p>Hi there, a new article about TestLink and Hudson (now Jenkins) was published, now in <a title="Automated Software Institute" href="http://www.automatedtestinginstitute.com/">Automated Software Testing Magazine</a>, issue March 2011. In this article you will find a short tutorial to set up a TestNG test and a simple Job to execute your automated tests.
-Now we are writing a <a title="DocBook" href="http://www.docbook.org/">docbook</a> document to explain with more details how the plug-in works and how you can play with it. We are also working in more samples, translation and video demos. Release 2.2 was planned for last Friday but I missed the date to add a new feature: TestLink platforms, this is the last known limitation in the plug-in.</p>
+<p>All you have to do is to use the hexadecimal representation of the characters instead of using plain text. And here is the result.</p>
 
-<p>Cheers</p>
+<p>2009-03-06 12:10:07 +1300</p>
+
+<p><img class="ui image" src="/assets/posts/2009-03-06-displaying-japanese-characters-in-java-swing/kino.png" alt="=" /></p>
+
+<p>Banzai!</p>
 </div>
 <!-- Pagination links -->
   <div class="pagination">
@@ -279,11 +273,9 @@ Now we are writing a <a title="DocBook" href="http://www.docbook.org/">docbook</
         <i class="left chevron icon"></i>Previous
       </a>
       
-      <span class="page_number ">Page: 27 of 31</span>
+      <span class="page_number ">Page: 27 of 27</span>
       
-      <a href="/blog/page/28/" class="next">
-        Next<i class="right chevron icon"></i>
-      </a>
+      <span class="next ">Next<i class="right chevron icon"></i></span>
       
     </p>
   </div></div>

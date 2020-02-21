@@ -4,7 +4,7 @@
   <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.6.1 -->
-<title>Page 20 of 31 for Blog - page 20 | Bruno P. Kinoshita</title>
+<title>Page 20 of 27 for Blog - page 20 | Bruno P. Kinoshita</title>
 <meta name="generator" content="Jekyll v3.8.5" />
 <meta property="og:title" content="Blog - page 20" />
 <meta property="og:locale" content="en_US" />
@@ -169,267 +169,69 @@
 
 <div class="blog"><div class="post">
   <h3 class="post-header">
-    <a class="post-link" href="/2014/09/08/cypher-gremlin-and-sparql-graph-dialects.html">
-      Cypher, Gremlin and SPARQL: Graph dialects
+    <a class="post-link" href="/2012/10/11/jenkins-testlink-and-gtest-in-5-minutes-or-so.html">
+      Jenkins, TestLink and GTest in 5 minutes (or so)
     </a>
-  </h3><span class="post-meta">Sep 8, 2014<span>&mdash; star date: -308232.88</span></span><p>When I was younger and my older brother was living in Germany, I asked him if he 
-had learned German. He said that he did, and explained that there are several 
-dialects, and he was quite proud for some people told him that he was using the 
-Bavarian dialect correctly.</p>
+  </h3><span class="post-meta">Oct 11, 201268<span>&mdash; star date: -310142.08</span></span><p>This is a 5 minutes guide on creating a job for a C++ project in <a href="http://www.jenkins-ci.org" title="Jenkins CI">Jenkins</a> with <a href="http://code.google.com/p/googletest" title="GoogleTest">GoogleTest</a> and reporting the test results back to <a href="http://www.teamst.org" title="TestLink">TestLink</a>, with <a href="https://wiki.jenkins-ci.org/display/JENKINS/TestLink+Plugin" title="Jenkins TestLink Plug-in">testlink-plugin</a>.</p>
 
-<p>Even though <a href="http://www.neo4j.org/learn/cypher">Cypher</a>, 
-<a href="http://gremlindocs.com/">Gremlin</a> and <a href="http://en.wikipedia.org/wiki/SPARQL">SPARQL</a> 
-are all query languages, I think we can consider them dialects of a common graph language. 
-Cypher is the query language used in <a href="http://www.neo4j.org/">neo4j</a>, a graph database. 
-Gremlin is part of the <a href="http://www.tinkerpop.com/">Tinkerpop</a>, an open source project 
-that contains graph server, graph algorithms, graph language, among other sub-projects. 
-And last but not least, SPARQL is used to query <a href="http://en.wikipedia.org/wiki/Resource_Description_Framework">RDF documents</a>.</p>
+<h2 id="the-test-project-with-googletest">The test project with GoogleTest</h2>
 
-<p>Let’s use the example of the Matrix movie provided by neo4j to take a look at the 
-three languages.</p>
+<p>For this simple guide we will use the samples that come with <a href="https://github.com/kinow/gtest-tap-listener" title="GTest TAP Listener">GTest TAP Listener</a>. You can get the code from GitHub with <code class="language-plaintext highlighter-rouge">git clone git://github.com/kinow/gtest-tap-listener.git</code>. Take a look at <code class="language-plaintext highlighter-rouge">gtest-tap-listener/samples/src/</code>, there you will find two C++ files: <code class="language-plaintext highlighter-rouge">gtest_main.cc</code> and <code class="language-plaintext highlighter-rouge">gtest_testHelloWorld.cc</code>.</p>
 
-<h2 id="cypher">Cypher</h2>
+<p><code class="language-plaintext highlighter-rouge">gtest_main.cc</code> has the <a href="http://code.google.com/p/googletest/wiki/Primer#Writing_the_main()_Function" title="GTest main function">main function</a>, and executes the test suite. And <code class="language-plaintext highlighter-rouge">gtest_testHelloWorld.cc</code> has the test cases and tests. Take note of the test case and tests names.</p>
 
-<p>First we create the graph.</p>
+<p><img class="ui fluid image" src="/assets/posts/2012-10-11-jenkins-testlink-and-gtest-in-5-minutes-or-so/screenshot_001.png" /></p>
 
-<pre><code class="language-SQL">create (matrix1:Movie {id : '603', title : 'The Matrix', year : '1999-03-31'}),
- (matrix2:Movie {id : '604', title : 'The Matrix Reloaded', year : '2003-05-07'}),
- (matrix3:Movie {id : '605', title : 'The Matrix Revolutions', year : '2003-10-27'}),
-
- (neo:Actor {name:'Keanu Reeves'}),
- (morpheus:Actor {name:'Laurence Fishburne'}),
- (trinity:Actor {name:'Carrie-Anne Moss'}),
-
- (matrix1)&lt;-[:ACTS_IN {role : 'Neo'}]-(neo),
- (matrix2)&lt;-[:ACTS_IN {role : 'Neo'}]-(neo),
- (matrix3)&lt;-[:ACTS_IN {role : 'Neo'}]-(neo),
- (matrix1)&lt;-[:ACTS_IN {role : 'Morpheus'}]-(morpheus),
- (matrix2)&lt;-[:ACTS_IN {role : 'Morpheus'}]-(morpheus),
- (matrix3)&lt;-[:ACTS_IN {role : 'Morpheus'}]-(morpheus),
- (matrix1)&lt;-[:ACTS_IN {role : 'Trinity'}]-(trinity),
- (matrix2)&lt;-[:ACTS_IN {role : 'Trinity'}]-(trinity),
- (matrix3)&lt;-[:ACTS_IN {role : 'Trinity'}]-(trinity)
-</code></pre>
-
-<p><code>Added 6 labels, created 6 nodes, set 21 properties, created 9 relationships, returned 0 rows in 2791 ms</code></p>
-
-<p>And execute a simple query.</p>
-
-<pre><code class="language-SQL">MATCH (a:Actor { name:"Keanu Reeves" })
-RETURN a
-</code></pre>
-
-<p><code>(9:Actor {name:"Keanu Reeves"})</code></p>
-
-<h2 id="gremlin">Gremlin</h2>
-
-<p>Again, let’s start by creating our graph.</p>
-
-<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">g</span> <span class="o">=</span> <span class="k">new</span> <span class="n">TinkerGraph</span><span class="p">();</span>
-<span class="n">matrix1</span> <span class="o">=</span> <span class="k">g</span><span class="p">.</span><span class="n">addVertex</span><span class="p">([</span><span class="nv">"_id"</span><span class="p">:</span><span class="mi">603</span><span class="p">,</span><span class="nv">"title"</span><span class="p">:</span><span class="nv">"The Matrix"</span><span class="p">,</span> <span class="nv">"year"</span><span class="p">:</span> <span class="nv">"1999-03-31"</span><span class="p">]);</span>
-<span class="n">matrix2</span> <span class="o">=</span> <span class="k">g</span><span class="p">.</span><span class="n">addVertex</span><span class="p">([</span><span class="nv">"_id"</span><span class="p">:</span><span class="mi">604</span><span class="p">,</span><span class="nv">"title"</span><span class="p">:</span><span class="nv">"The Matrix Reloaded"</span><span class="p">,</span> <span class="nv">"year"</span><span class="p">:</span> <span class="nv">"2003-05-07"</span><span class="p">]);</span>
-<span class="n">matrix3</span> <span class="o">=</span> <span class="k">g</span><span class="p">.</span><span class="n">addVertex</span><span class="p">([</span><span class="nv">"_id"</span><span class="p">:</span><span class="mi">605</span><span class="p">,</span><span class="nv">"title"</span><span class="p">:</span><span class="nv">"The Matrix Revolutions"</span><span class="p">,</span> <span class="nv">"year"</span><span class="p">:</span> <span class="nv">"2003-10-27"</span><span class="p">]);</span>
-
-<span class="n">neo</span> <span class="o">=</span> <span class="k">g</span><span class="p">.</span><span class="n">addVertex</span><span class="p">([</span><span class="nv">"name"</span><span class="p">:</span> <span class="nv">"Keanu Reeves"</span><span class="p">]);</span>
-<span class="n">morpheus</span> <span class="o">=</span> <span class="k">g</span><span class="p">.</span><span class="n">addVertex</span><span class="p">([</span><span class="nv">"name"</span><span class="p">:</span> <span class="nv">"Laurence Fishburne"</span><span class="p">]);</span>
-<span class="n">trinity</span> <span class="o">=</span> <span class="k">g</span><span class="p">.</span><span class="n">addVertex</span><span class="p">([</span><span class="nv">"name"</span><span class="p">:</span> <span class="nv">"Carrie-Anne Moss"</span><span class="p">]);</span>
-
-<span class="n">neo</span><span class="p">.</span><span class="n">addEdge</span><span class="p">(</span><span class="nv">"actsIn"</span><span class="p">,</span> <span class="n">matrix1</span><span class="p">);</span> 
-<span class="n">neo</span><span class="p">.</span><span class="n">addEdge</span><span class="p">(</span><span class="nv">"actsIn"</span><span class="p">,</span> <span class="n">matrix2</span><span class="p">);</span> 
-<span class="n">neo</span><span class="p">.</span><span class="n">addEdge</span><span class="p">(</span><span class="nv">"actsIn"</span><span class="p">,</span> <span class="n">matrix3</span><span class="p">);</span> 
-<span class="n">morpheus</span><span class="p">.</span><span class="n">addEdge</span><span class="p">(</span><span class="nv">"actsIn"</span><span class="p">,</span> <span class="n">matrix1</span><span class="p">);</span> 
-<span class="n">morpheus</span><span class="p">.</span><span class="n">addEdge</span><span class="p">(</span><span class="nv">"actsIn"</span><span class="p">,</span> <span class="n">matrix2</span><span class="p">);</span> 
-<span class="n">morpheus</span><span class="p">.</span><span class="n">addEdge</span><span class="p">(</span><span class="nv">"actsIn"</span><span class="p">,</span> <span class="n">matrix3</span><span class="p">);</span> 
-<span class="n">trinity</span><span class="p">.</span><span class="n">addEdge</span><span class="p">(</span><span class="nv">"actsIn"</span><span class="p">,</span> <span class="n">matrix1</span><span class="p">);</span> 
-<span class="n">trinity</span><span class="p">.</span><span class="n">addEdge</span><span class="p">(</span><span class="nv">"actsIn"</span><span class="p">,</span> <span class="n">matrix2</span><span class="p">);</span> 
-<span class="n">trinity</span><span class="p">.</span><span class="n">addEdge</span><span class="p">(</span><span class="nv">"actsIn"</span><span class="p">,</span> <span class="n">matrix3</span><span class="p">);</span> 
-</code></pre></div></div>
-
-<p>And execute a simple query.</p>
-
-<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">g</span><span class="p">.</span><span class="n">V</span><span class="p">.</span><span class="n">has</span><span class="p">(</span><span class="s1">'name'</span><span class="p">,</span> <span class="s1">'Keanu Reeves'</span><span class="p">).</span><span class="k">map</span>
-</code></pre></div></div>
-
-<p><code>gremlin&gt; g.V.has('name', 'Keanu Reeves').map
-==&gt;{name=Keanu Reeves}
-gremlin&gt;</code></p>
-
-<p>Quite similar to neo4j.</p>
-
-<h2 id="sparql">SPARQL</h2>
-
-<p>Let’s load our example (thanks to <a href="https://twitter.com/kendall">Kendall G. Clark</a>). I used 
-<a href="http://jena.apache.org/documentation/serving_data/">Fuseki</a> to run these queries.</p>
-
-<div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code>@prefix :          <span class="nt">&lt;http:</span><span class="err">//example.org/matrix</span><span class="nt">/&gt;</span> .
-
- :m1 a :Movie; :title "The Matrix"; :year "1999-03-31".
- :m2 a :Movie; :title "The Matrix Reloaded"; :year "2003-05-07".
- :m3 a :Movie; :title "The Matrix Revolutions"; :year "2003-10-27".
- 
- :neo a :Actor; :name "Keanu Reeves".
- :morpheus a :Actor; :name "Laurence Fishburne".
- :trinity a :Actor; :name "Carrie-Anne Moss".
- 
- :neo :hasRole [:as "Neo"; :in :m1].
- :neo :hasRole [:as "Neo"; :in :m2].
- :neo :hasRole [:as "Neo"; :in :m2].
- :morpheus :hasRole [:as "Morpheus"; :in :m1].
- :morpheus :hasRole [:as "Morpheus"; :in :m2].
- :morpheus :hasRole [:as "Morpheus"; :in :m2].
- :trinity :hasRole [:as "Trinity"; :in :m1].
- :trinity :hasRole [:as "Trinity"; :in :m2].
- :trinity :hasRole [:as "Trinity"; :in :m2].
-</code></pre></div></div>
-
-<p>And finally the SPARQL query.</p>
-
-<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">SELECT</span> <span class="o">?</span><span class="n">a</span> <span class="k">WHERE</span> <span class="err">{</span>
-   <span class="o">?</span><span class="n">a</span> <span class="n">a</span> <span class="o">&lt;</span><span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">example</span><span class="p">.</span><span class="n">org</span><span class="o">/</span><span class="n">matrix</span><span class="o">/</span><span class="n">Actor</span><span class="o">&gt;</span> <span class="p">.</span>
-   <span class="o">?</span><span class="n">a</span> <span class="o">&lt;</span><span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">example</span><span class="p">.</span><span class="n">org</span><span class="o">/</span><span class="n">matrix</span><span class="o">/</span><span class="n">name</span><span class="o">&gt;</span> <span class="o">?</span><span class="n">name</span> <span class="p">.</span>
-   <span class="n">FILTER</span><span class="p">(</span><span class="o">?</span><span class="n">name</span>  <span class="o">=</span> <span class="nv">"Keanu Reeves"</span><span class="p">)</span>
-<span class="err">}</span>
-</code></pre></div></div>
-
-<p>Returning the Keanu Reeves actor instance.</p>
-
-<pre>-----------------------------------
-| a                               |
-===================================
-| &lt;http://example.org/matrix/neo&gt; |
------------------------------------</pre>
-
-<p>SPARQL supports inference (or I must say that OWL, RDFS and the reasoners do), 
-but it is easier to define the depth of a search in the graph using neo4j. As for 
-Gremlin, it has native support to Groovy and Java. There is a common denominator 
-for these three languages, but what makes them really powerful are their unique features.</p>
-
-<p>I hope you enjoyed, and that this post gave you a quick overview of some of the existing 
-graph languages. Make sure you ponder the pros and cons of each server/language, and 
-make the best decision for your project. Take a look at <a href="http://en.wikipedia.org/wiki/Graph_database#APIs_and_Graph_Query.2FProgramming_Languages">other graph query languages</a> too.</p>
-
-<p>Happy hacking!</p>
-
-<hr />
-
-<p>This post has been updated as suggested by <a href="https://twitter.com/kendall">@kendall</a> (Thank you!).
-You can check the diff at <a href="https://github.com/kinow/kinoshita.eti.br/commits/master/site/_content/posts/2014-09-09_cypher-gremlin-and-sparql-graph-dialects.html">GitHub</a></p>
-</div>
+<a class="post-link" href="/2012/10/11/jenkins-testlink-and-gtest-in-5-minutes-or-so.html">Continue reading</a></div>
 <div class="post">
   <h3 class="post-header">
-    <a class="post-link" href="/2014/08/08/strings-transliteration-in-java-with-apache-commons-lang.html">
-      Strings transliteration in Java with Apache Commons Lang
+    <a class="post-link" href="/2012/09/25/bioinformatic-tools-series-stacks.html">
+      Bioinformatics tools: Stacks
     </a>
-  </h3><span class="post-meta">Aug 8, 2014<span>&mdash; star date: -308315.07</span></span><p><a href="http://rosalind.info">Rosalind</a> is a website with a curated set of exercices for bioinformatics, organized hierarchily. 
-In some of these examples you are required to replace characters (nucleotides) by other characters. It is a rather common 
-task for developers, like when you need to replace special characters in user’s names.</p>
+  </h3><span class="post-meta">Sep 25, 201269<span>&mdash; star date: -310188.52</span></span><p>It is the first post about <strong>bioinformatics tools</strong>, but I will try to post more about other tools such
+as MrBayes, Structure, maybe some next generation sequencing tools too, and Bioperl, Biojava, and so on.</p>
 
-<p>There are different ways of describing it, such as translate, replace, or <strong><a href="http://en.wikipedia.org/wiki/Transliteration">transliterate</a></strong>. The latter being my favorite definition.</p>
+<p>As I am more a computer geek, rather than a bioinformatics one, I will focus on requirements for running these tools
+on clusters and the requirements to install them on your machine. The instructions require that you have an
+intermediary knowledge on *nix OS and sometimes a bit of programming experience.&lt;/em&gt;</p>
 
-<p>In Python I know that there are several different ways of transliterating strings 
-[<a href="https://pypi.python.org/pypi/transliterate">1</a>][<a href="http://blog.lebowtech.com/blog/programming/python/transliterate-with-python.html">2</a>]. But in Java I always ended up using a Map or a Enum and writing my own method in some <em>Util</em> class for that.</p>
+<p><em>I will be using tutorials available on the Internet and hosting my code in <a href="http://www.github.com/kinow" alt="GitHub kinow" title="GitHub kinow">GitHub/kinow</a>. Hammer time!</em></p>
 
-<p>Turns out that <a href="http://commons.apache.org">Apache Commons Lang</a>, which I use in most of my projects, 
-provided this feature. What means that I will be able to reduce the length of my code, what also means 
-less code to be tested (and one less place to look for bugs).</p>
-
-<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">String</span> <span class="n">s</span> <span class="o">=</span> <span class="nc">StringUtils</span><span class="o">.</span><span class="na">replaceChars</span><span class="o">(</span><span class="s">"ATGCATGC"</span><span class="o">,</span> <span class="s">"GTCA"</span><span class="o">,</span> <span class="s">"CAGT"</span><span class="o">);</span> <span class="c1">// "TACGTACG"</span>
-<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">s</span><span class="o">);</span>
-</code></pre></div></div>
-
-<p>What the code above does, is replace G by C, T by A, C by G and A by T. This process is part of finding the 
-<a href="http://www.bioinformatics.org/sms/rev_comp.html">DNA reverse complement</a>. But you can also use this for replacing 
-special characters, spaces by _, and so it goes.</p>
-
-<p>Happy hacking!</p>
-</div>
+<a class="post-link" href="/2012/09/25/bioinformatic-tools-series-stacks.html">Continue reading</a></div>
 <div class="post">
   <h3 class="post-header">
-    <a class="post-link" href="/2014/05/18/treemapping-jenkins-extension-points-with-r.html">
-      Treemapping Jenkins Extension Points with R
+    <a class="post-link" href="/2012/09/20/running-word-count-example-on-a-hadoop-commodity-hardware-cluster-and-on-a-hadoop-local-installation.html">
+      Running word-count example on a Hadoop commodity-hardware cluster and on a Hadoop local installation
     </a>
-  </h3><span class="post-meta">May 18, 2014<span>&mdash; star date: -308539.73</span></span><p>I have been playing with R and its packages for some time, and decided to study it a 
-bit harder. Last week I started reading the <a href="http://adv-r.had.co.nz/">Advanced R Programming</a> 
-by Hadley Wickham.</p>
+  </h3><span class="post-meta">Sep 20, 201270<span>&mdash; star date: -310202.19</span></span><p>Last weekend I spent some hours assembling old computer parts to create my commodity hardware cluster for running Hadoop. I already had a local installation in my notebook, so I thought it would be cool to run the word-count example in both scenarios to see what would be the results.</p>
 
-<p>One of the first chapters talks about the basic data structures in R. In order to 
-get my feet wet I thought about a simple example: <a href="http://en.wikipedia.org/wiki/Treemapping">treemapping</a> 
-Jenkins extension points.</p>
+<p>But first, let's review the hardware configurations:</p>
 
-<p><img class="ui image" src="/assets/posts/2014-05-18-treemapping-jenkins-extension-points-with-r/extension_points.png" /></p>
-
-<a class="post-link" href="/2014/05/18/treemapping-jenkins-extension-points-with-r.html">Continue reading</a></div>
+<a class="post-link" href="/2012/09/20/running-word-count-example-on-a-hadoop-commodity-hardware-cluster-and-on-a-hadoop-local-installation.html">Continue reading</a></div>
 <div class="post">
   <h3 class="post-header">
-    <a class="post-link" href="/2014/02/11/writing-a-custom-schemaspy-command-for-laravel-4.html">
-      Writing a custom SchemaSpy command for Laravel 4
+    <a class="post-link" href="/2012/09/13/integrating-nutch-2-x-mysql-and-solr.html">
+      Integrating Nutch 2.x, MySQL and Solr
     </a>
-  </h3><span class="post-meta">Feb 11, 2014<span>&mdash; star date: -308810.96</span></span><p>This week I had to write my first custom command for <a href="http://laravel.com/">Laravel 4</a>. 
-In <a href="http://nestor-qa.org/">Nestor-QA</a>, <a href="https://github.com/tooh">Peter</a> and I thought it would be useful to have 
-the database schema being automatically generated with 
-<a href="http://schemaspy.sourceforge.net/">SchemaSpy</a> in our <a href="http://builds.tupilabs.com/view/Nestor-QA/">Jenkins box</a>.</p>
+  </h3><span class="post-meta">Sep 13, 201271<span>&mdash; star date: -310221.31</span></span><p>Right now we are working on a new project using <a href="http://nutch.apache.org" title="Apache Nutch">Apache Nutch</a> 2.x, <a href="http://hadoop.apache.org" title="Apache Hadoop">Apache Hadoop</a>, <a href="http://solr.apache.org" title="Apache Solr">Apache Solr</a> 4 and a lot of other cool tools/modules/API’s/etc. After following the instructions found on <a href="http://nlp.solutions.asia/?p=180" title="http://nlp.solutions.asia/?p=180">http://nlp.solutions.asia/?p=180</a>, I’ve successfully connected Apache Nutch, MySQL and Apache Solr.</p>
 
-<p>Thanks to <a href="http://laravel.com/docs/artisan">Artisan</a> this task is much simpler than I thought. 
-The following command creates the <code>schemaspy</code> command.</p>
+<p><img class="ui fluid image" src="/assets/posts/2012-09-13-integrating-nutch-2-x-mysql-and-solr/mysql_hadoop_solr_nutch.png" /></p>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>php artisan command:make SchemaSpyCommand --command=schemaspy
-</code></pre></div></div>
-
-<p>This will create the file <code>app/commands/SchemaSpyCommand.php</code>. And all I had to do was 
-just fill in the options and write the exec command as the <a href="http://laravel.com/docs/commands">Laravel 4 docs</a> explain.</p>
-
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$this-&gt;info('Creating SchemaSpy');
-
-$jar = $this-&gt;option("jar");
-$dbtype = $this-&gt;option("dbtype");
-$output = $this-&gt;option("output");
-
-$commandLine = sprintf("java -jar %s -u none -t %s -o %s", $jar, $dbtype, $output);
-
-$this-&gt;info(sprintf("Command line: [%s]", $commandLine));
-
-exec($commandLine);
-</code></pre></div></div>
-
-<p>That’s how my final command looks. Now the final step is integrate it into the application by adding the line below to 
-<code>app/start/artisan.php</code>.</p>
-
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Artisan::add(new SchemaSpyCommand);
-</code></pre></div></div>
-
-<p>And that’s it, running <code>php artisan schemaspy --jar=/opt/schemaspy/schemaSpy_5.0.0.jar 
---dbtype=app/database/sqlite.properties --output=database-schema</code> 
-creates the database schema docs in the <code>database-schema</code> directory.</p>
-
-<p>Check this <a href="https://gist.github.com/kinow/8936667">gist</a> for the final code.</p>
-
-<p>Happy coding!</p>
-</div>
+<a class="post-link" href="/2012/09/13/integrating-nutch-2-x-mysql-and-solr.html">Continue reading</a></div>
 <div class="post">
   <h3 class="post-header">
-    <a class="post-link" href="/2013/10/26/missing-menus-in-new-installation-of-testlink.html">
-      Missing menus in new installation of TestLink 1.9.8
+    <a class="post-link" href="/2012/09/09/invoking-testopia-xml-rpc-or-json-methods-using-java.html">
+      Invoking Testopia XML-RPC or JSON methods using Java
     </a>
-  </h3><span class="post-meta">Oct 26, 2013<span>&mdash; star date: -309098.63</span></span><p>I recently installed TestLink 1.9.8 and noticed that the menus and some other parts 
-of the UI we missing. Looking at <code>/var/log/testlink/userlog1.log</code> (the location 
-may change depending on your settings) I realized that there was something wrong 
-with my PHP installation. There were log messages like the below.</p>
+  </h3><span class="post-meta">Sep 9, 201272<span>&mdash; star date: -310232.24</span></span><p>Most <a href="http://www.teamst.org" title="TestLink">TestLink</a> [1] users are aware that there is an external API, maybe for the external API token being displayed in the user profile section. Today after a meeting with <a href="http://twitter.com/peterflorijn" title="Peter Florijn">Peter Florijn</a> [2], I realized that the same may not be true for <a href="http://www.mozilla.org/projects/testopia/" title="Testopia">Testopia</a>  [3] users.</p>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>include_once(ADORecordSet_ext_empty.class.php): failed to open stream: No such file or directory - in /home/kinow/php/workspace/testlink-1.9.8/lib/functions/common.php - Line 92
-[13/Sep/18 12:51:09][WARNING][2o0h173pdgg5fjqh1pukr83og2][GUI]
-E_WARNING
-include_once(): Failed opening 'ADORecordSet_ext_empty.class.php' for inclusion (include_path='.:/usr/share/php:/usr/share/pear:.:/home/kinow/php/workspace/testlink-1.9.8/lib/functions/:/home/kinow/php/workspace/testlink-1.9.8/lib/issuet
-...
-</code></pre></div></div>
+<p>I am quite new to Testopia, and there are many features that I haven’t used yet. But if I understand it correctly, the database is interfaced by several Perl scripts that are, by its turns, exposed as Web Service (most of them). The web services are available via a JSON and a XML-RPC API (what is very useful, TestLink supports supports only XML-RPC).</p>
 
-<p>I found a post in a forum (but unfortunately I forgot to save the link) that suggested 
-these ADORecordSet were being caused by the module <strong>php5-adodb</strong>. Removing the module, and 
-cleaning the templates cache directory (<code>$TESTLINK_HOME/gui/templates_c/*</code>) 
-fixed the issue for me.</p>
+<p>The communication between different programming languages and the external API’s is accomplished by a client API. In TestLink you have <a href="http://testlinkjavaapi.sourceforge.net/" title="TestLink Java API">testlink-java-api</a> [4] and <a href="http://code.google.com/p/testlink-api-java-client/" title="TestLink API Java Client">testlink-api-java-client</a> [5].</p>
 
-<p>Hope that helps.
-Happy testing!</p>
-</div>
+<p>Testopia has a Java client too, available in <a href="http://bzr.mozilla.org/bugzilla/extensions/testopia/2.2-bugzilla-3.2/files/head:/testopia/contrib/drivers/java/" title="Testopia source repository">Testopia source repository</a> [6] and can be used to integrate your existing Java code with Testopia.</p>
+
+<a class="post-link" href="/2012/09/09/invoking-testopia-xml-rpc-or-json-methods-using-java.html">Continue reading</a></div>
 <!-- Pagination links -->
   <div class="pagination">
     <p>
@@ -438,7 +240,7 @@ Happy testing!</p>
         <i class="left chevron icon"></i>Previous
       </a>
       
-      <span class="page_number ">Page: 20 of 31</span>
+      <span class="page_number ">Page: 20 of 27</span>
       
       <a href="/blog/page/21/" class="next">
         Next<i class="right chevron icon"></i>

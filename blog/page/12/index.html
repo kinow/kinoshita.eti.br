@@ -4,7 +4,7 @@
   <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.6.1 -->
-<title>Page 12 of 31 for Blog - page 12 | Bruno P. Kinoshita</title>
+<title>Page 12 of 27 for Blog - page 12 | Bruno P. Kinoshita</title>
 <meta name="generator" content="Jekyll v3.8.5" />
 <meta property="og:title" content="Blog - page 12" />
 <meta property="og:locale" content="en_US" />
@@ -169,269 +169,231 @@
 
 <div class="blog"><div class="post">
   <h3 class="post-header">
-    <a class="post-link" href="/2017/03/15/using-google-natural-language-api-in-aws-elastic-beanstalk-application.html">
-      Using Google Natural Language API in an AWS Elastic Beanstalk application
+    <a class="post-link" href="/2017/01/03/contributing-to-krita.html">
+      Contributing to Krita
     </a>
-  </h3><span class="post-meta">Mar 15, 2017<span>&mdash; star date: -305715.07</span></span><p>Besides providing an API for users and developers, Google also provides a series of
-(very well-written) client implementation, in several programming languages. That’s the
-case for Google Storage, Google Vision, and for Google Natural Language API’s.</p>
+  </h3><span class="post-meta">Jan 3, 2017<span>&mdash; star date: -305909.59</span></span><p>As I mentioned in the <a href="/2017/01/02/debugging-an-application-that-freezes-the-x-server.html">last post</a>,
+I have been learning Qt and using C and C++ again.
+Since I used C and C++ more during university (about 10 years ago, phew), decided
+to read real code.</p>
 
-<p>I recently had to use the latter in a POC at work, and ran into an interesting issue with
-our AWS Elastic Beanstalk environment.</p>
+<p>I used Photoshop, Illustrator, and Fireworks a lot when I was younger and had more
+time to spend drawing. But some time ago I switched to Inkscape for vector graphics,
+which I use at work for presentations. So it was only natural to try Krita now.</p>
 
-<p>Google Language API requires that clients authenticate before sending requests. If you use their <a href="https://github.com/GoogleCloudPlatform/google-cloud-java">google-cloud-java</a>, you can define the GOOGLE_APPLICATION_CREDENTIALS. This environment variable must point to a JSON file with the Google Language API credentials.</p>
+<p>Since I was going to try Krita, I thought why not check out and build from source, and then
+in case I found any bugs, contribute back? Or maybe from time to time triage issues,
+find low hanging ones, and send a patch?</p>
 
-<p>The issue is that while Google Language API (or more precisely
-<a href="https://github.com/google/google-auth-library-java/blob/ae9735c576fd8593636e155ccb26e454576bc2cd/oauth2_http/java/com/google/auth/oauth2/DefaultCredentialsProvider.java#L124">google-auth-library-java</a>)
-looks for an environment variable, in Elastic Beanstalk you are able to
-specify only system properties (unless you want to try something with ebextensions,
-maybe some JNI…).</p>
+<p>Well, turns out the Krita project has a great community, and it is super easy to send
+contributions. So far I submitted three patches, some were included in 3.x releases.</p>
 
-<p>A workaround for this issue in Google Natural Language API, is to create and pass a
-<a href="http://googlecloudplatform.github.io/google-cloud-java/0.8.0/apidocs/com/google/cloud/language/spi/v1/LanguageServiceSettings.html">LanguageServiceSettings</a>
-to your <a href="http://googlecloudplatform.github.io/google-cloud-java/0.8.0/apidocs/com/google/cloud/language/spi/v1/LanguageServiceClient.html">LanguageServiceClient</a>.
-This settings object, when created, must be given a
-<a href="http://googleapis.github.io/gax-java/0.2.0/apidocs/com/google/api/gax/grpc/ChannelProvider.html">channel provider</a>
-with a <a href="http://googleapis.github.io/gax-java/0.2.0/apidocs/com/google/api/gax/core/FixedCredentialsProvider.html">FixedCredentialsProvider</a>.</p>
+<ul>
+  <li><a href="https://bugs.kde.org/show_bug.cgi?id=366741">https://bugs.kde.org/show_bug.cgi?id=366741</a></li>
+  <li><a href="https://bugs.kde.org/show_bug.cgi?id=364208">https://bugs.kde.org/show_bug.cgi?id=364208</a></li>
+  <li><a href="https://bugs.kde.org/show_bug.cgi?id=374451">https://bugs.kde.org/show_bug.cgi?id=374451</a></li>
+</ul>
 
-<p>Of course reading code is way easier than reading this workaround description.</p>
+<p>While the patches are rather small, they are suggestions on how to fix memory
+segmentation faults, or strange behaviours in the interface. For these issues,
+I had to learn more about Qt components, signals and emitting events, and,
+of course, work with pointers, arrays, Qt data structures, etc. In other words,
+lots of (geek) fun!</p>
 
-<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// File: GoogleNaturalLanguageService.java</span>
-<span class="c1">// ...</span>
-    <span class="c1">// envvar or property used to specify the Google Application Credentials</span>
-    <span class="kd">private</span> <span class="kd">final</span> <span class="kd">static</span> <span class="nc">String</span> <span class="no">GOOGLE_APPLICATION_CREDENTIALS</span> <span class="o">=</span> <span class="s">"GOOGLE_APPLICATION_CREDENTIALS"</span><span class="o">;</span>
+<p>In other words, by contributing to Krita, I am not only helping the project
+and giving a little back to the community, but also refreshing my memory on
+C and C++, and slowly learning Qt - which is not very hard if you worked with
+Swing/AWT, Delphi, Visual Basic, Gtk, etc.</p>
 
-    <span class="cm">/**
-     * Google Natural Language API.
-     */</span>
-    <span class="kd">private</span> <span class="nc">LanguageServiceClient</span> <span class="n">languageServiceClient</span><span class="o">;</span>
+<p>What are you waiting to contribute to Krita? The developers that maintain the
+project answer tickets and questions posted to <a href="https://reddit.com/r/krita">reddit</a>
+in a good time, and are extremely easy to work with.</p>
 
-    <span class="nd">@PostConstruct</span>
-    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">init</span><span class="o">()</span> <span class="kd">throws</span> <span class="nc">Exception</span> <span class="o">{</span>
-        <span class="c1">// Elastic Beanstalk supports Properties, not Environment Variables.</span>
-        <span class="c1">// Google credentials library will load</span>
-        <span class="c1">// the JSON location for the service to authenticate from an envVar. So</span>
-        <span class="c1">// we need to fix that here.</span>
-        <span class="nc">String</span> <span class="n">googleApplicationCredentials</span> <span class="o">=</span> <span class="nc">System</span><span class="o">.</span><span class="na">getenv</span><span class="o">(</span><span class="no">GOOGLE_APPLICATION_CREDENTIALS</span><span class="o">);</span>
-        <span class="no">LOGGER</span><span class="o">.</span><span class="na">info</span><span class="o">(</span><span class="nc">String</span><span class="o">.</span><span class="na">format</span><span class="o">(</span><span class="s">"GOOGLE_APPLICATION_CREDENTIALS in environment variable: %s"</span><span class="o">,</span> <span class="n">googleApplicationCredentials</span><span class="o">));</span>
-        <span class="k">if</span> <span class="o">(</span><span class="nc">StringUtils</span><span class="o">.</span><span class="na">isBlank</span><span class="o">(</span><span class="n">googleApplicationCredentials</span><span class="o">))</span> <span class="o">{</span>
-            <span class="n">googleApplicationCredentials</span> <span class="o">=</span> <span class="nc">System</span><span class="o">.</span><span class="na">getProperty</span><span class="o">(</span><span class="no">GOOGLE_APPLICATION_CREDENTIALS</span><span class="o">);</span>
-            <span class="no">LOGGER</span><span class="o">.</span><span class="na">info</span><span class="o">(</span><span class="nc">String</span><span class="o">.</span><span class="na">format</span><span class="o">(</span><span class="s">"GOOGLE_APPLICATION_CREDENTIALS in JVM property: %s"</span><span class="o">,</span> <span class="n">googleApplicationCredentials</span><span class="o">));</span>
-        <span class="o">}</span>
+<p>Read more <a href="http://www.davidrevoy.com/article193/guide-building-krita-on-linux-for-cats">here</a> how to build from source, and
+<a href="https://krita.org/en/get-involved/developers/">here</a> on how to submit patches.</p>
 
-        <span class="k">if</span> <span class="o">(</span><span class="n">googleApplicationCredentials</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
-            <span class="k">throw</span> <span class="k">new</span> <span class="nf">RuntimeException</span><span class="o">(</span><span class="s">"Could not locate GOOGLE_APPLICATION_CREDENTIALS variable!"</span><span class="o">);</span>
-        <span class="o">}</span>
-
-        <span class="kd">final</span> <span class="nc">LanguageServiceSettings</span> <span class="n">languageServiceSettings</span><span class="o">;</span>
-        <span class="k">try</span> <span class="o">(</span><span class="nc">InputStream</span> <span class="n">is</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">FileInputStream</span><span class="o">(</span><span class="k">new</span> <span class="nc">File</span><span class="o">(</span><span class="n">googleApplicationCredentials</span><span class="o">)))</span> <span class="o">{</span>
-            <span class="kd">final</span> <span class="nc">GoogleCredentials</span> <span class="n">myCredentials</span> <span class="o">=</span> <span class="nc">GoogleCredentials</span>
-                    <span class="o">.</span><span class="na">fromStream</span><span class="o">(</span><span class="n">is</span><span class="o">)</span>
-                    <span class="o">.</span><span class="na">createScoped</span><span class="o">(</span>
-                            <span class="nc">Collections</span><span class="o">.</span><span class="na">singleton</span><span class="o">(</span><span class="s">"https://www.googleapis.com/auth/cloud-platform"</span><span class="o">)</span>
-                    <span class="o">);</span>
-            <span class="kd">final</span> <span class="nc">CredentialsProvider</span> <span class="n">credentialsProvider</span> <span class="o">=</span> <span class="nc">FixedCredentialsProvider</span><span class="o">.</span><span class="na">create</span><span class="o">(</span><span class="n">myCredentials</span><span class="o">);</span>
-
-            <span class="kd">final</span> <span class="nc">InstantiatingChannelProvider</span> <span class="n">channelProvider</span> <span class="o">=</span> <span class="nc">LanguageServiceSettings</span>
-                    <span class="o">.</span><span class="na">defaultChannelProviderBuilder</span><span class="o">()</span>
-                    <span class="o">.</span><span class="na">setCredentialsProvider</span><span class="o">(</span><span class="n">credentialsProvider</span><span class="o">)</span>
-                    <span class="o">.</span><span class="na">build</span><span class="o">();</span>
-            <span class="n">languageServiceSettings</span> <span class="o">=</span> <span class="nc">LanguageServiceSettings</span>
-                    <span class="o">.</span><span class="na">defaultBuilder</span><span class="o">()</span>
-                    <span class="o">.</span><span class="na">setChannelProvider</span><span class="o">(</span><span class="n">channelProvider</span><span class="o">)</span>
-                    <span class="o">.</span><span class="na">build</span><span class="o">();</span>
-        <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="nc">IOException</span> <span class="n">ioe</span><span class="o">)</span> <span class="o">{</span>
-            <span class="no">LOGGER</span><span class="o">.</span><span class="na">error</span><span class="o">(</span><span class="nc">String</span><span class="o">.</span><span class="na">format</span><span class="o">(</span><span class="s">"IO error creating Google NLP settings: %s"</span><span class="o">,</span> <span class="n">ioe</span><span class="o">.</span><span class="na">getMessage</span><span class="o">()),</span> <span class="n">ioe</span><span class="o">);</span>
-            <span class="k">throw</span> <span class="n">ioe</span><span class="o">;</span>
-        <span class="o">}</span>
-
-        <span class="c1">// Create Google API client</span>
-        <span class="k">this</span><span class="o">.</span><span class="na">languageServiceClient</span> <span class="o">=</span> <span class="nc">LanguageServiceClient</span><span class="o">.</span><span class="na">create</span><span class="o">(</span><span class="n">languageServiceSettings</span><span class="o">);</span>
-    <span class="o">}</span>
-
-    <span class="nd">@PreDestroy</span>
-    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">destroy</span><span class="o">()</span> <span class="kd">throws</span> <span class="nc">Exception</span> <span class="o">{</span>
-        <span class="k">if</span> <span class="o">(</span><span class="no">LOGGER</span><span class="o">.</span><span class="na">isDebugEnabled</span><span class="o">())</span> <span class="o">{</span>
-            <span class="no">LOGGER</span><span class="o">.</span><span class="na">debug</span><span class="o">(</span><span class="s">"Destroying Google NLP API client"</span><span class="o">);</span>
-        <span class="o">}</span>
-        <span class="c1">// Close Google API executors and channels</span>
-        <span class="k">this</span><span class="o">.</span><span class="na">languageServiceClient</span><span class="o">.</span><span class="na">close</span><span class="o">();</span>
-    <span class="o">}</span>
-<span class="c1">// ...</span>
-</code></pre></div></div>
-
-<p>That way you should be able to use the API with AWS Elastic Beanstalk
-without having to hack your environment to provide the GOOGLE_APPLICATION_CREDENTIALS
-environment variable.</p>
-
-<p>An alternative would be google-auth-library-java to look for an environment variable
-<em>and</em> a system property. Or maybe Amazon AWS add a way to provide environment variables.</p>
-
-<p>Note also that I included the @PostConstruct and @PreDestroy annotated methods. The
-API will start an executor thread pool, so if you do not want to risk to have problems
-re-deploying your application, then remember to close your streams.</p>
-
-<p>♥ Open Source</p>
+<p>Happy hacking!</p>
 </div>
 <div class="post">
   <h3 class="post-header">
-    <a class="post-link" href="/2017/03/14/order-of-containers-in-docker-compose.html">
-      Order of containers in Docker Compose
+    <a class="post-link" href="/2017/01/02/debugging-an-application-that-freezes-the-x-server.html">
+      Debugging an application that freezes the X server
     </a>
-  </h3><span class="post-meta">Mar 14, 2017<span>&mdash; star date: -305717.81</span></span><p>In Docker Compose you are able to control the startup order of the containers via
-the <em>depends_on</em> statement. This is documented in <a href="https://docs.docker.com/compose/startup-order/">Controlling startup order in Compose</a>.</p>
+  </h3><span class="post-meta">Jan 2, 2017<span>&mdash; star date: -305912.33</span></span><p>Some time ago, I decided to start writing C++ again, and picked Krita for that.
+Krita is written in C++ and Qt. The <a href="https://bugs.kde.org/show_bug.cgi?id=366741">bug I was working on</a>
+involved a memory issue when changing the UI.</p>
 
-<p>If you have a simple setup, with Tomcat and Postgres, sometimes Postgres will start first, but Compose
-will initialize Tomcat before Postgres has fully booted. When that happens, you may receive 401, 404, or other
-application errors.</p>
+<p>The problem was that this UI change would result in, not only Krita, but the whole
+X server freezing. My set up was basically Ubuntu 16.04.1 LTS, with Eclipse, Qt5,
+and the latest version of Krita checked out via git.</p>
 
-<p>You can fix it by combining <em>depends_on</em> with a <em>healthcheck</em>. For example:</p>
+<p>Initially I spent some time looking at the logs, tracing the binary, even downloaded
+some Qt utility tools to look at the events and what was happening with the application
+when it froze.</p>
 
-<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># File: docker-compose.yml</span>
-version: <span class="s1">'2.1'</span>
-services:
-  db:
-    container_name: twpg
-    build:
-      context: <span class="nb">.</span>
-      dockerfile: Dockerfile.postgres
-    restart: always
-    ports:
-      - <span class="s2">"5432:5432"</span>
-    healthcheck:
-      <span class="nb">test</span>: <span class="s2">"pg_isready -h localhost -p 5432 -q -U postgres"</span>
-      interval: 10s
-      <span class="nb">timeout</span>: 5s
-      retries: 5
+<p>However, eventually I realized I was going to spend more time on this part of the
+issue, rather than on the memory bug. So decided to look for a work-around.</p>
 
-  web:
-    container_name: twtc
-    build:
-      context: <span class="nb">.</span>
-      dockerfile: Dockerfile.tomcat
-    restart: always
-    depends_on:
-      db:
-        condition: service_healthy
-    links:
-      - db
-    ports:
-      - <span class="s2">"80:8080"</span>
+<p>Thankfully someone else blogged about a similar issue and saved me a lot of time :-)
+Here’s how I did it, following the instructions in
+<a href="http://www.geany.org/manual/gtk/gtk-faq/x462.html">this blog post</a>.</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">sudo </span>apt-get <span class="nb">install </span>xnest <span class="nt">-y</span>
+<span class="nv">$ </span><span class="nb">cd </span>krita_install/
+<span class="nv">$ </span>Xnest :10
+<span class="nv">$ </span>twm <span class="nt">-display</span> :10
+<span class="nv">$ </span><span class="nb">export </span><span class="nv">DISPLAY</span><span class="o">=</span>:10
+<span class="nv">$ </span>./krita
 </code></pre></div></div>
 
-<p>In the example docker-compose.yml, there are two containers, <em>db</em> and <em>web</em>. web is running
-a Tomcat, and db is running Postgres. Web depends on db (see depends_on), and uses a condition
-<em>service_healthy</em>. Which indicates it depends that that container is healthy.</p>
+<p>That’s it. You should have Krita running in a separate window, with Xnest, and within
+this window the twm window manager running. So when it freezes, at least you can still
+debug your application in Eclipse or whatever IDE you prefer.</p>
 
-<p>The <em>healthcheck</em> entry under the db container settings define how to check whether Postgres
-is running or not. In this case, we are using <em>pg_isready</em>, which is available in the
-vanilla Postgres 9 container.</p>
-
-<p>It will try 5 times, with a 10 seconds interval, and will time out after 5 seconds. You may
-have to tune these parameters for your application.</p>
-
-<p>This code snippet is from a
-<a href="https://github.com/Foxoncz/docker-thingworx/pull/3/files">pull request submitted to Foxoncz/docker-thingworx</a>.</p>
-
-<p>♥ Open Source</p>
+<p>Happy hacking!</p>
 </div>
 <div class="post">
   <h3 class="post-header">
-    <a class="post-link" href="/2017/02/27/using-aws-mfa-without-a-mobile-phone.html">
-      Using AWS MFA without a mobile phone
+    <a class="post-link" href="/2016/12/19/permgen-errors-and-java-lang-classcastexception-com-sun-crypto-provider-aescipher-cannot-be-cast-to-javax-crypto-cipherspi-running-jenkins-plug-in-tests-with-powermock.html">
+      PermGen errors and java.lang.ClassCastException: com.sun.crypto.provider.AESCipher cannot be cast to javax.crypto.CipherSpi running Jenkins plug-in tests with PowerMock
     </a>
-  </h3><span class="post-meta">Feb 27, 2017<span>&mdash; star date: -305767.12</span></span><p>If you use AWS, the chances are that you use MFA - Multi-factor Authentication - to authenticate.
-I don’t like to install apps in my mobile phone, unless I need to, so having bought a new phone
-recently, I decided to find a replacement for Google Authenticator.</p>
+  </h3><span class="post-meta">Dec 19, 201646<span>&mdash; star date: -306950.82</span></span><p>Recently while working on a Jenkins plugin some tests were failing with PermGen errors.
+Even though it worked in my notebook at home (with Java 8, thus no Permgen), it failed
+in a CloudBees hosted Jenkins job, and also on my Mac (with Java 7) at work.</p>
 
-<p>There are several command line utilities, browser extensions, libraries, and tools (free and paid)
-that implement the TOTP - time-based one-time password -, the standard
-<a href="http://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_mfa_enable_virtual.html">required by Amazon</a>
-for MFA authentication.</p>
+<p>As I could not change the settings in the CloudBees hosted Jenkins, I decided to spent some
+time investigating why these tests would require so much memory. Then I found
+<a href="https://angus.nyc/2015/fixing-common-powermock-problems/">this blog post about PowerMock</a>.</p>
 
-<p>I decided to use a Go tool for the first time: <a href="https://github.com/pcarrier/gauth">gauth</a>. Note that you
-won’t be able to use it from home, in case you don’t bring your laptop home. You can have one MFA device
-linked to your AWS account, so you may have to remove an existing one. Follow these instructions with care :^)</p>
+<p>I was not using the <em>@PrepareForTest</em> annotation, but after adding it the issue was gone. So I
+assume it either prevents PowerMock from trying to dynamically load several classes, or instructs
+it to unload classes after the tests. But in anyway after adding it the issue was gone.</p>
 
-<h3 id="install-go">Install Go</h3>
+<p>Then I got the following exception.</p>
 
-<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>apt update <span class="o">&amp;&amp;</span> <span class="nb">sudo </span>apt upgrade <span class="nt">-y</span>
-<span class="nb">cd </span>tmp/ <span class="o">&amp;&amp;</span> wget https://storage.googleapis.com/golang/go1.8.linux-amd64.tar.gz
-<span class="nb">tar</span> <span class="nt">-zxvf</span> go1.<span class="k">*</span>.tar.gz
-<span class="nb">sudo mv </span>go /usr/local
-vim ~/.bashrc
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>WARNING: Failed to instantiate Key[type<span class="o">=</span>hudson.security.csrf.DefaultCrumbIssuer<span class="nv">$DescriptorImpl</span>, <span class="nv">annotation</span><span class="o">=[</span>none]]<span class="p">;</span> skipping this component
+com.google.inject.ProvisionException: Guice provision errors:
+
+1<span class="o">)</span> Error injecting constructor, java.lang.ClassCastException: com.sun.crypto.provider.AESCipher cannot be cast to javax.crypto.CipherSpi
+  at hudson.security.csrf.DefaultCrumbIssuer<span class="nv">$DescriptorImpl</span>.&lt;init&gt;<span class="o">(</span>DefaultCrumbIssuer.java:127<span class="o">)</span>
+
+1 error
+    at com.google.inject.internal.ProviderToInternalFactoryAdapter.get<span class="o">(</span>ProviderToInternalFactoryAdapter.java:52<span class="o">)</span>
 </code></pre></div></div>
 
-<p>Add the following at the bottom of the file.</p>
+<p>And then thanks to <a href="https://github.com/powermock/powermock/issues/294">this issue</a> I understood
+that PowerMock was mocking <em>javax.crypto</em> classes. Turns out it is quite easy to tell
+PowerMock to ignore certain classes from being mocked, with the <em>@PowerMockIgnore</em> annotation.</p>
 
-<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">GOROOT</span><span class="o">=</span>/usr/local/go
-<span class="nv">GOPATH</span><span class="o">=</span><span class="s2">"</span><span class="nv">$HOME</span><span class="s2">/go"</span>
-<span class="nv">PATH</span><span class="o">=</span><span class="s2">"</span><span class="nv">$GOPATH</span><span class="s2">/bin:</span><span class="nv">$GOROOT</span><span class="s2">/bin:</span><span class="nv">$PATH</span><span class="s2">"</span>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// snip</span>
+<span class="nd">@RunWith</span><span class="o">(</span><span class="nc">PowerMockRunner</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+<span class="nd">@PowerMockIgnore</span><span class="o">({</span><span class="s">"javax.crypto.*"</span> <span class="o">})</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">TestAbstractUnoChoiceParameter</span> <span class="o">{</span>
+<span class="c1">//</span>
+<span class="o">}</span>
+<span class="c1">// snip</span>
 </code></pre></div></div>
 
-<p>And you can test it with <code class="language-plaintext highlighter-rouge">. ~/.bashrc &amp;&amp; go version</code>.</p>
+<p>Added a couple of notes to this <a href="https://wiki.jenkins-ci.org/display/JENKINS/Mocking+in+Unit+Tests">Jenkins Wiki page</a>
+so that users facing similar issues can try these possible workarounds.</p>
 
-<h3 id="install-gauth">Install gauth</h3>
+<p>Hope that helps someone!</p>
+</div>
+<div class="post">
+  <h3 class="post-header">
+    <a class="post-link" href="/2016/11/25/using-requests-session-objects-for-web-scraping.html">
+      Using Requests Session Objects for web scraping
+    </a>
+  </h3><span class="post-meta">Nov 25, 201647<span>&mdash; star date: -306021.86</span></span><p>I had to write a Python script some months ago, that would retrieve Solar energy
+data from a web site. It was basically a handful of HTTP calls, parse the response
+that was mainly in JSON, and store the results as JSON and CSV for processing later.</p>
 
-<p>Given your environment is correctly set up, you should be able to use the following command to install
-gauth, and have it available in your <em>$PATH</em>.</p>
+<p>Since it was such a small task, I used the <a href="http://docs.python-requests.org">Requests</a>
+module instead of a complete web scraper. The HTTP requests had to be made with a
+time out, and also pass certain headers. I started customizing each call, until
+I learned about the Requests <a href="http://docs.python-requests.org/en/master/user/advanced/">Session Objects</a>.</p>
 
-<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>go get github.com/pcarrier/gauth
+<p>You create a session, as in ORM/JPA, where you can define a context, with certain properties
+and control an orthogonal behavior.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">requests</span>
+
+<span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="n">session</span><span class="p">,</span> <span class="n">url</span><span class="p">):</span>
+    <span class="s">"""Utility method to HTTP GET a URL"""</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">response</span>
+
+<span class="k">def</span> <span class="nf">post</span><span class="p">(</span><span class="n">session</span><span class="p">,</span> <span class="n">url</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+    <span class="s">"""Utility method to HTTP POST a URL with data parameters"""</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">!=</span> <span class="n">requests</span><span class="o">.</span><span class="n">codes</span><span class="o">.</span><span class="n">ok</span><span class="p">:</span>
+        <span class="n">response</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">response</span>
+
+<span class="k">with</span> <span class="n">requests</span><span class="o">.</span><span class="n">Session</span><span class="p">()</span> <span class="k">as</span> <span class="n">s</span><span class="p">:</span>
+    <span class="c1"># x-test header will be sent with every request
+</span>    <span class="n">s</span><span class="o">.</span><span class="n">headers</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s">'x-test'</span><span class="p">:</span> <span class="s">'true'</span><span class="p">})</span>
+
+    <span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s">'user'</span><span class="p">:</span> <span class="n">user</span><span class="p">,</span> <span class="s">'password'</span><span class="p">:</span> <span class="n">password</span><span class="p">,</span> <span class="s">'rememberne'</span><span class="p">:</span> <span class="s">'false'</span><span class="p">}</span>
+    <span class="n">r</span> <span class="o">=</span> <span class="n">post</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="s">'https://portal.login.url'</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+
+    <span class="n">r</span> <span class="o">=</span> <span class="n">get</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="s">'https://portal.home.url'</span><span class="p">)</span>
 </code></pre></div></div>
 
-<p>Edit <em>~/.config/gauth.csv</em> adding a value for the AWS MFA key.</p>
+<p>Besides the session object, that gives you ability to add headers to all requests,
+you won’t have to worry about redirects. The library by default takes care
+<a href="https://github.com/kennethreitz/requests/blob/dfad00a6e84bc75b12468ca29ccf4f971c813fc8/requests/sessions.py#L110">of that</a>
+with a <a href="https://github.com/kennethreitz/requests/blob/dfad00a6e84bc75b12468ca29ccf4f971c813fc8/requests/models.py#L54">default limit of up to 30</a>.</p>
 
-<h3 id="getting-the-aws-mfa-key">Getting the AWS MFA key</h3>
+<p>Happy hacking!</p>
+</div>
+<div class="post">
+  <h3 class="post-header">
+    <a class="post-link" href="/2016/11/21/changing-spring-boot-environment-variables-in-the-command-line.html">
+      Changing Spring Boot environment variables in the command line
+    </a>
+  </h3><span class="post-meta">Nov 21, 201648<span>&mdash; star date: -306032.79</span></span><p>This week while helping developers and testers to experiment with a backend application,
+some of them found useful to learn a simple trick to change Spring Boot properties
+when you can run the application locally (our testers build, compile, change the code, how cool
+is that?).</p>
 
-<p>To get the value that you must place in your <em>gauth.csv</em> file, you must add a new MFA device. When asked to scan a QR code, look for an option to enter the manual value. That will give you a long string. That’s the value you are looking for.</p>
+<p>Here’s how it works. Say you have the following settings in your application’s
+<strong>application.properties</strong>:</p>
 
-<h3 id="extra-auto-copy-paste-from-command-line">Extra: Auto copy-paste from command line</h3>
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>my.application.database.username<span class="o">=</span>sa
+my.application.database.password<span class="o">=</span>notasimplepassword
+</code></pre></div></div>
 
-<p>If you would like to quickly copy and paste, try creating an alias as described
-<a href="https://gist.github.com/ehime/9fd8810442daf64686a34f885e18be01">on this gist</a>.</p>
+<p>And that you want to change these parameters in order to, for instance, create an application
+error, so that you can code and test what happens to the frontend application in that situation.</p>
 
-<p>I used these instructions, and can now run one command line, that will put the next MFA code in my
-clipboard. Then just paste into my browser, and that’s that!</p>
+<p>You replace <em>dots</em> by <em>underscores</em>, and put all your words in upper case. So the variables
+above would be: MY_APPLICATION_DATABASE_USERNAME and MY_APPLICATION_DATABASE_PASSWORD.</p>
+
+<p>Furthermore, you do not need to edit your application.properties file, if you are on Linux or
+Mac OS. You can start the application and override environment variables at the same time
+with the following syntax.</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ MY_APPLICATION_DATABASE_USERNAME</span><span class="o">=</span>olivei <span class="nv">MY_APPLICATION_DATABASE_PASSWORD</span><span class="o">=</span>7655432222a mvn clean spring-boot:run
+</code></pre></div></div>
+
+<p>This way your application will start with the new values.</p>
 
 <p>Happy hacking!</p>
 
-<h3 id="references">References</h3>
+<p><strong>–EDIT–</strong></p>
 
-<ul>
-  <li><a href="https://github.com/pcarrier/gauth">gauth: replace Google Authenticator</a></li>
-  <li><a href="http://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_mfa_enable_virtual.html">Enabling a Virtual Multi-factor Authentication (MFA) Device</a></li>
-  <li><a href="http://tecadmin.net/install-go-on-ubuntu/">How to Install Go 1.7 on Ubuntu 16.04 &amp; 14.04</a></li>
-  <li><a href="http://garywoodfine.com/use-pbcopy-on-ubuntu/">Use pbcopy on Ubuntu</a></li>
-</ul>
-</div>
-<div class="post">
-  <h3 class="post-header">
-    <a class="post-link" href="/2017/01/15/proposed-logos-for-opennlp.html">
-      Proposed logos for OpenNLP
-    </a>
-  </h3><span class="post-meta">Jan 15, 2017<span>&mdash; star date: -305876.71</span></span><p>A couple of logos submitted to <a href="https://issues.apache.org/jira/browse/OPENNLP-6">OPENNLP-6</a>. Made with Inkscape, fonts from Google Fonts.</p>
+<p>As pointed by Stéphane Nicoll (thanks!), you could change the property values
+without having to use the upper case syntax.</p>
 
-<div class="row">
-<div class="ui fluid container">
-<figure>
-<a href="/assets/posts/2017-01-15-proposed-logos-for-opennlp/#excerpt/OpenNLP-logos.svg.png" rel="prettyPhoto" class="thumbnail" title="Proposed logos for OpenNLP">
-<img style="height: 400px;" class="ui image" src="/assets/posts/2017-01-15-proposed-logos-for-opennlp/OpenNLP-logos.svg.png" alt="Proposed logos for OpenNLP" />
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mvn <span class="nt">-Dmy</span>.application.database.username<span class="o">=</span>anotheruser clean spring-boot:run
+</code></pre></div></div>
 
+<p>And he even included a link to <a href="http://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#boot-features-external-config">docs</a>! ♥ the Internet and Open Source!</p>
 
-For more, check out [my DeviantArt page](http://kinow.deviantart.com/art/Proposed-logos-for-Apache-OpenNLP-657512914).
-</a></figure></div></div>
-</div>
-<div class="post">
-  <h3 class="post-header">
-    <a class="post-link" href="/2017/01/12/drawing-cave.html">
-      Drawing Cave
-    </a>
-  </h3><span class="post-meta">Jan 12, 2017<span>&mdash; star date: -305884.93</span></span><div class="row">
-<div class="ui fluid container">
-<figure>
-<a href="/assets/posts/2017-01-13-drawing-cave/#excerpt/cave_by_kinow-daugn02.png" rel="prettyPhoto" class="thumbnail" title="Cave">
-<img style="height: 400px;" class="ui image" src="/assets/posts/2017-01-12-drawing-cave/cave_by_kinow-daugn02.png" alt="Cave" />
-</a></figure></div></div>
+<blockquote class="twitter-tweet" data-lang="en"><p lang="en" dir="ltr"><a href="https://twitter.com/kinow">@kinow</a> you can also specify them as command-line arguments (no need for the upper case thing)<a href="https://t.co/zBKpgcXN1C">https://t.co/zBKpgcXN1C</a><br /><br />or `-Drun.arguments`</p>&mdash; Stéphane Nicoll (@snicoll) <a href="https://twitter.com/snicoll/status/800965565120708608">November 22, 2016</a></blockquote>
+<script async="" src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+
 </div>
 <!-- Pagination links -->
   <div class="pagination">
@@ -441,7 +403,7 @@ For more, check out [my DeviantArt page](http://kinow.deviantart.com/art/Propose
         <i class="left chevron icon"></i>Previous
       </a>
       
-      <span class="page_number ">Page: 12 of 31</span>
+      <span class="page_number ">Page: 12 of 27</span>
       
       <a href="/blog/page/13/" class="next">
         Next<i class="right chevron icon"></i>

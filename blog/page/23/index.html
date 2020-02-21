@@ -4,7 +4,7 @@
   <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.6.1 -->
-<title>Page 23 of 31 for Blog - page 23 | Bruno P. Kinoshita</title>
+<title>Page 23 of 27 for Blog - page 23 | Bruno P. Kinoshita</title>
 <meta name="generator" content="Jekyll v3.8.5" />
 <meta property="og:title" content="Blog - page 23" />
 <meta property="og:locale" content="en_US" />
@@ -169,85 +169,123 @@
 
 <div class="blog"><div class="post">
   <h3 class="post-header">
-    <a class="post-link" href="/2012/10/16/adding-coverage-reports-in-jenkins-with-googletest-and-gcovr.html">
-      Adding coverage reports in Jenkins with GoogleTest and gcovr
+    <a class="post-link" href="/2011/08/25/tdc-2011-floripa-presentation-about-running-your-tests-in-jenkins.html">
+      TDC 2011 Floripa presentation about running your tests in Jenkins
     </a>
-  </h3><span class="post-meta">Oct 16, 201275<span>&mdash; star date: -310128.42</span></span><p>After the <a href="/2012/10/11/jenkins-testlink-and-gtest-in-5-minutes-or-so.html">last post</a> about
-<a href="http://code.google.com/p/googletest/">GoogleTest</a> and <a href="http://www.teamst.org">TestLink</a> using
-<a href="https://wiki.jenkins-ci.org/display/JENKINS/TestLink+Plugin">Jenkins TestLink Plug-in</a>, I received an e-mail
-asking about <a href="http://en.wikipedia.org/wiki/Code_coverage">coverage</a> with GoogleTest and
-<a href="http://www.jenkins-ci.org">Jenkins</a>. I’ve just updated the
-<a href="https://github.com/kinow/gtest-tap-listener/blob/master/samples/Makefile">Makefile</a> in the samples
-directory, of the <a href="https://github.com/kinow/gtest-tap-listener">GoogleTest TAP listener project</a>,
-to output coverage data.</p>
+  </h3><span class="post-meta">Aug 25, 2011<span>&mdash; star date: -311268.49</span></span><p>Last weekend I attended TDC (<a title="The Developers Conference" href="http://www.thedevelopersconference.com.br">The Developers Conference</a>) 2011 in Florianópolis, in the south of Brazil. It was my first time in Florianópolis, but the weather was cloudy and cold, so I couldn’t check out one of the prettiest cities in Brazil :-( Bummer.</p>
 
-<p>Basically, you have to add the compiler flags <code class="language-plaintext highlighter-rouge">-fprofile-arcs -ftest-coverage</code> and link the executable with
-<code class="language-plaintext highlighter-rouge">-lgcov</code>. Take a look at the project’s Makefile and you’ll notice how simple it is. In order to have Jenkins
-interpreting your coverage report, you’ll have to convert it to <a href="http://cobertura.sourceforge.net">cobertura</a>
-XML. There is a Python utility that can be used for this: <a href="https://software.sandia.gov/trac/fast/wiki/gcovr">gcovr</a>.
-Download it and copy it to somewhere where Jenkins can execute it (e.g.: <code class="language-plaintext highlighter-rouge">/usr/local/bin</code>).</p>
+<p><img class="ui left floated image" src="/assets/posts/2011-08-25-tdc-2011-floripa-presentation-about-running-your-tests-in-jenkins/banner_TDC2011_floripapng" /></p>
 
-<p>Now, if you’ve followed the instructions from the previous post, you should have a job that reports your GoogleTest
-tests from Jenkins to TestLink using the plug-in, and is downloading the source code from GitHub. Add an extra build
-step (Shell) to execute <code class="language-plaintext highlighter-rouge">gcovr</code>.</p>
+<p>Putting the weather aside, TDC was great! Basically, there were many nice, easy-going people gathering together to talk about subjects like Java, SOA, Arduino, Testing, Agile and more. I had the chance to talk with skilled and experienced people, see different talks and catch up Guilherme Motta (<a title="@gfcmotta" href="http://www.twitter.com/gfcmotta">@gfcmotta</a>) from <a title="ThoughtWorks" href="http://www.thoughtworks.com">ThoughtWorks</a>, who I have met in Porto Alegre in the beginning of this year. He gave an interesting talk about crowd testing using games as example, but varying with applications in different areas too.</p>
 
-<a class="post-link" href="/2012/10/16/adding-coverage-reports-in-jenkins-with-googletest-and-gcovr.html">Continue reading</a></div>
+<a class="post-link" href="/2011/08/25/tdc-2011-floripa-presentation-about-running-your-tests-in-jenkins.html">Continue reading</a></div>
 <div class="post">
   <h3 class="post-header">
-    <a class="post-link" href="/2012/10/11/jenkins-testlink-and-gtest-in-5-minutes-or-so.html">
-      Jenkins, TestLink and GTest in 5 minutes (or so)
+    <a class="post-link" href="/2011/08/20/tdc-2011-botando-o-jenkins-para-rodar-seus-testes.html">
+      The Developers Conference (TDC) 2011 Botando o Jenkins para rodar seus testes
     </a>
-  </h3><span class="post-meta">Oct 11, 201276<span>&mdash; star date: -310142.08</span></span><p>This is a 5 minutes guide on creating a job for a C++ project in <a href="http://www.jenkins-ci.org" title="Jenkins CI">Jenkins</a> with <a href="http://code.google.com/p/googletest" title="GoogleTest">GoogleTest</a> and reporting the test results back to <a href="http://www.teamst.org" title="TestLink">TestLink</a>, with <a href="https://wiki.jenkins-ci.org/display/JENKINS/TestLink+Plugin" title="Jenkins TestLink Plug-in">testlink-plugin</a>.</p>
+  </h3><span class="post-meta">Aug 20, 2011<span>&mdash; star date: -311282.19</span></span><p><strong>Botando o Jenkins para rodar seus testes</strong></p>
 
-<h2 id="the-test-project-with-googletest">The test project with GoogleTest</h2>
+<div class="row">
+<div class="ui embed">
+<iframe src="https://kinow.github.io/tdc-2011/" frameborder="0" allowfullscreen=""></iframe>
+</div>
+</div>
 
-<p>For this simple guide we will use the samples that come with <a href="https://github.com/kinow/gtest-tap-listener" title="GTest TAP Listener">GTest TAP Listener</a>. You can get the code from GitHub with <code class="language-plaintext highlighter-rouge">git clone git://github.com/kinow/gtest-tap-listener.git</code>. Take a look at <code class="language-plaintext highlighter-rouge">gtest-tap-listener/samples/src/</code>, there you will find two C++ files: <code class="language-plaintext highlighter-rouge">gtest_main.cc</code> and <code class="language-plaintext highlighter-rouge">gtest_testHelloWorld.cc</code>.</p>
-
-<p><code class="language-plaintext highlighter-rouge">gtest_main.cc</code> has the <a href="http://code.google.com/p/googletest/wiki/Primer#Writing_the_main()_Function" title="GTest main function">main function</a>, and executes the test suite. And <code class="language-plaintext highlighter-rouge">gtest_testHelloWorld.cc</code> has the test cases and tests. Take note of the test case and tests names.</p>
-
-<p><img class="ui fluid image" src="/assets/posts/2012-10-11-jenkins-testlink-and-gtest-in-5-minutes-or-so/screenshot_001.png" /></p>
-
-<a class="post-link" href="/2012/10/11/jenkins-testlink-and-gtest-in-5-minutes-or-so.html">Continue reading</a></div>
-<div class="post">
-  <h3 class="post-header">
-    <a class="post-link" href="/2012/09/25/paper-patterns-for-introducing-a-superclass-for-test-classes.html">
-      Paper: Patterns for Introducing a Superclass for Test Classes
-    </a>
-  </h3><span class="post-meta">Sep 25, 201277<span>&mdash; star date: -310188.52</span></span><p>Few days ago we had <a href="http://www.dimap.ufrn.br/sugarloafplop2012/">SugarLoafPlop 2012</a> in <a href="http://maps.google.com.br/maps?q=natal+-+rn&amp;hl=en&amp;sll=-23.682803,-46.595546&amp;sspn=0.653971,1.352692&amp;hnear=Natal+-+Rio+Grande+do+Norte&amp;t=m&amp;z=11">Natal - RN</a></p>
-
-<p>It is a conference on <a href="http://en.wikipedia.org/wiki/Pattern_language" title="Pattern Language">pattern languages</a> of programming. About six months ago I saw a tweet by <a href="https://twitter.com/emguerra" title="Eduardo Guerra">Eduardo Guerra</a> asking if anyone had some cases where certain patterns were applied. It was a big coincidence, since I was working on <a href="http://commons.apache.org/sandbox/functor/" title="Apache Commons Functor">Apache Commons Functor</a> and some <a href="http://www.jenkins-ci.org" title="Jenkins-CI">Jenkins plugins</a>, both projects with cases that could be used in his paper.</p>
-
-<p><img class="ui image" src="/assets/posts/2012-09-25-paper-patterns-for-introducing-a-superclass-for-test-classes/sugarloaf2012_300_146.jpg" /></p>
-
-<p>So I joined Guerra and gave my small contribution to the paper that <a href="http://www.dimap.ufrn.br/sugarloafplop2012/pages/acceptedpapers.html" title="accepted papers">has been accepted</a> for this edition of SugarLoafPlop. Guerra also went there to give a talk and participate in an open discussion about several papers, including ours.</p>
-
-<p>I simply love when these things happen, it was great work with Guerra, and even better for being able to use Open Source examples in our paper.</p>
+<dl>
+<dt>Event</dt>
+<dd><a href="http://www.thedevelopersconference.com.br/tdc/2011/florianopolis/trilha-testes#programacao">The Developers Conference 2011</a></dd>
+<dt>Where ?</dt>
+<dd><a href="https://www.google.co.nz/maps/place/Florian%C3%B3polis+-+State+of+Santa+Catarina,+Brazil/@-27.6158935,-48.7628663,10z/data=!3m1!4b1!4m5!3m4!1s0x952749bfe17eb89f:0xd3d6e34c9fba2a18!8m2!3d-27.5948698!4d-48.5482195?q=florianopolis&amp;um=1&amp;ie=UTF-8&amp;sa=X&amp;ved=0ahUKEwiG_oD-t5rWAhUBSJQKHXvQDnAQ_AUICygC">Florian&oacute;polis</a></dd>
+<dt>When ?</dt>
+<dd>2011-08-20</dd>
+</dl>
 </div>
 <div class="post">
   <h3 class="post-header">
-    <a class="post-link" href="/2012/09/25/bioinformatic-tools-series-stacks.html">
-      Bioinformatics tools: Stacks
+    <a class="post-link" href="/2011/08/13/bug-hunting-new-job-and-preparing-presentations.html">
+      Bug hunting, new job and preparing presentations
     </a>
-  </h3><span class="post-meta">Sep 25, 201278<span>&mdash; star date: -310188.52</span></span><p>It is the first post about <strong>bioinformatics tools</strong>, but I will try to post more about other tools such
-as MrBayes, Structure, maybe some next generation sequencing tools too, and Bioperl, Biojava, and so on.</p>
+  </h3><span class="post-meta">Aug 13, 2011<span>&mdash; star date: -311301.37</span></span><p>It’s been a while since the last time I posted something here. The reason is that I have been busy fixing bugs in <a title="Jenkins TestLink Plug-in" href="https://wiki.jenkins-ci.org/display/JENKINS/TestLink+Plugin">Jenkins TestLink Plug-in</a>, <a title="TestLink" href="http://www.teamst.org">TestLink</a>, <a title="TestLink Java API" href="http://testlinkjavaapi.sourceforge.net/">TestLink Java API</a>, <a title="tap4j" href="http://www.tap4j.org">tap4j</a>, <a title="Jenkins TAP Plug-in" href="https://wiki.jenkins-ci.org/display/JENKINS/TAP+Plugin">Jenkins TAP Plug-in</a> and other Open Source projects.</p>
 
-<p>As I am more a computer geek, rather than a bioinformatics one, I will focus on requirements for running these tools
-on clusters and the requirements to install them on your machine. The instructions require that you have an
-intermediary knowledge on *nix OS and sometimes a bit of programming experience.&lt;/em&gt;</p>
+<p>Recently I left <a title="Sysmap Solutions" href="http://www.sysmap.com.br">Sysmap Solutions</a>, where I was a consultant, to have my labor card signed by <a title="Lojas Riachuelo" href="http://www.lojasriachuelo.com.br">Lojas Riachuelo</a>, a famous Brazilian fashion retailer (like C&amp;A, Zara, H&amp;M and so on), part of Guararapes group.</p>
 
-<p><em>I will be using tutorials available on the Internet and hosting my code in <a href="http://www.github.com/kinow" alt="GitHub kinow" title="GitHub kinow">GitHub/kinow</a>. Hammer time!</em></p>
+<p><img class="ui left floated image" src="/assets/posts/2011-08-13-bug-hunting-new-job-and-preparing-presentations/riachuelo.jpg" /></p>
 
-<a class="post-link" href="/2012/09/25/bioinformatic-tools-series-stacks.html">Continue reading</a></div>
+<p>So I am still getting used to the new routine, new systems and be a employee rather than a consultant.</p>
+
+<p>There are also two talks to come, one in a few days at <a title="The Developers Conferecen" href="http://www.thedevelopersconference.com.br">TDC</a> (The Developers Conference) 2011 in Florianópolis, and another one in the beginning of September at <a title="JCertif" href="http://www.jcertif.com">JCertif</a> in Congo/Brazzaville. While I already bought the tickets and booked the hotel rooms, I still have to finish some slides and practical examples for both events.</p>
+
+<p>I already have two draft posts that I am still writing. One about continuous integration and parallelism/concurrency, and another one about spell check in DocBook projects, specially if you are using Maven.</p>
+
+<p>Today I had a new idea for a bioinformatics tool that is may be helpful for researchers and bioinformatics professionals. I will write about it as soon as I find some spare time, so stay tuned ;)</p>
+
+<p>Time to get back to work!</p>
+
+<p>Cheers</p>
+</div>
 <div class="post">
   <h3 class="post-header">
-    <a class="post-link" href="/2012/09/20/running-word-count-example-on-a-hadoop-commodity-hardware-cluster-and-on-a-hadoop-local-installation.html">
-      Running word-count example on a Hadoop commodity-hardware cluster and on a Hadoop local installation
+    <a class="post-link" href="/2011/06/15/why-am-i-learning-perl.html">
+      Why am I learning Perl? 
     </a>
-  </h3><span class="post-meta">Sep 20, 201279<span>&mdash; star date: -310202.19</span></span><p>Last weekend I spent some hours assembling old computer parts to create my commodity hardware cluster for running Hadoop. I already had a local installation in my notebook, so I thought it would be cool to run the word-count example in both scenarios to see what would be the results.</p>
+  </h3><span class="post-meta">Jun 15, 2011<span>&mdash; star date: -311465.75</span></span><p>Last month I attended the <a title="II Sao Paulo Perl Workshop" href="http://www.perlworkshop.com.br">II Sao Paulo Perl Workshop</a>, where I had the privilege of learning with the great talks performed by <a title="Bryan D Foy" href="http://www252.pair.com/~comdog/">bryan d foy</a>, <a title="Brad FitzPatrick" href="http://bradfitz.com/">Brad FitzPatrick</a> and <a title="Larry Wall" href="http://www.wall.org/~larry/">Larry Wall</a>. For being a Java programmer, you can imagine how lost I was feeling there.</p>
 
-<p>But first, let's review the hardware configurations:</p>
+<p>The first programming language that I had contact with was Perl. I was a 16 years old <a title="Slackware Linux" href="http://www.slackware.com">Slackware</a> aficionado at that time, and was dying to have a web site with a guestbook . We did not have any cheap hosting services in Brazil that offered a <a title="PHP" href="http://www.php.net">PHP</a> environment, but there were few companies that offered a free host with ads, and with Perl. I don’t remember which script I used, only that I found it in <a title="HotScripts.com" href="http://www.hotscripts.com">HotScripts.com</a> and that it stored the guestbook entries in disk. Now, ten years after, here I am playing with Perl again! :-D</p>
 
-<a class="post-link" href="/2012/09/20/running-word-count-example-on-a-hadoop-commodity-hardware-cluster-and-on-a-hadoop-local-installation.html">Continue reading</a></div>
+<p><img class="ui fluid image" src="/assets/posts/2011-06-15-why-am-i-learning-perl/larry_wall.jpg" /></p>
+
+<p>Well, what was my idea of Perl before the event? I thought it was an old programming language, very powerful, but over complicated. And what do I think of Perl now? I think it is an old programming language, very powerful, but may be complicated.</p>
+
+<a class="post-link" href="/2011/06/15/why-am-i-learning-perl.html">Continue reading</a></div>
+<div class="post">
+  <h3 class="post-header">
+    <a class="post-link" href="/2011/06/04/a-comparison-of-tap-test-anything-protocol-and-subunit.html">
+      A comparison of TAP (Test Anything Protocol) and SubUnit
+    </a>
+  </h3><span class="post-meta">Jun 4, 2011<span>&mdash; star date: -311495.89</span></span><p>
+    I have been playing with <a href="http://www.testanything.org">TAP</a> for some time and even implemented a <a href="http://www.tap4j.org">Java API</a> to let <a href="http://www.testng.org">TestNG</a>, <a href="http://www.junit.org">JUnit</a> and other Test Frameworks to produce and consume TAP. TAP is a standard
+    format for test output that first appeared with Perl 1 in 1987. It is human and machine readable, easy to be
+    serialized, language independent and extensible<sup><a href="#1">1</a></sup> through the use of <a href="http://www.yaml.org">YAML</a>.
+</p>
+
+<p>
+    Some days ago while I was designing a plug-in to show TAP test results in <a href="http://www.jenkins-ci.org">Jenkins</a>
+    I stumbled across a message in <a href="http://jenkins.361315.n4.nabble.com/Jenkins-dev-f387835.html">Jenkins
+        dev-list</a> where Max Magee and Nick Wiesmueller were discussing about a way of showing more details about the test
+    executions. I thought that the TAP Plug-in would fit perfectly, until one of the users, <a href="https://launchpad.net/~lifeless">Robert Collins</a>, mentioned <a href="https://launchpad.net/subunit">SubUnit</a>.
+</p>
+
+<p>
+    Shame on me, but I hadn't heard of SubUnit until that message. Max Magee and I exchanged some messages after that,
+    talking about a initial design and analysis for the TAP Plug-in<sup><a href="#2">2</a></sup>. Here is the initial
+    idea:
+<p>
+<ul>
+    <li>The plug-in will be able to parse one or more test formats (maybe SubUnit, TAP and the formats available in
+        xUnit?).</li>
+    <li>The test results will be displayed the same way JUnit tests are displayed in Jenkins (I think Jenkins
+        supports JUnit format by default, but you can use objects and create test results data, independently of the
+        test framework that you are using).</li>
+    <li>There will be a table containing the Test Name, Description and Status and an expandable section.</li>
+    <li>Inside this expandable section will be available all the details about the test.</li>
+    <li>In case there are images within the test details, they should be displayed as a lightbox gallery.<sup><a href="#3">3</a></sup></li>
+</ul>
+<p>
+    Although I have worked with TAP and spent some good time writing the tap4j port for Java, I am not convinced it is
+    the best solution for this issue yet. Hence I am posting this initial comparison between TAP and SubUnit hoping that
+    more people will contribute with the design of this solution. My goal is not only having a super cool plug-in for
+    Jenkins, but ease integration of test results in different tools and collaborate with both TAP and SubUnit. Another
+    objective that I have in mind is improving the way that test results are displayed in Jenkins and enabling it to be
+    an alternative for tools like <a href="http://sourceforge.net/projects/smolder/">Smolder</a>, <a href="https://launchpad.net/testrepository">TestRepository</a> or <a href="https://launchpad.net/tribunal">Tribunal</a>.
+    Because I believe the tasks done by these tools could be all done in my favorite CI Server, and it would increase
+    the productivity of Build &amp; Release professionals :-))
+</p>
+
+
+
+</p></p>
+<a class="post-link" href="/2011/06/04/a-comparison-of-tap-test-anything-protocol-and-subunit.html">Continue reading</a></div>
 <!-- Pagination links -->
   <div class="pagination">
     <p>
@@ -256,7 +294,7 @@ intermediary knowledge on *nix OS and sometimes a bit of programming experience.
         <i class="left chevron icon"></i>Previous
       </a>
       
-      <span class="page_number ">Page: 23 of 31</span>
+      <span class="page_number ">Page: 23 of 27</span>
       
       <a href="/blog/page/24/" class="next">
         Next<i class="right chevron icon"></i>

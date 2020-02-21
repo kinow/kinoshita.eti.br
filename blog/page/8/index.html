@@ -4,7 +4,7 @@
   <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.6.1 -->
-<title>Page 8 of 31 for Blog - page 8 | Bruno P. Kinoshita</title>
+<title>Page 8 of 27 for Blog - page 8 | Bruno P. Kinoshita</title>
 <meta name="generator" content="Jekyll v3.8.5" />
 <meta property="og:title" content="Blog - page 8" />
 <meta property="og:locale" content="en_US" />
@@ -169,306 +169,6 @@
 
 <div class="blog"><div class="post">
   <h3 class="post-header">
-    <a class="post-link" href="/2017/09/09/enabling-markdown-extension-tables-for-piecrust.html">
-      Enabling Markdown Extension Tables For Piecrust
-    </a>
-  </h3><span class="post-meta">Sep 9, 2017<span>&mdash; star date: -305230.14</span></span><p><a href="https://github.com/ludovicchabant/PieCrust2">PieCrust</a> is a Python static site generator.
-It allows users to write content in Markdown. But if you try adding a table, the content by
-default will be generated as plain text.</p>
-
-<p>You have to enable <a href="https://pythonhosted.org/Markdown/extensions/tables.html">Markdown extension tables</a>.
-PieCrust will <a href="https://github.com/ludovicchabant/PieCrust2/blob/6462e052045552d2ba164f4965370d84ddb54946/piecrust/formatting/markdownformatter.py#L29">load it</a>
-when creating the Markdown instance.</p>
-
-<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># config.yml</span>
-<span class="na">markdown</span><span class="pi">:</span>
-  <span class="na">extensions</span><span class="pi">:</span>
-    <span class="pi">-</span> <span class="s">tables</span>
-</code></pre></div></div>
-
-<p>Et, voilà! Happy blogging!</p>
-
-<p>♥ Open Source</p>
-</div>
-<div class="post">
-  <h3 class="post-header">
-    <a class="post-link" href="/2017/09/01/finding-base64-implementations-in-apache-software-foundation-projects.html">
-      Finding Base64 implementations in Apache Software Foundation projects
-    </a>
-  </h3><span class="post-meta">Sep 1, 2017<span>&mdash; star date: -305252.05</span></span><p style="text-align: center;">
-<a href="https://kinow.deviantart.com/art/Grey-Warbler-702099183?ga_submit_new=10%3A1504263729">
-<img style="display: inline" class="ui image" src="/assets/posts/2017-09-01-finding-base64-implementations-in-apache-software-foundation-projects/GreyWarbler.png" alt="NZ Grey Warbler (riroriro)" title="NZ Grey Warbler (riroriro)" />
-</a>
-<br />
-<small><a href="http://nzbirdsonline.org.nz/species/grey-warbler">New Zealand Grey Warbler (riroriro)</a></small>
-</p>
-
-<p>Some time ago while working in one of the many projects in the Apache Software Foundation (Apache Commons FileUpload if I remember well), I noticed that it had a Base64 implementation. What called my attention was that the project not using the <a href="https://github.com/apache/commons-codec/blob/c18b1923b3c1f897c7935d94fb9e443eabfff897/src/main/java/org/apache/commons/codec/binary/Base64.java">Apache Commons Codec</a> Base64 implementation.</p>
-
-<p>While Apache Commons’ mission is to create components that can be re-used across ASF projects, and also by other projects not necessarily under the ASF, it is understandable that some projects prefer to keep its dependencies to a minimum. It is normally a good software engineering practice to carefully manage your dependencies.</p>
-
-<p>But would Apache Commons FileUpload be the only project in the ASF with its own Base64 implementation?</p>
-
-<h3 id="what-is-base64">What is Base64?</h3>
-
-<p>Simply put, Base64 is a way to encode bytes to strings. It utilises a table, to convert parts of the binary input to certain numbers. These numbers match an entry in the table used by the Base64 implementation. There are several Base64 implementations, though some are obsolete now.</p>
-
-<p>The input text “<em>this is base64!</em>” results in “<em>dGhpcyBpcyBiYXNlNjQh</em>”. It can be decoded and will result in the same input text. An image can also be encoded. Or a ZIP file. This is helpful for data transfer and storage.</p>
-
-<p>Apache Commons Codec is well known to provide a Bse64 implementation, and used in several projects, both Open Source and in the industry. Its implementation is based on the <a href="https://www.ietf.org/rfc/rfc2045.txt">RFC-2045</a>.</p>
-
-<p>Java 8 contains a Base64 implementation, so that may very well replace Apache Commons Coded use in some projects, though that may take some time. The Java 8 implementation supports the RFC-2045, RFC-4648, and <a href="https://docs.oracle.com/javase/8/docs/api/java/util/Base64.html">has also</a> support to the URL and MIME formats.</p>
-
-<h3 id="searching-for-other-base64-implementations">Searching for other Base64 implementations</h3>
-
-<p>Using GitHub search, I looked for other Base64 implementations in the ASF projects. Here’s the result table with only the custom implementations found after going through some 15 pages in more than 100 pages with hits for “base64”.</p>
-
-<table>
-  <thead>
-    <tr>
-      <th>Project &amp; link to implementation</th>
-      <th style="text-align: center">JVM</th>
-      <th style="text-align: right">Base64 implementation</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><a href="https://github.com/apache/activemq-artemis/blob/master/artemis-commons/src/main/java/org/apache/activemq/artemis/utils/Base64.java">Apache ActiveMQ Artemis</a></td>
-      <td style="text-align: center">8</td>
-      <td style="text-align: right">RFC-3548, based on http://iharder.net/base64</td>
-    </tr>
-    <tr>
-      <td><a href="https://github.com/apache/incubator-asterixdb-hyracks/blob/3f849969f01effc9b6e7f22462ceb4b2bedabdc4/hyracks/hyracks-util/src/main/java/org/apache/hyracks/util/bytes/Base64Parser.java">Apache AsterixDB Hyracks (Incubator)</a></td>
-      <td style="text-align: center">8</td>
-      <td style="text-align: right">?</td>
-    </tr>
-    <tr>
-      <td><a href="https://github.com/apache/calcite-avatica/blob/4db1fb9c66db8ccebc9e96ce678154ec69c557f0/core/src/main/java/org/apache/calcite/avatica/util/Base64.java">Apache Calcite Avatica</a></td>
-      <td style="text-align: center">7</td>
-      <td style="text-align: right">RFC-3548, based on http://iharder.net/base64</td>
-    </tr>
-    <tr>
-      <td><a href="https://github.com/apache/cayenne/blob/bd1b109a943307a83078399c7a4d6aa53631a065/cayenne-server/src/main/java/org/apache/cayenne/util/Base64Codec.java">Apache Cayenne</a></td>
-      <td style="text-align: center">8</td>
-      <td style="text-align: right">RFC-2045 (based on codec)</td>
-    </tr>
-    <tr>
-      <td><a href="https://github.com/apache/chemistry-opencmis/blob/trunk/chemistry-opencmis-commons/chemistry-opencmis-commons-impl/src/main/java/org/apache/chemistry/opencmis/commons/impl/Base64.java">Apache Chemistry</a></td>
-      <td style="text-align: center">7</td>
-      <td style="text-align: right">RFC-3548, based on http://iharder.net/base64</td>
-    </tr>
-    <tr>
-      <td><a href="https://github.com/apache/commons-fileupload/blob/422caf46e5b7a950c639b8ba9fe41e16279b3aa9/src/main/java/org/apache/commons/fileupload/util/mime/Base64Decoder.java">Apache Commons FileUpload</a></td>
-      <td style="text-align: center">6</td>
-      <td style="text-align: right">?</td>
-    </tr>
-    <tr>
-      <td><a href="https://github.com/apache/commons-net/blob/trunk/src/main/java/org/apache/commons/net/util/Base64.java">Apache Commons Net</a></td>
-      <td style="text-align: center">6</td>
-      <td style="text-align: right">RFC-2045 (copy of codec?)</td>
-    </tr>
-    <tr>
-      <td><a href="https://github.com/apache/directory-kerby/blob/b7da10e3815a8ab84ab7ff4fa3572c92bfa9aef5/kerby-common/kerby-util/src/main/java/org/apache/kerby/util/Base64.java">Apache Directory Kerby</a></td>
-      <td style="text-align: center">7</td>
-      <td style="text-align: right">RFC-2045 (copy of codec?)</td>
-    </tr>
-    <tr>
-      <td><a href="https://github.com/apache/felix/blob/a4755e768329a29252b1d7d8e52537941768606d/webconsole-plugins/upnp/src/main/java/org/apache/felix/webconsole/plugins/upnp/internal/Base64.java">Apache Felix</a></td>
-      <td style="text-align: center">5 (?)</td>
-      <td style="text-align: right">RFC-2045 (copy of codec?)</td>
-    </tr>
-    <tr>
-      <td><a href="https://github.com/apache/hbase/blob/a66d491892514fd4a188d6ca87d6260d8ae46184/hbase-common/src/main/java/org/apache/hadoop/hbase/util/Base64.java">Apache HBase</a></td>
-      <td style="text-align: center">8</td>
-      <td style="text-align: right">RFC-3548, based on http://iharder.net/base64</td>
-    </tr>
-    <tr>
-      <td><a href="https://github.com/apache/jackrabbit/blob/adb1e79ae26aba5d068be56e5e9eb562344e5bb9/jackrabbit-jcr-commons/src/main/java/org/apache/jackrabbit/util/Base64.java">Apache Jackrabbit</a></td>
-      <td style="text-align: center">8 (?)</td>
-      <td style="text-align: right">?</td>
-    </tr>
-    <tr>
-      <td><a href="https://github.com/apache/james-project/blob/bab5ff434c407b98432cdc9af00b0263184de26a/server/protocols/protocols-smtp/src/test/java/org/apache/james/smtpserver/Base64.java">Apache James</a></td>
-      <td style="text-align: center">6</td>
-      <td style="text-align: right">RFC-2045 via javax.mail.internet.MimeUtility</td>
-    </tr>
-    <tr>
-      <td><a href="https://github.com/apache/james-mime4j/blob/cb48082fb7cbbfb111c926cc8ae953d7261c235c/core/src/main/java/org/apache/james/mime4j/codec/Base64OutputStream.java">Apache James Mime4J</a></td>
-      <td style="text-align: center">5</td>
-      <td style="text-align: right">RFC-2045 (based on codec)</td>
-    </tr>
-    <tr>
-      <td><a href="https://github.com/apache/ofbiz-framework/blob/29b815f1b969653da96995fed25e2cc52f25879d/framework/base/src/main/java/org/apache/ofbiz/base/util/Base64.java">Apache OFBiz</a></td>
-      <td style="text-align: center">8</td>
-      <td style="text-align: right">RFC-2045</td>
-    </tr>
-    <tr>
-      <td><a href="https://github.com/apache/pivot/blob/d9a21718f182d3c667b18b0f2c62f6ec1cd0e6dd/core/src/org/apache/pivot/util/Base64.java">Apache Pivot</a></td>
-      <td style="text-align: center">6</td>
-      <td style="text-align: right">RFC-2045</td>
-    </tr>
-    <tr>
-      <td><a href="https://github.com/apache/qpid-broker-j/blob/1c20cc32b17c58391b0aefcd00f74bc1b4253db9/broker-core/src/main/java/org/apache/qpid/server/util/Strings.java#L132">Apache Qpid</a></td>
-      <td style="text-align: center">8</td>
-      <td style="text-align: right">? uses javax.xml.bind.DatatypeConverter#parseBase64Binary()</td>
-    </tr>
-    <tr>
-      <td><a href="https://github.com/apache/shiro/blob/8acc82ab4775b3af546e3bbde928f299be62dc23/lang/src/main/java/org/apache/shiro/codec/Base64.java">Apache Shiro</a></td>
-      <td style="text-align: center">6</td>
-      <td style="text-align: right">RFC-2045 (based on commons)</td>
-    </tr>
-    <tr>
-      <td><a href="https://github.com/apache/tomcat/blob/trunk/java/org/apache/tomcat/util/codec/binary/Base64.java">Apache Tomcat</a></td>
-      <td style="text-align: center">8</td>
-      <td style="text-align: right">RFC-2045 (copy of codec?)</td>
-    </tr>
-    <tr>
-      <td><a href="https://github.com/apache/tomee/blob/8fc8d8011c5155e7f47ebc162cb88124bf4ca06e/container/openejb-core/src/main/java/org/apache/openejb/util/Base64.java">Apache TomEE</a></td>
-      <td style="text-align: center">7</td>
-      <td style="text-align: right">RFC-2045</td>
-    </tr>
-    <tr>
-      <td><a href="https://github.com/apache/tomee-site-ng/blob/8dbf7c5a4bdc6cd5249e00ff85d78a24fd76c7af/container/openejb-core/src/main/java/org/apache/openejb/util/Base64.java">Apache TomEE (Site-NG)</a></td>
-      <td style="text-align: center">6</td>
-      <td style="text-align: right">RFC-2045</td>
-    </tr>
-    <tr>
-      <td><a href="https://github.com/apache/incubator-trafodion/blob/b36003cf824bae6b0faf8b03c313f189991d5be1/core/rest/src/main/java/org/trafodion/rest/util/Base64.java">Apache Trafodion (Incubator)</a></td>
-      <td style="text-align: center">7</td>
-      <td style="text-align: right">RFC-3548, based on http://iharder.net/base64</td>
-    </tr>
-    <tr>
-      <td><a href="https://github.com/apache/incubator-wave/blob/master/wave/src/main/java/org/waveprotocol/wave/model/util/CharBase64.java">Apache Wave (Incubator)</a></td>
-      <td style="text-align: center">7</td>
-      <td style="text-align: right">RFC-3548 (?), based on http://iharder.net/base64</td>
-    </tr>
-  </tbody>
-</table>
-
-<h3 id="notes-and-conclusions">Notes and conclusions</h3>
-
-<ul>
-  <li><strong>Projects using Java 8 can likely remove its own implementation in favour of the new JVM 8 implementation</strong>.</li>
-  <li>Some projects were already using <a href="https://docs.oracle.com/javase/8/docs/api/java/util/Base64.Decoder.html">Java 8 Base64 implementation</a>.</li>
-  <li>Some projects were using Apache Commons Codec.</li>
-  <li>Some projects were using the Base64 implementation from http://iharder.net/base64, which claims to be very fast. It could be interesting to further investigate it. Perhaps projects where Base64 is used a lot, there could be a significant performance increase by using this version.</li>
-  <li>Even though most of these projects are not using Apache Commons Codec, some have either copied or based their implementations on Apache Commons Codec. Perhaps shading would be more effective? Or maybe adding it as a dependency…</li>
-  <li>I guess the Base64 implementations could be hidden from external users with /*protected*/, private scope. As they are probably not part of Apache Commons Net, or Apache Cayenne public API. Which will be solved eventually after Java 9…</li>
-  <li>Some implementations do not make it clear which RFC or standard they are following. Some derived the reference work (e.g. Apache Wave (Incubator) modified the iharder removing features…).</li>
-  <li>It could be that some of these projects that contain many dependencies like Cayenne and Pivot may even have Commons Codec in the class path as a transitive dependency. If so, it could be interesting to add it as a dependency and remove its own implementation, or simply use Java 8’s.</li>
-  <li>Some implementations like HBase and Trafodion were not using the latest version from http://iharder.net/base64. In the case of HBase and Trafodion, several invalid inputs have been fixed from 2.2.1 to 2.3.7.</li>
-</ul>
-
-<h3 id="future-work">Future work</h3>
-
-<ul>
-  <li>I will try to investigate which of these projects that have a custom Base64 implementation and are using Java 8 can be updated to throw away its own version (時間があるときでしょう!).</li>
-  <li>The implementation from <a href="http://iharder.net/base64">http://iharder.net/base64</a> promises to be very fast, and Apache ActiveMQ Artemis adopted it. We could consider adding a similar <em>fast</em> version to Apache Commons Codec. This could be a reason for keeping its own Base64 implementation.</li>
-  <li>Java 8 Base64 provides Base64, MIME, and URL formats for encode and decoding. Perhaps we could add more formats to Apache Commons Codec too. Even <a href="https://github.com/apache/commons-codec/pull/3">custom formats</a>. This could be a reason for keeping Apache Commons Codec’s implementation.</li>
-</ul>
-
-<p>Happy encoding!</p>
-
-<p>♥ Open Source</p>
-</div>
-<div class="post">
-  <h3 class="post-header">
-    <a class="post-link" href="/2017/08/12/two-other-maven-plugins-impsort-and-deptools.html">
-      Two other Maven Plug-ins: impsort and deptools
-    </a>
-  </h3><span class="post-meta">Aug 12, 2017<span>&mdash; star date: -305304.11</span></span><p>Last <a href="/2017/08/06/checking-for-transitive-dependencies-use-with-maven-enforcer-plugin.html">week I wrote</a>
-about the <a href="https://github.com/ImmobilienScout24/illegal-transitive-dependency-check">ImmobilienScout24/illegal-transitive-dependency-check</a>
-rule for Maven Enforcer Plug-in. There are two other Maven Plug-ins that can be useful.</p>
-
-<h3 id="mbknordeptools">mbknor/deptools</h3>
-
-<p>The <a href="https://github.com/mbknor/deptools">mbknor/deptools</a> is another rule for the Maven Enforcer Plug-in. It will scan your project dependency tree, looking for transitive dependencies. Whenever it finds a transitive dependency, it will keep track of the versions. And if, because of the way your dependencies and transitive dependencies are organised, you end up with a version that is not the newest, the build will fail.</p>
-
-<p>So, for example, if you have <code class="language-plaintext highlighter-rouge">commons-lang3</code> as transitive dependency of two other dependencies, but one is using 3.4 and the other 3.5. If for any reason you are using 3.4 instead of 3.5, you will have a build error.</p>
-
-<p>Here’s an example of the plug-in configuration.</p>
-
-<div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;project&gt;</span>
-  ...
-  <span class="nt">&lt;build&gt;</span>
-    <span class="nt">&lt;plugins&gt;</span>
-      <span class="nt">&lt;plugin&gt;</span>
-        <span class="nt">&lt;groupId&gt;</span>deptools.plugin<span class="nt">&lt;/groupId&gt;</span>
-        <span class="nt">&lt;artifactId&gt;</span>maven-deptools-plugin<span class="nt">&lt;/artifactId&gt;</span>
-        <span class="nt">&lt;version&gt;</span>1.3<span class="nt">&lt;/version&gt;</span>
-          <span class="nt">&lt;executions&gt;</span>
-              <span class="nt">&lt;execution&gt;</span>
-                  <span class="nt">&lt;phase&gt;</span>compile<span class="nt">&lt;/phase&gt;</span>
-                  <span class="nt">&lt;goals&gt;</span>
-                      <span class="nt">&lt;goal&gt;</span>version-checker<span class="nt">&lt;/goal&gt;</span>
-                  <span class="nt">&lt;/goals&gt;</span>
-              <span class="nt">&lt;/execution&gt;</span>
-          <span class="nt">&lt;/executions&gt;</span>
-        <span class="nt">&lt;/plugin&gt;</span>
-    <span class="nt">&lt;/plugins&gt;</span>
-  <span class="nt">&lt;/build&gt;</span>
-
-  <span class="nt">&lt;pluginRepositories&gt;</span>
-    <span class="nt">&lt;pluginRepository&gt;</span>
-      <span class="nt">&lt;id&gt;</span>mbk_mvn_repo<span class="nt">&lt;/id&gt;</span>
-      <span class="nt">&lt;name&gt;</span>mbk_mvn_repo<span class="nt">&lt;/name&gt;</span>
-      <span class="nt">&lt;url&gt;</span>https://raw.githubusercontent.com/mbknor/mbknor.github.com/master/m2repo/releases<span class="nt">&lt;/url&gt;</span>
-    <span class="nt">&lt;/pluginRepository&gt;</span>
-  <span class="nt">&lt;/pluginRepositories&gt;</span>
-  ...
-<span class="nt">&lt;/project&gt;</span>
-</code></pre></div></div>
-
-<p>Running <code class="language-plaintext highlighter-rouge">mvn clean verify</code> will execute the Maven Enforcer Plug-in <code class="language-plaintext highlighter-rouge">enforce</code> goal, which will call the deptools check. As you may have noticed, you also need to download the plug-in from GitHub, as it is not released to Maven Central.</p>
-
-<p>I do not use it for this reason, and also because I normally spend some time looking at the dependency tree anyway, but every now and then when I work on a new project I like quickly running it just to see what are the dependencies that are being shadowed by older versions.</p>
-
-<h3 id="revelcimpsort-maven-plugin">revelc/impsort-maven-plugin</h3>
-
-<p>I only found about this plug-in in the last <a href="https://blogs.apache.org/foundation/entry/the-apache-news-round-up31">Apache News Round-up</a>. Where it was mentioned that <a href="https://github.com/apache/accumulo/blob/401411619239e301ad14216b3b9c88ee947ab072/pom.xml#L999">Apache Accumulo uses</a> this plug-in to standarize the order of imports in code.</p>
-
-<div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;project&gt;</span>
-  ...
-  <span class="nt">&lt;build&gt;</span>
-    <span class="nt">&lt;plugins&gt;</span>
-      <span class="nt">&lt;plugin&gt;</span>
-        <span class="nt">&lt;groupId&gt;</span>net.revelc.code<span class="nt">&lt;/groupId&gt;</span>
-        <span class="nt">&lt;artifactId&gt;</span>impsort-maven-plugin<span class="nt">&lt;/artifactId&gt;</span>
-        <span class="nt">&lt;version&gt;</span>1.0.0<span class="nt">&lt;/version&gt;</span>
-        <span class="nt">&lt;configuration&gt;</span>
-          <span class="nt">&lt;groups&gt;</span>java.,javax.,org.,com.<span class="nt">&lt;/groups&gt;</span>
-          <span class="nt">&lt;staticGroups&gt;</span>java,*<span class="nt">&lt;/staticGroups&gt;</span>
-          <span class="nt">&lt;excludes&gt;</span>
-            <span class="nt">&lt;exclude&gt;</span>**/thrift/*.java<span class="nt">&lt;/exclude&gt;</span>
-          <span class="nt">&lt;/excludes&gt;</span>
-        <span class="nt">&lt;/configuration&gt;</span>
-        <span class="nt">&lt;executions&gt;</span>
-          <span class="nt">&lt;execution&gt;</span>
-            <span class="nt">&lt;id&gt;</span>sort-imports<span class="nt">&lt;/id&gt;</span>
-            <span class="nt">&lt;goals&gt;</span>
-              <span class="nt">&lt;goal&gt;</span>sort<span class="nt">&lt;/goal&gt;</span><span class="c">&lt;!-- runs at process-sources phase by default --&gt;</span>
-            <span class="nt">&lt;/goals&gt;</span>
-          <span class="nt">&lt;/execution&gt;</span>
-        <span class="nt">&lt;/executions&gt;</span>
-      <span class="nt">&lt;/plugin&gt;</span>
-    <span class="nt">&lt;/plugins&gt;</span>
-  <span class="nt">&lt;/build&gt;</span>
-  ...
-<span class="nt">&lt;/project&gt;</span>
-</code></pre></div></div>
-
-<p>I am neutral on imports order, though in cases where you have several contributors submitting pull requests, it can probably be useful to reduce the number of interactions. In other words, if a user submits a pull request and you have an automated check, then the user would be automatically notified about changes that s/he needs to do in order for his pull request to be accepted.</p>
-
-<h3 id="conclusion">Conclusion</h3>
-
-<p>I am not using any of these two plug-ins, but wanted to save it somewhere in case I needed to use them in the future, and also to share with others. Besides most common plug-ins (PMD, CheckStyle, FindBugs), I normally use at least some Maven Enforcer Plug-in rules, and the <a href="https://www.owasp.org/index.php/OWASP_Dependency_Check">OWASP plug-in</a>.</p>
-
-<p>While most of the time we spend writing code, preparing the infrastructure, and deploying and testing, I got bitten by some maven build bugs a few times, and had to spend days/weeks debugging some of these. So hope some of these posts save some hours of someone out there in a similar situation.</p>
-
-<p>♥ Open Source</p>
-</div>
-<div class="post">
-  <h3 class="post-header">
     <a class="post-link" href="/2017/08/06/checking-for-transitive-dependencies-use-with-maven-enforcer-plugin.html">
       Checking for transitive dependencies use with Maven Enforcer Plug-in
     </a>
@@ -531,18 +231,177 @@ rule for Maven Enforcer Plug-in. There are two other Maven Plug-ins that can be 
 </div>
 <div class="post">
   <h3 class="post-header">
-    <a class="post-link" href="/2017/08/03/my-favourite-star-trek-captain-jean-luc-picard.html">
-      My favourite Star Trek captain: Jean-Luc Picard
+    <a class="post-link" href="/2017/07/21/scico-2017-an-introduction-to-the-international-image-interoperability-framework-iiif.html">
+      SciCo 2017: An Introduction to the International Image Interoperability Framework (IIIF)
     </a>
-  </h3><span class="post-meta">Aug 3, 2017<span>&mdash; star date: -305328.77</span></span><p>My favourite Star Trek captain: <a href="http://www.startrek.com/database_article/picard-jean-luc">Jean-Luc Picard</a>.</p>
+  </h3><span class="post-meta">Jul 21, 2017<span>&mdash; star date: -305364.38</span></span><p><strong>An Introduction to the International Image Interoperability Framework (IIIF)</strong></p>
 
-<blockquote>&ldquo;Space, the final frontier. These are the voyages of the starship Enterprise. Its continuing mission: to explore strange new worlds, to seek out new life and new civilizations, to boldly go where no one has gone before!&rdquo;</blockquote>
+<div class="row">
+<div class="ui embed">
+<iframe src="https://kinow.github.io/scico-2017/" frameborder="0" allowfullscreen=""></iframe>
+</div>
+</div>
 
-<p><img style="height: 400px;" class="ui image" src="/assets/posts/2017-08-03-my-favourite-star-trek-captain-jean-luc-picard/jeanlucpicard.jpg" alt="Jean-Luc Picard" /></p>
+<dl>
+<dt>Event</dt>
+<dd><a href="http://nesi-cri.nz/">Science Coding Conference 2017</a></dd>
+<dt>Where ?</dt>
+<dd><a href="https://www.google.co.nz/maps/place/Wellington/@-41.244027,174.6217709,11z/data=!3m1!4b1!4m5!3m4!1s0x6d38b1fc49e974cb:0xa00ef63a213b470!8m2!3d-41.2864603!4d174.776236">Wellington, New Zealand</a></dd>
+<dt>When ?</dt>
+<dd>2017-08-04</dd>
+</dl>
+</div>
+<div class="post">
+  <h3 class="post-header">
+    <a class="post-link" href="/2017/06/14/how-to-remove-the-signature-from-emails-with-nlp.html">
+      How to remove the signature from e-mails with NLP?
+    </a>
+  </h3><span class="post-meta">Jun 14, 2017<span>&mdash; star date: -305468.49</span></span><p>Some time ago I stumbled across <a href="https://github.com/mynameisvinn/EmailParser">EmailParser</a>, a Python utility to remove e-mail signatures. Here’s a sample input e-mail from the project documentation.</p>
 
-<p><img style="height: 400px;" class="ui image" src="/assets/posts/2017-08-03-my-favourite-star-trek-captain-jean-luc-picard/jeanlucpicard-photo.jpg" alt="Jean-Luc Picard" /></p>
+<div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Wendy – thanks for the intro! Moving you to bcc.
+ 
+Hi Vincent – nice to meet you over email. Apologize for the late reply, I was on PTO for a couple weeks and this is my first week back in office. As Wendy mentioned, I am leading an AR/VR taskforce at Foobar Retail Solutions. The goal of the taskforce is to better understand how AR/VR can apply to retail/commerce and if/what is the role of a shopping center in AR/VR applications for retail.
+ 
+Wendy mentioned that you would be a great person to speak to since you are close to what is going on in this space. Would love to set up some time to chat via phone next week. What does your availability look like on Monday or Wednesday?
+ 
+Best,
+Joe Smith
+ 
+Joe Smith | Strategy &amp; Business Development
+111 Market St. Suite 111| San Francisco, CA 94103
+M: 111.111.1111| joe@foobar.com
+</code></pre></div></div>
 
-<p>2B pencil, rubber eraser, blending stump, and HB 0.3 mechanical pencil. Yellow-ish layer added adjusting LAB colour space in GIMP.</p>
+<p>And here’s what it looks like afterwards.</p>
+
+<div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Wendy – thanks for the intro! Moving you to bcc.
+ 
+Hi Vincent – nice to meet you over email. Apologize for the late reply, I was on PTO for a couple weeks and this is my first week back in office. As Wendy mentioned, I am leading an AR/VR taskforce at Foobar Retail Solutions. The goal of the taskforce is to better understand how AR/VR can apply to retail/commerce and if/what is the role of a shopping center in AR/VR applications for retail.
+ 
+Wendy mentioned that you would be a great person to speak to since you are close to what is going on in this space. Would love to set up some time to chat via phone next week. What does your availability look like on Monday or Wednesday?
+</code></pre></div></div>
+
+<p>As you can see, it removed all the lines after the main part of the message (i.e. after the three paragraphs). Here’s what the Python code looks like.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">Parser</span> <span class="kn">import</span> <span class="n">read_email</span><span class="p">,</span> <span class="n">strip</span><span class="p">,</span> <span class="n">prob_block</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">spacy.en</span> <span class="kn">import</span> <span class="n">English</span> 
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">pos</span> <span class="o">=</span> <span class="n">English</span><span class="p">()</span>  <span class="c1"># part-of-speech tagger
+</span><span class="o">&gt;&gt;&gt;</span> <span class="n">msg_raw</span> <span class="o">=</span> <span class="n">read_email</span><span class="p">(</span><span class="s">'emails/test1.txt'</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">msg_stripped</span> <span class="o">=</span> <span class="n">strip</span><span class="p">(</span><span class="n">msg_raw</span><span class="p">)</span>  <span class="c1"># preprocessing text before POS tagging
+</span>
+<span class="c1"># iterate through lines, write to file if not signature block
+</span><span class="o">&gt;&gt;&gt;</span> <span class="n">generate_text</span><span class="p">(</span><span class="n">msg_stripped</span><span class="p">,</span> <span class="mf">.9</span><span class="p">,</span> <span class="n">pos_tagger</span><span class="p">,</span> <span class="s">'emails/test1_clean.txt'</span><span class="p">)</span> 
+</code></pre></div></div>
+
+<p>What got me interested about this utility was the use of NLP. I couldn’t imagine how someone could use NLP for that. And I liked the simplicity of the approach, which is not perfect, but can be useful someday.</p>
+
+<p>After the imports in the code, it creates a <a href="https://en.wikipedia.org/wiki/Part_of_speech">Part of Speech</a> tagger using <a href="https://spacy.io/">spaCy</a> NLP library, reads the e-mail from a file, and sripts and creates an array with each paragraph of the message.</p>
+
+<p>The magic happens in the <code class="language-plaintext highlighter-rouge">generate_text</code> function, which receives the <strong>array of paragraphs</strong>, a <strong>threshold</strong>, the <strong>POS tagger</strong>, and the <strong>output destination</strong>. Here’s what the function does.</p>
+
+<div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>for each message
+    if probability ( signature block | message ) &lt; threshold
+        write to output file
+</code></pre></div></div>
+
+<p>And the formula for calculating the probability is quite simple too.</p>
+
+<div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>1. For a given paragraph (message block), find all the sentences in it.
+2. Then for each word (token) in the sentence, count the number of times a non-verb appears.
+3. Return the proportion of non-verbs per sentence, i.e. number of non-verbs / number of sentences.
+</code></pre></div></div>
+
+<p>In summary, it discards blocks that do not contain enough verbs to be considered a message block, being treated as signature blocks instead.</p>
+
+<p>Never thought about using an approach like this. It may definitely be helpful when doing data analysis, information retrieval, or scraping data from the web. Not necessarily with e-mails and signatures, but you got the gist of it.</p>
+
+<p>♥ Open Source</p>
+</div>
+<div class="post">
+  <h3 class="post-header">
+    <a class="post-link" href="/2017/06/10/backward-compatibility-and-switch-statements-with-constant-expressions.html">
+      Backward compatibility and switch statement with constant expressions
+    </a>
+  </h3><span class="post-meta">Jun 10, 2017<span>&mdash; star date: -305479.45</span></span><p>Maintaining Open Source software can be challenging. Making sure you keep backward compatibility (not only binary) can be even more challenging. <a href="https://commons.apache.org/proper/commons-lang/">Apache Commons Lang</a> 3.6 release is happening right now thanks to <a href="http://www.benediktritter.de/">Benedikt Ritter</a>, and it is on its fourth Release Candidate (i.e. RC4).</p>
+
+<p>A previous RC2 was cancelled due to <a href="http://commons.markmail.org/thread/57sqt2hkusegda73#query:+page:1+mid:dnwo5tjqo2e5bwuo+state:results">IBM JDK 8 compatibility</a>, more specifically the lazy initialization of ArrayList’s seems to be different in Oracle JDK and IBM JDK.</p>
+
+<p>The RC3 was cancelled due to a <a href="https://github.com/apache/commons-lang/commit/18e692478dcf91fdceb9b9fdca7c61a1111d63aa">change</a> that could affect users using a switch statement.</p>
+
+<p>The change was in the <em>CharEncoding</em> class. The issue was that this class has some constants, that stopped being <a href="http://docs.oracle.com/javase/specs/jls/se8/html/jls-15.html#jls-15.28">constant expressions</a>.</p>
+
+<blockquote>A constant expression is an expression denoting a value of primitive type or a String that does not complete abruptly and is composed using only the following (...)</blockquote>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">CharEncoding</span> <span class="o">{</span>
+    <span class="c1">// ...</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kd">final</span> <span class="nc">String</span> <span class="no">ISO_8859_1</span> <span class="o">=</span> <span class="s">"ISO-8859-1"</span><span class="o">;</span>
+    <span class="c1">// ...</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>The code above contains a constant (<em>static final</em>) variable, that is a constant expression. So users can safely use it in switch statements, and the Java compiler won’t complain about it.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">CharEncoding</span> <span class="o">{</span>
+    <span class="c1">// ...</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kd">final</span> <span class="nc">String</span> <span class="no">ISO_8859_1</span> <span class="o">=</span> <span class="nc">StandardCharsets</span><span class="o">.</span><span class="na">ISO_8859_1</span><span class="o">.</span><span class="na">name</span><span class="o">();</span>
+    <span class="c1">// ...</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>The code above is from the change that caused the regression. Any user that was using the ISO_8859_1 constant variable in a switch statement would get a compilation error (e.g. <em>case expressions must be constant expressions</em>) when updating to Apache Commons Lang 3.6. That is because the constant variable is not a constant expression.</p>
+
+<p>I think I learned that some time ago, but if you asked me what was wrong with the change, and if it would break backward compatibility, I would probably fail to spot the issue. There are tools for that now (e.g. Clirr, japicmp) though they may miss some cases too.</p>
+
+<p>Luckily in this case a user subscribed to the Apache Commons development mailing list spotted the issue and quickly reported it. It gets easier maintaining an Open Source project with the constructive feedback of users, like this one.</p>
+
+<p>♥ Open Source</p>
+</div>
+<div class="post">
+  <h3 class="post-header">
+    <a class="post-link" href="/2017/06/03/securely-using-passwords-with-r.html">
+      Securely using passwords with R
+    </a>
+  </h3><span class="post-meta">Jun 3, 2017<span>&mdash; star date: -305498.63</span></span><p>It is quite common to have code that needs to interact with another system, database, or third party application, and need to use some sort of credentials to securely communicate.</p>
+
+<p>Most of the code I wrote in <strong>R</strong>, or reviewed, had normally no borders (from a system analysis perspective) with other systems, or basically just interacted with the file system to retrieve NetCDF or JSON files.</p>
+
+<p>However, after I saw a comment in <em>Reddit</em> [1] some time ago about this, I decided to check what others used. With <strong>R Shiny</strong> becoming more popular, and moving more R code to the web, I think this will become a common requirement for R code.</p>
+
+<p>There is a blog post from <strong>RevolutionAnalytics</strong> [2] that does a nice summary of the options for that. The post is from 2015, but I do not think much changed now in 2017. From the blog post and comments, there are seven methods listed:</p>
+
+<ol>
+  <li>Put <a href="https://github.com/ropensci/fishbaseapi/blob/80393023a958aee54e2daa58c337458db5480b84/config_template.yaml">credentials</a> in your source code</li>
+  <li>Put credentials in a file in your project, but do not share this file (<em>#3</em>, <em>#4</em>, and <em>#5</em> are similar to this one)</li>
+  <li>Put credentials in a <a href="https://csgillespie.github.io/efficientR/3-3-r-startup.html#rprofile">.Rprofile</a> file</li>
+  <li><strong>Put credentials in a <a href="https://csgillespie.github.io/efficientR/3-3-r-startup.html#renviron">.Renviron</a> file</strong></li>
+  <li>Put <a href="https://github.com/ropensci/fishbaseapi/blob/80393023a958aee54e2daa58c337458db5480b84/config_template.yaml">credentials</a> in a JSON or YAML file</li>
+  <li>Put credentials in a secure store that you can access from R</li>
+  <li>Ask the user for the credentials when the script is executed (possibly not useful for R Shiny applications)</li>
+</ol>
+
+<p><strong>My preferred way for R is the .Renviron (or a <a href="https://github.com/gaborcsardi/dotenv">dotEnv</a>) file</strong>. You basically store your password in this file, make sure you do not share this (a global gitignore could be helpful to prevent any accident) and read the variables when you start your code.</p>
+
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">## Secrets</span><span class="w">
+</span><span class="n">MYSQL_PASSWORD</span><span class="o">=</span><span class="n">secret</span><span class="w">
+</span></code></pre></div></div>
+
+<p>If you would like to increase the security, you can combine it with a variation of <em>#6</em>. You use a .Renviron file, and use an encryption service like <a href="https://aws.amazon.com/kms/">Amazon KMS</a> (KMS stands for Key Management Service).</p>
+
+<p>With <a href="https://github.com/cardcorp/AWR.KMS">AWS KMS in R</a>, you can encrypt your values, put them encrypted in your .Renviron, and even if someone gets hold of your .Renviron file, you have an extra layer of protection, as the attacker would require access to your cloud environment to decrypt it too.</p>
+
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">## Secrets</span><span class="w">
+</span><span class="n">MYSQL_PASSWORD</span><span class="o">=</span><span class="n">AQECAHga320J8WadplGCqqVAr4HNvDaFSQ</span><span class="o">+</span><span class="n">NaiwIBhmm6qDSFwAAAGIwYAYJKoZIhvcNAQcGoFMwUQIBADBMBgkqhkiG9w0BBwEwHgYJYIZIAWUDBAEuMBEE99</span><span class="o">+</span><span class="n">LoLdvYv8l41OhAAIBEIAfx49FFJCLeYrkfMfAw6XlnxP23MmDBdqP8dPp28OoAQ</span><span class="o">==</span><span class="w">
+</span></code></pre></div></div>
+
+<h3 id="references">References</h3>
+
+<ul>
+  <li>[1] <a href="https://www.reddit.com/r/rstats/comments/6aonwx/open_source_r_applications_and_hiding_database/">r/stats * Open source R applications and hiding database connection</a></li>
+  <li>[2] <a href="http://blog.revolutionanalytics.com/2015/11/how-to-store-and-use-authentication-details-with-r.html">How to store and use webservice keys and authentication details with R</a></li>
+</ul>
+
+<p>♥ Open Source</p>
 </div>
 <!-- Pagination links -->
   <div class="pagination">
@@ -552,7 +411,7 @@ rule for Maven Enforcer Plug-in. There are two other Maven Plug-ins that can be 
         <i class="left chevron icon"></i>Previous
       </a>
       
-      <span class="page_number ">Page: 8 of 31</span>
+      <span class="page_number ">Page: 8 of 27</span>
       
       <a href="/blog/page/9/" class="next">
         Next<i class="right chevron icon"></i>

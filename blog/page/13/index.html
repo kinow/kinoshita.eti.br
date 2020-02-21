@@ -4,7 +4,7 @@
   <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.6.1 -->
-<title>Page 13 of 31 for Blog - page 13 | Bruno P. Kinoshita</title>
+<title>Page 13 of 27 for Blog - page 13 | Bruno P. Kinoshita</title>
 <meta name="generator" content="Jekyll v3.8.5" />
 <meta property="og:title" content="Blog - page 13" />
 <meta property="og:locale" content="en_US" />
@@ -169,205 +169,228 @@
 
 <div class="blog"><div class="post">
   <h3 class="post-header">
-    <a class="post-link" href="/2017/01/08/apache-commons-lang-memoizer.html">
-      Apache Commons Lang: Memoizer
+    <a class="post-link" href="/2016/11/12/add-a-header-to-a-file-with-shell-script-sed.html">
+      Add a header to a file with Shell script (sed)
     </a>
-  </h3><span class="post-meta">Jan 8, 2017<span>&mdash; star date: -305895.89</span></span><p>The current release of <a href="https://commons.apache.org/proper/commons-lang/">Apache Commons Lang</a>
-is <strong>3.5</strong>. The upcoming release, probably 3.6,
-will include a new feature, added in a
-<a href="https://github.com/apache/commons-lang/pull/203">pull request</a>:
-<strong>a Memoizer implementation</strong>. Check out the ticket <a href="https://issues.apache.org/jira/browse/LANG-740">LANG-740</a>
-for more about the implementation being added to [lang].</p>
+  </h3><span class="post-meta">Nov 12, 201649<span>&mdash; star date: -306057.38</span></span><p>Today I was re-generating the documentation for a REST API written in PHP, with
+Laravel. To generate the documentation, one would have to call a Laravel command first.
+That command would create a Markdown page. And since in this project I am using Jekyll
+for the project site, the final step was adding a header to the file, so that Jekyll
+can recognize that content as a blog post.</p>
 
-<p>The book <a href="http://jcip.net/">Java Concurrency in Practice</a> introduces readers to the Memoizer,
-and has also a <a href="http://jcip.net/listings/Memoizer.java">public domain implementation available for download</a>
-(besides that, the book has also lots of other interesting topics!).</p>
+<p>Laravel allows you to add custom commands to your project, so I decided to write a command
+that would call the other command that generates the documentation, and add an extra step
+of adding the header to the Markdown file.</p>
 
-<p>In summary, Memoizer is a simple cache, that will store the result of
-a computation. It receives a Computable object, responsible for doing something
-that will be stored by the Memoizer. Here’s a simple code to illustrate how that
-will work in your Java code.</p>
+<p>Here’s the shell script part, that allows you to add a header to a file, in place (i.e.
+it will alter and save the change your file).</p>
 
-<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// Computation to be stored in the cache</span>
-<span class="nc">Computable</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span> <span class="nc">String</span><span class="o">&gt;</span> <span class="n">getFormattedCurrentDate</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Computable</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span> <span class="nc">String</span><span class="o">&gt;()</span> <span class="o">{</span>
-    <span class="nd">@Override</span>
-    <span class="kd">public</span> <span class="nc">String</span> <span class="nf">compute</span><span class="o">(</span><span class="nc">String</span> <span class="n">fmt</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">InterruptedException</span> <span class="o">{</span>
-        <span class="k">return</span> <span class="k">new</span> <span class="nf">SimpleDateFormat</span><span class="o">(</span><span class="n">fmt</span><span class="o">).</span><span class="na">format</span><span class="o">(</span><span class="k">new</span> <span class="nc">Date</span><span class="o">());</span>
-    <span class="o">}</span>
-<span class="o">};</span>
-
-<span class="c1">// Our memoizer</span>
-<span class="nc">Memoizer</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span> <span class="nc">String</span><span class="o">&gt;</span> <span class="n">dateCache</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Memoizer</span><span class="o">&lt;&gt;(</span><span class="n">getFormattedCurrentDate</span><span class="o">);</span>
-
-<span class="c1">// To illustrate its use</span>
-<span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">10</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
-    <span class="k">try</span> <span class="o">{</span>
-        <span class="c1">// S -&gt; Millisecond</span>
-        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">dateCache</span><span class="o">.</span><span class="na">compute</span><span class="o">(</span><span class="s">"HH:mm:ss:S Z dd/MM/YYYY"</span><span class="o">));</span>
-        <span class="c1">// Regardless of this sleep call, we get the same result every iteration</span>
-        <span class="nc">Thread</span><span class="o">.</span><span class="na">sleep</span><span class="o">(</span><span class="mi">1500</span><span class="o">);</span>
-    <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="nc">InterruptedException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
-        <span class="n">e</span><span class="o">.</span><span class="na">printStackTrace</span><span class="o">();</span>
-    <span class="o">}</span>
-<span class="o">}</span>
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sed</span> <span class="nt">-i</span> 1i<span class="s2">"----</span><span class="se">\n</span><span class="s2">layout: page</span><span class="se">\n</span><span class="s2">title: API Installation</span><span class="se">\n</span><span class="s2">----</span><span class="se">\n\n</span><span class="s2">"</span> ./docs/documentation/api/api.md
 </code></pre></div></div>
 
-<p>The computable created (<em>getFormattedCurrentDate</em>) will be called only once, and stored in
-a map. The parameter passed in the <em>#compute()</em> method will be used as key in the map.
-So choose your parameter wisely :-) The output of the example will be similar to the following one.</p>
-
-<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>19:15:57:854 +1300 08/01/2017
-19:15:57:854 +1300 08/01/2017
-19:15:57:854 +1300 08/01/2017
-19:15:57:854 +1300 08/01/2017
-19:15:57:854 +1300 08/01/2017
-19:15:57:854 +1300 08/01/2017
-19:15:57:854 +1300 08/01/2017
-19:15:57:854 +1300 08/01/2017
-19:15:57:854 +1300 08/01/2017
-19:15:57:854 +1300 08/01/2017
-</code></pre></div></div>
-
-<p>In the example above I used a <em>for-loop</em> to illustrate what will happen. Even though we call
-the memoizer <em>#compute()</em> method several times, followed by
-<em>Thread#sleep()</em>; only one result, the first to be computed, will be returned.</p>
-
-<p>So that’s all for today. Hope you learned something about this new class, that must
-be available in the next release of Apache Commons Lang.</p>
-
-<p>Happy hacking!</p>
-
-<p>ps: [lang] uses Java 7, so that is why we do not have a functional instead of the Comparable</p>
-</div>
-<div class="post">
-  <h3 class="post-header">
-    <a class="post-link" href="/2017/01/07/apache-commons-text.html">
-      Apache Commons Text
-    </a>
-  </h3><span class="post-meta">Jan 7, 2017<span>&mdash; star date: -305898.63</span></span><p>There is a new component in Apache Commons: Apache Commons Text. The 1.0 release might be announced
-in the next weeks. The current site is still in the <a href="http://commons.apache.org/sandbox/commons-text/">Commons Sandbox</a>,
-but it will change with the 1.0 release. The promotion from the sandbox
-<a href="http://markmail.org/message/dm7xwv5wc6z7wme3">happened a few days ago</a> in
-the project mailing list.</p>
-
-<p>Here’s the project description: <strong>Apache Commons Text is a library focused on algorithms working on strings</strong>.</p>
-
-<p>There was <a href="http://markmail.org/message/3k7m2zrzboji333r">a thread on the mailing list</a>
-some time ago (Oct/2014) when we first discussed the component idea. Since then
-many people contributed porting code from
-<a href="http://commons.apache.org/proper/commons-lang/">Apache Commons Lang</a>,
-<a href="http://lucene.apache.org/">Apache Lucene</a>, donating code from existing projects, and with new ideas.</p>
-
-<p><strong>It is important to be aware that certain parts of Apache Commons Lang are
-being marked as deprecated, and will be removed in the future, after Apache Commons Text
-1.0 is out</strong>. For example: <a href="https://commons.apache.org/proper/commons-lang/apidocs/org/apache/commons/lang3/StringUtils.html">StringUtils</a>,
-and <a href="https://commons.apache.org/proper/commons-lang/apidocs/org/apache/commons/lang3/RandomStringUtils.html">RandomStringUtils</a>.</p>
-
-<p>That will happen probably in a 4.x release of Apache Commons Lang, if everything
-goes well with Apache Commons Text :-)</p>
-
-<p>And there are already future features in
-<a href="https://github.com/apache/commons-text/branches/all">branches too</a>.
-It was decided that these features
-needed further work, so they will probably be included in next releases.</p>
-
-<p>So that’s a little bit of background on the new component that will be released soon.
-If you have code using Apache Commons Lang, you might be interested in staying
-tuned to release announcements in the mailing list!</p>
-
-<p>And should you have suggestions and would like to contribute, feel free to join and start
-a thread in the <a href="https://commons.apache.org/mail-lists.html">mailing list</a>,
-open a <a href="https://issues.apache.org/jira/browse/TEXT">JIRA issue</a>, or submit a
-<a href="https://github.com/apache/commons-text/pulls">pull request</a>.</p>
+<p>Here the first argument to sed, <em>-i</em> is for in place. Then that strange <em>1i</em>
+means that it will insert something before the first line, once. Then we have our header,
+and finally the file.</p>
 
 <p>Happy hacking!</p>
 </div>
 <div class="post">
   <h3 class="post-header">
-    <a class="post-link" href="/2017/01/04/plotting-auckland-with-osmnx.html">
-      Plotting Auckland with OSMnx
+    <a class="post-link" href="/2016/11/07/content-negotiation-with-spring-boot-and-react.html">
+      Content negotiation with Spring Boot and React
     </a>
-  </h3><span class="post-meta">Jan 4, 2017<span>&mdash; star date: -305906.85</span></span><p><img style="height: 400px;" class="ui image" src="/assets/posts/2017-01-04-plotting-auckland-with-osmnx/figure_1.png" alt="Auckland" /></p>
+  </h3><span class="post-meta">Nov 7, 201650<span>&mdash; star date: -306071.04</span></span><p>A few days ago I had a bug in a system built with Spring Boot and React. The frontend application
+was using a REST client in React, built in a similar way to what is found in the documentation, and
+also in blogs.</p>
 
-<p>A couple of days ago I saw <a href="https://www.reddit.com/r/gis/comments/5lnjxs/creating_squaremile_figureground_diagrams_of/">a thread in reddit</a>
-about OSMnx. It is a utilty for interacting with the OpenStreeMap (OSM)
-API, manipulate it in pure Python and using libraries like NetworkX (a Python graph package).</p>
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="nx">rest</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">rest</span><span class="dl">'</span><span class="p">;</span>
+<span class="kd">const</span> <span class="nx">Rest</span> <span class="o">=</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="nx">rest</span><span class="p">.</span><span class="nx">wrap</span><span class="p">(</span><span class="nx">mime</span><span class="p">);</span>
+</code></pre></div></div>
 
-<p>With it you can do things like <q>visualize cul-de-sacs or one-way streets, plot shortest-path routes, or calculate stats like intersection density, average node connectivity, or betweenness centrality</q>. Or simply
-plot the OSM data as in the graph above.</p>
+<p>However, for one of the Spring Boot application endpoints, the React component was not working. The
+response seemed to be OK in the Network tab, of the browser developer tools. But the component was
+failing and complaining when parsing the response.</p>
 
-<p>The source code is hosted at GitHub: <a href="https://github.com/gboeing/osmnx">https://github.com/gboeing/osmnx</a>.</p>
+<p>Turns out that the frontend was sending the request with the header <code class="language-plaintext highlighter-rouge">Accept: text/plain, application/json</code>.
+And Spring Boot was just using its <a href="https://spring.io/blog/2013/05/11/content-negotiation-using-spring-mvc">default content negotiation</a>
+and returning what the frontend requested: a text plain version of, what looked like, JSON.</p>
 
-<a class="post-link" href="/2017/01/04/plotting-auckland-with-osmnx.html">Continue reading</a></div>
-<div class="post">
-  <h3 class="post-header">
-    <a class="post-link" href="/2017/01/04/drawing-terra-celta-vocal-elcio.html">
-      Drawing Terra Celta vocal Elcio
-    </a>
-  </h3><span class="post-meta">Jan 4, 2017<span>&mdash; star date: -305906.85</span></span><p><a href="http://www.terracelta.com.br/">Terra Celta band</a>’s vocal, Elcio.</p>
+<p>The quick fix was to request the content as JSON in React.</p>
 
-<p>Brazil is not only Samba, there is (good) celtic music in there too :-)</p>
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="nx">rest</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">rest</span><span class="dl">'</span><span class="p">;</span>
+<span class="k">import</span> <span class="nx">mime</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">rest/interceptor/mime</span><span class="dl">'</span><span class="p">;</span>
+<span class="kd">const</span> <span class="nx">Rest</span> <span class="o">=</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="nx">rest</span><span class="p">.</span><span class="nx">wrap</span><span class="p">(</span><span class="nx">mime</span> <span class="p">,</span> <span class="p">{</span> <span class="na">mime</span><span class="p">:</span> <span class="dl">'</span><span class="s1">application/json</span><span class="dl">'</span> <span class="p">}</span> <span class="p">);</span>
+</code></pre></div></div>
 
-<blockquote cite="https://en.wikipedia.org/wiki/Terra_Celta">Terra Celta ("Celtic Land") is a Brazilian Celtic comedy rock band formed in 2005, and based in Londrina, Paran&aacute;. They are noted for making Celtic rock in Portuguese language (initially English), with often humorous lyrics. The group performs live with traditional Celtic/Irish clothing. Besides performing Irish music, the members also research the subject, by attending Celtic music festivals in Europe.</blockquote>
+<p>Now we will revisit the backend to return the JSON content, as content, regardless of what
+the user asks :-)</p>
 
-<div class="row">
-<div class="ui fluid container">
-<figure>
-<a href="/assets/posts/2017-01-04-drawing-terra-celta-vocal-elcio/#excerpt/terra-celta-elcio.png" rel="prettyPhoto" class="thumbnail" title="Terra Celta vocal Elcio">
-<img style="height: 400px;" class="ui image" src="/assets/posts/2017-01-04-drawing-terra-celta-vocal-elcio/terra-celta-elcio.png" alt="Terra Celta vocal Elcio" />
-
-
-[http://kinow.deviantart.com/art/Terra-Celta-s-vocal-Elcio-655240481](http://kinow.deviantart.com/art/Terra-Celta-s-vocal-Elcio-655240481)
-
-<iframe id="player" type="text/html" width="640" height="390" src="http://www.youtube.com/embed/EOMEAzUBftA?enablejsapi=1&amp;origin=http://kinoshita.eti.br" frameborder="0"></iframe>
-</a></figure></div></div>
+<p>Happy hacking!</p>
 </div>
 <div class="post">
   <h3 class="post-header">
-    <a class="post-link" href="/2017/01/02/contributing-to-krita.html">
-      Contributing to Krita
+    <a class="post-link" href="/2016/11/05/checking-the-operating-system-type-in-shell-script.html">
+      Checking the operating system type in shell script
     </a>
-  </h3><span class="post-meta">Jan 2, 2017<span>&mdash; star date: -305912.33</span></span><p>As I mentioned in the <a href="/2017/01/01/debugging-an-application-that-freezes-the-x-server.html">last post</a>,
-I have been learning Qt and using C and C++ again.
-Since I used C and C++ more during university (about 10 years ago, phew), decided
-to read real code.</p>
+  </h3><span class="post-meta">Nov 5, 201651<span>&mdash; star date: -306076.5</span></span><p>Last week I learned about a tool called <a href="https://github.com/koalaman/shellcheck">ShellCheck</a>, a tool
+for static analysis of shell scripts. It reports errors like missing double quotes, use of deprecated
+syntax, etc.</p>
 
-<p>I used Photoshop, Illustrator, and Fireworks a lot when I was younger and had more
-time to spend drawing. But some time ago I switched to Inkscape for vector graphics,
-which I use at work for presentations. So it was only natural to try Krita now.</p>
+<p>I decided to check some projects I contribute to, and the first issue I found was in
+<a href="https://jena.apache.org">Apache Jena</a>:</p>
 
-<p>Since I was going to try Krita, I thought why not check out and build from source, and then
-in case I found any bugs, contribute back? Or maybe from time to time triage issues,
-find low hanging ones, and send a patch?</p>
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kinow@localhost:~/Development/java/jena/jena/apache-jena/bin<span class="nv">$ </span>shellcheck arq
 
-<p>Well, turns out the Krita project has a great community, and it is super easy to send
-contributions. So far I submitted three patches, some were included in 3.x releases.</p>
+In arq line 8:
+    <span class="k">case</span> <span class="s2">"</span><span class="nv">$OSTYPE</span><span class="s2">"</span> <span class="k">in</span>
+          ^-- SC2039: In POSIX sh, OSTYPE is not supported.
+</code></pre></div></div>
+
+<p>So, in summary, the <code class="language-plaintext highlighter-rouge">OSTYPE</code> variable should not be available in POSIX shell. The case in question, where
+<code class="language-plaintext highlighter-rouge">OSTYPE</code> is being used, checks for the Darwin OS type (i.e. Mac OS). Knowing how things get weird when you
+use different operating systems, I decided to check and learn how <code class="language-plaintext highlighter-rouge">OSTYPE</code> works. Here’s what I found.</p>
 
 <ul>
-  <li><a href="https://bugs.kde.org/show_bug.cgi?id=366741">https://bugs.kde.org/show_bug.cgi?id=366741</a></li>
-  <li><a href="https://bugs.kde.org/show_bug.cgi?id=364208">https://bugs.kde.org/show_bug.cgi?id=364208</a></li>
-  <li><a href="https://bugs.kde.org/show_bug.cgi?id=374451">https://bugs.kde.org/show_bug.cgi?id=374451</a></li>
+  <li>In Ubuntu, with /bin/bash, OSTYPE works fine (linux-gnu)</li>
+  <li>In Ubuntu, with /bin/sh, OSTYPE is not set</li>
+  <li>In Mac OS, with /bin/sh, OSTYPE is set (darwin15)</li>
 </ul>
 
-<p>While the patches are rather small, they are suggestions on how to fix memory
-segmentation faults, or strange behaviours in the interface. For these issues,
-I had to learn more about Qt components, signals and emitting events, and,
-of course, work with pointers, arrays, Qt data structures, etc. In other words,
-lots of (geek) fun!</p>
+<p>I checked the shells to make sure they were not pointing to symbolic links - some distributions
+use a different default shell, and replace /bin/bash and/or /bin/sh by a link to another
+shell. Looks like Mac OS has a POSIX shell that behaves different than Ubuntu’s.</p>
 
-<p>In other words, by contributing to Krita, I am not only helping the project
-and giving a little back to the community, but also refreshing my memory on
-C and C++, and slowly learning Qt - which is not very hard if you worked with
-Swing/AWT, Delphi, Visual Basic, Gtk, etc.</p>
+<p>Instead of trying to find a way to use <code class="language-plaintext highlighter-rouge">OSTYPE</code>, I decided to spend some time looking at
+how other projects do the same thing. And the best example I could find was
+<a href="https://git.kernel.org/cgit/git/git.git/tree/config.mak.uname">git</a>.</p>
 
-<p>What are you waiting to contribute to Krita? The developers that maintain the
-project answer tickets and questions posted to <a href="https://reddit.com/r/krita">reddit</a>
-in a good time, and are extremely easy to work with.</p>
+<p>Instead of relying on <code class="language-plaintext highlighter-rouge">OSTYPE</code>, git uses <code class="language-plaintext highlighter-rouge">uname</code>.</p>
 
-<p>Read more <a href="http://www.davidrevoy.com/article193/guide-building-krita-on-linux-for-cats">here</a> how to build from source, and
-<a href="https://krita.org/en/get-involved/developers/">here</a> on how to submit patches.</p>
+<p>I will spend some time during the next days working on a proposal to replace the <code class="language-plaintext highlighter-rouge">OSTYPE</code>
+from Apache Jena scripts, but then may have to submit more changes for the other issues
+found by ShellCheck.</p>
 
 <p>Happy hacking!</p>
+</div>
+<div class="post">
+  <h3 class="post-header">
+    <a class="post-link" href="/2016/10/04/using-the-aws-api-with-python.html">
+      Using the AWS API with Python
+    </a>
+  </h3><span class="post-meta">Oct 4, 201652<span>&mdash; star date: -306161.2</span></span><p>Amazon Web Services provides a series of cloud services. When you access the web interface, most - if not all - of the actions you do there are actually translated into API calls.</p>
+
+<p>They also provide SDK’s in several programming languages. With these SDK’s you are able to call the same API used by the web interface. Python has <a href="https://github.com/boto/boto3">boto</a> (or boto3) which lets you to automate several tasks in AWS.</p>
+
+<p>But before you start using the API, you will need to <a href="https://web.archive.org/web/20160818112016/http://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSGettingStartedGuide/AWSCredentials.html">set up your access key</a>.</p>
+
+<p>It is likely that with time you will have different roles, and may have different permissions with each role. You have to configure your local environment so that you can either use the command line Python utility (installed via <code class="language-plaintext highlighter-rouge">pip install awscli</code>) or with boto.</p>
+
+<p>The awscli is a dependency for using boto3. After you install it, you need to run <code class="language-plaintext highlighter-rouge">aws configure</code>. It will create the <em>~/.aws/config</em> and <em>~/.aws/credentials</em> files. You can tweak these files to support multiple roles.</p>
+
+<p>I followed the tutorials, but got all sorts of different issues. Then after debugging some locally installed dependencies, in special awscli files, I found that the following settings work for my environment.</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># File: config</span>
+<span class="o">[</span>profile default]
+region <span class="o">=</span> ap-southeast-2
+
+<span class="o">[</span>profile profile1]
+region <span class="o">=</span> ap-southeast-2
+source_profile <span class="o">=</span> default
+role_arn <span class="o">=</span> arn:aws:iam::123:role/Developer
+
+<span class="o">[</span>profile profile2]
+region <span class="o">=</span> ap-southeast-2
+source_profile <span class="o">=</span> default
+role_arn <span class="o">=</span> arn:aws:iam::456:role/Sysops
+mfa_serial <span class="o">=</span> arn:aws:iam::789:mfa/user@domain.blabla
+</code></pre></div></div>
+
+<p>and</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># File: credentials</span>
+<span class="o">[</span>default]
+aws_access_key_id <span class="o">=</span> YOU_KEY_ID
+aws_secret_access_key <span class="o">=</span> YOUR_SECRET
+</code></pre></div></div>
+
+<p>And once it is done you can, for example, confirm it is working with some S3 commands in Python.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">#!/usr/bin/env python3
+</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">boto3</span>
+
+<span class="n">session</span> <span class="o">=</span> <span class="n">boto3</span><span class="o">.</span><span class="n">Session</span><span class="p">(</span><span class="n">profile_name</span><span class="o">=</span><span class="s">'profile2'</span><span class="p">)</span>
+<span class="n">s3</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">resource</span><span class="p">(</span><span class="s">'s3'</span><span class="p">)</span>
+
+<span class="n">found</span> <span class="o">=</span> <span class="bp">False</span>
+
+<span class="n">name</span> <span class="o">=</span> <span class="s">'mysuperduperbucket'</span>
+
+<span class="k">for</span> <span class="n">bucket</span> <span class="ow">in</span> <span class="n">s3</span><span class="o">.</span><span class="n">buckets</span><span class="o">.</span><span class="nb">all</span><span class="p">():</span>
+    <span class="k">if</span> <span class="n">bucket</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="n">name</span><span class="p">:</span>
+        <span class="n">found</span> <span class="o">=</span> <span class="bp">True</span>
+
+<span class="k">if</span> <span class="ow">not</span> <span class="n">found</span><span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">"Creating bucket..."</span><span class="p">)</span>
+    <span class="n">s3</span><span class="o">.</span><span class="n">create_bucket</span><span class="p">(</span><span class="n">Bucket</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
+
+<span class="n">file_location</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">realpath</span><span class="p">(</span><span class="n">__file__</span><span class="p">))</span> <span class="o">+</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">sep</span> <span class="o">+</span> <span class="s">'samplefile.txt'</span>
+<span class="n">s3</span><span class="o">.</span><span class="n">meta</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">upload_file</span><span class="p">(</span><span class="n">Filename</span><span class="o">=</span><span class="n">file_location</span><span class="p">,</span> <span class="n">Bucket</span><span class="o">=</span><span class="n">name</span><span class="p">,</span> <span class="n">Key</span><span class="o">=</span><span class="s">'book.txt'</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>The AWS files in this example are using MFA too, the multi-factor authentication. So the first time you run this code you may be asked to generate a token, which will be cached for a short time.</p>
+
+<p>That’s it for today.</p>
+
+<p>Happy hacking!</p>
+</div>
+<div class="post">
+  <h3 class="post-header">
+    <a class="post-link" href="/2016/09/03/performance-problems-in-jenkins-tap-plugin-part-1.html">
+      Performance problems in Jenkins TAP Plug-in &amp;mdash; part 1
+    </a>
+  </h3><span class="post-meta">Sep 3, 201653<span>&mdash; star date: -306248.63</span></span><p><a href="https://issues.jenkins-ci.org/browse/JENKINS-17887">JENKINS-17887</a> reports performance problems in the <a href="https://wiki.jenkins-ci.org/display/JENKINS/TAP+Plugin">Jenkins TAP Plug-in</a>. It also lists a series of suggestions on how to improve the Jenkins TAP Plug-in performance. On this initial post, we will get a general idea of how the plug-in performs for large projects.</p>
+
+<p><a href="http://bioperl.org/">BioPerl</a> has over 21K tests. That should be enough for giving an initial idea of CPU, memory and disk usage for the plug-in.</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git clone https://github.com/bioperl/bioperl-live.git
+<span class="nb">cd </span>bioperl-live
+<span class="nb">sudo </span>cpanm  <span class="nt">-vv</span> <span class="nt">--installdeps</span> <span class="nt">--notest</span> <span class="nb">.</span>
+<span class="nb">sudo </span>cpanm Set::Scalar Graph::Directed XML::LibXML XML::SAX <span class="se">\</span>
+    SVG XML::Parser::PerlSAX Convert::Binary::C XML::SAX::Writer <span class="se">\</span>
+    XML::DOM::XPath Spreadsheet::ParseExcel XML::SAX::Writer <span class="se">\</span>
+    XML::DOM HTML::TableExtract XML::Simple Test::Pod DBI
+prove <span class="nt">-r</span> t/ <span class="nt">-a</span> tests.tar.gz
+
+All tests successful.
+<span class="nv">Files</span><span class="o">=</span>325, <span class="nv">Tests</span><span class="o">=</span>21095, 94 wallclock secs <span class="o">(</span> 2.47 usr  0.55 sys + 88.29 cusr  3.85 csys <span class="o">=</span> 95.16 CPU<span class="o">)</span>
+Result: PASS
+</code></pre></div></div>
+
+<p>When the test results are parsed, the plug-in also copies TAP files over to the master, in a folder called <em>tap-master-files</em>.</p>
+
+<p>The BioPerl tests are not really big, just <strong>1.7M</strong>. It gets doubled as there will be the workspace copy, and the tap-master-files directory copy, so <strong>3.4M</strong>.</p>
+
+<p>But several objects get created in memory, and persisted into the build.xml job file. BioPerl generates a build.xml file with <strong>11M</strong>. So <strong>less than 15M</strong>. But the build.xml contains objects that are read via XStream by Jenkins and into the memory.</p>
+
+<p>The build page with the graph, and the other two test result pages are rendering in more than 10 seconds in my computer. But the CPU load is OK, so a closer look at the memory use would probably be more interesting.</p>
+
+<p><img class="ui centered image" src="/assets/posts/2016-09-03-performance-problems-in-jenkins-tap-plug-in-mdash-part-1/JENKINS-17887-yourkit1.png" alt="JENKINS-17887 YourKit profiler" /></p>
+
+<p>The image shows one of the screens in YourKit profiler, where it is possible to see that <strong>org.tap4j.plugin.model.TapTestResultResult</strong> has over 6 million objects.</p>
+
+<p>One build.xml for the BioPerl project gets over 80K entries for the TestResult object.</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">grep</span> <span class="s2">"org.tap4j.model.TestResult"</span> builds/1/build.xml <span class="nt">-o</span> | <span class="nb">wc</span> <span class="nt">-l</span>
+84522
+</code></pre></div></div>
+
+<p>This happens because each TAP file may contain multiple test results (lines with test results). Each of these test results gets turned into a Java object and loaded by the plug-in. So when loading the test result pages, Jenkins needs to wait until all these objects have been parsed, deserialized and read into the memory.</p>
+
+<p>The next post will continue on code improvements, and another benchmark.</p>
+
+<p>Happy profiling!</p>
 </div>
 <!-- Pagination links -->
   <div class="pagination">
@@ -377,7 +400,7 @@ in a good time, and are extremely easy to work with.</p>
         <i class="left chevron icon"></i>Previous
       </a>
       
-      <span class="page_number ">Page: 13 of 31</span>
+      <span class="page_number ">Page: 13 of 27</span>
       
       <a href="/blog/page/14/" class="next">
         Next<i class="right chevron icon"></i>

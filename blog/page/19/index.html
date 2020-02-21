@@ -4,7 +4,7 @@
   <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.6.1 -->
-<title>Page 19 of 31 for Blog - page 19 | Bruno P. Kinoshita</title>
+<title>Page 19 of 27 for Blog - page 19 | Bruno P. Kinoshita</title>
 <meta name="generator" content="Jekyll v3.8.5" />
 <meta property="og:title" content="Blog - page 19" />
 <meta property="og:locale" content="en_US" />
@@ -169,207 +169,84 @@
 
 <div class="blog"><div class="post">
   <h3 class="post-header">
-    <a class="post-link" href="/2015/09/06/how-does-the-jenkins-credentials-plugin-store-passwords.html">
-      How does the Jenkins Credentials Plug-in store passwords?
+    <a class="post-link" href="/2012/12/21/using-apache-commons-functor-functional-interfaces-with-java-8-lambdas.html">
+      Using Apache Commons Functor functional interfaces with Java 8 lambdas
     </a>
-  </h3><span class="post-meta">Sep 6, 2015<span>&mdash; star date: -307238.36</span></span><p><a href="https://wiki.jenkins-ci.org/display/JENKINS/Credentials+Plugin">Jenkins Credentials Plug-in</a> manages credentials stored in Jenkins. These credentials can be used in many jobs and by plug-ins for executing SSH commands, authenticating to systems, or running other commands that need some sort of authentication or authorisation.</p>
+  </h3><span class="post-meta">Dec 21, 201263<span>&mdash; star date: -310945.36</span></span><p><a href="http://commons.apache.org/sandbox/functor/">Apache Commons Functor</a> (hereon [functor]) is an <a href="http://commons.apache.org/">Apache Commons</a> component that provides a functional programming API and several patterns implemented (visitor, generator, aggregator, etc). <a href="http://openjdk.java.net/projects/lambda/" title="Java 8 lambda">Java 8</a> has several nice new features, including lambda expressions and <a href="http://datumedge.blogspot.com.br/2012/06/java-8-lambdas.html">functional interfaces</a>. In Java 8, lambdas or lambdas expressions are <a href="http://tronicek.blogspot.com.br/2007/12/closures-closure-is-form-of-anonymous_28.html">closures</a> that can be evaluated and behave like anonymous methods.</p>
 
-<p>I recently used its API for the first time in the <a href="https://github.com/biouno/figshare-plugin">BioUno figshare Plug-in</a> to store OAuth 1.0 credentials (consumer key, consumer secret, token key, token secret). This <a href="http://biouno.org/2015/09/05/using_jenkins_credentials_plugin_to_create_the_biouno_figshare_plugin/">blog post</a> has more details about how we used the plug-in, but this post is specifically on how the passwords are stored by Jenkins.</p>
+<p>Functional interfaces are interfaces with only one method. These interfaces can be used in lambdas and save you a lot of time from writing anonymous classes or even implementing the interfaces. [functor] provides several functional interfaces (thanks to <a href="https://issues.apache.org/jira/browse/FUNCTOR-20">Matt Benson</a>). It hasn't been released yet, but there are some new examples in the project site, in the <a href="http://svn.apache.org/viewvc/commons/proper/functor/trunk/" title="[functor] SVN trunk">trunk of the SVN</a>. I will use one of these examples to show how [functor] functional interfaces can be used in conjunction with Java 8 lambdas.</p>
 
-<h2 id="secret-and-ciphers">Secret and ciphers</h2>
+<p>After the example with [functor] in Java 8, I will explain how I am running Java 8 in Eclipse (it's kind of a <a href="http://www.speaklikeabrazilian.com/expression/define?e=Gambiarra" title="Gambiarra">gambiarra</a>, but works well).</p>
 
-<p>Jenkins stores its configuration on disk as XML using the XStream library. Plug-in developers using the Credentials Plug-in API must use the <strong>Secret</strong> class to encrypt sensitive information.</p>
-
-<p>The <code class="language-plaintext highlighter-rouge">Secret.fromString</code> method is responsible for creating a cipher from a given String. As in the Secret Javadoc,  <em>“this is not meant as a protection against code running in the same VM, nor against an attacker who has local file system access on Jenkins master”</em>. But at least makes things more complicated :-)</p>
-
-<ul>
-  <li><a href="http://javadoc.jenkins-ci.org/hudson/util/Secret.html">Secret Javadoc</a></li>
-  <li><a href="https://github.com/jenkinsci/jenkins/blob/master/core/src/main/java/hudson/util/Secret.java">Secret source code</a></li>
-</ul>
-
-<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">static</span> <span class="nc">Secret</span> <span class="nf">fromString</span><span class="o">(</span><span class="nc">String</span> <span class="n">data</span><span class="o">)</span> <span class="o">{</span>
-    <span class="n">data</span> <span class="o">=</span> <span class="nc">Util</span><span class="o">.</span><span class="na">fixNull</span><span class="o">(</span><span class="n">data</span><span class="o">);</span>
-    <span class="nc">Secret</span> <span class="n">s</span> <span class="o">=</span> <span class="n">decrypt</span><span class="o">(</span><span class="n">data</span><span class="o">);</span>
-    <span class="k">if</span><span class="o">(</span><span class="n">s</span><span class="o">==</span><span class="kc">null</span><span class="o">)</span> <span class="n">s</span><span class="o">=</span><span class="k">new</span> <span class="nc">Secret</span><span class="o">(</span><span class="n">data</span><span class="o">);</span>
-    <span class="k">return</span> <span class="n">s</span><span class="o">;</span>
-<span class="o">}</span>
-</code></pre></div></div>
-
-<p>The first line simply replaces a null string by an empty “”, or keeps the current value of not null.</p>
-
-<p>After that, the decrypt method is called.</p>
-
-<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">static</span> <span class="nc">Secret</span> <span class="nf">decrypt</span><span class="o">(</span><span class="nc">String</span> <span class="n">data</span><span class="o">)</span> <span class="o">{</span>
-    <span class="k">if</span><span class="o">(</span><span class="n">data</span><span class="o">==</span><span class="kc">null</span><span class="o">)</span>      <span class="k">return</span> <span class="kc">null</span><span class="o">;</span>
-    <span class="k">try</span> <span class="o">{</span>
-        <span class="kt">byte</span><span class="o">[]</span> <span class="n">in</span> <span class="o">=</span> <span class="nc">Base64</span><span class="o">.</span><span class="na">decode</span><span class="o">(</span><span class="n">data</span><span class="o">.</span><span class="na">toCharArray</span><span class="o">());</span>
-        <span class="nc">Secret</span> <span class="n">s</span> <span class="o">=</span> <span class="n">tryDecrypt</span><span class="o">(</span><span class="no">KEY</span><span class="o">.</span><span class="na">decrypt</span><span class="o">(),</span> <span class="n">in</span><span class="o">);</span>
-        <span class="k">if</span> <span class="o">(</span><span class="n">s</span><span class="o">!=</span><span class="kc">null</span><span class="o">)</span>    <span class="k">return</span> <span class="n">s</span><span class="o">;</span>
-
-        <span class="c1">// try our historical key for backward compatibility</span>
-        <span class="nc">Cipher</span> <span class="n">cipher</span> <span class="o">=</span> <span class="n">getCipher</span><span class="o">(</span><span class="s">"AES"</span><span class="o">);</span>
-        <span class="n">cipher</span><span class="o">.</span><span class="na">init</span><span class="o">(</span><span class="nc">Cipher</span><span class="o">.</span><span class="na">DECRYPT_MODE</span><span class="o">,</span> <span class="n">getLegacyKey</span><span class="o">());</span>
-        <span class="k">return</span> <span class="nf">tryDecrypt</span><span class="o">(</span><span class="n">cipher</span><span class="o">,</span> <span class="n">in</span><span class="o">);</span>
-    <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="nc">GeneralSecurityException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
-        <span class="k">return</span> <span class="kc">null</span><span class="o">;</span>
-    <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="nc">UnsupportedEncodingException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
-        <span class="k">throw</span> <span class="k">new</span> <span class="nf">Error</span><span class="o">(</span><span class="n">e</span><span class="o">);</span> <span class="c1">// impossible</span>
-    <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="nc">IOException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
-        <span class="k">return</span> <span class="kc">null</span><span class="o">;</span>
-    <span class="o">}</span>
-<span class="o">}</span>
-</code></pre></div></div>
-
-<p>The <code class="language-plaintext highlighter-rouge">KEY.decrypt()</code> call will return a <a href="http://docs.oracle.com/javase/8/docs/api/javax/crypto/Cipher.html"><code class="language-plaintext highlighter-rouge">javax.crypto.Cipher</code></a>. The Cipher class is handled in <a href="https://github.com/jenkinsci/jenkins/blob/93dfe3377ec8d430818f5b9073f16c677343adb4/core/src/main/java/jenkins/security/CryptoConfidentialKey.java">CryptoConfidentialKey</a> in Jenkins API, where it defines the algorithm used to create the cipher: <a href="https://en.wikipedia.org/wiki/Advanced_Encryption_Standard">AES</a>.</p>
-
-<p>Jenkins has also a <a href="https://github.com/jenkinsci/jenkins/blob/93dfe3377ec8d430818f5b9073f16c677343adb4/core/src/main/java/jenkins/security/ConfidentialStore.java#L63">ConfidentialStore</a>, that is required to create the cipher. This class must be initialized before someone tries to create or read a cipher. This extra step also increases security, though access to the JVM is still a problem.</p>
-
-<p>It is a bit late, so it is all for today. In summary: the credentials plug-in gives you a central place to manage credentials, but it is up to plug-in developers to use it. Sensitive values can be encrypted with AES on disk. So it is important that your file permissions, ACL and system auditing processes are in place and well maintained and monitored.</p>
-
-<p>Happy hacking!</p>
-</div>
+<a class="post-link" href="/2012/12/21/using-apache-commons-functor-functional-interfaces-with-java-8-lambdas.html">Continue reading</a></div>
 <div class="post">
   <h3 class="post-header">
-    <a class="post-link" href="/2015/06/23/modeling-observation-data-in-sos.html">
-      Modeling observation data in SOS (Sensor Observation Service)
+    <a class="post-link" href="/2012/11/07/running-bdd-tests-from-testlink-in-jenkins.html">
+      Running BDD tests from TestLink in Jenkins
     </a>
-  </h3><span class="post-meta">Jun 23, 2015<span>&mdash; star date: -307443.84</span></span><p>This week NZ Herald published an <a href="http://www.nzherald.co.nz/technology/news/article.cfm?c_id=5&amp;objectid=11469418">article</a>
-about a device created by an Irish farmer enterpreneur that sends a message to a farmer when the cow is about to give birth.
-The device monitors “heightened tail moviment”.</p>
+  </h3><span class="post-meta">Nov 7, 201264<span>&mdash; star date: -310071.04</span></span><p>Last night and this morning I spent some time working on running
+<a href="http://en.wikipedia.org/wiki/Behavior-driven_development">BDD</a> tests that were created in
+<a href="http://www.teamst.org">TestLink</a> in <a href="http://jenkins-ci.org">Jenkins</a>, using
+<a href="https://wiki.jenkins-ci.org/display/JENKINS/TestLink+Plugin">testlink-plugin</a>.</p>
 
-<p>In this post I will try to apply what I am learning following the <a href="http://www.ogcnetwork.net/SOS_2_0/tutorial">SOS Tutorial</a>
-(the Open Geospatial Consortium standard for Sensor Observation Service). Feel free to drop me a message via
-<a href="https://twitter.com/kinow">@kinow</a> if you find any mistakes or have any suggestions.</p>
+<p>Similar integration has already been proposed in <a href="http://www.sqaopen.net/blog/en/?tag=jinfeng">JinFeng</a>,
+by Olivier Renault. Basically, you write BDD stories in TestLink (a story goes into the Test Case summary),
+Jenkins retrieves these stories and executes them using a skeleton project.</p>
 
-<h2 id="modeling-the-tail-moviment-observation-data-in-sos">Modeling the tail moviment observation data in SOS</h2>
+<p><img class="ui fluid image" src="/assets/posts/2012-11-07-running-bdd-tests-from-testlink-in-jenkins/tl_bdd.png" /></p>
 
-<p>SOS is a standard designed to provide access to observation data. There are several server implementations, such as Kisters KiWIS, 
-istSOS and 52North SOS.</p>
+<p>There are many ways to use BDD. In some of them you write code like Java, Ruby or Perl, and in others you write a DSL. I started working with JBehave, but for this integration, I preferred to use a <a href="http://en.wikipedia.org/wiki/Domain-specific_language" title="DSL">DSL</a> - as TestLink doesn’t maintain source code, only test cases -, so I switched to <a href="http://www.easyb.org" title="easyb">easyb</a>.</p>
 
-<p>The standard mentions and utilises several other standards, such as SensorML, WFS, XML, WMS, etc. The SOS Tutorial on
-how to model your observation data for SOS starts by defining <em>procedure</em>, <em>observed property</em>, <em>feature of interest</em>,
-<em>phenomenon and result times</em>, and the <em>result value</em>.</p>
-
-<p>Let’s try to model the data from the tail moviment sensors in the following table.</p>
-
-<table class="table table-bordered">
-<thead>
-<tr>
-<th>Name</th>
-<th>Description</th>
-<th>Our example</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<th>Procedure</th>
-<td>The process that has generated the observation, such as a sensor, from the O&amp;M specification. In our example that could be a sensor identification</td>
-<td>moocall_001</td>
-</tr>
-<tr>
-<th>Observed Property</th>
-<td>A property which is observed (look at NASA SWEET ontology for existing values)</td>
-<td>Heightned tail moviment</td>
-</tr>
-<tr>
-<th>Feature of Interest</th>
-<td>A feature that carries the property which is observed</td>
-<td>Pregnant cow</td>
-</tr>
-<tr>
-<th>Phenomenon and Result Times</th>
-<td>The phenomenon time is when the data has been taken, and the result time when it has been created. If both are the same, the resultTime can point to the phenomenonTime</td>
-<td>20150623142000</td>
-</tr>
-<tr>
-<th>Result value</th>
-<td>This is the result of the observation. Can be a OM_Measurement if numeric, OM_TruthObservation, etc (O&amp;M)</td>
-<td>3 (supposing we have a scale from 1 to 5)</td>
-</tr>
-</tbody>
-</table>
-
-<p>In the next post I will try to show how to load this model and some dummy data into a fresh installation of
-52North SOS server.</p>
-</div>
+<a class="post-link" href="/2012/11/07/running-bdd-tests-from-testlink-in-jenkins.html">Continue reading</a></div>
 <div class="post">
   <h3 class="post-header">
-    <a class="post-link" href="/2015/04/11/groovy-hooks-in-jenkins-for-increasing-logging-level.html">
-      Groovy Hooks in Jenkins for increasing logging level
+    <a class="post-link" href="/2012/10/25/a-quick-view-on-wordpress-mantis-and-jenkins-plug-in-api.html">
+      A quick view on Wordpress, Mantis and Jenkins plug-in API
     </a>
-  </h3><span class="post-meta">Apr 11, 2015<span>&mdash; star date: -307643.84</span></span><p>Yesterday, while debugging a problem we had in the <a href="http://biouno.org">BioUno</a> update center, 
-I realized that after <a href="https://wiki.jenkins-ci.org/display/JENKINS/Logging">increasing the logging level in the WEB interface</a>, 
-the messages that I needed weren’t being displayed in the logs.</p>
+  </h3><span class="post-meta">Oct 25, 201265<span>&mdash; star date: -310103.83</span></span><p>I'm preparing a <em>plug-in API proposal for <a href="http://www.teamst.org" title="TestLink">TestLink</a></em>, and thought that the best way to learn how to write a good plug-in API would be by looking at other application's plug-in API's.</p>
 
-<p>It happened because some of the logging happened during Jenkins initialization, and before I could adjust the log level.</p>
+<p><img class="ui image" src="/assets/posts/2012-10-25-a-quick-view-on-wordpress-mantis-and-jenkins-plug-in-api/testlink_logo_2.jpg " /></p>
 
-<p>The solution was to use a <a href="https://wiki.jenkins-ci.org/display/JENKINS/Groovy+Hook+Script">Groovy Hook Script</a>. 
-If you are familiar with Linux init scripts, the idea is quite similar.</p>
+<p>This post contains information that I gathered for creating this new API, but that may also be useful for other programmers. I used <a href="#wp">Wordpress</a>, <a href="#mantis">Mantis</a> and <a href="#jenkins">Jenkins</a> in this study. Let me know if you find any mistakes or if you have any other suggestions.</p>
 
-<p>A Groovy script in the <code class="language-plaintext highlighter-rouge">$JENKINS_ROOT_DIR/init.groovy.d/</code> directory is executed during
-Jenkins initialization. This way you can increase the global logger level with a script
-as the following below.</p>
-
-<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">java.util.logging.ConsoleHandler</span>
-<span class="kn">import</span> <span class="nn">java.util.logging.LogManager</span>
-<span class="kn">import</span> <span class="nn">java.util.logging.Logger</span>
-<span class="kn">import</span> <span class="nn">java.util.logging.Level</span>
-
-<span class="n">def</span> <span class="n">logger</span> <span class="o">=</span> <span class="nc">Logger</span><span class="o">.</span><span class="na">getLogger</span><span class="o">(</span><span class="s">""</span><span class="o">)</span>
-<span class="n">logger</span><span class="o">.</span><span class="na">setLevel</span><span class="o">(</span><span class="nc">Level</span><span class="o">.</span><span class="na">FINEST</span><span class="o">)</span>
-<span class="n">logger</span><span class="o">.</span><span class="na">addHandler</span> <span class="o">(</span><span class="k">new</span> <span class="nc">ConsoleHandler</span><span class="o">())</span>
-</code></pre></div></div>
-
-<p>Happy logging!</p>
-</div>
+<a class="post-link" href="/2012/10/25/a-quick-view-on-wordpress-mantis-and-jenkins-plug-in-api.html">Continue reading</a></div>
 <div class="post">
   <h3 class="post-header">
-    <a class="post-link" href="/2015/01/01/contributing-to-apache-jena.html">
-      Contributing to Apache Jena
+    <a class="post-link" href="/2012/10/20/replacing-a-hashset-with-a-bitset.html">
+      Replacing a HashSet with a BitSet
     </a>
-  </h3><span class="post-meta">Jan 1, 2015<span>&mdash; star date: -307915.07</span></span><p>As I mentioned in my <a href="/2014/10/11/basic-workflow-of-a-sparql-query-in-fuseki.html">previous post</a>, 
-I am using <a href="http://jena.apache.org">Apache Jena</a> for a project of a customer. I had never used 
-any triple store, nor a SPARQL Endpoint server before. But for being involved with the Apache 
-Software Foundation, and since the company itself is using several Apache components, it was only 
-natural Jena to be our first choice.</p>
+  </h3><span class="post-meta">Oct 20, 201266<span>&mdash; star date: -310117.49</span></span><p>I always read the messages in the <a href="http://www.apache.org/foundation/mailinglists.html" title="Apache mailing lists">Apache dev mailing lists</a>, including Apache Commons <a href="http://commons.apache.org/mail-lists.html" title="Apache Commons mailing lists">dev mailing list</a>. And you should too. There are always interesting discussions. Sometimes you participate, other times you only watch what's happening, but in the end <strong>you always learn something new</strong>.</p>
 
-<p>It has served us very well so far. At the moment we have less than 100 queries per day, but the 
-project is still under development and we expect 1000 queries per day by the first quarter of 
-2015 and 1000000 near the end of 2015. We also have few entries in TDB, but expect to grow this 
-number to a few million before 2016.</p>
+<p><img class="ui image" src="/assets/posts/2012-10-20-replacing-a-hashset-with-a-bitset/feather_small.gif" /></p>
 
-<a class="post-link" href="/2015/01/01/contributing-to-apache-jena.html">Continue reading</a></div>
+<p>A few days ago, I found <a href="https://issues.apache.org/jira/browse/LANG-839" title="LANG-839">an issue</a> where it was being proposed to replace an unnecessary <a href="http://docs.oracle.com/javase/6/docs/api/java/util/HashSet.html" title="HashSet">HashSet</a> in <a href="http://commons.apache.org/lang/api-release/org/apache/commons/lang3/ArrayUtils.html" title="ArrayUtils">ArrayUtils</a>#removeElements() by a <a href="http://docs.oracle.com/javase/6/docs/api/java/util/BitSet.html" title="BitSet">BitSet</a>. Here's how the code looked like: </p>
+
+<a class="post-link" href="/2012/10/20/replacing-a-hashset-with-a-bitset.html">Continue reading</a></div>
 <div class="post">
   <h3 class="post-header">
-    <a class="post-link" href="/2014/10/11/basic-workflow-of-a-sparql-query-in-fuseki.html">
-      Basic workflow of a SPARQL query in Fuseki
+    <a class="post-link" href="/2012/10/16/adding-coverage-reports-in-jenkins-with-googletest-and-gcovr.html">
+      Adding coverage reports in Jenkins with GoogleTest and gcovr
     </a>
-  </h3><span class="post-meta">Oct 11, 2014<span>&mdash; star date: -308139.73</span></span><p>Before using any library or tool in a customer project, specially when it is an Open Source one, 
-there are many things that I like to look at before deploying it. Basically, I look at the 
-features, documentation, community, open issues (in special blockers or criticals), the time 
-to release fixes and new features and, obviously, the license.</p>
+  </h3><span class="post-meta">Oct 16, 201267<span>&mdash; star date: -310128.42</span></span><p>After the <a href="/2012/10/11/jenkins-testlink-and-gtest-in-5-minutes-or-so.html">last post</a> about
+<a href="http://code.google.com/p/googletest/">GoogleTest</a> and <a href="http://www.teamst.org">TestLink</a> using
+<a href="https://wiki.jenkins-ci.org/display/JENKINS/TestLink+Plugin">Jenkins TestLink Plug-in</a>, I received an e-mail
+asking about <a href="http://en.wikipedia.org/wiki/Code_coverage">coverage</a> with GoogleTest and
+<a href="http://www.jenkins-ci.org">Jenkins</a>. I’ve just updated the
+<a href="https://github.com/kinow/gtest-tap-listener/blob/master/samples/Makefile">Makefile</a> in the samples
+directory, of the <a href="https://github.com/kinow/gtest-tap-listener">GoogleTest TAP listener project</a>,
+to output coverage data.</p>
 
-<p>At the moment I’m using <a href="http://jena.apache.org">Apache Jena</a> to work with ontologies, SPARQL 
-and data matching and enrichment for a customer.</p>
+<p>Basically, you have to add the compiler flags <code class="language-plaintext highlighter-rouge">-fprofile-arcs -ftest-coverage</code> and link the executable with
+<code class="language-plaintext highlighter-rouge">-lgcov</code>. Take a look at the project’s Makefile and you’ll notice how simple it is. In order to have Jenkins
+interpreting your coverage report, you’ll have to convert it to <a href="http://cobertura.sourceforge.net">cobertura</a>
+XML. There is a Python utility that can be used for this: <a href="https://software.sandia.gov/trac/fast/wiki/gcovr">gcovr</a>.
+Download it and copy it to somewhere where Jenkins can execute it (e.g.: <code class="language-plaintext highlighter-rouge">/usr/local/bin</code>).</p>
 
-<p>Jena is fantastic, and similar tools include <a href="http://www.w3.org/wiki/VirtuosoUniversalServer">Virtuoso</a>, 
-<a href="http://stardog.com/">StarDog</a>, <a href="http://www.ontotext.com/products/ontotext-graphdb-owlim/">GraphDB</a>, 
-<a href="http://4store.org/">4Store</a> and others. From looking at the code and its community and documentation, 
-Jena seems like a great choice.</p>
+<p>Now, if you’ve followed the instructions from the previous post, you should have a job that reports your GoogleTest
+tests from Jenkins to TestLink using the plug-in, and is downloading the source code from GitHub. Add an extra build
+step (Shell) to execute <code class="language-plaintext highlighter-rouge">gcovr</code>.</p>
 
-<p>I’m still investigating if/how we gonna need to use inference and reasoners, looking 
-at the issues, and learning my way through its code base. The following is my initial mapping 
-of what happens when you submit a SPARQL query to Fuseki.</p>
-
-<p><img src="/assets/posts/2014-10-11-basic-workflow-of-a-sparql-query-in-fuseki/drawing1.png" alt="Fuseki SPARQL query work flow" /></p>
-
-<p>My understanding is that Fuseki is just a web layer, handling a bunch of validations, logging, 
-error handling, and relying on the ARQ module, that is who actually handles the requests. 
-I also think a new Fuseki server is baking in the project git repo, so stay tuned for an 
-updated version of this graph soon.</p>
-
-<p>Happy hacking!</p>
-</div>
+<a class="post-link" href="/2012/10/16/adding-coverage-reports-in-jenkins-with-googletest-and-gcovr.html">Continue reading</a></div>
 <!-- Pagination links -->
   <div class="pagination">
     <p>
@@ -378,7 +255,7 @@ updated version of this graph soon.</p>
         <i class="left chevron icon"></i>Previous
       </a>
       
-      <span class="page_number ">Page: 19 of 31</span>
+      <span class="page_number ">Page: 19 of 27</span>
       
       <a href="/blog/page/20/" class="next">
         Next<i class="right chevron icon"></i>

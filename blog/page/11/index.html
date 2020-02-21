@@ -4,7 +4,7 @@
   <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.6.1 -->
-<title>Page 11 of 31 for Blog - page 11 | Bruno P. Kinoshita</title>
+<title>Page 11 of 27 for Blog - page 11 | Bruno P. Kinoshita</title>
 <meta name="generator" content="Jekyll v3.8.5" />
 <meta property="og:title" content="Blog - page 11" />
 <meta property="og:locale" content="en_US" />
@@ -169,360 +169,267 @@
 
 <div class="blog"><div class="post">
   <h3 class="post-header">
-    <a class="post-link" href="/2017/04/17/troubleshooting-a-jenkins-plugin-compatibility-issue.html">
-      Troubleshooting a Jenkins Plug-in compatibility issue
+    <a class="post-link" href="/2017/03/14/order-of-containers-in-docker-compose.html">
+      Order of containers in Docker Compose
     </a>
-  </h3><span class="post-meta">Apr 17, 2017<span>&mdash; star date: -305627.4</span></span><p>This post is probably different from others. I will give a TL;DR, but will then
-give you a copy of
-<a href="https://issues.jenkins-ci.org/browse/JENKINS-42655?focusedCommentId=291470&amp;page=com.atlassian.jira.plugin.system.issuetabpanels%3Acomment-tabpanel#comment-291470">a comment of a Jenkins JIRA issue</a>.
-Hope you have fun reading it,
-specially if you maintain Jenkins servers or plug-ins.</p>
+  </h3><span class="post-meta">Mar 14, 2017<span>&mdash; star date: -305717.81</span></span><p>In Docker Compose you are able to control the startup order of the containers via
+the <em>depends_on</em> statement. This is documented in <a href="https://docs.docker.com/compose/startup-order/">Controlling startup order in Compose</a>.</p>
 
-<p>TL;DR: there was an issue in Jenkins Job DSL Plug-in, that caused jobs created to
-have an invalid script. The fix had not been released, but was already in the
-master branch in GitHub.</p>
+<p>If you have a simple setup, with Tomcat and Postgres, sometimes Postgres will start first, but Compose
+will initialize Tomcat before Postgres has fully booted. When that happens, you may receive 401, 404, or other
+application errors.</p>
 
-<p style="text-align: center; color: #DDDDDD;">&diams;</p>
+<p>You can fix it by combining <em>depends_on</em> with a <em>healthcheck</em>. For example:</p>
 
-<p><em>Well, that was fun bug reproduced, I believe I know why that’s happening. Not so complicated to fix… but no fast way to fix it. Here’s the issue analysis (grab a coffee to read it).</em></p>
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># File: docker-compose.yml</span>
+version: <span class="s1">'2.1'</span>
+services:
+  db:
+    container_name: twpg
+    build:
+      context: <span class="nb">.</span>
+      dockerfile: Dockerfile.postgres
+    restart: always
+    ports:
+      - <span class="s2">"5432:5432"</span>
+    healthcheck:
+      <span class="nb">test</span>: <span class="s2">"pg_isready -h localhost -p 5432 -q -U postgres"</span>
+      interval: 10s
+      <span class="nb">timeout</span>: 5s
+      retries: 5
+
+  web:
+    container_name: twtc
+    build:
+      context: <span class="nb">.</span>
+      dockerfile: Dockerfile.tomcat
+    restart: always
+    depends_on:
+      db:
+        condition: service_healthy
+    links:
+      - db
+    ports:
+      - <span class="s2">"80:8080"</span>
+</code></pre></div></div>
+
+<p>In the example docker-compose.yml, there are two containers, <em>db</em> and <em>web</em>. web is running
+a Tomcat, and db is running Postgres. Web depends on db (see depends_on), and uses a condition
+<em>service_healthy</em>. Which indicates it depends that that container is healthy.</p>
+
+<p>The <em>healthcheck</em> entry under the db container settings define how to check whether Postgres
+is running or not. In this case, we are using <em>pg_isready</em>, which is available in the
+vanilla Postgres 9 container.</p>
+
+<p>It will try 5 times, with a 10 seconds interval, and will time out after 5 seconds. You may
+have to tune these parameters for your application.</p>
+
+<p>This code snippet is from a
+<a href="https://github.com/Foxoncz/docker-thingworx/pull/3/files">pull request submitted to Foxoncz/docker-thingworx</a>.</p>
+
+<p>♥ Open Source</p>
+</div>
+<div class="post">
+  <h3 class="post-header">
+    <a class="post-link" href="/2017/02/28/using-aws-mfa-without-a-mobile-phone.html">
+      Using AWS MFA without a mobile phone
+    </a>
+  </h3><span class="post-meta">Feb 28, 2017<span>&mdash; star date: -305764.38</span></span><p>If you use AWS, the chances are that you use MFA - Multi-factor Authentication - to authenticate.
+I don’t like to install apps in my mobile phone, unless I need to, so having bought a new phone
+recently, I decided to find a replacement for Google Authenticator.</p>
+
+<p>There are several command line utilities, browser extensions, libraries, and tools (free and paid)
+that implement the TOTP - time-based one-time password -, the standard
+<a href="http://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_mfa_enable_virtual.html">required by Amazon</a>
+for MFA authentication.</p>
+
+<p>I decided to use a Go tool for the first time: <a href="https://github.com/pcarrier/gauth">gauth</a>. Note that you
+won’t be able to use it from home, in case you don’t bring your laptop home. You can have one MFA device
+linked to your AWS account, so you may have to remove an existing one. Follow these instructions with care :^)</p>
+
+<h3 id="install-go">Install Go</h3>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>apt update <span class="o">&amp;&amp;</span> <span class="nb">sudo </span>apt upgrade <span class="nt">-y</span>
+<span class="nb">cd </span>tmp/ <span class="o">&amp;&amp;</span> wget https://storage.googleapis.com/golang/go1.8.linux-amd64.tar.gz
+<span class="nb">tar</span> <span class="nt">-zxvf</span> go1.<span class="k">*</span>.tar.gz
+<span class="nb">sudo mv </span>go /usr/local
+vim ~/.bashrc
+</code></pre></div></div>
+
+<p>Add the following at the bottom of the file.</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">GOROOT</span><span class="o">=</span>/usr/local/go
+<span class="nv">GOPATH</span><span class="o">=</span><span class="s2">"</span><span class="nv">$HOME</span><span class="s2">/go"</span>
+<span class="nv">PATH</span><span class="o">=</span><span class="s2">"</span><span class="nv">$GOPATH</span><span class="s2">/bin:</span><span class="nv">$GOROOT</span><span class="s2">/bin:</span><span class="nv">$PATH</span><span class="s2">"</span>
+</code></pre></div></div>
+
+<p>And you can test it with <code class="language-plaintext highlighter-rouge">. ~/.bashrc &amp;&amp; go version</code>.</p>
+
+<h3 id="install-gauth">Install gauth</h3>
+
+<p>Given your environment is correctly set up, you should be able to use the following command to install
+gauth, and have it available in your <em>$PATH</em>.</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>go get github.com/pcarrier/gauth
+</code></pre></div></div>
+
+<p>Edit <em>~/.config/gauth.csv</em> adding a value for the AWS MFA key.</p>
+
+<h3 id="getting-the-aws-mfa-key">Getting the AWS MFA key</h3>
+
+<p>To get the value that you must place in your <em>gauth.csv</em> file, you must add a new MFA device. When asked to scan a QR code, look for an option to enter the manual value. That will give you a long string. That’s the value you are looking for.</p>
+
+<h3 id="extra-auto-copy-paste-from-command-line">Extra: Auto copy-paste from command line</h3>
+
+<p>If you would like to quickly copy and paste, try creating an alias as described
+<a href="https://gist.github.com/ehime/9fd8810442daf64686a34f885e18be01">on this gist</a>.</p>
+
+<p>I used these instructions, and can now run one command line, that will put the next MFA code in my
+clipboard. Then just paste into my browser, and that’s that!</p>
+
+<p>Happy hacking!</p>
+
+<h3 id="references">References</h3>
 
 <ul>
-  <li><em>Downloaded jenkins.war (2.32.3.war)</em></li>
-  <li><em>mkdir /tmp/123</em></li>
-  <li><em>JENKINS_HOME=/tmp/123 java -jar jenkins.war</em></li>
-  <li><em>Entered secret into form and submitted</em></li>
-  <li><em>Installed suggested plugins (boy that takes a while)</em></li>
-  <li><em>Created temp user</em></li>
-  <li><em>Installed (without restart) active-choices-plugin 1.5.3</em></li>
-  <li><em>Installed (without restart) job-dsl-plugin</em></li>
-  <li><em>Manually stopped Jenkins, and started it again with same command #3</em></li>
-  <li><em>Log in with user, all looking good</em></li>
-  <li><em>Created Freestyle job JENKINS-42655 (see attached config.xml)</em></li>
-  <li><em>Executed job, and found new job JENKINS-42655-1</em></li>
-  <li><em>Never opened the job configuration, clicked on the “Generated Items link to JENKINS-42655-1” to open in a new tab</em></li>
-  <li><em>Clicked on Build with Parameters</em></li>
-  <li><em>Looked at logs, and noticed the security-script-plugin exceptions</em></li>
-  <li><em>Went to “Manage Jenkins” / “In-process Script Approval” and approved scripts</em></li>
-  <li><em>Went back to the JENKINS-42655-1 build with parameters screen, and everything worked as expected</em></li>
+  <li><a href="https://github.com/pcarrier/gauth">gauth: replace Google Authenticator</a></li>
+  <li><a href="http://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_mfa_enable_virtual.html">Enabling a Virtual Multi-factor Authentication (MFA) Device</a></li>
+  <li><a href="http://tecadmin.net/install-go-on-ubuntu/">How to Install Go 1.7 on Ubuntu 16.04 &amp; 14.04</a></li>
+  <li><a href="http://garywoodfine.com/use-pbcopy-on-ubuntu/">Use pbcopy on Ubuntu</a></li>
 </ul>
-
-<p><em>*Hummm. Issue more or less reproduced. Let’s investigate more.</em></p>
-
-<ul>
-  <li><em>Restarted Jenkins again</em></li>
-  <li><em>Changed the JENKINS-42655 seed job configuration to use a different script</em></li>
-  <li><em>Copied the config.xml file to another location</em></li>
-  <li><em>Went to build with parameters, and now it was broken again</em></li>
-  <li><em>Saved the job manually</em></li>
-  <li><em>Copied the config.xml file to yet another location</em></li>
-  <li><em>Went to build with parameters, and now it worked as reported in this issue</em></li>
-</ul>
-
-<p><em>Now comes the interesting part. Looking at the diff. Attaching a screen shot so that others can have fun looking at it too. I installed Kompare as it has some cool features such as disabling diff for white spaces, blank lines, etc. The whole file changes as you save it. But if you ignore the number of white spaces… Then you can see that the Job DSL Plug-in is creating a &lt;script&gt; tag, as we used to do before 1.5 I think.</em></p>
-
-<div class="row">
-<div class="ui fluid container">
-<figure>
-<a href="/assets/posts/2017-04-17-troubleshooting-a-jenkins-plugin-compatibility-issue/#excerpt/JENKINS-42655-diff.png" rel="prettyPhoto" class="thumbnail" title="Screen shot">
-<img style="height: 400px;" class="ui image" src="/assets/posts/2017-04-17-troubleshooting-a-jenkins-plug-in-compatibility-issue/JENKINS-42655-diff.png" alt="Screen shot" />
-
-
-*Now we use the script-security-plugin. So we need to wrap that around the script-security-plugin's tags. Will report an issue for job-dsl-plugin, and will probably submit a pull request in the next days too. There's not much left we can change in the plug-in code for that Piotr Tempes, so I'm afraid you will have to:*
-
-* *keep saving the job*
-* *perhaps work on the fix for Job DSL if you feel like doing it (as you could probably be faster than me in submitting the PR)*
-* *use an older version of the active-choices-plugin that doesn't use security-script-plugin, though you could be bitten by other old bugs*
-* *write some script to replace the &lt;script&gt; tag and wrap it by the secureScript (doing what the pull request will do automatically later)*
-
-*Sorry for not being able to quickly provide any workaround, nor to cut a quick bugfix release.*
-
-*Cheers*
-*Bruno*
-
-<p style="text-align: center; color: #DDDDDD;">&diams;</p>
-
-ps: When I started getting involved in Open Source, I always felt extremely happy when
-people would spend their time troubleshooting my issues, or just educating me on how to
-behave in an Open Source community, or even how I should have troubleshooted initially
-the issue myself. So whenever I have time, I try to write detailed and polite replies. The
-person posting the comment is my past. The person posting the comment is my future :-)
-[Kindness begets kindness](http://revistaepoca.globo.com/Revista/Epoca/0,,EMI96818-15230,00.html).
-
-&hearts; Open Source
-</a></figure></div></div>
 </div>
 <div class="post">
   <h3 class="post-header">
-    <a class="post-link" href="/2017/04/14/writing-a-binary-parser-in-python-numpy-vs-construct.html">
-      Writing a binary parser in Python: NumPy vs. Construct
+    <a class="post-link" href="/2017/01/08/apache-commons-lang-memoizer.html">
+      Apache Commons Lang: Memoizer
     </a>
-  </h3><span class="post-meta">Apr 14, 2017<span>&mdash; star date: -305635.62</span></span><p>Some time ago I worked with researchers to write a parser for an old data format. The data
-was generated by device (radiosonde) using the vendor (Vaisala) specific binary format.</p>
+  </h3><span class="post-meta">Jan 8, 2017<span>&mdash; star date: -305895.89</span></span><p>The current release of <a href="https://commons.apache.org/proper/commons-lang/">Apache Commons Lang</a>
+is <strong>3.5</strong>. The upcoming release, probably 3.6,
+will include a new feature, added in a
+<a href="https://github.com/apache/commons-lang/pull/203">pull request</a>:
+<strong>a Memoizer implementation</strong>. Check out the ticket <a href="https://issues.apache.org/jira/browse/LANG-740">LANG-740</a>
+for more about the implementation being added to [lang].</p>
 
-<p>One of the researchers told me someone had written a parser for his work, and shared it
-on GitHub. To be honest, that was my first time parsing data in binary with Python. Did
-that before with C, C++, Perl, and Java, but never with Python.</p>
+<p>The book <a href="http://jcip.net/">Java Concurrency in Practice</a> introduces readers to the Memoizer,
+and has also a <a href="http://jcip.net/listings/Memoizer.java">public domain implementation available for download</a>
+(besides that, the book has also lots of other interesting topics!).</p>
 
-<p>The code on GitHub used <a href="http://www.numpy.org/">NumPy</a> and looked similar to this one.</p>
+<p>In summary, Memoizer is a simple cache, that will store the result of
+a computation. It receives a Computable object, responsible for doing something
+that will be stored by the Memoizer. Here’s a simple code to illustrate how that
+will work in your Java code.</p>
 
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="n">np</span>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// Computation to be stored in the cache</span>
+<span class="nc">Computable</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span> <span class="nc">String</span><span class="o">&gt;</span> <span class="n">getFormattedCurrentDate</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Computable</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span> <span class="nc">String</span><span class="o">&gt;()</span> <span class="o">{</span>
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="nc">String</span> <span class="nf">compute</span><span class="o">(</span><span class="nc">String</span> <span class="n">fmt</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">InterruptedException</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="k">new</span> <span class="nf">SimpleDateFormat</span><span class="o">(</span><span class="n">fmt</span><span class="o">).</span><span class="na">format</span><span class="o">(</span><span class="k">new</span> <span class="nc">Date</span><span class="o">());</span>
+    <span class="o">}</span>
+<span class="o">};</span>
 
-<span class="n">parse_header</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dtype</span><span class="p">(</span> <span class="p">[</span> <span class="p">((</span><span class="s">'field_a'</span><span class="p">,</span> <span class="s">'b1'</span><span class="p">),</span> <span class="p">(</span><span class="s">'field_b'</span><span class="p">,</span> <span class="s">'17b1'</span><span class="p">)</span> <span class="p">]</span> <span class="p">)</span>
+<span class="c1">// Our memoizer</span>
+<span class="nc">Memoizer</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span> <span class="nc">String</span><span class="o">&gt;</span> <span class="n">dateCache</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Memoizer</span><span class="o">&lt;&gt;(</span><span class="n">getFormattedCurrentDate</span><span class="o">);</span>
 
-<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s">'input.dat'</span><span class="p">,</span> <span class="s">'rb'</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
-    <span class="n">header</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">fromfile</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">parse_header</span><span class="p">,</span> <span class="n">count</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-    <span class="c1"># ...
-</span></code></pre></div></div>
+<span class="c1">// To illustrate its use</span>
+<span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">10</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+    <span class="k">try</span> <span class="o">{</span>
+        <span class="c1">// S -&gt; Millisecond</span>
+        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">dateCache</span><span class="o">.</span><span class="na">compute</span><span class="o">(</span><span class="s">"HH:mm:ss:S Z dd/MM/YYYY"</span><span class="o">));</span>
+        <span class="c1">// Regardless of this sleep call, we get the same result every iteration</span>
+        <span class="nc">Thread</span><span class="o">.</span><span class="na">sleep</span><span class="o">(</span><span class="mi">1500</span><span class="o">);</span>
+    <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="nc">InterruptedException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">e</span><span class="o">.</span><span class="na">printStackTrace</span><span class="o">();</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
 
-<p>And it indeed worked fine. But in the end I used the code - after contacting the author and letting
-him know what I was about to do - as reference together with an old specification document
-for the format, and created a parser with <a href="https://construct.readthedocs.io/en/latest/">Construct</a>.</p>
+<p>The computable created (<em>getFormattedCurrentDate</em>) will be called only once, and stored in
+a map. The parameter passed in the <em>#compute()</em> method will be used as key in the map.
+So choose your parameter wisely :-) The output of the example will be similar to the following one.</p>
 
-<p>From Construct’s website:</p>
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>19:15:57:854 +1300 08/01/2017
+19:15:57:854 +1300 08/01/2017
+19:15:57:854 +1300 08/01/2017
+19:15:57:854 +1300 08/01/2017
+19:15:57:854 +1300 08/01/2017
+19:15:57:854 +1300 08/01/2017
+19:15:57:854 +1300 08/01/2017
+19:15:57:854 +1300 08/01/2017
+19:15:57:854 +1300 08/01/2017
+19:15:57:854 +1300 08/01/2017
+</code></pre></div></div>
 
-<blockquote>
-  <p>Construct is a powerful declarative parser (and builder) for binary data.</p>
-</blockquote>
+<p>In the example above I used a <em>for-loop</em> to illustrate what will happen. Even though we call
+the memoizer <em>#compute()</em> method several times, followed by
+<em>Thread#sleep()</em>; only one result, the first to be computed, will be returned.</p>
 
-<p>This is what the code with construct looked like.</p>
+<p>So that’s all for today. Hope you learned something about this new class, that must
+be available in the next release of Apache Commons Lang.</p>
 
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">construct</span> <span class="kn">import</span> <span class="o">*</span>
+<p>Happy hacking!</p>
 
-<span class="n">parse_header</span> <span class="o">=</span> <span class="n">Struct</span><span class="p">(</span><span class="s">"parse_header"</span><span class="p">,</span>
-    <span class="n">Enum</span><span class="p">(</span><span class="n">Byte</span><span class="p">(</span><span class="s">"file_ready"</span><span class="p">),</span>
-        <span class="n">READY</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
-        <span class="n">NOT_READY</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
-        <span class="n">_default_</span> <span class="o">=</span> <span class="s">"UNKNOWN"</span><span class="p">,</span>
-    <span class="p">),</span>
-    <span class="n">Bytes</span><span class="p">(</span><span class="s">"reserved"</span><span class="p">,</span> <span class="mi">17</span><span class="p">)</span>
-<span class="p">)</span>
-
-<span class="c1"># ...
-</span>
-<span class="n">parse_contents</span> <span class="o">=</span> <span class="n">Struct</span><span class="p">(</span><span class="s">"parse_contents"</span><span class="p">,</span>
-    <span class="n">parse_header</span><span class="p">,</span>
-    <span class="n">Range</span><span class="p">(</span><span class="n">mincount</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">maxcout</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">subcon</span><span class="o">=</span><span class="n">pre_data</span><span class="p">),</span>
-    <span class="n">OptionalGreedyRange</span><span class="p">(</span><span class="n">detailed_data</span><span class="p">)</span>
-<span class="p">)</span>
-
-<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s">'input.dat'</span><span class="p">,</span> <span class="s">'rb'</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
-    <span class="n">parse_results</span> <span class="o">=</span> <span class="n">parse_contents</span><span class="o">.</span><span class="n">parse_stream</span><span class="p">(</span><span class="n">fid</span><span class="p">)</span>
-    <span class="c1"># ...
-</span></code></pre></div></div>
-
-<p>Writing the parser with NumPy or Construct would achieve the same result. However, in the end
-this came down to personal preference, and my point of view as Software Engineer. This is the
-description of NumPy.</p>
-
-<blockquote>
-  <p>NumPy is the fundamental package for scientific computing with Python.</p>
-</blockquote>
-
-<p>NumPy is a project tailored for scientific computing, with a focus on linear algebra,
-N-dimensional arrays, and so it goes. While it contains code that can parse binary data,
-the footprint added to a project that includes it as dependency is quite big.</p>
-
-<p>The parser written with NumPy wasn’t using 5% of the NumPy code base. Probably less than 1%. Updates
-to NumPy could break the application compatibility, even if the update came due to some new
-matrix operation added to NumPy through some external and missing dependency.</p>
-
-<p>In Java something similar happens with Google Guava. While I use it some times, most of the
-times I find myself using one of the Apache Commons libraries, or another dependency
-with just what I need. To avoid including unnecessary code to my application.</p>
-
-<p>If you prefer to use NumPy that’s fine too :-) I just had the time enough to rewrite it
-instead of using the NumPy (took a couple of hours). In other cases it may still
-make sense to use another tool or library, even if it was not made specifically for the
-job ¯\<em>(ツ)</em>/¯</p>
-
-<p>♥ Open Source</p>
+<p>ps: [lang] uses Java 7, so that is why we do not have a functional instead of the Comparable</p>
 </div>
 <div class="post">
   <h3 class="post-header">
-    <a class="post-link" href="/2017/04/13/spring-cloud-encrypted-values-and-spring-propertysources.html">
-      Spring Cloud encrypted values and Spring PropertySources
+    <a class="post-link" href="/2017/01/07/apache-commons-text.html">
+      Apache Commons Text
     </a>
-  </h3><span class="post-meta">Apr 13, 2017<span>&mdash; star date: -305638.36</span></span><p>As I could not find any documentation for that, I decided to write it as a note to myself
-in case I use the
-<a href="https://cloud.spring.io/spring-cloud-config/spring-cloud-config.html#_encryption_and_decryption">encryption and decryption</a>
-with Spring Cloud again.</p>
+  </h3><span class="post-meta">Jan 7, 2017<span>&mdash; star date: -305898.63</span></span><p>There is a new component in Apache Commons: Apache Commons Text. The 1.0 release might be announced
+in the next weeks. The current site is still in the <a href="http://commons.apache.org/sandbox/commons-text/">Commons Sandbox</a>,
+but it will change with the 1.0 release. The promotion from the sandbox
+<a href="http://markmail.org/message/dm7xwv5wc6z7wme3">happened a few days ago</a> in
+the project mailing list.</p>
 
-<p>In Spring and Spring Boot, you normally have multiple sources of properties, like multiple
-properties files, environment properties and variables, and so it goes. In the Spring API,
-these are represented as
-<a href="http://docs.spring.io/spring/docs/current/javadoc-api/org/springframework/context/annotation/PropertySource.html">PropertySource</a>’s.</p>
+<p>Here’s the project description: <strong>Apache Commons Text is a library focused on algorithms working on strings</strong>.</p>
 
-<p>In a Spring Boot application, you would be used to overriding certain properties
-by defining environments and using an application-production.properties file, or
-overriding values with environment properties.</p>
+<p>There was <a href="http://markmail.org/message/3k7m2zrzboji333r">a thread on the mailing list</a>
+some time ago (Oct/2014) when we first discussed the component idea. Since then
+many people contributed porting code from
+<a href="http://commons.apache.org/proper/commons-lang/">Apache Commons Lang</a>,
+<a href="http://lucene.apache.org/">Apache Lucene</a>, donating code from existing projects, and with new ideas.</p>
 
-<p>This is common in
-<a href="https://aws.amazon.com/blogs/devops/deploying-a-spring-boot-application-on-aws-using-aws-elastic-beanstalk/">Spring Boot applications deployed to Amazon Elastic Beanstalk</a>.</p>
+<p><strong>It is important to be aware that certain parts of Apache Commons Lang are
+being marked as deprecated, and will be removed in the future, after Apache Commons Text
+1.0 is out</strong>. For example: <a href="https://commons.apache.org/proper/commons-lang/apidocs/org/apache/commons/lang3/StringUtils.html">StringUtils</a>,
+and <a href="https://commons.apache.org/proper/commons-lang/apidocs/org/apache/commons/lang3/RandomStringUtils.html">RandomStringUtils</a>.</p>
 
-<p>Some time ago another team at work found that overriding did not always work when you have
-encrypted values in your properties files. Even if you specified new values in the
-Amazon Elastic Beanstalk application configuration.</p>
+<p>That will happen probably in a 4.x release of Apache Commons Lang, if everything
+goes well with Apache Commons Text :-)</p>
 
-<p>Yesterday, while debugging the issue and reading Spring Cloud source code, I found its
-<a href="https://github.com/spring-cloud/spring-cloud-commons/blob/9675df02f6a2c01766711f7dee3c4d2818b7d716/spring-cloud-context/src/main/java/org/springframework/cloud/bootstrap/encrypt/EnvironmentDecryptApplicationInitializer.java#L44">EnvironmentDecryptApplicationInitializer</a>.</p>
+<p>And there are already future features in
+<a href="https://github.com/apache/commons-text/branches/all">branches too</a>.
+It was decided that these features
+needed further work, so they will probably be included in next releases.</p>
 
-<p>It basically iterates through all loaded property sources, looking for values that start with
-{cipher}. Then it calls the
-<a href="http://docs.spring.io/spring-security/site/docs/current/apidocs/org/springframework/security/crypto/encrypt/TextEncryptor.html">Spring Security TextEncryptor</a>
-defined in the application.</p>
+<p>So that’s a little bit of background on the new component that will be released soon.
+If you have code using Apache Commons Lang, you might be interested in staying
+tuned to release announcements in the mailing list!</p>
 
-<p>Finally, it creates a new property source, called decrypted, with the decrypted values. So when
-your application looks for a property called XPTO, and if it has been encrypted, it will
-find the value in the decrypted propery source, regardless of whether you tried to override it or
-not.</p>
+<p>And should you have suggestions and would like to contribute, feel free to join and start
+a thread in the <a href="https://commons.apache.org/mail-lists.html">mailing list</a>,
+open a <a href="https://issues.apache.org/jira/browse/TEXT">JIRA issue</a>, or submit a
+<a href="https://github.com/apache/commons-text/pulls">pull request</a>.</p>
 
-<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Property sources listed in Eclipse IDE</span>
-
-<span class="o">[</span>
-  servletConfigInitParams,
-  servletContextInitParams,
-  systemProperties,
-  systemEnvironment,
-  random,
-  applicationConfigurationProperties,
-  springCloudClientHostInfo,
-  defaultProperties
-<span class="o">]</span>
-
-<span class="c"># When using encrypted values</span>
-
-<span class="o">[</span>
-  decrypted, &lt;<span class="nt">--------</span> created by Spring Cloud, with decrypted values. Prepended to the list of property sources
-  servletConfigInitParams,
-  servletContextInitParams,
-  systemProperties,
-  systemEnvironment,
-  random,
-  applicationConfigurationProperties,
-  springCloudClientHostInfo,
-  defaultProperties
-<span class="o">]</span>
-</code></pre></div></div>
-
-<p>So in case you have encrypted values in your Spring application (and you are using Spring Cloud, 
-of course) remember that these values will have higher priority, and can only be overriden by other
-encrypted values.</p>
-
-<p>♥ Open Source</p>
+<p>Happy hacking!</p>
 </div>
 <div class="post">
   <h3 class="post-header">
-    <a class="post-link" href="/2017/04/01/fixing-qt-warning-qlayout-attempting-to-add-qlayout-to-qwidget-which-already-has-a-layout.html">
-      Fixing Qt warning &quot;QLayout: Attempting to add QLayout &quot;&quot; to QWidget &quot;&quot;, which already has a layout&quot;
+    <a class="post-link" href="/2017/01/05/plotting-auckland-with-osmnx.html">
+      Plotting Auckland with OSMnx
     </a>
-  </h3><span class="post-meta">Apr 1, 2017<span>&mdash; star date: -305671.23</span></span><p>If you ever started Krita 3.x in your command line, and had a look at the console output,
-you may noticed the following warning.</p>
+  </h3><span class="post-meta">Jan 5, 2017<span>&mdash; star date: -305904.11</span></span><p><img style="height: 400px;" class="ui image" src="/assets/posts/2017-01-05-plotting-auckland-with-osmnx/figure_1.png" alt="Auckland" /></p>
 
-<blockquote>
-  <p>QLayout: Attempting to add QLayout “” to QWidget “”, which already has a layout</p>
-</blockquote>
+<p>A couple of days ago I saw <a href="https://www.reddit.com/r/gis/comments/5lnjxs/creating_squaremile_figureground_diagrams_of/">a thread in reddit</a>
+about OSMnx. It is a utilty for interacting with the OpenStreeMap (OSM)
+API, manipulate it in pure Python and using libraries like NetworkX (a Python graph package).</p>
 
-<p>Krita recently <a href="https://krita.org/en/item/krita-3-1-3-alpha-released/">announced the release of 3.1.3-alpha-2</a>,
-and while testing I saw this warning and
-decided to investigate why this warning happens.</p>
+<p>With it you can do things like <q>visualize cul-de-sacs or one-way streets, plot shortest-path routes, or calculate stats like intersection density, average node connectivity, or betweenness centrality</q>. Or simply
+plot the OSM data as in the graph above.</p>
 
-<p>There was already
-<a href="http://stackoverflow.com/a/25451334">a similar question posted on StackOverflow</a>. And the
-best answer’s initial paragraph gave me a hint of what to look for.</p>
+<p>The source code is hosted at GitHub: <a href="https://github.com/gboeing/osmnx">https://github.com/gboeing/osmnx</a>.</p>
 
-<blockquote>
-  <p>When you assign a widget as the parent of a QLayout by passing it into the constructor, the layout is automatically set as the layout for that widget. In your code you are not only doing this, but explicitly calling setlayout(). This is no problem when when the widget passed is the same. If they are different you will get an error because Qt tries to assign the second layout to your widget which has already had a layout set.</p>
-</blockquote>
-
-<p>So, somewhere in Krita code, there was a a QWidget being created, and layouts
-were being added to it more than once. To find where the issue was happening was quite easy. A breakpoint at
-<a href="https://github.com/KDE/krita/blob/9e2b8c5b07deccd4a616ad7930a91e8cc784a85b/krita/main.cc#L141">main.cc</a>
-where the application is initialized, then step through a few times, until the message appeared in the
-console.</p>
-
-<p>Further investigation led me to the History docker (the one that shows undo steps)
-<a href="https://github.com/KDE/krita/blob/9e2b8c5b07deccd4a616ad7930a91e8cc784a85b/plugins/dockers/historydocker/HistoryDock.cpp#L33">constructor</a>.</p>
-
-<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="n">QVBoxLayout</span> <span class="o">*</span><span class="n">vl</span> <span class="o">=</span> <span class="k">new</span> <span class="nf">QVBoxLayout</span><span class="p">(</span><span class="n">page</span><span class="p">);</span> <span class="c1">// layout being set to page</span>
-    <span class="n">m_undoView</span> <span class="o">=</span> <span class="k">new</span> <span class="nf">KisUndoView</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
-    <span class="n">vl</span><span class="o">-&gt;</span><span class="n">addWidget</span><span class="p">(</span><span class="n">m_undoView</span><span class="p">);</span>
-    <span class="n">QHBoxLayout</span> <span class="o">*</span><span class="n">hl</span> <span class="o">=</span> <span class="k">new</span> <span class="nf">QHBoxLayout</span><span class="p">(</span><span class="n">page</span><span class="p">);</span> <span class="c1">// layout being set to page again</span>
-    <span class="n">hl</span><span class="o">-&gt;</span><span class="n">addSpacerItem</span><span class="p">(</span><span class="k">new</span> <span class="nf">QSpacerItem</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span>  <span class="n">QSizePolicy</span><span class="o">::</span><span class="n">Expanding</span><span class="p">,</span> <span class="n">QSizePolicy</span><span class="o">::</span><span class="n">Fixed</span><span class="p">));</span>
-    <span class="n">m_bnConfigure</span> <span class="o">=</span> <span class="k">new</span> <span class="nf">QToolButton</span><span class="p">(</span><span class="n">page</span><span class="p">);</span>
-    <span class="n">m_bnConfigure</span><span class="o">-&gt;</span><span class="n">setIcon</span><span class="p">(</span><span class="n">KisIconUtils</span><span class="o">::</span><span class="n">loadIcon</span><span class="p">(</span><span class="s">"configure"</span><span class="p">));</span>
-    <span class="n">connect</span><span class="p">(</span><span class="n">m_bnConfigure</span><span class="p">,</span> <span class="n">SIGNAL</span><span class="p">(</span><span class="n">clicked</span><span class="p">(</span><span class="kt">bool</span><span class="p">)),</span> <span class="n">SLOT</span><span class="p">(</span><span class="n">configure</span><span class="p">()));</span>
-    <span class="n">hl</span><span class="o">-&gt;</span><span class="n">addWidget</span><span class="p">(</span><span class="n">m_bnConfigure</span><span class="p">);</span>
-    <span class="n">vl</span><span class="o">-&gt;</span><span class="n">addItem</span><span class="p">(</span><span class="n">hl</span><span class="p">);</span>
-
-    <span class="n">setWidget</span><span class="p">(</span><span class="n">page</span><span class="p">);</span>
-    <span class="n">setWindowTitle</span><span class="p">(</span><span class="n">i18n</span><span class="p">(</span><span class="s">"Undo History"</span><span class="p">));</span>
-</code></pre></div></div>
-
-<p>Here the QWidget created receives both QHBoxLayout and QVBoxLayout. Again, searching the Internet
-a little bit, then came across this post with a good example of a QWidget with
-QHBoxLayout and QVBoxLayout. Here’s what the constructor looks after the
-<a href="https://bugs.kde.org/show_bug.cgi?id=378313">patch</a>
-has been <a href="https://github.com/KDE/krita/commit/1d2343c0cacfb0b105fbe86c2bcef975a09b1041">applied</a>.</p>
-
-<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="n">QVBoxLayout</span> <span class="o">*</span><span class="n">vl</span> <span class="o">=</span> <span class="k">new</span> <span class="nf">QVBoxLayout</span><span class="p">(</span><span class="n">page</span><span class="p">);</span> <span class="c1">// layout being set to page</span>
-    <span class="n">m_undoView</span> <span class="o">=</span> <span class="k">new</span> <span class="nf">KisUndoView</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
-    <span class="n">vl</span><span class="o">-&gt;</span><span class="n">addWidget</span><span class="p">(</span><span class="n">m_undoView</span><span class="p">);</span>
-    <span class="n">QHBoxLayout</span> <span class="o">*</span><span class="n">hl</span> <span class="o">=</span> <span class="k">new</span> <span class="nf">QHBoxLayout</span><span class="p">();</span>
-    <span class="n">hl</span><span class="o">-&gt;</span><span class="n">addSpacerItem</span><span class="p">(</span><span class="k">new</span> <span class="nf">QSpacerItem</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span>  <span class="n">QSizePolicy</span><span class="o">::</span><span class="n">Expanding</span><span class="p">,</span> <span class="n">QSizePolicy</span><span class="o">::</span><span class="n">Fixed</span><span class="p">));</span>
-    <span class="n">m_bnConfigure</span> <span class="o">=</span> <span class="k">new</span> <span class="nf">QToolButton</span><span class="p">(</span><span class="n">page</span><span class="p">);</span>
-    <span class="n">m_bnConfigure</span><span class="o">-&gt;</span><span class="n">setIcon</span><span class="p">(</span><span class="n">KisIconUtils</span><span class="o">::</span><span class="n">loadIcon</span><span class="p">(</span><span class="s">"configure"</span><span class="p">));</span>
-    <span class="n">connect</span><span class="p">(</span><span class="n">m_bnConfigure</span><span class="p">,</span> <span class="n">SIGNAL</span><span class="p">(</span><span class="n">clicked</span><span class="p">(</span><span class="kt">bool</span><span class="p">)),</span> <span class="n">SLOT</span><span class="p">(</span><span class="n">configure</span><span class="p">()));</span>
-    <span class="n">hl</span><span class="o">-&gt;</span><span class="n">addWidget</span><span class="p">(</span><span class="n">m_bnConfigure</span><span class="p">);</span>
-    <span class="n">vl</span><span class="o">-&gt;</span><span class="n">addItem</span><span class="p">(</span><span class="n">hl</span><span class="p">);</span>
-    <span class="n">vl</span><span class="o">-&gt;</span><span class="n">addLayout</span><span class="p">(</span><span class="n">hl</span><span class="p">);</span> <span class="c1">// horizontal layout added to the vertical layout</span>
-
-    <span class="n">setWidget</span><span class="p">(</span><span class="n">page</span><span class="p">);</span>
-    <span class="n">setWindowTitle</span><span class="p">(</span><span class="n">i18n</span><span class="p">(</span><span class="s">"Undo History"</span><span class="p">));</span>
-</code></pre></div></div>
-
-<p>That’s it. Learned something new in Qt. Not as important and useful as learning about
-<a href="http://doc.qt.io/qt-4.8/signalsandslots.html">signals and slots</a>, but now I can focus
-on other warnings in the console output of Krita.</p>
-
-<p>And you? Have you tested <a href="https://krita.org/en/item/krita-3-1-3-alpha-released/">Krita 3.1.3 alpha</a> already?
-What are you waiting for? :-)</p>
-
-<p>♥ Open Source</p>
-</div>
-<div class="post">
-  <h3 class="post-header">
-    <a class="post-link" href="/2017/03/25/simulating-less-memory-with-ulimit.html">
-      Simulating less memory with ulimit
-    </a>
-  </h3><span class="post-meta">Mar 25, 2017<span>&mdash; star date: -305687.67</span></span><p>These days I was trying to reproduce <a href="https://bugs.kde.org/show_bug.cgi?id=376382">a bug in Krita</a>
-where it would crash when a user copied group layers between windows. It appeared that the user was
-getting a segmentation fault due to the user’s computer running out of memory.</p>
-
-<p>I could not reproduce the issue, but my computer has 16 GB. The first thing that came to my mind was
-to create a virtual machine with less memory to reproduce the issue. But I decided to spend some time
-looking for a <a href="http://wiki.c2.com/?LazinessImpatienceHubris">simpler way</a> of doing it.</p>
-
-<p>Searching the web I found some suggestions that <code class="language-plaintext highlighter-rouge">ulimit</code> could work. After playing for a while with
-<code class="language-plaintext highlighter-rouge">ulimit</code> and <code class="language-plaintext highlighter-rouge">htop</code>, and verifying the amount of memory necessary to open two files in two windows
-in Krita, I came up with the following settings.</p>
-
-<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 2550 mb in kb</span>
-<span class="nb">ulimit</span> <span class="nt">-v</span> 2550000
-
-<span class="c"># 2 gb in kb</span>
-<span class="nb">ulimit</span> <span class="nt">-m</span> 2000000
-
-<span class="c"># Confirm limits</span>
-<span class="nb">ulimit</span> <span class="nt">-a</span>
-
-gdb <span class="nv">$HOME</span>/Development/cpp/workspace/krita_install/bin/krita
-</code></pre></div></div>
-
-<p>Then after copying a few layers from one window to another, I successfully reproduced the issue,
-and could include a backtrace in the Krita issue tracking system.</p>
-
-<p>♥ Open Source</p>
-</div>
+<a class="post-link" href="/2017/01/05/plotting-auckland-with-osmnx.html">Continue reading</a></div>
 <!-- Pagination links -->
   <div class="pagination">
     <p>
@@ -531,7 +438,7 @@ and could include a backtrace in the Krita issue tracking system.</p>
         <i class="left chevron icon"></i>Previous
       </a>
       
-      <span class="page_number ">Page: 11 of 31</span>
+      <span class="page_number ">Page: 11 of 27</span>
       
       <a href="/blog/page/12/" class="next">
         Next<i class="right chevron icon"></i>
