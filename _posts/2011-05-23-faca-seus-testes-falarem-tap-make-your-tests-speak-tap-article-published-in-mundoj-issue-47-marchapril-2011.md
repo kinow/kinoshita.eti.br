@@ -13,7 +13,7 @@ title: Faça seus Testes Falarem TAP (Make your Tests Speak TAP) article publish
 
 This is my first article for a Brazilian magazine! :-D It was published in this month's issue of <a href="http://www.mundoj.com.br">MundoJ</a> magazine (previously called MundoJava).
 
-<img class="ui left floated image" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/ed47p.jpg">
+<img class="ui left floated image" src="/assets/posts/2011-05-23-faca-seus-testes-falarem-tap-make-your-tests-speak-tap-article-published-in-mundoj-issue-47-marchapril-2011/ed47p.jpg">
 
 In this article Cesar Fernandes de Almeida, <a href="http://andersonxp.tumblr.com/">Anderson dos Santos</a> and I discuss how to make your Java tests output <a href="http://www.testanything.org">TAP</a> (Test Anything Protocol) Streams. This test protocol has been used by Perl developers since Perl's first version (1983~) but hasn't been used by many Java developers yet, unfortunately. We hope it incentives other Java developers to use TAP for their tests. There is an alternative to TAP too, <a href="https://launchpad.net/subunit">SubUnit</a>, which was pointed out for me by <a href="https://launchpad.net/~lifeless">Robert Collins</a> in the <a href="http://jenkins.361315.n4.nabble.com/Jenkins-dev-f387835.html">Jenkins dev-list</a> few weeks ago. Now I am preparing a comparison between TAP and SubUnit as an analysis before developing a plug-in for Jenkins to show detailed test results (such as exception, images, raw test, error line, etc). 
 
