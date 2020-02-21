@@ -5,7 +5,7 @@ permalink: "/recipes/"
 note: "Our cooking recipes."
 ---
 
-## Pizza de Pita
+## Microwave Pita Pizza
 
 **Ingredients**
 
@@ -20,14 +20,14 @@ Then 30 seconds to 1 minute in the microwave.
 
 ## Leite com Ensure
 
-**Ingredients**
+**Ingredientes**
 
-1. Milk
-2. Abbott Ensure (vanilla)
+1. Leite
+2. Abbott Ensure (baunilha)
 
-**Instructions**
+**Como fazer**
 
-Mix both, heat up in microwave for up to 1 minute.
+Misturar os dois e esquentar no microondas por até 1 minuto.
 
 ## Pão de Queijo caseiro
 
@@ -39,6 +39,16 @@ Mix both, heat up in microwave for up to 1 minute.
 
 ## Cruskits com Hummus
 
+## Arroz com sardinha
 
+## New Zealand South Island Cheese Roll
 
+## Cookie de Aveia
 
+## Canja
+
+## Hashbrown
+
+## Mayonese da Simone
+
+## Bolinhas de chickpeas
