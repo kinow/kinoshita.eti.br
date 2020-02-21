@@ -1,5 +1,4 @@
 ---
-date: 2016-07-17 14:14:03 +1300
 layout: post
 tags:
 - skosmos

@@ -1,5 +1,4 @@
 ---
-date: 2017-03-15 13:18:03 +1300
 layout: post
 tags:
 - aws

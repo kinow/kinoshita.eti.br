@@ -1,5 +1,4 @@
 ---
-date: 2019-04-07 21:20:57 +1300
 layout: post
 note: The comparison does not focus so much on how fuzzers work, which one is best
   than the other, etc. It looks only into its advertised features, whether it is maintained

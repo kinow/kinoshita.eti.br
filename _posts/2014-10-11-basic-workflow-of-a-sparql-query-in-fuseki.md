@@ -1,5 +1,4 @@
 ---
-date: 2014-10-11 20:36:33 +1300
 layout: post
 tags:
 - sparql

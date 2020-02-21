@@ -1,5 +1,4 @@
 ---
-date: 2018-08-12 17:55:44 +1300
 layout: post
 tags:
 - apache software foundation

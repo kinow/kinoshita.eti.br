@@ -1,5 +1,4 @@
 ---
-date: 2011-08-25 03:34:46 +1300
 layout: post
 tags:
 - software quality

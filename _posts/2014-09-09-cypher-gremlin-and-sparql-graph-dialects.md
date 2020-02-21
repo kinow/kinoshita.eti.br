@@ -1,5 +1,4 @@
 ---
-date: 2014-09-09 10:14:33 +1300
 layout: post
 tags:
 - graphs

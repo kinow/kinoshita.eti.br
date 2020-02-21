@@ -1,5 +1,4 @@
 ---
-date: 2011-03-20 03:34:05 +1300
 layout: post
 tags:
 - test anything protocol

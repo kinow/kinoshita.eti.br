@@ -1,5 +1,4 @@
 ---
-date: 2016-07-12 21:18:03 +1300
 layout: post
 tags:
 - python

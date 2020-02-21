@@ -1,5 +1,4 @@
 ---
-date: 2018-12-22 11:32:28 +1300
 layout: post
 tags:
 - cylc

@@ -1,5 +1,4 @@
 ---
-date: 2012-09-20 21:49:38 +1300
 layout: post
 tags:
 - big data

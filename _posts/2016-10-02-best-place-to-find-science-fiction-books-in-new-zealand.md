@@ -1,5 +1,4 @@
 ---
-date: 2016-10-02 21:57:03 +1300
 layout: post
 tags:
 - science fiction

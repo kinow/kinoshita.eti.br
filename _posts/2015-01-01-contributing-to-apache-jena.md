@@ -1,5 +1,4 @@
 ---
-date: 2015-01-01 18:49:03 +1300
 layout: post
 tags:
 - jena

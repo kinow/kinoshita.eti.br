@@ -1,5 +1,4 @@
 ---
-date: 2010-10-15 16:10:26 +1300
 layout: post
 tags:
 - visual basic

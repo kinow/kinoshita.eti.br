@@ -1,5 +1,4 @@
 ---
-date: 2016-04-24 16:05:03 +1300
 layout: post
 tags:
 - jenkins

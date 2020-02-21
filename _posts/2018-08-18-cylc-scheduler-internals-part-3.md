@@ -1,5 +1,4 @@
 ---
-date: 2018-08-18 18:27:37 +1300
 layout: post
 note: 'NB: this is a post to remember things, not really expecting to give someone
   enough information to be able to hack the Cylc Scheduler (though you can and would

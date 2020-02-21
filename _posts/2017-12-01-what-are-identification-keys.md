@@ -1,5 +1,4 @@
 ---
-date: 2017-12-01 23:26:09 +1300
 layout: post
 tags:
 - programming

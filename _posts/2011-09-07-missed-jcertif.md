@@ -1,5 +1,4 @@
 ---
-date: 2011-09-07 00:36:11 +1300
 layout: post
 tags:
 - presentations

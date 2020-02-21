@@ -1,5 +1,4 @@
 ---
-date: 2016-11-12 01:55:03 +1300
 layout: post
 tags:
 - shell script

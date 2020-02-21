@@ -1,5 +1,4 @@
 ---
-date: 2017-06-03 12:30:39 +1300
 layout: post
 tags:
 - natural language processing

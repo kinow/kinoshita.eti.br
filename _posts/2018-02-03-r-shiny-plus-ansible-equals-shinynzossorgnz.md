@@ -1,5 +1,4 @@
 ---
-date: 2018-02-03 17:23:03 +1300
 layout: post
 tags:
 - r shiny

@@ -1,5 +1,4 @@
 ---
-date: 2018-04-28 18:20:28 +1300
 layout: post
 tags:
 - jena

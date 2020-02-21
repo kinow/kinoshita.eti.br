@@ -1,5 +1,4 @@
 ---
-date: 2017-02-28 00:47:03 +1300
 layout: post
 tags:
 - go

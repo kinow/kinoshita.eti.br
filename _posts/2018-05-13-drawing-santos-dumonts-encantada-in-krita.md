@@ -1,5 +1,4 @@
 ---
-date: 2018-05-13 02:38:12 +1300
 layout: post
 tags:
 - opensource

@@ -1,5 +1,4 @@
 ---
-date: 2010-04-07 16:59:24 +1300
 layout: post
 tags:
 - jenkins

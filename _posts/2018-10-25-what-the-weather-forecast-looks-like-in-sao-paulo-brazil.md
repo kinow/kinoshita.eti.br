@@ -1,5 +1,4 @@
 ---
-date: 2018-10-25 19:34:11 +1300
 layout: post
 tags:
 - forecast

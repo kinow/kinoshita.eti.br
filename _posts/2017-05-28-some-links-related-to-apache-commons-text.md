@@ -1,5 +1,4 @@
 ---
-date: 2017-05-28 19:50:39 +1300
 layout: post
 tags:
 - apache software foundation

@@ -1,5 +1,4 @@
 ---
-date: 2013-01-17 14:49:50 +1300
 layout: post
 tags:
 - git

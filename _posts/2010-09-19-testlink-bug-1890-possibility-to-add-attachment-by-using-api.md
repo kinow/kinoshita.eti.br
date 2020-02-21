@@ -1,5 +1,4 @@
 ---
-date: 2010-09-19 20:44:38 +1300
 layout: post
 tags:
 - testlink

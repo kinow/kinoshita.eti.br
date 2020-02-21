@@ -1,5 +1,4 @@
 ---
-date: 2017-09-01 20:23:03 +1300
 format: markdown
 layout: post
 tags:

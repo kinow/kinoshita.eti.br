@@ -1,5 +1,4 @@
 ---
-date: 2019-03-30 16:32:17 +1300
 layout: post
 tags:
 - zmq

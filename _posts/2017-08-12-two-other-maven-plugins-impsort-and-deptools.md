@@ -1,5 +1,4 @@
 ---
-date: 2017-08-12 22:16:03 +1300
 layout: post
 tags:
 - java

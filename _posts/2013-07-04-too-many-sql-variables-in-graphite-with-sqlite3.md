@@ -1,5 +1,4 @@
 ---
-date: 2013-07-04 13:54:53 +1300
 layout: post
 tags:
 - monitoring

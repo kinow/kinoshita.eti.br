@@ -1,5 +1,4 @@
 ---
-date: 2010-09-03 11:25:45 +1300
 layout: post
 tags:
 - articles

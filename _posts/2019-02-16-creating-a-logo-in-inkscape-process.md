@@ -1,5 +1,4 @@
 ---
-date: 2019-02-16 22:25:43 +1300
 layout: post
 tags:
 - inkscape

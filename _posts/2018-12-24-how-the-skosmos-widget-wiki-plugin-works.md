@@ -1,5 +1,4 @@
 ---
-date: 2018-12-24 15:43:43 +1300
 layout: post
 tags:
 - php
