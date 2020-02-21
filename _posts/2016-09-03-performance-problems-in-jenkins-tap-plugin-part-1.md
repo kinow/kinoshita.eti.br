@@ -5,6 +5,8 @@ tags:
 - programming
 - jenkins
 - software quality
+categories:
+- blog
 title: Performance problems in Jenkins TAP Plug-in &mdash; part 1
 ---
 

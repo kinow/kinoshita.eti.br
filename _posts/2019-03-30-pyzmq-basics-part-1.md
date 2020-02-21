@@ -6,6 +6,8 @@ tags:
 - python
 - opensource
 - programming
+categories:
+- blog
 title: PyZMQ Basics - Part 1
 ---
 

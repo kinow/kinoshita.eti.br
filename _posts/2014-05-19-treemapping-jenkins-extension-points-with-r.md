@@ -4,6 +4,8 @@ layout: post
 tags:
 - jenkins
 - r
+categories:
+- blog
 title: Treemapping Jenkins Extension Points with R
 ---
 

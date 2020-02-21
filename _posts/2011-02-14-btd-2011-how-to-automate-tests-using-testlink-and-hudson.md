@@ -5,6 +5,8 @@ tags:
 - testlink
 - jenkins
 - opensource
+categories:
+- writing
 title: Belgium Testing Days (BTD) 2011 How To Automate Tests Using Testlink And Hudson
 ---
 

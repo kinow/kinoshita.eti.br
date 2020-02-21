@@ -5,6 +5,8 @@ tags:
 - jenkins
 - c++
 - test anything protocol
+categories:
+- blog
 title: Adding coverage reports in Jenkins with GoogleTest and gcovr
 ---
 

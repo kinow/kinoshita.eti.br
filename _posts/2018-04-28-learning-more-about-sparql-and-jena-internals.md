@@ -7,6 +7,8 @@ tags:
 - java
 - sparql
 - opensource
+categories:
+- blog
 title: Learning more about SPARQL and Jena internals
 ---
 

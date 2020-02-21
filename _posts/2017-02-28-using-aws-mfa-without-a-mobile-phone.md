@@ -5,6 +5,8 @@ tags:
 - go
 - aws
 - security
+categories:
+- blog
 title: Using AWS MFA without a mobile phone
 ---
 

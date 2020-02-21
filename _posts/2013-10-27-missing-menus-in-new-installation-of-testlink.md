@@ -3,6 +3,8 @@ date: 2013-10-27 12:42:33 +1300
 layout: post
 tags:
 - testlink
+categories:
+- blog
 title: Missing menus in new installation of TestLink 1.9.8
 ---
 

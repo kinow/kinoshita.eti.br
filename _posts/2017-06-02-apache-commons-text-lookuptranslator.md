@@ -6,6 +6,8 @@ tags:
 - java
 - opensource
 - programming
+categories:
+- blog
 title: Apache Commons Text LookupTranslator
 ---
 

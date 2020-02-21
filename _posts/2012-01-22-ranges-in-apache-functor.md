@@ -4,6 +4,8 @@ layout: post
 tags:
 - apache software foundation
 - functional programming
+categories:
+- blog
 title: Ranges in Apache Commons Functor
 ---
 

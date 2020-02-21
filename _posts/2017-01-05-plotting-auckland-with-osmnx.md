@@ -3,6 +3,8 @@ date: 2017-01-05 10:39:03 +1300
 layout: post
 tags:
 - gis
+categories:
+- blog
 title: Plotting Auckland with OSMnx
 ---
 

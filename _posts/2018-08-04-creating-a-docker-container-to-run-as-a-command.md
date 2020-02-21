@@ -5,6 +5,8 @@ tags:
 - cylc
 - docker
 - opensource
+categories:
+- blog
 title: Creating a Docker container to run as a command
 ---
 

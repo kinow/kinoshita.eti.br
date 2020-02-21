@@ -5,6 +5,8 @@ tags:
 - software quality
 - presentations
 - jenkins
+categories:
+- blog
 title: TDC 2011 Floripa presentation about running your tests in Jenkins
 ---
 

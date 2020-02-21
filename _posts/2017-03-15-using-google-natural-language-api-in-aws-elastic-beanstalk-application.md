@@ -4,6 +4,8 @@ layout: post
 tags:
 - aws
 - natural language processing
+categories:
+- blog
 title: Using Google Natural Language API in an AWS Elastic Beanstalk application
 ---
 

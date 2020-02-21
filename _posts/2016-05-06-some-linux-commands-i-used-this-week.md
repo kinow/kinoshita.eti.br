@@ -3,6 +3,8 @@ date: 2016-05-06 23:26:03 +1300
 layout: post
 tags:
 - linux
+categories:
+- blog
 title: Some Linux commands I used this week
 ---
 

@@ -6,6 +6,8 @@ tags:
 - krita
 - programming
 - opensource
+categories:
+- blog
 title: Simulating less memory with ulimit
 ---
 

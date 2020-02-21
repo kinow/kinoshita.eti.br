@@ -5,6 +5,8 @@ tags:
 - testlink
 - java
 - software quality
+categories:
+- blog
 title: 'Practical test doubles: adding stubs to TestLink Java API'
 ---
 

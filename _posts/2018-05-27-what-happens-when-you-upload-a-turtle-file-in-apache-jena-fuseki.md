@@ -6,6 +6,8 @@ tags:
 - jena
 - opensource
 - programming
+categories:
+- blog
 title: What happens when you upload a Turtle file in Apache Jena Fuseki
 ---
 

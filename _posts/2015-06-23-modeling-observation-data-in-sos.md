@@ -3,6 +3,8 @@ date: 2015-06-23 13:40:03 +1300
 layout: post
 tags:
 - sensor web
+categories:
+- blog
 title: Modeling observation data in SOS (Sensor Observation Service)
 ---
 

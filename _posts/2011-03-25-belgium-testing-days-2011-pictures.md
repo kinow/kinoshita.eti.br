@@ -4,6 +4,8 @@ layout: post
 tags:
 - software quality
 - presentations
+categories:
+- blog
 title: Belgium Testing Days 2011 Pictures
 ---
 

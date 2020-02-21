@@ -3,6 +3,8 @@ layout: post
 tags:
 - reddit
 - functionalprogramming
+categories:
+- blog
 title: Reddit r/functionalprogramming community
 ---
 

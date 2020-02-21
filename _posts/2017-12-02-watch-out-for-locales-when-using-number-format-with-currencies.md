@@ -5,6 +5,8 @@ tags:
 - programming
 - java
 - apache software foundation
+categories:
+- blog
 title: Watch out for Locales when using NumberFormat with currencies
 ---
 

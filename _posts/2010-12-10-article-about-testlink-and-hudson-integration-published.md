@@ -6,6 +6,8 @@ tags:
 - testlink
 - articles
 - software quality
+categories:
+- writing
 title: Article about TestLink and Hudson integration published
 ---
 

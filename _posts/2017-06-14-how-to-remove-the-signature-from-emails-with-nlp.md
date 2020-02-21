@@ -6,6 +6,8 @@ tags:
 - programming
 - natural language processing
 - opensource
+categories:
+- blog
 title: How to remove the signature from e-mails with NLP?
 ---
 

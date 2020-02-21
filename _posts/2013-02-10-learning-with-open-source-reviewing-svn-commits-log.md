@@ -5,6 +5,8 @@ tags:
 - apache software foundation
 - functional programming
 - java
+categories:
+- blog
 title: 'Learning with Open Source: Reviewing SVN commits log'
 ---
 

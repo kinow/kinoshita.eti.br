@@ -5,6 +5,8 @@ tags:
 - test anything protocol
 - java
 - software quality
+categories:
+- blog
 title: tap4j - A new TAP implementation in Java
 ---
 

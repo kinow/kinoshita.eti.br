@@ -3,6 +3,8 @@ date: 2017-03-14 21:22:03 +1300
 layout: post
 tags:
 - docker
+categories:
+- blog
 title: Order of containers in Docker Compose
 ---
 

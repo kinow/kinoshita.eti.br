@@ -4,6 +4,8 @@ layout: post
 tags:
 - test anything protocol
 - software quality
+categories:
+- blog
 title: A comparison of TAP (Test Anything Protocol) and SubUnit
 ---
 

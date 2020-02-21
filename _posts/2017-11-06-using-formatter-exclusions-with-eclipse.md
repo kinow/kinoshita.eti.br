@@ -6,6 +6,8 @@ tags:
 - java
 - opensource
 - eclipse
+categories:
+- blog
 title: Using formatter exclusions with Eclipse
 ---
 

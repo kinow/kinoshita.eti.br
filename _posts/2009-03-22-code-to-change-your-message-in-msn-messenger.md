@@ -3,6 +3,8 @@ date: 2009-03-22 14:31:18 +1300
 layout: post
 tags:
 - c++
+categories:
+- blog
 title: Code to change your message in MSN messenger
 ---
 

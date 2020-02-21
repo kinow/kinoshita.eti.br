@@ -4,6 +4,8 @@ layout: post
 tags:
 - science fiction
 - illustrations
+categories:
+- drawing
 title: 'My favourite Star Trek captain: Jean-Luc Picard'
 ---
 

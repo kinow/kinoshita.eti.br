@@ -6,6 +6,8 @@ tags:
 - programming
 - apache software foundation
 - opensource
+categories:
+- blog
 title: Backward compatibility and switch statement with constant expressions
 ---
 

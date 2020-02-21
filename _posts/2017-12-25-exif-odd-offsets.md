@@ -6,6 +6,8 @@ tags:
 - java
 - apache software foundation
 - opensource
+categories:
+- blog
 title: Exif Odd Offsets
 ---
 

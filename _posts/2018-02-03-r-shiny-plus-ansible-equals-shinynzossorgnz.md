@@ -5,6 +5,8 @@ tags:
 - r shiny
 - r
 - opensource
+categories:
+- blog
 title: R Shiny + Ansible = shiny.nzoss.org.nz
 ---
 

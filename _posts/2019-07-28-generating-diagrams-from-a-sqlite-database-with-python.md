@@ -4,6 +4,8 @@ tags:
 - python
 - cylc
 - database
+categories:
+- blog
 title: Generating diagrams from a SQlite database with Python
 ---
 

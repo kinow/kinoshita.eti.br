@@ -5,6 +5,8 @@ tags:
 - apache software foundation
 - java
 - functional programming
+categories:
+- blog
 title: Using Apache Commons Functor functional interfaces with Java 8 lambdas
 ---
 

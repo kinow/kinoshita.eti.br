@@ -3,6 +3,8 @@ date: 2011-08-13 01:29:58 +1300
 layout: post
 tags:
 - software quality
+categories:
+- blog
 title: Bug hunting, new job and preparing presentations
 ---
 

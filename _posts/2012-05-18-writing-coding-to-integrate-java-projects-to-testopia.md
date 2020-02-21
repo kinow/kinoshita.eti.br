@@ -3,6 +3,8 @@ date: 2012-05-18 17:16:25 +1300
 layout: post
 tags:
 - java
+categories:
+- blog
 title: Writing code to integrate Java projects to Testopia
 ---
 

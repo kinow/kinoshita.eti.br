@@ -3,6 +3,8 @@ date: 2012-09-25 16:08:03 +1300
 layout: post
 tags:
 - bioinformatics
+categories:
+- blog
 title: 'Bioinformatics tools: Stacks'
 ---
 

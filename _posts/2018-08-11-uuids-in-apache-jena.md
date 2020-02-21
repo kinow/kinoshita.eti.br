@@ -6,6 +6,8 @@ tags:
 - java
 - jena
 - opensource
+categories:
+- blog
 title: UUID's in Apache Jena
 ---
 

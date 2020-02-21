@@ -6,6 +6,8 @@ tags:
 - krita
 - opensource
 - programming
+categories:
+- blog
 title: Debugging an application that freezes the X server
 ---
 

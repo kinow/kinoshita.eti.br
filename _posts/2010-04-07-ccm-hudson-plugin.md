@@ -4,6 +4,8 @@ layout: post
 tags:
 - jenkins
 - software quality
+categories:
+- blog
 title: CCM Hudson Plugin
 ---
 

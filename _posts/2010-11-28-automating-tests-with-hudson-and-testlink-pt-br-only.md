@@ -6,6 +6,8 @@ tags:
 - presentations
 - jenkins
 - testlink
+categories:
+- blog
 title: Automating tests with Hudson and TestLink (pt-BR only)
 ---
 

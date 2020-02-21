@@ -3,6 +3,8 @@ date: 2014-02-11 13:15:33 +1300
 layout: post
 tags:
 - php
+categories:
+- blog
 title: Writing a custom SchemaSpy command for Laravel 4
 ---
 

@@ -4,6 +4,8 @@ layout: post
 tags:
 - python
 - aws
+categories:
+- blog
 title: Using the AWS API with Python
 ---
 

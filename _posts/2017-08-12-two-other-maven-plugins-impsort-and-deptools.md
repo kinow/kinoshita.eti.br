@@ -6,6 +6,8 @@ tags:
 - programming
 - opensource
 - maven
+categories:
+- blog
 title: 'Two other Maven Plug-ins: impsort and deptools'
 ---
 

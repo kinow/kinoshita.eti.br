@@ -2,6 +2,8 @@
 layout: post
 tags:
 - writing
+categories:
+- writing
 title: Science books and articles from Zinsser's "On Writing Well" book
 ---
 

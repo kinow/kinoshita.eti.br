@@ -5,6 +5,8 @@ tags:
 - jenkins
 - tomcat
 - docker
+categories:
+- blog
 title: Deploying WAR files to Tomcat with Jenkins
 ---
 

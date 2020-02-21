@@ -5,6 +5,8 @@ tags:
 - python
 - programming
 - opensource
+categories:
+- blog
 title: 'Writing a binary parser in Python: NumPy vs. Construct'
 ---
 

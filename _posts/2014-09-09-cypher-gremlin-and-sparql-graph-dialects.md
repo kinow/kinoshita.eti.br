@@ -4,6 +4,8 @@ layout: post
 tags:
 - graphs
 - programming
+categories:
+- blog
 title: 'Cypher, Gremlin and SPARQL: Graph dialects'
 ---
 

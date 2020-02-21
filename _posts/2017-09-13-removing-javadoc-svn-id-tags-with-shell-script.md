@@ -6,6 +6,8 @@ tags:
 - shell script
 - opensource
 - apache software foundation
+categories:
+- blog
 title: Removing Javadoc SVN Id Tags with Shell Script
 ---
 

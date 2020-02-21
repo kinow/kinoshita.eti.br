@@ -4,6 +4,8 @@ layout: post
 tags:
 - sparql
 - jena
+categories:
+- blog
 title: Basic workflow of a SPARQL query in Fuseki
 ---
 

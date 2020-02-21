@@ -3,6 +3,8 @@ date: 2009-03-06 12:10:07 +1300
 layout: post
 tags:
 - java
+categories:
+- blog
 title: Displaying Japanese characters in Java Swing
 ---
 
@@ -27,6 +29,8 @@ public static void main(String[] args) {
 ```
 
 All you have to do is to use the hexadecimal representation of the characters instead of using plain text. And here is the result.
+
+{{ page.date }}
 
 <img class="ui image" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/kino.png" alt="=" />
 

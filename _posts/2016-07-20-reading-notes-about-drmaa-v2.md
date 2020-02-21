@@ -4,6 +4,8 @@ layout: post
 tags:
 - programming
 - hpc
+categories:
+- blog
 title: Reading notes about DRMAA v2
 ---
 

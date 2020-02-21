@@ -3,6 +3,8 @@ date: 2017-04-24 00:41:03 +1300
 layout: post
 tags:
 - illustrations
+categories:
+- drawing
 title: 'Drawing sketch: Page 036'
 ---
 

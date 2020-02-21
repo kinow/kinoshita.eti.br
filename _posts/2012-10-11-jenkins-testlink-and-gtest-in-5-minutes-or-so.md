@@ -6,6 +6,8 @@ tags:
 - testlink
 - c++
 - software quality
+categories:
+- blog
 title: Jenkins, TestLink and GTest in 5 minutes (or so)
 ---
 

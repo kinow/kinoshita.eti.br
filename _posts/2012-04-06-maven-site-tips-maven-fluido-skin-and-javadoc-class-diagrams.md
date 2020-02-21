@@ -3,6 +3,8 @@ date: 2012-04-06 21:01:52 +1300
 layout: post
 tags:
 - java
+categories:
+- blog
 title: 'Maven site tips: Maven Fluido Skin and Javadoc class diagrams'
 ---
 

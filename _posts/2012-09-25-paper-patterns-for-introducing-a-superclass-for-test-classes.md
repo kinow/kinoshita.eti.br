@@ -4,6 +4,8 @@ layout: post
 tags:
 - software quality
 - articles
+categories:
+- writing
 title: 'Paper: Patterns for Introducing a Superclass for Test Classes'
 ---
 

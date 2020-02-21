@@ -4,6 +4,8 @@ layout: post
 tags:
 - science fiction
 - books
+categories:
+- writing
 title: Best place to find science fiction books in New Zealand
 ---
 

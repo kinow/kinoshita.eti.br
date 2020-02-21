@@ -5,6 +5,8 @@ tags:
 - java
 - programming
 - opensource
+categories:
+- blog
 title: Spring Cloud encrypted values and Spring PropertySources
 ---
 

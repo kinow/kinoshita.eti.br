@@ -3,6 +3,8 @@ date: 2017-06-27 00:09:03 +1300
 layout: post
 tags:
 - illustrations
+categories:
+- drawing
 title: Drawing Archer
 ---
 

@@ -5,6 +5,8 @@ tags:
 - python
 - cylc
 - opensource
+categories:
+- blog
 title: A couple of class diagrams of JupyterHub
 ---
 

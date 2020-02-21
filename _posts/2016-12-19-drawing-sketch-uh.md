@@ -3,6 +3,8 @@ date: 2016-12-19 19:40:03 +1300
 layout: post
 tags:
 - illustrations
+categories:
+- drawing
 title: 'Drawing sketch: Uh!'
 ---
 

@@ -4,6 +4,8 @@ layout: post
 tags:
 - illustrations
 - natural language processing
+categories:
+- drawing
 title: Proposed logos for OpenNLP
 ---
 

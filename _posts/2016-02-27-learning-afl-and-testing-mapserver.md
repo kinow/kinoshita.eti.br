@@ -6,6 +6,8 @@ tags:
 - fuzzing
 - security
 - software quality
+categories:
+- blog
 title: Learning afl and testing MapServer
 ---
 

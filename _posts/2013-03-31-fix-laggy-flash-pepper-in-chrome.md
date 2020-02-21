@@ -3,6 +3,8 @@ date: 2013-03-31 11:32:10 +1300
 layout: post
 tags:
 - linux
+categories:
+- blog
 title: Fix laggy Flash (Pepper) in Chrome
 ---
 

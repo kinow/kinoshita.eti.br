@@ -4,6 +4,8 @@ layout: post
 tags:
 - jenkins
 - groovy
+categories:
+- blog
 title: Groovy Hooks in Jenkins for increasing logging level
 ---
 

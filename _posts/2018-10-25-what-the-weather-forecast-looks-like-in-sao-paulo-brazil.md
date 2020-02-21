@@ -3,6 +3,8 @@ date: 2018-10-25 19:34:11 +1300
 layout: post
 tags:
 - forecast
+categories:
+- blog
 title: What the weather forecast looks like in Sao Paulo, Brazil
 ---
 

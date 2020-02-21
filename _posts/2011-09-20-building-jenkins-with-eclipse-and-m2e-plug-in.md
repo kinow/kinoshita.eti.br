@@ -4,6 +4,8 @@ layout: post
 tags:
 - java
 - jenkins
+categories:
+- blog
 title: Building Jenkins with Eclipse and m2e plug-in
 ---
 

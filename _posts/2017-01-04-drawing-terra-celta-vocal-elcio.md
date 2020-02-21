@@ -3,6 +3,8 @@ date: 2017-01-04 19:40:03 +1300
 layout: post
 tags:
 - illustrations
+categories:
+- drawing
 title: Drawing Terra Celta vocal Elcio
 ---
 

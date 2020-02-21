@@ -5,6 +5,8 @@ tags:
 - opensource
 - illustrations
 - krita
+categories:
+- drawing
 title: Drawing Santos Dumont's "Encantada" in Krita
 ---
 

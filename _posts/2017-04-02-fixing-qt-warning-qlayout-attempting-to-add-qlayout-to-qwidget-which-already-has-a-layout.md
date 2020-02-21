@@ -6,6 +6,8 @@ tags:
 - krita
 - programming
 - opensource
+categories:
+- blog
 title: 'Fixing Qt warning "QLayout: Attempting to add QLayout "" to QWidget "", which
   already has a layout"'
 ---

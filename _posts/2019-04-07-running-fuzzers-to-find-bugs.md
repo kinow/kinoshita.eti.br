@@ -10,6 +10,8 @@ tags:
 - security
 - programming
 - fuzzing
+categories:
+- blog
 title: Running fuzzers to find bugs
 ---
 

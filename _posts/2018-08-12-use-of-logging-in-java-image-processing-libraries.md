@@ -6,6 +6,8 @@ tags:
 - java
 - image processing
 - opensource
+categories:
+- blog
 title: Use of Logging in Java Image Processing libraries
 ---
 

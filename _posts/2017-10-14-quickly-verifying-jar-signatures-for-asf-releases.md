@@ -7,6 +7,8 @@ tags:
 - security
 - opensource
 - apache software foundation
+categories:
+- blog
 title: Quickly Verifying jar Signatures For ASF Releases
 ---
 

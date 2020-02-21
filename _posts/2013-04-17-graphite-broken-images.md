@@ -4,6 +4,8 @@ layout: post
 tags:
 - monitoring
 - python
+categories:
+- blog
 title: 'Graphite: Broken images'
 ---
 

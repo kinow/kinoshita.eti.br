@@ -4,6 +4,8 @@ layout: post
 tags:
 - jenkins
 - security
+categories:
+- blog
 title: How does the Jenkins Credentials Plug-in store passwords?
 ---
 

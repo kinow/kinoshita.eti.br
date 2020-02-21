@@ -5,6 +5,8 @@ tags:
 - software quality
 - presentations
 - jenkins
+categories:
+- blog
 title: 'Belgium Testing Days 2011: Manage automated tests with TestLink and Hudson/Jenkins'
 ---
 

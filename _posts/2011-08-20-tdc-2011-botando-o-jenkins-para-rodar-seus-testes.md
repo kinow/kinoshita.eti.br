@@ -5,6 +5,8 @@ tags:
 - testlink
 - jenkins
 - opensource
+categories:
+- blog
 title: The Developers Conference (TDC) 2011 Botando o Jenkins para rodar seus testes
 ---
 

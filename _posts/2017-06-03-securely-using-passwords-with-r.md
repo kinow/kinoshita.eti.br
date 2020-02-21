@@ -5,6 +5,8 @@ tags:
 - r
 - programming
 - security
+categories:
+- blog
 title: Securely using passwords with R
 ---
 

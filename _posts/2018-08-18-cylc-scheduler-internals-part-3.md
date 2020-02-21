@@ -8,6 +8,8 @@ tags:
 - cylc
 - python
 - opensource
+categories:
+- blog
 title: Cylc Scheduler Internals - Part 3
 ---
 

@@ -5,6 +5,8 @@ tags:
 - jenkins
 - docker
 - saltstack
+categories:
+- blog
 title: Trying SaltStack with Docker
 ---
 

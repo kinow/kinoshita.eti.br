@@ -6,6 +6,8 @@ tags:
 - java
 - opensource
 - programming
+categories:
+- blog
 title: Some links related to Apache Commons Text
 ---
 

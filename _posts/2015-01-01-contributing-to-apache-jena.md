@@ -4,6 +4,8 @@ layout: post
 tags:
 - jena
 - apache software foundation
+categories:
+- blog
 title: Contributing to Apache Jena
 ---
 

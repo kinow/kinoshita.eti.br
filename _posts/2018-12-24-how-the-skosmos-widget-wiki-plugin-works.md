@@ -6,6 +6,8 @@ tags:
 - skosmos
 - semantic web
 - vocabulary server
+categories:
+- blog
 title: How the Skosmos Widget Wiki plugin works
 ---
 

@@ -4,6 +4,8 @@ layout: post
 tags:
 - programming
 - illustrations
+categories:
+- drawing
 title: Revamping Frege logo
 ---
 

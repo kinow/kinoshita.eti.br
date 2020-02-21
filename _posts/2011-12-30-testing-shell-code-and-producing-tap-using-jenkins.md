@@ -5,6 +5,8 @@ tags:
 - jenkins
 - test anything protocol
 - software quality
+categories:
+- blog
 title: Testing shell code and producing TAP using Jenkins?
 ---
 

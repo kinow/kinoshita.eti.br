@@ -5,6 +5,8 @@ tags:
 - java
 - programming
 - apache software foundation
+categories:
+- blog
 title: Apache Commons Text
 ---
 

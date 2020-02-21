@@ -7,6 +7,8 @@ tags:
 - programming
 - opensource
 - apache software foundation
+categories:
+- blog
 title: Finding Base64 implementations in Apache Software Foundation projects
 ---
 

@@ -3,6 +3,8 @@ date: 2016-11-25 01:24:03 +1300
 layout: post
 tags:
 - python
+categories:
+- blog
 title: Using Requests Session Objects for web scraping
 ---
 

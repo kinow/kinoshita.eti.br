@@ -3,6 +3,8 @@ date: 2011-12-24 14:08:56 +1300
 layout: post
 tags:
 - testlink
+categories:
+- blog
 title: Listing of current projects, achievements and my New Year's resolutions
 ---
 

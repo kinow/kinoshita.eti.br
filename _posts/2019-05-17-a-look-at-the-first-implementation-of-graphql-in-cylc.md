@@ -4,6 +4,8 @@ tags:
 - python
 - cylc
 - graphql
+categories:
+- blog
 title: A look at the first implementation of GraphQL in Cylc
 note: This is based on a WIP pull request, and what is being described
   here may be outdated by the time the pull request has been reviewed

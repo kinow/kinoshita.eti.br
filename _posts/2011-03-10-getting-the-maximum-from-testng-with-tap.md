@@ -5,6 +5,8 @@ tags:
 - test anything protocol
 - java
 - software quality
+categories:
+- blog
 title: Getting the maximum from TestNG with TAP
 ---
 

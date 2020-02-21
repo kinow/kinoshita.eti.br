@@ -6,6 +6,8 @@ tags:
 - testlink
 - software quality
 - presentations
+categories:
+- blog
 title: Encontro Ágil 2010 - Lighting talk about Test Automation with TestLink and
   Hudson
 ---

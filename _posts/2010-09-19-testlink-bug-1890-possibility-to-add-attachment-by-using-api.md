@@ -5,6 +5,8 @@ tags:
 - testlink
 - opensource
 - software quality
+categories:
+- blog
 title: 'TestLink BUG-1890: Possibility to add attachment by using API'
 ---
 

@@ -5,6 +5,8 @@ tags:
 - python
 - pandas
 - opensource
+categories:
+- blog
 title: Multithreaded code and Pandas
 ---
 

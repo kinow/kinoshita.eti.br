@@ -3,6 +3,8 @@ layout: post
 tags:
 - python
 - cylc
+categories:
+- blog
 title: Cylc videos
 ---
 

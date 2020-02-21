@@ -6,6 +6,8 @@ tags:
 - apache software foundation
 - opensource
 - illustrations
+categories:
+- drawing
 title: Creating a logo in Inkscape - process
 ---
 

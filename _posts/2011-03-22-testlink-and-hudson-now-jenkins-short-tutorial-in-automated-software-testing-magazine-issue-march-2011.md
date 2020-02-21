@@ -6,6 +6,8 @@ tags:
 - testlink
 - software quality
 - articles
+categories:
+- blog
 title: TestLink and Hudson (now Jenkins) short tutorial in Automated Software Testing
   Magazine, issue March 2011
 ---

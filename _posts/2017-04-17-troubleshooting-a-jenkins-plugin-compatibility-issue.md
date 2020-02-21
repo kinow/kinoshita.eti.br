@@ -6,6 +6,8 @@ tags:
 - java
 - programming
 - opensource
+categories:
+- blog
 title: Troubleshooting a Jenkins Plug-in compatibility issue
 ---
 

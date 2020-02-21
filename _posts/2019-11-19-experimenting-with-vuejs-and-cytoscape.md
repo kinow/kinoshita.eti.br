@@ -6,6 +6,8 @@ tags:
 - cylc
 - cytoscape
 - graph
+categories:
+- blog
 title: Experimenting with Vuejs and Cytoscape
 ---
 

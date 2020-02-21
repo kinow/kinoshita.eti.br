@@ -3,6 +3,8 @@ date: 2017-01-13 02:11:03 +1300
 layout: post
 tags:
 - illustrations
+categories:
+- drawing
 title: Drawing Cave
 ---
 

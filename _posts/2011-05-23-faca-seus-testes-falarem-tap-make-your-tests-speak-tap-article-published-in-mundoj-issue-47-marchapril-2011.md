@@ -5,6 +5,8 @@ tags:
 - test anything protocol
 - software quality
 - articles
+categories:
+- writing
 title: Faça seus Testes Falarem TAP (Make your Tests Speak TAP) article published
   in MundoJ, issue 47, March/April 2011
 ---

@@ -4,6 +4,8 @@ layout: post
 tags:
 - apache software foundation
 - web crawling
+categories:
+- blog
 title: Integrating Nutch 2.x, MySQL and Solr
 ---
 

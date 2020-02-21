@@ -3,6 +3,8 @@ layout: post
 tags:
 - javascript
 - vuejs
+categories:
+- blog
 title: Dynamic breadcrumbs with Vue Router nested routes and Vuetify Breadcrumb component
 ---
 

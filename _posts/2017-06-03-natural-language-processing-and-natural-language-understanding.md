@@ -4,6 +4,8 @@ layout: post
 tags:
 - natural language processing
 - programming
+categories:
+- blog
 title: Natural Language Processing and Natural Language Understanding
 ---
 

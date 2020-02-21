@@ -6,6 +6,8 @@ tags:
 - java
 - opensource
 - programming
+categories:
+- blog
 title: Replacing a HashSet with a BitSet
 ---
 

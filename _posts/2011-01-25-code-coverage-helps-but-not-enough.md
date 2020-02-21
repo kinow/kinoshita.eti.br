@@ -3,6 +3,8 @@ date: 2011-01-25 19:41:59 +1300
 layout: post
 tags:
 - software quality
+categories:
+- blog
 title: Code coverage helps, but it's not enough
 ---
 

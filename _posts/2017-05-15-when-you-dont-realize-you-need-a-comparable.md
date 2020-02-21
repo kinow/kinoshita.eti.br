@@ -6,6 +6,8 @@ tags:
 - java
 - opensource
 - programming
+categories:
+- blog
 title: When you don't realize you need a Comparable
 ---
 

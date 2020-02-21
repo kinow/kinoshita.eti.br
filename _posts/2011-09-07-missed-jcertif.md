@@ -4,6 +4,8 @@ layout: post
 tags:
 - presentations
 - software quality
+categories:
+- blog
 title: Missed JCertif
 ---
 

@@ -3,6 +3,8 @@ date: 2011-06-15 23:35:08 +1300
 layout: post
 tags:
 - perl
+categories:
+- blog
 title: 'Why am I learning Perl? '
 ---
 

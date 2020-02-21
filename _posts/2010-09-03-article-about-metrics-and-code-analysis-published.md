@@ -4,6 +4,8 @@ layout: post
 tags:
 - articles
 - software quality
+categories:
+- writing
 title: Article about metrics and code analysis published
 ---
 

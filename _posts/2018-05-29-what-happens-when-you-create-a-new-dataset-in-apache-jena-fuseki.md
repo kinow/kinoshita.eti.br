@@ -7,6 +7,8 @@ tags:
 - java
 - sparql
 - opensource
+categories:
+- blog
 title: What happens when you create a new dataset in Apache Jena Fuseki
 ---
 

@@ -6,6 +6,8 @@ tags:
 - vocabulary server
 - translation
 - semantic web
+categories:
+- blog
 title: Reasons for having pt and pt-BR in a software
 ---
 

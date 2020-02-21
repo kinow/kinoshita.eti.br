@@ -5,6 +5,8 @@ tags:
 - testlink
 - jenkins
 - software quality
+categories:
+- blog
 title: Running BDD tests from TestLink in Jenkins
 ---
 

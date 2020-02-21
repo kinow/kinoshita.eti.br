@@ -3,6 +3,8 @@ date: 2016-11-12 01:55:03 +1300
 layout: post
 tags:
 - shell script
+categories:
+- blog
 title: Add a header to a file with Shell script (sed)
 ---
 

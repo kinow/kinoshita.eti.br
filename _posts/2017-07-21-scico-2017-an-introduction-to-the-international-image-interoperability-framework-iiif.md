@@ -3,6 +3,8 @@ date: 2017-07-21 21:25:03 +1300
 layout: post
 tags:
 - iiif
+categories:
+- blog
 title: 'SciCo 2017: An Introduction to the International Image Interoperability Framework
   (IIIF)'
 ---

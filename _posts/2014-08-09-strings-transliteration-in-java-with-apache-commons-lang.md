@@ -5,6 +5,8 @@ tags:
 - java
 - apache software foundation
 - bioinformatics
+categories:
+- blog
 title: Strings transliteration in Java with Apache Commons Lang
 ---
 

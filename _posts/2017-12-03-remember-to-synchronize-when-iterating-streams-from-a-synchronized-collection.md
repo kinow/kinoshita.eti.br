@@ -5,6 +5,8 @@ tags:
 - programming
 - java
 - opensource
+categories:
+- blog
 title: Remember to synchronize when iterating streams from a synchronized Collection
 ---
 

@@ -3,6 +3,8 @@ date: 2012-09-20 21:49:38 +1300
 layout: post
 tags:
 - big data
+categories:
+- blog
 title: Running word-count example on a Hadoop commodity-hardware cluster and on a
   Hadoop local installation
 ---

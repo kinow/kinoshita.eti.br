@@ -6,6 +6,8 @@ tags:
 - programming
 - opensource
 - maven
+categories:
+- blog
 title: Checking for transitive dependencies use with Maven Enforcer Plug-in
 ---
 

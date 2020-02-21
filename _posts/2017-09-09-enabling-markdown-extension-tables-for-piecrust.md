@@ -5,6 +5,8 @@ tags:
 - programming
 - python
 - opensource
+categories:
+- blog
 title: Enabling Markdown Extension Tables For Piecrust
 ---
 

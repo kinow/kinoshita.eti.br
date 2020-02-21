@@ -3,6 +3,8 @@ date: 2010-05-28 14:38:22 +1300
 layout: post
 tags:
 - jenkins
+categories:
+- blog
 title: CafePress Hudson Store
 ---
 

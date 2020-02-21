@@ -4,6 +4,8 @@ layout: post
 tags:
 - monitoring
 - python
+categories:
+- blog
 title: Too many SQL variables exception in Graphite with SQLite3
 ---
 

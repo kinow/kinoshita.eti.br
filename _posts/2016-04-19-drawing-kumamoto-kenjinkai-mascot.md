@@ -3,6 +3,8 @@ date: 2016-04-19 21:39:03 +1300
 layout: post
 tags:
 - illustrations
+categories:
+- drawing
 title: 'Drawing vector art: Kumamoto Kenjinkai mascot'
 ---
 

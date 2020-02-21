@@ -6,6 +6,8 @@ tags:
 - python
 - hpc
 - docker
+categories:
+- blog
 title: Running Cylc tasks on PBS Torque with Docker
 ---
 

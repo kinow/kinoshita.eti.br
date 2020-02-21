@@ -4,6 +4,8 @@ layout: post
 tags:
 - jenkins
 - testlink
+categories:
+- blog
 title: A quick view on Wordpress, Mantis and Jenkins plug-in API
 ---
 
