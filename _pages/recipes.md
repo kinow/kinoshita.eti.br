@@ -74,7 +74,25 @@ Misturar os dois e esquentar no microondas por até 1 minuto.
 
 ## Arroz com sardinha
 
-## New Zealand South Island Cheese Roll
+## Southland Cheese Roll
+
+**Ingredients**
+
+- White toast bread
+- Cheese (Edam or Cheddar)
+- Evaporated milk
+- Onion soup
+- One small onion
+- Salt
+- Pepper
+
+**Instructions**
+
+- Chop the onion
+- Place the evaporated milk with the onion and salt and pepper in a pot
+- Heat it until it's almost boiling, then add cheese and onion soup powder and mix well
+- Wait a bit until the mix thickens
+- Fill each bread slice with the cheesy mix, roll it up, and take it to the oven until it is crisp and golden 
 
 ## Cookie de Aveia
 
@@ -82,6 +100,6 @@ Misturar os dois e esquentar no microondas por até 1 minuto.
 
 ## Hashbrown
 
-## Mayonese da Simone
+## Maionese da Simone
 
 ## Bolinhas de chickpeas
