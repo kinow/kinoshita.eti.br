@@ -74,6 +74,16 @@ Misturar os dois e esquentar no microondas por até 1 minuto.
 
 ## Arroz com sardinha
 
+**Ingredientes**
+
+- Arroz brasileiro velho
+- Sardinha em óleo
+
+**Como fazer**
+
+- Esquente o arroz no microondas
+- Coloque a sardinha sem o óleo e misture
+
 ## Southland Cheese Roll
 
 **Ingredients**
