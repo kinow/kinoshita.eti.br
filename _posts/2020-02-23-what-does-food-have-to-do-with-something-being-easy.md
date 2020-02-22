@@ -11,12 +11,12 @@ title: What does food have to do with something being easy?
 ---
 
 Some time ago I saw [this post](https://www.reddit.com/r/etymology/comments/dsknqj/japanese_idiom_%E6%9C%9D%E9%A3%AF%E5%89%8D_asameshimae_lit_before/)
-on reddit about **"朝飯前"** (asa-meshi-mae), literally "before the morning meal". This is an expression
-that has the same meaning as **piece of cake**, meaning that something is very easy.
+on reddit about **"朝飯前"** (asa-meshi-mae), literally "before the morning meal" in Japanese.
+This is an expression that has the same meaning as **piece of cake**, meaning that something is very easy.
 
 From the comments in that thread, there are more examples.
 
-In English **"___ for breakfast"** means that something will be very easy.
+In English **"<something>> for breakfast"** means that something is very easy.
 
 >I eat punks like you for breakfast
 
@@ -25,7 +25,7 @@ and has the same meaning.
 
 In Portuguese **"sopa"** is used with the same meaning of something being very easy.
 
->Ganhar desse time é sopa
+>Ganhar desse time é sopa!
 
 And similarly in Spanish but with **"pan comido"**.
 
