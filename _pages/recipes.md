@@ -31,6 +31,23 @@ Misturar os dois e esquentar no microondas por até 1 minuto.
 
 ## Pão de Queijo caseiro
 
+**Ingredientes**
+
+- 250g de polvilho
+- 1/2 xícara chá de leite (120ml)
+- 1/4 xícara chá de óleo (60ml)
+- 1/2 colher sopa rasa de sal
+- 1 ovo
+- 1 xícara chá de queijo ralado
+
+**Como fazer**
+
+- Ferver o leite, o óleo, e o sal
+- Misturar no polvilho
+- Colocar o ovo e mexer
+- Colocar queijo e mexer
+- Levar ao forno
+
 ## Tapioca da Dona Bete
 
 **Ingredientes**
