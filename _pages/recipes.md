@@ -121,7 +121,23 @@ Misturar os dois e esquentar no microondas por até 1 minuto.
 - Wait a bit until the mix thickens
 - Fill each bread slice with the cheesy mix, roll it up, and take it to the oven until it is crisp and golden 
 
-## Cookie de Aveia
+## Cookie de aveia cacau e amendoim
+
+**Ingredientes**
+
+- 50g de manteiga
+- 2 xícaras de aveia
+- 1/2 xícara de farinha
+- 1/2 xícara de açúcar mascavo
+- 1 ovo
+- 1 colher chá de baunilha
+- 2 colheres sopa de cacau
+- 1 colher chá de fermento
+
+**Como fazer**
+
+- Misturar tudo
+- Assar por 15 minutos
 
 ## Canja
 
