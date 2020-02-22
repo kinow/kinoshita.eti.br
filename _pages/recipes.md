@@ -139,6 +139,27 @@ Misturar os dois e esquentar no microondas por até 1 minuto.
 - Misturar tudo
 - Assar por 15 minutos
 
+## Bolo de caneca para microondas
+
+**Ingredientes**
+
+- 1 ovo
+- 3 colheres sopa de óleo
+- 4 colheres sopa de leite
+- 3 colheres sopa de áçúcar
+- 3 colheres sopa de chocolate em pó
+- 4 colheres sopa de farinha de trigo
+- 1/2 colher chá de fermento
+
+**Como fazer**
+
+- Colocar na caneca o ovo e o óleo
+- Adicionar leite, açúcar, e chocolate
+- Mexer bem
+- Adicionar aos poucos farinha mexendo
+- Adicionar o fermento
+- Levar ao microondas por três minutos
+
 ## Canja
 
 ## Hashbrown
