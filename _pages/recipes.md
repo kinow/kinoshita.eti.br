@@ -63,6 +63,15 @@ Misturar os dois e esquentar no microondas por até 1 minuto.
 
 ## Cruskits com Hummus
 
+**Ingredients**
+
+- Cruskits Light
+- Lisa's Original Hummus
+
+**Instructions**
+
+- D'oh
+
 ## Arroz com sardinha
 
 ## New Zealand South Island Cheese Roll
