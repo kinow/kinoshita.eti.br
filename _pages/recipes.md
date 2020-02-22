@@ -50,6 +50,17 @@ Misturar os dois e esquentar no microondas por até 1 minuto.
 
 ## Kao Pad Ochazuke
 
+**Ingredients**
+
+- Kao Pad from Chomna (old is better)
+- Ochazuke mix from JapanMart
+- Katsuo (optional)
+
+**Instructions**
+
+- Sprinkle the ochazuke mix on top of the rice
+- Heat up the kao pad with enough water to cover it
+
 ## Cruskits com Hummus
 
 ## Arroz com sardinha
