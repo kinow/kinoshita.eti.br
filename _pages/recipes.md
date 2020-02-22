@@ -33,6 +33,19 @@ Misturar os dois e esquentar no microondas por até 1 minuto.
 
 ## Tapioca da Dona Bete
 
+**Ingredientes**
+
+- Polvilho Doce, ou Tapioca Flour, ou Mistura pronta de Tapioca
+- Sal
+- Água
+
+**Como fazer**
+
+- Colocar água e ir mexendo até dar o ponto que dê pra peneirar.
+- Peneirar um pouco e testar na frigideira se dá liga.
+- Depois de peneirar, colocar sal a gosto.
+- Fritar e rechear.
+
 ## Sopa da Dona Bete
 
 ## Kao Pad Ochazuke
