@@ -5,8 +5,8 @@ permalink: "/geek/"
 note: "This page contains geek things like video-games, manga, illustrations, languages, math, etc."
 ---
 
-- [Inventions by accident](/geek/inventions-by-accident.md)
-- [Crazy treatments](/geek/crazy-health-treatments.md)
+- [Inventions by accident](/geek/inventions-by-accident)
+- [Crazy treatments](/geek/crazy-health-treatments)
 
 ### Games
 
