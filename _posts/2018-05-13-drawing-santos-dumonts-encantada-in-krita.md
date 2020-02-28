@@ -16,6 +16,8 @@ an artwork to for the challenge. The topic of this month's challenge is **Home**
 My submission was [Santos Dumont's house in Petropolis, Rio de Janeiro](https://www.google.co.nz/maps/place/Casa+de+Santos+Dumont/@-22.5103512,-43.1864205,17z/data=!3m1!4b1!4m5!3m4!1s0x70145eaee05ea9b:0x33f52a8860f58db9!8m2!3d-22.5103562!4d-43.1842318), called
 [*Encantada*]((https://en.wikipedia.org/wiki/Alberto_Santos-Dumont#A_Encantada)).
 
+<img style="height: 400px;" class="ui image" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/side-by-side.jpg" alt="Line art" />
+
 <!--more-->
 
 And I am happy to report that **Krita 4.x looks much faster**! And I had no crashes, bugs,
@@ -28,9 +30,6 @@ creative!
 I started by preparing the canvas with the original image and an onion layer, and then traced
 the lineart. I used [David Revoy's brushes](https://www.davidrevoy.com/article340/krita-4-0-brushes).
 They are great! And used the built-in chalk brush for most of the colours.
-
-<img style="height: 400px;" class="ui image" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/side-by-side.jpg" alt="Line art" />
-
 
 I enjoy line art much more than colours, but for the monthly challenge, I tried to use
 some colours. I used the original photo to create the palette for the painting.
