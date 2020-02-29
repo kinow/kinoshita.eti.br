@@ -10,6 +10,8 @@ categories:
 title: What does food have to do with something being easy?
 ---
 
+<img class="fluid left-aligned" style="width: 40%" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/apple-02.png" />
+
 Some time ago I saw [this post](https://www.reddit.com/r/etymology/comments/dsknqj/japanese_idiom_%E6%9C%9D%E9%A3%AF%E5%89%8D_asameshimae_lit_before/)
 on reddit about **"朝飯前"** (asa-meshi-mae), literally "before the morning meal" in Japanese.
 This is an expression that has the same meaning as **piece of cake**, meaning that something is very easy.
