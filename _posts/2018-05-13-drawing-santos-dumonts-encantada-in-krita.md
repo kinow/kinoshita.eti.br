@@ -36,7 +36,6 @@ some colours. I used the original photo to create the palette for the painting.
 
 <img style="height: 400px;" class="ui image" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/lineart.jpg" alt="Line art" />
 
-
 It had been a few months since I used either my Wacom tablet or Krita for painting. But I
 was glad to remember some shortcuts. Krita interface is also quite intuitive. In a few
 minutes I found how to rotate the canvas and the zoom controls.
