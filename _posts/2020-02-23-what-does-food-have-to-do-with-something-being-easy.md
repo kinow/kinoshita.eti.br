@@ -18,7 +18,7 @@ This is an expression that has the same meaning as **piece of cake**, meaning th
 
 From the comments in that thread, there are more examples.
 
-In English **"<something>> for breakfast"** means that something is very easy.
+In English **"&lt;something&gt; for breakfast"** means that something is very easy.
 
 >I eat punks like you for breakfast
 
