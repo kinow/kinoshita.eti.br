@@ -10,6 +10,8 @@ categories:
 title: The etymology of bombast
 ---
 
+<img class="fluid left-aligned" style="width: 40%" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/146-1.png" />
+
 On ["On Writing Well"](https://www.amazon.com/Writing-Well-Classic-Guide-Nonfiction/dp/0060891548),
 Zinsser wrote:
 
