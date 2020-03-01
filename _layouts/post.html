@@ -14,6 +14,9 @@ layout: default
         {{ page.date | date: date_format }}
       </time>
       {% include stardate.html date=page.date %}
+      <span>
+        Number of words: {{ page.content | number_of_words }}.
+      </span>
       {%- if page.author -%}
       • <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span
       class="p-author h-card" itemprop="name">{{ page.author | escape }}</span></span>
@@ -34,7 +37,7 @@ layout: default
       {%- if page.length > 1 and page.tags.last == tag -%}and&nbsp;{%- endif -%}
       <a class="label" href="/tags#{{ tag }}">{{ tag }}</a>
       {%- if page.tags.last != tag -%},&nbsp;{%- endif -%}
-      {%- endfor -%}
+      {%- endfor -%}. Number of words: {{ page.content | number_of_words }}.
     </p>
   </div>
 
