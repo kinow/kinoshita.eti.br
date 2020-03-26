@@ -169,6 +169,25 @@
 
 <div class="blog"><div class="post">
   <h3 class="post-header">
+    <a class="post-link" href="/2017/01/05/plotting-auckland-with-osmnx.html">
+      Plotting Auckland with OSMnx
+    </a>
+  </h3><span class="post-meta">Jan 5, 2017<span>&mdash; star date: -305904.11.</span></span><p><img style="height: 400px;" class="ui image" src="/assets/posts/2017-01-05-plotting-auckland-with-osmnx/figure_1.png" alt="Auckland" /></p>
+
+<p>A couple of days ago I saw <a href="https://www.reddit.com/r/gis/comments/5lnjxs/creating_squaremile_figureground_diagrams_of/">a thread in reddit</a>
+about OSMnx. It is a utilty for interacting with the OpenStreeMap (OSM)
+API, manipulate it in pure Python and using libraries like NetworkX (a Python graph package).</p>
+
+<p>With it you can do things like <q>visualize cul-de-sacs or one-way streets, plot shortest-path routes, or calculate stats like intersection density, average node connectivity, or betweenness centrality</q>. Or simply
+plot the OSM data as in the graph above.</p>
+
+<p>The source code is hosted at GitHub: <a href="https://github.com/gboeing/osmnx">https://github.com/gboeing/osmnx</a>.</p>
+
+<p class="more-link">
+    <a class="post-link" href="/2017/01/05/plotting-auckland-with-osmnx.html">Continue reading&hellip;</a>
+  </p></div>
+<div class="post">
+  <h3 class="post-header">
     <a class="post-link" href="/2017/01/03/contributing-to-krita.html">
       Contributing to Krita
     </a>
@@ -257,7 +276,7 @@ debug your application in Eclipse or whatever IDE you prefer.</p>
     <a class="post-link" href="/2016/12/19/permgen-errors-and-java-lang-classcastexception-com-sun-crypto-provider-aescipher-cannot-be-cast-to-javax-crypto-cipherspi-running-jenkins-plug-in-tests-with-powermock.html">
       PermGen errors and java.lang.ClassCastException: com.sun.crypto.provider.AESCipher cannot be cast to javax.crypto.CipherSpi running Jenkins plug-in tests with PowerMock
     </a>
-  </h3><span class="post-meta">Dec 19, 201652<span>&mdash; star date: -306950.82.</span></span><p>Recently while working on a Jenkins plugin some tests were failing with PermGen errors.
+  </h3><span class="post-meta">Dec 19, 201654<span>&mdash; star date: -306950.82.</span></span><p>Recently while working on a Jenkins plugin some tests were failing with PermGen errors.
 Even though it worked in my notebook at home (with Java 8, thus no Permgen), it failed
 in a CloudBees hosted Jenkins job, and also on my Mac (with Java 7) at work.</p>
 
@@ -304,7 +323,7 @@ so that users facing similar issues can try these possible workarounds.</p>
     <a class="post-link" href="/2016/11/25/using-requests-session-objects-for-web-scraping.html">
       Using Requests Session Objects for web scraping
     </a>
-  </h3><span class="post-meta">Nov 25, 201653<span>&mdash; star date: -306021.86.</span></span><p>I had to write a Python script some months ago, that would retrieve Solar energy
+  </h3><span class="post-meta">Nov 25, 201655<span>&mdash; star date: -306021.86.</span></span><p>I had to write a Python script some months ago, that would retrieve Solar energy
 data from a web site. It was basically a handful of HTTP calls, parse the response
 that was mainly in JSON, and store the results as JSON and CSV for processing later.</p>
 
@@ -346,54 +365,6 @@ you won’t have to worry about redirects. The library by default takes care
 with a <a href="https://github.com/kennethreitz/requests/blob/dfad00a6e84bc75b12468ca29ccf4f971c813fc8/requests/models.py#L54">default limit of up to 30</a>.</p>
 
 <p>Happy hacking!</p>
-</div>
-<div class="post">
-  <h3 class="post-header">
-    <a class="post-link" href="/2016/11/21/changing-spring-boot-environment-variables-in-the-command-line.html">
-      Changing Spring Boot environment variables in the command line
-    </a>
-  </h3><span class="post-meta">Nov 21, 201654<span>&mdash; star date: -306032.79.</span></span><p>This week while helping developers and testers to experiment with a backend application,
-some of them found useful to learn a simple trick to change Spring Boot properties
-when you can run the application locally (our testers build, compile, change the code, how cool
-is that?).</p>
-
-<p>Here’s how it works. Say you have the following settings in your application’s
-<strong>application.properties</strong>:</p>
-
-<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>my.application.database.username<span class="o">=</span>sa
-my.application.database.password<span class="o">=</span>notasimplepassword
-</code></pre></div></div>
-
-<p>And that you want to change these parameters in order to, for instance, create an application
-error, so that you can code and test what happens to the frontend application in that situation.</p>
-
-<p>You replace <em>dots</em> by <em>underscores</em>, and put all your words in upper case. So the variables
-above would be: MY_APPLICATION_DATABASE_USERNAME and MY_APPLICATION_DATABASE_PASSWORD.</p>
-
-<p>Furthermore, you do not need to edit your application.properties file, if you are on Linux or
-Mac OS. You can start the application and override environment variables at the same time
-with the following syntax.</p>
-
-<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ MY_APPLICATION_DATABASE_USERNAME</span><span class="o">=</span>olivei <span class="nv">MY_APPLICATION_DATABASE_PASSWORD</span><span class="o">=</span>7655432222a mvn clean spring-boot:run
-</code></pre></div></div>
-
-<p>This way your application will start with the new values.</p>
-
-<p>Happy hacking!</p>
-
-<p><strong>–EDIT–</strong></p>
-
-<p>As pointed by Stéphane Nicoll (thanks!), you could change the property values
-without having to use the upper case syntax.</p>
-
-<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mvn <span class="nt">-Dmy</span>.application.database.username<span class="o">=</span>anotheruser clean spring-boot:run
-</code></pre></div></div>
-
-<p>And he even included a link to <a href="http://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#boot-features-external-config">docs</a>! ♥ the Internet and Open Source!</p>
-
-<blockquote class="twitter-tweet" data-lang="en"><p lang="en" dir="ltr"><a href="https://twitter.com/kinow">@kinow</a> you can also specify them as command-line arguments (no need for the upper case thing)<a href="https://t.co/zBKpgcXN1C">https://t.co/zBKpgcXN1C</a><br /><br />or `-Drun.arguments`</p>&mdash; Stéphane Nicoll (@snicoll) <a href="https://twitter.com/snicoll/status/800965565120708608">November 22, 2016</a></blockquote>
-<script async="" src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
-
 </div>
 <!-- Pagination links -->
   <div class="pagination">

@@ -169,6 +169,112 @@
 
 <div class="blog"><div class="post">
   <h3 class="post-header">
+    <a class="post-link" href="/2017/03/15/using-google-natural-language-api-in-aws-elastic-beanstalk-application.html">
+      Using Google Natural Language API in an AWS Elastic Beanstalk application
+    </a>
+  </h3><span class="post-meta">Mar 15, 2017<span>&mdash; star date: -305715.07.</span></span><p>Besides providing an API for users and developers, Google also provides a series of
+(very well-written) client implementation, in several programming languages. That’s the
+case for Google Storage, Google Vision, and for Google Natural Language API’s.</p>
+
+<p>I recently had to use the latter in a POC at work, and ran into an interesting issue with
+our AWS Elastic Beanstalk environment.</p>
+
+<p>Google Language API requires that clients authenticate before sending requests. If you use their <a href="https://github.com/GoogleCloudPlatform/google-cloud-java">google-cloud-java</a>, you can define the GOOGLE_APPLICATION_CREDENTIALS. This environment variable must point to a JSON file with the Google Language API credentials.</p>
+
+<p>The issue is that while Google Language API (or more precisely
+<a href="https://github.com/google/google-auth-library-java/blob/ae9735c576fd8593636e155ccb26e454576bc2cd/oauth2_http/java/com/google/auth/oauth2/DefaultCredentialsProvider.java#L124">google-auth-library-java</a>)
+looks for an environment variable, in Elastic Beanstalk you are able to
+specify only system properties (unless you want to try something with ebextensions,
+maybe some JNI…).</p>
+
+<p>A workaround for this issue in Google Natural Language API, is to create and pass a
+<a href="http://googlecloudplatform.github.io/google-cloud-java/0.8.0/apidocs/com/google/cloud/language/spi/v1/LanguageServiceSettings.html">LanguageServiceSettings</a>
+to your <a href="http://googlecloudplatform.github.io/google-cloud-java/0.8.0/apidocs/com/google/cloud/language/spi/v1/LanguageServiceClient.html">LanguageServiceClient</a>.
+This settings object, when created, must be given a
+<a href="http://googleapis.github.io/gax-java/0.2.0/apidocs/com/google/api/gax/grpc/ChannelProvider.html">channel provider</a>
+with a <a href="http://googleapis.github.io/gax-java/0.2.0/apidocs/com/google/api/gax/core/FixedCredentialsProvider.html">FixedCredentialsProvider</a>.</p>
+
+<p>Of course reading code is way easier than reading this workaround description.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// File: GoogleNaturalLanguageService.java</span>
+<span class="c1">// ...</span>
+    <span class="c1">// envvar or property used to specify the Google Application Credentials</span>
+    <span class="kd">private</span> <span class="kd">final</span> <span class="kd">static</span> <span class="nc">String</span> <span class="no">GOOGLE_APPLICATION_CREDENTIALS</span> <span class="o">=</span> <span class="s">"GOOGLE_APPLICATION_CREDENTIALS"</span><span class="o">;</span>
+
+    <span class="cm">/**
+     * Google Natural Language API.
+     */</span>
+    <span class="kd">private</span> <span class="nc">LanguageServiceClient</span> <span class="n">languageServiceClient</span><span class="o">;</span>
+
+    <span class="nd">@PostConstruct</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">init</span><span class="o">()</span> <span class="kd">throws</span> <span class="nc">Exception</span> <span class="o">{</span>
+        <span class="c1">// Elastic Beanstalk supports Properties, not Environment Variables.</span>
+        <span class="c1">// Google credentials library will load</span>
+        <span class="c1">// the JSON location for the service to authenticate from an envVar. So</span>
+        <span class="c1">// we need to fix that here.</span>
+        <span class="nc">String</span> <span class="n">googleApplicationCredentials</span> <span class="o">=</span> <span class="nc">System</span><span class="o">.</span><span class="na">getenv</span><span class="o">(</span><span class="no">GOOGLE_APPLICATION_CREDENTIALS</span><span class="o">);</span>
+        <span class="no">LOGGER</span><span class="o">.</span><span class="na">info</span><span class="o">(</span><span class="nc">String</span><span class="o">.</span><span class="na">format</span><span class="o">(</span><span class="s">"GOOGLE_APPLICATION_CREDENTIALS in environment variable: %s"</span><span class="o">,</span> <span class="n">googleApplicationCredentials</span><span class="o">));</span>
+        <span class="k">if</span> <span class="o">(</span><span class="nc">StringUtils</span><span class="o">.</span><span class="na">isBlank</span><span class="o">(</span><span class="n">googleApplicationCredentials</span><span class="o">))</span> <span class="o">{</span>
+            <span class="n">googleApplicationCredentials</span> <span class="o">=</span> <span class="nc">System</span><span class="o">.</span><span class="na">getProperty</span><span class="o">(</span><span class="no">GOOGLE_APPLICATION_CREDENTIALS</span><span class="o">);</span>
+            <span class="no">LOGGER</span><span class="o">.</span><span class="na">info</span><span class="o">(</span><span class="nc">String</span><span class="o">.</span><span class="na">format</span><span class="o">(</span><span class="s">"GOOGLE_APPLICATION_CREDENTIALS in JVM property: %s"</span><span class="o">,</span> <span class="n">googleApplicationCredentials</span><span class="o">));</span>
+        <span class="o">}</span>
+
+        <span class="k">if</span> <span class="o">(</span><span class="n">googleApplicationCredentials</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">throw</span> <span class="k">new</span> <span class="nf">RuntimeException</span><span class="o">(</span><span class="s">"Could not locate GOOGLE_APPLICATION_CREDENTIALS variable!"</span><span class="o">);</span>
+        <span class="o">}</span>
+
+        <span class="kd">final</span> <span class="nc">LanguageServiceSettings</span> <span class="n">languageServiceSettings</span><span class="o">;</span>
+        <span class="k">try</span> <span class="o">(</span><span class="nc">InputStream</span> <span class="n">is</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">FileInputStream</span><span class="o">(</span><span class="k">new</span> <span class="nc">File</span><span class="o">(</span><span class="n">googleApplicationCredentials</span><span class="o">)))</span> <span class="o">{</span>
+            <span class="kd">final</span> <span class="nc">GoogleCredentials</span> <span class="n">myCredentials</span> <span class="o">=</span> <span class="nc">GoogleCredentials</span>
+                    <span class="o">.</span><span class="na">fromStream</span><span class="o">(</span><span class="n">is</span><span class="o">)</span>
+                    <span class="o">.</span><span class="na">createScoped</span><span class="o">(</span>
+                            <span class="nc">Collections</span><span class="o">.</span><span class="na">singleton</span><span class="o">(</span><span class="s">"https://www.googleapis.com/auth/cloud-platform"</span><span class="o">)</span>
+                    <span class="o">);</span>
+            <span class="kd">final</span> <span class="nc">CredentialsProvider</span> <span class="n">credentialsProvider</span> <span class="o">=</span> <span class="nc">FixedCredentialsProvider</span><span class="o">.</span><span class="na">create</span><span class="o">(</span><span class="n">myCredentials</span><span class="o">);</span>
+
+            <span class="kd">final</span> <span class="nc">InstantiatingChannelProvider</span> <span class="n">channelProvider</span> <span class="o">=</span> <span class="nc">LanguageServiceSettings</span>
+                    <span class="o">.</span><span class="na">defaultChannelProviderBuilder</span><span class="o">()</span>
+                    <span class="o">.</span><span class="na">setCredentialsProvider</span><span class="o">(</span><span class="n">credentialsProvider</span><span class="o">)</span>
+                    <span class="o">.</span><span class="na">build</span><span class="o">();</span>
+            <span class="n">languageServiceSettings</span> <span class="o">=</span> <span class="nc">LanguageServiceSettings</span>
+                    <span class="o">.</span><span class="na">defaultBuilder</span><span class="o">()</span>
+                    <span class="o">.</span><span class="na">setChannelProvider</span><span class="o">(</span><span class="n">channelProvider</span><span class="o">)</span>
+                    <span class="o">.</span><span class="na">build</span><span class="o">();</span>
+        <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="nc">IOException</span> <span class="n">ioe</span><span class="o">)</span> <span class="o">{</span>
+            <span class="no">LOGGER</span><span class="o">.</span><span class="na">error</span><span class="o">(</span><span class="nc">String</span><span class="o">.</span><span class="na">format</span><span class="o">(</span><span class="s">"IO error creating Google NLP settings: %s"</span><span class="o">,</span> <span class="n">ioe</span><span class="o">.</span><span class="na">getMessage</span><span class="o">()),</span> <span class="n">ioe</span><span class="o">);</span>
+            <span class="k">throw</span> <span class="n">ioe</span><span class="o">;</span>
+        <span class="o">}</span>
+
+        <span class="c1">// Create Google API client</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">languageServiceClient</span> <span class="o">=</span> <span class="nc">LanguageServiceClient</span><span class="o">.</span><span class="na">create</span><span class="o">(</span><span class="n">languageServiceSettings</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="nd">@PreDestroy</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">destroy</span><span class="o">()</span> <span class="kd">throws</span> <span class="nc">Exception</span> <span class="o">{</span>
+        <span class="k">if</span> <span class="o">(</span><span class="no">LOGGER</span><span class="o">.</span><span class="na">isDebugEnabled</span><span class="o">())</span> <span class="o">{</span>
+            <span class="no">LOGGER</span><span class="o">.</span><span class="na">debug</span><span class="o">(</span><span class="s">"Destroying Google NLP API client"</span><span class="o">);</span>
+        <span class="o">}</span>
+        <span class="c1">// Close Google API executors and channels</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">languageServiceClient</span><span class="o">.</span><span class="na">close</span><span class="o">();</span>
+    <span class="o">}</span>
+<span class="c1">// ...</span>
+</code></pre></div></div>
+
+<p>That way you should be able to use the API with AWS Elastic Beanstalk
+without having to hack your environment to provide the GOOGLE_APPLICATION_CREDENTIALS
+environment variable.</p>
+
+<p>An alternative would be google-auth-library-java to look for an environment variable
+<em>and</em> a system property. Or maybe Amazon AWS add a way to provide environment variables.</p>
+
+<p>Note also that I included the @PostConstruct and @PreDestroy annotated methods. The
+API will start an executor thread pool, so if you do not want to risk to have problems
+re-deploying your application, then remember to close your streams.</p>
+
+<p>♥ Open Source</p>
+</div>
+<div class="post">
+  <h3 class="post-header">
     <a class="post-link" href="/2017/03/14/order-of-containers-in-docker-compose.html">
       Order of containers in Docker Compose
     </a>
@@ -413,25 +519,6 @@ open a <a href="https://issues.apache.org/jira/browse/TEXT">JIRA issue</a>, or s
 
 <p>Happy hacking!</p>
 </div>
-<div class="post">
-  <h3 class="post-header">
-    <a class="post-link" href="/2017/01/05/plotting-auckland-with-osmnx.html">
-      Plotting Auckland with OSMnx
-    </a>
-  </h3><span class="post-meta">Jan 5, 2017<span>&mdash; star date: -305904.11.</span></span><p><img style="height: 400px;" class="ui image" src="/assets/posts/2017-01-05-plotting-auckland-with-osmnx/figure_1.png" alt="Auckland" /></p>
-
-<p>A couple of days ago I saw <a href="https://www.reddit.com/r/gis/comments/5lnjxs/creating_squaremile_figureground_diagrams_of/">a thread in reddit</a>
-about OSMnx. It is a utilty for interacting with the OpenStreeMap (OSM)
-API, manipulate it in pure Python and using libraries like NetworkX (a Python graph package).</p>
-
-<p>With it you can do things like <q>visualize cul-de-sacs or one-way streets, plot shortest-path routes, or calculate stats like intersection density, average node connectivity, or betweenness centrality</q>. Or simply
-plot the OSM data as in the graph above.</p>
-
-<p>The source code is hosted at GitHub: <a href="https://github.com/gboeing/osmnx">https://github.com/gboeing/osmnx</a>.</p>
-
-<p class="more-link">
-    <a class="post-link" href="/2017/01/05/plotting-auckland-with-osmnx.html">Continue reading&hellip;</a>
-  </p></div>
 <!-- Pagination links -->
   <div class="pagination">
     <p>

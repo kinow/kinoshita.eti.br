@@ -169,6 +169,102 @@
 
 <div class="blog"><div class="post">
   <h3 class="post-header">
+    <a class="post-link" href="/2017/08/12/two-other-maven-plugins-impsort-and-deptools.html">
+      Two other Maven Plug-ins: impsort and deptools
+    </a>
+  </h3><span class="post-meta">Aug 12, 2017<span>&mdash; star date: -305304.11.</span></span><p>Last <a href="/2017/08/06/checking-for-transitive-dependencies-use-with-maven-enforcer-plugin.html">week I wrote</a>
+about the <a href="https://github.com/ImmobilienScout24/illegal-transitive-dependency-check">ImmobilienScout24/illegal-transitive-dependency-check</a>
+rule for Maven Enforcer Plug-in. There are two other Maven Plug-ins that can be useful.</p>
+
+<h3 id="mbknordeptools">mbknor/deptools</h3>
+
+<p>The <a href="https://github.com/mbknor/deptools">mbknor/deptools</a> is another rule for the Maven Enforcer Plug-in. It will scan your project dependency tree, looking for transitive dependencies. Whenever it finds a transitive dependency, it will keep track of the versions. And if, because of the way your dependencies and transitive dependencies are organised, you end up with a version that is not the newest, the build will fail.</p>
+
+<p>So, for example, if you have <code class="language-plaintext highlighter-rouge">commons-lang3</code> as transitive dependency of two other dependencies, but one is using 3.4 and the other 3.5. If for any reason you are using 3.4 instead of 3.5, you will have a build error.</p>
+
+<p>Here’s an example of the plug-in configuration.</p>
+
+<div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;project&gt;</span>
+  ...
+  <span class="nt">&lt;build&gt;</span>
+    <span class="nt">&lt;plugins&gt;</span>
+      <span class="nt">&lt;plugin&gt;</span>
+        <span class="nt">&lt;groupId&gt;</span>deptools.plugin<span class="nt">&lt;/groupId&gt;</span>
+        <span class="nt">&lt;artifactId&gt;</span>maven-deptools-plugin<span class="nt">&lt;/artifactId&gt;</span>
+        <span class="nt">&lt;version&gt;</span>1.3<span class="nt">&lt;/version&gt;</span>
+          <span class="nt">&lt;executions&gt;</span>
+              <span class="nt">&lt;execution&gt;</span>
+                  <span class="nt">&lt;phase&gt;</span>compile<span class="nt">&lt;/phase&gt;</span>
+                  <span class="nt">&lt;goals&gt;</span>
+                      <span class="nt">&lt;goal&gt;</span>version-checker<span class="nt">&lt;/goal&gt;</span>
+                  <span class="nt">&lt;/goals&gt;</span>
+              <span class="nt">&lt;/execution&gt;</span>
+          <span class="nt">&lt;/executions&gt;</span>
+        <span class="nt">&lt;/plugin&gt;</span>
+    <span class="nt">&lt;/plugins&gt;</span>
+  <span class="nt">&lt;/build&gt;</span>
+
+  <span class="nt">&lt;pluginRepositories&gt;</span>
+    <span class="nt">&lt;pluginRepository&gt;</span>
+      <span class="nt">&lt;id&gt;</span>mbk_mvn_repo<span class="nt">&lt;/id&gt;</span>
+      <span class="nt">&lt;name&gt;</span>mbk_mvn_repo<span class="nt">&lt;/name&gt;</span>
+      <span class="nt">&lt;url&gt;</span>https://raw.githubusercontent.com/mbknor/mbknor.github.com/master/m2repo/releases<span class="nt">&lt;/url&gt;</span>
+    <span class="nt">&lt;/pluginRepository&gt;</span>
+  <span class="nt">&lt;/pluginRepositories&gt;</span>
+  ...
+<span class="nt">&lt;/project&gt;</span>
+</code></pre></div></div>
+
+<p>Running <code class="language-plaintext highlighter-rouge">mvn clean verify</code> will execute the Maven Enforcer Plug-in <code class="language-plaintext highlighter-rouge">enforce</code> goal, which will call the deptools check. As you may have noticed, you also need to download the plug-in from GitHub, as it is not released to Maven Central.</p>
+
+<p>I do not use it for this reason, and also because I normally spend some time looking at the dependency tree anyway, but every now and then when I work on a new project I like quickly running it just to see what are the dependencies that are being shadowed by older versions.</p>
+
+<h3 id="revelcimpsort-maven-plugin">revelc/impsort-maven-plugin</h3>
+
+<p>I only found about this plug-in in the last <a href="https://blogs.apache.org/foundation/entry/the-apache-news-round-up31">Apache News Round-up</a>. Where it was mentioned that <a href="https://github.com/apache/accumulo/blob/401411619239e301ad14216b3b9c88ee947ab072/pom.xml#L999">Apache Accumulo uses</a> this plug-in to standarize the order of imports in code.</p>
+
+<div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;project&gt;</span>
+  ...
+  <span class="nt">&lt;build&gt;</span>
+    <span class="nt">&lt;plugins&gt;</span>
+      <span class="nt">&lt;plugin&gt;</span>
+        <span class="nt">&lt;groupId&gt;</span>net.revelc.code<span class="nt">&lt;/groupId&gt;</span>
+        <span class="nt">&lt;artifactId&gt;</span>impsort-maven-plugin<span class="nt">&lt;/artifactId&gt;</span>
+        <span class="nt">&lt;version&gt;</span>1.0.0<span class="nt">&lt;/version&gt;</span>
+        <span class="nt">&lt;configuration&gt;</span>
+          <span class="nt">&lt;groups&gt;</span>java.,javax.,org.,com.<span class="nt">&lt;/groups&gt;</span>
+          <span class="nt">&lt;staticGroups&gt;</span>java,*<span class="nt">&lt;/staticGroups&gt;</span>
+          <span class="nt">&lt;excludes&gt;</span>
+            <span class="nt">&lt;exclude&gt;</span>**/thrift/*.java<span class="nt">&lt;/exclude&gt;</span>
+          <span class="nt">&lt;/excludes&gt;</span>
+        <span class="nt">&lt;/configuration&gt;</span>
+        <span class="nt">&lt;executions&gt;</span>
+          <span class="nt">&lt;execution&gt;</span>
+            <span class="nt">&lt;id&gt;</span>sort-imports<span class="nt">&lt;/id&gt;</span>
+            <span class="nt">&lt;goals&gt;</span>
+              <span class="nt">&lt;goal&gt;</span>sort<span class="nt">&lt;/goal&gt;</span><span class="c">&lt;!-- runs at process-sources phase by default --&gt;</span>
+            <span class="nt">&lt;/goals&gt;</span>
+          <span class="nt">&lt;/execution&gt;</span>
+        <span class="nt">&lt;/executions&gt;</span>
+      <span class="nt">&lt;/plugin&gt;</span>
+    <span class="nt">&lt;/plugins&gt;</span>
+  <span class="nt">&lt;/build&gt;</span>
+  ...
+<span class="nt">&lt;/project&gt;</span>
+</code></pre></div></div>
+
+<p>I am neutral on imports order, though in cases where you have several contributors submitting pull requests, it can probably be useful to reduce the number of interactions. In other words, if a user submits a pull request and you have an automated check, then the user would be automatically notified about changes that s/he needs to do in order for his pull request to be accepted.</p>
+
+<h3 id="conclusion">Conclusion</h3>
+
+<p>I am not using any of these two plug-ins, but wanted to save it somewhere in case I needed to use them in the future, and also to share with others. Besides most common plug-ins (PMD, CheckStyle, FindBugs), I normally use at least some Maven Enforcer Plug-in rules, and the <a href="https://www.owasp.org/index.php/OWASP_Dependency_Check">OWASP plug-in</a>.</p>
+
+<p>While most of the time we spend writing code, preparing the infrastructure, and deploying and testing, I got bitten by some maven build bugs a few times, and had to spend days/weeks debugging some of these. So hope some of these posts save some hours of someone out there in a similar situation.</p>
+
+<p>♥ Open Source</p>
+</div>
+<div class="post">
+  <h3 class="post-header">
     <a class="post-link" href="/2017/08/06/checking-for-transitive-dependencies-use-with-maven-enforcer-plugin.html">
       Checking for transitive dependencies use with Maven Enforcer Plug-in
     </a>
@@ -354,52 +450,6 @@ Wendy mentioned that you would be a great person to speak to since you are close
 <p>I think I learned that some time ago, but if you asked me what was wrong with the change, and if it would break backward compatibility, I would probably fail to spot the issue. There are tools for that now (e.g. Clirr, japicmp) though they may miss some cases too.</p>
 
 <p>Luckily in this case a user subscribed to the Apache Commons development mailing list spotted the issue and quickly reported it. It gets easier maintaining an Open Source project with the constructive feedback of users, like this one.</p>
-
-<p>♥ Open Source</p>
-</div>
-<div class="post">
-  <h3 class="post-header">
-    <a class="post-link" href="/2017/06/03/securely-using-passwords-with-r.html">
-      Securely using passwords with R
-    </a>
-  </h3><span class="post-meta">Jun 3, 2017<span>&mdash; star date: -305498.63.</span></span><p>It is quite common to have code that needs to interact with another system, database, or third party application, and need to use some sort of credentials to securely communicate.</p>
-
-<p>Most of the code I wrote in <strong>R</strong>, or reviewed, had normally no borders (from a system analysis perspective) with other systems, or basically just interacted with the file system to retrieve NetCDF or JSON files.</p>
-
-<p>However, after I saw a comment in <em>Reddit</em> [1] some time ago about this, I decided to check what others used. With <strong>R Shiny</strong> becoming more popular, and moving more R code to the web, I think this will become a common requirement for R code.</p>
-
-<p>There is a blog post from <strong>RevolutionAnalytics</strong> [2] that does a nice summary of the options for that. The post is from 2015, but I do not think much changed now in 2017. From the blog post and comments, there are seven methods listed:</p>
-
-<ol>
-  <li>Put <a href="https://github.com/ropensci/fishbaseapi/blob/80393023a958aee54e2daa58c337458db5480b84/config_template.yaml">credentials</a> in your source code</li>
-  <li>Put credentials in a file in your project, but do not share this file (<em>#3</em>, <em>#4</em>, and <em>#5</em> are similar to this one)</li>
-  <li>Put credentials in a <a href="https://csgillespie.github.io/efficientR/3-3-r-startup.html#rprofile">.Rprofile</a> file</li>
-  <li><strong>Put credentials in a <a href="https://csgillespie.github.io/efficientR/3-3-r-startup.html#renviron">.Renviron</a> file</strong></li>
-  <li>Put <a href="https://github.com/ropensci/fishbaseapi/blob/80393023a958aee54e2daa58c337458db5480b84/config_template.yaml">credentials</a> in a JSON or YAML file</li>
-  <li>Put credentials in a secure store that you can access from R</li>
-  <li>Ask the user for the credentials when the script is executed (possibly not useful for R Shiny applications)</li>
-</ol>
-
-<p><strong>My preferred way for R is the .Renviron (or a <a href="https://github.com/gaborcsardi/dotenv">dotEnv</a>) file</strong>. You basically store your password in this file, make sure you do not share this (a global gitignore could be helpful to prevent any accident) and read the variables when you start your code.</p>
-
-<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">## Secrets</span><span class="w">
-</span><span class="n">MYSQL_PASSWORD</span><span class="o">=</span><span class="n">secret</span><span class="w">
-</span></code></pre></div></div>
-
-<p>If you would like to increase the security, you can combine it with a variation of <em>#6</em>. You use a .Renviron file, and use an encryption service like <a href="https://aws.amazon.com/kms/">Amazon KMS</a> (KMS stands for Key Management Service).</p>
-
-<p>With <a href="https://github.com/cardcorp/AWR.KMS">AWS KMS in R</a>, you can encrypt your values, put them encrypted in your .Renviron, and even if someone gets hold of your .Renviron file, you have an extra layer of protection, as the attacker would require access to your cloud environment to decrypt it too.</p>
-
-<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">## Secrets</span><span class="w">
-</span><span class="n">MYSQL_PASSWORD</span><span class="o">=</span><span class="n">AQECAHga320J8WadplGCqqVAr4HNvDaFSQ</span><span class="o">+</span><span class="n">NaiwIBhmm6qDSFwAAAGIwYAYJKoZIhvcNAQcGoFMwUQIBADBMBgkqhkiG9w0BBwEwHgYJYIZIAWUDBAEuMBEE99</span><span class="o">+</span><span class="n">LoLdvYv8l41OhAAIBEIAfx49FFJCLeYrkfMfAw6XlnxP23MmDBdqP8dPp28OoAQ</span><span class="o">==</span><span class="w">
-</span></code></pre></div></div>
-
-<h3 id="references">References</h3>
-
-<ul>
-  <li>[1] <a href="https://www.reddit.com/r/rstats/comments/6aonwx/open_source_r_applications_and_hiding_database/">r/stats * Open source R applications and hiding database connection</a></li>
-  <li>[2] <a href="http://blog.revolutionanalytics.com/2015/11/how-to-store-and-use-authentication-details-with-r.html">How to store and use webservice keys and authentication details with R</a></li>
-</ul>
 
 <p>♥ Open Source</p>
 </div>

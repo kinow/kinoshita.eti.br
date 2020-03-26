@@ -169,10 +169,57 @@
 
 <div class="blog"><div class="post">
   <h3 class="post-header">
+    <a class="post-link" href="/2016/09/03/performance-problems-in-jenkins-tap-plugin-part-1.html">
+      Performance problems in Jenkins TAP Plug-in &amp;mdash; part 1
+    </a>
+  </h3><span class="post-meta">Sep 3, 201661<span>&mdash; star date: -306248.63.</span></span><p><a href="https://issues.jenkins-ci.org/browse/JENKINS-17887">JENKINS-17887</a> reports performance problems in the <a href="https://wiki.jenkins-ci.org/display/JENKINS/TAP+Plugin">Jenkins TAP Plug-in</a>. It also lists a series of suggestions on how to improve the Jenkins TAP Plug-in performance. On this initial post, we will get a general idea of how the plug-in performs for large projects.</p>
+
+<p><a href="http://bioperl.org/">BioPerl</a> has over 21K tests. That should be enough for giving an initial idea of CPU, memory and disk usage for the plug-in.</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git clone https://github.com/bioperl/bioperl-live.git
+<span class="nb">cd </span>bioperl-live
+<span class="nb">sudo </span>cpanm  <span class="nt">-vv</span> <span class="nt">--installdeps</span> <span class="nt">--notest</span> <span class="nb">.</span>
+<span class="nb">sudo </span>cpanm Set::Scalar Graph::Directed XML::LibXML XML::SAX <span class="se">\</span>
+    SVG XML::Parser::PerlSAX Convert::Binary::C XML::SAX::Writer <span class="se">\</span>
+    XML::DOM::XPath Spreadsheet::ParseExcel XML::SAX::Writer <span class="se">\</span>
+    XML::DOM HTML::TableExtract XML::Simple Test::Pod DBI
+prove <span class="nt">-r</span> t/ <span class="nt">-a</span> tests.tar.gz
+
+All tests successful.
+<span class="nv">Files</span><span class="o">=</span>325, <span class="nv">Tests</span><span class="o">=</span>21095, 94 wallclock secs <span class="o">(</span> 2.47 usr  0.55 sys + 88.29 cusr  3.85 csys <span class="o">=</span> 95.16 CPU<span class="o">)</span>
+Result: PASS
+</code></pre></div></div>
+
+<p>When the test results are parsed, the plug-in also copies TAP files over to the master, in a folder called <em>tap-master-files</em>.</p>
+
+<p>The BioPerl tests are not really big, just <strong>1.7M</strong>. It gets doubled as there will be the workspace copy, and the tap-master-files directory copy, so <strong>3.4M</strong>.</p>
+
+<p>But several objects get created in memory, and persisted into the build.xml job file. BioPerl generates a build.xml file with <strong>11M</strong>. So <strong>less than 15M</strong>. But the build.xml contains objects that are read via XStream by Jenkins and into the memory.</p>
+
+<p>The build page with the graph, and the other two test result pages are rendering in more than 10 seconds in my computer. But the CPU load is OK, so a closer look at the memory use would probably be more interesting.</p>
+
+<p><img class="ui centered image" src="/assets/posts/2016-09-03-performance-problems-in-jenkins-tap-plug-in-mdash-part-1/JENKINS-17887-yourkit1.png" alt="JENKINS-17887 YourKit profiler" /></p>
+
+<p>The image shows one of the screens in YourKit profiler, where it is possible to see that <strong>org.tap4j.plugin.model.TapTestResultResult</strong> has over 6 million objects.</p>
+
+<p>One build.xml for the BioPerl project gets over 80K entries for the TestResult object.</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">grep</span> <span class="s2">"org.tap4j.model.TestResult"</span> builds/1/build.xml <span class="nt">-o</span> | <span class="nb">wc</span> <span class="nt">-l</span>
+84522
+</code></pre></div></div>
+
+<p>This happens because each TAP file may contain multiple test results (lines with test results). Each of these test results gets turned into a Java object and loaded by the plug-in. So when loading the test result pages, Jenkins needs to wait until all these objects have been parsed, deserialized and read into the memory.</p>
+
+<p>The next post will continue on code improvements, and another benchmark.</p>
+
+<p>Happy profiling!</p>
+</div>
+<div class="post">
+  <h3 class="post-header">
     <a class="post-link" href="/2016/07/20/reading-notes-about-drmaa-v2.html">
       Reading notes about DRMAA v2
     </a>
-  </h3><span class="post-meta">Jul 20, 201660<span>&mdash; star date: -306368.85.</span></span><p>The DRMAA v2 specification draft is ready to be published, and is in <a href="https://redmine.ogf.org/boards/36/topics/494">public
+  </h3><span class="post-meta">Jul 20, 201662<span>&mdash; star date: -306368.85.</span></span><p>The DRMAA v2 specification draft is ready to be published, and is in <a href="https://redmine.ogf.org/boards/36/topics/494">public
 comment</a> until 31st July this year.
 I used DRMAA v1 to integrate Jenkins and PBS some time ago, but it was not a
 very elegant solution.</p>
@@ -192,7 +239,7 @@ Jenkins and several grid computing implementations in a single plug-in.</p>
     <a class="post-link" href="/2016/07/17/reasons-for-having-pt-and-ptbr-in-a-software.html">
       Reasons for having pt and pt-BR in a software
     </a>
-  </h3><span class="post-meta">Jul 17, 201661<span>&mdash; star date: -306377.05.</span></span><p>Some time ago I found some spare time to work on a different Open Source project:
+  </h3><span class="post-meta">Jul 17, 201663<span>&mdash; star date: -306377.05.</span></span><p>Some time ago I found some spare time to work on a different Open Source project:
 <a href="http://skosmos.org/">SKOSMOS</a>. SKOSMOS is a web based SKOS browser and publishing
 tool, used to create vocabularies using the SKOS ontology.</p>
 
@@ -216,7 +263,7 @@ add rules for special cases.</p>
     <a class="post-link" href="/2016/07/12/processing-vaisala-radiosonde-data-with-python-and-creating-gruan-like-netcdf-files.html">
       Processing Vaisala Radiosonde data with Python, and creating GRUAN-like NetCDF files
     </a>
-  </h3><span class="post-meta">Jul 12, 201662<span>&mdash; star date: -306390.71.</span></span><p>One of my last projects involved parsing a few GB’s of data that was in a certain binary format,
+  </h3><span class="post-meta">Jul 12, 201664<span>&mdash; star date: -306390.71.</span></span><p>One of my last projects involved parsing a few GB’s of data that was in a certain binary format,
 and convert it into NetCDF files. In this post I will describe what was done, what I learned about radiosonde,
 <a href="http://www.dwd.de/EN/research/international_programme/gruan/home.html">GRUAN</a> and other geek stuff. Ready?</p>
 
@@ -250,7 +297,7 @@ normally in a short and constant interval.</p>
     <a class="post-link" href="/2016/05/06/some-linux-commands-i-used-this-week.html">
       Some Linux commands I used this week
     </a>
-  </h3><span class="post-meta">May 6, 201663<span>&mdash; star date: -306573.77.</span></span><p>These are some commands I used on Linux servers this week. Adding them here in case someone else
+  </h3><span class="post-meta">May 6, 201665<span>&mdash; star date: -306573.77.</span></span><p>These are some commands I used on Linux servers this week. Adding them here in case someone else
 find them interesting, and also due to my bad memory :-)</p>
 
 <h2 id="listing-latest-installed-packages-in-sles">Listing latest installed packages in SLES</h2>
@@ -367,24 +414,6 @@ syd12s02-in-f3.1e110.net.
 
 <p>Happy hacking!</p>
 </div>
-<div class="post">
-  <h3 class="post-header">
-    <a class="post-link" href="/2016/04/24/using-active-choices-with-role-strategy-plugin.html">
-      Using Active Choices with Role Strategy Plug-in
-    </a>
-  </h3><span class="post-meta">Apr 24, 201664<span>&mdash; star date: -306609.29.</span></span><p>Having worked in Open Source for a few years, one of my favorite things is when you can
-share experience with other people that you meet. <a href="https://github.com/agray">Andrew Gray</a>
-has worked with .NET and Jenkins for years, and we met through Open Source. He has helped me
-in the past with Jenkins and .NET, and also maintains the blog
-<a href="http://jenkinsheaven.blogspot.co.nz/">Jenkins.NET</a>.</p>
-
-<p>A couple of days ago he sent me an interesting question. He asked me if that would be possible
-to use Active Choices Plug-in with the <a href="https://wiki.jenkins-ci.org/display/JENKINS/Role+Strategy+Plugin">Role Strategy Plug-in</a>.
-This plug-in lets you define roles, define which permissions a role has, and then assign users to the roles.</p>
-
-<p class="more-link">
-    <a class="post-link" href="/2016/04/24/using-active-choices-with-role-strategy-plugin.html">Continue reading&hellip;</a>
-  </p></div>
 <!-- Pagination links -->
   <div class="pagination">
     <p>
