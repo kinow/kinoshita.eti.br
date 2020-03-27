@@ -67,7 +67,7 @@ note: "Drawing for fun, but commissions are welcome if I have the time."
         <a href="/art/doggo-white/">
             <div class="ui image sprite-thumbs-thumb-doggo-white"></div>
         </a>
-        <a href="/art/galpao-bras/">
+        <a href="/2020/03/28/galpao-bras.html">
             <div class="ui image sprite-thumbs-thumb-galpao-bras"></div>
         </a>
         <a href="/art/kelvin-diesel-engine/">
