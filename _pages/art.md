@@ -76,7 +76,7 @@ note: "Drawing for fun, but commissions are welcome if I have the time."
         <a href="/art/woman-looking-01/">
             <div class="ui image sprite-thumbs-thumb-woman-looking-01"></div>
         </a>
-        <a href="/art/zatoichi-crying-1/">
+        <a href="/2020/03/28/zatoichi-crying-1.html">
             <div class="ui image sprite-thumbs-thumb-zatoichi-crying-1"></div>
         </a>
         <a href="/art/plane1/">

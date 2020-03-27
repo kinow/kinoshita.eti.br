@@ -1,6 +1,8 @@
 ---
 title: Zatoichi Crying 1
-layout: page
+layout: post
+categories:
+- drawing
 note: 'From one of his movies. In this scene he had been betrayed.'
 ---
 
