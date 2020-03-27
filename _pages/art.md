@@ -7,7 +7,7 @@ note: "Drawing for fun, but commissions are welcome if I have the time."
 
 <div id="art">
     <div class="ui images">
-        <a href="/art/alonzo-and-lambda/">
+        <a href="/2020/03/27/alonzo-and-lambda.html">
             <div class="ui image sprite-thumbs-thumb-alonzo_and_lambda_by_kinow-d5tqvau"></div>
         </a>
         <a href="/art/jean-luc-picard/">
