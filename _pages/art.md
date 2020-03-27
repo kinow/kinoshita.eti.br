@@ -37,7 +37,7 @@ note: "Drawing for fun, but commissions are welcome if I have the time."
     and technology related content.</p>
     
     <div class="ui images">
-        <a href="/art/southern-royal-albatross/">
+        <a href="/2020/03/27/southern-royal-albatross.html">
             <div class="ui image sprite-thumbs-thumb-southern-royal-albatross"></div>
         </a>
         <a href="/art/daienny-lima/">
