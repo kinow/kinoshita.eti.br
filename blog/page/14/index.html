@@ -169,10 +169,83 @@
 
 <div class="blog"><div class="post">
   <h3 class="post-header">
+    <a class="post-link" href="/2016/10/04/using-the-aws-api-with-python.html">
+      Using the AWS API with Python
+    </a>
+  </h3><span class="post-meta">Oct 4, 201672<span>&mdash; star date: -306161.2.</span></span><p>Amazon Web Services provides a series of cloud services. When you access the web interface, most - if not all - of the actions you do there are actually translated into API calls.</p>
+
+<p>They also provide SDK’s in several programming languages. With these SDK’s you are able to call the same API used by the web interface. Python has <a href="https://github.com/boto/boto3">boto</a> (or boto3) which lets you to automate several tasks in AWS.</p>
+
+<p>But before you start using the API, you will need to <a href="https://web.archive.org/web/20160818112016/http://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSGettingStartedGuide/AWSCredentials.html">set up your access key</a>.</p>
+
+<p>It is likely that with time you will have different roles, and may have different permissions with each role. You have to configure your local environment so that you can either use the command line Python utility (installed via <code class="language-plaintext highlighter-rouge">pip install awscli</code>) or with boto.</p>
+
+<p>The awscli is a dependency for using boto3. After you install it, you need to run <code class="language-plaintext highlighter-rouge">aws configure</code>. It will create the <em>~/.aws/config</em> and <em>~/.aws/credentials</em> files. You can tweak these files to support multiple roles.</p>
+
+<p>I followed the tutorials, but got all sorts of different issues. Then after debugging some locally installed dependencies, in special awscli files, I found that the following settings work for my environment.</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># File: config</span>
+<span class="o">[</span>profile default]
+region <span class="o">=</span> ap-southeast-2
+
+<span class="o">[</span>profile profile1]
+region <span class="o">=</span> ap-southeast-2
+source_profile <span class="o">=</span> default
+role_arn <span class="o">=</span> arn:aws:iam::123:role/Developer
+
+<span class="o">[</span>profile profile2]
+region <span class="o">=</span> ap-southeast-2
+source_profile <span class="o">=</span> default
+role_arn <span class="o">=</span> arn:aws:iam::456:role/Sysops
+mfa_serial <span class="o">=</span> arn:aws:iam::789:mfa/user@domain.blabla
+</code></pre></div></div>
+
+<p>and</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># File: credentials</span>
+<span class="o">[</span>default]
+aws_access_key_id <span class="o">=</span> YOU_KEY_ID
+aws_secret_access_key <span class="o">=</span> YOUR_SECRET
+</code></pre></div></div>
+
+<p>And once it is done you can, for example, confirm it is working with some S3 commands in Python.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">#!/usr/bin/env python3
+</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">boto3</span>
+
+<span class="n">session</span> <span class="o">=</span> <span class="n">boto3</span><span class="o">.</span><span class="n">Session</span><span class="p">(</span><span class="n">profile_name</span><span class="o">=</span><span class="s">'profile2'</span><span class="p">)</span>
+<span class="n">s3</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">resource</span><span class="p">(</span><span class="s">'s3'</span><span class="p">)</span>
+
+<span class="n">found</span> <span class="o">=</span> <span class="bp">False</span>
+
+<span class="n">name</span> <span class="o">=</span> <span class="s">'mysuperduperbucket'</span>
+
+<span class="k">for</span> <span class="n">bucket</span> <span class="ow">in</span> <span class="n">s3</span><span class="o">.</span><span class="n">buckets</span><span class="o">.</span><span class="nb">all</span><span class="p">():</span>
+    <span class="k">if</span> <span class="n">bucket</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="n">name</span><span class="p">:</span>
+        <span class="n">found</span> <span class="o">=</span> <span class="bp">True</span>
+
+<span class="k">if</span> <span class="ow">not</span> <span class="n">found</span><span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">"Creating bucket..."</span><span class="p">)</span>
+    <span class="n">s3</span><span class="o">.</span><span class="n">create_bucket</span><span class="p">(</span><span class="n">Bucket</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
+
+<span class="n">file_location</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">realpath</span><span class="p">(</span><span class="n">__file__</span><span class="p">))</span> <span class="o">+</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">sep</span> <span class="o">+</span> <span class="s">'samplefile.txt'</span>
+<span class="n">s3</span><span class="o">.</span><span class="n">meta</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">upload_file</span><span class="p">(</span><span class="n">Filename</span><span class="o">=</span><span class="n">file_location</span><span class="p">,</span> <span class="n">Bucket</span><span class="o">=</span><span class="n">name</span><span class="p">,</span> <span class="n">Key</span><span class="o">=</span><span class="s">'book.txt'</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>The AWS files in this example are using MFA too, the multi-factor authentication. So the first time you run this code you may be asked to generate a token, which will be cached for a short time.</p>
+
+<p>That’s it for today.</p>
+
+<p>Happy hacking!</p>
+</div>
+<div class="post">
+  <h3 class="post-header">
     <a class="post-link" href="/2016/09/03/performance-problems-in-jenkins-tap-plugin-part-1.html">
       Performance problems in Jenkins TAP Plug-in &amp;mdash; part 1
     </a>
-  </h3><span class="post-meta">Sep 3, 201671<span>&mdash; star date: -306248.63.</span></span><p><a href="https://issues.jenkins-ci.org/browse/JENKINS-17887">JENKINS-17887</a> reports performance problems in the <a href="https://wiki.jenkins-ci.org/display/JENKINS/TAP+Plugin">Jenkins TAP Plug-in</a>. It also lists a series of suggestions on how to improve the Jenkins TAP Plug-in performance. On this initial post, we will get a general idea of how the plug-in performs for large projects.</p>
+  </h3><span class="post-meta">Sep 3, 201673<span>&mdash; star date: -306248.63.</span></span><p><a href="https://issues.jenkins-ci.org/browse/JENKINS-17887">JENKINS-17887</a> reports performance problems in the <a href="https://wiki.jenkins-ci.org/display/JENKINS/TAP+Plugin">Jenkins TAP Plug-in</a>. It also lists a series of suggestions on how to improve the Jenkins TAP Plug-in performance. On this initial post, we will get a general idea of how the plug-in performs for large projects.</p>
 
 <p><a href="http://bioperl.org/">BioPerl</a> has over 21K tests. That should be enough for giving an initial idea of CPU, memory and disk usage for the plug-in.</p>
 
@@ -219,7 +292,7 @@ Result: PASS
     <a class="post-link" href="/2016/07/20/reading-notes-about-drmaa-v2.html">
       Reading notes about DRMAA v2
     </a>
-  </h3><span class="post-meta">Jul 20, 201672<span>&mdash; star date: -306368.85.</span></span><p>The DRMAA v2 specification draft is ready to be published, and is in <a href="https://redmine.ogf.org/boards/36/topics/494">public
+  </h3><span class="post-meta">Jul 20, 201674<span>&mdash; star date: -306368.85.</span></span><p>The DRMAA v2 specification draft is ready to be published, and is in <a href="https://redmine.ogf.org/boards/36/topics/494">public
 comment</a> until 31st July this year.
 I used DRMAA v1 to integrate Jenkins and PBS some time ago, but it was not a
 very elegant solution.</p>
@@ -239,7 +312,7 @@ Jenkins and several grid computing implementations in a single plug-in.</p>
     <a class="post-link" href="/2016/07/17/reasons-for-having-pt-and-ptbr-in-a-software.html">
       Reasons for having pt and pt-BR in a software
     </a>
-  </h3><span class="post-meta">Jul 17, 201673<span>&mdash; star date: -306377.05.</span></span><p>Some time ago I found some spare time to work on a different Open Source project:
+  </h3><span class="post-meta">Jul 17, 201675<span>&mdash; star date: -306377.05.</span></span><p>Some time ago I found some spare time to work on a different Open Source project:
 <a href="http://skosmos.org/">SKOSMOS</a>. SKOSMOS is a web based SKOS browser and publishing
 tool, used to create vocabularies using the SKOS ontology.</p>
 
@@ -263,7 +336,7 @@ add rules for special cases.</p>
     <a class="post-link" href="/2016/07/12/processing-vaisala-radiosonde-data-with-python-and-creating-gruan-like-netcdf-files.html">
       Processing Vaisala Radiosonde data with Python, and creating GRUAN-like NetCDF files
     </a>
-  </h3><span class="post-meta">Jul 12, 201674<span>&mdash; star date: -306390.71.</span></span><p>One of my last projects involved parsing a few GB’s of data that was in a certain binary format,
+  </h3><span class="post-meta">Jul 12, 201676<span>&mdash; star date: -306390.71.</span></span><p>One of my last projects involved parsing a few GB’s of data that was in a certain binary format,
 and convert it into NetCDF files. In this post I will describe what was done, what I learned about radiosonde,
 <a href="http://www.dwd.de/EN/research/international_programme/gruan/home.html">GRUAN</a> and other geek stuff. Ready?</p>
 
@@ -292,128 +365,6 @@ normally in a short and constant interval.</p>
 <p class="more-link">
     <a class="post-link" href="/2016/07/12/processing-vaisala-radiosonde-data-with-python-and-creating-gruan-like-netcdf-files.html">Continue reading&hellip;</a>
   </p></div>
-<div class="post">
-  <h3 class="post-header">
-    <a class="post-link" href="/2016/05/06/some-linux-commands-i-used-this-week.html">
-      Some Linux commands I used this week
-    </a>
-  </h3><span class="post-meta">May 6, 201675<span>&mdash; star date: -306573.77.</span></span><p>These are some commands I used on Linux servers this week. Adding them here in case someone else
-find them interesting, and also due to my bad memory :-)</p>
-
-<h2 id="listing-latest-installed-packages-in-sles">Listing latest installed packages in SLES</h2>
-
-<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>rpm <span class="nt">-qa</span> <span class="nt">--last</span>
-</code></pre></div></div>
-
-<p>This will display the last packages installed. Useful when there are packages being updated, and you
-need to confirm what changed, and when.</p>
-
-<h2 id="listing-packages-in-sles-and-origin-repository">Listing packages in SLES and origin repository</h2>
-
-<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>rpm <span class="nt">-qa</span> <span class="nt">--qf</span> <span class="s1">'%-30{DISTRIBUTION} %{NAME}\n'</span>| <span class="nb">sort</span>
-</code></pre></div></div>
-
-<p>The output will have two columns. The first containing the repository name, and the second column with
-the package name. For example.</p>
-
-<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>devel:languages:R:base / SLE_11_SP2 R-base
-devel:languages:R:base / SLE_11_SP2 R-base-devel
-home:flacco:sles / SLE_11_SP3 php53-phar
-home:happenpappen / SLE_11_SP2 nodejs
-</code></pre></div></div>
-
-<h2 id="grep-for-content-in-xml-tags">Grep for content in XML tags</h2>
-
-<p>Be it for web services, or for finding things in Jenkins XML files. Being able to grep the tag attribute
-or tag name might be useful. Look at the following example that uses the 
-<a href="https://msdn.microsoft.com/en-us/library/ms762271%28v=vs.85%29.aspx">books XML provided by Microsoft for testing</a>.</p>
-
-<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">grep</span> <span class="nt">-oP</span> <span class="s2">"(?&lt;=&lt;genre&gt;).*?(?=&lt;/genre&gt;)"</span> books.xml | <span class="nb">sort</span> | <span class="nb">uniq</span>
-</code></pre></div></div>
-
-<p>Which will outputs the following.</p>
-
-<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Computer
-Fantasy
-Horror
-Romance
-Science Fiction
-</code></pre></div></div>
-
-<h2 id="find-python-site-packages-directory">Find Python site packages directory</h2>
-
-<p>Sometimes you have Anaconda, but also the system installation, and maybe even other Python distributions.
-Knowing where Python is looking for site packages can be helpful to confirm the package exists, and also
-to inspect its sources.</p>
-
-<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>python <span class="nt">-c</span> <span class="s2">"from distutils.sysconfig import get_python_lib; print(get_python_lib())"</span>
-</code></pre></div></div>
-
-<p>An example of the output of the script.</p>
-
-<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>/usr/lib/python2.7/dist-packages
-</code></pre></div></div>
-
-<h2 id="force-no-cache-via-curl-for-a-list-of-files">Force no-cache via curl for a list of files</h2>
-
-<p>Useful when you have a proxy like squid caching some requests from an application and you
-want to flush the cache and get the latest content (which will be cached again, but then
-you can fix it once confirmed).</p>
-
-<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>curl <span class="nt">--silent</span> <span class="nt">-H</span> <span class="s1">'Cache-Control: no-cache'</span> http://systemcachingvalues.local/somedoc.html
-</code></pre></div></div>
-
-<h2 id="find-to-which-servers-a-linux-process-is-talking-to">Find to which servers a Linux process is talking to</h2>
-
-<p>You have to find the pid of the process that you would like to investigate (e.g. 6364) and have
-<a href="http://linux.die.net/man/1/strace">strace</a> installed.</p>
-
-<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>strace <span class="nt">-p</span> 6364 <span class="nt">-f</span> <span class="nt">-e</span> <span class="nv">trace</span><span class="o">=</span>network <span class="nt">-o</span> output.txt
-</code></pre></div></div>
-
-<p>The command above creates output.txt with the trace information. Then you can grep for
-the IP addresses with the following regex.</p>
-
-<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">grep</span> <span class="nt">-E</span> <span class="nt">-o</span> <span class="s2">"(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)</span><span class="se">\.</span><span class="s2">(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)</span><span class="se">\.</span><span class="s2">(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)</span><span class="se">\.</span><span class="s2">(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)"</span> output.txt
-</code></pre></div></div>
-
-<p>Which will output something similar to the following example.</p>
-
-<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>127.0.1.1
-127.0.1.1
-127.0.1.1
-192.168.20.4
-10.10.0.12
-...
-</code></pre></div></div>
-
-<p>And finally, you can call dig to get the server name, and also remove duplicates.</p>
-
-<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">grep</span> <span class="nt">-E</span> <span class="nt">-o</span> <span class="s2">"(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)</span><span class="se">\.</span><span class="s2">(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)</span><span class="se">\.</span><span class="s2">(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)</span><span class="se">\.</span><span class="s2">(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)"</span> output.txt | xargs <span class="nt">-l</span> dig +noall +answer +nocmd <span class="nt">-x</span> | <span class="nb">awk</span> <span class="s1">'{ print $5}'</span> | <span class="nb">sort</span> | <span class="nb">uniq</span>
-</code></pre></div></div>
-
-<p>Which gives you the following.</p>
-
-<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ec2-52-13-43-205.compute-1.amazonaws.com.
-ec2-52-32-244-147.compute-1.amazonaws.com.
-ec2-52-44-11-85.compute-1.amazonaws.com.
-ec2-52-55-36-20.us-west-2.compute.amazonaws.com.
-ec2-52-11-19-24.us-west-2.compute.amazonaws.com.
-ec2-52-2-21-13.compute-1.amazonaws.com.
-ec2-54-33-249-49.us-west-2.compute.amazonaws.com.
-ec2-54-180-165-17.us-west-2.compute.amazonaws.com.
-ec2-54-2-177-91.compute-1.amazonaws.com.
-ec2-54-8-163-15.compute-1.amazonaws.com.
-syd11s01-in-f124.1e110.net.
-syd11s02-in-f5.1e110.net.
-syd12s02-in-f3.1e110.net.
-...
-</code></pre></div></div>
-
-<p>That’s all for today.</p>
-
-<p>Happy hacking!</p>
-</div>
 <!-- Pagination links -->
   <div class="pagination">
     <p>

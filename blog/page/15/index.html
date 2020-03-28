@@ -169,10 +169,132 @@
 
 <div class="blog"><div class="post">
   <h3 class="post-header">
+    <a class="post-link" href="/2016/05/06/some-linux-commands-i-used-this-week.html">
+      Some Linux commands I used this week
+    </a>
+  </h3><span class="post-meta">May 6, 201677<span>&mdash; star date: -306573.77.</span></span><p>These are some commands I used on Linux servers this week. Adding them here in case someone else
+find them interesting, and also due to my bad memory :-)</p>
+
+<h2 id="listing-latest-installed-packages-in-sles">Listing latest installed packages in SLES</h2>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>rpm <span class="nt">-qa</span> <span class="nt">--last</span>
+</code></pre></div></div>
+
+<p>This will display the last packages installed. Useful when there are packages being updated, and you
+need to confirm what changed, and when.</p>
+
+<h2 id="listing-packages-in-sles-and-origin-repository">Listing packages in SLES and origin repository</h2>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>rpm <span class="nt">-qa</span> <span class="nt">--qf</span> <span class="s1">'%-30{DISTRIBUTION} %{NAME}\n'</span>| <span class="nb">sort</span>
+</code></pre></div></div>
+
+<p>The output will have two columns. The first containing the repository name, and the second column with
+the package name. For example.</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>devel:languages:R:base / SLE_11_SP2 R-base
+devel:languages:R:base / SLE_11_SP2 R-base-devel
+home:flacco:sles / SLE_11_SP3 php53-phar
+home:happenpappen / SLE_11_SP2 nodejs
+</code></pre></div></div>
+
+<h2 id="grep-for-content-in-xml-tags">Grep for content in XML tags</h2>
+
+<p>Be it for web services, or for finding things in Jenkins XML files. Being able to grep the tag attribute
+or tag name might be useful. Look at the following example that uses the 
+<a href="https://msdn.microsoft.com/en-us/library/ms762271%28v=vs.85%29.aspx">books XML provided by Microsoft for testing</a>.</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">grep</span> <span class="nt">-oP</span> <span class="s2">"(?&lt;=&lt;genre&gt;).*?(?=&lt;/genre&gt;)"</span> books.xml | <span class="nb">sort</span> | <span class="nb">uniq</span>
+</code></pre></div></div>
+
+<p>Which will outputs the following.</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Computer
+Fantasy
+Horror
+Romance
+Science Fiction
+</code></pre></div></div>
+
+<h2 id="find-python-site-packages-directory">Find Python site packages directory</h2>
+
+<p>Sometimes you have Anaconda, but also the system installation, and maybe even other Python distributions.
+Knowing where Python is looking for site packages can be helpful to confirm the package exists, and also
+to inspect its sources.</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>python <span class="nt">-c</span> <span class="s2">"from distutils.sysconfig import get_python_lib; print(get_python_lib())"</span>
+</code></pre></div></div>
+
+<p>An example of the output of the script.</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>/usr/lib/python2.7/dist-packages
+</code></pre></div></div>
+
+<h2 id="force-no-cache-via-curl-for-a-list-of-files">Force no-cache via curl for a list of files</h2>
+
+<p>Useful when you have a proxy like squid caching some requests from an application and you
+want to flush the cache and get the latest content (which will be cached again, but then
+you can fix it once confirmed).</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>curl <span class="nt">--silent</span> <span class="nt">-H</span> <span class="s1">'Cache-Control: no-cache'</span> http://systemcachingvalues.local/somedoc.html
+</code></pre></div></div>
+
+<h2 id="find-to-which-servers-a-linux-process-is-talking-to">Find to which servers a Linux process is talking to</h2>
+
+<p>You have to find the pid of the process that you would like to investigate (e.g. 6364) and have
+<a href="http://linux.die.net/man/1/strace">strace</a> installed.</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>strace <span class="nt">-p</span> 6364 <span class="nt">-f</span> <span class="nt">-e</span> <span class="nv">trace</span><span class="o">=</span>network <span class="nt">-o</span> output.txt
+</code></pre></div></div>
+
+<p>The command above creates output.txt with the trace information. Then you can grep for
+the IP addresses with the following regex.</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">grep</span> <span class="nt">-E</span> <span class="nt">-o</span> <span class="s2">"(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)</span><span class="se">\.</span><span class="s2">(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)</span><span class="se">\.</span><span class="s2">(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)</span><span class="se">\.</span><span class="s2">(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)"</span> output.txt
+</code></pre></div></div>
+
+<p>Which will output something similar to the following example.</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>127.0.1.1
+127.0.1.1
+127.0.1.1
+192.168.20.4
+10.10.0.12
+...
+</code></pre></div></div>
+
+<p>And finally, you can call dig to get the server name, and also remove duplicates.</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">grep</span> <span class="nt">-E</span> <span class="nt">-o</span> <span class="s2">"(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)</span><span class="se">\.</span><span class="s2">(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)</span><span class="se">\.</span><span class="s2">(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)</span><span class="se">\.</span><span class="s2">(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)"</span> output.txt | xargs <span class="nt">-l</span> dig +noall +answer +nocmd <span class="nt">-x</span> | <span class="nb">awk</span> <span class="s1">'{ print $5}'</span> | <span class="nb">sort</span> | <span class="nb">uniq</span>
+</code></pre></div></div>
+
+<p>Which gives you the following.</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ec2-52-13-43-205.compute-1.amazonaws.com.
+ec2-52-32-244-147.compute-1.amazonaws.com.
+ec2-52-44-11-85.compute-1.amazonaws.com.
+ec2-52-55-36-20.us-west-2.compute.amazonaws.com.
+ec2-52-11-19-24.us-west-2.compute.amazonaws.com.
+ec2-52-2-21-13.compute-1.amazonaws.com.
+ec2-54-33-249-49.us-west-2.compute.amazonaws.com.
+ec2-54-180-165-17.us-west-2.compute.amazonaws.com.
+ec2-54-2-177-91.compute-1.amazonaws.com.
+ec2-54-8-163-15.compute-1.amazonaws.com.
+syd11s01-in-f124.1e110.net.
+syd11s02-in-f5.1e110.net.
+syd12s02-in-f3.1e110.net.
+...
+</code></pre></div></div>
+
+<p>That’s all for today.</p>
+
+<p>Happy hacking!</p>
+</div>
+<div class="post">
+  <h3 class="post-header">
     <a class="post-link" href="/2016/04/24/using-active-choices-with-role-strategy-plugin.html">
       Using Active Choices with Role Strategy Plug-in
     </a>
-  </h3><span class="post-meta">Apr 24, 201676<span>&mdash; star date: -306609.29.</span></span><p>Having worked in Open Source for a few years, one of my favorite things is when you can
+  </h3><span class="post-meta">Apr 24, 201678<span>&mdash; star date: -306609.29.</span></span><p>Having worked in Open Source for a few years, one of my favorite things is when you can
 share experience with other people that you meet. <a href="https://github.com/agray">Andrew Gray</a>
 has worked with .NET and Jenkins for years, and we met through Open Source. He has helped me
 in the past with Jenkins and .NET, and also maintains the blog
@@ -190,7 +312,7 @@ This plug-in lets you define roles, define which permissions a role has, and the
     <a class="post-link" href="/2016/04/17/trying-saltstack-with-docker.html">
       Trying SaltStack with Docker
     </a>
-  </h3><span class="post-meta">Apr 17, 201677<span>&mdash; star date: -306628.42.</span></span><p>Some weeks ago I started learning <a href="http://saltstack.com/">SaltStack</a> for a project at work. But I couldn’t
+  </h3><span class="post-meta">Apr 17, 201679<span>&mdash; star date: -306628.42.</span></span><p>Some weeks ago I started learning <a href="http://saltstack.com/">SaltStack</a> for a project at work. But I couldn’t
 find a good Docker image for that and I had to ask the Ops team for some VM’s. We
 are having a rainy weekend in Auckland, so I decided to have another look at the
 <a href="https://wiki.jenkins-ci.org/display/JENKINS/saltstack-plugin">Jenkins SaltStack Plug-in</a>.</p>
@@ -268,7 +390,7 @@ in Jenkins.</p>
     <a class="post-link" href="/2016/04/08/geek-vacation-2016.html">
       Geek Vacation 2016
     </a>
-  </h3><span class="post-meta">Apr 8, 201678<span>&mdash; star date: -306653.01.</span></span><p>I just had a two week vacation, and I tried to use my time to rest, play some music, and
+  </h3><span class="post-meta">Apr 8, 201680<span>&mdash; star date: -306653.01.</span></span><p>I just had a two week vacation, and I tried to use my time to rest, play some music, and
 complete a geek todo-list.</p>
 
 <p>The list included things that I used some time ago but wanted to
@@ -315,7 +437,7 @@ but there’s always some books to read, and things to learn anyway right ¯\<em
     <a class="post-link" href="/2016/03/20/deploying-war-files-to-tomcat-with-jenkins.html">
       Deploying WAR files to Tomcat with Jenkins
     </a>
-  </h3><span class="post-meta">Mar 20, 201679<span>&mdash; star date: -306702.19.</span></span><p><strong>Table of Contents</strong></p>
+  </h3><span class="post-meta">Mar 20, 201681<span>&mdash; star date: -306702.19.</span></span><p><strong>Table of Contents</strong></p>
 
 <ul>
   <li><a href="#1-deploying-with-custom-scripts">Deploying with custom scripts</a></li>
@@ -346,25 +468,6 @@ OK - Deployed application at context path /spring-petclinic
 
 <p class="more-link">
     <a class="post-link" href="/2016/03/20/deploying-war-files-to-tomcat-with-jenkins.html">Continue reading&hellip;</a>
-  </p></div>
-<div class="post">
-  <h3 class="post-header">
-    <a class="post-link" href="/2016/02/27/learning-afl-and-testing-mapserver.html">
-      Learning afl and testing MapServer
-    </a>
-  </h3><span class="post-meta">Feb 27, 201680<span>&mdash; star date: -306767.76.</span></span><p><a href="http://lcamtuf.coredump.cx/afl/">afl</a> is a fuzzer, an application that combines a series of algorithms
-in order to try invoking programs with several different input values. It then analyses the application
-execution flow given different test case scenarios. 
-You can read more about fuzzing at <a href="https://www.owasp.org/index.php/Fuzzing">this OWASP page</a>, or in other
-blogs that I also used while learning about afl <a href="&quot;#1&quot;">1</a> <a href="&quot;#2&quot;">2</a></p>
-
-<p>At work we are using MapServer for serving WFS and WMS. And I am using it for the
-<a href="http://maps.nzoss.org.nz">NZ OpenStreetMap maps</a> too. MapServer is written in C++ and is normally
-exposed as a CGI script, so I thought it was worth learning about afl and trying it on MapServer,
-as in case it finds any interesting bug I can submit it to the MapServer project.</p>
-
-<p class="more-link">
-    <a class="post-link" href="/2016/02/27/learning-afl-and-testing-mapserver.html">Continue reading&hellip;</a>
   </p></div>
 <!-- Pagination links -->
   <div class="pagination">

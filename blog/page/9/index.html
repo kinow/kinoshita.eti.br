@@ -169,6 +169,45 @@
 
 <div class="blog"><div class="post">
   <h3 class="post-header">
+    <a class="post-link" href="/2017/06/10/backward-compatibility-and-switch-statements-with-constant-expressions.html">
+      Backward compatibility and switch statement with constant expressions
+    </a>
+  </h3><span class="post-meta">Jun 10, 2017<span>&mdash; star date: -305479.45.</span></span><p>Maintaining Open Source software can be challenging. Making sure you keep backward compatibility (not only binary) can be even more challenging. <a href="https://commons.apache.org/proper/commons-lang/">Apache Commons Lang</a> 3.6 release is happening right now thanks to <a href="http://www.benediktritter.de/">Benedikt Ritter</a>, and it is on its fourth Release Candidate (i.e. RC4).</p>
+
+<p>A previous RC2 was cancelled due to <a href="http://commons.markmail.org/thread/57sqt2hkusegda73#query:+page:1+mid:dnwo5tjqo2e5bwuo+state:results">IBM JDK 8 compatibility</a>, more specifically the lazy initialization of ArrayList’s seems to be different in Oracle JDK and IBM JDK.</p>
+
+<p>The RC3 was cancelled due to a <a href="https://github.com/apache/commons-lang/commit/18e692478dcf91fdceb9b9fdca7c61a1111d63aa">change</a> that could affect users using a switch statement.</p>
+
+<p>The change was in the <em>CharEncoding</em> class. The issue was that this class has some constants, that stopped being <a href="http://docs.oracle.com/javase/specs/jls/se8/html/jls-15.html#jls-15.28">constant expressions</a>.</p>
+
+<blockquote>A constant expression is an expression denoting a value of primitive type or a String that does not complete abruptly and is composed using only the following (...)</blockquote>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">CharEncoding</span> <span class="o">{</span>
+    <span class="c1">// ...</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kd">final</span> <span class="nc">String</span> <span class="no">ISO_8859_1</span> <span class="o">=</span> <span class="s">"ISO-8859-1"</span><span class="o">;</span>
+    <span class="c1">// ...</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>The code above contains a constant (<em>static final</em>) variable, that is a constant expression. So users can safely use it in switch statements, and the Java compiler won’t complain about it.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">CharEncoding</span> <span class="o">{</span>
+    <span class="c1">// ...</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kd">final</span> <span class="nc">String</span> <span class="no">ISO_8859_1</span> <span class="o">=</span> <span class="nc">StandardCharsets</span><span class="o">.</span><span class="na">ISO_8859_1</span><span class="o">.</span><span class="na">name</span><span class="o">();</span>
+    <span class="c1">// ...</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>The code above is from the change that caused the regression. Any user that was using the ISO_8859_1 constant variable in a switch statement would get a compilation error (e.g. <em>case expressions must be constant expressions</em>) when updating to Apache Commons Lang 3.6. That is because the constant variable is not a constant expression.</p>
+
+<p>I think I learned that some time ago, but if you asked me what was wrong with the change, and if it would break backward compatibility, I would probably fail to spot the issue. There are tools for that now (e.g. Clirr, japicmp) though they may miss some cases too.</p>
+
+<p>Luckily in this case a user subscribed to the Apache Commons development mailing list spotted the issue and quickly reported it. It gets easier maintaining an Open Source project with the constructive feedback of users, like this one.</p>
+
+<p>♥ Open Source</p>
+</div>
+<div class="post">
+  <h3 class="post-header">
     <a class="post-link" href="/2017/06/03/securely-using-passwords-with-r.html">
       Securely using passwords with R
     </a>
@@ -334,21 +373,6 @@ check some of the links below.</p>
 
 <p>♥ Open Source</p>
 </div>
-<div class="post">
-  <h3 class="post-header">
-    <a class="post-link" href="/2017/05/15/when-you-dont-realize-you-need-a-comparable.html">
-      When you don&#39;t realize you need a Comparable
-    </a>
-  </h3><span class="post-meta">May 15, 2017<span>&mdash; star date: -305547.95.</span></span><p><a href="/2012/10/20/replacing-a-hashset-with-a-bitset.html">In 2012, I wrote</a> about how you always learn something
-new by following the <a href="http://www.apache.org/foundation/mailinglists.html">Apache dev mailing lists</a>.</p>
-
-<p>After about five years, I am still learning, and still getting impressed by the knowledge of other
-developers. Days ago I was massaging some code in <a href="https://github.com/apache/jena/pull/237">a pull request</a>
-and a developer suggested me to simplify my code.</p>
-
-<p class="more-link">
-    <a class="post-link" href="/2017/05/15/when-you-dont-realize-you-need-a-comparable.html">Continue reading&hellip;</a>
-  </p></div>
 <!-- Pagination links -->
   <div class="pagination">
     <p>

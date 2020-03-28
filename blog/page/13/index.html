@@ -169,10 +169,58 @@
 
 <div class="blog"><div class="post">
   <h3 class="post-header">
+    <a class="post-link" href="/2016/11/25/using-requests-session-objects-for-web-scraping.html">
+      Using Requests Session Objects for web scraping
+    </a>
+  </h3><span class="post-meta">Nov 25, 201667<span>&mdash; star date: -306021.86.</span></span><p>I had to write a Python script some months ago, that would retrieve Solar energy
+data from a web site. It was basically a handful of HTTP calls, parse the response
+that was mainly in JSON, and store the results as JSON and CSV for processing later.</p>
+
+<p>Since it was such a small task, I used the <a href="http://docs.python-requests.org">Requests</a>
+module instead of a complete web scraper. The HTTP requests had to be made with a
+time out, and also pass certain headers. I started customizing each call, until
+I learned about the Requests <a href="http://docs.python-requests.org/en/master/user/advanced/">Session Objects</a>.</p>
+
+<p>You create a session, as in ORM/JPA, where you can define a context, with certain properties
+and control an orthogonal behavior.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">requests</span>
+
+<span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="n">session</span><span class="p">,</span> <span class="n">url</span><span class="p">):</span>
+    <span class="s">"""Utility method to HTTP GET a URL"""</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">response</span>
+
+<span class="k">def</span> <span class="nf">post</span><span class="p">(</span><span class="n">session</span><span class="p">,</span> <span class="n">url</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+    <span class="s">"""Utility method to HTTP POST a URL with data parameters"""</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">!=</span> <span class="n">requests</span><span class="o">.</span><span class="n">codes</span><span class="o">.</span><span class="n">ok</span><span class="p">:</span>
+        <span class="n">response</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">response</span>
+
+<span class="k">with</span> <span class="n">requests</span><span class="o">.</span><span class="n">Session</span><span class="p">()</span> <span class="k">as</span> <span class="n">s</span><span class="p">:</span>
+    <span class="c1"># x-test header will be sent with every request
+</span>    <span class="n">s</span><span class="o">.</span><span class="n">headers</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s">'x-test'</span><span class="p">:</span> <span class="s">'true'</span><span class="p">})</span>
+
+    <span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s">'user'</span><span class="p">:</span> <span class="n">user</span><span class="p">,</span> <span class="s">'password'</span><span class="p">:</span> <span class="n">password</span><span class="p">,</span> <span class="s">'rememberne'</span><span class="p">:</span> <span class="s">'false'</span><span class="p">}</span>
+    <span class="n">r</span> <span class="o">=</span> <span class="n">post</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="s">'https://portal.login.url'</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+
+    <span class="n">r</span> <span class="o">=</span> <span class="n">get</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="s">'https://portal.home.url'</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Besides the session object, that gives you ability to add headers to all requests,
+you won’t have to worry about redirects. The library by default takes care
+<a href="https://github.com/kennethreitz/requests/blob/dfad00a6e84bc75b12468ca29ccf4f971c813fc8/requests/sessions.py#L110">of that</a>
+with a <a href="https://github.com/kennethreitz/requests/blob/dfad00a6e84bc75b12468ca29ccf4f971c813fc8/requests/models.py#L54">default limit of up to 30</a>.</p>
+
+<p>Happy hacking!</p>
+</div>
+<div class="post">
+  <h3 class="post-header">
     <a class="post-link" href="/2016/11/21/changing-spring-boot-environment-variables-in-the-command-line.html">
       Changing Spring Boot environment variables in the command line
     </a>
-  </h3><span class="post-meta">Nov 21, 201666<span>&mdash; star date: -306032.79.</span></span><p>This week while helping developers and testers to experiment with a backend application,
+  </h3><span class="post-meta">Nov 21, 201668<span>&mdash; star date: -306032.79.</span></span><p>This week while helping developers and testers to experiment with a backend application,
 some of them found useful to learn a simple trick to change Spring Boot properties
 when you can run the application locally (our testers build, compile, change the code, how cool
 is that?).</p>
@@ -220,7 +268,7 @@ without having to use the upper case syntax.</p>
     <a class="post-link" href="/2016/11/12/add-a-header-to-a-file-with-shell-script-sed.html">
       Add a header to a file with Shell script (sed)
     </a>
-  </h3><span class="post-meta">Nov 12, 201667<span>&mdash; star date: -306057.38.</span></span><p>Today I was re-generating the documentation for a REST API written in PHP, with
+  </h3><span class="post-meta">Nov 12, 201669<span>&mdash; star date: -306057.38.</span></span><p>Today I was re-generating the documentation for a REST API written in PHP, with
 Laravel. To generate the documentation, one would have to call a Laravel command first.
 That command would create a Markdown page. And since in this project I am using Jekyll
 for the project site, the final step was adding a header to the file, so that Jekyll
@@ -247,7 +295,7 @@ and finally the file.</p>
     <a class="post-link" href="/2016/11/07/content-negotiation-with-spring-boot-and-react.html">
       Content negotiation with Spring Boot and React
     </a>
-  </h3><span class="post-meta">Nov 7, 201668<span>&mdash; star date: -306071.04.</span></span><p>A few days ago I had a bug in a system built with Spring Boot and React. The frontend application
+  </h3><span class="post-meta">Nov 7, 201670<span>&mdash; star date: -306071.04.</span></span><p>A few days ago I had a bug in a system built with Spring Boot and React. The frontend application
 was using a REST client in React, built in a similar way to what is found in the documentation, and
 also in blogs.</p>
 
@@ -280,7 +328,7 @@ the user asks :-)</p>
     <a class="post-link" href="/2016/11/05/checking-the-operating-system-type-in-shell-script.html">
       Checking the operating system type in shell script
     </a>
-  </h3><span class="post-meta">Nov 5, 201669<span>&mdash; star date: -306076.5.</span></span><p>Last week I learned about a tool called <a href="https://github.com/koalaman/shellcheck">ShellCheck</a>, a tool
+  </h3><span class="post-meta">Nov 5, 201671<span>&mdash; star date: -306076.5.</span></span><p>Last week I learned about a tool called <a href="https://github.com/koalaman/shellcheck">ShellCheck</a>, a tool
 for static analysis of shell scripts. It reports errors like missing double quotes, use of deprecated
 syntax, etc.</p>
 
@@ -317,79 +365,6 @@ how other projects do the same thing. And the best example I could find was
 <p>I will spend some time during the next days working on a proposal to replace the <code class="language-plaintext highlighter-rouge">OSTYPE</code>
 from Apache Jena scripts, but then may have to submit more changes for the other issues
 found by ShellCheck.</p>
-
-<p>Happy hacking!</p>
-</div>
-<div class="post">
-  <h3 class="post-header">
-    <a class="post-link" href="/2016/10/04/using-the-aws-api-with-python.html">
-      Using the AWS API with Python
-    </a>
-  </h3><span class="post-meta">Oct 4, 201670<span>&mdash; star date: -306161.2.</span></span><p>Amazon Web Services provides a series of cloud services. When you access the web interface, most - if not all - of the actions you do there are actually translated into API calls.</p>
-
-<p>They also provide SDK’s in several programming languages. With these SDK’s you are able to call the same API used by the web interface. Python has <a href="https://github.com/boto/boto3">boto</a> (or boto3) which lets you to automate several tasks in AWS.</p>
-
-<p>But before you start using the API, you will need to <a href="https://web.archive.org/web/20160818112016/http://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSGettingStartedGuide/AWSCredentials.html">set up your access key</a>.</p>
-
-<p>It is likely that with time you will have different roles, and may have different permissions with each role. You have to configure your local environment so that you can either use the command line Python utility (installed via <code class="language-plaintext highlighter-rouge">pip install awscli</code>) or with boto.</p>
-
-<p>The awscli is a dependency for using boto3. After you install it, you need to run <code class="language-plaintext highlighter-rouge">aws configure</code>. It will create the <em>~/.aws/config</em> and <em>~/.aws/credentials</em> files. You can tweak these files to support multiple roles.</p>
-
-<p>I followed the tutorials, but got all sorts of different issues. Then after debugging some locally installed dependencies, in special awscli files, I found that the following settings work for my environment.</p>
-
-<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># File: config</span>
-<span class="o">[</span>profile default]
-region <span class="o">=</span> ap-southeast-2
-
-<span class="o">[</span>profile profile1]
-region <span class="o">=</span> ap-southeast-2
-source_profile <span class="o">=</span> default
-role_arn <span class="o">=</span> arn:aws:iam::123:role/Developer
-
-<span class="o">[</span>profile profile2]
-region <span class="o">=</span> ap-southeast-2
-source_profile <span class="o">=</span> default
-role_arn <span class="o">=</span> arn:aws:iam::456:role/Sysops
-mfa_serial <span class="o">=</span> arn:aws:iam::789:mfa/user@domain.blabla
-</code></pre></div></div>
-
-<p>and</p>
-
-<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># File: credentials</span>
-<span class="o">[</span>default]
-aws_access_key_id <span class="o">=</span> YOU_KEY_ID
-aws_secret_access_key <span class="o">=</span> YOUR_SECRET
-</code></pre></div></div>
-
-<p>And once it is done you can, for example, confirm it is working with some S3 commands in Python.</p>
-
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">#!/usr/bin/env python3
-</span>
-<span class="kn">import</span> <span class="nn">os</span>
-<span class="kn">import</span> <span class="nn">boto3</span>
-
-<span class="n">session</span> <span class="o">=</span> <span class="n">boto3</span><span class="o">.</span><span class="n">Session</span><span class="p">(</span><span class="n">profile_name</span><span class="o">=</span><span class="s">'profile2'</span><span class="p">)</span>
-<span class="n">s3</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">resource</span><span class="p">(</span><span class="s">'s3'</span><span class="p">)</span>
-
-<span class="n">found</span> <span class="o">=</span> <span class="bp">False</span>
-
-<span class="n">name</span> <span class="o">=</span> <span class="s">'mysuperduperbucket'</span>
-
-<span class="k">for</span> <span class="n">bucket</span> <span class="ow">in</span> <span class="n">s3</span><span class="o">.</span><span class="n">buckets</span><span class="o">.</span><span class="nb">all</span><span class="p">():</span>
-    <span class="k">if</span> <span class="n">bucket</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="n">name</span><span class="p">:</span>
-        <span class="n">found</span> <span class="o">=</span> <span class="bp">True</span>
-
-<span class="k">if</span> <span class="ow">not</span> <span class="n">found</span><span class="p">:</span>
-    <span class="k">print</span><span class="p">(</span><span class="s">"Creating bucket..."</span><span class="p">)</span>
-    <span class="n">s3</span><span class="o">.</span><span class="n">create_bucket</span><span class="p">(</span><span class="n">Bucket</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
-
-<span class="n">file_location</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">realpath</span><span class="p">(</span><span class="n">__file__</span><span class="p">))</span> <span class="o">+</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">sep</span> <span class="o">+</span> <span class="s">'samplefile.txt'</span>
-<span class="n">s3</span><span class="o">.</span><span class="n">meta</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">upload_file</span><span class="p">(</span><span class="n">Filename</span><span class="o">=</span><span class="n">file_location</span><span class="p">,</span> <span class="n">Bucket</span><span class="o">=</span><span class="n">name</span><span class="p">,</span> <span class="n">Key</span><span class="o">=</span><span class="s">'book.txt'</span><span class="p">)</span>
-</code></pre></div></div>
-
-<p>The AWS files in this example are using MFA too, the multi-factor authentication. So the first time you run this code you may be asked to generate a token, which will be cached for a short time.</p>
-
-<p>That’s it for today.</p>
 
 <p>Happy hacking!</p>
 </div>

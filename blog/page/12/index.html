@@ -169,6 +169,49 @@
 
 <div class="blog"><div class="post">
   <h3 class="post-header">
+    <a class="post-link" href="/2017/01/07/apache-commons-text.html">
+      Apache Commons Text
+    </a>
+  </h3><span class="post-meta">Jan 7, 2017<span>&mdash; star date: -305898.63.</span></span><p>There is a new component in Apache Commons: Apache Commons Text. The 1.0 release might be announced
+in the next weeks. The current site is still in the <a href="http://commons.apache.org/sandbox/commons-text/">Commons Sandbox</a>,
+but it will change with the 1.0 release. The promotion from the sandbox
+<a href="http://markmail.org/message/dm7xwv5wc6z7wme3">happened a few days ago</a> in
+the project mailing list.</p>
+
+<p>Here’s the project description: <strong>Apache Commons Text is a library focused on algorithms working on strings</strong>.</p>
+
+<p>There was <a href="http://markmail.org/message/3k7m2zrzboji333r">a thread on the mailing list</a>
+some time ago (Oct/2014) when we first discussed the component idea. Since then
+many people contributed porting code from
+<a href="http://commons.apache.org/proper/commons-lang/">Apache Commons Lang</a>,
+<a href="http://lucene.apache.org/">Apache Lucene</a>, donating code from existing projects, and with new ideas.</p>
+
+<p><strong>It is important to be aware that certain parts of Apache Commons Lang are
+being marked as deprecated, and will be removed in the future, after Apache Commons Text
+1.0 is out</strong>. For example: <a href="https://commons.apache.org/proper/commons-lang/apidocs/org/apache/commons/lang3/StringUtils.html">StringUtils</a>,
+and <a href="https://commons.apache.org/proper/commons-lang/apidocs/org/apache/commons/lang3/RandomStringUtils.html">RandomStringUtils</a>.</p>
+
+<p>That will happen probably in a 4.x release of Apache Commons Lang, if everything
+goes well with Apache Commons Text :-)</p>
+
+<p>And there are already future features in
+<a href="https://github.com/apache/commons-text/branches/all">branches too</a>.
+It was decided that these features
+needed further work, so they will probably be included in next releases.</p>
+
+<p>So that’s a little bit of background on the new component that will be released soon.
+If you have code using Apache Commons Lang, you might be interested in staying
+tuned to release announcements in the mailing list!</p>
+
+<p>And should you have suggestions and would like to contribute, feel free to join and start
+a thread in the <a href="https://commons.apache.org/mail-lists.html">mailing list</a>,
+open a <a href="https://issues.apache.org/jira/browse/TEXT">JIRA issue</a>, or submit a
+<a href="https://github.com/apache/commons-text/pulls">pull request</a>.</p>
+
+<p>Happy hacking!</p>
+</div>
+<div class="post">
+  <h3 class="post-header">
     <a class="post-link" href="/2017/01/05/plotting-auckland-with-osmnx.html">
       Plotting Auckland with OSMnx
     </a>
@@ -276,7 +319,7 @@ debug your application in Eclipse or whatever IDE you prefer.</p>
     <a class="post-link" href="/2016/12/19/permgen-errors-and-java-lang-classcastexception-com-sun-crypto-provider-aescipher-cannot-be-cast-to-javax-crypto-cipherspi-running-jenkins-plug-in-tests-with-powermock.html">
       PermGen errors and java.lang.ClassCastException: com.sun.crypto.provider.AESCipher cannot be cast to javax.crypto.CipherSpi running Jenkins plug-in tests with PowerMock
     </a>
-  </h3><span class="post-meta">Dec 19, 201664<span>&mdash; star date: -306950.82.</span></span><p>Recently while working on a Jenkins plugin some tests were failing with PermGen errors.
+  </h3><span class="post-meta">Dec 19, 201666<span>&mdash; star date: -306950.82.</span></span><p>Recently while working on a Jenkins plugin some tests were failing with PermGen errors.
 Even though it worked in my notebook at home (with Java 8, thus no Permgen), it failed
 in a CloudBees hosted Jenkins job, and also on my Mac (with Java 7) at work.</p>
 
@@ -317,54 +360,6 @@ PowerMock to ignore certain classes from being mocked, with the <em>@PowerMockIg
 so that users facing similar issues can try these possible workarounds.</p>
 
 <p>Hope that helps someone!</p>
-</div>
-<div class="post">
-  <h3 class="post-header">
-    <a class="post-link" href="/2016/11/25/using-requests-session-objects-for-web-scraping.html">
-      Using Requests Session Objects for web scraping
-    </a>
-  </h3><span class="post-meta">Nov 25, 201665<span>&mdash; star date: -306021.86.</span></span><p>I had to write a Python script some months ago, that would retrieve Solar energy
-data from a web site. It was basically a handful of HTTP calls, parse the response
-that was mainly in JSON, and store the results as JSON and CSV for processing later.</p>
-
-<p>Since it was such a small task, I used the <a href="http://docs.python-requests.org">Requests</a>
-module instead of a complete web scraper. The HTTP requests had to be made with a
-time out, and also pass certain headers. I started customizing each call, until
-I learned about the Requests <a href="http://docs.python-requests.org/en/master/user/advanced/">Session Objects</a>.</p>
-
-<p>You create a session, as in ORM/JPA, where you can define a context, with certain properties
-and control an orthogonal behavior.</p>
-
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">requests</span>
-
-<span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="n">session</span><span class="p">,</span> <span class="n">url</span><span class="p">):</span>
-    <span class="s">"""Utility method to HTTP GET a URL"""</span>
-    <span class="n">response</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">response</span>
-
-<span class="k">def</span> <span class="nf">post</span><span class="p">(</span><span class="n">session</span><span class="p">,</span> <span class="n">url</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
-    <span class="s">"""Utility method to HTTP POST a URL with data parameters"""</span>
-    <span class="n">response</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">!=</span> <span class="n">requests</span><span class="o">.</span><span class="n">codes</span><span class="o">.</span><span class="n">ok</span><span class="p">:</span>
-        <span class="n">response</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>
-    <span class="k">return</span> <span class="n">response</span>
-
-<span class="k">with</span> <span class="n">requests</span><span class="o">.</span><span class="n">Session</span><span class="p">()</span> <span class="k">as</span> <span class="n">s</span><span class="p">:</span>
-    <span class="c1"># x-test header will be sent with every request
-</span>    <span class="n">s</span><span class="o">.</span><span class="n">headers</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s">'x-test'</span><span class="p">:</span> <span class="s">'true'</span><span class="p">})</span>
-
-    <span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s">'user'</span><span class="p">:</span> <span class="n">user</span><span class="p">,</span> <span class="s">'password'</span><span class="p">:</span> <span class="n">password</span><span class="p">,</span> <span class="s">'rememberne'</span><span class="p">:</span> <span class="s">'false'</span><span class="p">}</span>
-    <span class="n">r</span> <span class="o">=</span> <span class="n">post</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="s">'https://portal.login.url'</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
-
-    <span class="n">r</span> <span class="o">=</span> <span class="n">get</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="s">'https://portal.home.url'</span><span class="p">)</span>
-</code></pre></div></div>
-
-<p>Besides the session object, that gives you ability to add headers to all requests,
-you won’t have to worry about redirects. The library by default takes care
-<a href="https://github.com/kennethreitz/requests/blob/dfad00a6e84bc75b12468ca29ccf4f971c813fc8/requests/sessions.py#L110">of that</a>
-with a <a href="https://github.com/kennethreitz/requests/blob/dfad00a6e84bc75b12468ca29ccf4f971c813fc8/requests/models.py#L54">default limit of up to 30</a>.</p>
-
-<p>Happy hacking!</p>
 </div>
 <!-- Pagination links -->
   <div class="pagination">

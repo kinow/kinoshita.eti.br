@@ -169,6 +169,40 @@
 
 <div class="blog"><div class="post">
   <h3 class="post-header">
+    <a class="post-link" href="/2017/03/26/simulating-less-memory-with-ulimit.html">
+      Simulating less memory with ulimit
+    </a>
+  </h3><span class="post-meta">Mar 26, 2017<span>&mdash; star date: -305684.93.</span></span><p>These days I was trying to reproduce <a href="https://bugs.kde.org/show_bug.cgi?id=376382">a bug in Krita</a>
+where it would crash when a user copied group layers between windows. It appeared that the user was
+getting a segmentation fault due to the user’s computer running out of memory.</p>
+
+<p>I could not reproduce the issue, but my computer has 16 GB. The first thing that came to my mind was
+to create a virtual machine with less memory to reproduce the issue. But I decided to spend some time
+looking for a <a href="http://wiki.c2.com/?LazinessImpatienceHubris">simpler way</a> of doing it.</p>
+
+<p>Searching the web I found some suggestions that <code class="language-plaintext highlighter-rouge">ulimit</code> could work. After playing for a while with
+<code class="language-plaintext highlighter-rouge">ulimit</code> and <code class="language-plaintext highlighter-rouge">htop</code>, and verifying the amount of memory necessary to open two files in two windows
+in Krita, I came up with the following settings.</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 2550 mb in kb</span>
+<span class="nb">ulimit</span> <span class="nt">-v</span> 2550000
+
+<span class="c"># 2 gb in kb</span>
+<span class="nb">ulimit</span> <span class="nt">-m</span> 2000000
+
+<span class="c"># Confirm limits</span>
+<span class="nb">ulimit</span> <span class="nt">-a</span>
+
+gdb <span class="nv">$HOME</span>/Development/cpp/workspace/krita_install/bin/krita
+</code></pre></div></div>
+
+<p>Then after copying a few layers from one window to another, I successfully reproduced the issue,
+and could include a backtrace in the Krita issue tracking system.</p>
+
+<p>♥ Open Source</p>
+</div>
+<div class="post">
+  <h3 class="post-header">
     <a class="post-link" href="/2017/03/15/using-google-natural-language-api-in-aws-elastic-beanstalk-application.html">
       Using Google Natural Language API in an AWS Elastic Beanstalk application
     </a>
@@ -475,49 +509,6 @@ be available in the next release of Apache Commons Lang.</p>
 <p>Happy hacking!</p>
 
 <p>ps: [lang] uses Java 7, so that is why we do not have a functional instead of the Comparable</p>
-</div>
-<div class="post">
-  <h3 class="post-header">
-    <a class="post-link" href="/2017/01/07/apache-commons-text.html">
-      Apache Commons Text
-    </a>
-  </h3><span class="post-meta">Jan 7, 2017<span>&mdash; star date: -305898.63.</span></span><p>There is a new component in Apache Commons: Apache Commons Text. The 1.0 release might be announced
-in the next weeks. The current site is still in the <a href="http://commons.apache.org/sandbox/commons-text/">Commons Sandbox</a>,
-but it will change with the 1.0 release. The promotion from the sandbox
-<a href="http://markmail.org/message/dm7xwv5wc6z7wme3">happened a few days ago</a> in
-the project mailing list.</p>
-
-<p>Here’s the project description: <strong>Apache Commons Text is a library focused on algorithms working on strings</strong>.</p>
-
-<p>There was <a href="http://markmail.org/message/3k7m2zrzboji333r">a thread on the mailing list</a>
-some time ago (Oct/2014) when we first discussed the component idea. Since then
-many people contributed porting code from
-<a href="http://commons.apache.org/proper/commons-lang/">Apache Commons Lang</a>,
-<a href="http://lucene.apache.org/">Apache Lucene</a>, donating code from existing projects, and with new ideas.</p>
-
-<p><strong>It is important to be aware that certain parts of Apache Commons Lang are
-being marked as deprecated, and will be removed in the future, after Apache Commons Text
-1.0 is out</strong>. For example: <a href="https://commons.apache.org/proper/commons-lang/apidocs/org/apache/commons/lang3/StringUtils.html">StringUtils</a>,
-and <a href="https://commons.apache.org/proper/commons-lang/apidocs/org/apache/commons/lang3/RandomStringUtils.html">RandomStringUtils</a>.</p>
-
-<p>That will happen probably in a 4.x release of Apache Commons Lang, if everything
-goes well with Apache Commons Text :-)</p>
-
-<p>And there are already future features in
-<a href="https://github.com/apache/commons-text/branches/all">branches too</a>.
-It was decided that these features
-needed further work, so they will probably be included in next releases.</p>
-
-<p>So that’s a little bit of background on the new component that will be released soon.
-If you have code using Apache Commons Lang, you might be interested in staying
-tuned to release announcements in the mailing list!</p>
-
-<p>And should you have suggestions and would like to contribute, feel free to join and start
-a thread in the <a href="https://commons.apache.org/mail-lists.html">mailing list</a>,
-open a <a href="https://issues.apache.org/jira/browse/TEXT">JIRA issue</a>, or submit a
-<a href="https://github.com/apache/commons-text/pulls">pull request</a>.</p>
-
-<p>Happy hacking!</p>
 </div>
 <!-- Pagination links -->
   <div class="pagination">
