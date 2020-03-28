@@ -13,6 +13,8 @@ title: Using Lumino with Vue
 but some time ago there was a misunderstanding and the author gave up maintaining it.
 Then JupyterLab decided to fork it under this new name.
 
+<img class="ui image" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/demo.gif" />
+
 The documentation is still lacking, but it works as expected, and there is already a
 community supporting it. We decided to use it in [Cylc UI](https://github.com/cylc/cylc-ui)
 to have tabbed panels like JupyterLab.
@@ -21,8 +23,6 @@ to have tabbed panels like JupyterLab.
 Cylc UI that integrated Lumino and Vue. It was a suggestion from one of the maintainers
 of JupyterLab, that got involved in an issue of Cylc UI. You can find this project linked
 too in the Lumino project `README` file.
-
-<img class="ui image" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/demo.gif" />
 
 <!--more-->
 
