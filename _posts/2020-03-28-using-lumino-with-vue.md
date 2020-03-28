@@ -13,7 +13,7 @@ title: Using Lumino with Vue
 but some time ago there was a misunderstanding and the author gave up maintaining it.
 Then JupyterLab decided to fork it under this new name.
 
-<img class="ui image" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/demo.gif" />
+<img class="ui fluid image" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/demo.gif" />
 
 The documentation is still lacking, but it works as expected, and there is already a
 community supporting it. We decided to use it in [Cylc UI](https://github.com/cylc/cylc-ui)
@@ -30,7 +30,7 @@ Lumino handles the DOM directly, while Vue deals with a virtual DOM. So integrat
 both can be a bit tricky. And there are probably more than one way of doing it. So
 I am not claiming the route we went is the best.
 
-<img class="ui image" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/01.png" />
+<img class="ui fluid image" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/01.png" />
 
 The main component for this integration is called `Lumino`. It has an array in its
 `data` section that holds one entry for each widget that must be added to the Lumino
