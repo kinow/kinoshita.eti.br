@@ -66,5 +66,3 @@ that later receive the HTML element from the wrapped Vue component, we get it
 working with Vue in the same as Lumino works with JupyterLab.
 
 [https://github.com/kinow/vue-lumino](https://github.com/kinow/vue-lumino)
-
-Happy hacking
