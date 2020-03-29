@@ -40,7 +40,7 @@ note: "Drawing for fun, but commissions are welcome if I have the time."
         <a href="/2020/03/27/southern-royal-albatross.html">
             <div class="ui image sprite-thumbs-thumb-southern-royal-albatross"></div>
         </a>
-        <a href="/art/daienny-lima/">
+        <a href="/2020/03/29/daienny-lima.html">
             <div class="ui image sprite-thumbs-thumb-daienny-lima-compare"></div>
         </a>
         <a href="/art/green-skull/">

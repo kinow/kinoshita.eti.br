@@ -1,6 +1,8 @@
 ---
 title: Daienny Lima
-layout: page
+layout: post
+categories:
+- drawing
 note: "Drawing made from a Photo in a magazine"
 ---
 
