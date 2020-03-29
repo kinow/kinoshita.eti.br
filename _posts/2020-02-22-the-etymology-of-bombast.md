@@ -33,3 +33,5 @@ But it also an interesting [etymology](https://www.etymonline.com/word/bombast).
 >From stuffing and padding for clothes or upholstery, meaning extended to "pompous, empty speech" (1580s).
 >
 >>Bombast was originally applied to a stuff of soft, loose texture, once used to swell the garment. Fustian was also a kind of cloth of stiff expansive character. These terms are applied to a high, swelling style of writing, full of extravagant sentiments and expressions. Bathos is a word which has the same application, meaning generally the mock heroic--that "depth" into which one falls who overleaps the sublime; the step which one makes in order to pass from the sublime to the ridiculous. [James de Mille, "Elements of Rhetoric," 1878]
+
+<img src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/20200107_112644.jpg" />
