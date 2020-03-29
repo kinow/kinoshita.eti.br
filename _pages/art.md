@@ -10,7 +10,7 @@ note: "Drawing for fun, but commissions are welcome if I have the time."
         <a href="/2020/03/27/alonzo-and-lambda.html">
             <div class="ui image sprite-thumbs-thumb-alonzo_and_lambda_by_kinow-d5tqvau"></div>
         </a>
-        <a href="/art/jean-luc-picard/">
+        <a href="/2020/03/29/jean-luc-picard.html">
             <div class="ui image sprite-thumbs-thumb-jean-luc-picard-original-size"></div>
         </a>
         <a href="/art/stink-bug/">
