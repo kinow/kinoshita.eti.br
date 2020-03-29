@@ -70,7 +70,7 @@ note: "Drawing for fun, but commissions are welcome if I have the time."
         <a href="/2020/03/28/galpao-bras.html">
             <div class="ui image sprite-thumbs-thumb-galpao-bras"></div>
         </a>
-        <a href="/art/kelvin-diesel-engine/">
+        <a href="/2020/03/29/kelvin-diesel-engine.html">
             <div class="ui image sprite-thumbs-thumb-kelvin-diesel-engine"></div>
         </a>
         <a href="/art/woman-looking-01/">
