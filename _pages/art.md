@@ -22,7 +22,7 @@ note: "Drawing for fun, but commissions are welcome if I have the time."
     just drop me a message.</p>
     
     <div class="ui images">
-        <a href="/art/dog/">
+        <a href="/2020/03/30/dog.html">
             <div class="ui image sprite-thumbs-thumb-dog"></div>
         </a>
         <a href="/art/o-corvo/">
