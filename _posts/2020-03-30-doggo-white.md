@@ -1,6 +1,8 @@
 ---
 title: Doggo White
-layout: page
+layout: post
+categories:
+- drawing
 note: 'From a redditgetsdrawn photography.'
 ---
 

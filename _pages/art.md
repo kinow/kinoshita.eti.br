@@ -64,7 +64,7 @@ note: "Drawing for fun, but commissions are welcome if I have the time."
         <a href="/art/cave/">
             <div class="ui image sprite-thumbs-thumb-cave"></div>
         </a>
-        <a href="/art/doggo-white/">
+        <a href="/2020/03/30/doggo-white.html">
             <div class="ui image sprite-thumbs-thumb-doggo-white"></div>
         </a>
         <a href="/2020/03/28/galpao-bras.html">
