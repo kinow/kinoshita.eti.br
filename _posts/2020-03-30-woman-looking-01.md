@@ -1,6 +1,8 @@
 ---
 title: Woman Looking 01
-layout: page
+layout: post
+categories:
+- drawing
 note: 'From a picture from the Papo de Homem magazine.'
 ---
 
