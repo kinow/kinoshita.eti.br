@@ -85,7 +85,7 @@ note: "Drawing for fun, but commissions are welcome if I have the time."
         <a href="/art/simone/">
             <div class="ui image sprite-thumbs-thumb-simone"></div>
         </a>
-        <a href="/art/obachan/">
+        <a href="/2020/03/31/obachan.html">
             <div class="ui image sprite-thumbs-thumb-obachan"></div>
         </a>
     </div>
