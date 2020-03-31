@@ -28,7 +28,7 @@ note: "Drawing for fun, but commissions are welcome if I have the time."
         <a href="/art/o-corvo/">
             <div class="ui image sprite-thumbs-thumb-o-corvo"></div>
         </a>
-        <a href="/art/terra-celta-elcio/">
+        <a href="/2020/03/31/terra-celta-elcio.html">
             <div class="ui image sprite-thumbs-thumb-terra_celta_s_vocal_elcio_by_kinow-dau42sh"></div>
         </a>
     </div>
