@@ -52,7 +52,7 @@ note: "Drawing for fun, but commissions are welcome if I have the time."
     <a href="https://www.instagram.com/brunokinoshita/">Instagram</a>.</p>
     
     <div class="ui images">
-        <a href="/art/domestic-violence/">
+        <a href="/2020/03/31/domestic-violence.html">
             <div class="ui image sprite-thumbs-thumb-domestic-violence"></div>
         </a>
         <a href="/art/royal-spoonbill/">

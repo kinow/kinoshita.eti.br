@@ -1,6 +1,8 @@
 ---
 title: Victim of domestic violence
-layout: page
+layout: post
+categories:
+- drawing
 note: "Drawing made of a woman victim of domestic violence. Drawn from a journal picture."
 ---
 
