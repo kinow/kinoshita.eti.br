@@ -25,7 +25,7 @@ note: "Drawing for fun, but commissions are welcome if I have the time."
         <a href="/2020/03/30/dog.html">
             <div class="ui image sprite-thumbs-thumb-dog"></div>
         </a>
-        <a href="/art/o-corvo/">
+        <a href="/2020/04/01/o-corvo.html">
             <div class="ui image sprite-thumbs-thumb-o-corvo"></div>
         </a>
         <a href="/2020/03/31/terra-celta-elcio.html">
