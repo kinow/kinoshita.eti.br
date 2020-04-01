@@ -55,7 +55,7 @@ note: "Drawing for fun, but commissions are welcome if I have the time."
         <a href="/2020/03/31/domestic-violence.html">
             <div class="ui image sprite-thumbs-thumb-domestic-violence"></div>
         </a>
-        <a href="/art/royal-spoonbill/">
+        <a href="/2020/04/01/royal-spoonbill.html">
             <div class="ui image sprite-thumbs-thumb-royal-spoonbill"></div>
         </a>
         <a href="/art/old-hands/">
