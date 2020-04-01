@@ -82,7 +82,7 @@ note: "Drawing for fun, but commissions are welcome if I have the time."
         <a href="/2020/03/28/plane1.html">
             <div class="ui image sprite-thumbs-thumb-plane1"></div>
         </a>
-        <a href="/art/simone/">
+        <a href="/2020/04/01/simone.html">
             <div class="ui image sprite-thumbs-thumb-simone"></div>
         </a>
         <a href="/2020/03/31/obachan.html">
