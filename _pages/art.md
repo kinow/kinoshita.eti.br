@@ -58,7 +58,7 @@ note: "Drawing for fun, but commissions are welcome if I have the time."
         <a href="/2020/04/01/royal-spoonbill.html">
             <div class="ui image sprite-thumbs-thumb-royal-spoonbill"></div>
         </a>
-        <a href="/art/old-hands/">
+        <a href="/2020/04/03/old-hands.html">
             <div class="ui image sprite-thumbs-thumb-old-hands"></div>
         </a>
         <a href="/2020/04/01/cave.html">
