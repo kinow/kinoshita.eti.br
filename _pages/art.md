@@ -13,7 +13,7 @@ note: "Drawing for fun, but commissions are welcome if I have the time."
         <a href="/2020/03/29/jean-luc-picard.html">
             <div class="ui image sprite-thumbs-thumb-jean-luc-picard-original-size"></div>
         </a>
-        <a href="/art/stink-bug/">
+        <a href="/2020/04/03/stink-bug.html">
             <div class="ui image sprite-thumbs-thumb-stink-bug-smaller"></div>
         </a>
     </div>
