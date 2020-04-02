@@ -43,7 +43,7 @@ note: "Drawing for fun, but commissions are welcome if I have the time."
         <a href="/2020/03/29/daienny-lima.html">
             <div class="ui image sprite-thumbs-thumb-daienny-lima-compare"></div>
         </a>
-        <a href="/art/green-skull/">
+        <a href="/2020/04/03/green-skull.html">
             <div class="ui image sprite-thumbs-thumb-green-skull-full"></div>
         </a>
     </div>
