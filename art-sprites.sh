@@ -17,7 +17,7 @@ make_thumbnail() {
 # with */*.jpg
 # (we could also glob levels 2 and 3 with two globs: */*.jpg */*/*.jpg)
 
-for pic in ${SCRIPTPATH}/assets/pages/art/images/*.*
+for pic in "${SCRIPTPATH}"/assets/pages/art/images/*.*
 do
     make_thumbnail "$pic"
 done
