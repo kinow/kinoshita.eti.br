@@ -2,7 +2,7 @@
 window.semantic = {
   handler: {}
 };
-var
+const
   $menu = $('#toc');
 // ready event
 semantic.ready = function () {
