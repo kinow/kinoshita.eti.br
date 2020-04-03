@@ -12,7 +12,9 @@ is a book by [William Zinsser](https://en.wikipedia.org/wiki/William_Zinsser), p
 already past its seventeenth edition. It is extremely well written - as it was expected
 for a book with such title - and also funny and simple to read.
 
+<a href="/2020/04/04/lunar-vehicle.html">
 <img class="fluid" src="/assets/posts/2020-01-02-science-books-and-articles-from-zinssers-on-writing-well-book/lunar-vehicle.png" alt="A lunar vehicle">
+</a>
 
 The book is full of excerpts and quotes from other books and articles, used as good or bad examples.
 In one of its chapters where Zinsser discusses writing about Science he lists
