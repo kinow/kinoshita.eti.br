@@ -14,9 +14,9 @@ note: Notes taken while reading a piece of Apache Jena's source code.
 
 [Apache Jena](https://jena.apache.org/) project is like a box full of interesting things—at least if you love programming. One of its many features, is **stream processing**.
 
-It may contain very large datasets, with gigabytes of data about graphs. Some queries may be quite large, so sending the whole result would be simply impracticable.
+The graphs in Jena may contain very large datasets, with giga- or terabytes. Some queries may be very large, and then sending the whole result would be simply impracticable.
 
-Instead, the data will go through ARQ. ARQ is a query engine for Jena that supports Sparql. There is one piece of code there that I found interesting while reviewing a small pull request: [`org.apache.jena.riot.system.StreamRDFWriter`](https://github.com/apache/jena/blob/cbdba5edb47041a4181a00bd7660e5d4c212530a/jena-arq/src/main/java/org/apache/jena/riot/system/StreamRDFWriter.java).
+Instead, the data will go through ARQ. ARQ is a query engine for Jena that supports SPARQL. There is one piece of code there that I found interesting while reviewing a small pull request: [`org.apache.jena.riot.system.StreamRDFWriter`](https://github.com/apache/jena/blob/cbdba5edb47041a4181a00bd7660e5d4c212530a/jena-arq/src/main/java/org/apache/jena/riot/system/StreamRDFWriter.java).
 
 It is responsible for writing graph data in a streaming fashion. (See [stream processing](https://en.wikipedia.org/wiki/Stream_processing) for programming models and more.)
 
