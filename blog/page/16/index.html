@@ -169,6 +169,44 @@
 
 <div class="blog"><div class="post">
   <h3 class="post-header">
+    <a class="post-link" href="/2016/03/20/deploying-war-files-to-tomcat-with-jenkins.html">
+      Deploying WAR files to Tomcat with Jenkins
+    </a>
+  </h3><span class="post-meta">Mar 20, 2016<span>&mdash; star date: -306699.45.</span></span>
+  <span class="post-meta">Number of words: 0.</span><p><strong>Table of Contents</strong></p>
+
+<ul>
+  <li><a href="#1-deploying-with-custom-scripts">Deploying with custom scripts</a></li>
+  <li><a href="#2-deploying-with-a-build-tool">Deploying with a build tool</a></li>
+  <li><a href="#3-deploying-with-a-build-server">Deploying with a build server</a></li>
+  <li><a href="#final-thoughts">Final thoughts</a></li>
+</ul>
+
+<p>A co-worker asked me this week about how to deploy a WAR file to Tomcat with Jenkins. In my team we are
+currently maintaining and deploying about 10 Java web systems, but we have no consistent way of deploying
+the applications to Tomcat yet. In the past I used Ant, Maven, Cargo, Grunt, and Jenkins, so I
+decided to write this short post to show a few different ways it can be achieved, à la
+<a href="https://en.wikipedia.org/wiki/There's_more_than_one_way_to_do_it">Perl’s TMTOWTDI</a> motto.</p>
+
+<h2><a name="1-deploying-with-custom-scripts" style="color: #222222;">#1 Deploying with custom scripts</a></h2>
+
+<p>At first you may be tempted to write your own script to deploy to Tomcat with some Shell, Perl, Python
+or Java. But I think I would choose this option only because either I needed some feature that is not
+available in the other options, or in order to call other tasks or debug some problem.</p>
+
+<p>Example:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>docker run <span class="nt">-d</span> <span class="nt">-p</span> 8888:8080 jeanblanchard/tomcat:8
+<span class="nv">$ </span>git clone https://github.com/spring-projects/spring-petclinic.git <span class="o">&amp;&amp;</span> <span class="nb">cd </span>spring-petclinic <span class="o">&amp;&amp;</span> mvn package
+<span class="nv">$ </span>curl <span class="nt">--upload-file</span> target/petclinic.war <span class="s2">"http://admin:admin@localhost:8888/manager/text/deploy?path=/spring-petclinic&amp;update=true"</span>
+OK - Deployed application at context path /spring-petclinic
+</code></pre></div></div>
+
+<p class="more-link">
+    <a class="post-link" href="/2016/03/20/deploying-war-files-to-tomcat-with-jenkins.html">Continue reading&hellip;</a>
+  </p></div>
+<div class="post">
+  <h3 class="post-header">
     <a class="post-link" href="/2016/02/27/learning-afl-and-testing-mapserver.html">
       Learning afl and testing MapServer
     </a>
@@ -345,26 +383,6 @@ as the following below.</p>
 
 <p>Happy logging!</p>
 </div>
-<div class="post">
-  <h3 class="post-header">
-    <a class="post-link" href="/2015/01/01/contributing-to-apache-jena.html">
-      Contributing to Apache Jena
-    </a>
-  </h3><span class="post-meta">Jan 1, 2015<span>&mdash; star date: -307915.07.</span></span>
-  <span class="post-meta">Number of words: 0.</span><p>As I mentioned in my <a href="/2014/10/11/basic-workflow-of-a-sparql-query-in-fuseki.html">previous post</a>, 
-I am using <a href="http://jena.apache.org">Apache Jena</a> for a project of a customer. I had never used 
-any triple store, nor a SPARQL Endpoint server before. But for being involved with the Apache 
-Software Foundation, and since the company itself is using several Apache components, it was only 
-natural Jena to be our first choice.</p>
-
-<p>It has served us very well so far. At the moment we have less than 100 queries per day, but the 
-project is still under development and we expect 1000 queries per day by the first quarter of 
-2015 and 1000000 near the end of 2015. We also have few entries in TDB, but expect to grow this 
-number to a few million before 2016.</p>
-
-<p class="more-link">
-    <a class="post-link" href="/2015/01/01/contributing-to-apache-jena.html">Continue reading&hellip;</a>
-  </p></div>
 <!-- Pagination links -->
   <div class="pagination">
     <p>

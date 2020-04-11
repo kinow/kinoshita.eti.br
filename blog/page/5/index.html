@@ -169,6 +169,30 @@
 
 <div class="blog"><div class="post">
   <h3 class="post-header">
+    <a class="post-link" href="/2018/07/22/multithreaded-code-and-pandas.html">
+      Multithreaded code and Pandas
+    </a>
+  </h3><span class="post-meta">Jul 22, 2018<span>&mdash; star date: -304361.64.</span></span>
+  <span class="post-meta">Number of words: 0.</span><p><a href="https://www.deviantart.com/kinow/art/Woman-looking-01-743551195"><img style="float: left; height: 300px;" class="ui image" src="/assets/posts/2018-07-22-multithreaded-code-and-pandas/woman-looking-01.png" alt="Woman looking" /></a></p>
+
+<p>Pandas provides high-performance data structures in Python. I think in Java there are
+similar data structures in projects like Apache Commons Collections,
+Google Guava, and also Trove.</p>
+
+<p>In the Java libraries thread-safety is always a must-have feature. Probably as it is quite
+common for a Java program to have more than one thread, especially if the code runs in some
+sort of web container.</p>
+
+<p>I recently learned that Pandas, on the other hand, does not guarantee any thread-safety.
+I found that while reading an
+<a href="https://github.com/pandas-dev/pandas/issues/21150">issue about race condition in the <code class="language-plaintext highlighter-rouge">IndexEngine</code></a>,
+and after preparing a pull request for that.</p>
+
+<p class="more-link">
+    <a class="post-link" href="/2018/07/22/multithreaded-code-and-pandas.html">Continue reading&hellip;</a>
+  </p></div>
+<div class="post">
+  <h3 class="post-header">
     <a class="post-link" href="/2018/07/14/cylc-scheduler-internals-part-1.html">
       Cylc Scheduler Internals - Part 1
     </a>
@@ -243,138 +267,6 @@ these articles are more brain-dumps, used by myself for later reference.</p>
 <p class="more-link">
     <a class="post-link" href="/2018/05/29/what-happens-when-you-create-a-new-dataset-in-apache-jena-fuseki.html">Continue reading&hellip;</a>
   </p></div>
-<div class="post">
-  <h3 class="post-header">
-    <a class="post-link" href="/2018/05/27/what-happens-when-you-upload-a-turtle-file-in-apache-jena-fuseki.html">
-      What happens when you upload a Turtle file in Apache Jena Fuseki
-    </a>
-  </h3><span class="post-meta">May 27, 2018<span>&mdash; star date: -304515.07.</span></span>
-  <span class="post-meta">Number of words: 0.</span><p>I am working on <a href="https://github.com/NatLibFi/Skosmos/issues/738">an issue for Skosmos</a>
-that involves preparing some <a href="https://www.w3.org/TR/turtle/">Turtle</a> files and uploading
-them using Apache Jena Fuseki’s web interface.</p>
-
-<p>The issue is now pending feedback, which gives me a moment to have fun with
-something else. So I decided to dig down the rabbit hole and start learning more
-about certain parts of the Apache Jena code base.</p>
-
-<p style="text-align: center;">
-<img style="display: inline; width: 600px;" class="ui image" src="/assets/posts/2018-05-27-what-happens-when-you-upload-a-turtle-file-in-apache-jena-fuseki/browser.png" />
-</p>
-
-<p>This post will be useful to myself in the future, as a note-taking in a series, so that I
-remember how things work - you never know right? But hopefully this will be useful
-to other wanting to understand more about the code of Apache Jena.</p>
-
-<h3 id="where-upload-happens---sparql_upload-and-upload-fuseki-core">Where upload happens - SPARQL_Upload and Upload (Fuseki Core)</h3>
-
-<p>Knowing a bit of the code base, I went straight to the <code class="language-plaintext highlighter-rouge">SPARQL_Upload</code> class,
-from the Fuseki Core module. Set up a couple of breakpoints, uploaded my file,
-but nothing. Then tried on its package-neighbour class, <code class="language-plaintext highlighter-rouge">Upload</code>.</p>
-
-<p>Actually, it is easier to understand seeing the class hierarchy, and knowing
-that when I run the application in Eclipse, it is running with Jetty, serving
-servlets (there is no framework like Wicket, Struts, etc, involved).</p>
-
-<p style="text-align: center;">
-<img style="display: inline; width: 600px;" class="ui image" src="/assets/posts/2018-05-27-what-happens-when-you-upload-a-turtle-file-in-apache-jena-fuseki/class-hierarchy.png" />
-</p>
-
-<p>Several filters are applied to the HTTP request too, like Cross Origin, Shiro, and
-the <code class="language-plaintext highlighter-rouge">FusekiFilter</code>. The latter looks at the requests to see if it includes a dataset.
-If a dataset is found - it is in our case - then it hands the request over to
-the right class to handle it.</p>
-
-<p>REST_Quads_RW will take care of the upload action, using the <code class="language-plaintext highlighter-rouge">Upload</code> class where my
-breakpoint stopped.</p>
-
-<h3 id="uploadincomingdata-fuseki-core">Upload#incomingData() (Fuseki Core)</h3>
-
-<p><code class="language-plaintext highlighter-rouge">Upload#incomingData()</code> starts by checking the Content Type from the request. In my case
-it is a <code class="language-plaintext highlighter-rouge">multipart/form-data</code>. Then it calls its other method <code class="language-plaintext highlighter-rouge">#fileUploadWorker()</code>.</p>
-
-<p><code class="language-plaintext highlighter-rouge">#fileUploadWorker()</code> creates a <code class="language-plaintext highlighter-rouge">ServletFilterUpload</code>, from Apache Commons FileUpload.
-With that, it opens a stream for the file, retrieves its name and other information,
-such as the content type.</p>
-
-<p>Ah, the content type is interesting too. It defaults to <code class="language-plaintext highlighter-rouge">RDFXML</code>, but what’s interesting
-is the comment.</p>
-
-<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">if</span> <span class="o">(</span> <span class="n">lang</span> <span class="o">==</span> <span class="kc">null</span> <span class="o">)</span>
-    <span class="c1">// Desperate.</span>
-    <span class="n">lang</span> <span class="o">=</span> <span class="nc">RDFLanguages</span><span class="o">.</span><span class="na">RDFXML</span> <span class="o">;</span>
-</code></pre></div></div>
-
-<p>Well, in this case we are getting a <code class="language-plaintext highlighter-rouge">Lang:Turtle</code>. So it now knows that it has a Turtle
-file, but it still needs to parse it.</p>
-
-<h3 id="actionlibparse-fuseki-core">ActionLib#parse() (Fuseki Core)</h3>
-
-<p><code class="language-plaintext highlighter-rouge">Upload</code> calls <code class="language-plaintext highlighter-rouge">ActionLib#parse()</code>, which uses <code class="language-plaintext highlighter-rouge">RDFParserBuilder</code> to build a parser.
-It applies a nice fluent API design when doing that.</p>
-
-<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">RDFParser</span><span class="o">.</span><span class="na">create</span><span class="o">()</span>
-    <span class="o">.</span><span class="na">errorHandler</span><span class="o">(</span><span class="n">errorHandler</span><span class="o">)</span>
-    <span class="o">.</span><span class="na">source</span><span class="o">(</span><span class="n">input</span><span class="o">)</span>
-    <span class="o">.</span><span class="na">lang</span><span class="o">(</span><span class="n">lang</span><span class="o">)</span>
-    <span class="o">.</span><span class="na">base</span><span class="o">(</span><span class="n">base</span><span class="o">)</span>
-    <span class="o">.</span><span class="na">parse</span><span class="o">(</span><span class="n">dest</span><span class="o">);</span>
-</code></pre></div></div>
-
-<blockquote>Side note to self: the `RDFParser` has a `canUse` flag. It seems to indicate
-the parser can be used just once. Though it looks actually it works until the stream
-is closed...</blockquote>
-
-<p>So <code class="language-plaintext highlighter-rouge">RDFParserBuilder</code> will call <code class="language-plaintext highlighter-rouge">RDFParser</code>, which in turn will use the
-classes <code class="language-plaintext highlighter-rouge">LangTurtle</code> and <code class="language-plaintext highlighter-rouge">LangTurtleBase</code>.</p>
-
-<h3 id="langturtle-arq">LangTurtle (ARQ)</h3>
-
-<p>ARQ is a low level module in Jena, responsible for parsing queries, and also
-some of the interaction with graphs and datasets.</p>
-
-<p><code class="language-plaintext highlighter-rouge">LangTurtle</code> extends <code class="language-plaintext highlighter-rouge">LangTurtleBase</code>. Their task starts by populating
-the <code class="language-plaintext highlighter-rouge">prefixMap</code>, which contains all those prefixes used in queries like
-<code class="language-plaintext highlighter-rouge">rdfs</code>, <code class="language-plaintext highlighter-rouge">void</code>, <code class="language-plaintext highlighter-rouge">skos</code>, <code class="language-plaintext highlighter-rouge">etc</code>.</p>
-
-<p>Then it will keep parsing <strong>triples</strong> until it finds an <code class="language-plaintext highlighter-rouge">EOF</code>. For every
-triple, after the <em>Predicate-Object-List</em> is found, it calls
-<code class="language-plaintext highlighter-rouge">LangTurtle#emit()</code>.</p>
-
-<p>The <code class="language-plaintext highlighter-rouge">#emit()</code>method creates a <code class="language-plaintext highlighter-rouge">Triple</code> object (Jena Core, graph package).
-And also a <code class="language-plaintext highlighter-rouge">StreamRDFCountingBase</code> to keep track of statistics to display
-back to the user.</p>
-
-<p style="text-align: center;">
-<img style="display: inline; width: 600px;" class="ui image" src="/assets/posts/2018-05-27-what-happens-when-you-upload-a-turtle-file-in-apache-jena-fuseki/eclipse.png" />
-</p>
-
-<p><code class="language-plaintext highlighter-rouge">StreamRDFCountingBase</code> extends <code class="language-plaintext highlighter-rouge">StreamRDFWrapper</code>, and wraps - as per name -
-other <code class="language-plaintext highlighter-rouge">StreamRDF</code>’s, such as <code class="language-plaintext highlighter-rouge">ParserOutputDataset</code>.</p>
-
-<p><code class="language-plaintext highlighter-rouge">ParserOutputDataset</code> holds a reference to the <code class="language-plaintext highlighter-rouge">DatasetGraph</code> and also to the
-<code class="language-plaintext highlighter-rouge">prefixMap</code> populated earlier in <code class="language-plaintext highlighter-rouge">LangTurtle</code>. For each <code class="language-plaintext highlighter-rouge">Triple</code> that we have
-it will call the <code class="language-plaintext highlighter-rouge">DatasetGraph#add</code> method, creating a new <em>Quad</em> with the
-default graph name.</p>
-
-<h3 id="conclusion">Conclusion</h3>
-
-<p>Finally, readers and streams are closed. An <code class="language-plaintext highlighter-rouge">UploadDetails</code> object is created
-holding stats collected in <code class="language-plaintext highlighter-rouge">StreamRDFCountingBase</code>, which are also used for
-logging.</p>
-
-<p><code class="language-plaintext highlighter-rouge">Upload#incomingPath()</code> will return the <code class="language-plaintext highlighter-rouge">UploadDetails</code>. If there are no errors
-then the transaction will be committed. It involves again classes from ARQ and
-TDB (for journaling), but that will be for another post.</p>
-
-<p>The final method called in the <code class="language-plaintext highlighter-rouge">Upload</code> class will be <code class="language-plaintext highlighter-rouge">detailsJson()</code>, which
-returns the object as JSON. This JSON string is then finally returned to the
-user.</p>
-
-<p>So that’s it. Probably the next step will be to learn how <code class="language-plaintext highlighter-rouge">DatasetGraph</code> works,
-or maybe more about transactions in Jena.</p>
-
-<p>Happy hacking !</p>
-</div>
 <!-- Pagination links -->
   <div class="pagination">
     <p>

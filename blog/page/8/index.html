@@ -169,6 +169,30 @@
 
 <div class="blog"><div class="post">
   <h3 class="post-header">
+    <a class="post-link" href="/2017/09/09/enabling-markdown-extension-tables-for-piecrust.html">
+      Enabling Markdown Extension Tables For Piecrust
+    </a>
+  </h3><span class="post-meta">Sep 9, 2017<span>&mdash; star date: -305230.14.</span></span>
+  <span class="post-meta">Number of words: 0.</span><p><a href="https://github.com/ludovicchabant/PieCrust2">PieCrust</a> is a Python static site generator.
+It allows users to write content in Markdown. But if you try adding a table, the content by
+default will be generated as plain text.</p>
+
+<p>You have to enable <a href="https://pythonhosted.org/Markdown/extensions/tables.html">Markdown extension tables</a>.
+PieCrust will <a href="https://github.com/ludovicchabant/PieCrust2/blob/6462e052045552d2ba164f4965370d84ddb54946/piecrust/formatting/markdownformatter.py#L29">load it</a>
+when creating the Markdown instance.</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># config.yml</span>
+<span class="na">markdown</span><span class="pi">:</span>
+  <span class="na">extensions</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="s">tables</span>
+</code></pre></div></div>
+
+<p>Et, voilà! Happy blogging!</p>
+
+<p>♥ Open Source</p>
+</div>
+<div class="post">
+  <h3 class="post-header">
     <a class="post-link" href="/2017/09/01/finding-base64-implementations-in-apache-software-foundation-projects.html">
       Finding Base64 implementations in Apache Software Foundation projects
     </a>
@@ -531,74 +555,6 @@ rule for Maven Enforcer Plug-in. There are two other Maven Plug-ins that can be 
 <dt>When ?</dt>
 <dd>2017-08-04</dd>
 </dl>
-</div>
-<div class="post">
-  <h3 class="post-header">
-    <a class="post-link" href="/2017/06/14/how-to-remove-the-signature-from-emails-with-nlp.html">
-      How to remove the signature from e-mails with NLP?
-    </a>
-  </h3><span class="post-meta">Jun 14, 2017<span>&mdash; star date: -305468.49.</span></span>
-  <span class="post-meta">Number of words: 0.</span><p>Some time ago I stumbled across <a href="https://github.com/mynameisvinn/EmailParser">EmailParser</a>, a Python utility to remove e-mail signatures. Here’s a sample input e-mail from the project documentation.</p>
-
-<div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Wendy – thanks for the intro! Moving you to bcc.
- 
-Hi Vincent – nice to meet you over email. Apologize for the late reply, I was on PTO for a couple weeks and this is my first week back in office. As Wendy mentioned, I am leading an AR/VR taskforce at Foobar Retail Solutions. The goal of the taskforce is to better understand how AR/VR can apply to retail/commerce and if/what is the role of a shopping center in AR/VR applications for retail.
- 
-Wendy mentioned that you would be a great person to speak to since you are close to what is going on in this space. Would love to set up some time to chat via phone next week. What does your availability look like on Monday or Wednesday?
- 
-Best,
-Joe Smith
- 
-Joe Smith | Strategy &amp; Business Development
-111 Market St. Suite 111| San Francisco, CA 94103
-M: 111.111.1111| joe@foobar.com
-</code></pre></div></div>
-
-<p>And here’s what it looks like afterwards.</p>
-
-<div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Wendy – thanks for the intro! Moving you to bcc.
- 
-Hi Vincent – nice to meet you over email. Apologize for the late reply, I was on PTO for a couple weeks and this is my first week back in office. As Wendy mentioned, I am leading an AR/VR taskforce at Foobar Retail Solutions. The goal of the taskforce is to better understand how AR/VR can apply to retail/commerce and if/what is the role of a shopping center in AR/VR applications for retail.
- 
-Wendy mentioned that you would be a great person to speak to since you are close to what is going on in this space. Would love to set up some time to chat via phone next week. What does your availability look like on Monday or Wednesday?
-</code></pre></div></div>
-
-<p>As you can see, it removed all the lines after the main part of the message (i.e. after the three paragraphs). Here’s what the Python code looks like.</p>
-
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">Parser</span> <span class="kn">import</span> <span class="n">read_email</span><span class="p">,</span> <span class="n">strip</span><span class="p">,</span> <span class="n">prob_block</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">spacy.en</span> <span class="kn">import</span> <span class="n">English</span> 
-
-<span class="o">&gt;&gt;&gt;</span> <span class="n">pos</span> <span class="o">=</span> <span class="n">English</span><span class="p">()</span>  <span class="c1"># part-of-speech tagger
-</span><span class="o">&gt;&gt;&gt;</span> <span class="n">msg_raw</span> <span class="o">=</span> <span class="n">read_email</span><span class="p">(</span><span class="s">'emails/test1.txt'</span><span class="p">)</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">msg_stripped</span> <span class="o">=</span> <span class="n">strip</span><span class="p">(</span><span class="n">msg_raw</span><span class="p">)</span>  <span class="c1"># preprocessing text before POS tagging
-</span>
-<span class="c1"># iterate through lines, write to file if not signature block
-</span><span class="o">&gt;&gt;&gt;</span> <span class="n">generate_text</span><span class="p">(</span><span class="n">msg_stripped</span><span class="p">,</span> <span class="mf">.9</span><span class="p">,</span> <span class="n">pos_tagger</span><span class="p">,</span> <span class="s">'emails/test1_clean.txt'</span><span class="p">)</span> 
-</code></pre></div></div>
-
-<p>What got me interested about this utility was the use of NLP. I couldn’t imagine how someone could use NLP for that. And I liked the simplicity of the approach, which is not perfect, but can be useful someday.</p>
-
-<p>After the imports in the code, it creates a <a href="https://en.wikipedia.org/wiki/Part_of_speech">Part of Speech</a> tagger using <a href="https://spacy.io/">spaCy</a> NLP library, reads the e-mail from a file, and sripts and creates an array with each paragraph of the message.</p>
-
-<p>The magic happens in the <code class="language-plaintext highlighter-rouge">generate_text</code> function, which receives the <strong>array of paragraphs</strong>, a <strong>threshold</strong>, the <strong>POS tagger</strong>, and the <strong>output destination</strong>. Here’s what the function does.</p>
-
-<div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>for each message
-    if probability ( signature block | message ) &lt; threshold
-        write to output file
-</code></pre></div></div>
-
-<p>And the formula for calculating the probability is quite simple too.</p>
-
-<div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>1. For a given paragraph (message block), find all the sentences in it.
-2. Then for each word (token) in the sentence, count the number of times a non-verb appears.
-3. Return the proportion of non-verbs per sentence, i.e. number of non-verbs / number of sentences.
-</code></pre></div></div>
-
-<p>In summary, it discards blocks that do not contain enough verbs to be considered a message block, being treated as signature blocks instead.</p>
-
-<p>Never thought about using an approach like this. It may definitely be helpful when doing data analysis, information retrieval, or scraping data from the web. Not necessarily with e-mails and signatures, but you got the gist of it.</p>
-
-<p>♥ Open Source</p>
 </div>
 <!-- Pagination links -->
   <div class="pagination">

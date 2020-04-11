@@ -168,6 +168,30 @@
 
 <div class="blog"><div class="post">
   <h3 class="post-header">
+    <a class="post-link" href="/2020/04/11/notes-on-apache-jena-streamrdfwriter.html">
+      Notes on Apache Jena StreamRDFWriter
+    </a>
+  </h3><div class="note"><p>Notes taken while reading a piece of Apache Jena’s source code.</p>
+</div><span class="post-meta">Apr 11, 2020<span>&mdash; star date: -302642.08.</span></span>
+  <span class="post-meta">Number of words: 0.</span><p><a href="https://jena.apache.org/">Apache Jena</a> project is like a box full of interesting things—at least if you love programming. One of its many features, is <strong>stream processing</strong>.</p>
+
+<p>It may contain very large datasets, with gigabytes of data about graphs. Some queries may be quite large, so sending the whole result would be simply impracticable.</p>
+
+<p>Instead, the data will go through ARQ. ARQ is a query engine for Jena that supports Sparql. There is one piece of code there that I found interesting while reviewing a small pull request: <a href="https://github.com/apache/jena/blob/cbdba5edb47041a4181a00bd7660e5d4c212530a/jena-arq/src/main/java/org/apache/jena/riot/system/StreamRDFWriter.java"><code class="language-plaintext highlighter-rouge">org.apache.jena.riot.system.StreamRDFWriter</code></a>.</p>
+
+<p>It is responsible for writing graph data in a streaming fashion. (See <a href="https://en.wikipedia.org/wiki/Stream_processing">stream processing</a> for programming models and more.)</p>
+
+<h2 id="stream-factories">Stream factories</h2>
+
+<p><code class="language-plaintext highlighter-rouge">StreamRDFWriter</code> holds several implementations (as <code class="language-plaintext highlighter-rouge">static</code> members) of <code class="language-plaintext highlighter-rouge">StreamRDFWriterFactory</code>. The factory has one responsibility only, to create streams (<code class="language-plaintext highlighter-rouge">StreamRDF</code>), for a certain format and context.</p>
+
+<p><img class="fluid" src="/assets/posts/2020-04-11-notes-on-apache-jena-streamrdfwriter/01.png" /></p>
+
+<p class="more-link">
+    <a class="post-link" href="/2020/04/11/notes-on-apache-jena-streamrdfwriter.html">Continue reading&hellip;</a>
+  </p></div>
+<div class="post">
+  <h3 class="post-header">
     <a class="post-link" href="/2020/03/28/using-lumino-with-vue.html">
       Using Lumino with Vue
     </a>
@@ -312,30 +336,6 @@ This is handy if you want to create breadcrumbs based on this hierarchy dynamica
 <p class="more-link">
     <a class="post-link" href="/2019/11/09/dynamic-breadcrumbs-with-vue-router-nested-routes-and-vuetify-breadcrumb-component.html">Continue reading&hellip;</a>
   </p></div>
-<div class="post">
-  <h3 class="post-header">
-    <a class="post-link" href="/2019/10/01/reddit-functionalprogramming-community.html">
-      Reddit r/functionalprogramming community
-    </a>
-  </h3><span class="post-meta">Oct 1, 2019<span>&mdash; star date: -303167.12.</span></span>
-  <span class="post-meta">Number of words: 0.</span><p><img class="ui image" src="/assets/pages/art/images/alonzo_and_lambda_by_kinow-d5tqvau.png" style="width: 30%; float: left" alt="Alonzo Church caricature" /></p>
-
-<p><a href="https://reddit.com/r/functionalprogramming/">r/functionalprogramming</a> was created nearly seven years ago.
-It started when I was interested in contributing to
-<a href="http://commons.apache.org/proper/commons-functor/">Apache Commons Functor</a>.</p>
-
-<p>I created it to have a place to collect links about functional programming. To my surprise there was
-no subreddit for functional programming. So I created one. Fast forward a few years, the community is
-still active, with a healthy group of nearly 10.000 readers and contributors.</p>
-
-<p>Nowadays I spend something like 5 to 20 minutes everyday moderating posts. And a little more than that whenever I
-find some interesting post to read. But if I could change one thing in the community, it would be to find
-more moderators.</p>
-
-<p>It is a huge responsibility to be the sole moderator of content read by thousands of readers.
-Whilst I try to stay neutral, and keep it a healthy community, I feel like having other
-people with different background and opinions would be good for the future of the community.</p>
-</div>
 <!-- Pagination links -->
   <div class="pagination">
     <p>

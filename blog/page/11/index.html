@@ -169,6 +169,86 @@
 
 <div class="blog"><div class="post">
   <h3 class="post-header">
+    <a class="post-link" href="/2017/04/02/fixing-qt-warning-qlayout-attempting-to-add-qlayout-to-qwidget-which-already-has-a-layout.html">
+      Fixing Qt warning &quot;QLayout: Attempting to add QLayout &quot;&quot; to QWidget &quot;&quot;, which already has a layout&quot;
+    </a>
+  </h3><span class="post-meta">Apr 2, 2017<span>&mdash; star date: -305668.49.</span></span>
+  <span class="post-meta">Number of words: 0.</span><p>If you ever started Krita 3.x in your command line, and had a look at the console output,
+you may noticed the following warning.</p>
+
+<blockquote>
+  <p>QLayout: Attempting to add QLayout “” to QWidget “”, which already has a layout</p>
+</blockquote>
+
+<p>Krita recently <a href="https://krita.org/en/item/krita-3-1-3-alpha-released/">announced the release of 3.1.3-alpha-2</a>,
+and while testing I saw this warning and
+decided to investigate why this warning happens.</p>
+
+<p>There was already
+<a href="http://stackoverflow.com/a/25451334">a similar question posted on StackOverflow</a>. And the
+best answer’s initial paragraph gave me a hint of what to look for.</p>
+
+<blockquote>
+  <p>When you assign a widget as the parent of a QLayout by passing it into the constructor, the layout is automatically set as the layout for that widget. In your code you are not only doing this, but explicitly calling setlayout(). This is no problem when when the widget passed is the same. If they are different you will get an error because Qt tries to assign the second layout to your widget which has already had a layout set.</p>
+</blockquote>
+
+<p>So, somewhere in Krita code, there was a a QWidget being created, and layouts
+were being added to it more than once. To find where the issue was happening was quite easy. A breakpoint at
+<a href="https://github.com/KDE/krita/blob/9e2b8c5b07deccd4a616ad7930a91e8cc784a85b/krita/main.cc#L141">main.cc</a>
+where the application is initialized, then step through a few times, until the message appeared in the
+console.</p>
+
+<p>Further investigation led me to the History docker (the one that shows undo steps)
+<a href="https://github.com/KDE/krita/blob/9e2b8c5b07deccd4a616ad7930a91e8cc784a85b/plugins/dockers/historydocker/HistoryDock.cpp#L33">constructor</a>.</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="n">QVBoxLayout</span> <span class="o">*</span><span class="n">vl</span> <span class="o">=</span> <span class="k">new</span> <span class="nf">QVBoxLayout</span><span class="p">(</span><span class="n">page</span><span class="p">);</span> <span class="c1">// layout being set to page</span>
+    <span class="n">m_undoView</span> <span class="o">=</span> <span class="k">new</span> <span class="nf">KisUndoView</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
+    <span class="n">vl</span><span class="o">-&gt;</span><span class="n">addWidget</span><span class="p">(</span><span class="n">m_undoView</span><span class="p">);</span>
+    <span class="n">QHBoxLayout</span> <span class="o">*</span><span class="n">hl</span> <span class="o">=</span> <span class="k">new</span> <span class="nf">QHBoxLayout</span><span class="p">(</span><span class="n">page</span><span class="p">);</span> <span class="c1">// layout being set to page again</span>
+    <span class="n">hl</span><span class="o">-&gt;</span><span class="n">addSpacerItem</span><span class="p">(</span><span class="k">new</span> <span class="nf">QSpacerItem</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span>  <span class="n">QSizePolicy</span><span class="o">::</span><span class="n">Expanding</span><span class="p">,</span> <span class="n">QSizePolicy</span><span class="o">::</span><span class="n">Fixed</span><span class="p">));</span>
+    <span class="n">m_bnConfigure</span> <span class="o">=</span> <span class="k">new</span> <span class="nf">QToolButton</span><span class="p">(</span><span class="n">page</span><span class="p">);</span>
+    <span class="n">m_bnConfigure</span><span class="o">-&gt;</span><span class="n">setIcon</span><span class="p">(</span><span class="n">KisIconUtils</span><span class="o">::</span><span class="n">loadIcon</span><span class="p">(</span><span class="s">"configure"</span><span class="p">));</span>
+    <span class="n">connect</span><span class="p">(</span><span class="n">m_bnConfigure</span><span class="p">,</span> <span class="n">SIGNAL</span><span class="p">(</span><span class="n">clicked</span><span class="p">(</span><span class="kt">bool</span><span class="p">)),</span> <span class="n">SLOT</span><span class="p">(</span><span class="n">configure</span><span class="p">()));</span>
+    <span class="n">hl</span><span class="o">-&gt;</span><span class="n">addWidget</span><span class="p">(</span><span class="n">m_bnConfigure</span><span class="p">);</span>
+    <span class="n">vl</span><span class="o">-&gt;</span><span class="n">addItem</span><span class="p">(</span><span class="n">hl</span><span class="p">);</span>
+
+    <span class="n">setWidget</span><span class="p">(</span><span class="n">page</span><span class="p">);</span>
+    <span class="n">setWindowTitle</span><span class="p">(</span><span class="n">i18n</span><span class="p">(</span><span class="s">"Undo History"</span><span class="p">));</span>
+</code></pre></div></div>
+
+<p>Here the QWidget created receives both QHBoxLayout and QVBoxLayout. Again, searching the Internet
+a little bit, then came across this post with a good example of a QWidget with
+QHBoxLayout and QVBoxLayout. Here’s what the constructor looks after the
+<a href="https://bugs.kde.org/show_bug.cgi?id=378313">patch</a>
+has been <a href="https://github.com/KDE/krita/commit/1d2343c0cacfb0b105fbe86c2bcef975a09b1041">applied</a>.</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="n">QVBoxLayout</span> <span class="o">*</span><span class="n">vl</span> <span class="o">=</span> <span class="k">new</span> <span class="nf">QVBoxLayout</span><span class="p">(</span><span class="n">page</span><span class="p">);</span> <span class="c1">// layout being set to page</span>
+    <span class="n">m_undoView</span> <span class="o">=</span> <span class="k">new</span> <span class="nf">KisUndoView</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
+    <span class="n">vl</span><span class="o">-&gt;</span><span class="n">addWidget</span><span class="p">(</span><span class="n">m_undoView</span><span class="p">);</span>
+    <span class="n">QHBoxLayout</span> <span class="o">*</span><span class="n">hl</span> <span class="o">=</span> <span class="k">new</span> <span class="nf">QHBoxLayout</span><span class="p">();</span>
+    <span class="n">hl</span><span class="o">-&gt;</span><span class="n">addSpacerItem</span><span class="p">(</span><span class="k">new</span> <span class="nf">QSpacerItem</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span>  <span class="n">QSizePolicy</span><span class="o">::</span><span class="n">Expanding</span><span class="p">,</span> <span class="n">QSizePolicy</span><span class="o">::</span><span class="n">Fixed</span><span class="p">));</span>
+    <span class="n">m_bnConfigure</span> <span class="o">=</span> <span class="k">new</span> <span class="nf">QToolButton</span><span class="p">(</span><span class="n">page</span><span class="p">);</span>
+    <span class="n">m_bnConfigure</span><span class="o">-&gt;</span><span class="n">setIcon</span><span class="p">(</span><span class="n">KisIconUtils</span><span class="o">::</span><span class="n">loadIcon</span><span class="p">(</span><span class="s">"configure"</span><span class="p">));</span>
+    <span class="n">connect</span><span class="p">(</span><span class="n">m_bnConfigure</span><span class="p">,</span> <span class="n">SIGNAL</span><span class="p">(</span><span class="n">clicked</span><span class="p">(</span><span class="kt">bool</span><span class="p">)),</span> <span class="n">SLOT</span><span class="p">(</span><span class="n">configure</span><span class="p">()));</span>
+    <span class="n">hl</span><span class="o">-&gt;</span><span class="n">addWidget</span><span class="p">(</span><span class="n">m_bnConfigure</span><span class="p">);</span>
+    <span class="n">vl</span><span class="o">-&gt;</span><span class="n">addItem</span><span class="p">(</span><span class="n">hl</span><span class="p">);</span>
+    <span class="n">vl</span><span class="o">-&gt;</span><span class="n">addLayout</span><span class="p">(</span><span class="n">hl</span><span class="p">);</span> <span class="c1">// horizontal layout added to the vertical layout</span>
+
+    <span class="n">setWidget</span><span class="p">(</span><span class="n">page</span><span class="p">);</span>
+    <span class="n">setWindowTitle</span><span class="p">(</span><span class="n">i18n</span><span class="p">(</span><span class="s">"Undo History"</span><span class="p">));</span>
+</code></pre></div></div>
+
+<p>That’s it. Learned something new in Qt. Not as important and useful as learning about
+<a href="http://doc.qt.io/qt-4.8/signalsandslots.html">signals and slots</a>, but now I can focus
+on other warnings in the console output of Krita.</p>
+
+<p>And you? Have you tested <a href="https://krita.org/en/item/krita-3-1-3-alpha-released/">Krita 3.1.3 alpha</a> already?
+What are you waiting for? :-)</p>
+
+<p>♥ Open Source</p>
+</div>
+<div class="post">
+  <h3 class="post-header">
     <a class="post-link" href="/2017/03/26/simulating-less-memory-with-ulimit.html">
       Simulating less memory with ulimit
     </a>
@@ -441,79 +521,6 @@ clipboard. Then just paste into my browser, and that’s that!</p>
   <li><a href="http://tecadmin.net/install-go-on-ubuntu/">How to Install Go 1.7 on Ubuntu 16.04 &amp; 14.04</a></li>
   <li><a href="http://garywoodfine.com/use-pbcopy-on-ubuntu/">Use pbcopy on Ubuntu</a></li>
 </ul>
-</div>
-<div class="post">
-  <h3 class="post-header">
-    <a class="post-link" href="/2017/01/08/apache-commons-lang-memoizer.html">
-      Apache Commons Lang: Memoizer
-    </a>
-  </h3><span class="post-meta">Jan 8, 2017<span>&mdash; star date: -305895.89.</span></span>
-  <span class="post-meta">Number of words: 0.</span><p>The current release of <a href="https://commons.apache.org/proper/commons-lang/">Apache Commons Lang</a>
-is <strong>3.5</strong>. The upcoming release, probably 3.6,
-will include a new feature, added in a
-<a href="https://github.com/apache/commons-lang/pull/203">pull request</a>:
-<strong>a Memoizer implementation</strong>. Check out the ticket <a href="https://issues.apache.org/jira/browse/LANG-740">LANG-740</a>
-for more about the implementation being added to [lang].</p>
-
-<p>The book <a href="http://jcip.net/">Java Concurrency in Practice</a> introduces readers to the Memoizer,
-and has also a <a href="http://jcip.net/listings/Memoizer.java">public domain implementation available for download</a>
-(besides that, the book has also lots of other interesting topics!).</p>
-
-<p>In summary, Memoizer is a simple cache, that will store the result of
-a computation. It receives a Computable object, responsible for doing something
-that will be stored by the Memoizer. Here’s a simple code to illustrate how that
-will work in your Java code.</p>
-
-<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// Computation to be stored in the cache</span>
-<span class="nc">Computable</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span> <span class="nc">String</span><span class="o">&gt;</span> <span class="n">getFormattedCurrentDate</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Computable</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span> <span class="nc">String</span><span class="o">&gt;()</span> <span class="o">{</span>
-    <span class="nd">@Override</span>
-    <span class="kd">public</span> <span class="nc">String</span> <span class="nf">compute</span><span class="o">(</span><span class="nc">String</span> <span class="n">fmt</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">InterruptedException</span> <span class="o">{</span>
-        <span class="k">return</span> <span class="k">new</span> <span class="nf">SimpleDateFormat</span><span class="o">(</span><span class="n">fmt</span><span class="o">).</span><span class="na">format</span><span class="o">(</span><span class="k">new</span> <span class="nc">Date</span><span class="o">());</span>
-    <span class="o">}</span>
-<span class="o">};</span>
-
-<span class="c1">// Our memoizer</span>
-<span class="nc">Memoizer</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span> <span class="nc">String</span><span class="o">&gt;</span> <span class="n">dateCache</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Memoizer</span><span class="o">&lt;&gt;(</span><span class="n">getFormattedCurrentDate</span><span class="o">);</span>
-
-<span class="c1">// To illustrate its use</span>
-<span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">10</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
-    <span class="k">try</span> <span class="o">{</span>
-        <span class="c1">// S -&gt; Millisecond</span>
-        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">dateCache</span><span class="o">.</span><span class="na">compute</span><span class="o">(</span><span class="s">"HH:mm:ss:S Z dd/MM/YYYY"</span><span class="o">));</span>
-        <span class="c1">// Regardless of this sleep call, we get the same result every iteration</span>
-        <span class="nc">Thread</span><span class="o">.</span><span class="na">sleep</span><span class="o">(</span><span class="mi">1500</span><span class="o">);</span>
-    <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="nc">InterruptedException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
-        <span class="n">e</span><span class="o">.</span><span class="na">printStackTrace</span><span class="o">();</span>
-    <span class="o">}</span>
-<span class="o">}</span>
-</code></pre></div></div>
-
-<p>The computable created (<em>getFormattedCurrentDate</em>) will be called only once, and stored in
-a map. The parameter passed in the <em>#compute()</em> method will be used as key in the map.
-So choose your parameter wisely :-) The output of the example will be similar to the following one.</p>
-
-<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>19:15:57:854 +1300 08/01/2017
-19:15:57:854 +1300 08/01/2017
-19:15:57:854 +1300 08/01/2017
-19:15:57:854 +1300 08/01/2017
-19:15:57:854 +1300 08/01/2017
-19:15:57:854 +1300 08/01/2017
-19:15:57:854 +1300 08/01/2017
-19:15:57:854 +1300 08/01/2017
-19:15:57:854 +1300 08/01/2017
-19:15:57:854 +1300 08/01/2017
-</code></pre></div></div>
-
-<p>In the example above I used a <em>for-loop</em> to illustrate what will happen. Even though we call
-the memoizer <em>#compute()</em> method several times, followed by
-<em>Thread#sleep()</em>; only one result, the first to be computed, will be returned.</p>
-
-<p>So that’s all for today. Hope you learned something about this new class, that must
-be available in the next release of Apache Commons Lang.</p>
-
-<p>Happy hacking!</p>
-
-<p>ps: [lang] uses Java 7, so that is why we do not have a functional instead of the Comparable</p>
 </div>
 <!-- Pagination links -->
   <div class="pagination">
