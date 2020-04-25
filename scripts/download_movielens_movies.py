@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
 
-import requests
 import json
 import locale
-from functools import cmp_to_key
 import os
+from functools import cmp_to_key
 from os.path import join, dirname
+
+import requests
 from dotenv import load_dotenv
 
 dotenv_path = join(dirname(__file__), '.env')
