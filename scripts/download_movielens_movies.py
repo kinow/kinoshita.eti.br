@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+import csv
 import json
 import locale
 import os
@@ -65,6 +66,14 @@ class MovieLens(object):
         return movies
 
     def list_all_rated_movies(self, cookies):
+        """
+        Lists all rated movies, navigating through each page of the listing of
+        rated movies. This is much slower, and sends multiple requests to the
+        server. Use with caution.
+
+        :param cookies: Dict or CookieJar, passed to request module
+        :return: list of movies
+        """
         movies = []
         current_page = 1
 
@@ -79,11 +88,27 @@ class MovieLens(object):
 
         return movies
 
+    def list_all_rated_movies_csv(self, cookies):
+        """
+        Lists all rated movies, sending a single request to the URL that
+        exports users rated movies as CSV. This may take a few seconds,
+        but at least avoids sending multiple requests to the server
+        (be nice).
+
+        :param cookies: Dict or CookieJar, passed to request module
+        :return: list of movies
+        """
+        url = "%s/%s" % (self.base_url, "users/me/movielens-ratings.csv")
+        r = requests.get(url, cookies=cookies, headers=self.headers, timeout=self.timeout)
+        decoded_content = r.content.decode('utf-8')
+        reader = csv.reader(decoded_content.splitlines(), delimiter=',', quotechar='"')
+        return [result[5] for result in reader]
+
 def main():
     locale.setlocale(locale.LC_ALL, 'pt_BR.UTF-8')
     ml = MovieLens()
     cookies = ml.login(USER, PASS)
-    movies = ml.list_all_rated_movies(cookies)
+    movies = ml.list_all_rated_movies_csv(cookies)
     movies = sorted(movies, key=cmp_to_key(locale.strcoll))  # locale-aware sort order
     movies_html_file = join(dirname(__file__), '../_pages/movies.md')
     header = """---
