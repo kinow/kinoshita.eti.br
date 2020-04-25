@@ -102,6 +102,7 @@ class MovieLens(object):
         r = requests.get(url, cookies=cookies, headers=self.headers, timeout=self.timeout)
         decoded_content = r.content.decode('utf-8')
         reader = csv.reader(decoded_content.splitlines(), delimiter=',', quotechar='"')
+        next(reader, None)
         return [result[5] for result in reader]
 
 def main():
