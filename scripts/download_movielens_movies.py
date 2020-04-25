@@ -2,7 +2,6 @@
 
 import requests
 import json
-from pprint import pprint as pp
 import locale
 from functools import cmp_to_key
 import os
