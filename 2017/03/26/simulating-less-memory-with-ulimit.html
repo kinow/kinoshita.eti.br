@@ -18,7 +18,9 @@
 <script type="application/ld+json">
 {"description":"These days I was trying to reproduce a bug in Krita where it would crash when a user copied group layers between windows. It appeared that the user was getting a segmentation fault due to the user’s computer running out of memory. I could not reproduce the issue, but my computer has 16 GB. The first thing that came to my mind was to create a virtual machine with less memory to reproduce the issue. But I decided to spend some time looking for a simpler way of doing it. Searching the web I found some suggestions that ulimit could work. After playing for a while with ulimit and htop, and verifying the amount of memory necessary to open two files in two windows in Krita, I came up with the following settings. # 2550 mb in kb ulimit -v 2550000 # 2 gb in kb ulimit -m 2000000 # Confirm limits ulimit -a gdb $HOME/Development/cpp/workspace/krita_install/bin/krita Then after copying a few layers from one window to another, I successfully reproduced the issue, and could include a backtrace in the Krita issue tracking system. ♥ Open Source","@type":"BlogPosting","url":"https://kinoshita.eti.br/2017/03/26/simulating-less-memory-with-ulimit.html","headline":"Simulating less memory with ulimit","dateModified":"2017-03-26T00:00:00+13:00","datePublished":"2017-03-26T00:00:00+13:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://kinoshita.eti.br/2017/03/26/simulating-less-memory-with-ulimit.html"},"@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
-<link rel="stylesheet" href="/assets/css/main.css"><link type="application/atom+xml" rel="alternate" href="https://kinoshita.eti.br/feed.xml" title="Bruno P. Kinoshita" /></head>
+<link rel="stylesheet" href="/assets/css/main.css"><link type="application/atom+xml" rel="alternate" href="https://kinoshita.eti.br/feed.xml" title="Bruno P. Kinoshita" /><link href="https://unpkg.com/pattern.css" rel="stylesheet">
+
+</head>
 <body>
 <div id="mobile-menu"><div class="menu">
   <ul class="menu">
@@ -163,7 +165,7 @@
   </div>
 </div>
 </div>
-  <div id="content">
+  <div id="content" class="pattern-checks-sm bg-blue white">
     <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
   <header class="post-header">
     <h1 class="post-title p-name" itemprop="name headline">Simulating less memory with ulimit</h1>

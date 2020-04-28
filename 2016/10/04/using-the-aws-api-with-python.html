@@ -18,7 +18,9 @@
 <script type="application/ld+json">
 {"description":"Amazon Web Services provides a series of cloud services. When you access the web interface, most - if not all - of the actions you do there are actually translated into API calls. They also provide SDK’s in several programming languages. With these SDK’s you are able to call the same API used by the web interface. Python has boto (or boto3) which lets you to automate several tasks in AWS. But before you start using the API, you will need to set up your access key. It is likely that with time you will have different roles, and may have different permissions with each role. You have to configure your local environment so that you can either use the command line Python utility (installed via pip install awscli) or with boto. The awscli is a dependency for using boto3. After you install it, you need to run aws configure. It will create the ~/.aws/config and ~/.aws/credentials files. You can tweak these files to support multiple roles. I followed the tutorials, but got all sorts of different issues. Then after debugging some locally installed dependencies, in special awscli files, I found that the following settings work for my environment. # File: config [profile default] region = ap-southeast-2 [profile profile1] region = ap-southeast-2 source_profile = default role_arn = arn:aws:iam::123:role/Developer [profile profile2] region = ap-southeast-2 source_profile = default role_arn = arn:aws:iam::456:role/Sysops mfa_serial = arn:aws:iam::789:mfa/user@domain.blabla and # File: credentials [default] aws_access_key_id = YOU_KEY_ID aws_secret_access_key = YOUR_SECRET And once it is done you can, for example, confirm it is working with some S3 commands in Python. #!/usr/bin/env python3 import os import boto3 session = boto3.Session(profile_name=&#39;profile2&#39;) s3 = session.resource(&#39;s3&#39;) found = False name = &#39;mysuperduperbucket&#39; for bucket in s3.buckets.all(): if bucket.name == name: found = True if not found: print(&quot;Creating bucket...&quot;) s3.create_bucket(Bucket=name) file_location = os.path.dirname(os.path.realpath(__file__)) + os.path.sep + &#39;samplefile.txt&#39; s3.meta.client.upload_file(Filename=file_location, Bucket=name, Key=&#39;book.txt&#39;) The AWS files in this example are using MFA too, the multi-factor authentication. So the first time you run this code you may be asked to generate a token, which will be cached for a short time. That’s it for today. Happy hacking!","@type":"BlogPosting","url":"https://kinoshita.eti.br/2016/10/04/using-the-aws-api-with-python.html","headline":"Using the AWS API with Python","dateModified":"2016-10-04T00:00:00+13:00","datePublished":"2016-10-04T00:00:00+13:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://kinoshita.eti.br/2016/10/04/using-the-aws-api-with-python.html"},"@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
-<link rel="stylesheet" href="/assets/css/main.css"><link type="application/atom+xml" rel="alternate" href="https://kinoshita.eti.br/feed.xml" title="Bruno P. Kinoshita" /></head>
+<link rel="stylesheet" href="/assets/css/main.css"><link type="application/atom+xml" rel="alternate" href="https://kinoshita.eti.br/feed.xml" title="Bruno P. Kinoshita" /><link href="https://unpkg.com/pattern.css" rel="stylesheet">
+
+</head>
 <body>
 <div id="mobile-menu"><div class="menu">
   <ul class="menu">
@@ -163,7 +165,7 @@
   </div>
 </div>
 </div>
-  <div id="content">
+  <div id="content" class="pattern-checks-sm bg-blue white">
     <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
   <header class="post-header">
     <h1 class="post-title p-name" itemprop="name headline">Using the AWS API with Python</h1>

@@ -18,7 +18,9 @@
 <script type="application/ld+json">
 {"description":"I’ve always wanted to know how does the code to show what was I listening to looked like. I found it after installing XMPlay and XMPlay MSN Plug-in. The plug-in zip had the plug-in itself and its source code. And what a neat source code (-:. Basically, you just send a message to the MSN UI API with a defined data structure. And to remove the message, just send again with an empty string. /* Bruno de Paula Kinoshita original src code: XMPlay MSN Plugin (c) 2005-2006 Elliott Sales de Andrade */ #include &lt;cstdlib&gt; #include &lt;iostream&gt; #include &lt;windows.h&gt; using namespace std; typedef struct { BOOL showCues; BOOL keepOnClose; } MSNStuff; static MSNStuff msnConf; void setNowPlaying( char *title) { wchar_t *lpMsn; int strLen = 20; HWND xmpwin; HWND msnui=0; lpMsn = (wchar_t*)calloc(1024,1024); // stuff for MSN before... memcpy(lpMsn, L&amp;quot;\\&amp;#92;&amp;#48;Music\\&amp;#92;&amp;#48;1\\&amp;#92;&amp;#48;{0}\\&amp;#92;&amp;#48;&amp;quot;, 17*2); // actual title... strLen=MultiByteToWideChar(false?CP_UTF8:CP_ACP,0,title,-1,lpMsn+17,492)-1;Â  /* 1024/2 - 20 */ // stuff for MSN after... memcpy(lpMsn + 17 + strLen, L&amp;quot;\\&amp;#92;&amp;#48;&amp;quot;, 3*2); strLen += 20; COPYDATASTRUCT msndata; msndata.dwData = 0x547; msndata.lpData = (void*)lpMsn; msndata.cbData = strLen * 2; while ( msnui = FindWindowEx(NULL, msnui, &amp;quot;MsnMsgrUIManager&amp;quot;, NULL) ) SendMessage(msnui, WM_COPYDATA, (WPARAM)xmpwin, (LPARAM)&amp;amp;msndata); } int main(int argc, char *argv[]) { char *title; if ( argc == 1 ) title = &amp;quot;&amp;quot;; else title = argv[1]; setNowPlaying ( title ); return EXIT_SUCCESS; }","@type":"BlogPosting","url":"https://kinoshita.eti.br/2009/03/22/code-to-change-your-message-in-msn-messenger.html","headline":"Code to change your message in MSN messenger","dateModified":"2009-03-22T00:00:00+13:00","datePublished":"2009-03-22T00:00:00+13:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://kinoshita.eti.br/2009/03/22/code-to-change-your-message-in-msn-messenger.html"},"@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
-<link rel="stylesheet" href="/assets/css/main.css"><link type="application/atom+xml" rel="alternate" href="https://kinoshita.eti.br/feed.xml" title="Bruno P. Kinoshita" /></head>
+<link rel="stylesheet" href="/assets/css/main.css"><link type="application/atom+xml" rel="alternate" href="https://kinoshita.eti.br/feed.xml" title="Bruno P. Kinoshita" /><link href="https://unpkg.com/pattern.css" rel="stylesheet">
+
+</head>
 <body>
 <div id="mobile-menu"><div class="menu">
   <ul class="menu">
@@ -163,7 +165,7 @@
   </div>
 </div>
 </div>
-  <div id="content">
+  <div id="content" class="pattern-checks-sm bg-blue white">
     <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
   <header class="post-header">
     <h1 class="post-title p-name" itemprop="name headline">Code to change your message in MSN messenger</h1>
