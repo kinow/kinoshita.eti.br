@@ -178,6 +178,23 @@ Misturar os dois e esquentar no microondas por até 1 minuto.
 - Untar uma assadeira com manteiga e polvilhar açúcar e canela.
 - 40 a 45 minutos em fogo 180 graus.
 
+## Cookies da Dona Bete
+
+**Ingredientes**
+
+- 2 xícaras de farinha de trigo
+- 1 xícara e meia de chá de aveia em flocos
+- 1 xícara de chá de chocolate em pó
+- 1 xícara de chá de açúcar mascavo
+- 2 colheres de chá de fermento em pó
+- 1 ovo grande inteiro
+- 200 gramas de margatina derretida em banho-maria
+
+**Como fazer**
+
+- Misture tudo com a mão e faça em formatos da preferência.
+- Colocar em fôrma untada no forno por 20 minutos.
+
 ## Canja
 
 ## Hashbrown
