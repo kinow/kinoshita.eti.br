@@ -160,6 +160,24 @@ Misturar os dois e esquentar no microondas por até 1 minuto.
 - Adicionar o fermento
 - Levar ao microondas por três minutos
 
+## Bolo de Banana
+
+**Ingredientes**
+
+- 4 bananas
+- 4 ovos inteiros
+- 3/4 copo de óleo
+- 2 copos de farinha de rosca
+- 2 copos de açúcar
+- 1 colher de sopa de royal
+- 1 pouco de canela
+
+**Como fazer**
+
+- Bater no liquidificador.
+- Untar uma assadeira com manteiga e polvilhar açúcar e canela.
+- 40 a 45 minutos em fogo 180 graus.
+
 ## Canja
 
 ## Hashbrown
