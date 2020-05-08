@@ -227,6 +227,29 @@ Misturar os dois e esquentar no microondas por até 1 minuto.
 - Ovas de salmão: deixe de molho por 1 noite 2 colheres (sopa) de ovas de salmão temperadas com 1 colher (sopa) de saquê e ½ colher (café) de shoyu.
 - Umeshiso: pique 3 umeboshi sem sementes e misture a 5 folhas de shiso (cortado fininho) e 1 colher (sopa) de gergelim torrado.
 
+## Frango Xadrez
+
+**Ingredientes**
+
+- 2 colheres de azeite
+- 2 cebolas em cubos
+- 2 dentes de alho
+- 500 g de filé de frango
+- sal
+- 3 pimentões (amarelo, vermelho e verde)
+- 1 xícara chá de cogumelo
+- 1/4 de xícara de molho de shoyu
+- 1 colher sopa de maisena
+- 1/2 xícara de chá de água
+- 2 colheres sopa de amendoim
+
+**Como fazer**
+
+- Cozinhar metade do azeite, cebola, alho. Separar.
+- Cozinhar sal azeite, pimentões, cogumelto por 5 minutos. Separar.
+- Cozinhar o frango até dourar. Juntar tudo de novo por 2 minutos.
+- Shoyu + maisena + água. Juntar e mexer até ficar espesso. Polvilhar amendoim.
+
 ## Canja
 
 ## Hashbrown
