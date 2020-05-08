@@ -195,6 +195,29 @@ Misturar os dois e esquentar no microondas por até 1 minuto.
 - Misture tudo com a mão e faça em formatos da preferência.
 - Colocar em fôrma untada no forno por 20 minutos.
 
+## Bolo de Mel
+
+**Ingredientes**
+
+- 2 xícaras e meia de farinha de trigo
+- meia xícara de chocolate em pó
+- 1 xícara de chá de leite
+- 1 xícara de chá de mel
+- meia xícara de açúcar mascavo
+- 1 colher de sobremesa de canela em pó
+- 1 colher de sobremesa de cravo em pó
+- 2 colheres de chá de fermento em pó
+- 2 colheres de chá de bicarbonato
+
+(Cobertura)
+
+- 200 gramas de chocolate ao leite ou meio amargo derretido.
+
+**Como fazer**
+
+- Na batedeira coloque o leite e o mel, misture. Adicione cravo, canela, farinha de trigo, chocolate em pó, bata até se agregarem.
+- Desligue a batedeira e adicione o bicarbonato, fermento(peneirado), mexa delicadamente. Coloque em uma forma redonda, untada e enfarinhada. Leve ao forno pré-aquecido a 180° graus por 40 minutos. Retire do forno e coloque a cobertura.
+
 ## Canja
 
 ## Hashbrown
