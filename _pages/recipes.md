@@ -218,6 +218,15 @@ Misturar os dois e esquentar no microondas por até 1 minuto.
 - Na batedeira coloque o leite e o mel, misture. Adicione cravo, canela, farinha de trigo, chocolate em pó, bata até se agregarem.
 - Desligue a batedeira e adicione o bicarbonato, fermento(peneirado), mexa delicadamente. Coloque em uma forma redonda, untada e enfarinhada. Leve ao forno pré-aquecido a 180° graus por 40 minutos. Retire do forno e coloque a cobertura.
 
+## Recheios de Onigiri
+
+- A ameixa umeboshi deve ser colocada dentro do bolinho sem a semente. (Dependendo do tamanho, ela deve ser colocada inteira ou pela metade.)
+- O atum em lata deve ser misturado com maionese até que fique cremoso, e temperado com shoyu e um pouquinho de suco de limão.
+- Já o salmão deve ser em filés, com a pele, e levemente salgado. Deixe-o secar na geladeira, embrulhado em papel-absorvente e sem filme, para perder a umidade. Deixe por 1 noite e, no dia seguinte, grelhe o peixe. Retire espinhas e pele, leve ao fogo e, com uma espátula, esmigalhe e seque. Tempere com saquê e um pouquinho de shoyu.
+- Lascas de bonito seco (okaka): coloque em 1 xícara (chá) as lascas de bonito e tempere com shoyu e gergelim torrado.
+- Ovas de salmão: deixe de molho por 1 noite 2 colheres (sopa) de ovas de salmão temperadas com 1 colher (sopa) de saquê e ½ colher (café) de shoyu.
+- Umeshiso: pique 3 umeboshi sem sementes e misture a 5 folhas de shiso (cortado fininho) e 1 colher (sopa) de gergelim torrado.
+
 ## Canja
 
 ## Hashbrown
