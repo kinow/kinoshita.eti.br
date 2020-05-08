@@ -4,7 +4,7 @@ tags:
 - programming
 categories:
 - blog
-title: Code coverage helps, but not enough
+title: Code coverage helps, but it is not enough
 ---
 
 Today I talked to two QA Engineers about code coverage, and we all agreed that code coverage helps, but is
