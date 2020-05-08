@@ -195,7 +195,7 @@ Misturar os dois e esquentar no microondas por até 1 minuto.
 - Misture tudo com a mão e faça em formatos da preferência.
 - Colocar em fôrma untada no forno por 20 minutos.
 
-## Bolo de Mel
+## Bolo de Mel da Dona Bete
 
 **Ingredientes**
 
