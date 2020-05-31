@@ -15,3 +15,5 @@ Cited as **Kinoshita, B. P.; Nakaya, D. H.. Conjuntos Fuzzy e Aplicações. Facu
 Informática - São Paulo: Universidade Presbiteriana Mackenzie**.
 
 [Download](/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/kinoshita_bruno_nakaya_daniel_conjuntos_fuzzy_e_aplicacoes.pdf)
+
+Google Scholar link: https://scholar.google.com/scholar?cluster=6169842656053696090&hl=en&oi=scholarr
