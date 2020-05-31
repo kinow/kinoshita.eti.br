@@ -8,6 +8,7 @@ layout: page
 I have worked in many different projects for the past ten years, in industries such as telecommunications, banking, credit, retail, insurance, and start-ups. Occupied different positions including programmer, quality engineer, devops, architect, full stack developer, and big data engineer. 
 
 I am fluent in English and Portuguese, with good understanding of Spanish, and basic of Japanese. Attended Te Reo Māori beginner classes to learn basic vocabulary and pronunciation.
+ORCID ID: https://orcid.org/0000-0001-8250-4074
 
 
 ## <i class="fa fa-chevron-right"></i> Skills
