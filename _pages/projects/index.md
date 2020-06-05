@@ -14,7 +14,7 @@ permalink: "/projects"
   - C
     * GTest TAP Reporter
 * Reddit
-  - [r/functionalprogramming](/projects/functionalprogramming_subreddit/)
+  - [r/functionalprogramming](/projects/functionalprogramming_subreddit)
   - r/chorinho
   - r/testlink
   - r/testanythingprotocol
@@ -22,7 +22,7 @@ permalink: "/projects"
   - r/chapolin
   - r/chaves
 
-Acknowledged:
+## Acknowledged on:
 
 **Books**:
 
