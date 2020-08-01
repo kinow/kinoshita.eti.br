@@ -679,6 +679,7 @@ note: "Some of the movies I have watched so far. Suggestions are welcome."
 * Life of Brian (1979)
 * Life of Pi (2012)
 * Lifepod (1993)
+* Line of Duty (2019)
 * Lisbela and the Prisoner (2003)
 * Little Man (2006)
 * Little Miss Sunshine (2006)
