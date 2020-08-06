@@ -25,4 +25,6 @@ note: "Our cooking recipes. Some are in English. Some are in Portuguese."
 {%- endfor -%}
 </ul>
 
+<p><a href="#top">Back to the top</a></p>
+
 {%- endfor -%}
