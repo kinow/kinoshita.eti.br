@@ -44,6 +44,10 @@ Linux, OSX, Windows
 
 <table class="ui celled table">
   <tr>
+    <td>GSoC Mentor, Jenkins Machine Learning Plug-in</td>
+    <td>March 2020, to September 2020</td>
+  </tr>
+  <tr>
     <td>Invited to become an Apache Software Foundation Member</td>
     <td>March 2018</td>
   </tr>
@@ -413,4 +417,4 @@ Linux, OSX, Windows
 </table>
 
 
- I wrote articles that have been published in different magazines, and also spoke in conferences in some countries. The complete list is available in my web site. For a list of Open Source projects that I contribute to, look at my GitHub profile. I have three software registered with Brazilian INPI (512018001048-2, 512018001051-2, and 512018001052-0) through Federal University of Amapa Foundation. References available upon request.
+ I wrote articles that have been published in different magazines, and also spoke in conferences in some countries. The complete list is available in my web site. For a list of Open Source projects that I contribute to, look at my GitHub profile. I have three software registered with Brazilian INPI (512018001048-2, 512018001051-2, and 512018001052-0) through Federal University of Amapa Foundation. Mentored in GSoC 2020, a new plug-in for Jenkins called Machine Learning Plug-in. References available upon request.
