@@ -10,7 +10,8 @@ tags:
 ---
 
 Last week a friend told me he was looking for a place in Taiwan called “Ryukokosho”.
-Or maybe “Ryoko kosho”. From what I understood, he was looking for a mosquito species.
+Or maybe “Ryoko kosho”. From what I understood he was looking for a mosquito species
+found in this place.
 
 The species name is “[Anopheles tessellatus](https://en.wikipedia.org/wiki/Anopheles_tessellatus)”,
 and one of its synonyms is “[kinoshitai Koidzumi](http://www.mosquitocatalog.org/taxon_descr.aspx?ID=20899)” — pure
@@ -18,8 +19,9 @@ coincidence that _kinoshitai_!
 
 That synonym entry appears to have been found at the following location:
 **Ryukokosho**, Taihoku (Taipei), Formosa [Taiwan, ROC] (LU). So how to find
-Ryukokosho if Google Maps cannot find it, and Google brings only a handful of
-entries with the species synonyms, and no maps or other GIS data?
+Ryukokosho if Google Maps cannot find it, Google brings only a handful of
+entries with the species synonyms, and no there are no other maps or other
+GIS data available?
 
 <!--more-->
 
@@ -30,10 +32,10 @@ The reason is that between 1895 and 1945 Taiwan was under Japanese rule, and som
 places got different names. Even now, many words from Chinese are still pronounced
 in Japan with the Japanese reading of the Chinese characters.
 
-From that location, it is possible to immediately identify that it is somewhere in
+From that location it is possible to immediately identify that it is somewhere in
 Taiwan.
 
-We can probably tell that it is an old entry, as Taiwan is being identified as
+We can probably tell that it is an old entry as Taiwan is being identified as
 “Formosa”. I remember Taiwan being called “Ilha Formosa” in textbooks in Brazil
 when I was in high school.
 
@@ -43,30 +45,32 @@ to the island of Taiwan [by Portuguese explorers](https://en.wikipedia.org/wiki/
 ### It is in Taipei
 
 Another hint at the date of the synonym entry is the next part, Taihoku.
-The capital of Taiwan is Taipei, written as 「台北」. Reading those two
-characters in Japanese, a possible way to read it would be Tai-Hoku.
+The capital of Taiwan is Taipei, written as 「台北」.
 
 Taipei was officially [renamed to Taihoku](https://en.wikipedia.org/wiki/Taipei)
-in 1895 when Japan annexed Taiwan.
+in 1895 when Japan annexed Taiwan. Taihoku is the Japanese reading of the Taipei
+Chinese characters.
 
 Curiously, Taihoku [is still in use](https://languagelog.ldc.upenn.edu/nll/?p=40072)
-in Japan. But so is Taipei.
+in Japan. Oh, and so is Taipei by the way. Must be confusing for non-locals to find
+both names in documents, sites, newspapers, etc.
 
 ### Now, where is Ryukokosho?
 
-This was the tricky part. The name of many [places in Japan](https://en.wikipedia.org/wiki/Place_names_in_Japan)
-have the last part representing the kind of place it is. For example:
+This was the tricky part.
+
+The name of many [places in Japan](https://en.wikipedia.org/wiki/Place_names_in_Japan)
+includes a useful suffix. For example:
 
 - -ken for prefecture, as in Kumamoto-ken
 - -shi for the city, as in Kumamoto-shi
-- -ku for the wad of a city, as in Tokyo-ku
+- -ku for the ward of a city, as in Tokyo-ku
 - -mura for village, as in Kamikuishiki-mura
 - -hoku or kita- for North, as in Hokkaido, Taihoku, or Kita-ku
 - -shima or -jima for island, as in Iwo-Jima
 
 Looking at -sho, and -kosho, nothing came to my mind. With some help of Jisho.org,
-it looked like it could be this old character for "manor; villa", 「庄」, read as
-shou or shō.
+I found this old character for "manor; villa", 「庄」, read as shou or shō.
 
 Many words when translated to English lose their vowels, like Toukyou that becomes
 Tokyo, and Kyouto becomes Kyoto. So maybe shou lost its u, and became sho?
@@ -77,16 +81,15 @@ Chinese characters 「龍匣口」.
 
 Surprised, I asked her how she found that name so quickly. She told me she wrote
 "ryoko" in a dictionary to translate from Japanese to Chinese. I assume the dictionary
-gave her some possible character combinations, and she picked the one made
+gave her some possible character combinations and she picked the one made
 more sense.
 
-Searching for this in English wasn't really helpful. Then after searching Wikipedia,
-I found this link in Chinese for the Longxiakou village: https://zh.m.wikipedia.org/wiki/龍匣口
+That's when I found this link in Chinese for the Longxiakou
+village: [https://zh.m.wikipedia.org/wiki/龍匣口](https://zh.m.wikipedia.org/wiki/龍匣口).
 
 ### Longxiakou
 
-If you translate the Wikipedia page from Mandarin into English, the first paragraph
-says:
+If you translate the Wikipedia page from Chinese into English, the first paragraph says:
 
 >Longxiakou is an old place name in Taipei City . It is located in the middle of present-day
 >Zhongzheng District. It includes all of Aiguoli, Nanmenli, Longguangli, and Longfuli, and
@@ -94,10 +97,9 @@ says:
 >a small part of the northeast end of Yingxueli, the northern half of Nanfuli, the west of
 >Xinyingli and the south of Dongmenli.
 
-So now we have a good source to identify the location of the mosquito!
+So now we have a reliable source to identify the location of the mosquito!
 
->It is located in the middle of present-day
->Zhongzheng District
+>It is located in the middle of present-day Zhongzheng District
 
 <img
   class="fluid"
@@ -106,16 +108,12 @@ So now we have a good source to identify the location of the mosquito!
   aria-label="Google Map for Zhongzheng District"
   />
 
-Unfortunately, names like Aiguoli don't seem to match the name in Chinese (愛國里), or at least
-Google Maps is not able to locate them.
+Unfortunately the translated names like Aiguoli don't match any existing names in Google Maps in Taiwan. The name
+in Chinese does (愛國里). So I entered some of these names to confirm the area of the map of that old village.
 
-The map above should at least be a good starting point for someone looking for Ryukokosho.
-
-I found [this one](https://www.facebook.com/IntoChengNan/photos/a.357412827975944/508448539539038/?type=3&theater)
+I also found [this map](https://www.facebook.com/IntoChengNan/photos/a.357412827975944/508448539539038/?type=3&theater)
 on FaceBook, but without knowing Chinese, the only part I could confirm is that
 the light brown area at the top contains the words 「南門」 (South gate?) and 「龍匣口」 (Longxiakou).
-
-The text also talks about the village in the past.
 
 <img
   class="fluid"
@@ -124,8 +122,9 @@ The text also talks about the village in the past.
   aria-label="Map with Longxiakou Village"
   />
 
-Using QGIS 3, the Georeferencer plug-in, and quickly adding some points manually,
-then finally adjusting raster transparency, the final map looks like this.
+Using QGIS 3, the Georeferencer plug-in, quickly adding some points manually,
+and then finally adjusting raster transparency, we have the following map to
+show us where the village used to be.
 
 <img
   class="fluid"
