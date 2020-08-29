@@ -189,6 +189,15 @@ Linux, OSX, Windows
 
 <table class="ui celled table">
   <tr>
+    <td>Intro to Vue.js, Real World Vue.js, Advanced Components,
+Next-Level Vue, Mastering Vuex, and Vue 3 Composition API
+</td>
+    <td>Vue Mastery</td>
+    <td>        Online
+    </td>
+    <td>2020</td>
+  </tr>
+  <tr>
     <td>Building Web Applications in R with Shiny</td>
     <td>DataCamp</td>
     <td>        Online
