@@ -4,7 +4,7 @@
   <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.6.1 -->
-<title>Page 14 of 27 for Blog - page 14 | Bruno P. Kinoshita</title>
+<title>Page 14 of 28 for Blog - page 14 | Bruno P. Kinoshita</title>
 <meta name="generator" content="Jekyll v3.8.5" />
 <meta property="og:title" content="Blog - page 14" />
 <meta property="og:locale" content="en_US" />
@@ -170,6 +170,40 @@
 </div>
 
 <div class="blog"><div class="post">
+  <h3 class="post-header">
+    <a class="post-link" href="/2016/11/07/content-negotiation-with-spring-boot-and-react.html">
+      Content negotiation with Spring Boot and React
+    </a>
+  </h3><span class="post-meta">Nov 7, 2016<span>&mdash; star date: -306068.31.</span></span>
+  <span class="post-meta">Number of words: 0.</span><p>A few days ago I had a bug in a system built with Spring Boot and React. The frontend application
+was using a REST client in React, built in a similar way to what is found in the documentation, and
+also in blogs.</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="nx">rest</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">rest</span><span class="dl">'</span><span class="p">;</span>
+<span class="kd">const</span> <span class="nx">Rest</span> <span class="o">=</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="nx">rest</span><span class="p">.</span><span class="nx">wrap</span><span class="p">(</span><span class="nx">mime</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>However, for one of the Spring Boot application endpoints, the React component was not working. The
+response seemed to be OK in the Network tab, of the browser developer tools. But the component was
+failing and complaining when parsing the response.</p>
+
+<p>Turns out that the frontend was sending the request with the header <code class="language-plaintext highlighter-rouge">Accept: text/plain, application/json</code>.
+And Spring Boot was just using its <a href="https://spring.io/blog/2013/05/11/content-negotiation-using-spring-mvc">default content negotiation</a>
+and returning what the frontend requested: a text plain version of, what looked like, JSON.</p>
+
+<p>The quick fix was to request the content as JSON in React.</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="nx">rest</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">rest</span><span class="dl">'</span><span class="p">;</span>
+<span class="k">import</span> <span class="nx">mime</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">rest/interceptor/mime</span><span class="dl">'</span><span class="p">;</span>
+<span class="kd">const</span> <span class="nx">Rest</span> <span class="o">=</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="nx">rest</span><span class="p">.</span><span class="nx">wrap</span><span class="p">(</span><span class="nx">mime</span> <span class="p">,</span> <span class="p">{</span> <span class="na">mime</span><span class="p">:</span> <span class="dl">'</span><span class="s1">application/json</span><span class="dl">'</span> <span class="p">}</span> <span class="p">);</span>
+</code></pre></div></div>
+
+<p>Now we will revisit the backend to return the JSON content, as content, regardless of what
+the user asks :-)</p>
+
+<p>Happy hacking!</p>
+</div>
+<div class="post">
   <h3 class="post-header">
     <a class="post-link" href="/2016/11/05/checking-the-operating-system-type-in-shell-script.html">
       Checking the operating system type in shell script
@@ -358,31 +392,6 @@ Jenkins and several grid computing implementations in a single plug-in.</p>
 <p class="more-link">
     <a class="post-link" href="/2016/07/20/reading-notes-about-drmaa-v2.html">Continue reading&hellip;</a>
   </p></div>
-<div class="post">
-  <h3 class="post-header">
-    <a class="post-link" href="/2016/07/17/reasons-for-having-pt-and-ptbr-in-a-software.html">
-      Reasons for having pt and pt-BR in a software
-    </a>
-  </h3><span class="post-meta">Jul 17, 2016<span>&mdash; star date: -306374.32.</span></span>
-  <span class="post-meta">Number of words: 0.</span><p>Some time ago I found some spare time to work on a different Open Source project:
-<a href="http://skosmos.org/">SKOSMOS</a>. SKOSMOS is a web based SKOS browser and publishing
-tool, used to create vocabularies using the SKOS ontology.</p>
-
-<p>I decided to help with translation, but there was no Brazilian Portuguese option,
-only Portuguese. I used a few arguments to suggest that having Brazilian Portuguese
-would be a good thing.</p>
-
-<p>Another Open Source project that I use in a side project is
-<a href="https://www.languagetool.org/">LanguageTool</a>. LanguageTool is used for
-proof-reading, and uses rules to find spelling and grammar errors.</p>
-
-<p>Today I saw a message in the LanguageTool mailing list discussing whether having a Brazilian
-Portuguese page would make sense, or if it would be better to have just Portuguese, and then
-add rules for special cases.</p>
-
-<p class="more-link">
-    <a class="post-link" href="/2016/07/17/reasons-for-having-pt-and-ptbr-in-a-software.html">Continue reading&hellip;</a>
-  </p></div>
 <!-- Pagination links -->
   <div class="pagination">
     <p>
@@ -391,7 +400,7 @@ add rules for special cases.</p>
         <i class="left chevron icon"></i>Previous
       </a>
       
-      <span class="page_number ">Page: 14 of 27</span>
+      <span class="page_number ">Page: 14 of 28</span>
       
       <a href="/blog/page/15/" class="next">
         Next<i class="right chevron icon"></i>

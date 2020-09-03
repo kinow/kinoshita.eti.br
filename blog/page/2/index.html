@@ -4,7 +4,7 @@
   <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.6.1 -->
-<title>Page 2 of 27 for Blog - page 2 | Bruno P. Kinoshita</title>
+<title>Page 2 of 28 for Blog - page 2 | Bruno P. Kinoshita</title>
 <meta name="generator" content="Jekyll v3.8.5" />
 <meta property="og:title" content="Blog - page 2" />
 <meta property="og:locale" content="en_US" />
@@ -171,6 +171,76 @@
 
 <div class="blog"><div class="post">
   <h3 class="post-header">
+    <a class="post-link" href="/2019/11/09/dynamic-breadcrumbs-with-vue-router-nested-routes-and-vuetify-breadcrumb-component.html">
+      Dynamic breadcrumbs with Vue Router nested routes and Vuetify Breadcrumb component
+    </a>
+  </h3><span class="post-meta">Nov 9, 2019<span>&mdash; star date: -303063.01.</span></span>
+  <span class="post-meta">Number of words: 0.</span><p>Vue Router supports nested routes, which allow developers to create a hierarchical navigation structure.
+This is handy if you want to create breadcrumbs based on this hierarchy dynamically.</p>
+
+<p>Here’s how you should create your nested routes:</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">const</span> <span class="nx">routes</span> <span class="o">=</span> <span class="p">[</span>
+  <span class="p">{</span> <span class="na">path</span><span class="p">:</span> <span class="dl">'</span><span class="s1">/</span><span class="dl">'</span><span class="p">,</span> <span class="na">component</span><span class="p">:</span> <span class="p">{</span> <span class="na">template</span><span class="p">:</span> <span class="s2">`&lt;h1&gt;Home View&lt;/h1&gt;`</span> <span class="p">}</span> <span class="p">},</span>
+  <span class="p">{</span>
+    <span class="na">path</span><span class="p">:</span> <span class="dl">'</span><span class="s1">/users</span><span class="dl">'</span><span class="p">,</span>
+    <span class="na">component</span><span class="p">:</span> <span class="p">{</span>
+      <span class="nx">render</span> <span class="p">(</span><span class="nx">c</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="nx">c</span><span class="p">(</span><span class="dl">'</span><span class="s1">router-view</span><span class="dl">'</span><span class="p">)</span>
+      <span class="p">}</span>
+    <span class="p">},</span>
+    <span class="na">meta</span><span class="p">:</span> <span class="p">{</span> <span class="na">breadCrumb</span><span class="p">:</span> <span class="dl">'</span><span class="s1">Users</span><span class="dl">'</span> <span class="p">},</span>
+    <span class="na">children</span><span class="p">:</span> <span class="p">[</span>
+      <span class="p">{</span>
+        <span class="na">path</span><span class="p">:</span> <span class="dl">''</span><span class="p">,</span>
+        <span class="na">component</span><span class="p">:</span> <span class="p">{</span>
+          <span class="na">template</span><span class="p">:</span> <span class="s2">`
+            &lt;div&gt;
+              &lt;h1&gt;Users View&lt;/h1&gt;
+              &lt;router-link to="/users/1"&gt;View User 1&lt;/router-link&gt;
+            &lt;/div&gt;
+          `</span>
+        <span class="p">}</span>
+      <span class="p">},</span>
+      <span class="p">{</span>
+        <span class="na">path</span><span class="p">:</span> <span class="dl">'</span><span class="s1">:id</span><span class="dl">'</span><span class="p">,</span>
+        <span class="na">component</span><span class="p">:</span> <span class="p">{</span>
+          <span class="nx">render</span> <span class="p">(</span><span class="nx">c</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="nx">c</span><span class="p">(</span><span class="dl">'</span><span class="s1">router-view</span><span class="dl">'</span><span class="p">)</span>
+          <span class="p">}</span>
+        <span class="p">},</span>
+        <span class="na">meta</span><span class="p">:</span> <span class="p">{</span> <span class="na">breadCrumb</span><span class="p">:</span> <span class="dl">'</span><span class="s1">View User</span><span class="dl">'</span> <span class="p">},</span>
+        <span class="na">children</span><span class="p">:</span> <span class="p">[</span>
+          <span class="p">{</span>
+            <span class="na">path</span><span class="p">:</span> <span class="dl">''</span><span class="p">,</span>
+            <span class="na">component</span><span class="p">:</span> <span class="p">{</span>
+              <span class="na">template</span><span class="p">:</span> <span class="s2">`
+                &lt;div&gt;
+                  &lt;h1&gt;User View&lt;/h1&gt;
+                  &lt;router-link to="/users/1/edit"&gt;Edit User&lt;/router-link&gt;
+                &lt;/div&gt;
+              `</span>
+            <span class="p">}</span>
+          <span class="p">},</span>
+          <span class="p">{</span>
+            <span class="na">path</span><span class="p">:</span> <span class="dl">'</span><span class="s1">edit</span><span class="dl">'</span><span class="p">,</span>
+            <span class="na">component</span><span class="p">:</span> <span class="p">{</span>
+              <span class="na">template</span><span class="p">:</span> <span class="s2">`&lt;h1&gt;Edit User&lt;/h1&gt;`</span>
+            <span class="p">},</span>
+            <span class="na">meta</span><span class="p">:</span> <span class="p">{</span> <span class="na">breadCrumb</span><span class="p">:</span> <span class="dl">'</span><span class="s1">Edit User</span><span class="dl">'</span> <span class="p">}</span>
+          <span class="p">}</span>
+        <span class="p">]</span>
+      <span class="p">}</span>
+    <span class="p">]</span>
+  <span class="p">}</span>
+<span class="p">]</span>
+</code></pre></div></div>
+
+<p class="more-link">
+    <a class="post-link" href="/2019/11/09/dynamic-breadcrumbs-with-vue-router-nested-routes-and-vuetify-breadcrumb-component.html">Continue reading&hellip;</a>
+  </p></div>
+<div class="post">
+  <h3 class="post-header">
     <a class="post-link" href="/2019/10/01/reddit-functionalprogramming-community.html">
       Reddit r/functionalprogramming community
     </a>
@@ -244,20 +314,6 @@ few things need to be done in a different way due to the jump from Desktop GUI t
 <p class="more-link">
     <a class="post-link" href="/2019/05/17/a-look-at-the-first-implementation-of-graphql-in-cylc.html">Continue reading&hellip;</a>
   </p></div>
-<div class="post">
-  <h3 class="post-header">
-    <a class="post-link" href="/2019/04/07/running-fuzzers-to-find-bugs.html">
-      Running fuzzers to find bugs
-    </a>
-  </h3><div class="note"><p>The comparison does not focus so much on how fuzzers work, which one is best than the other, etc. It looks only into its advertised features, whether it is maintained by a group or individual (<a href="https://en.wikipedia.org/wiki/Bus_factor">bus factor</a> is always important), and the license.</p>
-</div><span class="post-meta">Apr 7, 2019<span>&mdash; star date: -303654.79.</span></span>
-  <span class="post-meta">Number of words: 0.</span><p>Fuzzifying is a technique used in automated tests to find bugs in programs with unexpected data. fuzzer is the name given to the program used for running these tests. Some fuzzers also generate random data used for the tests.</p>
-
-<p><img class="ui fluid image" src="/assets/posts/2019-04-07-running-fuzzers-to-find-bugs/stink-bug-smaller.png" /></p>
-
-<p class="more-link">
-    <a class="post-link" href="/2019/04/07/running-fuzzers-to-find-bugs.html">Continue reading&hellip;</a>
-  </p></div>
 <!-- Pagination links -->
   <div class="pagination">
     <p>
@@ -266,7 +322,7 @@ few things need to be done in a different way due to the jump from Desktop GUI t
         <i class="left chevron icon"></i>Previous
       </a>
       
-      <span class="page_number ">Page: 2 of 27</span>
+      <span class="page_number ">Page: 2 of 28</span>
       
       <a href="/blog/page/3/" class="next">
         Next<i class="right chevron icon"></i>

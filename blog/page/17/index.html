@@ -4,7 +4,7 @@
   <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.6.1 -->
-<title>Page 17 of 27 for Blog - page 17 | Bruno P. Kinoshita</title>
+<title>Page 17 of 28 for Blog - page 17 | Bruno P. Kinoshita</title>
 <meta name="generator" content="Jekyll v3.8.5" />
 <meta property="og:title" content="Blog - page 17" />
 <meta property="og:locale" content="en_US" />
@@ -170,6 +170,37 @@
 </div>
 
 <div class="blog"><div class="post">
+  <h3 class="post-header">
+    <a class="post-link" href="/2015/04/12/groovy-hooks-in-jenkins-for-increasing-logging-level.html">
+      Groovy Hooks in Jenkins for increasing logging level
+    </a>
+  </h3><span class="post-meta">Apr 12, 2015<span>&mdash; star date: -307641.1.</span></span>
+  <span class="post-meta">Number of words: 0.</span><p>Yesterday, while debugging a problem we had in the <a href="http://biouno.org">BioUno</a> update center, 
+I realized that after <a href="https://wiki.jenkins-ci.org/display/JENKINS/Logging">increasing the logging level in the WEB interface</a>, 
+the messages that I needed weren’t being displayed in the logs.</p>
+
+<p>It happened because some of the logging happened during Jenkins initialization, and before I could adjust the log level.</p>
+
+<p>The solution was to use a <a href="https://wiki.jenkins-ci.org/display/JENKINS/Groovy+Hook+Script">Groovy Hook Script</a>. 
+If you are familiar with Linux init scripts, the idea is quite similar.</p>
+
+<p>A Groovy script in the <code class="language-plaintext highlighter-rouge">$JENKINS_ROOT_DIR/init.groovy.d/</code> directory is executed during
+Jenkins initialization. This way you can increase the global logger level with a script
+as the following below.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">java.util.logging.ConsoleHandler</span>
+<span class="kn">import</span> <span class="nn">java.util.logging.LogManager</span>
+<span class="kn">import</span> <span class="nn">java.util.logging.Logger</span>
+<span class="kn">import</span> <span class="nn">java.util.logging.Level</span>
+
+<span class="n">def</span> <span class="n">logger</span> <span class="o">=</span> <span class="nc">Logger</span><span class="o">.</span><span class="na">getLogger</span><span class="o">(</span><span class="s">""</span><span class="o">)</span>
+<span class="n">logger</span><span class="o">.</span><span class="na">setLevel</span><span class="o">(</span><span class="nc">Level</span><span class="o">.</span><span class="na">FINEST</span><span class="o">)</span>
+<span class="n">logger</span><span class="o">.</span><span class="na">addHandler</span> <span class="o">(</span><span class="k">new</span> <span class="nc">ConsoleHandler</span><span class="o">())</span>
+</code></pre></div></div>
+
+<p>Happy logging!</p>
+</div>
+<div class="post">
   <h3 class="post-header">
     <a class="post-link" href="/2015/01/01/contributing-to-apache-jena.html">
       Contributing to Apache Jena
@@ -399,25 +430,6 @@ special characters, spaces by _, and so it goes.</p>
 
 <p>Happy hacking!</p>
 </div>
-<div class="post">
-  <h3 class="post-header">
-    <a class="post-link" href="/2014/05/19/treemapping-jenkins-extension-points-with-r.html">
-      Treemapping Jenkins Extension Points with R
-    </a>
-  </h3><span class="post-meta">May 19, 2014<span>&mdash; star date: -308536.99.</span></span>
-  <span class="post-meta">Number of words: 0.</span><p>I have been playing with R and its packages for some time, and decided to study it a 
-bit harder. Last week I started reading the <a href="http://adv-r.had.co.nz/">Advanced R Programming</a> 
-by Hadley Wickham.</p>
-
-<p>One of the first chapters talks about the basic data structures in R. In order to 
-get my feet wet I thought about a simple example: <a href="http://en.wikipedia.org/wiki/Treemapping">treemapping</a> 
-Jenkins extension points.</p>
-
-<p><img class="ui image" src="/assets/posts/2014-05-19-treemapping-jenkins-extension-points-with-r/extension_points.png" /></p>
-
-<p class="more-link">
-    <a class="post-link" href="/2014/05/19/treemapping-jenkins-extension-points-with-r.html">Continue reading&hellip;</a>
-  </p></div>
 <!-- Pagination links -->
   <div class="pagination">
     <p>
@@ -426,7 +438,7 @@ Jenkins extension points.</p>
         <i class="left chevron icon"></i>Previous
       </a>
       
-      <span class="page_number ">Page: 17 of 27</span>
+      <span class="page_number ">Page: 17 of 28</span>
       
       <a href="/blog/page/18/" class="next">
         Next<i class="right chevron icon"></i>

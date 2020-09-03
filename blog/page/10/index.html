@@ -4,7 +4,7 @@
   <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.6.1 -->
-<title>Page 10 of 27 for Blog - page 10 | Bruno P. Kinoshita</title>
+<title>Page 10 of 28 for Blog - page 10 | Bruno P. Kinoshita</title>
 <meta name="generator" content="Jekyll v3.8.5" />
 <meta property="og:title" content="Blog - page 10" />
 <meta property="og:locale" content="en_US" />
@@ -170,6 +170,35 @@
 </div>
 
 <div class="blog"><div class="post">
+  <h3 class="post-header">
+    <a class="post-link" href="/2017/06/02/apache-commons-text-lookuptranslator.html">
+      Apache Commons Text LookupTranslator
+    </a>
+  </h3><span class="post-meta">Jun 2, 2017<span>&mdash; star date: -305501.37.</span></span>
+  <span class="post-meta">Number of words: 0.</span><p><a href="http://commons.apache.org/proper/commons-text/">Apache Commons Text</a> includes several algorithms for text processing. Today’s post is about one of the classes available since the 1.0 release, the <a href="http://commons.apache.org/proper/commons-text/apidocs/org/apache/commons/text/translate/LookupTranslator.html">LookupTranslator</a>.</p>
+
+<p>It is used to translate text using a lookup table. Most users won’t necessarily be - knowingly - using this class. Most likely, they will use the <a href="http://commons.apache.org/proper/commons-text/apidocs/org/apache/commons/text/StringEscapeUtils.html">StringEscapeUtils</a>, which contains methods to escape and unescape CSV, JSON, XML, Java, and EcmaScript.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">String</span> <span class="n">original</span> <span class="o">=</span> <span class="s">"He didn't say, \"stop!\""</span><span class="o">;</span>
+<span class="nc">String</span> <span class="n">expected</span> <span class="o">=</span> <span class="s">"He didn't say, \\\"stop!\\\""</span><span class="o">;</span>
+<span class="nc">String</span> <span class="n">result</span>   <span class="o">=</span> <span class="nc">StringEscapeUtils</span><span class="o">.</span><span class="na">escapeJava</span><span class="o">(</span><span class="n">original</span><span class="o">);</span>
+</code></pre></div></div>
+
+<p>StringEscapeUtils uses CharSequenceTranslator’s, including LookupTranslator. You can use it directly too, to escape other data your text may contain, special characters not supported by some third party library or system, or even a simpler case.</p>
+
+<p>In other words, you would be creating your own StringEscapeUtils. Let’s say you have some text where numbers must never start with the zero digital, due to some restriction in the way you use that data later.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">Map</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span> <span class="nc">String</span><span class="o">&gt;</span> <span class="n">lookupTable</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">HashMap</span><span class="o">&lt;&gt;();</span>
+<span class="n">lookupTable</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">"a"</span><span class="o">,</span> <span class="s">""</span><span class="o">);</span>
+<span class="kd">final</span> <span class="nc">LookupTranslator</span> <span class="n">escapeNumber0</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">LookupTranslator</span><span class="o">(</span><span class="k">new</span> <span class="nc">String</span><span class="o">[][]</span> <span class="o">{</span> <span class="o">{</span><span class="s">"0"</span><span class="o">,</span> <span class="s">""</span><span class="o">}</span> <span class="o">});</span>
+<span class="nc">String</span> <span class="n">escaped</span> <span class="o">=</span> <span class="n">escapeNumber0</span><span class="o">.</span><span class="na">translate</span><span class="o">(</span><span class="s">"There are 02 texts waiting for analysis today..."</span><span class="o">);</span>
+</code></pre></div></div>
+
+<p>That way the resulting text would be “There are 2 texts waiting for analysis today”, allowing you to proceed with the rest of your analysis. This is a very simple example, but hopefully you grokked how LookupTranslator works.</p>
+
+<p>♥ Open Source</p>
+</div>
+<div class="post">
   <h3 class="post-header">
     <a class="post-link" href="/2017/05/28/some-links-related-to-apache-commons-text.html">
       Some links related to Apache Commons Text
@@ -413,80 +442,6 @@ job ¯\<em>(ツ)</em>/¯</p>
 
 <p>♥ Open Source</p>
 </div>
-<div class="post">
-  <h3 class="post-header">
-    <a class="post-link" href="/2017/04/14/spring-cloud-encrypted-values-and-spring-propertysources.html">
-      Spring Cloud encrypted values and Spring PropertySources
-    </a>
-  </h3><span class="post-meta">Apr 14, 2017<span>&mdash; star date: -305635.62.</span></span>
-  <span class="post-meta">Number of words: 0.</span><p>As I could not find any documentation for that, I decided to write it as a note to myself
-in case I use the
-<a href="https://cloud.spring.io/spring-cloud-config/spring-cloud-config.html#_encryption_and_decryption">encryption and decryption</a>
-with Spring Cloud again.</p>
-
-<p>In Spring and Spring Boot, you normally have multiple sources of properties, like multiple
-properties files, environment properties and variables, and so it goes. In the Spring API,
-these are represented as
-<a href="http://docs.spring.io/spring/docs/current/javadoc-api/org/springframework/context/annotation/PropertySource.html">PropertySource</a>’s.</p>
-
-<p>In a Spring Boot application, you would be used to overriding certain properties
-by defining environments and using an application-production.properties file, or
-overriding values with environment properties.</p>
-
-<p>This is common in
-<a href="https://aws.amazon.com/blogs/devops/deploying-a-spring-boot-application-on-aws-using-aws-elastic-beanstalk/">Spring Boot applications deployed to Amazon Elastic Beanstalk</a>.</p>
-
-<p>Some time ago another team at work found that overriding did not always work when you have
-encrypted values in your properties files. Even if you specified new values in the
-Amazon Elastic Beanstalk application configuration.</p>
-
-<p>Yesterday, while debugging the issue and reading Spring Cloud source code, I found its
-<a href="https://github.com/spring-cloud/spring-cloud-commons/blob/9675df02f6a2c01766711f7dee3c4d2818b7d716/spring-cloud-context/src/main/java/org/springframework/cloud/bootstrap/encrypt/EnvironmentDecryptApplicationInitializer.java#L44">EnvironmentDecryptApplicationInitializer</a>.</p>
-
-<p>It basically iterates through all loaded property sources, looking for values that start with
-{cipher}. Then it calls the
-<a href="http://docs.spring.io/spring-security/site/docs/current/apidocs/org/springframework/security/crypto/encrypt/TextEncryptor.html">Spring Security TextEncryptor</a>
-defined in the application.</p>
-
-<p>Finally, it creates a new property source, called decrypted, with the decrypted values. So when
-your application looks for a property called XPTO, and if it has been encrypted, it will
-find the value in the decrypted propery source, regardless of whether you tried to override it or
-not.</p>
-
-<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Property sources listed in Eclipse IDE</span>
-
-<span class="o">[</span>
-  servletConfigInitParams,
-  servletContextInitParams,
-  systemProperties,
-  systemEnvironment,
-  random,
-  applicationConfigurationProperties,
-  springCloudClientHostInfo,
-  defaultProperties
-<span class="o">]</span>
-
-<span class="c"># When using encrypted values</span>
-
-<span class="o">[</span>
-  decrypted, &lt;<span class="nt">--------</span> created by Spring Cloud, with decrypted values. Prepended to the list of property sources
-  servletConfigInitParams,
-  servletContextInitParams,
-  systemProperties,
-  systemEnvironment,
-  random,
-  applicationConfigurationProperties,
-  springCloudClientHostInfo,
-  defaultProperties
-<span class="o">]</span>
-</code></pre></div></div>
-
-<p>So in case you have encrypted values in your Spring application (and you are using Spring Cloud, 
-of course) remember that these values will have higher priority, and can only be overriden by other
-encrypted values.</p>
-
-<p>♥ Open Source</p>
-</div>
 <!-- Pagination links -->
   <div class="pagination">
     <p>
@@ -495,7 +450,7 @@ encrypted values.</p>
         <i class="left chevron icon"></i>Previous
       </a>
       
-      <span class="page_number ">Page: 10 of 27</span>
+      <span class="page_number ">Page: 10 of 28</span>
       
       <a href="/blog/page/11/" class="next">
         Next<i class="right chevron icon"></i>

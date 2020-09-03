@@ -4,7 +4,7 @@
   <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.6.1 -->
-<title>Page 11 of 27 for Blog - page 11 | Bruno P. Kinoshita</title>
+<title>Page 11 of 28 for Blog - page 11 | Bruno P. Kinoshita</title>
 <meta name="generator" content="Jekyll v3.8.5" />
 <meta property="og:title" content="Blog - page 11" />
 <meta property="og:locale" content="en_US" />
@@ -170,6 +170,80 @@
 </div>
 
 <div class="blog"><div class="post">
+  <h3 class="post-header">
+    <a class="post-link" href="/2017/04/14/spring-cloud-encrypted-values-and-spring-propertysources.html">
+      Spring Cloud encrypted values and Spring PropertySources
+    </a>
+  </h3><span class="post-meta">Apr 14, 2017<span>&mdash; star date: -305635.62.</span></span>
+  <span class="post-meta">Number of words: 0.</span><p>As I could not find any documentation for that, I decided to write it as a note to myself
+in case I use the
+<a href="https://cloud.spring.io/spring-cloud-config/spring-cloud-config.html#_encryption_and_decryption">encryption and decryption</a>
+with Spring Cloud again.</p>
+
+<p>In Spring and Spring Boot, you normally have multiple sources of properties, like multiple
+properties files, environment properties and variables, and so it goes. In the Spring API,
+these are represented as
+<a href="http://docs.spring.io/spring/docs/current/javadoc-api/org/springframework/context/annotation/PropertySource.html">PropertySource</a>’s.</p>
+
+<p>In a Spring Boot application, you would be used to overriding certain properties
+by defining environments and using an application-production.properties file, or
+overriding values with environment properties.</p>
+
+<p>This is common in
+<a href="https://aws.amazon.com/blogs/devops/deploying-a-spring-boot-application-on-aws-using-aws-elastic-beanstalk/">Spring Boot applications deployed to Amazon Elastic Beanstalk</a>.</p>
+
+<p>Some time ago another team at work found that overriding did not always work when you have
+encrypted values in your properties files. Even if you specified new values in the
+Amazon Elastic Beanstalk application configuration.</p>
+
+<p>Yesterday, while debugging the issue and reading Spring Cloud source code, I found its
+<a href="https://github.com/spring-cloud/spring-cloud-commons/blob/9675df02f6a2c01766711f7dee3c4d2818b7d716/spring-cloud-context/src/main/java/org/springframework/cloud/bootstrap/encrypt/EnvironmentDecryptApplicationInitializer.java#L44">EnvironmentDecryptApplicationInitializer</a>.</p>
+
+<p>It basically iterates through all loaded property sources, looking for values that start with
+{cipher}. Then it calls the
+<a href="http://docs.spring.io/spring-security/site/docs/current/apidocs/org/springframework/security/crypto/encrypt/TextEncryptor.html">Spring Security TextEncryptor</a>
+defined in the application.</p>
+
+<p>Finally, it creates a new property source, called decrypted, with the decrypted values. So when
+your application looks for a property called XPTO, and if it has been encrypted, it will
+find the value in the decrypted propery source, regardless of whether you tried to override it or
+not.</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Property sources listed in Eclipse IDE</span>
+
+<span class="o">[</span>
+  servletConfigInitParams,
+  servletContextInitParams,
+  systemProperties,
+  systemEnvironment,
+  random,
+  applicationConfigurationProperties,
+  springCloudClientHostInfo,
+  defaultProperties
+<span class="o">]</span>
+
+<span class="c"># When using encrypted values</span>
+
+<span class="o">[</span>
+  decrypted, &lt;<span class="nt">--------</span> created by Spring Cloud, with decrypted values. Prepended to the list of property sources
+  servletConfigInitParams,
+  servletContextInitParams,
+  systemProperties,
+  systemEnvironment,
+  random,
+  applicationConfigurationProperties,
+  springCloudClientHostInfo,
+  defaultProperties
+<span class="o">]</span>
+</code></pre></div></div>
+
+<p>So in case you have encrypted values in your Spring application (and you are using Spring Cloud, 
+of course) remember that these values will have higher priority, and can only be overriden by other
+encrypted values.</p>
+
+<p>♥ Open Source</p>
+</div>
+<div class="post">
   <h3 class="post-header">
     <a class="post-link" href="/2017/04/02/fixing-qt-warning-qlayout-attempting-to-add-qlayout-to-qwidget-which-already-has-a-layout.html">
       Fixing Qt warning &quot;QLayout: Attempting to add QLayout &quot;&quot; to QWidget &quot;&quot;, which already has a layout&quot;
@@ -454,76 +528,6 @@ have to tune these parameters for your application.</p>
 
 <p>♥ Open Source</p>
 </div>
-<div class="post">
-  <h3 class="post-header">
-    <a class="post-link" href="/2017/02/28/using-aws-mfa-without-a-mobile-phone.html">
-      Using AWS MFA without a mobile phone
-    </a>
-  </h3><span class="post-meta">Feb 28, 2017<span>&mdash; star date: -305764.38.</span></span>
-  <span class="post-meta">Number of words: 0.</span><p>If you use AWS, the chances are that you use MFA - Multi-factor Authentication - to authenticate.
-I don’t like to install apps in my mobile phone, unless I need to, so having bought a new phone
-recently, I decided to find a replacement for Google Authenticator.</p>
-
-<p>There are several command line utilities, browser extensions, libraries, and tools (free and paid)
-that implement the TOTP - time-based one-time password -, the standard
-<a href="http://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_mfa_enable_virtual.html">required by Amazon</a>
-for MFA authentication.</p>
-
-<p>I decided to use a Go tool for the first time: <a href="https://github.com/pcarrier/gauth">gauth</a>. Note that you
-won’t be able to use it from home, in case you don’t bring your laptop home. You can have one MFA device
-linked to your AWS account, so you may have to remove an existing one. Follow these instructions with care :^)</p>
-
-<h3 id="install-go">Install Go</h3>
-
-<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>apt update <span class="o">&amp;&amp;</span> <span class="nb">sudo </span>apt upgrade <span class="nt">-y</span>
-<span class="nb">cd </span>tmp/ <span class="o">&amp;&amp;</span> wget https://storage.googleapis.com/golang/go1.8.linux-amd64.tar.gz
-<span class="nb">tar</span> <span class="nt">-zxvf</span> go1.<span class="k">*</span>.tar.gz
-<span class="nb">sudo mv </span>go /usr/local
-vim ~/.bashrc
-</code></pre></div></div>
-
-<p>Add the following at the bottom of the file.</p>
-
-<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">GOROOT</span><span class="o">=</span>/usr/local/go
-<span class="nv">GOPATH</span><span class="o">=</span><span class="s2">"</span><span class="nv">$HOME</span><span class="s2">/go"</span>
-<span class="nv">PATH</span><span class="o">=</span><span class="s2">"</span><span class="nv">$GOPATH</span><span class="s2">/bin:</span><span class="nv">$GOROOT</span><span class="s2">/bin:</span><span class="nv">$PATH</span><span class="s2">"</span>
-</code></pre></div></div>
-
-<p>And you can test it with <code class="language-plaintext highlighter-rouge">. ~/.bashrc &amp;&amp; go version</code>.</p>
-
-<h3 id="install-gauth">Install gauth</h3>
-
-<p>Given your environment is correctly set up, you should be able to use the following command to install
-gauth, and have it available in your <em>$PATH</em>.</p>
-
-<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>go get github.com/pcarrier/gauth
-</code></pre></div></div>
-
-<p>Edit <em>~/.config/gauth.csv</em> adding a value for the AWS MFA key.</p>
-
-<h3 id="getting-the-aws-mfa-key">Getting the AWS MFA key</h3>
-
-<p>To get the value that you must place in your <em>gauth.csv</em> file, you must add a new MFA device. When asked to scan a QR code, look for an option to enter the manual value. That will give you a long string. That’s the value you are looking for.</p>
-
-<h3 id="extra-auto-copy-paste-from-command-line">Extra: Auto copy-paste from command line</h3>
-
-<p>If you would like to quickly copy and paste, try creating an alias as described
-<a href="https://gist.github.com/ehime/9fd8810442daf64686a34f885e18be01">on this gist</a>.</p>
-
-<p>I used these instructions, and can now run one command line, that will put the next MFA code in my
-clipboard. Then just paste into my browser, and that’s that!</p>
-
-<p>Happy hacking!</p>
-
-<h3 id="references">References</h3>
-
-<ul>
-  <li><a href="https://github.com/pcarrier/gauth">gauth: replace Google Authenticator</a></li>
-  <li><a href="http://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_mfa_enable_virtual.html">Enabling a Virtual Multi-factor Authentication (MFA) Device</a></li>
-  <li><a href="http://tecadmin.net/install-go-on-ubuntu/">How to Install Go 1.7 on Ubuntu 16.04 &amp; 14.04</a></li>
-  <li><a href="http://garywoodfine.com/use-pbcopy-on-ubuntu/">Use pbcopy on Ubuntu</a></li>
-</ul>
-</div>
 <!-- Pagination links -->
   <div class="pagination">
     <p>
@@ -532,7 +536,7 @@ clipboard. Then just paste into my browser, and that’s that!</p>
         <i class="left chevron icon"></i>Previous
       </a>
       
-      <span class="page_number ">Page: 11 of 27</span>
+      <span class="page_number ">Page: 11 of 28</span>
       
       <a href="/blog/page/12/" class="next">
         Next<i class="right chevron icon"></i>
