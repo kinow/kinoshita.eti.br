@@ -189,6 +189,13 @@ Linux, OSX, Windows
 
 <table class="ui celled table">
   <tr>
+    <td>Data Science Math Skills</td>
+    <td>Duke University (Coursera)</td>
+    <td>        Online (Coursera)
+    </td>
+    <td>2020</td>
+  </tr>
+  <tr>
     <td>Unconscious Bias (3 modules)</td>
     <td>NIWA / SimTutor</td>
     <td>        Online
