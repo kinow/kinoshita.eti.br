@@ -204,7 +204,8 @@ Linux, OSX, Windows
   </tr>
   <tr>
     <td>Intro to Vue.js, Real World Vue.js, Advanced Components,
-Next-Level Vue, Mastering Vuex, and Vue 3 Composition API
+Next-Level Vue, Mastering Vuex, Vue 3 Composition API,
+From Vue 2 to Vue 3
 </td>
     <td>Vue Mastery</td>
     <td>        Online
