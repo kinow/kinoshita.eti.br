@@ -189,6 +189,20 @@ Linux, OSX, Windows
 
 <table class="ui celled table">
   <tr>
+    <td>Pandas</td>
+    <td>Kaggle</td>
+    <td>        Online (Kaggle)
+    </td>
+    <td>2020</td>
+  </tr>
+  <tr>
+    <td>Intro to Machine Learning</td>
+    <td>Kaggle</td>
+    <td>        Online (Kaggle)
+    </td>
+    <td>2020</td>
+  </tr>
+  <tr>
     <td>Data Science Math Skills</td>
     <td>Duke University (Coursera)</td>
     <td>        Online (Coursera)
