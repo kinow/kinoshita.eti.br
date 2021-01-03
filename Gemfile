@@ -26,4 +26,6 @@ group :jekyll_plugins do
   gem 'jekyll-paginate-v2'
 end
 
+gem "nokogiri", ">= 1.11.0.rc4"
+
 gem "jekyll", "~> 3.8"
