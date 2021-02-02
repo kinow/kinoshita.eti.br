@@ -19,8 +19,8 @@ title: About
     Aotearoa</a></i> New Zealand.</p>
 
     <p>Head on to the blog for posts about languages, writing, music, and computer
-    programming. Or check out my portfolio where I post drawings, illustrations,
-    painting, and-what-not.</p>
+    programming. Or check out my portfolio where I upload drawings, illustrations,
+    paintings, and more.</p>
 
     <ul class="menu">
       <li>
