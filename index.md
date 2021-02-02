@@ -3,21 +3,33 @@ layout: newhome
 title: About
 ---
 
-Hello! I am Bruno Kinoshita or “kinow”, born and raised in São Paulo city, Brazil. 
-A typical _Paulistano_ but now based in Auckland city, Aotearoa New Zealand.
+<div id="about">
 
-Head on to the blog for posts about languages, writing, music, and computer
-programming. Or check out my portfolio where I post drawings, illustrations,
-painting, and-what-not.
+  <div id="figurinha-da-copa">
+    <img
+      src="{{ '/assets/images/figurinha-copa.jpg' | relative_url }}"
+    />
+  </div>
+  
+  <div id="bio">
+    <p>Hello! I am Bruno Kinoshita or “kinow”, born and raised in São Paulo city, Brazil. 
+    A typical _Paulistano_ but now based in Auckland city, Aotearoa New Zealand.</p>
+    
+    <p>Head on to the blog for posts about languages, writing, music, and computer
+    programming. Or check out my portfolio where I post drawings, illustrations,
+    painting, and-what-not.</p>
+  
+    <ul class="menu">
+      <li>
+        <a href="">CV (programming)</a>
+      </li>
+      <li>
+        <a href="">CV (arts)</a>
+      </li>
+      <li>
+        <a href="">Contact</a>
+      </li>
+    </ul>
+  </div>
 
-<ul>
-  <li>
-    <a href="">CV (programming)</a>
-  </li>
-  <li>
-    <a href="">CV (arts)</a>
-  </li>
-  <li>
-    <a href="">Contact</a>
-  </li>
-</ul>
+</div>
