@@ -4,7 +4,7 @@ title: About
 ---
 
 Hello! I am Bruno Kinoshita or “kinow”, born and raised in São Paulo city, Brazil. 
-A typical _Paulistano_ but now based in Auckland CBD, Aotearoa New Zealand.
+A typical _Paulistano_ but now based in Auckland city, Aotearoa New Zealand.
 
 Head on to the blog for posts about languages, writing, music, and computer
 programming. Or check out my portfolio where I post drawings, illustrations,
