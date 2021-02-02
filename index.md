@@ -1,6 +1,6 @@
 ---
 layout: newhome
-title: Me
+title: About
 ---
 
 Hello! I am Bruno Kinoshita or “kinow”, born and raised in São Paulo city, Brazil. 
