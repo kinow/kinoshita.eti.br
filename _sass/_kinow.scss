@@ -2,11 +2,18 @@ html, body {
   color: rgb(52, 58, 64);
 }
 
+@mixin font-sans-serif {
+  font-family: Franklin,arial,sans-serif;
+}
+
+@mixin font-serif {
+  font-family: georgia, Times New Roman, serif;
+}
+
 // header
 
 #header {
-  font-family: Franklin,arial,sans-serif;
-
+  @include font-sans-serif;
   padding: 24px 12px 12px 12px;
 
   display: flex;
@@ -79,7 +86,7 @@ html, body {
 #content {
   padding: 0 12px 24px 12px;
   p {
-    font-family: georgia, Times New Roman, serif;
+    @include font-serif;
     font-size: 20px;
     line-height: 35px;
   }
@@ -92,6 +99,7 @@ html, body {
       margin: 0 12px 0 0;
       display: inline;
       a {
+        @include font-sans-serif;
         text-decoration: underline;
         text-transform: uppercase;
         color: inherit;
@@ -118,11 +126,20 @@ html, body {
   }
   #bio {
     flex-grow: 1;
+    flex-direction: column;
     border-left: 1px solid #6d6d6d;
     padding: 0 24px;
+    display: flex;
     a {
       color: #6d6d6d;
       text-decoration: none;
+    }
+    #bio-top {
+      order: 1;
+    }
+    #bio-bottom {
+      order: 2;
+      padding: 24px 0;
     }
   }
 }
