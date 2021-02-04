@@ -1,24 +1,23 @@
 ---
 layout: page
-title: Home
-note: "Content licensed under the Creative Commons Attribution-NonCommercial 4.0 International License."
+title: About
 ---
 
-[comment]: <>  without this markdown wraps it in a p tag
-<figure>
-    <img class="left-aligned" style="width: 180px;" src="/assets/pages/about/bruno-3.png" alt="Bruno P. Kinoshita picture">
-    <figcaption class="hidden">Bruno P. Kinoshita picture</figcaption>
-</figure>
+<div>
+  <p>Hello! I am Bruno Kinoshita or “kinow”, born and raised in São Paulo city, Brazil. 
+  A typical <i><a href="https://en.wiktionary.org/wiki/paulistano#Noun" title="São Paulo city demonym">Paulistano</a></i>
+  but now based in Auckland city, <i><a href="https://en.wikipedia.org/wiki/Aotearoa" title="Māori name for New Zealand">
+  Aotearoa</a></i> New Zealand.</p>
+</div>
 
-I am **Bruno P. Kinoshita**, born in 84 in **Sao Paulo city**, Sao Paulo state, **Brazil**. 
-And I am a typical _Paulistano_, but now based in the **Auckland** CBD, **New Zealand**.
+<div>
+  <p>Head on to the blog for posts about languages, writing, music, and computer
+  programming. Or check out my portfolio where I upload drawings, illustrations,
+  paintings, and more.</p>
+</div>
 
-- I do [illustrations](/art/) when I have time, and post them to [Instagram](https://instagram.com/brunokinoshita/) and
-[DeviantArt](https://deviantart.com/kinow/)
-- I am also into [books](/books/), especially science fiction
-- And watching [theatre plays](/theatre/), and all sorts of [movies](/movies/)
-- Gave some [programming presentations](/tags#presentations) in the past
-
-Feel free to get in touch via [Twitter <i class="twitter icon"></i>](https://twitter.com/kinow)
-or [GitHub <i class="github icon"></i>](https://github.com/kinow). CV available
-[here as PDF](/cv.pdf) and [here as HTML](/cv/).
+<div>
+  <p>Feel free to get in touch via <a href="https://twitter.com/kinow/">Twitter <i class="twitter icon"></i></a>
+  or <a href="https://github.com/kinow/">GitHub <i class="github icon"></i></a>. CV available as
+  <a href="/cv.pdf">PDF</a> and <a href="/cv/">HTML</a>.</p>
+</div>

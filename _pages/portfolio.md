@@ -1,8 +1,7 @@
 ---
-title: Illustrations
+title: Portfolio
 layout: page
-permalink: "/art/"
-note: "Drawing for fun, but commissions are welcome if I have the time."
+permalink: "/portfolio/"
 ---
 
 <div id="art">
