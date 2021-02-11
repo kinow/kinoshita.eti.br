@@ -15,32 +15,40 @@ title: About
 
   <div class="gallery">
     <div class="thumbnail">
-      <img
-        class="photo"
-        src="{{ '/assets/photos/bruno/2015-sao-paulo.jpg' | relative_url }}"
-        title="São Paulo city from Terraço Itália, 2015"
-      />
+      <a href="#photo1">
+        <img
+          class="photo"
+          src="{{ '/assets/photos/about/2015-sao-paulo-thumbnail.jpg' | relative_url }}"
+          title="São Paulo city from Terraço Itália, 2015"
+        />
+      </a>
+      <a href="#" class="lightbox" id="photo1">
+        <span style="background-image: url({{ '/assets/photos/about/2015-sao-paulo.jpg' | relative_url }})"></span>
+      </a>
     </div>
     <div class="thumbnail">
-      <img
-        class="photo"
-        src="{{ '/assets/photos/bruno/2017-auckland.jpg' | relative_url }}"
-        title="Auckland city from Sky Tower, 2017"
-      />
+      <a href="#photo2">
+        <img
+          class="photo"
+          src="{{ '/assets/photos/about/2017-auckland-thumbnail.jpg' | relative_url }}"
+          title="Auckland city from Sky Tower, 2017"
+        />
+      </a>
+      <a href="#" class="lightbox" id="photo2">
+        <span style="background-image: url({{ '/assets/photos/about/2017-auckland.jpg' | relative_url }})"></span>
+      </a>
     </div>
     <div class="thumbnail">
-      <img
-        class="photo"
-        src="{{ '/assets/photos/bruno/2019-obachan.png' | relative_url }}"
-        title="Charcoal drawing of old hands, 2019"
-      />
-    </div>
-    <div class="thumbnail">
-      <img
-        class="photo"
-        src="{{ '/assets/photos/bruno/2020-me.png' | relative_url }}"
-        title="Me in 2020"
-      />
+      <a href="#photo3">
+        <img
+          class="photo"
+          src="{{ '/assets/photos/about/2020-me-thumbnail.png' | relative_url }}"
+          title="Me in 2020"
+        />
+      </a>
+      <a href="#" class="lightbox" id="photo3">
+        <span style="background-image: url({{ '/assets/photos/about/2020-me.png' | relative_url }})"></span>
+      </a>
     </div>
   </div>
 
