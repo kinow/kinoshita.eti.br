@@ -1,0 +1,25 @@
+<div class="post">
+  <p class="post-header">
+    <a class="post-link" href="{{ post.url | relative_url }}">
+      “{{ post.title | escape }}”
+    </a>
+  </p>
+  {%- assign title_only = include.title_only | default: "true" -%}
+  {%- if title_only == "false" and post.note -%}
+  <div class="note">{{ post.note | markdownify }}</div>
+  {%- endif %}
+  {%- assign date_format = site.minima.date_format | default: "%b %-d, %Y" -%}
+  {%- if title_only == "false" -%}
+  <span class="post-meta">{{ post.date | date: date_format }}{% include stardate.html date=post.date %}</span>
+  <span class="post-meta">Number of words: {{ page.content | number_of_words }}.</span>
+  {%- if site.show_excerpts -%}
+  {{ post.excerpt }}
+  {%- if post.content contains site.excerpt_separator -%}
+  <p class="more-link">
+    <a class="post-link" href="{{ post.url | relative_url }}">Continue reading&hellip;</a>
+  </p>
+  {%- endif -%}
+  {%- endif -%}
+  {%- else -%}
+  {%- endif -%}
+</div>
