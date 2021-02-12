@@ -4,7 +4,7 @@
   <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.6.1 -->
-<title>Page 7 of 28 for Blog - page 7 | kinow</title>
+<title>Page 7 of 7 for Blog - page 7 | kinow</title>
 <meta name="generator" content="Jekyll v3.8.5" />
 <meta property="og:title" content="Blog - page 7" />
 <meta property="og:locale" content="en_US" />
@@ -14,7 +14,6 @@
 <meta property="og:url" content="https://kinoshita.eti.br/blog/page/7/" />
 <meta property="og:site_name" content="kinow" />
 <link rel="prev" href="https://kinoshita.eti.br/blog/page/6/" />
-<link rel="next" href="https://kinoshita.eti.br/blog/page/8/" />
 <script type="application/ld+json">
 {"description":"Bruno “kinow” Kinoshita personal home page","@type":"WebPage","url":"https://kinoshita.eti.br/blog/page/7/","headline":"Blog - page 7","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
@@ -83,300 +82,101 @@
     <h1 class="page-heading">Blog - page 7</h1>
 
 <div class="blog"><div class="post">
-  <h3 class="post-header">
-    <a class="post-link" href="/2017/12/03/remember-to-synchronize-when-iterating-streams-from-a-synchronized-collection.html">
-      Remember to synchronize when iterating streams from a synchronized Collection
+  <p class="post-header">
+    <a class="post-link" href="/2011/03/22/testlink-and-hudson-now-jenkins-short-tutorial-in-automated-software-testing-magazine-issue-march-2011.html">
+      “TestLink and Hudson (now Jenkins) short tutorial in Automated Software Testing Magazine, issue March 2011”
     </a>
-  </h3><span class="post-meta">Dec 3, 2017<span>&mdash; star date: -305994.52.</span></span>
-  <span class="post-meta">Number of words: 0.</span><p>When iterating collections created via <code class="language-plaintext highlighter-rouge">Collections.synchronizedList</code> for instance, you are required
-to obtain a lock on the actual list before doing so. So you normally end up with code similar to:</p>
-
-<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">List</span> <span class="n">list</span> <span class="o">=</span> <span class="nc">Collections</span><span class="o">.</span><span class="na">synchronizedList</span><span class="o">(</span><span class="k">new</span> <span class="nc">ArrayList</span><span class="o">());</span>
-<span class="kd">synchronized</span> <span class="o">(</span><span class="n">list</span><span class="o">)</span> <span class="o">{</span>
-  <span class="nc">Iterator</span> <span class="n">i</span> <span class="o">=</span> <span class="n">list</span><span class="o">.</span><span class="na">iterator</span><span class="o">();</span> <span class="c1">// Must be in synchronized block</span>
-  <span class="k">while</span> <span class="o">(</span><span class="n">i</span><span class="o">.</span><span class="na">hasNext</span><span class="o">())</span>
-      <span class="n">foo</span><span class="o">(</span><span class="n">i</span><span class="o">.</span><span class="na">next</span><span class="o">());</span>
-<span class="o">}</span>
-</code></pre></div></div>
-
-<p>This requirement is <a href="https://docs.oracle.com/javase/9/docs/api/java/util/Collections.html#synchronizedList-java.util.List-">documented in the javadocs</a>.</p>
-
-<p>Since lambdas and streams are being more widely used, it is important to remind
-that when iterating via a stream we also need to obtain a lock on the synchronized
-collection created.</p>
-
-<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">List</span> <span class="n">list</span> <span class="o">=</span> <span class="nc">Collections</span><span class="o">.</span><span class="na">synchronizedList</span><span class="o">(</span><span class="k">new</span> <span class="nc">ArrayList</span><span class="o">());</span>
-<span class="kd">synchronized</span> <span class="o">(</span><span class="n">list</span><span class="o">)</span> <span class="o">{</span>
-  <span class="n">list</span><span class="o">.</span><span class="na">stream</span><span class="o">()</span>
-    <span class="o">.</span><span class="na">anyMatch</span><span class="o">(...)</span>
-<span class="o">}</span>
-</code></pre></div></div>
-
-<p>Here’s an <a href="https://github.com/zalando/nakadi/pull/786">example from Zalando Nakadi Event Broker</a>.</p>
-
-<p>Happy hacking!</p>
-</div>
+  </p></div>
 <div class="post">
-  <h3 class="post-header">
-    <a class="post-link" href="/2017/12/02/watch-out-for-locales-when-using-number-format-with-currencies.html">
-      Watch out for Locales when using NumberFormat with currencies
+  <p class="post-header">
+    <a class="post-link" href="/2011/03/20/discussing-the-flexibility-of-tap-to-cover-information-generated-by-testng.html">
+      “Discussing the flexibility of TAP to cover information generated by TestNG”
     </a>
-  </h3><span class="post-meta">Dec 2, 2017<span>&mdash; star date: -305997.26.</span></span>
-  <span class="post-meta">Number of words: 0.</span><p>In Java you have the <a href="https://docs.oracle.com/javase/9/docs/api/java/text/NumberFormat.html">NumberFormatException</a>
-to help you formatting and parsing numbers for any locale. Said that, here’s some code.</p>
-
-<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>BigDecimal negative <span class="o">=</span> new BigDecimal<span class="o">(</span><span class="s2">"-1234.56"</span><span class="o">)</span><span class="p">;</span>
-
-DecimalFormat nf <span class="o">=</span> <span class="o">(</span>DecimalFormat<span class="o">)</span> NumberFormat.getCurrencyInstance<span class="o">(</span>Locale.UK<span class="o">)</span><span class="p">;</span>
-String formattedNegative <span class="o">=</span> nf.format<span class="o">(</span>negative<span class="o">)</span><span class="p">;</span>
-
-System.out.println<span class="o">(</span>formattedNegative<span class="o">)</span><span class="p">;</span>
-</code></pre></div></div>
-
-<p>The output for this code is <strong>-£1,234.56</strong>. That’s expected, as the locale is set to
-UK, so the currency symbol used is for British Pounds. And as the number is negative, you
-get that minus sign as a prefix. For Japanese locale you’d get <strong>-￥1,235</strong>, and for Brazilian
-locale you’d get <strong>-R$ 1.234,56</strong>.</p>
-
-<p>So far so good.</p>
-
-<p>What about the following code, with nothing different except for the locale set to <strong>US</strong>.</p>
-
-<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>BigDecimal negative <span class="o">=</span> new BigDecimal<span class="o">(</span><span class="s2">"-1234.56"</span><span class="o">)</span><span class="p">;</span>
-
-DecimalFormat nf <span class="o">=</span> <span class="o">(</span>DecimalFormat<span class="o">)</span> NumberFormat.getCurrencyInstance<span class="o">(</span>Locale.US<span class="o">)</span><span class="p">;</span> // &lt;<span class="nt">---</span> US now
-String formattedNegative <span class="o">=</span> nf.format<span class="o">(</span>negative<span class="o">)</span><span class="p">;</span>
-
-System.out.println<span class="o">(</span>formattedNegative<span class="o">)</span><span class="p">;</span>
-</code></pre></div></div>
-
-<p>Some could intuitively expect <strong>-$1,234.56</strong>. However, <strong>the output is actually ($1,234.56)</strong>.</p>
-
-<p>There are different prefixes and suffixes. But in some locales the prefix can be empty, or, as
-in the case of the US locale, it can be quite different than what you could expect.</p>
-
-<p>Learned about this peculiarity from NumberFormat while working on <a href="https://issues.apache.org/jira/browse/VALIDATOR-433">VALIDATOR-433</a> for Apache Commons Validator.</p>
-
-<p>Happy hacking!</p>
-</div>
+  </p></div>
 <div class="post">
-  <h3 class="post-header">
-    <a class="post-link" href="/2017/12/01/what-are-identification-keys.html">
-      What Are Identification Keys
+  <p class="post-header">
+    <a class="post-link" href="/2011/03/10/getting-the-maximum-from-testng-with-tap.html">
+      “Getting the maximum from TestNG with TAP”
     </a>
-  </h3><span class="post-meta">Dec 1, 2017<span>&mdash; star date: -306000.0.</span></span>
-  <span class="post-meta">Number of words: 0.</span><blockquote>
-  <p>In biology, an identification key is a printed or computer-aided device that aids the identification of biological entities, such as plants, animals, fossils, microorganisms, and pollen grains. Identification keys are also used in many other scientific and technical fields to identify various kinds of entities, such as diseases, soil types, minerals, or archaeological and anthropological artifacts</p>
-</blockquote>
-
-<p>When you work writing software, it is common that at one point or another of the product
-development you will work with a SME, or <a href="https://en.wikipedia.org/wiki/Subject-matter_expert">subject-matter expert</a>.
-This person is someone experienced in a field such as telecom billing, insurance, taxes, or
-even nature and environment.</p>
-
-<p>Questions too specific, that land away from the knowledge area of software engineers,
-are normally addressed by the SME. Sometimes the knowledge from a SME can be spread in a team
-after they have worked together for a while.</p>
-
-<p>Most of my time in New Zealand I have been working with environmental sciences. In one project,
-I remember hearing other developers mention ID’s, Keys, and Identification Keys. I had not worked
-with environmental sciences before, and only learned about its Portuguese translation
-(“Chave”, or “Chave de Identificação”, or “Chave
-Dicotêmica”) recently.</p>
-
-<p><strong>They are mechanisms, digital or physical, that help you identify plants, animals, fossils, etc.</strong>
-And I found out later that there are many identification key software written for the Web, desktop,
-and also other medias like PDF’s, and even printed version.</p>
-
-<p>And also in New Zealand I found how fun identifying species can be with
-the <a href="https://www.inaturalist.org/">iNaturalist</a> app and community. If you are like me before, and
-had not heard about it before, search around more about it. It is a very simple concept, common
-to biologists, people who work with taxonomy, marine life, birds.</p>
-
-<p>If you are in New Zealand, or just interested about it, here are some links to get you started identifying
-the local species.</p>
-
-<ul>
-  <li><a href="http://www.doc.govt.nz/nature/biodiversity/biodiversity-new-zealand-resources/biodiversity-references/species/">DOC (Department of Conservation) Species descriptions and threat classifications</a></li>
-  <li><a href="http://naturewatch.org.nz/pages/links_nz">NatureWatch Helpful websites for exploring NZ nature</a></li>
-  <li><a href="https://www.niwa.co.nz/freshwater-and-estuaries/nzffd/identification-guides-and-keys">NIWA (National Institute of Water and Atmospheric Research) Freshwater fish ID guides/keys</a></li>
-  <li><a href="http://www.birds.cornell.edu/bbimages/PDFs/Clues2Bird%20ID.pdf">Clues to Bird ID (PDF)</a></li>
-</ul>
-
-<p>Have fun!</p>
-</div>
+  </p></div>
 <div class="post">
-  <h3 class="post-header">
-    <a class="post-link" href="/2017/11/06/using-formatter-exclusions-with-eclipse.html">
-      Using formatter exclusions with Eclipse
+  <p class="post-header">
+    <a class="post-link" href="/2011/02/25/belgium-testing-days-2011-manage-automated-tests-with-testlink-and-hudsonjenkins.html">
+      “Belgium Testing Days 2011: Manage automated tests with TestLink and Hudson/Jenkins”
     </a>
-  </h3><span class="post-meta">Nov 6, 2017<span>&mdash; star date: -305071.23.</span></span>
-  <span class="post-meta">Number of words: 0.</span><p>Sometimes when you are formatting your code in Eclipse, you may want to prevent
-some parts of the code from being formatted. Especially when using Java 8 lambdas
-and optionals.</p>
-
-<p>Here’s some code before being formatted by Eclipse’s default formatter rules.</p>
-
-<p><small>Code adapted from: blog post <a href="http://javadeau.lawesson.se/2016/10/java-8-streams-in-hibernate-and-beyond.html"><i>Java d’eau &amp;dash; Java 8: Streams in Hibernate and Beyond</i></a></small></p>
-
-<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">session</span><span class="o">.</span><span class="na">createQuery</span><span class="o">(</span><span class="s">"SELECT h FROM Hare h"</span><span class="o">,</span> <span class="nc">Hare</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
-    <span class="o">.</span><span class="na">stream</span><span class="o">()</span>
-    <span class="o">.</span><span class="na">filter</span><span class="o">(</span><span class="n">h</span> <span class="o">-&gt;</span> <span class="n">h</span><span class="o">.</span><span class="na">getId</span><span class="o">()</span> <span class="o">==</span> <span class="mi">1</span><span class="o">)</span>
-    <span class="o">.</span><span class="na">map</span><span class="o">(</span><span class="nl">Hare:</span><span class="o">:</span><span class="n">getName</span><span class="o">)</span>
-    <span class="o">.</span><span class="na">forEach</span><span class="o">(</span><span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">::</span><span class="n">println</span><span class="o">);</span>
-</code></pre></div></div>
-
-<p>Then after formatting.</p>
-
-<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">session</span><span class="o">.</span><span class="na">createQuery</span><span class="o">(</span><span class="s">"SELECT h FROM Hare h"</span><span class="o">,</span> <span class="nc">Hare</span><span class="o">.</span><span class="na">class</span><span class="o">).</span><span class="na">stream</span><span class="o">().</span><span class="na">filter</span><span class="o">(</span><span class="n">h</span> <span class="o">-&gt;</span> <span class="n">h</span><span class="o">.</span><span class="na">getId</span><span class="o">()</span> <span class="o">==</span> <span class="mi">1</span><span class="o">).</span><span class="na">map</span><span class="o">(</span><span class="nl">Hare:</span><span class="o">:</span><span class="n">getName</span><span class="o">)</span>
-                <span class="o">.</span><span class="na">forEach</span><span class="o">(</span><span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">::</span><span class="n">println</span><span class="o">);</span>
-</code></pre></div></div>
-
-<p>Which doesn’t look very appealing, ay? You can change this behaviour at least in two ways.
-The first by telling the formatter to ignore this block, through a special formatter tag in your code.</p>
-
-<p>First you need to enable this feature in Eclipse, as it is disabled by default. This setting is found in
-the preferences <em>Java</em> → <em>Code Style</em> → <em>Formatter</em> → <em>Edit</em> → <em>Off/On Tags</em>.</p>
-
-<p style="text-align: center;">
-<img style="display: inline" class="ui image" src="/assets/posts/2017-11-06-using-formatter-exclusions-with-eclipse/formatter-tags.png" alt="A screen shot of Eclipse formatter settings" title="Enabling formatter tags in Eclipse" />
-<br />
-<small>Enabling formatter tags in Eclipse</small>
-</p>
-
-<p>Then formatting the following code won’t change a thing in the block surrounded by the formatter tags.</p>
-
-<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/* @Formatter:off */</span>
-<span class="n">session</span><span class="o">.</span><span class="na">createQuery</span><span class="o">(</span><span class="s">"SELECT h FROM Hare h"</span><span class="o">,</span> <span class="nc">Hare</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
-    <span class="o">.</span><span class="na">stream</span><span class="o">()</span>
-    <span class="o">.</span><span class="na">filter</span><span class="o">(</span><span class="n">h</span> <span class="o">-&gt;</span> <span class="n">h</span><span class="o">.</span><span class="na">getId</span><span class="o">()</span> <span class="o">==</span> <span class="mi">1</span><span class="o">)</span>
-    <span class="o">.</span><span class="na">map</span><span class="o">(</span><span class="nl">Hare:</span><span class="o">:</span><span class="n">getName</span><span class="o">)</span>
-    <span class="o">.</span><span class="na">forEach</span><span class="o">(</span><span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">::</span><span class="n">println</span><span class="o">);</span>
-<span class="cm">/* @Formatter:on */</span>
-</code></pre></div></div>
-
-<p>But having to type these tags can become annoying, and cause more commits and pull requests to be
-unnecessarily created. So an alternative approach can be to change the formatter
-<a href="https://stackoverflow.com/a/34492247/1762101">behaviour globally</a>.</p>
-
-<p>This can be done in Eclipse in another option under the formatter options, <em>Java</em> → <em>Code Style</em>
-→ <em>Formatter</em> → <em>Edit</em> → <em>Line Wrapping</em> → <em>Function Calls</em> →
-<em>Qualified invocations</em>.</p>
-
-<p>You will have to choose <em>“Wrap all elements, except first element if not necessary”</em>
-under <em>Line wrapping policy</em>. And also check <em>“Force split, even if line shorter than
-maximum line width”</em>.</p>
-
-<p style="text-align: center;">
-<img style="display: inline" class="ui image" src="/assets/posts/2017-11-06-using-formatter-exclusions-with-eclipse/global-setting.png" alt="A screen shot of Eclipse formatter settings" title="Enabling custom formatter behaviour globally" />
-<br />
-<small>Enabling custom formatter behaviour globally</small>
-</p>
-
-<p>Once it is done, your code will look like the following no matter what.</p>
-
-<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">session</span><span class="o">.</span><span class="na">createQuery</span><span class="o">(</span><span class="s">"SELECT h FROM Hare h"</span><span class="o">,</span> <span class="nc">Hare</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
-    <span class="o">.</span><span class="na">stream</span><span class="o">()</span>
-    <span class="o">.</span><span class="na">filter</span><span class="o">(</span><span class="n">h</span> <span class="o">-&gt;</span> <span class="n">h</span><span class="o">.</span><span class="na">getId</span><span class="o">()</span> <span class="o">==</span> <span class="mi">1</span><span class="o">)</span>
-    <span class="o">.</span><span class="na">map</span><span class="o">(</span><span class="nl">Hare:</span><span class="o">:</span><span class="n">getName</span><span class="o">)</span>
-    <span class="o">.</span><span class="na">forEach</span><span class="o">(</span><span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">::</span><span class="n">println</span><span class="o">);</span>
-</code></pre></div></div>
-
-<p>Happy coding!</p>
-
-<p>♥ Open Source</p>
-</div>
+  </p></div>
 <div class="post">
-  <h3 class="post-header">
-    <a class="post-link" href="/2017/10/14/quickly-verifying-jar-signatures-for-asf-releases.html">
-      Quickly Verifying jar Signatures For ASF Releases
+  <p class="post-header">
+    <a class="post-link" href="/2011/01/25/code-coverage-helps-but-not-enough.html">
+      “Code coverage helps, but it&#39;s not enough”
     </a>
-  </h3><span class="post-meta">Oct 14, 2017<span>&mdash; star date: -305131.51.</span></span>
-  <span class="post-meta">Number of words: 0.</span><p>The release process within the Apache Software Foundation includes a series of steps. Amongst these
-steps is the <a href="https://www.apache.org/foundation/voting.html">voting process</a>. In Apache Commons, the
-<a href="https://commons.apache.org/releases/prepare.html">release instructions</a> includes a note on artefact
-signatures.</p>
-
-<blockquote>
-  <p>During the course of the VOTE, make sure that one or more of the reviewers have verified the signatures and hash files included with the release artifacts. If no one specifically mentions having done that during the VOTE, ask on the dev list and make sure someone does this before you proceed with the release.</p>
-</blockquote>
-
-<p>Tired of always having to manually check several artefacts, or having to come up with the correct
-shell commands to iterate through a list of files, the other day I wrote a simple script to download
-the KEYS file, import it, download all the artefacts, then iterate through them and verify the
-signature.</p>
-
-<p>Here’s the script. Licensed under the GPL licence.</p>
-
-<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">#!/usr/bin/env bash</span>
-
-<span class="nv">url</span><span class="o">=</span><span class="s2">""</span>
-
-<span class="c"># From: https://blog.mafr.de/2007/08/05/cmdline-options-in-shell-scripts/</span>
-<span class="nv">USAGE</span><span class="o">=</span><span class="s2">"Usage: </span><span class="sb">`</span><span class="nb">basename</span> <span class="nv">$0</span><span class="sb">`</span><span class="s2"> [-hv] https://repository.apache.org/.../commons/commons-configuration/2.2/"</span>
-
-<span class="c"># Parse command line options.</span>
-<span class="k">while </span><span class="nb">getopts </span>hv: OPT<span class="p">;</span> <span class="k">do
-    case</span> <span class="s2">"</span><span class="nv">$OPT</span><span class="s2">"</span> <span class="k">in
-        </span>h<span class="p">)</span>
-            <span class="nb">echo</span> <span class="nv">$USAGE</span>
-            <span class="nb">exit </span>0
-            <span class="p">;;</span>
-        v<span class="p">)</span>
-            <span class="nb">echo</span> <span class="s2">"</span><span class="sb">`</span><span class="nb">basename</span> <span class="nv">$0</span><span class="sb">`</span><span class="s2"> version 0.0.1"</span>
-            <span class="nb">exit </span>0
-            <span class="p">;;</span>
-        <span class="se">\?</span><span class="p">)</span>
-            <span class="c"># getopts issues an error message</span>
-            <span class="nb">echo</span> <span class="nv">$USAGE</span> <span class="o">&gt;</span>&amp;2
-            <span class="nb">exit </span>1
-            <span class="p">;;</span>
-    <span class="k">esac</span>
-<span class="k">done</span>
-
-<span class="c"># Remove the switches we parsed above.</span>
-<span class="nb">shift</span> <span class="sb">`</span><span class="nb">expr</span> <span class="nv">$OPTIND</span> - 1<span class="sb">`</span>
-
-<span class="c"># We want at least one non-option argument. </span>
-<span class="c"># Remove this block if you don't need it.</span>
-<span class="k">if</span> <span class="o">[</span> <span class="nv">$# </span><span class="nt">-eq</span> 0 <span class="o">]</span><span class="p">;</span> <span class="k">then
-    </span><span class="nb">echo</span> <span class="nv">$USAGE</span> <span class="o">&gt;</span>&amp;amp<span class="p">;</span>2
-    <span class="nb">exit </span>1
-<span class="k">fi</span>
-
-<span class="c"># Access additional arguments as usual through </span>
-<span class="c"># variables $@, $*, $1, $2, etc. or using this loop:</span>
-<span class="nv">URL</span><span class="o">=</span><span class="nv">$1</span>
-
-<span class="nb">echo</span> <span class="s2">"url: </span><span class="k">${</span><span class="nv">URL</span><span class="k">}</span><span class="s2">"</span>
-
-<span class="c"># Use a local temporary directory</span>
-<span class="nv">BUILD_DIR</span><span class="o">=</span><span class="si">$(</span><span class="nb">mktemp</span> <span class="nt">-d</span><span class="si">)</span>
-<span class="nb">pushd</span> <span class="s2">"</span><span class="nv">$BUILD_DIR</span><span class="s2">"</span>
-
-<span class="nb">echo</span> <span class="s2">"build dir: </span><span class="k">${</span><span class="nv">BUILD_DIR</span><span class="k">}</span><span class="s2">"</span>
-
-<span class="c"># Download KEYS file</span>
-<span class="nv">KEYS_URL</span><span class="o">=</span>https://www.apache.org/dist/commons/KEYS
-
-<span class="nb">echo</span> <span class="s2">"importing KEYS from: </span><span class="k">${</span><span class="nv">KEYS_URL</span><span class="k">}</span><span class="s2">"</span>
-
-wget <span class="s2">"</span><span class="nv">$KEYS_URL</span><span class="s2">"</span>
-gpg <span class="nt">--import</span> KEYS
-
-<span class="c"># Download JARs and signature files</span>
-<span class="nb">echo</span> <span class="s2">"downloading all jars and signature files..."</span>
-
-wget <span class="nt">-r</span> <span class="nt">-nd</span> <span class="nt">-np</span> <span class="nt">-e</span> <span class="nv">robots</span><span class="o">=</span>off <span class="nt">--wait</span> 1 <span class="nt">-R</span> <span class="s2">"index.html*"</span> <span class="s2">"</span><span class="k">${</span><span class="nv">URL</span><span class="k">}</span><span class="s2">"</span>
-
-<span class="c"># Check the files</span>
-<span class="k">for </span>x <span class="k">in</span> <span class="k">*</span>.jar<span class="p">;</span> <span class="k">do </span>gpg <span class="nt">--verify</span> <span class="s2">"</span><span class="k">${</span><span class="nv">x</span><span class="k">}</span><span class="s2">"</span>.asc<span class="p">;</span> <span class="k">done</span>
-
-<span class="c"># EOF</span>
-</code></pre></div></div>
-
-<p>The script can be found at GitHub too: <a href="https://github.com/kinow/dork-scripts/tree/3c519a74f28c08310ce2e65f8e860d61fd0c5c07/gpg/asf-sigs">https://github.com/kinow/dork-scripts/tree/3c519a74f28c08310ce2e65f8e860d61fd0c5c07/gpg/asf-sigs</a></p>
-</div>
+  </p></div>
+<div class="post">
+  <p class="post-header">
+    <a class="post-link" href="/2010/11/28/automating-tests-with-hudson-and-testlink-pt-br-only.html">
+      “Automating tests with Hudson and TestLink (pt-BR only)”
+    </a>
+  </p></div>
+<div class="post">
+  <p class="post-header">
+    <a class="post-link" href="/2010/11/02/encontro-agil-2010-lighting-talk-about-test-automation-with-testlink-and-hudson.html">
+      “Encontro Ágil 2010 - Lighting talk about Test Automation with TestLink and Hudson”
+    </a>
+  </p></div>
+<div class="post">
+  <p class="post-header">
+    <a class="post-link" href="/2010/10/15/extract-images-from-a-word-document.html">
+      “Extract images from a Word document”
+    </a>
+  </p></div>
+<div class="post">
+  <p class="post-header">
+    <a class="post-link" href="/2010/10/12/tap4j-a-new-tap-implementation-in-java.html">
+      “tap4j - A new TAP implementation in Java”
+    </a>
+  </p></div>
+<div class="post">
+  <p class="post-header">
+    <a class="post-link" href="/2010/09/29/jacobe-maven-plugin.html">
+      “Jacobe Maven Plugin”
+    </a>
+  </p></div>
+<div class="post">
+  <p class="post-header">
+    <a class="post-link" href="/2010/09/28/new-version-of-ccm-hudson-plugin-released.html">
+      “New version of CCM Hudson Plugin released”
+    </a>
+  </p></div>
+<div class="post">
+  <p class="post-header">
+    <a class="post-link" href="/2010/09/19/testlink-bug-1890-possibility-to-add-attachment-by-using-api.html">
+      “TestLink BUG-1890: Possibility to add attachment by using API”
+    </a>
+  </p></div>
+<div class="post">
+  <p class="post-header">
+    <a class="post-link" href="/2010/05/28/cafepress-hudson-store.html">
+      “CafePress Hudson Store”
+    </a>
+  </p></div>
+<div class="post">
+  <p class="post-header">
+    <a class="post-link" href="/2010/04/07/ccm-hudson-plugin.html">
+      “CCM Hudson Plugin”
+    </a>
+  </p></div>
+<div class="post">
+  <p class="post-header">
+    <a class="post-link" href="/2009/03/22/code-to-change-your-message-in-msn-messenger.html">
+      “Code to change your message in MSN messenger”
+    </a>
+  </p></div>
+<div class="post">
+  <p class="post-header">
+    <a class="post-link" href="/2009/03/06/displaying-japanese-characters-n-java-swing.html">
+      “Displaying Japanese characters in Java Swing”
+    </a>
+  </p></div>
 <!-- Pagination links -->
   <div class="pagination">
     <p>
@@ -385,11 +185,9 @@ wget <span class="nt">-r</span> <span class="nt">-nd</span> <span class="nt">-np
         <i class="left chevron icon"></i>Previous
       </a>
       
-      <span class="page_number ">Page: 7 of 28</span>
+      <span class="page_number ">Page: 7 of 7</span>
       
-      <a href="/blog/page/8/" class="next">
-        Next<i class="right chevron icon"></i>
-      </a>
+      <span class="next ">Next<i class="right chevron icon"></i></span>
       
     </p>
   </div></div>
