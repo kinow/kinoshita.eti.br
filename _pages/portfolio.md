@@ -15,12 +15,6 @@ permalink: "/portfolio/"
         <a href="/2020/04/03/stink-bug.html">
             <div class="ui image sprite-thumbs-thumb-stink-bug-smaller"></div>
         </a>
-    </div>
-    
-    <p>Drawing comics, logos and illustrations is my hobby. If you have any question, or would like to use my work,
-    just drop me a message.</p>
-    
-    <div class="ui images">
         <a href="/2020/03/30/dog.html">
             <div class="ui image sprite-thumbs-thumb-dog"></div>
         </a>
@@ -30,12 +24,6 @@ permalink: "/portfolio/"
         <a href="/2020/03/31/terra-celta-elcio.html">
             <div class="ui image sprite-thumbs-thumb-terra_celta_s_vocal_elcio_by_kinow-dau42sh"></div>
         </a>
-    </div>
-    
-    <p>I am specially interested in: academic works (papers, thesis), natural history, books, news articles,
-    and technology related content.</p>
-    
-    <div class="ui images">
         <a href="/2020/03/27/southern-royal-albatross.html">
             <div class="ui image sprite-thumbs-thumb-southern-royal-albatross"></div>
         </a>
@@ -45,12 +33,6 @@ permalink: "/portfolio/"
         <a href="/2020/04/03/green-skull.html">
             <div class="ui image sprite-thumbs-thumb-green-skull-full"></div>
         </a>
-    </div>
-    
-    <p>You can find more on my <a href="http://kinow.deviantart.com/gallery/">DeviantArt</a> and on my
-    <a href="https://www.instagram.com/brunokinoshita/">Instagram</a>.</p>
-    
-    <div class="ui images">
         <a href="/2020/03/31/domestic-violence.html">
             <div class="ui image sprite-thumbs-thumb-domestic-violence"></div>
         </a>
