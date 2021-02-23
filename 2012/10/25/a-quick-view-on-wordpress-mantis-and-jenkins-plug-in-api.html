@@ -3,9 +3,9 @@
 <head>
   <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.6.1 -->
+<meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.7.1 -->
 <title>A quick view on Wordpress, Mantis and Jenkins plug-in API | kinow</title>
-<meta name="generator" content="Jekyll v3.8.5" />
+<meta name="generator" content="Jekyll v3.9.0" />
 <meta property="og:title" content="A quick view on Wordpress, Mantis and Jenkins plug-in API" />
 <meta property="og:locale" content="en_US" />
 <meta name="description" content="I&#39;m preparing a plug-in API proposal for TestLink, and thought that the best way to learn how to write a good plug-in API would be by looking at other application&#39;s plug-in API&#39;s. This post contains information that I gathered for creating this new API, but that may also be useful for other programmers. I used Wordpress, Mantis and Jenkins in this study. Let me know if you find any mistakes or if you have any other suggestions." />
@@ -15,8 +15,10 @@
 <meta property="og:site_name" content="kinow" />
 <meta property="og:type" content="article" />
 <meta property="article:published_time" content="2012-10-25T00:00:00+13:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="A quick view on Wordpress, Mantis and Jenkins plug-in API" />
 <script type="application/ld+json">
-{"description":"I&#39;m preparing a plug-in API proposal for TestLink, and thought that the best way to learn how to write a good plug-in API would be by looking at other application&#39;s plug-in API&#39;s. This post contains information that I gathered for creating this new API, but that may also be useful for other programmers. I used Wordpress, Mantis and Jenkins in this study. Let me know if you find any mistakes or if you have any other suggestions.","@type":"BlogPosting","url":"https://kinoshita.eti.br/2012/10/25/a-quick-view-on-wordpress-mantis-and-jenkins-plug-in-api.html","headline":"A quick view on Wordpress, Mantis and Jenkins plug-in API","dateModified":"2012-10-25T00:00:00+13:00","datePublished":"2012-10-25T00:00:00+13:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://kinoshita.eti.br/2012/10/25/a-quick-view-on-wordpress-mantis-and-jenkins-plug-in-api.html"},"@context":"https://schema.org"}</script>
+{"mainEntityOfPage":{"@type":"WebPage","@id":"https://kinoshita.eti.br/2012/10/25/a-quick-view-on-wordpress-mantis-and-jenkins-plug-in-api.html"},"description":"I&#39;m preparing a plug-in API proposal for TestLink, and thought that the best way to learn how to write a good plug-in API would be by looking at other application&#39;s plug-in API&#39;s. This post contains information that I gathered for creating this new API, but that may also be useful for other programmers. I used Wordpress, Mantis and Jenkins in this study. Let me know if you find any mistakes or if you have any other suggestions.","@type":"BlogPosting","url":"https://kinoshita.eti.br/2012/10/25/a-quick-view-on-wordpress-mantis-and-jenkins-plug-in-api.html","headline":"A quick view on Wordpress, Mantis and Jenkins plug-in API","dateModified":"2012-10-25T00:00:00+13:00","datePublished":"2012-10-25T00:00:00+13:00","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 <link rel="stylesheet" href="/assets/css/main.css"><link type="application/atom+xml" rel="alternate" href="https://kinoshita.eti.br/feed.xml" title="kinow" /><link href="https://unpkg.com/pattern.css" rel="stylesheet">
 
@@ -88,7 +90,7 @@
       </time>
       <span>&mdash; star date: -310101.09.</span>
       <span>
-        Number of words: 1641.
+        Number of words: 1642.
       </span></span>
   </header>
 
@@ -154,33 +156,33 @@
 <p>Wordpress provides two hook types, action and filter. The <strong>action hook</strong> is used to execute some action when an event occurs. For instance, you can add an action for when the plug-in is activated.</p>
 
 <div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="nc">MyPlugin</span> <span class="p">{</span>
-     <span class="k">static</span> <span class="k">function</span> <span class="nf">install</span><span class="p">()</span> <span class="p">{</span>
+     <span class="k">static</span> <span class="k">function</span> <span class="n">install</span><span class="p">()</span> <span class="p">{</span>
             <span class="c1">// do not generate any output here</span>
      <span class="p">}</span>
 <span class="p">}</span>
-<span class="nx">register_activation_hook</span><span class="p">(</span> <span class="k">__FILE__</span><span class="p">,</span> <span class="k">array</span><span class="p">(</span><span class="s1">'MyPlugin'</span><span class="p">,</span> <span class="s1">'install'</span><span class="p">)</span> <span class="p">);</span>
+<span class="nf">register_activation_hook</span><span class="p">(</span> <span class="k">__FILE__</span><span class="p">,</span> <span class="k">array</span><span class="p">(</span><span class="s1">'MyPlugin'</span><span class="p">,</span> <span class="s1">'install'</span><span class="p">)</span> <span class="p">);</span>
 </code></pre></div></div>
 
 <p>And the <strong>filter hook</strong> is used to modify content. For instance, you could want to modify the title of a post, so you could apply a filter on the function that displays the blog title. This filter could, say, upper case the title.</p>
 
 <div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">&lt;?php</span>
-<span class="k">function</span> <span class="nf">theme_slug_filter_the_content</span><span class="p">(</span> <span class="nv">$content</span> <span class="p">)</span> <span class="p">{</span>
+<span class="k">function</span> <span class="n">theme_slug_filter_the_content</span><span class="p">(</span> <span class="nv">$content</span> <span class="p">)</span> <span class="p">{</span>
     <span class="nv">$custom_content</span> <span class="o">=</span> <span class="s1">'YOUR CONTENT GOES HERE'</span><span class="p">;</span>
-    <span class="nv">$custom_content</span> <span class="o">.=</span> <span class="nv">$content</span><span class="p">;</span>
+    <span class="nv">$custom_content</span> <span class="mf">.</span><span class="o">=</span> <span class="nv">$content</span><span class="p">;</span>
     <span class="k">return</span> <span class="nv">$custom_content</span><span class="p">;</span>
 <span class="p">}</span>
-<span class="nx">add_filter</span><span class="p">(</span> <span class="s1">'the_content'</span><span class="p">,</span> <span class="s1">'theme_slug_filter_the_content'</span> <span class="p">);</span>
+<span class="nf">add_filter</span><span class="p">(</span> <span class="s1">'the_content'</span><span class="p">,</span> <span class="s1">'theme_slug_filter_the_content'</span> <span class="p">);</span>
 <span class="cp">?&gt;</span>
 </code></pre></div></div>
 
 <p>There is also the possibility to use <strong>pluggable functions</strong>. With them themes and plug-ins can define functions to be overriden by themes (or child themes) and plug-ins.</p>
 
 <div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="nb">function_exists</span><span class="p">(</span> <span class="s1">'mytheme_nav_menu'</span> <span class="p">)</span> <span class="p">)</span> <span class="o">:</span>
-<span class="k">function</span> <span class="nf">mytheme_nav_menu</span><span class="p">()</span> <span class="p">{</span>
-    <span class="k">if</span> <span class="p">(</span> <span class="nx">current_theme_supports</span><span class="p">(</span> <span class="s1">'menus'</span> <span class="p">)</span> <span class="p">)</span> <span class="o">:</span>
-        <span class="nx">wp_nav_menu</span><span class="p">(</span> <span class="k">array</span><span class="p">(</span> <span class="s1">'theme_location'</span> <span class="o">=&amp;</span><span class="nx">gt</span><span class="p">;</span> <span class="s1">'primary_nav'</span><span class="p">,</span> <span class="s1">'fallback_cb'</span> <span class="o">=&amp;</span><span class="nx">gt</span><span class="p">;</span> <span class="s1">'wp_list_pages'</span> <span class="p">)</span> <span class="p">);</span>
+<span class="k">function</span> <span class="n">mytheme_nav_menu</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="nf">current_theme_supports</span><span class="p">(</span> <span class="s1">'menus'</span> <span class="p">)</span> <span class="p">)</span> <span class="o">:</span>
+        <span class="nf">wp_nav_menu</span><span class="p">(</span> <span class="k">array</span><span class="p">(</span> <span class="s1">'theme_location'</span> <span class="o">=&amp;</span><span class="n">gt</span><span class="p">;</span> <span class="s1">'primary_nav'</span><span class="p">,</span> <span class="s1">'fallback_cb'</span> <span class="o">=&amp;</span><span class="n">gt</span><span class="p">;</span> <span class="s1">'wp_list_pages'</span> <span class="p">)</span> <span class="p">);</span>
     <span class="k">else</span> <span class="o">:</span>
-        <span class="nx">wp_list_pages</span><span class="p">();</span>
+        <span class="nf">wp_list_pages</span><span class="p">();</span>
     <span class="k">endif</span><span class="p">;</span>
 <span class="p">}</span>
 <span class="k">endif</span><span class="p">;</span>
@@ -220,24 +222,24 @@
 <p>Certain actions in Mantis generate <strong>events</strong> (see: <em>$MANTIS_HOME/core/events_inc.php</em>). A plug-in can register functions for these events. This way, Mantis will call these functions when such event occurs.</p>
 
 <div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">**</span>
- <span class="o">*</span> <span class="nx">requires</span> <span class="nx">MantisPlugin</span><span class="o">.</span><span class="nx">class</span><span class="o">.</span><span class="nx">php</span>
+ <span class="o">*</span> <span class="n">requires</span> <span class="nc">MantisPlugin</span><span class="mf">.</span><span class="n">class</span><span class="mf">.</span><span class="n">php</span>
  <span class="o">*/</span>
-<span class="k">require_once</span><span class="p">(</span> <span class="nx">config_get</span><span class="p">(</span> <span class="s1">'class_path'</span> <span class="p">)</span> <span class="o">.</span> <span class="s1">'MantisPlugin.class.php'</span> <span class="p">);</span>
+<span class="k">require_once</span><span class="p">(</span> <span class="nf">config_get</span><span class="p">(</span> <span class="s1">'class_path'</span> <span class="p">)</span> <span class="mf">.</span> <span class="s1">'MantisPlugin.class.php'</span> <span class="p">);</span>
 
 <span class="cd">/**
  * XmlImportExportPlugin Class
  */</span>
-<span class="kd">class</span> <span class="nc">XmlImportExportPlugin</span> <span class="k">extends</span> <span class="nx">MantisPlugin</span> <span class="p">{</span>
+<span class="kd">class</span> <span class="nc">XmlImportExportPlugin</span> <span class="kd">extends</span> <span class="nc">MantisPlugin</span> <span class="p">{</span>
 	
 	<span class="c1">//...</span>
 
 	<span class="cd">/**
 	 * Default plugin configuration.
 	 */</span>
-	<span class="k">function</span> <span class="nf">hooks</span><span class="p">(</span> <span class="p">)</span> <span class="p">{</span>
+	<span class="k">function</span> <span class="n">hooks</span><span class="p">(</span> <span class="p">)</span> <span class="p">{</span>
 		<span class="nv">$hooks</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span>
-			<span class="s1">'EVENT_MENU_MANAGE'</span> <span class="o">=&amp;</span><span class="nx">gt</span><span class="p">;</span> <span class="s1">'import_issues_menu'</span><span class="p">,</span>
-			<span class="s1">'EVENT_MENU_FILTER'</span> <span class="o">=&amp;</span><span class="nx">gt</span><span class="p">;</span> <span class="s1">'export_issues_menu'</span><span class="p">,</span>
+			<span class="s1">'EVENT_MENU_MANAGE'</span> <span class="o">=&amp;</span><span class="n">gt</span><span class="p">;</span> <span class="s1">'import_issues_menu'</span><span class="p">,</span>
+			<span class="s1">'EVENT_MENU_FILTER'</span> <span class="o">=&amp;</span><span class="n">gt</span><span class="p">;</span> <span class="s1">'export_issues_menu'</span><span class="p">,</span>
 		<span class="p">);</span>
 		<span class="k">return</span> <span class="nv">$hooks</span><span class="p">;</span>
 	<span class="p">}</span>
@@ -333,7 +335,7 @@
 
   <div class="tags">
     <p>
-      Published Oct 25, 2012 in &ldquo;blog&rdquo; and tagged&nbsp;<a class="label" href="/tags#jenkins">jenkins</a>,&nbsp;<a class="label" href="/tags#testlink">testlink</a>. Number of words: 1641.
+      Published Oct 25, 2012 in &ldquo;blog&rdquo; and tagged&nbsp;<a class="label" href="/tags#jenkins">jenkins</a>,&nbsp;<a class="label" href="/tags#testlink">testlink</a>. Number of words: 1642.
     </p>
   </div>
 

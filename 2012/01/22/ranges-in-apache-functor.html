@@ -3,9 +3,9 @@
 <head>
   <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.6.1 -->
+<meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.7.1 -->
 <title>Ranges in Apache Commons Functor | kinow</title>
-<meta name="generator" content="Jekyll v3.8.5" />
+<meta name="generator" content="Jekyll v3.9.0" />
 <meta property="og:title" content="Ranges in Apache Commons Functor" />
 <meta property="og:locale" content="en_US" />
 <meta name="description" content="This is a long post. So here is a TL;DR: Apache Commons Functor has no Double or Float Range (yet) Apache Commons Functor IntegerRange and LongRange treat the low value as inclusive, and the high value as exclusive. How does that compare to other languages/APIs? (you will have to read to see some comparison) Perl has support for characters ranges, perhaps we could implement it in Functor too? In case we implemented a CharacterRange, it would have to be inclusive for both low and high limits. With &#39;z&#39; being the last character, there wouldn&#39;t have a way to include Z with the current approach. Or we would have to make the CharacterRange a special one. What would go against Liskov Substitution Principle. You can see a comparison table with Apache Commons Functor, other Java API&#39;s and other programming languages for ranges clicking here. It would be nice to have a clear distinction in Functor documentation among a Sequence, a Generator and a Range. While I was gathering material for this post, I found places using range, others using sequence, and in Apache Commons Functor, an IntegerRange is a Generator. Now, if you have some spare time or curiosity, keep reading :-)" />
@@ -15,8 +15,10 @@
 <meta property="og:site_name" content="kinow" />
 <meta property="og:type" content="article" />
 <meta property="article:published_time" content="2012-01-22T00:00:00+13:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Ranges in Apache Commons Functor" />
 <script type="application/ld+json">
-{"description":"This is a long post. So here is a TL;DR: Apache Commons Functor has no Double or Float Range (yet) Apache Commons Functor IntegerRange and LongRange treat the low value as inclusive, and the high value as exclusive. How does that compare to other languages/APIs? (you will have to read to see some comparison) Perl has support for characters ranges, perhaps we could implement it in Functor too? In case we implemented a CharacterRange, it would have to be inclusive for both low and high limits. With &#39;z&#39; being the last character, there wouldn&#39;t have a way to include Z with the current approach. Or we would have to make the CharacterRange a special one. What would go against Liskov Substitution Principle. You can see a comparison table with Apache Commons Functor, other Java API&#39;s and other programming languages for ranges clicking here. It would be nice to have a clear distinction in Functor documentation among a Sequence, a Generator and a Range. While I was gathering material for this post, I found places using range, others using sequence, and in Apache Commons Functor, an IntegerRange is a Generator. Now, if you have some spare time or curiosity, keep reading :-)","@type":"BlogPosting","url":"https://kinoshita.eti.br/2012/01/22/ranges-in-apache-functor.html","headline":"Ranges in Apache Commons Functor","dateModified":"2012-01-22T00:00:00+13:00","datePublished":"2012-01-22T00:00:00+13:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://kinoshita.eti.br/2012/01/22/ranges-in-apache-functor.html"},"@context":"https://schema.org"}</script>
+{"mainEntityOfPage":{"@type":"WebPage","@id":"https://kinoshita.eti.br/2012/01/22/ranges-in-apache-functor.html"},"description":"This is a long post. So here is a TL;DR: Apache Commons Functor has no Double or Float Range (yet) Apache Commons Functor IntegerRange and LongRange treat the low value as inclusive, and the high value as exclusive. How does that compare to other languages/APIs? (you will have to read to see some comparison) Perl has support for characters ranges, perhaps we could implement it in Functor too? In case we implemented a CharacterRange, it would have to be inclusive for both low and high limits. With &#39;z&#39; being the last character, there wouldn&#39;t have a way to include Z with the current approach. Or we would have to make the CharacterRange a special one. What would go against Liskov Substitution Principle. You can see a comparison table with Apache Commons Functor, other Java API&#39;s and other programming languages for ranges clicking here. It would be nice to have a clear distinction in Functor documentation among a Sequence, a Generator and a Range. While I was gathering material for this post, I found places using range, others using sequence, and in Apache Commons Functor, an IntegerRange is a Generator. Now, if you have some spare time or curiosity, keep reading :-)","@type":"BlogPosting","url":"https://kinoshita.eti.br/2012/01/22/ranges-in-apache-functor.html","headline":"Ranges in Apache Commons Functor","dateModified":"2012-01-22T00:00:00+13:00","datePublished":"2012-01-22T00:00:00+13:00","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 <link rel="stylesheet" href="/assets/css/main.css"><link type="application/atom+xml" rel="alternate" href="https://kinoshita.eti.br/feed.xml" title="kinow" /><link href="https://unpkg.com/pattern.css" rel="stylesheet">
 
@@ -88,7 +90,7 @@
       </time>
       <span>&mdash; star date: -310855.19.</span>
       <span>
-        Number of words: 2981.
+        Number of words: 2980.
       </span></span>
   </header>
 
@@ -197,18 +199,18 @@
 </code></pre></div></div>
 
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="mi">101</span>
-<span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.30000000000000004</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="o">...</span><span class="p">,</span> <span class="mf">10.0</span><span class="p">]</span>
+<span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.30000000000000004</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="p">...,</span> <span class="mf">10.0</span><span class="p">]</span>
 </code></pre></div></div>
 
 <p>There are API’s in Python too, like numpy, that has arange. However it is complicated specify a range to give similar array as the one produced by Matlab.</p>
 
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="n">arange</span><span class="p">;</span>
-<span class="n">x</span> <span class="o">=</span> <span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">10.1</span><span class="p">,</span> <span class="mf">.1</span><span class="p">);</span> <span class="c1">#inclusive/exclusive
+<span class="n">x</span> <span class="o">=</span> <span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">10.1</span><span class="p">,</span> <span class="p">.</span><span class="mi">1</span><span class="p">);</span> <span class="c1">#inclusive/exclusive
 </span><span class="k">print</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">);</span>
 <span class="k">print</span> <span class="n">x</span><span class="p">;</span>
 </code></pre></div></div>
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="mi">101</span>
-<span class="p">[</span> <span class="mf">0.</span> <span class="mf">0.1</span> <span class="mf">0.2</span> <span class="o">...</span> <span class="mf">10.0</span><span class="p">]</span>
+<span class="p">[</span> <span class="mf">0.</span> <span class="mf">0.1</span> <span class="mf">0.2</span> <span class="p">...</span> <span class="mf">10.0</span><span class="p">]</span>
 </code></pre></div></div>
 
 <h3>Perl</h3>
@@ -221,7 +223,7 @@
 
 <span class="k">print</span> <span class="p">"</span><span class="s2">[ </span><span class="p">";</span>
 <span class="k">for</span><span class="p">(</span><span class="mi">0</span><span class="o">..</span><span class="mi">10</span><span class="p">)</span> <span class="p">{</span> <span class="c1">#inclusive/inclusive</span>
-    <span class="k">print</span> <span class="nv">$_</span><span class="p">,</span> <span class="p">"</span><span class="s2"> </span><span class="p">";</span>
+    <span class="k">print</span> <span class="vg">$_</span><span class="p">,</span> <span class="p">"</span><span class="s2"> </span><span class="p">";</span>
 <span class="p">}</span>
 <span class="k">print</span> <span class="p">"</span><span class="s2"> ]</span><span class="p">"</span>
 </code></pre></div></div>
@@ -240,10 +242,10 @@
 <span class="k">my</span> <span class="nv">$range</span> <span class="o">=</span> <span class="nv">range</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">;</span> <span class="c1">#inclusive/inclusive</span>
 
 <span class="k">print</span> <span class="p">"</span><span class="s2">[ </span><span class="p">";</span>
-<span class="k">print</span> <span class="nv">$_</span><span class="p">,</span> <span class="p">"</span><span class="s2"> </span><span class="p">"</span> <span class="k">for</span> <span class="nv">@$range</span><span class="p">;</span>
+<span class="k">print</span> <span class="vg">$_</span><span class="p">,</span> <span class="p">"</span><span class="s2"> </span><span class="p">"</span> <span class="k">for</span> <span class="nv">@$range</span><span class="p">;</span>
 <span class="k">print</span> <span class="p">"</span><span class="s2"> ]</span><span class="p">"</span>
 </code></pre></div></div>
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">[</span> <span class="mi">0</span> <span class="mf">0.1</span> <span class="mf">0.2</span> <span class="mf">0.3</span> <span class="mf">0.4</span> <span class="o">...</span> <span class="mi">10</span> <span class="p">]</span>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">[</span> <span class="mi">0</span> <span class="mf">0.1</span> <span class="mf">0.2</span> <span class="mf">0.3</span> <span class="mf">0.4</span> <span class="p">...</span> <span class="mi">10</span> <span class="p">]</span>
 </code></pre></div></div>
 
 <p>Perl also has support to range of characters. Look at the examples from Perldoc.</p>
@@ -263,7 +265,7 @@
 <span class="o">}</span>
 </code></pre></div></div>
 
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">NumericRange</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="o">...</span><span class="p">,</span> <span class="mf">9.99999999999998</span><span class="p">)</span>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">NumericRange</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="p">...,</span> <span class="mf">9.99999999999998</span><span class="p">)</span>
 </code></pre></div></div>
 <h3>Matlab</h3>
 <p>Why, yes sir, we will compare Matlab too. It has built in operator for ranges, and both values, low and high, are inclusive.</p>
@@ -283,17 +285,17 @@
 <div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$range</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">);</span>
 <span class="k">echo</span> <span class="s2">"[ "</span><span class="p">;</span>
 <span class="k">foreach</span><span class="p">(</span><span class="nv">$range</span> <span class="k">as</span> <span class="nv">$number</span><span class="p">)</span> <span class="p">{</span>
-    <span class="k">echo</span> <span class="nv">$number</span> <span class="o">.</span> <span class="s2">" "</span><span class="p">;</span>
+    <span class="k">echo</span> <span class="nv">$number</span> <span class="mf">.</span> <span class="s2">" "</span><span class="p">;</span>
 <span class="p">}</span>
 <span class="k">echo</span> <span class="s2">"]"</span><span class="p">;</span>
 </code></pre></div></div>
 
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">[</span> <span class="mi">0</span> <span class="mf">0.1</span> <span class="mf">0.2</span> <span class="mf">0.3</span> <span class="o">...</span> <span class="mf">9.9</span> <span class="mi">10</span> <span class="p">]</span>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">[</span> <span class="mi">0</span> <span class="mf">0.1</span> <span class="mf">0.2</span> <span class="mf">0.3</span> <span class="p">...</span> <span class="mf">9.9</span> <span class="mi">10</span> <span class="p">]</span>
 </code></pre></div></div>
 <h3>Haskell</h3>
 <p>Haskell has gained more attention lately with web frameworks. It has features such as monads, functors and high order function. And also has a built-in range operator. Both, left and right values of the range are inclusive in Haskell’s range operator.</p>
 
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">[</span><span class="mi">0</span> <span class="o">..</span> <span class="mi">10</span><span class="p">]</span>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">[</span><span class="mi">0</span> <span class="p">..</span> <span class="mi">10</span><span class="p">]</span>
 </code></pre></div></div>
 
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">8</span><span class="p">,</span><span class="mi">9</span><span class="p">,</span><span class="mi">10</span><span class="p">]</span>
@@ -324,7 +326,7 @@
 <span class="k">end</span>
 <span class="nb">io.write</span><span class="p">(</span><span class="s2">"]"</span><span class="p">);</span>
 </code></pre></div></div>
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">[</span> <span class="mi">0</span> <span class="mf">0.1</span> <span class="mf">0.2</span> <span class="mf">0.3</span> <span class="o">...</span><span class="err">  </span><span class="mf">9.9</span> <span class="mi">10</span> <span class="p">]</span>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">[</span> <span class="mi">0</span> <span class="mf">0.1</span> <span class="mf">0.2</span> <span class="mf">0.3</span> <span class="p">...</span><span class="err">  </span><span class="mf">9.9</span> <span class="mi">10</span> <span class="p">]</span>
 </code></pre></div></div>
 <h3>LISP</h3>
 <p>Lisp is probably one of the oldest programming languages with functional features. Every time I read something about functional programming and collections it reminds me of Lisp recursion with lists. In Lisp you can use loop to iterate over a range of integers or floats, and both values are included for integers, for float, there is some precision problem that I couldn’t overcome. For integers the following code would do.</p>
@@ -357,7 +359,7 @@
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">(</span><span class="n">dorun</span> <span class="p">(</span><span class="k">for</span> <span class="p">[</span><span class="n">i</span> <span class="p">(</span><span class="nb">range</span> <span class="mi">0</span> <span class="mi">10</span> <span class="mi">1</span><span class="p">)]</span> <span class="p">(</span><span class="n">println</span> <span class="n">i</span><span class="p">)))</span>
 <span class="mi">0</span>
 <span class="mi">1</span>
-<span class="o">...</span>
+<span class="p">...</span>
 <span class="mi">9</span>
 <span class="n">nil</span>
 </code></pre></div></div>
@@ -384,7 +386,7 @@
 
   <div class="tags">
     <p>
-      Published Jan 22, 2012 in &ldquo;blog&rdquo; and tagged&nbsp;<a class="label" href="/tags#apache software foundation">apache software foundation</a>,&nbsp;<a class="label" href="/tags#functional programming">functional programming</a>. Number of words: 2981.
+      Published Jan 22, 2012 in &ldquo;blog&rdquo; and tagged&nbsp;<a class="label" href="/tags#apache software foundation">apache software foundation</a>,&nbsp;<a class="label" href="/tags#functional programming">functional programming</a>. Number of words: 2980.
     </p>
   </div>
 
