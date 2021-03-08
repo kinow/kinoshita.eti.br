@@ -189,6 +189,13 @@ Linux, OSX, Windows
 
 <table class="ui celled table">
   <tr>
+    <td>Vue 3 + Typescript</td>
+    <td>Vue Mastery</td>
+    <td>        Online
+    </td>
+    <td>2021</td>
+  </tr>
+  <tr>
     <td>Pandas</td>
     <td>Kaggle</td>
     <td>        Online (Kaggle)
