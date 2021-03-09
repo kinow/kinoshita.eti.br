@@ -24,6 +24,7 @@ group :jekyll_plugins do
   gem "jekyll-seo-tag", "~> 2.1"
   gem 'jekyll-sitemap'
   gem 'jekyll-paginate-v2'
+  gem 'jekyll-archives'
 end
 
 gem "nokogiri", ">= 1.11.0.rc4"
