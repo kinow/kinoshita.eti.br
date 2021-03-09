@@ -2,32 +2,61 @@
 title: Portfolio
 layout: page
 permalink: "/portfolio/"
+gallery:
+  - title: Paintings
+    images:
+      - title: Green Skull
+        src: /assets/pages/art/thumbs/thumb-green-skull-full.png
+        link: /2020/04/03/green-skull
+      - title: Royal Spoonbill
+        src: /assets/pages/art/thumbs/thumb-royal-spoonbill.png
+        link: /2020/04/01/royal-spoonbill
+  - title: Editorial Illustration
+    images:
+    - title: Alonzo and Lambda
+      src: /assets/pages/art/thumbs/thumb-alonzo_and_lambda_by_kinow-d5tqvau.png
+      link: /2020/03/27/alonzo-and-lambda
+  - title: Figurative Drawing
+    images:
+    - title: Figurative Drawing 1
+      src: /assets/pages/art/thumbs/thumb-251.png
+      link: ''
+  - title: Observational Drawing
+    images:
+    - title: Simone
+      src: /assets/pages/art/thumbs/thumb-simone.png
+      link: /2020/04/01/simone
+    - title: Rocky
+      src: /assets/pages/art/thumbs/thumb-rocky.png
+      link: /2020/09/23/rocky
+    - title: Obachan
+      src: /assets/pages/art/thumbs/thumb-obachan.png
+      link: /2020/03/31/obachan
+    - title: Old hands
+      src: /assets/pages/art/thumbs/thumb-old-hands.png
+      link: /2020/04/03/old-hands
+    - title: O Corvo
+      src: /assets/pages/art/thumbs/thumb-o-corvo.png
+      link: /2020/04/01/o-corvo
+    - title: Stink bug
+      src: /assets/pages/art/thumbs/thumb-stink-bug-smaller.png
+      link: /2020/04/03/stink-bug
 ---
 
-## Paintings
+{%- for section in page.gallery -%}
 
-![]({{ '/assets/pages/art/thumbs/thumb-green-skull-full.png' | relative_url }})
+## {{ section.title }}
 
-![]({{ '/assets/pages/art/thumbs/thumb-royal-spoonbill.png' | relative_url }})
+<div class="gallery">
+  {%- for image in section.images -%}
+  <figure>
+    <img src="{{ image.src | relative_url }}" alt="{{ image.title }}">
+    <figcaption>
+      <span class="title">{{ image.title }}</span>
+      <a href="{{ image.link | relative_url }}">View</a>
+    </figcaption>
+  </figure>
+  {%- endfor -%}
+</div>
 
-## Editorial Illustration
-
-![]({{ '/assets/pages/art/thumbs/thumb-alonzo_and_lambda_by_kinow-d5tqvau.png' | relative_url }})
-
-## Figurative Drawing
-
-![]({{ '/assets/pages/art/thumbs/thumb-251.png' | relative_url }})
-
-## Observational Drawing
-
-![]({{ '/assets/pages/art/thumbs/thumb-simone.png' | relative_url }})
-
-![]({{ '/assets/pages/art/thumbs/thumb-rocky.png' | relative_url }})
-
-![]({{ '/assets/pages/art/thumbs/thumb-obachan.png' | relative_url }})
-
-![]({{ '/assets/pages/art/thumbs/thumb-old-hands.png' | relative_url }})
-
-![]({{ '/assets/pages/art/thumbs/thumb-o-corvo.png' | relative_url }})
-
-![]({{ '/assets/pages/art/thumbs/thumb-stink-bug-smaller.png' | relative_url }})
+{%- endfor -%}

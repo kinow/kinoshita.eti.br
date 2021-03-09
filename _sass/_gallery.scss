@@ -1,0 +1,72 @@
+// Adapted from: https://gist.github.com/1000k/6351e4d235f735a3bae1
+
+$animation_time: .3s;
+$image_height: 10rem;
+
+.gallery {
+  display: flex;
+  flex-flow: row;
+  flex-wrap: wrap;
+
+  figure {
+    overflow: hidden;
+    position: relative;
+    box-sizing: border-box;
+    height: $image_height;
+
+    img {
+      height: $image_height;
+      object-position: 50% 50%;
+      object-fit: cover;
+      z-index: 1;
+    }
+
+    &:hover figcaption {
+      transform: translateY(0);
+    }
+
+    &:hover::before {
+      background: rgba(0, 0, 0, .75);
+    }
+
+    &::before {
+      content: ' ';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: transparent;
+      transition: background $animation_time ease-out;
+    }
+
+    figcaption {
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      padding: 1rem;
+      transform:  translateY(100%);
+      transition: transform $animation_time ease-in-out;
+
+      .title {
+        display: block;
+        color: #FFFFFF;
+        font-size: 1rem;
+      }
+
+      a {
+        display: block;
+        text-decoration: none;
+        float: left;
+        font-size: 1rem;
+        margin: 0.5rem 0.5rem 0 0;
+        transition: all $animation_time;
+        :hover {
+          color: #E3FF00;
+        }
+      }
+    }
+  }
+}
