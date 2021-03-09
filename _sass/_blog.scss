@@ -1,50 +1,76 @@
 @import "variables";
 
-.blog {
-  display: flex;
-  flex-direction: column;
-  flex: 1 1 auto;
-  margin: 1rem 0;
+@mixin post-style {
+  margin: 0 0;
+  clear: both;
+
+  .post-header {
+    margin: 0;
+  }
+
+  .post-content {
+    margin-bottom: $font-size;
+  }
+
+  .tags {
+    p {
+      font-size: 0.6em;
+      color: $gray;
+    }
+  }
+
+  .more-link {
+    margin: 0;
+    padding: 0;
+  }
+
+  img {
+    &.text-image {
+      max-width: 400px;
+      width: 100%;
+    }
+
+    &.float-left {
+      float: left;
+    }
+  }
+
+  // causes UI overflow
+  //a {
+  //  &:hover {
+  //    &::after {
+  //      content: '◁';
+  //    }
+  //  }
+  //}
+}
+
+#wrapper {
   .post {
-    margin: 0 0;
-    clear: both;
-    .post-header {
-      margin: 0;
+    @include post-style;
+  }
+  .blog {
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 auto;
+    margin: 1rem 0;
+    .post {
+      @include post-style;
     }
-    .post-content {
-      margin-bottom: $font-size;
-    }
-    .tags {
-      p {
-        font-size: 0.6em;
-        color: $gray;
-      }
-    }
-    .more-link {
-      margin: 0;
-      padding: 0;
-    }
-    img {
-      &.text-image {
-        max-width: 400px;
-        width: 100%;
-      }
-      &.float-left {
-        float: left;
-      }
-    }
-    // causes UI overflow
-    //a {
-    //  &:hover {
-    //    &::after {
-    //      content: '◁';
-    //    }
-    //  }
-    //}
   }
 }
 
 @media (max-width: 1100px) {
+  .post {
+    img {
+      &.text-image {
+        width: 100%;
+      }
+      &.float-left {
+        float: none;
+      }
+    }
+  }
   .blog {
     .post {
       img {
