@@ -31,14 +31,16 @@ layout: default
   </div>
 
   <div class="tags">
-    <p>
-      Published {{ page.date | date: "%b %-d, %Y" }} in &ldquo;{{ page.categories[0] }}&rdquo; and tagged&nbsp;
-      {%- for tag in page.tags -%}
-      {%- if page.length > 1 and page.tags.last == tag -%}and&nbsp;{%- endif -%}
-      <a class="label" href="/tags#{{ tag }}">{{ tag }}</a>
-      {%- if page.tags.last != tag -%},&nbsp;{%- endif -%}
-      {%- endfor -%}. Number of words: {{ page.content | number_of_words }}.
-    </p>
+    {%- if page.tags and page.tags.size > 0 -%}
+      {%- capture tagscommas -%}
+        Tags:&nbsp;
+        {%- for tag in page.tags -%}
+          <a class="label" href="/tags#{{ tag }}">{{ tag }}</a>
+          {%- unless forloop.last -%},&nbsp;{%- endunless -%}
+        {%- endfor -%}.<br/>
+      {%- endcapture -%}
+    <p>{{ tagscommas }}</p>
+    {%- endif -%}
   </div>
 
   <a class="u-url" href="{{ page.url | relative_url }}" hidden></a>
