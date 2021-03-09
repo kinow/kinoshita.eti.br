@@ -18,9 +18,9 @@ gallery:
       link: /2020/03/27/alonzo-and-lambda
   - title: Figurative Drawing
     images:
-    - title: Figurative Drawing 1
+    - title: Sepia dry and sepia oil figurative drawing
       src: /assets/pages/art/thumbs/thumb-251.png
-      link: ''
+      link: /2021/02/20/figure-drawing-with-sepia-line-of-action
   - title: Observational Drawing
     images:
     - title: Simone
