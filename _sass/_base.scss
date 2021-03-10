@@ -1,0 +1,286 @@
+/**
+ * Resetting several styles.
+ */
+
+@import "variables";
+@import "helpers";
+
+html {
+  padding: 0;
+  margin: 0;
+}
+
+body {
+  padding: 0;
+  margin: 0;
+  font-size: $font-size;
+  color: rgba(0, 0, 0, 0.87);
+  background-color: white;
+}
+
+:root {
+}
+
+p, li, a, span {
+  @include monospace;
+
+  &::selection {
+    background-color: pink;
+  }
+}
+
+h1, h2, h3, h4, h5, h6 {
+  @include monospace;
+
+  &::selection {
+    background-color: pink;
+  }
+
+  @include no-selection;
+}
+
+p {
+  font-size: $font-size;
+  line-height: $line-height;
+}
+
+ul {
+  padding: 0;
+  margin: 1em 0 1em 1em;
+}
+
+ul ul {
+  padding: 0;
+  margin: 0.2em 0 0.2em 1em;
+}
+
+li {
+  padding: 0;
+  margin: 0;
+  list-style-position: inside;
+}
+
+a {
+  color: $red;
+  text-decoration: none;
+}
+
+a:hover {
+  color: $red;
+  font-weight: 700;
+  text-decoration: underline;
+  text-decoration-style: solid;
+}
+
+pre {
+  overflow-x: auto;
+}
+
+h1 {
+  font-size: 2em;
+}
+
+h1, h2, h3, h4, h5 {
+  margin: 0;
+  padding: 0;
+  /**
+   * This is from the landing page of blog, with pagination.
+   */
+  &.post-header {
+    margin: $font-size 0;
+  }
+  /**
+   * This is from the post page.
+   */
+  &.post-title {
+  }
+  /**
+   * This is from the page title.
+   */
+  &.page-heading {
+  }
+}
+
+blockquote {
+  color: rgba(0, 0, 0, 0.8);
+  font-style: italic;
+}
+
+/**
+ * Site wrapper, surrounding sidebar and content.
+ */
+#wrapper {
+  display: flex;
+  flex-wrap: nowrap;
+  flex-direction: row;
+  flex: 1 1 0;
+}
+
+/**
+ * Site sidebar.
+ */
+#sidebar {
+  height: 100vh;
+  background-color: $black;
+  width: 200px;
+  position: fixed;
+}
+
+/**
+ * Site content.
+ */
+#content {
+  max-width: 800px;
+  padding: 1rem;
+  margin-left: 200px;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+/**
+ * A page article.
+ */
+.article {
+  -webkit-box-flex: 1;
+  -webkit-flex: 1 1 auto;
+  -ms-flex: 1 1 auto;
+  flex: 1 1 auto;
+  min-width: 0;
+  margin-left: 250px !important;
+}
+
+/**
+ * A note, added to both pages and posts.
+ */
+.note {
+  font-style: italic;
+  color: $gray !important;
+  margin: 0 0 $font-size 0;
+  p {
+    padding: 0;
+    margin: 0;
+  }
+}
+
+a.post-link {
+  color: $red !important;
+}
+
+.post-meta {
+  font-size: 0.8em;
+  color: $gray;
+}
+
+/* Remove Fixed Sidebar /  Show Top Bar */
+@media only screen and (max-width: 799px) {
+  #mobile-menu {
+    display: block;
+    background-color: $black;
+  }
+  #sidebar {
+    display: none;
+  }
+  #content {
+    max-width: unset;
+    margin-left: unset;
+  }
+  img {
+    width: 100% !important;
+    height: auto !important;
+  }
+}
+
+/* Hide Top Bar */
+@media only screen and (min-width: 800px) {
+  #mobile-menu {
+    display: none;
+  }
+}
+
+table {
+  border-collapse: collapse;
+}
+
+table, th, td {
+  border: 1px solid #999999;
+  padding: 14px 7px;
+}
+
+/**
+ * thumbnail class is from https://jonathannicol.com/blog/2014/06/16/centre-crop-thumbnails-with-css/
+ */
+.gallery {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+
+  .thumbnail {
+    position: relative;
+    width: 100px;
+    height: 100px;
+    overflow: hidden;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 5px;
+    margin: 0 1rem 1rem 0;
+
+    &:last-child {
+      margin-right: 0;
+    }
+
+    img {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      height: 100%;
+      width: auto;
+      -webkit-transform: translate(-50%,-50%);
+      -ms-transform: translate(-50%,-50%);
+      transform: translate(-50%,-50%);
+
+      &.photo {
+        width: 100%;
+        height: auto;
+      }
+    }
+
+    /**
+     * From: https://codepen.io/gschier/pen/HCoqh
+     */
+    .lightbox {
+      /* Default to hidden */
+      display: none;
+
+      /* Overlay entire screen */
+      position: fixed;
+      z-index: 999;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+
+      /* A bit of padding around image */
+      padding: 1em;
+
+      /* Translucent background */
+      background: rgba(0, 0, 0, 0.8);
+    }
+
+    /* Unhide the lightbox when it's the target */
+    .lightbox:target {
+      display: block;
+    }
+
+    .lightbox span {
+      /* Full width and height */
+      display: block;
+      width: 100%;
+      height: 100%;
+
+      /* Size and position background image */
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: contain;
+    }
+  }
+}
