@@ -41,6 +41,14 @@ gallery:
     - title: Stink bug
       src: /assets/pages/art/thumbs/thumb-stink-bug-smaller.png
       link: /2020/04/03/stink-bug
+  - title: Sketchbook
+    images:
+    - title: Lola
+      src: /assets/pages/art/thumbs/thumb-lola.png
+      link: /2020/10/11/lola
+    - title: A baby
+      src: /assets/pages/art/thumbs/thumb-baby-02.png
+      link: /2019/12/30/a-baby
 ---
 
 {%- for section in page.gallery -%}
