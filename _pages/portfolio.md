@@ -18,9 +18,12 @@ gallery:
       link: /2020/03/27/alonzo-and-lambda
   - title: Figurative Drawing
     images:
-    - title: Sepia dry and sepia oil figurative drawing
+    - title: Auckland CBD Life Drawing 2021-02-22
       src: /assets/pages/art/thumbs/thumb-251.png
-      link: /2021/02/20/figure-drawing-with-sepia-line-of-action
+      link: /2021/02/20/auckland-cbd-life-drawing-2021-02-20
+    - title: Auckland CBD Life Drawing 2021-01-18
+      src: /assets/pages/art/thumbs/thumb-196.png
+      link: /2021/01/18/auckland-cbd-life-drawing-2021-01-18
   - title: Observational Drawing
     images:
     - title: Simone
@@ -42,6 +45,10 @@ gallery:
       src: /assets/pages/art/thumbs/thumb-stink-bug-smaller.png
       link: /2020/04/03/stink-bug
   - title: Sketchbook
+    notes: |
+      Mainly cretacolor pencils, bic, pentel brush, staedtler pigment
+      liners, mixed media (gouache, watercolor, pastels), and digital
+      with Krita, GIMP, Blender, and Clip Studio Paint.
     images:
     - title: Lola
       src: /assets/pages/art/thumbs/thumb-lola.png
@@ -49,11 +56,16 @@ gallery:
     - title: A baby
       src: /assets/pages/art/thumbs/thumb-baby-02.png
       link: /2019/12/30/a-baby
+    - title: Grumman F-14 Tomcat
+      src: /assets/pages/art/thumbs/thumb-plane1.png
+      link: /2020/03/28/plane1
 ---
 
 {%- for section in page.gallery -%}
 
 ## {{ section.title }}
+
+<div class="note">{{ section.notes }}</div>
 
 <div class="gallery">
   {%- for image in section.images -%}
