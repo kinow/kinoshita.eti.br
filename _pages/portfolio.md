@@ -3,6 +3,16 @@ title: Portfolio
 layout: page
 permalink: "/portfolio/"
 gallery:
+  - title: Logos
+    images:
+      - title: Apache OpenNLP
+        src: /assets/pages/art/thumbs/thumb-opennlp-1.png
+      - title: Frege Programming Language
+        src: /assets/pages/art/thumbs/thumb-frege-2.png
+      - title: TupiLabs
+        src: /assets/pages/art/thumbs/thumb-tupilabs-1.png
+      - title: Yandê
+        src: /assets/pages/art/thumbs/thumb-yande-1.png
   - title: Paintings
     images:
       - title: Green Skull
