@@ -4,7 +4,7 @@ layout: post
 categories:
 - drawing
 note: |
-    New logo for the Apache OpenNLP project, https://issues.apache.org/jira/browse/OPENNLP-6.
+    New logo for the Apache OpenNLP project, <https://issues.apache.org/jira/browse/OPENNLP-6.>
 ---
 
 This project was completed combining an idea of Koji Sekiguchi.
@@ -19,19 +19,39 @@ in the website, promotional material, favicon, etc.
   alt="Apache OpenNLP logo"
 />
 
-<img src="/assets/pages/art/images/opennlp-2.png">
+<img
+  src="/assets/pages/art/images/opennlp-2.png"
+  class="center-aligned"
+  alt="Apache OpenNLP logo"
+/>
 
-The Apache Software Foundation symbol is a feather, which we used as a
+The **Apache Software Foundation** symbol is a feather, which we used as a
 writing feather in the logo. That combined with the letters NLP
 create an image that is easy to recognize.
 
-<img src="/assets/pages/art/images/opennlp-3.png">
+<img
+  src="/assets/pages/art/images/opennlp-3.png"
+  class="center-aligned"
+  alt="Apache OpenNLP logo"
+/>
 
 It has been used in the project website and documentation, Wikipedia,
 presentations, and other promotional material.
 
-<img src="/assets/pages/art/images/opennlp-4.png">
+<img
+  src="/assets/pages/art/images/opennlp-4.png"
+  class="center-aligned"
+  alt="Apache OpenNLP logo"
+/>
 
-<img src="/assets/pages/art/images/opennlp-5.png">
+<img
+  src="/assets/pages/art/images/opennlp-5.png"
+  class="center-aligned"
+  alt="Apache OpenNLP logo"
+/>
 
-<img src="/assets/pages/art/images/opennlp-6.png">
+<img
+  src="/assets/pages/art/images/opennlp-6.png"
+  class="center-aligned"
+  alt="Apache OpenNLP logo"
+/>
