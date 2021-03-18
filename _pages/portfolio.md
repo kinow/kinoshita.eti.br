@@ -10,6 +10,7 @@ gallery:
         link: /2017/04/21/apache-opennlp-logo/
       - title: Frege Programming Language
         src: /assets/pages/art/thumbs/thumb-frege-2.png
+        link: /2016/08/24/revamping-frege-logo-part-2
       - title: TupiLabs
         src: /assets/pages/art/thumbs/thumb-tupilabs-1.png
       - title: Yandê
