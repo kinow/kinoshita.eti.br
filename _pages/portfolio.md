@@ -7,6 +7,7 @@ gallery:
     images:
       - title: Apache OpenNLP
         src: /assets/pages/art/thumbs/thumb-opennlp-1.png
+        link: /2017/04/21/apache-opennlp-logo/
       - title: Frege Programming Language
         src: /assets/pages/art/thumbs/thumb-frege-2.png
       - title: TupiLabs
