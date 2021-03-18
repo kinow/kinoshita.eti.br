@@ -4,6 +4,8 @@ layout: page
 permalink: "/portfolio/"
 gallery:
   - title: Logos
+    notes: |
+      Inkscape, Blender, or Adobe Illustrator.
     images:
       - title: Apache OpenNLP
         src: /assets/pages/art/thumbs/thumb-opennlp-1.png
@@ -16,6 +18,8 @@ gallery:
       - title: Yandê
         src: /assets/pages/art/thumbs/thumb-yande-1.png
   - title: Paintings
+    notes: |
+      Watercolors, gouache, colored pencils, and digital (Krita, Clip Studio Paint).
     images:
       - title: Green Skull
         src: /assets/pages/art/thumbs/thumb-green-skull-full.png
@@ -24,11 +28,15 @@ gallery:
         src: /assets/pages/art/thumbs/thumb-royal-spoonbill.png
         link: /2020/04/01/royal-spoonbill
   - title: Editorial Illustration
+    notes: |
+      Graphite, ink brush, colored pencils, Inkscape, Krita, Clip Studio Paint
     images:
     - title: Alonzo and Lambda
       src: /assets/pages/art/thumbs/thumb-alonzo_and_lambda_by_kinow-d5tqvau.png
       link: /2020/03/27/alonzo-and-lambda
   - title: Figurative Drawing
+    notes: |
+      Charcoal, sepia, graphite, ink brush.
     images:
     - title: Auckland CBD Life Drawing 2021-02-22
       src: /assets/pages/art/thumbs/thumb-251.png
@@ -37,6 +45,8 @@ gallery:
       src: /assets/pages/art/thumbs/thumb-196.png
       link: /2021/01/18/auckland-cbd-life-drawing-2021-01-18
   - title: Observational Drawing
+    notes: |
+      Charcoal, graphite, ink brush.
     images:
     - title: Simone
       src: /assets/pages/art/thumbs/thumb-simone.png
