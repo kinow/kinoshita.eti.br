@@ -17,6 +17,7 @@ gallery:
         src: /assets/pages/art/thumbs/thumb-tupilabs-1.png
       - title: Yandê
         src: /assets/pages/art/thumbs/thumb-yande-1.png
+        link: /2021/03/07/yande-paes-logo
   - title: Paintings
     notes: |
       Watercolors, gouache, colored pencils, and digital (Krita, Clip Studio Paint).
