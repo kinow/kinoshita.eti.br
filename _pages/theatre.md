@@ -277,4 +277,28 @@ note: "These are some plays I have watched. Suggestions are welcome."
             </div>
         </div>
     </div>
+    <div class="column">
+        <div class="ui raised card">
+            <div class="content">
+                <div class="right floated meta">March, 2021</div>
+                <div class="header">Waiting</div>
+            </div>
+            <div class="image">
+                <img src="/assets/pages/theatre/waiting.jpg" alt="Play photo" />
+            </div>
+            <div class="content">
+                <div class="description">
+                    <p>An evocative coming-of-age story that emulates beat poetry delivered through physical grace. Written and performed by Shadon Meredith, Waiting is a letter written to his son taking the audience through a journey of his life and breaking down the human condition of waiting. Growing up in New Zealand as a Samoan New Zealander, the insights are both personal and reflective of cultural challenges faced by those who are navigating identity as a minority race in Aotearoa New Zealand.</p>
+                    <p>Waiting is an honest and raw look at how life can take us on twists and turns and will leave you musing your own life story - sparking reflection on moments lost, relationships built, and decisions made.</p>
+                    <p>Waiting won Best of the fringe, Best theatre, Best director, Best design and Best solo at the Nelson Fringe Festival 2017 and Best of Whangarei Fringe award 2020.</p>
+                    <p>Presented as part of Auckland Fringe 2021.</p>
+                </div>
+            </div>
+            <div class="extra content">
+                <div class="right floated author">
+                    Basement Theatre, Auckland, New Zealand
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
