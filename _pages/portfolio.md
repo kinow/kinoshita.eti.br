@@ -15,6 +15,7 @@ gallery:
         link: /2016/08/24/revamping-frege-logo-part-2
       - title: TupiLabs
         src: /assets/pages/art/thumbs/thumb-tupilabs-1.png
+        link: /2012/02/02/tupilabs-logo
       - title: Yandê
         src: /assets/pages/art/thumbs/thumb-yande-1.png
         link: /2021/03/07/yande-paes-logo
