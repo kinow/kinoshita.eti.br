@@ -10,7 +10,7 @@ SCRIPTPATH=$(dirname "$SCRIPT")
 make_thumbnail() {
     pic=$1
     thumb=$(dirname "$1")/../thumbs/thumb-$(basename "$1")
-    convert "$pic" -thumbnail 200x200 -gravity center -extent 200x200 "$thumb"
+    convert "$pic" -thumbnail 400x400 -gravity center -extent 400x400 "$thumb"
 }
 
 # Now we need a way to call make_thumbnail on each file.
