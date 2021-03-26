@@ -1,13 +1,14 @@
 ---
-title: Figure drawing
+title: Auckland CBD Life Drawing 2021-02-01
 layout: post
 tags:
 - sketchbook
-- figure drawing
+- life drawing
+- figurative drawing
 categories:
 - drawing
 note: |
-    Graphite stick on 110 gsm sketchbook
+    Cretacolor Graphite stick 6B on 110 gsm sketchbook
 ---
 
 <a id="1">
