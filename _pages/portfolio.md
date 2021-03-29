@@ -3,6 +3,13 @@ title: Portfolio
 layout: page
 permalink: "/portfolio/"
 gallery:
+  - title: Digital Drawing
+    notes: |
+      Inkspace, Clip Studio Paint, Krita, GIMP.
+    images:
+      - title: Low poly in Inkscape
+        src: /assets/pages/art/thumbs/thumb-low-poly-01.png
+        link: /2021/03/11/low-poly-in-inkscape
   - title: Logos
     notes: |
       Inkscape, Blender, or Adobe Illustrator.
