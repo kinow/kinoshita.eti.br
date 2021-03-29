@@ -10,6 +10,16 @@ gallery:
       - title: Low poly in Inkscape
         src: /assets/pages/art/thumbs/thumb-low-poly-01.png
         link: /2021/03/11/low-poly-in-inkscape
+  - title: Editorial Illustration
+    notes: |
+      Graphite, ink brush, colored pencils, Inkscape, Krita, Clip Studio Paint
+    images:
+      - title: Alonzo and Lambda for r/functionalprogramming subreddit
+        src: /assets/pages/art/thumbs/thumb-alonzo_and_lambda_by_kinow-d5tqvau.png
+        link: /2020/03/27/alonzo-and-lambda
+      - title: Bezerra da Silva for Speak Like A Brazilian
+        src: /assets/pages/art/thumbs/thumb-bezerra-03.png
+        link: /2021/03/27/bezerra-da-silva
   - title: Logos
     notes: |
       Inkscape, Blender, or Adobe Illustrator.
@@ -36,13 +46,6 @@ gallery:
       - title: Royal Spoonbill
         src: /assets/pages/art/thumbs/thumb-royal-spoonbill.png
         link: /2020/04/01/royal-spoonbill
-  - title: Editorial Illustration
-    notes: |
-      Graphite, ink brush, colored pencils, Inkscape, Krita, Clip Studio Paint
-    images:
-    - title: Alonzo and Lambda
-      src: /assets/pages/art/thumbs/thumb-alonzo_and_lambda_by_kinow-d5tqvau.png
-      link: /2020/03/27/alonzo-and-lambda
   - title: Figurative Drawing
     notes: |
       Charcoal, sepia, graphite, ink brush.
