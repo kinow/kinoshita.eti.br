@@ -55,19 +55,19 @@ gallery:
       link: /2021/01/18/auckland-cbd-life-drawing-2021-01-18
     - title: Auckland CBD Life Drawing 2021-02-01
       src: /assets/pages/art/thumbs/thumb-230.png
-      link: /2021/02/01/auckland-cbd-life-drawing-2021-02-01/#1
+      link: /2021/02/01/auckland-cbd-life-drawing-2021-02-01#1
     - title: Auckland CBD Life Drawing 2021-02-01
       src: /assets/pages/art/thumbs/thumb-231.png
-      link: /2021/02/01/auckland-cbd-life-drawing-2021-02-01/#2
+      link: /2021/02/01/auckland-cbd-life-drawing-2021-02-01#2
     - title: Auckland CBD Life Drawing 2021-02-01
       src: /assets/pages/art/thumbs/thumb-232.png
-      link: /2021/02/01/auckland-cbd-life-drawing-2021-02-01/#3
+      link: /2021/02/01/auckland-cbd-life-drawing-2021-02-01#3
     - title: Auckland CBD Life Drawing 2021-02-01
       src: /assets/pages/art/thumbs/thumb-233.png
-      link: /2021/02/01/auckland-cbd-life-drawing-2021-02-01/#4
+      link: /2021/02/01/auckland-cbd-life-drawing-2021-02-01#4
     - title: Auckland CBD Life Drawing 2021-02-01
       src: /assets/pages/art/thumbs/thumb-234.png
-      link: /2021/02/01/auckland-cbd-life-drawing-2021-02-01/#5
+      link: /2021/02/01/auckland-cbd-life-drawing-2021-02-01#5
     - title: Auckland CBD Life Drawing 2021-02-22
       src: /assets/pages/art/thumbs/thumb-251.png
       link: /2021/02/20/auckland-cbd-life-drawing-2021-02-20
