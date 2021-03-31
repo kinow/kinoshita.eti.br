@@ -29,4 +29,5 @@ end
 
 gem "nokogiri", ">= 1.11.0.rc4"
 
-gem "jekyll", "~> 3.8"
+gem 'jekyll', '~> 3'
+
