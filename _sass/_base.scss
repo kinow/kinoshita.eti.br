@@ -122,7 +122,7 @@ blockquote {
 #sidebar {
   height: 100vh;
   background-color: $black;
-  width: 200px;
+  width: max(15vw, 200px);
   position: fixed;
 }
 
@@ -130,9 +130,9 @@ blockquote {
  * Site content.
  */
 #content {
-  max-width: 800px;
+  max-width: 65vw;
   padding: 1rem;
-  margin-left: 200px;
+  margin-left: max(15vw, 200px);
   overflow-x: hidden;
   overflow-y: auto;
 }
@@ -172,7 +172,7 @@ a.post-link {
 }
 
 /* Remove Fixed Sidebar /  Show Top Bar */
-@media only screen and (max-width: 799px) {
+@media only screen and (max-width: $large-viewport - 1px) {
   #mobile-menu {
     display: block;
     background-color: $black;
@@ -191,7 +191,7 @@ a.post-link {
 }
 
 /* Hide Top Bar */
-@media only screen and (min-width: 800px) {
+@media only screen and (min-width: $large-viewport) {
   #mobile-menu {
     display: none;
   }
@@ -209,24 +209,25 @@ table, th, td {
 /**
  * thumbnail class is from https://jonathannicol.com/blog/2014/06/16/centre-crop-thumbnails-with-css/
  */
-.gallery {
+.landing-gallery {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
+  justify-content: space-between;
 
   .thumbnail {
     position: relative;
-    width: 100px;
-    height: 100px;
+    width: 100%;
+    height: 400px;
+    @media screen and (min-width: $large-viewport) {
+      width: calc((65vw / 3) - 22px);
+      height: calc((65vw / 3) - 22px);
+    }
     overflow: hidden;
     border: 1px solid #ddd;
     border-radius: 4px;
-    padding: 5px;
-    margin: 0 1rem 1rem 0;
-
-    &:last-child {
-      margin-right: 0;
-    }
+    padding: 0;
+    margin: 0;
 
     img {
       position: absolute;

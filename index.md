@@ -13,7 +13,7 @@ title: About
   programming. Or check out my portfolio where I upload drawings, illustrations,
   paintings, and more.</p>
 
-  <div class="gallery">
+  <div class="landing-gallery">
     <div class="thumbnail">
       <a href="#photo1">
         <img
