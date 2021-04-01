@@ -16,4 +16,7 @@ jobs:
           JEKYLL_GID: 0
         with:
           secret_gh_pages_api_token: ${{ secrets.ACCESS_TOKEN }}
-          pre_build_commands: gem install bundler
+          pre_build_commands: |
+            echo "Packaged bundler version: $(bundle --version)"
+            echo "Updating bundler..."
+            bundle update --bundler
