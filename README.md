@@ -7,7 +7,8 @@
 ## Building
 
 Built with [Ruby](https://www.ruby-lang.org/en/), [Jekyll](https://www.ruby-lang.org/en/),
-and some [Python](https://www.python.org/) scripts. Layout created using [Semantic UI](http://semantic-ui.com/).
+and some [Python](https://www.python.org/) scripts. Layout based on
+[Minima](https://github.com/jekyll/minima) Jekyll theme.
 
 For Linux:
 
