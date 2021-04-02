@@ -110,7 +110,7 @@ body { padding: 0; margin: 0; font-size: 22px; color: rgba(0, 0, 0, 0.87); backg
 p, li, a, span { font-family: monospace, serif; }
 p::selection, li::selection, a::selection, span::selection { background-color: pink; }
 
-h1, h2, h3, h4, h5, h6 { font-family: monospace, serif; -ms-user-select: none; -moz-user-select: none; -webkit-user-select: none; -webkit-touch-callout: none; -khtml-user-select: none; user-select: none; }
+h1, h2, h3, h4, h5, h6 { font-family: Consolas, monospace, serif; -ms-user-select: none; -moz-user-select: none; -webkit-user-select: none; -webkit-touch-callout: none; -khtml-user-select: none; user-select: none; }
 h1::selection, h2::selection, h3::selection, h4::selection, h5::selection, h6::selection { background-color: pink; }
 
 p { font-size: 22px; line-height: 32px; }
@@ -138,16 +138,16 @@ blockquote { color: rgba(0, 0, 0, 0.8); font-style: italic; }
 #wrapper { display: flex; flex-wrap: nowrap; flex-direction: row; flex: 1 1 0; }
 
 /** Site sidebar. */
-#sidebar { height: 100vh; background-color: #000000; width: 200px; position: fixed; }
+#sidebar { height: 100vh; background-color: #000000; width: max(15vw, 200px); position: fixed; }
 
 /** Site content. */
-#content { max-width: 800px; padding: 1rem; margin-left: 200px; overflow-x: hidden; overflow-y: auto; }
+#content { max-width: 65vw; padding: 1rem; margin-left: max(15vw, 200px); overflow-x: hidden; overflow-y: auto; }
 
 /** A page article. */
 .article { -webkit-box-flex: 1; -webkit-flex: 1 1 auto; -ms-flex: 1 1 auto; flex: 1 1 auto; min-width: 0; margin-left: 250px !important; }
 
 /** A note, added to both pages and posts. */
-.note { font-style: italic; color: #696969 !important; margin: 0 0 22px 0; }
+.note { font-family: monospace, serif; font-size: 1em; font-style: italic; color: #696969 !important; margin: 0 0 22px 0; }
 .note p { padding: 0; margin: 0; }
 
 a.post-link { color: #d22737 !important; }
@@ -155,25 +155,27 @@ a.post-link { color: #d22737 !important; }
 .post-meta { font-size: 0.8em; color: #696969; }
 
 /* Remove Fixed Sidebar /  Show Top Bar */
-@media only screen and (max-width: 799px) { #mobile-menu { display: block; background-color: #000000; }
+@media only screen and (max-width: 999px) { #mobile-menu { display: block; background-color: #000000; }
   #sidebar { display: none; }
   #content { max-width: unset; margin-left: unset; }
   img { width: 100% !important; height: auto !important; } }
 /* Hide Top Bar */
-@media only screen and (min-width: 800px) { #mobile-menu { display: none; } }
+@media only screen and (min-width: 1000px) { #mobile-menu { display: none; } }
 table { border-collapse: collapse; }
 
 table, th, td { border: 1px solid #999999; padding: 14px 7px; }
 
 /** thumbnail class is from https://jonathannicol.com/blog/2014/06/16/centre-crop-thumbnails-with-css/ */
-.gallery { display: flex; flex-direction: row; flex-wrap: wrap; }
-.gallery .thumbnail { position: relative; width: 100px; height: 100px; overflow: hidden; border: 1px solid #ddd; border-radius: 4px; padding: 5px; margin: 0 1rem 1rem 0; /** From: https://codepen.io/gschier/pen/HCoqh */ /* Unhide the lightbox when it's the target */ }
-.gallery .thumbnail:last-child { margin-right: 0; }
-.gallery .thumbnail img { position: absolute; left: 50%; top: 50%; height: 100%; width: auto; -webkit-transform: translate(-50%, -50%); -ms-transform: translate(-50%, -50%); transform: translate(-50%, -50%); }
-.gallery .thumbnail img.photo { width: 100%; height: auto; }
-.gallery .thumbnail .lightbox { /* Default to hidden */ display: none; /* Overlay entire screen */ position: fixed; z-index: 999; top: 0; left: 0; right: 0; bottom: 0; /* A bit of padding around image */ padding: 1em; /* Translucent background */ background: rgba(0, 0, 0, 0.8); }
-.gallery .thumbnail .lightbox:target { display: block; }
-.gallery .thumbnail .lightbox span { /* Full width and height */ display: block; width: 100%; height: 100%; /* Size and position background image */ background-position: center; background-repeat: no-repeat; background-size: contain; }
+.landing-gallery { display: flex; flex-direction: row; flex-wrap: wrap; justify-content: space-between; }
+.landing-gallery .thumbnail { position: relative; width: 100%; height: 400px; margin: 1rem 0; overflow: hidden; border: 1px solid #ddd; border-radius: 4px; padding: 0; /** From: https://codepen.io/gschier/pen/HCoqh */ /* Unhide the lightbox when it's the target */ }
+.landing-gallery .thumbnail:first-of-type { margin-top: 0; }
+.landing-gallery .thumbnail:last-of-type { margin-bottom: 0; }
+@media screen and (min-width: 1000px) { .landing-gallery .thumbnail { width: calc((65vw / 3) - 22px); height: calc((65vw / 3) - 22px); margin: 0; } }
+.landing-gallery .thumbnail img { position: absolute; left: 50%; top: 50%; height: 100%; width: auto; -webkit-transform: translate(-50%, -50%); -ms-transform: translate(-50%, -50%); transform: translate(-50%, -50%); }
+.landing-gallery .thumbnail img.photo { width: 100%; height: auto; }
+.landing-gallery .thumbnail .lightbox { /* Default to hidden */ display: none; /* Overlay entire screen */ position: fixed; z-index: 999; top: 0; left: 0; right: 0; bottom: 0; /* A bit of padding around image */ padding: 1em; /* Translucent background */ background: rgba(0, 0, 0, 0.8); }
+.landing-gallery .thumbnail .lightbox:target { display: block; }
+.landing-gallery .thumbnail .lightbox span { /* Full width and height */ display: block; width: 100%; height: 100%; /* Size and position background image */ background-position: center; background-repeat: no-repeat; background-size: contain; }
 
 figure { display: inline; margin: 0; padding: 0; height: auto; width: auto; }
 
@@ -189,7 +191,7 @@ img.center-aligned { float: none; clear: both; display: block; width: auto; marg
 
 div.menu ul.menu { border-radius: 0; border-width: 0; box-shadow: none; margin: 0; padding: 0; width: inherit; will-change: transform; max-height: 100vh; overflow: auto; -webkit-overflow-scrolling: touch; text-align: right; list-style: none; z-index: 2; background-color: #000000; }
 div.menu ul.menu li.item { display: block; list-style-type: none; margin: 0; padding: 0; position: relative; }
-div.menu ul.menu li.item a { color: #ffffff; cursor: pointer; display: block; font-family: monospace, serif; padding: .5rem 1rem; margin: 0; -ms-user-select: none; -moz-user-select: none; -webkit-user-select: none; -webkit-touch-callout: none; -khtml-user-select: none; user-select: none; }
+div.menu ul.menu li.item a { color: #ffffff; cursor: pointer; display: block; font-family: Consolas, monospace, serif; padding: .5rem 1rem; margin: 0; -ms-user-select: none; -moz-user-select: none; -webkit-user-select: none; -webkit-touch-callout: none; -khtml-user-select: none; user-select: none; }
 div.menu ul.menu li.item a.inline-link { display: inline; padding: 0; margin: 0; }
 div.menu ul.menu li.item a.inline-link:hover { text-decoration: none; }
 div.menu ul.menu li.item a.current { color: #999999; }
