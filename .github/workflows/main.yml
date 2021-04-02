@@ -9,10 +9,15 @@ jobs:
     steps:
       - name: SCM
         uses: actions/checkout@v2
-      - name: Build
-        uses: fabacab/jekyll-builder-for-github-pages-action@builder/3.8
-        env:
-          JEKYLL_UID: 0
-          JEKYLL_GID: 0
+      - uses: ruby/setup-ruby@v1
         with:
-          secret_gh_pages_api_token: ${{ secrets.ACCESS_TOKEN }}
+          ruby-version: 2.6
+          bundler-cache: true
+      - name: Build
+        run: bundle exec jekyll build
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.ACCESS_TOKEN }}
+          publish_dir: ./build
+          publish_branch: gh-pages
