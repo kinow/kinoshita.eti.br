@@ -29,7 +29,7 @@ end
 
 gem "nokogiri", ">= 1.11.0.rc4"
 
-gem 'jekyll', '~> 3'
+# gem 'jekyll', '~> 3'
 
 # fixing windows build problems
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw]
