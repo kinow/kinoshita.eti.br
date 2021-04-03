@@ -10,6 +10,9 @@ gallery:
       - title: Low poly in Inkscape
         src: /assets/pages/art/thumbs/thumb-low-poly-01.png
         link: /2021/03/11/low-poly-in-inkscape
+      - title: Rooster
+        src: /assets/pages/art/thumbs/thumb-FRANGO.png
+        link: /2021/02/07/rooster
   - title: Editorial Illustration
     notes: |
       Graphite, ink brush, colored pencils, Inkscape, Krita, Clip Studio Paint
