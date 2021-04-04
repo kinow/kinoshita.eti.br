@@ -49,6 +49,9 @@ gallery:
       - title: Royal Spoonbill
         src: /assets/pages/art/thumbs/thumb-royal-spoonbill.png
         link: /2020/04/01/royal-spoonbill
+      - title: Tufted Titmouse
+        src: /assets/pages/art/thumbs/thumb-tufted-titmouse.png
+        link: /2021/04/05/tufted-titmouse
   - title: Figurative Drawing
     notes: |
       Charcoal, sepia, graphite, ink brush.
