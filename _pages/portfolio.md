@@ -52,6 +52,9 @@ gallery:
       - title: Tufted Titmouse
         src: /assets/pages/art/thumbs/thumb-tufted-titmouse.png
         link: /2021/04/05/tufted-titmouse
+      - title: Random Traffic Light
+        src: /assets/pages/art/thumbs/thumb-random-traffic-light.png
+        link: /2021/04/06/random-traffic-light
   - title: Figurative Drawing
     notes: |
       Charcoal, sepia, graphite, ink brush.
