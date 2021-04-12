@@ -77,9 +77,12 @@ gallery:
     - title: Auckland CBD Life Drawing 2021-02-01
       src: /assets/pages/art/thumbs/thumb-234.png
       link: /2021/02/01/auckland-cbd-life-drawing-2021-02-01#5
-    - title: Auckland CBD Life Drawing 2021-02-22
+    - title: Figurative drawing Line of Action 2021-02-22
       src: /assets/pages/art/thumbs/thumb-251.png
-      link: /2021/02/20/auckland-cbd-life-drawing-2021-02-20
+      link: /2021/02/20/figurative-drawing-line-of-action-2021-02-20
+    - title: Figurative drawing Line of Action 2021-03-11
+      src: /assets/pages/art/thumbs/thumb-255.png
+      link: /2021/03/11/figurative-drawing-line-of-action-2021-03-11
   - title: Observational Drawing
     notes: |
       Charcoal, graphite, ink brush.
