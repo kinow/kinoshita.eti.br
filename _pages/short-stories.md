@@ -2,28 +2,17 @@
 title: Short Stories
 layout: page
 ---
-<table>
-  <colgroup>
-    <col width="50%" />
-    <col width="50%" />
-  </colgroup>
-  <thead style="">
-    <tr>
-      <th>Title</th>
-      <th>Author</th>
-    </tr>
-  </thead>
-  <tbody>
-    {%- assign stories = site.data.short-stories | sort_natural: "author" -%}
-    {%- for story in stories -%}
-    <tr>
-      {%- if story.link -%}
-      <td><a href="{{ story.link }}">{{ story.title }}</a></td>
-      {%- else -%}
-      <td>{{ story.title }}</td>
-      {%- endif -%}
-      <td>{{ story.author }}</td>
-    </tr>
-    {%- endfor -%}
-  </tbody>
-</table>
+{%- assign reading_resources = site.data.short-stories | sort_natural: "author" -%}
+<div class="reading-resources" markdown="0">
+  {%- for reading_resource in reading_resources -%}
+    {%- if reading_resource.link -%}
+      {%- capture title -%}<a href="{{ reading_resource.link }}">{{ reading_resource.title }}</a>{%- endcapture -%}
+    {%- else -%}
+      {%- assign title = reading_resource.title -%}
+    {%- endif -%}
+  <div class="reading-resource">
+    <p class="title">{{ title }}</p>
+    <p class="author">{{ reading_resource.author }}</p>
+  </div>
+  {%- endfor -%}
+</div>
