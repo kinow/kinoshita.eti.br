@@ -2,7 +2,6 @@
 title: Theatre
 layout: page
 permalink: "/theatre/"
-note: "These are some plays I have watched. Suggestions are welcome."
 ---
 
 {%- assign plays = site.data.plays -%}
