@@ -53,6 +53,5 @@ title: About
   </div>
 
   <p>Feel free to get in touch via <a href="https://twitter.com/kinow/">Twitter</a>
-  or <a href="https://github.com/kinow/">GitHub</a>. CV available as
-  <a href="/cv.pdf">PDF</a> and <a href="/cv/">HTML</a>.</p>
+  or <a href="https://github.com/kinow/">GitHub</a>.</p>
 </div>
