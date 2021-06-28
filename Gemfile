@@ -27,7 +27,7 @@ group :jekyll_plugins do
   gem 'jekyll-archives'
 end
 
-gem "nokogiri", ">= 1.11.0.rc4"
+gem "nokogiri", ">= 1.11.4"
 
 # gem 'jekyll', '~> 3'
 
