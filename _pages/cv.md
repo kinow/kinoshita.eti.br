@@ -3,12 +3,16 @@ title: 'CV'
 layout: page
 ---
 
- I am an honest, and focused Software Engineer that is always trying to deliver solutions with quality. I am very calm and easy-going, and enjoy a challenging work environment, Open Source, and learning about different cultures. 
+In the past seventeen years have worked in different industries including
+telecommunications, banking, credit, retail, insurance, research, government,
+and start-ups. Occupied different positions such as programmer,
+quality engineer, devops, architect, full stack developer, big
+data engineer, and frontend developer. 
 
-I have worked in many different projects for the past ten years, in industries such as telecommunications, banking, credit, retail, insurance, and start-ups. Occupied different positions including programmer, quality engineer, devops, architect, full stack developer, and big data engineer. 
 
-I am fluent in English and Portuguese, with good understanding of Spanish, and basic of Japanese. Attended Te Reo Maori beginner classes to learn basic vocabulary and pronunciation.
-ORCID ID: https://orcid.org/0000-0001-8250-4074
+I am fluent in English and Portuguese. I have an intermediate level of
+Spanish, and basic of Japanese and French. Attended Te Reo Maori
+beginner classes to learn basic vocabulary and pronunciation.
 
 
 ## <i class="fa fa-chevron-right"></i> Skills
@@ -26,15 +30,15 @@ Node.js, NumPy, Pandas, Spark, Spring, SpringBoot, Struts, Hadoop, Tornado, Lara
   </td>
 </tr>
 <tr>
-  <td>GIS</td>
-  <td markdown="1">
-PostGIS, QGIS, ArcGIS, gvSIG, WFS, WMS, SOS, and other OGC standards
-  </td>
-</tr>
-<tr>
   <td>Systems</td>
   <td markdown="1">
 Linux, OSX, Windows
+  </td>
+</tr>
+<tr>
+  <td>Other</td>
+  <td markdown="1">
+Open Source, GIS, Semantic Web, Linked Data, Natural Language Processing
   </td>
 </tr>
 </table>
@@ -52,47 +56,11 @@ Linux, OSX, Windows
     <td>March 2018</td>
   </tr>
   <tr>
-    <td>Invited to become an Apache OpenNLP PMC</td>
-    <td>July 2017</td>
-  </tr>
-  <tr>
-    <td>Invited to become an Apache OpenNLP Committer</td>
-    <td>April 2017</td>
-  </tr>
-  <tr>
-    <td>Invited to become an Apache Commons PMC</td>
-    <td>October 2016</td>
-  </tr>
-  <tr>
-    <td>Invited to become an Apache Jena PMC</td>
-    <td>March 2015</td>
-  </tr>
-  <tr>
-    <td>Invited to become an Apache Jena Committer</td>
-    <td>January 2015</td>
-  </tr>
-  <tr>
-    <td>Invited to become an Apache Commons Committer</td>
-    <td>August 2012</td>
-  </tr>
-  <tr>
-    <td>Organized two Jenkins meetups in Sao Paulo, Brazil</td>
-    <td>2012 and 2013</td>
-  </tr>
-</table>
-
-
-## <i class="fa fa-chevron-right"></i> Awards
-
-<table class="ui celled table">
-  <tr>
     <td>Spirit of GovHack for amazing team work</td>
-    <td>Auckland, New Zealand</td>
     <td>July 2016</td>
   </tr>
   <tr>
     <td>NIWA Proactive Communicator</td>
-    <td>Auckland, New Zealand</td>
     <td>February 2016</td>
   </tr>
 </table>
@@ -103,28 +71,90 @@ Linux, OSX, Windows
 <table class="ui celled table">
   <tr>
     <td>
-        <strong>Diploma in Business Administration</strong>
-      Mackenzie University
-    </td>
-    <td>January 2008 - July 2009</td>
-  </tr>
-  <tr>
-    <td>
-        <strong>B.S. in Information Systems</strong>
+        <strong>BSc Information Systems</strong>
       Mackenzie University
     </td>
     <td>August 2003 - July 2007</td>
   </tr>
+</table>
+
+
+## <i class="fa fa-chevron-right"></i> Training
+
+<table class="ui celled table">
   <tr>
-    <td>
-      Colegio Centenario (Sao Paulo, Sao Paulo, Brazil)
+    <td>Privacy 101 - the Office of the Privacy Commissioner's online eLearning module</td>
+    <td>Privacy Commissioner Te Mana Matapono Matatapu</td>
+    <td>        Online
     </td>
-    <td>December 2002</td>
+    <td>2021</td>
+  </tr>
+  <tr>
+    <td>Intro to Vue.js, Real World Vue.js, Advanced Components,
+Next-Level Vue, Mastering Vuex, Vue 3 Composition API,
+From Vue 2 to Vue 3, Vue 3 + Typescript
+</td>
+    <td>Vue Mastery</td>
+    <td>        Online
+    </td>
+    <td>2020</td>
+  </tr>
+  <tr>
+    <td>Building Web Applications in R with Shiny</td>
+    <td>DataCamp</td>
+    <td>        Online
+    </td>
+    <td>2018</td>
+  </tr>
+  <tr>
+    <td>OWASP NZ Day Advanced Web Hacking and Secure Coding</td>
+    <td>University of Auckland</td>
+    <td>        Auckland, New Zealand
+    </td>
+    <td>2017</td>
+  </tr>
+  <tr>
+    <td>AWS Concepts</td>
+    <td>Linux Academy</td>
+    <td>        Online
+    </td>
+    <td>2016</td>
+  </tr>
+  <tr>
+    <td>Basics of Geographic Coordinate Systems,
+Telling Your Story With Esri Story Maps,
+Achieving Interoperability Using ArcGIS and OGC Standards
+</td>
+    <td>Esri</td>
+    <td>        Auckland, New Zealand
+    </td>
+    <td>2016</td>
+  </tr>
+  <tr>
+    <td>OWASP New Zealand day training</td>
+    <td>OWASP</td>
+    <td>        Auckland, New Zealand
+    </td>
+    <td>2016</td>
+  </tr>
+  <tr>
+    <td>Web Development with Servlets and JSP</td>
+    <td>Sun Microsystems</td>
+    <td>        Sao Paulo, Brazil
+    </td>
+    <td>2007</td>
+  </tr>
+  <tr>
+    <td>COBIT and Sarbanes-Oxley</td>
+    <td>Claro</td>
+    <td>        Sao Paulo, Brazil
+    </td>
+    <td>2006</td>
   </tr>
 </table>
 
 
-## <i class="fa fa-chevron-right"></i> Work Experience
+## <i class="fa fa-chevron-right"></i> Experience
 <table class="ui celled table">
 <tr>
   <td><strong>NIWA</strong>, Research Software Engineer</td>
@@ -185,229 +215,12 @@ Linux, OSX, Windows
 </table>
 
 
-## <i class="fa fa-chevron-right"></i> Technical Training
-
-<table class="ui celled table">
-  <tr>
-    <td>Vue 3 + Typescript</td>
-    <td>Vue Mastery</td>
-    <td>        Online
-    </td>
-    <td>2021</td>
-  </tr>
-  <tr>
-    <td>Pandas</td>
-    <td>Kaggle</td>
-    <td>        Online (Kaggle)
-    </td>
-    <td>2020</td>
-  </tr>
-  <tr>
-    <td>Intro to Machine Learning</td>
-    <td>Kaggle</td>
-    <td>        Online (Kaggle)
-    </td>
-    <td>2020</td>
-  </tr>
-  <tr>
-    <td>Data Science Math Skills</td>
-    <td>Duke University (Coursera)</td>
-    <td>        Online (Coursera)
-    </td>
-    <td>2020</td>
-  </tr>
-  <tr>
-    <td>Unconscious Bias (3 modules)</td>
-    <td>NIWA / SimTutor</td>
-    <td>        Online
-    </td>
-    <td>2020</td>
-  </tr>
-  <tr>
-    <td>Intro to Vue.js, Real World Vue.js, Advanced Components,
-Next-Level Vue, Mastering Vuex, Vue 3 Composition API,
-From Vue 2 to Vue 3
-</td>
-    <td>Vue Mastery</td>
-    <td>        Online
-    </td>
-    <td>2020</td>
-  </tr>
-  <tr>
-    <td>Building Web Applications in R with Shiny</td>
-    <td>DataCamp</td>
-    <td>        Online
-    </td>
-    <td>2018</td>
-  </tr>
-  <tr>
-    <td>Intermediate R Course - Practice Course</td>
-    <td>DataCamp</td>
-    <td>        Online
-    </td>
-    <td>2018</td>
-  </tr>
-  <tr>
-    <td>Intermediate R Course</td>
-    <td>DataCamp</td>
-    <td>        Online
-    </td>
-    <td>2018</td>
-  </tr>
-  <tr>
-    <td>Introduction to R Course</td>
-    <td>DataCamp</td>
-    <td>        Online
-    </td>
-    <td>2018</td>
-  </tr>
-  <tr>
-    <td>Level 1 Introduction to Sailing Keelboat Certificate</td>
-    <td>Royal New Zealand Yacht Squadron</td>
-    <td>        Auckland, New Zealand
-    </td>
-    <td>2018</td>
-  </tr>
-  <tr>
-    <td>OWASP NZ Day Advanced Web Hacking and Secure Coding</td>
-    <td>University of Auckland</td>
-    <td>        Auckland, New Zealand
-    </td>
-    <td>2017</td>
-  </tr>
-  <tr>
-    <td>AWS Concepts</td>
-    <td>Linux Academy</td>
-    <td>        Online
-    </td>
-    <td>2016</td>
-  </tr>
-  <tr>
-    <td>Apache Spark Essentials</td>
-    <td>Linux Academy</td>
-    <td>        Online
-    </td>
-    <td>2016</td>
-  </tr>
-  <tr>
-    <td>CS107: C++ Programming</td>
-    <td>Saylor Academy</td>
-    <td>        Online
-    </td>
-    <td>2016</td>
-  </tr>
-  <tr>
-    <td>OWASP New Zealand day training</td>
-    <td>OWASP</td>
-    <td>        Auckland, New Zealand
-    </td>
-    <td>2016</td>
-  </tr>
-  <tr>
-    <td>Linux Foundation Certified Systems Engineer</td>
-    <td>Linux Academy</td>
-    <td>        Online
-    </td>
-    <td>2015</td>
-  </tr>
-  <tr>
-    <td>Infrastructure Management with Puppet</td>
-    <td>Instruct</td>
-    <td>        Sao Paulo, Brazil
-    </td>
-    <td>2012</td>
-  </tr>
-  <tr>
-    <td>Basic concepts of change management</td>
-    <td>Nossa Caixa Bank</td>
-    <td>        Sao Paulo, Brazil
-    </td>
-    <td>2008</td>
-  </tr>
-  <tr>
-    <td>CA Harvest Software Change Admin and Config</td>
-    <td>CA</td>
-    <td>        Sao Paulo, Brazil
-    </td>
-    <td>2008</td>
-  </tr>
-  <tr>
-    <td>Hands-On Websphere Application Server</td>
-    <td>IBM</td>
-    <td>        Sao Paulo, Brazil
-    </td>
-    <td>2008</td>
-  </tr>
-  <tr>
-    <td>Business Intelligence</td>
-    <td>Claro</td>
-    <td>        Sao Paulo, Brazil
-    </td>
-    <td>2008</td>
-  </tr>
-  <tr>
-    <td>Information Security</td>
-    <td>Claro</td>
-    <td>        Sao Paulo, Brazil
-    </td>
-    <td>2007</td>
-  </tr>
-  <tr>
-    <td>Biometry applied in computer networks security</td>
-    <td>Mackenzie University</td>
-    <td>        Sao Paulo, Brazil
-    </td>
-    <td>2007</td>
-  </tr>
-  <tr>
-    <td>Web Development with Servlets and JSP</td>
-    <td>Sun Microsystems</td>
-    <td>        Sao Paulo, Brazil
-    </td>
-    <td>2007</td>
-  </tr>
-  <tr>
-    <td>COBIT and Sarbanes-Oxley</td>
-    <td>Claro</td>
-    <td>        Sao Paulo, Brazil
-    </td>
-    <td>2006</td>
-  </tr>
-  <tr>
-    <td>Genexus Programming</td>
-    <td>Procwork (Sonda)</td>
-    <td>        Sao Paulo, Brazil
-    </td>
-    <td>2004</td>
-  </tr>
-  <tr>
-    <td>Microsoft Certified Solutions Associate career</td>
-    <td>Bras e Figueiredo</td>
-    <td>        Sao Paulo, Brazil
-    </td>
-    <td>2003</td>
-  </tr>
-</table>
-
-
 ## <i class="fa fa-chevron-right"></i> Certifications
 
 <table class="ui celled table">
   <tr>
-    <td>Japanese-Language Proficiency Test (JLPT) N4</td>
-    <td>2019</td>
-  </tr>
-  <tr>
     <td>gvSIG User Certificate</td>
     <td>2018</td>
-  </tr>
-  <tr>
-    <td>Japanese-Language Proficiency Test (JLPT) N5</td>
-    <td>2018</td>
-  </tr>
-  <tr>
-    <td>LFCE Linux Foundation Certified Engineer</td>
-    <td>2015</td>
   </tr>
   <tr>
     <td>Professional Scrum Master I (scrum.org)</td>
@@ -421,45 +234,4 @@ From Vue 2 to Vue 3
     <td>SCWCD Sun Certified Web Component Developer</td>
     <td>2009</td>
   </tr>
-  <tr>
-    <td>ITIL Foundation V2</td>
-    <td>2009</td>
-  </tr>
-  <tr>
-    <td>COBIT Foundation V4.1</td>
-    <td>2009</td>
-  </tr>
-  <tr>
-    <td>CA Software Change Manager Administration</td>
-    <td>2008</td>
-  </tr>
-  <tr>
-    <td>SCJP Sun Certified Java Programmer</td>
-    <td>2006</td>
-  </tr>
-  <tr>
-    <td>MCP Microsoft Certified Professional Windows 2000</td>
-    <td>2003</td>
-  </tr>
 </table>
-
-
-## <i class="fa fa-chevron-right"></i> Interests and Hobbies
-
-<table class="ui celled table">
-  <tr>
-    <td>Bioinformatics, semantic web, linked data, animation pipelines, NLP, fuzzy logic, and GIS.</td>
-  </tr>
-  <tr>
-    <td>Sci-fi books, short stories, comics, movies.</td>
-  </tr>
-  <tr>
-    <td>Learning about new cultures, but in special Japanese, Brazilian, and Irish.</td>
-  </tr>
-  <tr>
-    <td>Slack line, swimming, judo, and soccer.</td>
-  </tr>
-</table>
-
-
- I wrote articles that have been published in different magazines, and also spoke in conferences in some countries. The complete list is available in my web site. For a list of Open Source projects that I contribute to, look at my GitHub profile. I have three software registered with Brazilian INPI (512018001048-2, 512018001051-2, and 512018001052-0) through Federal University of Amapa Foundation. Mentored in GSoC 2020, a new plug-in for Jenkins called Machine Learning Plug-in. References available upon request.
