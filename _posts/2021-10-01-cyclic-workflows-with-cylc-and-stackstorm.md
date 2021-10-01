@@ -10,10 +10,7 @@ note: |
     Most workflow managers focus on the DAG. Very few support cyclic workflows.
 ---
 
-If you look for a workflow manager that supports Directed Cyclic Graphs, you may be surprised
-to see it is rarely mentioned.
-
-I have seen only two workflow managers that support cyclic workflows.
+I am aware of only two workflow managers that support cyclic workflows.
 [Cylc](https://cylc.github.io/) and [StackStorm](https://stackstorm.com/). I won't
 enter into details about these two tools, but I must note that I worked on Cylc
 during my employment with NIWA, in New Zealand.
