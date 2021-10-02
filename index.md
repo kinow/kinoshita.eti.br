@@ -19,7 +19,7 @@ title: About
         <img
           class="photo"
           src="{{ '/assets/photos/about/2015-sao-paulo-thumbnail.jpg' | relative_url }}"
-          title="São Paulo city from Terraço Itália, 2015"
+          title="Photo of São Paulo city from Terraço Itália, 2015"
         />
       </a>
       <a href="#" class="lightbox" id="photo1">
@@ -31,7 +31,7 @@ title: About
         <img
           class="photo"
           src="{{ '/assets/photos/about/2017-auckland-thumbnail.jpg' | relative_url }}"
-          title="Auckland city from Sky Tower, 2017"
+          title="Photo of Auckland city from Sky Tower, 2017"
         />
       </a>
       <a href="#" class="lightbox" id="photo2">
@@ -43,7 +43,7 @@ title: About
         <img
           class="photo"
           src="{{ '/assets/photos/about/2020-me-thumbnail.png' | relative_url }}"
-          title="Me in 2020"
+          title="Head shot of myself in 2020"
         />
       </a>
       <a href="#" class="lightbox" id="photo3">
