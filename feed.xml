@@ -1,4 +1,211 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.0">Jekyll</generator><link href="https://kinoshita.eti.br/feed.xml" rel="self" type="application/atom+xml" /><link href="https://kinoshita.eti.br/" rel="alternate" type="text/html" /><updated>2021-10-17T15:15:11+13:00</updated><id>https://kinoshita.eti.br/feed.xml</id><title type="html">kinow</title><subtitle>Bruno Kinoshita “kinow” personal home page</subtitle><entry><title type="html">Cyclic Workflows with Cylc and StackStorm</title><link href="https://kinoshita.eti.br/2021/10/01/cyclic-workflows-with-cylc-and-stackstorm.html" rel="alternate" type="text/html" title="Cyclic Workflows with Cylc and StackStorm" /><published>2021-10-01T00:00:00+13:00</published><updated>2021-10-01T00:00:00+13:00</updated><id>https://kinoshita.eti.br/2021/10/01/cyclic-workflows-with-cylc-and-stackstorm</id><content type="html" xml:base="https://kinoshita.eti.br/2021/10/01/cyclic-workflows-with-cylc-and-stackstorm.html">&lt;p&gt;I am aware of only two workflow managers that support cyclic workflows.
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.0">Jekyll</generator><link href="https://kinoshita.eti.br/feed.xml" rel="self" type="application/atom+xml" /><link href="https://kinoshita.eti.br/" rel="alternate" type="text/html" /><updated>2021-10-17T17:51:16+13:00</updated><id>https://kinoshita.eti.br/feed.xml</id><title type="html">kinow</title><subtitle>Bruno Kinoshita “kinow” personal home page</subtitle><entry><title type="html">Blender rendering on NVIDIA Jetson Nano</title><link href="https://kinoshita.eti.br/2021/10/17/blender-rendering-on-nvidia-jetson-nano.html" rel="alternate" type="text/html" title="Blender rendering on NVIDIA Jetson Nano" /><published>2021-10-17T00:00:00+13:00</published><updated>2021-10-17T00:00:00+13:00</updated><id>https://kinoshita.eti.br/2021/10/17/blender-rendering-on-nvidia-jetson-nano</id><content type="html" xml:base="https://kinoshita.eti.br/2021/10/17/blender-rendering-on-nvidia-jetson-nano.html">&lt;p&gt;&lt;img src=&quot;/assets/posts/2021-10-17-blender-rendering-on-nvidia-jetson-nano/jetson.jpg&quot; alt=&quot;NVIDIA Jetson Nano computer&quot; class=&quot;center-aligned&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;I had used Blender during my graduation at the Mackenzie University and started learning
+Blender 2.8+ again a few weeks ago. Unfortunately rendering the basic tutorials like Andrew
+Price’s donut takes several minutes on my old (but excellent for programming) Thinkpad
+T550 i7 16 GB with a simple Samsung SSD. The reason is that my GPU, a
+&lt;a href=&quot;https://www.techpowerup.com/gpu-specs/nvs-5400m.c1742&quot;&gt;NVIDIA NVS 5400M&lt;/a&gt;
+with 2 GB memory and 96 cores cannot be used with Blender as it only supports CUDA 2.1.
+Blender 2.8+ GPU rendering requires CUDA 3.0 and higher, which means Blender Cycles
+render is using my CPU, which is slower than using a decent GPU.&lt;/p&gt;
+
+&lt;p&gt;Since I am really happy with my (refurbished) Thinkpad T550 and prefer to avoid buying
+a new computer unless I really need to, my first idea was a GPU (egpu). These are simple
+kits that allow you to connect a GPU to a notebook like mine using an adapter and some
+port like thunderbolt, m.2 (removing wi-fi card), etc. But all these options are expensive
+and the bandwidth is not near as good as using a GPU plugged in the motherboard.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/posts/2021-10-17-blender-rendering-on-nvidia-jetson-nano/donut.png&quot; alt=&quot;Andrew Price (Blender Guru) donut&quot; class=&quot;center-aligned&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;A few months ago I heard about the &lt;a href=&quot;https://developer.nvidia.com/embedded/jetson-nano&quot;&gt;NVIDIA Jetson Nano&lt;/a&gt;
+board computer. They are small board computers for embedded applications. Using an
+ARM CPU and equipped with &lt;a href=&quot;https://www.techpowerup.com/gpu-specs/jetson-nano-gpu.c3643&quot;&gt;a GPU&lt;/a&gt;
+with &lt;strong&gt;128 cores&lt;/strong&gt;. The computer has &lt;strong&gt;4 GB memory that is shared between the operating
+system and the graphics processor&lt;/strong&gt;. And the NVIDIA Jetson Nano GPU supports CUDA 5.3,
+which means it can be used by Blender to render scenes in the GPU.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/posts/2021-10-17-blender-rendering-on-nvidia-jetson-nano/suzanne.png&quot; alt=&quot;A blender scene with Suzanne and modifiers&quot; class=&quot;center-aligned&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;After following the Jetson Nano documentation to install it using an SD disk,
+and enabling the performance overclock mode, I used &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;apt-get&lt;/code&gt; to install Blender.
+The first thing I noticed is that it installed Blender 2.7. I tried downloading
+2.8 since I had a few files created with this version, but then I realized I had
+downloaded the x86_64 version. I couldn’t find 2.8 build for arm, so instead I
+selected two files:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;One with Suzanne, the Blender monkey, configured with smaller tiles and added
+a modifier to smooth it (I assumed that way it would use more of the GPU.)&lt;/li&gt;
+  &lt;li&gt;The other one was the Blender 2.7 &lt;a href=&quot;https://www.blender.org/download/demo-files/&quot;&gt;splash screen&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;I installed the same version of Blender, 2.7, on my Ubuntu Thinkpad, and configured the
+tiles size on both files, and selected GPU rendering. Then I &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;scp&lt;/code&gt;ed it to the NVIDIA
+Jetson Nano Ubuntu, and set the render engine back to CPU on my Ubuntu.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/posts/2021-10-17-blender-rendering-on-nvidia-jetson-nano/splashscreen.png&quot; alt=&quot;Blender 2.7 splash demo image&quot; class=&quot;center-aligned&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;First I rendered Suzanne on my Thinkpad using the CPU. It took &lt;strong&gt;11 seconds to render&lt;/strong&gt;
+the scene.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;kinow@ranma:~/Downloads/blender&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;/opt/blender-2.79-linux-glibc219-x86_64/blender &lt;span class=&quot;nt&quot;&gt;-b&lt;/span&gt; b-jetson.blend &lt;span class=&quot;nt&quot;&gt;-o&lt;/span&gt; ./ &lt;span class=&quot;nt&quot;&gt;-f&lt;/span&gt; 1
+found bundled python: /opt/blender-2.79-linux-glibc219-x86_64/2.79/python
+Read blend: /home/kinow/Downloads/blender/b-jetson.blend
+Fra:1 Mem:260.65M &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0.00M, Peak 525.85M&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; | Time:00:01.68 | Preparing Scene data
+Fra:1 Mem:260.67M &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0.00M, Peak 525.85M&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; | Time:00:01.68 | Preparing Scene data
+Fra:1 Mem:260.67M &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0.00M, Peak 525.85M&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; | Time:00:01.68 | Creating Shadowbuffers
+Fra:1 Mem:260.67M &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0.00M, Peak 525.85M&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; | Time:00:01.68 | Raytree.. preparing
+Fra:1 Mem:560.45M &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0.00M, Peak 560.45M&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; | Time:00:01.87 | Raytree.. building
+&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;...&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+Fra:1 Mem:545.16M &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0.00M, Peak 1012.27M&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; | Time:00:11.36 | Scene, Part 82-135
+Fra:1 Mem:544.70M &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0.00M, Peak 1012.27M&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; | Time:00:11.39 | Scene, Part 86-135
+Fra:1 Mem:16.93M &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0.00M, Peak 1012.27M&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; | Time:00:11.43 | Sce: Scene Ve:2016578 Fa:2182948 La:1
+Saved: &lt;span class=&quot;s1&quot;&gt;'./0001.png'&lt;/span&gt;
+ Time: 00:11.49 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Saving: 00:00.06&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Tried the same command on my NVIDIA Jetson Nano now. It took &lt;strong&gt;48 seconds&lt;/strong&gt;. Near 4 times
+longer than my old Thinkpad.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;root@kinow-jetson:/home/kinow# blender &lt;span class=&quot;nt&quot;&gt;-b&lt;/span&gt; b-jetson.blend &lt;span class=&quot;nt&quot;&gt;-o&lt;/span&gt; ./ &lt;span class=&quot;nt&quot;&gt;-f&lt;/span&gt; 1
+AL lib: &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;EE&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; UpdateDeviceParams: Failed to &lt;span class=&quot;nb&quot;&gt;set &lt;/span&gt;44100hz, got 48000hz instead
+Read blend: /home/kinow/b-jetson.blend
+Fra:1 Mem:260.50M &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0.00M, Peak 525.70M&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; | Time:00:05.27 | Preparing Scene data
+Fra:1 Mem:260.51M &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0.00M, Peak 525.70M&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; | Time:00:05.27 | Preparing Scene data
+&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;...&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+Fra:1 Mem:594.15M &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0.00M, Peak 727.22M&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; | Time:00:48.26 | Scene, Part 86-135
+Fra:1 Mem:16.78M &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0.00M, Peak 727.22M&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; | Time:00:48.36 | Sce: Scene Ve:2016578 Fa:2183144 La:1
+Saved: &lt;span class=&quot;s1&quot;&gt;'./0001.png'&lt;/span&gt;
+ Time: 00:48.53 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Saving: 00:00.17&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;I thought it could be because my scene was too simple for the CPU to render,
+so the GPU was being slower maybe due to the tile sizes or CPU&amp;lt;-&amp;gt;memory context
+switching.&lt;/p&gt;
+
+&lt;p&gt;So I tried the Splash screen now. &lt;strong&gt;01 hour and 53 minutes&lt;/strong&gt; on my Thinkpad.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Fra:1 Mem:2088.19M &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0.00M, Peak 4612.16M&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; | Time:01:53:53.18 | Sce: Scene Ve:0 Fa:0 La:0
+Saved: &lt;span class=&quot;s1&quot;&gt;'./0001.png'&lt;/span&gt;
+ Time: 01:53:54.08 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Saving: 00:00.90&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;And on the NVIDIA Jetson Nano, &lt;strong&gt;22 hours and 38 minutes&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Fra:1 Mem:2088.40M &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0.00M, Peak 4612.39M&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; | Time:22:38.00 | Sce: Scene Ve:0 Fa:0 La:0
+Saved: &lt;span class=&quot;s1&quot;&gt;'./0001.png'&lt;/span&gt;
+ Time: 22:38.22 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Saving: 00:00.21&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;I did a few more experiments using the Suzanne file. Tried different command line
+arguments, specifying the engine, number of threads, debug GPU to see if I could
+see any warnings. But alas I could not find a setup that could speed up the process.&lt;/p&gt;
+
+&lt;p&gt;Even tried a Python script I found in a forum to see this way the NVIDIA Jetson
+Nano board would perform better.&lt;/p&gt;
+
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;bpy&lt;/span&gt;
+
+
+&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;enable_gpus&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;device_type&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;use_cpus&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;False&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;preferences&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;bpy&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;context&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;preferences&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;cycles_preferences&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;preferences&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;addons&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;cycles&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;].&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;preferences&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;cuda_devices&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;opencl_devices&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;cycles_preferences&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;get_devices&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+
+    &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;device_type&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;CUDA&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;devices&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;cuda_devices&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;elif&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;device_type&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;OPENCL&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;devices&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;opencl_devices&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;raise&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;RuntimeError&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Unsupported device type&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+    &lt;span class=&quot;n&quot;&gt;activated_gpus&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[]&lt;/span&gt;
+
+    &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;device&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;devices&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;device&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;type&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;CPU&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+            &lt;span class=&quot;n&quot;&gt;device&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;use&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;use_cpus&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+            &lt;span class=&quot;n&quot;&gt;device&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;use&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;bp&quot;&gt;True&lt;/span&gt;
+            &lt;span class=&quot;n&quot;&gt;activated_gpus&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;append&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;device&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+    &lt;span class=&quot;n&quot;&gt;cycles_preferences&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;compute_device_type&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;device_type&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;bpy&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;context&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;scene&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;cycles&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;device&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;GPU&quot;&lt;/span&gt;
+
+    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;activated_gpus&lt;/span&gt;
+
+
+&lt;span class=&quot;n&quot;&gt;enable_gpus&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;CUDA&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;The render was about the same time, a little slower, probably because Blender
+needs to load and execute the Python script. After reading about users with
+slow render times (not necessarily because of egpu or board computer GPU’s),
+some users mentioned the kind of scene or file, and also the system memory.&lt;/p&gt;
+
+&lt;p&gt;My old Thinkpad has 16 GB memory, where normally about 14 GB are free for Blender
+to use while rendering. And even my old GPU, with its 2 GB dedicated memory would
+probably perform about the same I guess with Blender, if it supported newer CUDA
+versions (which means, if it also had a newer processor.)&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;kinow@ranma:~&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;nvidia-smi 
+Tue Sep 28 23:44:54 2021       
++-----------------------------------------------------------------------------+
+| NVIDIA-SMI 390.144                Driver Version: 390.144                   |
+|-------------------------------+----------------------+----------------------+
+| GPU  Name        Persistence-M| Bus-Id        Disp.A | Volatile Uncorr. ECC |
+| Fan  Temp  Perf  Pwr:Usage/Cap|         Memory-Usage | GPU-Util  Compute M. |
+|&lt;span class=&quot;o&quot;&gt;===============================&lt;/span&gt;+&lt;span class=&quot;o&quot;&gt;======================&lt;/span&gt;+&lt;span class=&quot;o&quot;&gt;======================&lt;/span&gt;|
+|   0  NVS 5400M           Off  | 00000000:01:00.0 N/A |                  N/A |
+| N/A   56C    P0    N/A /  N/A |    294MiB /   964MiB |     N/A      Default |
++-------------------------------+----------------------+----------------------+
+                                                                               
++-----------------------------------------------------------------------------+
+| Processes:                                                       GPU Memory |
+|  GPU       PID   Type   Process name                             Usage      |
+|&lt;span class=&quot;o&quot;&gt;=============================================================================&lt;/span&gt;|
+|    0                    Not Supported                                       |
++-----------------------------------------------------------------------------+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;The NVIDIA Jetson Nano, with no GUI (I uninstalled &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ubuntu-desktop&lt;/code&gt;, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;mousepad&lt;/code&gt;,
+and disabled firewall and any other service that I considered unnecessary for Blender)
+starts with ~600 MB of used memory, leaving 3.2 GB for Blender and for the GPU.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;kinow@kinow-jetson:~&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;./mem
+  mem free 3295.226562 MB mem total 3964.101562 MB mem used 668.875000 MB
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;My guess is that while the NVIDIA Jetson Nano board works well for AI and IoT
+applications that need the GPU for calculations that are not affected by the
+shared memory, rendering 3D scenes in Blender would still perform better in
+an egpu or in an environment with a new GPU.&lt;/p&gt;
+
+&lt;p&gt;But at least I confirmed that you can render files in these board computers, and
+it was a fun project. Things I am still thinking in trying someday:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Compile and try Blender 3.x for arm&lt;/li&gt;
+  &lt;li&gt;Learn more about the Blender Python API and try to write some sort of debug function&lt;/li&gt;
+  &lt;li&gt;Investigate if AI/machine learning applications have the same kind of problems (e.g.
+&lt;a href=&quot;https://github.com/tensorflow/tensorflow/issues/39486&quot;&gt;see this tensorflow issue&lt;/a&gt;)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;These boards are really fun, and support plugging cameras like the Raspberry Pi camera.
+So it could be used for things like &lt;a href=&quot;https://techcrunch.com/2018/06/01/count-your-bees-with-this-raspberry-pi-project/&quot;&gt;counting number of bees&lt;/a&gt;,
+or estimate the &lt;a href=&quot;https://www.youtube.com/watch?v=nUjGLjOmF7o&amp;amp;list=WL&amp;amp;index=14&quot;&gt;pose of a body&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;With dedicated memory for the graphics processor, it could probably perform a lot
+better, but the CPU would also have to be improved a little, as well as the power
+unit… and I suspect the cost would increase too. So not sure if at that point it
+would not make more sense to buy an egpu or a dedicated workstation for Blender.&lt;/p&gt;
+
+&lt;p&gt;For now, I am keeping my Thinkpad and will keep thinking how to improve my rendering
+time.&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Special thanks to Luke Reid for donating his NVIDIA Jetson Nano so I could test it
+with Blender&lt;/p&gt;
+&lt;/blockquote&gt;</content><author><name></name></author><category term="blog" /><category term="opensource" /><category term="blender" /><summary type="html">I had used Blender during my graduation at the Mackenzie University and started learning Blender 2.8+ again a few weeks ago. Unfortunately rendering the basic tutorials like Andrew Price’s donut takes several minutes on my old (but excellent for programming) Thinkpad T550 i7 16 GB with a simple Samsung SSD. The reason is that my GPU, a NVIDIA NVS 5400M with 2 GB memory and 96 cores cannot be used with Blender as it only supports CUDA 2.1. Blender 2.8+ GPU rendering requires CUDA 3.0 and higher, which means Blender Cycles render is using my CPU, which is slower than using a decent GPU. Since I am really happy with my (refurbished) Thinkpad T550 and prefer to avoid buying a new computer unless I really need to, my first idea was a GPU (egpu). These are simple kits that allow you to connect a GPU to a notebook like mine using an adapter and some port like thunderbolt, m.2 (removing wi-fi card), etc. But all these options are expensive and the bandwidth is not near as good as using a GPU plugged in the motherboard. A few months ago I heard about the NVIDIA Jetson Nano board computer. They are small board computers for embedded applications. Using an ARM CPU and equipped with a GPU with 128 cores. The computer has 4 GB memory that is shared between the operating system and the graphics processor. And the NVIDIA Jetson Nano GPU supports CUDA 5.3, which means it can be used by Blender to render scenes in the GPU. After following the Jetson Nano documentation to install it using an SD disk, and enabling the performance overclock mode, I used apt-get to install Blender. The first thing I noticed is that it installed Blender 2.7. I tried downloading 2.8 since I had a few files created with this version, but then I realized I had downloaded the x86_64 version. I couldn’t find 2.8 build for arm, so instead I selected two files: One with Suzanne, the Blender monkey, configured with smaller tiles and added a modifier to smooth it (I assumed that way it would use more of the GPU.) The other one was the Blender 2.7 splash screen I installed the same version of Blender, 2.7, on my Ubuntu Thinkpad, and configured the tiles size on both files, and selected GPU rendering. Then I scped it to the NVIDIA Jetson Nano Ubuntu, and set the render engine back to CPU on my Ubuntu. First I rendered Suzanne on my Thinkpad using the CPU. It took 11 seconds to render the scene. kinow@ranma:~/Downloads/blender$ /opt/blender-2.79-linux-glibc219-x86_64/blender -b b-jetson.blend -o ./ -f 1 found bundled python: /opt/blender-2.79-linux-glibc219-x86_64/2.79/python Read blend: /home/kinow/Downloads/blender/b-jetson.blend Fra:1 Mem:260.65M (0.00M, Peak 525.85M) | Time:00:01.68 | Preparing Scene data Fra:1 Mem:260.67M (0.00M, Peak 525.85M) | Time:00:01.68 | Preparing Scene data Fra:1 Mem:260.67M (0.00M, Peak 525.85M) | Time:00:01.68 | Creating Shadowbuffers Fra:1 Mem:260.67M (0.00M, Peak 525.85M) | Time:00:01.68 | Raytree.. preparing Fra:1 Mem:560.45M (0.00M, Peak 560.45M) | Time:00:01.87 | Raytree.. building (...) Fra:1 Mem:545.16M (0.00M, Peak 1012.27M) | Time:00:11.36 | Scene, Part 82-135 Fra:1 Mem:544.70M (0.00M, Peak 1012.27M) | Time:00:11.39 | Scene, Part 86-135 Fra:1 Mem:16.93M (0.00M, Peak 1012.27M) | Time:00:11.43 | Sce: Scene Ve:2016578 Fa:2182948 La:1 Saved: './0001.png' Time: 00:11.49 (Saving: 00:00.06) Tried the same command on my NVIDIA Jetson Nano now. It took 48 seconds. Near 4 times longer than my old Thinkpad. root@kinow-jetson:/home/kinow# blender -b b-jetson.blend -o ./ -f 1 AL lib: (EE) UpdateDeviceParams: Failed to set 44100hz, got 48000hz instead Read blend: /home/kinow/b-jetson.blend Fra:1 Mem:260.50M (0.00M, Peak 525.70M) | Time:00:05.27 | Preparing Scene data Fra:1 Mem:260.51M (0.00M, Peak 525.70M) | Time:00:05.27 | Preparing Scene data (...) Fra:1 Mem:594.15M (0.00M, Peak 727.22M) | Time:00:48.26 | Scene, Part 86-135 Fra:1 Mem:16.78M (0.00M, Peak 727.22M) | Time:00:48.36 | Sce: Scene Ve:2016578 Fa:2183144 La:1 Saved: './0001.png' Time: 00:48.53 (Saving: 00:00.17) I thought it could be because my scene was too simple for the CPU to render, so the GPU was being slower maybe due to the tile sizes or CPU&amp;lt;-&amp;gt;memory context switching. So I tried the Splash screen now. 01 hour and 53 minutes on my Thinkpad. Fra:1 Mem:2088.19M (0.00M, Peak 4612.16M) | Time:01:53:53.18 | Sce: Scene Ve:0 Fa:0 La:0 Saved: './0001.png' Time: 01:53:54.08 (Saving: 00:00.90) And on the NVIDIA Jetson Nano, 22 hours and 38 minutes. Fra:1 Mem:2088.40M (0.00M, Peak 4612.39M) | Time:22:38.00 | Sce: Scene Ve:0 Fa:0 La:0 Saved: './0001.png' Time: 22:38.22 (Saving: 00:00.21) I did a few more experiments using the Suzanne file. Tried different command line arguments, specifying the engine, number of threads, debug GPU to see if I could see any warnings. But alas I could not find a setup that could speed up the process. Even tried a Python script I found in a forum to see this way the NVIDIA Jetson Nano board would perform better. import bpy def enable_gpus(device_type, use_cpus=False): preferences = bpy.context.preferences cycles_preferences = preferences.addons[&quot;cycles&quot;].preferences cuda_devices, opencl_devices = cycles_preferences.get_devices() if device_type == &quot;CUDA&quot;: devices = cuda_devices elif device_type == &quot;OPENCL&quot;: devices = opencl_devices else: raise RuntimeError(&quot;Unsupported device type&quot;) activated_gpus = [] for device in devices: if device.type == &quot;CPU&quot;: device.use = use_cpus else: device.use = True activated_gpus.append(device.name) cycles_preferences.compute_device_type = device_type bpy.context.scene.cycles.device = &quot;GPU&quot; return activated_gpus enable_gpus(&quot;CUDA&quot;) The render was about the same time, a little slower, probably because Blender needs to load and execute the Python script. After reading about users with slow render times (not necessarily because of egpu or board computer GPU’s), some users mentioned the kind of scene or file, and also the system memory. My old Thinkpad has 16 GB memory, where normally about 14 GB are free for Blender to use while rendering. And even my old GPU, with its 2 GB dedicated memory would probably perform about the same I guess with Blender, if it supported newer CUDA versions (which means, if it also had a newer processor.) kinow@ranma:~$ nvidia-smi Tue Sep 28 23:44:54 2021 +-----------------------------------------------------------------------------+ | NVIDIA-SMI 390.144 Driver Version: 390.144 | |-------------------------------+----------------------+----------------------+ | GPU Name Persistence-M| Bus-Id Disp.A | Volatile Uncorr. ECC | | Fan Temp Perf Pwr:Usage/Cap| Memory-Usage | GPU-Util Compute M. | |===============================+======================+======================| | 0 NVS 5400M Off | 00000000:01:00.0 N/A | N/A | | N/A 56C P0 N/A / N/A | 294MiB / 964MiB | N/A Default | +-------------------------------+----------------------+----------------------+ +-----------------------------------------------------------------------------+ | Processes: GPU Memory | | GPU PID Type Process name Usage | |=============================================================================| | 0 Not Supported | +-----------------------------------------------------------------------------+ The NVIDIA Jetson Nano, with no GUI (I uninstalled ubuntu-desktop, mousepad, and disabled firewall and any other service that I considered unnecessary for Blender) starts with ~600 MB of used memory, leaving 3.2 GB for Blender and for the GPU. kinow@kinow-jetson:~$ ./mem mem free 3295.226562 MB mem total 3964.101562 MB mem used 668.875000 MB My guess is that while the NVIDIA Jetson Nano board works well for AI and IoT applications that need the GPU for calculations that are not affected by the shared memory, rendering 3D scenes in Blender would still perform better in an egpu or in an environment with a new GPU. But at least I confirmed that you can render files in these board computers, and it was a fun project. Things I am still thinking in trying someday: Compile and try Blender 3.x for arm Learn more about the Blender Python API and try to write some sort of debug function Investigate if AI/machine learning applications have the same kind of problems (e.g. see this tensorflow issue) These boards are really fun, and support plugging cameras like the Raspberry Pi camera. So it could be used for things like counting number of bees, or estimate the pose of a body. With dedicated memory for the graphics processor, it could probably perform a lot better, but the CPU would also have to be improved a little, as well as the power unit… and I suspect the cost would increase too. So not sure if at that point it would not make more sense to buy an egpu or a dedicated workstation for Blender. For now, I am keeping my Thinkpad and will keep thinking how to improve my rendering time. Special thanks to Luke Reid for donating his NVIDIA Jetson Nano so I could test it with Blender</summary></entry><entry><title type="html">Cyclic Workflows with Cylc and StackStorm</title><link href="https://kinoshita.eti.br/2021/10/01/cyclic-workflows-with-cylc-and-stackstorm.html" rel="alternate" type="text/html" title="Cyclic Workflows with Cylc and StackStorm" /><published>2021-10-01T00:00:00+13:00</published><updated>2021-10-01T00:00:00+13:00</updated><id>https://kinoshita.eti.br/2021/10/01/cyclic-workflows-with-cylc-and-stackstorm</id><content type="html" xml:base="https://kinoshita.eti.br/2021/10/01/cyclic-workflows-with-cylc-and-stackstorm.html">&lt;p&gt;I am aware of only two workflow managers that support cyclic workflows.
 &lt;a href=&quot;https://cylc.github.io/&quot;&gt;Cylc&lt;/a&gt; and &lt;a href=&quot;https://stackstorm.com/&quot;&gt;StackStorm&lt;/a&gt;. I won’t
 enter into details about these two tools, but I must note that I worked on Cylc
 during my employment with NIWA, in New Zealand.&lt;/p&gt;
@@ -189,22 +396,4 @@ to “read” and can be used for social media and websites.&lt;/p&gt;</content>
 
 &lt;p&gt;&lt;img src=&quot;/assets/pages/art/images/yande-3.png&quot; alt=&quot;Yandê logo&quot; class=&quot;center-aligned&quot; /&gt;&lt;/p&gt;</content><author><name></name></author><category term="drawing" /><summary type="html">Logo created on Inkscape, based on ideas and sketches given by customer. Used both for the store and for the social media and web sites.</summary></entry><entry><title type="html">Figurative drawing line of action 2021-02-20</title><link href="https://kinoshita.eti.br/2021/02/20/figurative-drawing-line-of-action-2021-02-20.html" rel="alternate" type="text/html" title="Figurative drawing line of action 2021-02-20" /><published>2021-02-20T00:00:00+13:00</published><updated>2021-02-20T00:00:00+13:00</updated><id>https://kinoshita.eti.br/2021/02/20/figurative-drawing-line-of-action-2021-02-20</id><content type="html" xml:base="https://kinoshita.eti.br/2021/02/20/figurative-drawing-line-of-action-2021-02-20.html">&lt;p&gt;&lt;img src=&quot;/assets/pages/art/images/251.png&quot; alt=&quot;Figurative drawing from Line of Action site&quot; /&gt;&lt;/p&gt;</content><author><name></name></author><category term="drawing" /><summary type="html"></summary></entry><entry><title type="html">Rooster</title><link href="https://kinoshita.eti.br/2021/02/07/rooster.html" rel="alternate" type="text/html" title="Rooster" /><published>2021-02-07T00:00:00+13:00</published><updated>2021-02-07T00:00:00+13:00</updated><id>https://kinoshita.eti.br/2021/02/07/rooster</id><content type="html" xml:base="https://kinoshita.eti.br/2021/02/07/rooster.html">&lt;p&gt;Created in Krita from reference photo.&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/assets/pages/art/images/FRANGO.png&quot; alt=&quot;Digital drawing of a rooster&quot; class=&quot;center-aligned&quot; /&gt;&lt;/p&gt;</content><author><name></name></author><category term="editorial illustration" /><summary type="html">Created in Krita from reference photo.</summary></entry><entry><title type="html">Auckland CBD Life Drawing 2021-02-01</title><link href="https://kinoshita.eti.br/2021/02/01/auckland-cbd-life-drawing-2021-02-01.html" rel="alternate" type="text/html" title="Auckland CBD Life Drawing 2021-02-01" /><published>2021-02-01T00:00:00+13:00</published><updated>2021-02-01T00:00:00+13:00</updated><id>https://kinoshita.eti.br/2021/02/01/auckland-cbd-life-drawing-2021-02-01</id><content type="html" xml:base="https://kinoshita.eti.br/2021/02/01/auckland-cbd-life-drawing-2021-02-01.html">&lt;p&gt;&lt;a id=&quot;1&quot;&gt;
-&lt;img class=&quot;ui fluid image&quot; src=&quot;/assets/pages/art/images/230.png&quot; alt=&quot;Figure drawing from life model&quot; /&gt;
-&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;a id=&quot;2&quot;&gt;
-&lt;img class=&quot;ui fluid image&quot; src=&quot;/assets/pages/art/images/231.png&quot; alt=&quot;Figure drawing from life model&quot; /&gt;
-&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;a id=&quot;3&quot;&gt;
-&lt;img class=&quot;ui fluid image&quot; src=&quot;/assets/pages/art/images/232.png&quot; alt=&quot;Figure drawing from life model&quot; /&gt;
-&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;a id=&quot;4&quot;&gt;
-&lt;img class=&quot;ui fluid image&quot; src=&quot;/assets/pages/art/images/233.png&quot; alt=&quot;Figure drawing from life model&quot; /&gt;
-&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;a id=&quot;5&quot;&gt;
-&lt;img class=&quot;ui fluid image&quot; src=&quot;/assets/pages/art/images/234.png&quot; alt=&quot;Figure drawing from life model&quot; /&gt;
-&lt;/a&gt;&lt;/p&gt;</content><author><name></name></author><category term="drawing" /><category term="sketchbook" /><category term="life drawing" /><category term="figurative drawing" /><summary type="html"></summary></entry></feed>
+&lt;p&gt;&lt;img src=&quot;/assets/pages/art/images/FRANGO.png&quot; alt=&quot;Digital drawing of a rooster&quot; class=&quot;center-aligned&quot; /&gt;&lt;/p&gt;</content><author><name></name></author><category term="editorial illustration" /><summary type="html">Created in Krita from reference photo.</summary></entry></feed>
