@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1" /><!-- Begin Jekyll SEO tag v2.7.1 -->
+<title>Cyclic Workflows with Prefect | kinow</title>
+<meta name="generator" content="Jekyll v3.9.0" />
+<meta property="og:title" content="Cyclic Workflows with Prefect" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Last month I wrote about Cyclic Workflows with Cylc and StackStorm and how few workflow managers support cyclic workflows. I was surprised today while reading Prefect documentation to see this paragraph: Most workflow frameworks act as if looping is impossible (stressing the Acyclic part of the DAG), but it’s actually trivial to implement. We simply dynamically unroll the loop, similar to how RNN gradients are sometimes computed. Image source: A Gentle Introduction to RNN Unrolling The API for cyclic workflows of Prefect appears to be limited when compared with Cylc and StackStorm, but they have a lot of integrations, and good documentation. I had to re-work the example from the previous post a bit, as using prep as entry point resulted in prep present in every cycle. Their dependency and constraints algorithm is probably re-executing the whole cycle, or there may be another way to have optional tasks that I couldn’t find. #!/bin/bash # file: workflow.py import prefect from prefect import task, Flow from prefect.engine.signals import LOOP import time INTERVAL=1 @task def prep(): cycle = prefect.context.get(&quot;task_loop_count&quot;, 1) logger = prefect.context.get(&quot;logger&quot;) time.sleep(INTERVAL) logger.info(f&quot;prep.{cycle} says hi!&quot;) @task def foo(): cycle = prefect.context.get(&quot;task_loop_count&quot;, 1) if cycle == 1: prep.run() logger = prefect.context.get(&quot;logger&quot;) time.sleep(INTERVAL) logger.info(f&quot;foo.{cycle} says hi!&quot;) bar.run() raise LOOP() @task def bar(): cycle = prefect.context.get(&quot;task_loop_count&quot;, 1) logger = prefect.context.get(&quot;logger&quot;) time.sleep(INTERVAL) logger.info(f&quot;bar.{cycle} says hi!&quot;) with Flow(&quot;hello-flow&quot;) as flow: foo() flow.run() #flow.visualize() # need to pip install prefect[&#39;viz&#39;] Running the workflow is really simple (simpler than both Cylc and StackStorm): python workflow.py (venv) kinow@ranma:/tmp$ python workflow.py [2021-11-08 21:37:20+1300] INFO - prefect.FlowRunner | Beginning Flow run for &#39;hello-flow&#39; [2021-11-08 21:37:20+1300] INFO - prefect.TaskRunner | Task &#39;foo&#39;: Starting task run... [2021-11-08 21:37:21+1300] INFO - prefect.foo | prep.1 says hi! [2021-11-08 21:37:22+1300] INFO - prefect.foo | foo.1 says hi! [2021-11-08 21:37:23+1300] INFO - prefect.foo | bar.1 says hi! [2021-11-08 21:37:24+1300] INFO - prefect.foo | foo.2 says hi! [2021-11-08 21:37:25+1300] INFO - prefect.foo | bar.2 says hi! [2021-11-08 21:37:26+1300] INFO - prefect.foo | foo.3 says hi! [2021-11-08 21:37:27+1300] INFO - prefect.foo | bar.3 says hi! [2021-11-08 21:37:28+1300] INFO - prefect.foo | foo.4 says hi! [2021-11-08 21:37:29+1300] INFO - prefect.foo | bar.4 says hi! ... I had seen the RNN graph unrolling algorithm mentioned in their documentation while working on decyclify. I believe more workflow managers will start supporting cyclic workflows soon. It adds some complexity to the code, but so it does add dependency management, good logging, configuration, distributed execution, and so on. I am not sure if the way I linked tasks is following best practices for Prefect. There may be better ways so that Prefect can handle restarting workflows, for instance. But if you want to run cyclic workflows, now you have —at least— three options." />
+<meta property="og:description" content="Last month I wrote about Cyclic Workflows with Cylc and StackStorm and how few workflow managers support cyclic workflows. I was surprised today while reading Prefect documentation to see this paragraph: Most workflow frameworks act as if looping is impossible (stressing the Acyclic part of the DAG), but it’s actually trivial to implement. We simply dynamically unroll the loop, similar to how RNN gradients are sometimes computed. Image source: A Gentle Introduction to RNN Unrolling The API for cyclic workflows of Prefect appears to be limited when compared with Cylc and StackStorm, but they have a lot of integrations, and good documentation. I had to re-work the example from the previous post a bit, as using prep as entry point resulted in prep present in every cycle. Their dependency and constraints algorithm is probably re-executing the whole cycle, or there may be another way to have optional tasks that I couldn’t find. #!/bin/bash # file: workflow.py import prefect from prefect import task, Flow from prefect.engine.signals import LOOP import time INTERVAL=1 @task def prep(): cycle = prefect.context.get(&quot;task_loop_count&quot;, 1) logger = prefect.context.get(&quot;logger&quot;) time.sleep(INTERVAL) logger.info(f&quot;prep.{cycle} says hi!&quot;) @task def foo(): cycle = prefect.context.get(&quot;task_loop_count&quot;, 1) if cycle == 1: prep.run() logger = prefect.context.get(&quot;logger&quot;) time.sleep(INTERVAL) logger.info(f&quot;foo.{cycle} says hi!&quot;) bar.run() raise LOOP() @task def bar(): cycle = prefect.context.get(&quot;task_loop_count&quot;, 1) logger = prefect.context.get(&quot;logger&quot;) time.sleep(INTERVAL) logger.info(f&quot;bar.{cycle} says hi!&quot;) with Flow(&quot;hello-flow&quot;) as flow: foo() flow.run() #flow.visualize() # need to pip install prefect[&#39;viz&#39;] Running the workflow is really simple (simpler than both Cylc and StackStorm): python workflow.py (venv) kinow@ranma:/tmp$ python workflow.py [2021-11-08 21:37:20+1300] INFO - prefect.FlowRunner | Beginning Flow run for &#39;hello-flow&#39; [2021-11-08 21:37:20+1300] INFO - prefect.TaskRunner | Task &#39;foo&#39;: Starting task run... [2021-11-08 21:37:21+1300] INFO - prefect.foo | prep.1 says hi! [2021-11-08 21:37:22+1300] INFO - prefect.foo | foo.1 says hi! [2021-11-08 21:37:23+1300] INFO - prefect.foo | bar.1 says hi! [2021-11-08 21:37:24+1300] INFO - prefect.foo | foo.2 says hi! [2021-11-08 21:37:25+1300] INFO - prefect.foo | bar.2 says hi! [2021-11-08 21:37:26+1300] INFO - prefect.foo | foo.3 says hi! [2021-11-08 21:37:27+1300] INFO - prefect.foo | bar.3 says hi! [2021-11-08 21:37:28+1300] INFO - prefect.foo | foo.4 says hi! [2021-11-08 21:37:29+1300] INFO - prefect.foo | bar.4 says hi! ... I had seen the RNN graph unrolling algorithm mentioned in their documentation while working on decyclify. I believe more workflow managers will start supporting cyclic workflows soon. It adds some complexity to the code, but so it does add dependency management, good logging, configuration, distributed execution, and so on. I am not sure if the way I linked tasks is following best practices for Prefect. There may be better ways so that Prefect can handle restarting workflows, for instance. But if you want to run cyclic workflows, now you have —at least— three options." />
+<link rel="canonical" href="https://kinoshita.eti.br/2021/11/08/cyclic-workflows-with-prefect.html" />
+<meta property="og:url" content="https://kinoshita.eti.br/2021/11/08/cyclic-workflows-with-prefect.html" />
+<meta property="og:site_name" content="kinow" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2021-11-08T00:00:00+13:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Cyclic Workflows with Prefect" />
+<script type="application/ld+json">
+{"description":"Last month I wrote about Cyclic Workflows with Cylc and StackStorm and how few workflow managers support cyclic workflows. I was surprised today while reading Prefect documentation to see this paragraph: Most workflow frameworks act as if looping is impossible (stressing the Acyclic part of the DAG), but it’s actually trivial to implement. We simply dynamically unroll the loop, similar to how RNN gradients are sometimes computed. Image source: A Gentle Introduction to RNN Unrolling The API for cyclic workflows of Prefect appears to be limited when compared with Cylc and StackStorm, but they have a lot of integrations, and good documentation. I had to re-work the example from the previous post a bit, as using prep as entry point resulted in prep present in every cycle. Their dependency and constraints algorithm is probably re-executing the whole cycle, or there may be another way to have optional tasks that I couldn’t find. #!/bin/bash # file: workflow.py import prefect from prefect import task, Flow from prefect.engine.signals import LOOP import time INTERVAL=1 @task def prep(): cycle = prefect.context.get(&quot;task_loop_count&quot;, 1) logger = prefect.context.get(&quot;logger&quot;) time.sleep(INTERVAL) logger.info(f&quot;prep.{cycle} says hi!&quot;) @task def foo(): cycle = prefect.context.get(&quot;task_loop_count&quot;, 1) if cycle == 1: prep.run() logger = prefect.context.get(&quot;logger&quot;) time.sleep(INTERVAL) logger.info(f&quot;foo.{cycle} says hi!&quot;) bar.run() raise LOOP() @task def bar(): cycle = prefect.context.get(&quot;task_loop_count&quot;, 1) logger = prefect.context.get(&quot;logger&quot;) time.sleep(INTERVAL) logger.info(f&quot;bar.{cycle} says hi!&quot;) with Flow(&quot;hello-flow&quot;) as flow: foo() flow.run() #flow.visualize() # need to pip install prefect[&#39;viz&#39;] Running the workflow is really simple (simpler than both Cylc and StackStorm): python workflow.py (venv) kinow@ranma:/tmp$ python workflow.py [2021-11-08 21:37:20+1300] INFO - prefect.FlowRunner | Beginning Flow run for &#39;hello-flow&#39; [2021-11-08 21:37:20+1300] INFO - prefect.TaskRunner | Task &#39;foo&#39;: Starting task run... [2021-11-08 21:37:21+1300] INFO - prefect.foo | prep.1 says hi! [2021-11-08 21:37:22+1300] INFO - prefect.foo | foo.1 says hi! [2021-11-08 21:37:23+1300] INFO - prefect.foo | bar.1 says hi! [2021-11-08 21:37:24+1300] INFO - prefect.foo | foo.2 says hi! [2021-11-08 21:37:25+1300] INFO - prefect.foo | bar.2 says hi! [2021-11-08 21:37:26+1300] INFO - prefect.foo | foo.3 says hi! [2021-11-08 21:37:27+1300] INFO - prefect.foo | bar.3 says hi! [2021-11-08 21:37:28+1300] INFO - prefect.foo | foo.4 says hi! [2021-11-08 21:37:29+1300] INFO - prefect.foo | bar.4 says hi! ... I had seen the RNN graph unrolling algorithm mentioned in their documentation while working on decyclify. I believe more workflow managers will start supporting cyclic workflows soon. It adds some complexity to the code, but so it does add dependency management, good logging, configuration, distributed execution, and so on. I am not sure if the way I linked tasks is following best practices for Prefect. There may be better ways so that Prefect can handle restarting workflows, for instance. But if you want to run cyclic workflows, now you have —at least— three options.","@type":"BlogPosting","url":"https://kinoshita.eti.br/2021/11/08/cyclic-workflows-with-prefect.html","headline":"Cyclic Workflows with Prefect","datePublished":"2021-11-08T00:00:00+13:00","dateModified":"2021-11-08T00:00:00+13:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://kinoshita.eti.br/2021/11/08/cyclic-workflows-with-prefect.html"},"@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/css/main.css" /><link type="application/atom+xml" rel="alternate" href="https://kinoshita.eti.br/feed.xml" title="kinow" /><link href="https://unpkg.com/pattern.css" rel="stylesheet" />
+
+</head>
+<body>
+<div id="mobile-menu"><div class="menu">
+  <ul class="menu">
+    <li class="item">
+      <h1 id="kinow">KINOW</h1>
+    </li>
+    <li class="item">
+      <a href="/" class="">About</a>
+    </li>
+    <li class="item">
+      <a href="/blog/" class="current">Blog</a>
+    </li>
+    <li class="item">
+      <a href="/portfolio/" class="">Portfolio</a>
+    </li>
+    <li class="item social-media-item">
+      <a href="https://www.instagram.com/brunokinoshita/" class="inline-link">
+        <img src="/assets/icons/instagram.png" class="inverted-image"  alt="Instagram link" />
+      </a>
+      <a href="https://twitter.com/kinow/" class="inline-link">
+        <img src="/assets/icons/twitter.png" class="inverted-image" alt="Twitter link" />
+      </a>
+      <a href="https://github.com/kinow/" class="inline-link">
+        <img src="/assets/icons/github.png" class="inverted-image" alt="GitHub link" />
+      </a>
+    </li>
+  </ul>
+</div>
+</div>
+<div id="wrapper">
+  <div id="sidebar"><div class="menu">
+  <ul class="menu">
+    <li class="item">
+      <h1 id="kinow">KINOW</h1>
+    </li>
+    <li class="item">
+      <a href="/" class="">About</a>
+    </li>
+    <li class="item">
+      <a href="/blog/" class="current">Blog</a>
+    </li>
+    <li class="item">
+      <a href="/portfolio/" class="">Portfolio</a>
+    </li>
+    <li class="item social-media-item">
+      <a href="https://www.instagram.com/brunokinoshita/" class="inline-link">
+        <img src="/assets/icons/instagram.png" class="inverted-image"  alt="Instagram link" />
+      </a>
+      <a href="https://twitter.com/kinow/" class="inline-link">
+        <img src="/assets/icons/twitter.png" class="inverted-image" alt="Twitter link" />
+      </a>
+      <a href="https://github.com/kinow/" class="inline-link">
+        <img src="/assets/icons/github.png" class="inverted-image" alt="GitHub link" />
+      </a>
+    </li>
+  </ul>
+</div>
+</div>
+  <div id="content">
+    <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Cyclic Workflows with Prefect</h1><div class="note"><p>This post is a sequel to last month’s <a href="/2021/10/01/cyclic-workflows-with-cylc-and-stackstorm.html">Cyclic Workflows with Cylc and StackStorm</a></p>
+</div>
+    <span class="post-meta">
+      <time class="dt-published" datetime="2021-11-08T00:00:00+13:00" itemprop="datePublished">Nov 8, 2021
+      </time>
+      <span>&mdash; star date: -301065.75.</span>
+      <span>
+        Number of words: 698.
+      </span></span>
+  </header>
+
+  
+
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <p><img src="/assets/posts/2021-11-08-cyclic-workflows-with-prefect/prefect.svg" alt="Prefect logo" class="center-aligned" /></p>
+
+<p>Last month I wrote about
+<a href="/2021/10/01/cyclic-workflows-with-cylc-and-stackstorm.html">Cyclic Workflows with Cylc and StackStorm</a>
+and how few workflow managers support cyclic workflows.</p>
+
+<p>I was surprised today while reading Prefect documentation to see this paragraph:</p>
+
+<blockquote>
+  <p>Most workflow frameworks act as if looping is impossible (stressing the Acyclic part of the DAG),
+but it’s actually trivial to implement. We simply dynamically unroll the loop, similar to how RNN
+gradients are sometimes computed.</p>
+</blockquote>
+
+<p><img src="/assets/posts/2021-11-08-cyclic-workflows-with-prefect/Example-of-Unrolled-RNN-on-the-forward-pass.png" alt="Example of Unrolled RNN on the forward-pass (image from https://machinelearningmastery.com/rnn-unrolling/)" class="center-aligned" /></p>
+
+<p><small>Image source: <a href="https://machinelearningmastery.com/rnn-unrolling/">A Gentle Introduction to RNN Unrolling
+</a></small></p>
+
+<p>The API for cyclic workflows of Prefect appears to be limited when compared with Cylc and
+StackStorm, but they have a lot of integrations, and good documentation.</p>
+
+<p>I had to re-work the example from the previous post a bit, as using <code class="language-plaintext highlighter-rouge">prep</code> as entry point
+resulted in <code class="language-plaintext highlighter-rouge">prep</code> present in every cycle. Their dependency and constraints algorithm is
+probably re-executing the whole cycle, or there may be another way to have optional tasks
+that I couldn’t find.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">#!/bin/bash
+# file: workflow.py
+</span><span class="kn">import</span> <span class="nn">prefect</span>
+<span class="kn">from</span> <span class="nn">prefect</span> <span class="kn">import</span> <span class="n">task</span><span class="p">,</span> <span class="n">Flow</span>
+<span class="kn">from</span> <span class="nn">prefect.engine.signals</span> <span class="kn">import</span> <span class="n">LOOP</span>
+<span class="kn">import</span> <span class="nn">time</span>
+
+<span class="n">INTERVAL</span><span class="o">=</span><span class="mi">1</span>
+
+
+<span class="o">@</span><span class="n">task</span>
+<span class="k">def</span> <span class="nf">prep</span><span class="p">():</span>
+    <span class="n">cycle</span> <span class="o">=</span> <span class="n">prefect</span><span class="p">.</span><span class="n">context</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">"task_loop_count"</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">logger</span> <span class="o">=</span> <span class="n">prefect</span><span class="p">.</span><span class="n">context</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">"logger"</span><span class="p">)</span>
+    <span class="n">time</span><span class="p">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">INTERVAL</span><span class="p">)</span>
+    <span class="n">logger</span><span class="p">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s">"prep.</span><span class="si">{</span><span class="n">cycle</span><span class="si">}</span><span class="s"> says hi!"</span><span class="p">)</span>
+
+<span class="o">@</span><span class="n">task</span>
+<span class="k">def</span> <span class="nf">foo</span><span class="p">():</span>
+    <span class="n">cycle</span> <span class="o">=</span> <span class="n">prefect</span><span class="p">.</span><span class="n">context</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">"task_loop_count"</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">cycle</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">prep</span><span class="p">.</span><span class="n">run</span><span class="p">()</span>
+    <span class="n">logger</span> <span class="o">=</span> <span class="n">prefect</span><span class="p">.</span><span class="n">context</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">"logger"</span><span class="p">)</span>
+    <span class="n">time</span><span class="p">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">INTERVAL</span><span class="p">)</span>
+    <span class="n">logger</span><span class="p">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s">"foo.</span><span class="si">{</span><span class="n">cycle</span><span class="si">}</span><span class="s"> says hi!"</span><span class="p">)</span>
+    <span class="n">bar</span><span class="p">.</span><span class="n">run</span><span class="p">()</span>
+    <span class="k">raise</span> <span class="n">LOOP</span><span class="p">()</span>
+
+<span class="o">@</span><span class="n">task</span>
+<span class="k">def</span> <span class="nf">bar</span><span class="p">():</span>
+    <span class="n">cycle</span> <span class="o">=</span> <span class="n">prefect</span><span class="p">.</span><span class="n">context</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">"task_loop_count"</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">logger</span> <span class="o">=</span> <span class="n">prefect</span><span class="p">.</span><span class="n">context</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">"logger"</span><span class="p">)</span>
+    <span class="n">time</span><span class="p">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">INTERVAL</span><span class="p">)</span>
+    <span class="n">logger</span><span class="p">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s">"bar.</span><span class="si">{</span><span class="n">cycle</span><span class="si">}</span><span class="s"> says hi!"</span><span class="p">)</span>
+
+
+<span class="k">with</span> <span class="n">Flow</span><span class="p">(</span><span class="s">"hello-flow"</span><span class="p">)</span> <span class="k">as</span> <span class="n">flow</span><span class="p">:</span>
+    <span class="n">foo</span><span class="p">()</span>
+
+<span class="n">flow</span><span class="p">.</span><span class="n">run</span><span class="p">()</span>
+<span class="c1">#flow.visualize() # need to pip install prefect['viz']
+</span></code></pre></div></div>
+
+<p>Running the workflow is really simple (simpler than both
+Cylc and StackStorm): <code class="language-plaintext highlighter-rouge">python workflow.py</code></p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">(</span>venv<span class="o">)</span> kinow@ranma:/tmp<span class="nv">$ </span>python workflow.py 
+<span class="o">[</span>2021-11-08 21:37:20+1300] INFO - prefect.FlowRunner | Beginning Flow run <span class="k">for</span> <span class="s1">'hello-flow'</span>
+<span class="o">[</span>2021-11-08 21:37:20+1300] INFO - prefect.TaskRunner | Task <span class="s1">'foo'</span>: Starting task run...
+<span class="o">[</span>2021-11-08 21:37:21+1300] INFO - prefect.foo | prep.1 says hi!
+<span class="o">[</span>2021-11-08 21:37:22+1300] INFO - prefect.foo | foo.1 says hi!
+<span class="o">[</span>2021-11-08 21:37:23+1300] INFO - prefect.foo | bar.1 says hi!
+<span class="o">[</span>2021-11-08 21:37:24+1300] INFO - prefect.foo | foo.2 says hi!
+<span class="o">[</span>2021-11-08 21:37:25+1300] INFO - prefect.foo | bar.2 says hi!
+<span class="o">[</span>2021-11-08 21:37:26+1300] INFO - prefect.foo | foo.3 says hi!
+<span class="o">[</span>2021-11-08 21:37:27+1300] INFO - prefect.foo | bar.3 says hi!
+<span class="o">[</span>2021-11-08 21:37:28+1300] INFO - prefect.foo | foo.4 says hi!
+<span class="o">[</span>2021-11-08 21:37:29+1300] INFO - prefect.foo | bar.4 says hi!
+...
+</code></pre></div></div>
+
+<p>I had seen the RNN graph unrolling algorithm mentioned in their documentation
+while working on <a href="https://github.com/kinow/decyclify">decyclify</a>. I believe more
+workflow managers will start supporting cyclic workflows soon. It adds some
+complexity to the code, but so it does add dependency management, good logging,
+configuration, distributed execution, and so on.</p>
+
+<p><img src="/assets/posts/2021-11-08-cyclic-workflows-with-prefect/graph-unroll.png" alt="Decyclify algorithm (image from https://github.com/kinow/decyclify)" class="center-aligned" /></p>
+
+<p>I am not sure if the way I linked tasks is following best practices for Prefect. There
+may be better ways so that Prefect can handle restarting workflows, for instance. But
+if you want to run cyclic workflows, now you have —at least— three options.</p>
+
+  </div>
+
+  <div class="tags"><p>Tags:&nbsp;<a class="label" href="/tag/opensource">opensource</a>.<br/></p></div>
+
+  <a class="u-url" href="/2021/11/08/cyclic-workflows-with-prefect.html" hidden></a>
+</article>
+
+  </div>
+</div>
+</body>
+</html>
