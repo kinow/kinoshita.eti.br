@@ -19,7 +19,7 @@ Last month I wrote about
 [Cyclic Workflows with Cylc and StackStorm](/2021/10/01/cyclic-workflows-with-cylc-and-stackstorm.html)
 and how few workflow managers support cyclic workflows.
 
-I was surprised today while reading Prefect documentation to see these paragraphs:
+I was surprised today while reading Prefect documentation to see this paragraph:
 
 > Most workflow frameworks act as if looping is impossible (stressing the Acyclic part of the DAG),
 > but it's actually trivial to implement. We simply dynamically unroll the loop, similar to how RNN
