@@ -22,15 +22,12 @@ else
 	YAML_FILES = $(INPUT_FILENAME)
 endif
 
-.PHONY: all public serve push clean
+.PHONY: all build build/cv.tex build/cv.md build/cv.pdf clean
 
 all: $(PDF) $(MD)
 
 $(BUILD_DIR):
 	mkdir -p $(BUILD_DIR)
-
-public: $(BUILD_DIR) $(TEMPLATES) $(YAML_FILES) generate.py
-	./generate.py cv.yaml
 
 $(TEX) $(MD): $(TEMPLATES) $(YAML_FILES) generate.py
 	./generate.py $(YAML_FILES)
