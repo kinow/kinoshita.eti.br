@@ -9,7 +9,7 @@ WEBSITE_MD=$(WEBSITE_DIR)/pages/cv.md
 
 TEMPLATES=$(shell find templates -type f)
 
-INPUT_FILENAME?=cv_frontend.yaml
+INPUT_FILENAME?=cv_backend.yaml
 
 BUILD_DIR=build
 TEX=$(BUILD_DIR)/cv.tex
