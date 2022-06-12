@@ -1,0 +1,52 @@
+#!/usr/bin/env python3
+
+from ruamel.yaml import YAML
+from pprint import pprint
+
+from rdflib.graph import Dataset, Graph, URIRef, RDF, BNode, Literal, Namespace
+
+def main():
+    yaml = YAML(typ='safe')
+    prefix = 'https://kinoshita.eti.br/books#'
+    dataset = Dataset()
+    # @prefix : <https://kinoshita.eti.br/books#>
+    dataset.bind("", Namespace(prefix))
+
+    # :books { ... }
+    graph = URIRef(prefix)
+    dataset.graph(identifier=graph)
+
+    # TODO: schema-salad-ify, validating the doc
+    with open('../../_data/books.yml') as doc:
+        # pprint(books)
+        books = yaml.load(doc)
+
+        for book in books:
+            blank_node = BNode()
+            dataset.add(
+                (
+                    blank_node, RDF.type, URIRef(f'{prefix}book'), graph
+                )
+            )
+            dataset.add(
+                (
+                    blank_node, URIRef(f'{prefix}title'), Literal(book['title']), graph
+                )
+            )
+            dataset.add(
+                (
+                    blank_node, URIRef(f'{prefix}author'), Literal(book['author']), graph
+                )
+            )
+            dataset.add(
+                (
+                    blank_node, URIRef(f'{prefix}link'), Literal(book.get('link', '')), graph
+                )
+            )
+
+#         print(len(books))
+#         print(len(dataset))
+    print(dataset.serialize(format="trig"))
+
+if __name__ == '__main__':
+    main()
