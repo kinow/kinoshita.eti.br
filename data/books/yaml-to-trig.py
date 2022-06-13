@@ -35,22 +35,20 @@ def main():
             )
             dataset.add(
                 (
-                    blank_node, URIRef(f'{prefix}title'), Literal(book['title']), graph
+                    blank_node, URIRef(f'{prefix}title'), Literal(book['title'].strip()), graph
                 )
             )
             dataset.add(
                 (
-                    blank_node, URIRef(f'{prefix}author'), Literal(book['author']), graph
+                    blank_node, URIRef(f'{prefix}author'), Literal(book['author'].strip()), graph
                 )
             )
             dataset.add(
                 (
-                    blank_node, URIRef(f'{prefix}link'), Literal(book.get('link', '')), graph
+                    blank_node, URIRef(f'{prefix}link'), Literal(book.get('link', '').strip()), graph
                 )
             )
 
-#         print(len(books))
-#         print(len(dataset))
     print(dataset.serialize(format="trig"))
 
 if __name__ == '__main__':
