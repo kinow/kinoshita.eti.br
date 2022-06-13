@@ -1,11 +1,10 @@
 #!/usr/bin/env python3
 
 from ruamel.yaml import YAML
-from pprint import pprint
 
 import schema_salad.main
 
-from rdflib.graph import Dataset, Graph, URIRef, RDF, BNode, Literal, Namespace
+from rdflib.graph import Dataset, URIRef, RDF, BNode, Literal, Namespace
 
 BOOKS_FILE='../../_data/books.yml'
 
@@ -20,12 +19,11 @@ def main():
     graph = URIRef(prefix)
     dataset.graph(identifier=graph)
 
-    # TODO: schema-salad-ify, validating the doc
+    # schema-salad-ify, validating the doc
 
     assert 0 == schema_salad.main.main(argsl=['Books-schema.yml', BOOKS_FILE])
 
     with open(BOOKS_FILE) as doc:
-        # pprint(books)
         books = yaml.load(doc)
 
         for book in books:
