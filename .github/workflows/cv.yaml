@@ -19,9 +19,11 @@ jobs:
           python-version: '3.9'
           architecture: 'x64'
           cache: 'pip'
-      - run: |
-          cd ./scripts/
-          cd ./cv/
+      - name: Dependencies
+        run: |
+          cd ./scripts/cv/
           pip install -r requirements.txt
+      - name: Build
+        run: |
           INPUT_FILENAME=cv_backend.yaml make
           ls build/
