@@ -32,3 +32,11 @@ jobs:
           INPUT_FILENAME=cv_backend.yaml make clean all
       - name: List directory
         run: ls -la ./scripts/cv/build/
+      - name: Copy build files
+        run: |
+          cp ./scripts/cv/build/cv.pdf ./cv_backend.pdf
+          cp ./scripts/cv/build/cv.md ./_pages/cv.md
+      - name: Commit new files
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: Update CV
