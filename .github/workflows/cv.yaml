@@ -1,0 +1,27 @@
+name: GitHub Pages
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - 'scripts/cv/**'
+  pull_request:
+    paths:
+      - 'scripts/cv/**'
+  workflow_dispatch:
+jobs:
+  build_and_deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+          architecture: 'x64'
+          cache: 'pip'
+      - run: |
+          cd ./scripts/
+          pip install -r requirements.txt
+          cv ./cv/
+          INPUT_FILENAME=cv_backend.yaml make
+          ls build/
