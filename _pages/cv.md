@@ -3,16 +3,22 @@ title: 'CV'
 layout: page
 ---
 
-In the past seventeen years have worked in different industries including
-telecommunications, banking, credit, retail, insurance, research, government,
-and start-ups. Occupied different positions such as programmer,
-quality engineer, devops, architect, full stack developer, big
-data engineer, and frontend developer. 
+I have **18 years of experience** in telecommunications, banking, credit, retail, insurance, research,
+government, civil construction, and start-ups. Having had a **wide variety of roles** including backend
+developer, quality engineer, devops, architect, full stack, big data engineer, research software engineer,
+and frontend developer.
 
 
-I am fluent in English and Portuguese. I have an intermediate level of
-Spanish, and basic of Japanese and French. Attended Te Reo Maori
-beginner classes to learn basic vocabulary and pronunciation.
+My main interests are NLP, Semantic Web, GIS, Workflow Management Systems, Data Journalism, and **Open Source**
+(including Community Management and Developer Relations). I am fluent in English and Portuguese. I have an
+intermediate level of Spanish and of Japanese, and basic of French and Te Reo M\=aori.
+
+
+I value the **impact of the project** (e.g. work on climate change, accessibility, inclusion, open data, disease
+control, education, research, etc.) over technology and salary. I am a New Zealand tax resident, able
+to work in person in New Zealand, Australia, and Latin America - otherwise visa sponsorship is required.
+
+ORCID ID: https://orcid.org/0000-0001-8250-4074
 
 
 ## <i class="fa fa-chevron-right"></i> Skills
@@ -20,25 +26,25 @@ beginner classes to learn basic vocabulary and pronunciation.
 <tr>
   <td>Languages</td>
   <td markdown="1">
-Java, Python, PHP, R, C/C++, CSS, HTML, JavaScript, Shell, Perl, SQL
+**Java**, **Python**, **JavaScript**, PHP, R, C/C++, CSS, HTML, TypeScript, Shell, Perl, SQL
   </td>
 </tr>
 <tr>
   <td>Frameworks</td>
   <td markdown="1">
-Node.js, NumPy, Pandas, Spark, Spring, SpringBoot, Struts, Hadoop, Tornado, Laravel
+Spring Boot, Tornado, asyncio, Symfony, Vue.js
   </td>
 </tr>
 <tr>
   <td>Systems</td>
   <td markdown="1">
-Linux, OSX, Windows
+**Linux**, **AWS**, **Docker**, **Singularity**, OSX, Windows
   </td>
 </tr>
 <tr>
   <td>Other</td>
   <td markdown="1">
-Open Source, GIS, Semantic Web, Linked Data, Natural Language Processing
+**Open Source**, **NLP**, **GIS**, **Semantic Web**, Linked Data, Community Management
   </td>
 </tr>
 </table>
@@ -48,20 +54,28 @@ Open Source, GIS, Semantic Web, Linked Data, Natural Language Processing
 
 <table class="ui celled table">
   <tr>
-    <td>GSoC Mentor, Jenkins Machine Learning Plug-in</td>
-    <td>March 2020, to September 2020</td>
+    <td>**Outreachy** Mentor, CZI Grant, wdl-cwl-translator</td>
+    <td>2022</td>
   </tr>
   <tr>
-    <td>Invited to become an Apache Software Foundation Member</td>
-    <td>March 2018</td>
+    <td>**Google Summer of Code (GSoC)** Mentor, Jenkins Machine Learning Plug-in</td>
+    <td>2020</td>
+  </tr>
+  <tr>
+    <td>Invited to become an **Apache Software Foundation** Member</td>
+    <td>2018</td>
   </tr>
   <tr>
     <td>Spirit of GovHack for amazing team work</td>
-    <td>July 2016</td>
+    <td>2016</td>
   </tr>
   <tr>
     <td>NIWA Proactive Communicator</td>
-    <td>February 2016</td>
+    <td>2016</td>
+  </tr>
+  <tr>
+    <td>Organized two **Jenkins** meetups in Sao Paulo, Brazil as local community manager</td>
+    <td>2012 - 2013</td>
   </tr>
 </table>
 
@@ -71,10 +85,17 @@ Open Source, GIS, Semantic Web, Linked Data, Natural Language Processing
 <table class="ui celled table">
   <tr>
     <td>
+        <strong>Diploma in Business Administration</strong>
+      Mackenzie University
+    </td>
+    <td>2008 - 2009</td>
+  </tr>
+  <tr>
+    <td>
         <strong>BSc Information Systems</strong>
       Mackenzie University
     </td>
-    <td>August 2003 - July 2007</td>
+    <td>2003 - 2007</td>
   </tr>
 </table>
 
@@ -83,19 +104,23 @@ Open Source, GIS, Semantic Web, Linked Data, Natural Language Processing
 
 <table class="ui celled table">
   <tr>
-    <td>Privacy 101 - the Office of the Privacy Commissioner's online eLearning module</td>
-    <td>Privacy Commissioner Te Mana Matapono Matatapu</td>
+    <td>Machine learning in Python with scikit-learn</td>
+    <td>INRIA</td>
+    <td>        Online (France Universit\'e Num\'erique MOOC)
+    </td>
+    <td>2022</td>
+  </tr>
+  <tr>
+    <td>Vue 3 + Typescript</td>
+    <td>Vue Mastery</td>
     <td>        Online
     </td>
     <td>2021</td>
   </tr>
   <tr>
-    <td>Intro to Vue.js, Real World Vue.js, Advanced Components,
-Next-Level Vue, Mastering Vuex, Vue 3 Composition API,
-From Vue 2 to Vue 3, Vue 3 + Typescript
-</td>
-    <td>Vue Mastery</td>
-    <td>        Online
+    <td>Data Science Math Skills</td>
+    <td>Duke University</td>
+    <td>        Online (Coursera)
     </td>
     <td>2020</td>
   </tr>
@@ -109,7 +134,7 @@ From Vue 2 to Vue 3, Vue 3 + Typescript
   <tr>
     <td>OWASP NZ Day Advanced Web Hacking and Secure Coding</td>
     <td>University of Auckland</td>
-    <td>        Auckland, New Zealand
+    <td>        New Zealand
     </td>
     <td>2017</td>
   </tr>
@@ -121,21 +146,18 @@ From Vue 2 to Vue 3, Vue 3 + Typescript
     <td>2016</td>
   </tr>
   <tr>
-    <td>Basics of Geographic Coordinate Systems,
-Telling Your Story With Esri Story Maps,
-Achieving Interoperability Using ArcGIS and OGC Standards
-</td>
-    <td>Esri</td>
-    <td>        Auckland, New Zealand
+    <td>Linux Foundation Certified Systems Engineer</td>
+    <td>Linux Academy</td>
+    <td>        Online
     </td>
-    <td>2016</td>
+    <td>2015</td>
   </tr>
   <tr>
-    <td>OWASP New Zealand day training</td>
-    <td>OWASP</td>
-    <td>        Auckland, New Zealand
+    <td>Statistics and R for the Life Sciences</td>
+    <td>edX</td>
+    <td>        Online
     </td>
-    <td>2016</td>
+    <td>2015</td>
   </tr>
   <tr>
     <td>Web Development with Servlets and JSP</td>
@@ -145,11 +167,11 @@ Achieving Interoperability Using ArcGIS and OGC Standards
     <td>2007</td>
   </tr>
   <tr>
-    <td>COBIT and Sarbanes-Oxley</td>
-    <td>Claro</td>
+    <td>Microsoft Certified Solutions Associate career</td>
+    <td>Br\'as e Figueiredo</td>
     <td>        Sao Paulo, Brazil
     </td>
-    <td>2006</td>
+    <td>2003</td>
   </tr>
 </table>
 
@@ -157,8 +179,12 @@ Achieving Interoperability Using ArcGIS and OGC Standards
 ## <i class="fa fa-chevron-right"></i> Experience
 <table class="ui celled table">
 <tr>
-  <td><strong>NIWA</strong>, Research Software Engineer</td>
-  <td>October 2018 - Today</td>
+  <td><strong>Curii (Remote NZ, Europe, and USA teams)</strong>, Software Engineer</td>
+  <td>Dec 2021 - actual</td>
+</tr>
+<tr>
+  <td><strong>NIWA (Remote NZ and UK teams)</strong>, Research Software Engineer</td>
+  <td>Oct 2018 - Oct 2021</td>
 </tr>
 <tr>
   <td><strong>NIWA</strong>, Java Engineer</td>
@@ -212,26 +238,4 @@ Achieving Interoperability Using ArcGIS and OGC Standards
   <td><strong>Claro</strong>, Value Added Services intern</td>
   <td>Jul 2004 - Dec 2005</td>
 </tr>
-</table>
-
-
-## <i class="fa fa-chevron-right"></i> Certifications
-
-<table class="ui celled table">
-  <tr>
-    <td>gvSIG User Certificate</td>
-    <td>2018</td>
-  </tr>
-  <tr>
-    <td>Professional Scrum Master I (scrum.org)</td>
-    <td>2011</td>
-  </tr>
-  <tr>
-    <td>ISTQB CTFL Certified Tester</td>
-    <td>2010</td>
-  </tr>
-  <tr>
-    <td>SCWCD Sun Certified Web Component Developer</td>
-    <td>2009</td>
-  </tr>
 </table>
