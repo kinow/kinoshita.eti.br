@@ -82,7 +82,11 @@
   <div id="content">
     <article class="post">
   <h1 class="ui header" id="top">Data</h1><ul>
-  <li><a href="#data">Data</a></li>
+  <li><a href="#data">Data</a>
+    <ul>
+      <li><a href="#serving">Serving</a></li>
+    </ul>
+  </li>
 </ul>
 
   <h1 id="data">Data</h1>
@@ -91,6 +95,27 @@
 
 <p>The data in this directory is intended to be temporarily used to create a new
 static site built on top of linked data.</p>
+
+<p>The data is stored as TriG files. Each file may contain none, one, or more
+graphs. These are supposed to be loaded into a server that supports SPARQL.</p>
+
+<h2 id="serving">Serving</h2>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker run <span class="nt">-p</span> 3030:3030 <span class="se">\</span>
+  <span class="nt">-e</span> <span class="nv">JVM_ARGS</span><span class="o">=</span><span class="nt">-Xmx2g</span> <span class="se">\</span>
+  <span class="nt">-e</span> <span class="nv">TDB</span><span class="o">=</span>2 <span class="se">\</span>
+  <span class="nt">-e</span> <span class="nv">FUSEKI_DATASET_1</span><span class="o">=</span>kinow <span class="se">\</span>
+  <span class="nt">-v</span> <span class="si">$(</span><span class="nb">pwd</span> <span class="nt">-P</span><span class="si">)</span>/fuseki:/fuseki <span class="se">\</span>
+  <span class="nt">--name</span> kinow-fuseki <span class="se">\</span>
+  stain/jena-fuseki
+</code></pre></div></div>
+
+<p>Useful commands:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker logs fuseki
+docker stop fuseki
+docker restart fuseki
+</code></pre></div></div>
 
 </article>
 
