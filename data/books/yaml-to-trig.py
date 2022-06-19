@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 from ruamel.yaml import YAML
-
+from html import unescape
 import schema_salad.main
 
 from rdflib.graph import Dataset, URIRef, RDF, BNode, Literal, Namespace
@@ -28,6 +28,8 @@ def main():
 
         for book in books:
             blank_node = BNode()
+            title = unescape(book['title'].strip())
+            author = unescape(book['author'].strip())
             dataset.add(
                 (
                     blank_node, RDF.type, URIRef(f'{prefix}book'), graph
@@ -35,12 +37,12 @@ def main():
             )
             dataset.add(
                 (
-                    blank_node, URIRef(f'{prefix}title'), Literal(book['title'].strip()), graph
+                    blank_node, URIRef(f'{prefix}title'), Literal(title), graph
                 )
             )
             dataset.add(
                 (
-                    blank_node, URIRef(f'{prefix}author'), Literal(book['author'].strip()), graph
+                    blank_node, URIRef(f'{prefix}author'), Literal(author), graph
                 )
             )
             dataset.add(
