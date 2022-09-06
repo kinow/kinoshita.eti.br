@@ -18,7 +18,10 @@ NLU can be seen as a subfield of NLP. NLP englobes all techniques used for parsi
 <figure>
 <a  href="/assets/posts{{page.path | remove: ".md" | remove: "_posts" }}/nlp-nlu.png" rel="prettyPhoto" class="thumbnail" title="NLP, NLU, and NLG">
 <img style="height: 400px;" class="ui image" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/nlp-nlu.png" alt="NLP, NLU, and NLG" />
-
+</a>
+</figure>
+</div>
+</div>
 
 When you are processing a language, it does not mean you are understanding the language. You may simply have rules, statistics, or some heuristics built to extract the information you need for some work.
 
@@ -37,6 +40,9 @@ NLP is an extremely interesting topic. 2001: A Space Odissey, Star Trek, The Fou
 <figure>
 <a  href="/assets/posts{{page.path | remove: ".md" | remove: "_posts" }}/spock-nlp.png" rel="prettyPhoto" class="thumbnail" title="NLP and Spock">
 <img style="height: 300px;" class="ui image" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/spock-nlp.png" alt="NLP and Spock" />
-
+</a>
+</figure>
+</div>
+</div>
 
 &hearts; NLP
