@@ -53,7 +53,7 @@ autosubmit;
 ```
 
 This container will be called `autosubmit` and contains the `autosubmit` command.
-It is the equivalent to a virtual machine with Autosubmit, used to submit workflows.
+It is the equivalent to a virtual machine with Autosubmit used to submit workflows.
 
 The `Dockerfile` for Autosubmit, based on Airflow (thanks!). This file can be saved
 somewhere, like `autosubmit/docker/` (i.e. inside the Autosubmit checked out source
@@ -62,7 +62,10 @@ code). If saved in a non-empty directory, remember to keep the context to a mini
 
 _`Dockerfile`_
 
-```
+<details>
+<summary>Click to expand</summary>
+
+```docker
 # syntax=docker/dockerfile:1.4
 #
 # Copyright (C) 2022
@@ -212,6 +215,7 @@ COPY --from=autosubmit-build-image --chown=autosubmit:autosubmit \
 
 ENTRYPOINT ["autosubmit"]
 ```
+</details>
 
 The Docker `autosubmit` container will need its own `.autosubmitrc` file, as that RC
 file specifies file locations that vary for each server:
@@ -254,8 +258,7 @@ and is very customizable. In real life this worker node would have a
 batch system like Slurm installed, or contain GPU's, or the utilities
 used by the tools executed in the Autosubmit workflow.
 
-A Linux Server OpenSSH [docker image](https://github.com/linuxserver/docker-openssh-server)
-wi.
+A Linux Server OpenSSH [docker image](https://github.com/linuxserver/docker-openssh-server).
 The image by default uses port `2222`, which is an issue as Autosubmit
 only supports the port `22` for all the Paramiko based platforms. We
 can bypass it by customizing the initialization of the OpenSSH (instead
@@ -275,6 +278,20 @@ _`./custom-cont-init.d/custom-port.sh`_
 sed -i -e 's/^USER_NAME=.*/USER_NAME=root/' -e 's/2222$/22/' /etc/services.d/openssh-server/run
 
 # Source: https://github.com/linuxserver/docker-openssh-server/issues/30
+```
+
+We also need to create the directory used for the workflow platform. We can create
+another file inside `./custom-cont-ini.d` for that:
+
+_`./custom-cont-init.d/autosubmit-remote-init.sh`_
+
+```sh
+#!/bin/bash
+
+# Every remote worker needs to have the project folder created.
+# /tmp/ is the SCRATCH_DIR; test is the PROJECT; autosubmit is the USER.
+mkdir -pv /tmp/test/autosubmit/
+chown -R autosubmit: /tmp/test/
 ```
 
 ## Docker Compose cluster
