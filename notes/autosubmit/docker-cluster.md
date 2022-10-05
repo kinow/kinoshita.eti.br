@@ -2,6 +2,23 @@
 
 All the files and directories created must be placed in the same base directory.
 
+## Prerequisites
+
+1. A host computer with Docker (e.g. Ubuntu Linux LTS, Docker version 20.10.18, build b40c2f6)
+2. `docker-compose` (e.g. docker-compose version 1.23.1, build b02f1306)
+3. Autosubmit pre-installed in the host computer (not a strong requirement, as you could use
+the `autosubmit` container exclusively, but it tests more of the system that way).
+4. Autosubmit configured correctly (i.e. `configure` and `install` executed)
+5. An Autosubmit workflow created (e.g. `autosubmit expid -H local -d "Docker example"`)
+6. The workflow must have its platform correctly set up for the Docker example (more later)
+
+```mermaid
+graph TD;
+Host--Docker-->autosubmit;
+Host -.- Docker/SSH -.->worker;
+autosubmit--SSH-->worker;
+```
+
 ## Autosubmit container
 
 This container will be called `autosubmit` and contains the `autosubmit` command.

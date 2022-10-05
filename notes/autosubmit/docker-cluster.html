@@ -84,6 +84,7 @@
   <h1 class="ui header" id="top">Autosubmit Docker Cluster</h1><ul>
   <li><a href="#autosubmit-docker-cluster">Autosubmit Docker Cluster</a>
     <ul>
+      <li><a href="#prerequisites">Prerequisites</a></li>
       <li><a href="#autosubmit-container">Autosubmit container</a></li>
       <li><a href="#ssh-worker">SSH worker</a></li>
       <li><a href="#docker-compose-cluster">Docker Compose cluster</a></li>
@@ -94,6 +95,24 @@
   <h1 id="autosubmit-docker-cluster">Autosubmit Docker Cluster</h1>
 
 <p>All the files and directories created must be placed in the same base directory.</p>
+
+<h2 id="prerequisites">Prerequisites</h2>
+
+<ol>
+  <li>A host computer with Docker (e.g. Ubuntu Linux LTS, Docker version 20.10.18, build b40c2f6)</li>
+  <li><code class="language-plaintext highlighter-rouge">docker-compose</code> (e.g. docker-compose version 1.23.1, build b02f1306)</li>
+  <li>Autosubmit pre-installed in the host computer (not a strong requirement, as you could use
+the <code class="language-plaintext highlighter-rouge">autosubmit</code> container exclusively, but it tests more of the system that way).</li>
+  <li>Autosubmit configured correctly (i.e. <code class="language-plaintext highlighter-rouge">configure</code> and <code class="language-plaintext highlighter-rouge">install</code> executed)</li>
+  <li>An Autosubmit workflow created (e.g. <code class="language-plaintext highlighter-rouge">autosubmit expid -H local -d "Docker example"</code>)</li>
+  <li>The workflow must have its platform correctly set up for the Docker example (more later)</li>
+</ol>
+
+<pre><code class="language-mermaid">graph TD;
+Host--Docker--&gt;autosubmit;
+Host -.- Docker/SSH -.-&gt;worker;
+autosubmit--SSH--&gt;worker;
+</code></pre>
 
 <h2 id="autosubmit-container">Autosubmit container</h2>
 
