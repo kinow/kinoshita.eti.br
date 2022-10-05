@@ -385,89 +385,100 @@ another file inside <code class="language-plaintext highlighter-rouge">./custom-
 <h2 id="docker-compose-cluster">Docker Compose cluster</h2>
 
 <p>This cluster uses the Linux Server OpenSSH worker node, and a container for Autosubmit.
-Note that both containers were created to be as ephemeral as possible. This means that
+Note that both containers <strong>were created to be as ephemeral as possible</strong>. This means that
 they are not supposed to retain state, data, or any tools of importance, and can be
 destroyed and replaced by new containers at any time (which is useful for cloud environments
 like AWS, OpenStack, Kubernetes, etc.).</p>
 
-<p>The <code class="language-plaintext highlighter-rouge">docker-compose.yml</code> file below can be used without any overrides (which are
-a possible extension):</p>
+<blockquote>
+  <p><strong>NOTE</strong>: The whole cluster runs without <code class="language-plaintext highlighter-rouge">root</code> users and without using <code class="language-plaintext highlighter-rouge">sudo</code>, another
+Docker best practice. It also helps to migrate it to Singularity, charliecloud, etc.</p>
+</blockquote>
+
+<p>The <code class="language-plaintext highlighter-rouge">docker-compose.yml</code> file below can be used without any <a href="https://docs.docker.com/compose/extends/">override files</a>
+(which can be used, if needed). And it also does not uses <a href="https://docs.docker.com/compose/compose-file/deploy/">replicas</a>
+(another possibility, if needed):</p>
 
 <p><em><code class="language-plaintext highlighter-rouge">docker-compose.yml</code></em></p>
 
-<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">version</span><span class="pi">:</span> <span class="s2">"</span><span class="s">3.7"</span>
-<span class="c1"># Autosubmit example cluster.</span>
-<span class="na">services</span><span class="pi">:</span>
-  <span class="c1"># A worker node.</span>
-  <span class="na">worker</span><span class="pi">:</span>
-    <span class="na">image</span><span class="pi">:</span> <span class="s">lscr.io/linuxserver/openssh-server:latest</span>
-    <span class="na">container_name</span><span class="pi">:</span> <span class="s">worker</span>
-    <span class="na">hostname</span><span class="pi">:</span> <span class="s">worker</span>
-    <span class="na">environment</span><span class="pi">:</span>
-      <span class="pi">-</span> <span class="s">PUID=1000</span>
-      <span class="pi">-</span> <span class="s">PGID=1000</span>
-      <span class="pi">-</span> <span class="s">TZ=UTC</span>
-      <span class="c1"># - PUBLIC_KEY=yourpublickey #optional</span>
-      <span class="c1"># - PUBLIC_KEY_FILE=/path/to/file #optional</span>
-      <span class="c1"># - PUBLIC_KEY_DIR=/path/to/directory/containing/_only_/pubkeys #optional</span>
-      <span class="c1"># This is pulling my SSH keys from GitHub, just to make sure it never accesses</span>
-      <span class="c1"># my local files in the container. The linuxserver image offers other</span>
-      <span class="c1"># alternatives for fetching the SSH key.</span>
-      <span class="pi">-</span> <span class="s">PUBLIC_KEY_URL=https://github.com/kinow.keys</span> <span class="c1">#optional</span>
-      <span class="pi">-</span> <span class="s">SUDO_ACCESS=false</span> <span class="c1">#optional</span>
-      <span class="pi">-</span> <span class="s">PASSWORD_ACCESS=false</span> <span class="c1">#optional</span>
-      <span class="c1"># - USER_PASSWORD=password #optional</span>
-      <span class="c1"># - USER_PASSWORD_FILE=/path/to/file #optional</span>
-      <span class="pi">-</span> <span class="s">USER_NAME=autosubmit</span> <span class="c1">#optional</span>
-    <span class="na">volumes</span><span class="pi">:</span>
-      <span class="pi">-</span> <span class="na">type</span><span class="pi">:</span> <span class="s">bind</span>
-        <span class="na">source</span><span class="pi">:</span> <span class="s">./custom-cont-init.d</span>
-        <span class="na">target</span><span class="pi">:</span> <span class="s">/custom-cont-init.d</span>
-        <span class="na">read_only</span><span class="pi">:</span> <span class="no">true</span>
-    <span class="na">ports</span><span class="pi">:</span>
-      <span class="pi">-</span> <span class="s2">"</span><span class="s">2222:2222"</span>
-    <span class="na">restart</span><span class="pi">:</span> <span class="s">unless-stopped</span>
-  <span class="c1"># Autosubmit server to submit experiments.</span>
-  <span class="na">autosubmit</span><span class="pi">:</span>
-    <span class="na">container_name</span><span class="pi">:</span> <span class="s">autosubmit</span>
-    <span class="na">hostname</span><span class="pi">:</span> <span class="s">autosubmit</span>
-    <span class="na">build</span><span class="pi">:</span>
-      <span class="na">context</span><span class="pi">:</span> <span class="s">.</span>
-      <span class="na">dockerfile</span><span class="pi">:</span> <span class="s">Dockerfile</span>
-      <span class="na">args</span><span class="pi">:</span>
-        <span class="pi">-</span> <span class="s">AUTOSUBMIT_UID=1000</span>
-        <span class="pi">-</span> <span class="s">AUTOSUBMIT_GID=1000</span>
-        <span class="pi">-</span> <span class="s">AUTOSUBMIT_BRANCH=v3.14.0</span>
-    <span class="na">user</span><span class="pi">:</span> <span class="s">autosubmit</span>
-    <span class="c1"># Just to keep the container running.</span>
-    <span class="na">entrypoint</span><span class="pi">:</span> <span class="s2">"</span><span class="s">tail</span><span class="nv"> </span><span class="s">-f</span><span class="nv"> </span><span class="s">/dev/null"</span>
-    <span class="c1"># N.B.: The autosubmit container can operate in isolation.</span>
-    <span class="c1"># ports:</span>
-    <span class="na">depends_on</span><span class="pi">:</span>
-      <span class="pi">-</span> <span class="s">worker</span>
-    <span class="c1"># Here we define the SSH socket agent location.</span>
-    <span class="na">environment</span><span class="pi">:</span>
-      <span class="pi">-</span> <span class="s">SSH_AUTH_SOCK=/ssh-agent</span>
-    <span class="na">volumes</span><span class="pi">:</span>
-      <span class="c1"># The .autosubmitrc configuration file, indicating where location</span>
-      <span class="c1"># of files such as the SQLite database file.</span>
-      <span class="pi">-</span> <span class="na">type</span><span class="pi">:</span> <span class="s">bind</span>
-        <span class="na">source</span><span class="pi">:</span> <span class="s">./.autosubmitrc</span>
-        <span class="na">target</span><span class="pi">:</span> <span class="s">/home/autosubmit/.autosubmitrc</span>
-        <span class="na">read_only</span><span class="pi">:</span> <span class="no">true</span>
-      <span class="c1"># The directory that holds the Autosubmit experiments.</span>
-      <span class="pi">-</span> <span class="na">type</span><span class="pi">:</span> <span class="s">bind</span>
-        <span class="na">source</span><span class="pi">:</span> <span class="s">${HOME}/autosubmit</span>
-        <span class="na">target</span><span class="pi">:</span> <span class="s">/home/autosubmit/autosubmit</span>
-        <span class="na">read_only</span><span class="pi">:</span> <span class="no">false</span>
-      <span class="c1"># The SSH agent file, from the host. This prevents copying secrets like SSH keys inside the container.</span>
-      <span class="c1"># e.g. https://dille.name/slides/2020-01-22/110_ecosystem/ssh_forwarding/slides.final/</span>
-      <span class="pi">-</span> <span class="na">type</span><span class="pi">:</span> <span class="s">bind</span>
-        <span class="na">source</span><span class="pi">:</span> <span class="s">${SSH_AUTH_SOCK}</span>
-        <span class="na">target</span><span class="pi">:</span> <span class="s">/ssh-agent</span>
-        <span class="na">read_only</span><span class="pi">:</span> <span class="no">true</span>
-    <span class="na">restart</span><span class="pi">:</span> <span class="s">unless-stopped</span>
-</code></pre></div></div>
+<details>
+<summary>Click to expand</summary>
+
+```yaml
+version: "3.7"
+# Autosubmit example cluster.
+services:
+  # A worker node.
+  worker:
+    image: lscr.io/linuxserver/openssh-server:latest
+    container_name: worker
+    hostname: worker
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=UTC
+      # - PUBLIC_KEY=yourpublickey #optional
+      # - PUBLIC_KEY_FILE=/path/to/file #optional
+      # - PUBLIC_KEY_DIR=/path/to/directory/containing/_only_/pubkeys #optional
+      # This is pulling my SSH keys from GitHub, just to make sure it never accesses
+      # my local files in the container. The linuxserver image offers other
+      # alternatives for fetching the SSH key.
+      - PUBLIC_KEY_URL=https://github.com/kinow.keys #optional
+      - SUDO_ACCESS=false #optional
+      - PASSWORD_ACCESS=false #optional
+      # - USER_PASSWORD=password #optional
+      # - USER_PASSWORD_FILE=/path/to/file #optional
+      - USER_NAME=autosubmit #optional
+    volumes:
+      - type: bind
+        source: ./custom-cont-init.d
+        target: /custom-cont-init.d
+        read_only: true
+    ports:
+      - "2222:2222"
+    restart: unless-stopped
+  # Autosubmit server to submit experiments.
+  autosubmit:
+    container_name: autosubmit
+    hostname: autosubmit
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        - AUTOSUBMIT_UID=1000
+        - AUTOSUBMIT_GID=1000
+        - AUTOSUBMIT_BRANCH=v3.14.0
+    user: autosubmit
+    # Just to keep the container running.
+    entrypoint: "tail -f /dev/null"
+    # N.B.: The autosubmit container can operate in isolation.
+    # ports:
+    depends_on:
+      - worker
+    # Here we define the SSH socket agent location.
+    environment:
+      - SSH_AUTH_SOCK=/ssh-agent
+    volumes:
+      # The .autosubmitrc configuration file, indicating where location
+      # of files such as the SQLite database file.
+      - type: bind
+        source: ./.autosubmitrc
+        target: /home/autosubmit/.autosubmitrc
+        read_only: true
+      # The directory that holds the Autosubmit experiments.
+      - type: bind
+        source: ${HOME}/autosubmit
+        target: /home/autosubmit/autosubmit
+        read_only: false
+      # The SSH agent file, from the host. This prevents copying secrets like SSH keys inside the container.
+      # e.g. https://dille.name/slides/2020-01-22/110_ecosystem/ssh_forwarding/slides.final/
+      - type: bind
+        source: ${SSH_AUTH_SOCK}
+        target: /ssh-agent
+        read_only: true
+    restart: unless-stopped
+```
+</details>
 
 <p>There are two services defined in this Docker Compose file. One for Autosubmit,
 using the <code class="language-plaintext highlighter-rouge">Dockerfile</code>. That container can be used as a permanent VM/container
