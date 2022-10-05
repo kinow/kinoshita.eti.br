@@ -481,3 +481,78 @@ $ autosubmit monitor a000
 ![image](https://user-images.githubusercontent.com/304786/193987635-bc70cfc8-9ec6-47cd-9acb-4d70939ba9de.png)
 
 TODO: Use an X server in the Autosubmit container so `monitor` works with plots inside the container
+
+After running it for a few seconds/minutes you should get the following in the terminal
+where you started your workflow.
+
+```bash
+(...)
+2 of 7 jobs remaining (05:28)
+Job a000_20000101_fc0_1_CLEAN is COMPLETED
+a000_20000101_fc0_TRANSFER submitted
+Call from a000_20000101_fc0_TRANSFER with status SUBMITTED
+
+
+1 of 7 jobs remaining (05:28)
+Job a000_20000101_fc0_TRANSFER is RUNNING
+
+
+1 of 7 jobs remaining (05:28)
+Job a000_20000101_fc0_TRANSFER is RUNNING
+
+
+1 of 7 jobs remaining (05:29)
+Job a000_20000101_fc0_TRANSFER is COMPLETED
+No more jobs to run.
+Run successful
+```
+
+You have successfully used Docker Compose to run a cluster with Autosubmit,
+and run a workflow with no errors. You can inspect the logs in the worker
+log if you would like:
+
+```bash
+$ docker-compose exec worker /bin/bash
+root@worker:/# ls -lah /tmp/test/autosubmit/a000/LOG_a000/
+total 92K
+drwxr-xr-x 2 autosubmit users 4.0K Oct  5 05:29 .
+drwxr-xr-x 3 autosubmit users 4.0K Oct  5 05:24 ..
+-rw-r--r-- 1 autosubmit users  686 Oct  5 05:28 a000_20000101_fc0_1_CLEAN.20221005052811.err
+-rw-r--r-- 1 autosubmit users    0 Oct  5 05:27 a000_20000101_fc0_1_CLEAN.20221005052811.out
+-rwxr-xr-x 1 autosubmit users  804 Oct  5 05:27 a000_20000101_fc0_1_CLEAN.cmd
+-rw-r--r-- 1 autosubmit users    0 Oct  5 05:28 a000_20000101_fc0_1_CLEAN_COMPLETED
+-rw-r--r-- 1 autosubmit users   22 Oct  5 05:28 a000_20000101_fc0_1_CLEAN_STAT
+-rw-r--r-- 1 autosubmit users  682 Oct  5 05:27 a000_20000101_fc0_1_POST.20221005052735.err
+-rw-r--r-- 1 autosubmit users    0 Oct  5 05:27 a000_20000101_fc0_1_POST.20221005052735.out
+-rwxr-xr-x 1 autosubmit users  802 Oct  5 05:27 a000_20000101_fc0_1_POST.cmd
+-rw-r--r-- 1 autosubmit users    0 Oct  5 05:27 a000_20000101_fc0_1_POST_COMPLETED
+-rw-r--r-- 1 autosubmit users   22 Oct  5 05:27 a000_20000101_fc0_1_POST_STAT
+-rw-r--r-- 1 autosubmit users  678 Oct  5 05:27 a000_20000101_fc0_1_SIM.20221005052658.err
+-rw-r--r-- 1 autosubmit users    0 Oct  5 05:26 a000_20000101_fc0_1_SIM.20221005052658.out
+-rwxr-xr-x 1 autosubmit users  800 Oct  5 05:26 a000_20000101_fc0_1_SIM.cmd
+-rw-r--r-- 1 autosubmit users    0 Oct  5 05:27 a000_20000101_fc0_1_SIM_COMPLETED
+-rw-r--r-- 1 autosubmit users   22 Oct  5 05:27 a000_20000101_fc0_1_SIM_STAT
+-rw-r--r-- 1 autosubmit users  670 Oct  5 05:26 a000_20000101_fc0_INI.20221005052622.err
+-rw-r--r-- 1 autosubmit users    0 Oct  5 05:26 a000_20000101_fc0_INI.20221005052622.out
+-rwxr-xr-x 1 autosubmit users  798 Oct  5 05:26 a000_20000101_fc0_INI.cmd
+-rw-r--r-- 1 autosubmit users    0 Oct  5 05:26 a000_20000101_fc0_INI_COMPLETED
+-rw-r--r-- 1 autosubmit users   22 Oct  5 05:26 a000_20000101_fc0_INI_STAT
+-rw-r--r-- 1 autosubmit users  690 Oct  5 05:29 a000_20000101_fc0_TRANSFER.20221005052847.err
+-rw-r--r-- 1 autosubmit users    0 Oct  5 05:28 a000_20000101_fc0_TRANSFER.20221005052847.out
+-rwxr-xr-x 1 autosubmit users  808 Oct  5 05:28 a000_20000101_fc0_TRANSFER.cmd
+-rw-r--r-- 1 autosubmit users    0 Oct  5 05:29 a000_20000101_fc0_TRANSFER_COMPLETED
+-rw-r--r-- 1 autosubmit users   22 Oct  5 05:29 a000_20000101_fc0_TRANSFER_STAT
+-rw-r--r-- 1 autosubmit users  650 Oct  5 05:25 a000_LOCAL_SETUP.20221005052510.err
+-rw-r--r-- 1 autosubmit users    0 Oct  5 05:24 a000_LOCAL_SETUP.20221005052510.out
+-rwxr-xr-x 1 autosubmit users  801 Oct  5 05:24 a000_LOCAL_SETUP.cmd
+-rw-r--r-- 1 autosubmit users    0 Oct  5 05:25 a000_LOCAL_SETUP_COMPLETED
+-rw-r--r-- 1 autosubmit users   22 Oct  5 05:25 a000_LOCAL_SETUP_STAT
+-rw-r--r-- 1 autosubmit users  654 Oct  5 05:26 a000_REMOTE_SETUP.20221005052546.err
+-rw-r--r-- 1 autosubmit users    0 Oct  5 05:25 a000_REMOTE_SETUP.20221005052546.out
+-rwxr-xr-x 1 autosubmit users  803 Oct  5 05:25 a000_REMOTE_SETUP.cmd
+-rw-r--r-- 1 autosubmit users    0 Oct  5 05:26 a000_REMOTE_SETUP_COMPLETED
+-rw-r--r-- 1 autosubmit users   22 Oct  5 05:26 a000_REMOTE_SETUP_STAT
+root@worker:/# cat /tmp/test/autosubmit/a000/LOG_a000/a000_20000101_fc0_1_SIM_STAT 
+1664947606
+1664947641
+```
