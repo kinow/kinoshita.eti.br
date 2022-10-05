@@ -2,16 +2,6 @@
 
 All the files and directories created must be placed in the same base directory.
 
-## Prerequisites
-
-1. A host computer with Docker (e.g. Ubuntu Linux LTS, Docker version 20.10.18, build b40c2f6)
-2. `docker-compose` (e.g. docker-compose version 1.23.1, build b02f1306)
-3. Autosubmit pre-installed in the host computer (not a strong requirement, as you could use
-the `autosubmit` container exclusively, but it tests more of the system that way).
-4. Autosubmit configured correctly (i.e. `configure` and `install` executed)
-5. An Autosubmit workflow created (e.g. `autosubmit expid -H local -d "Docker example"`)
-6. The workflow must have its platform correctly set up for the Docker example (more later)
-
 ```mermaid
 graph TD;
 Host--Docker-->autosubmit;
@@ -19,7 +9,48 @@ Host -.- Docker/SSH -.->worker;
 autosubmit--SSH-->worker;
 ```
 
+Workflows will be run from both the Host node and from the Autosubmit node.
+The platform `local` will be configured to use the `worker` node via SSH.
+The dotted line in the graph above shows that it is optional to interact with
+Autosubmit from the host node (i.e. it could be a Windows machine without
+Autosubmit, connected to the `autosubmit` container running workflows using
+the cluster).
+
+## Host prerequisites
+
+```mermaid
+graph TD;
+Host;
+```
+
+1. A host computer with Docker (e.g. Ubuntu Linux LTS, Docker version 20.10.18, build b40c2f6;
+2. `docker-compose` (e.g. docker-compose version 1.23.1, build b02f1306);
+3. Autosubmit pre-installed in the host computer (not a strong requirement, as you could use
+the `autosubmit` container exclusively, but it tests more of the system that way; must be the
+same version as in the rest of the cluster, e.g. v3.14.0);
+4. Autosubmit configured correctly (i.e. `configure` and `install` executed);
+5. An Autosubmit workflow created (e.g. `autosubmit expid -H local -d "Docker example"`, we
+assume the workflow created is called “`a000`”, change it if needed);
+7. The workflow must have its platform correctly set up for the Docker example (more below).
+
+_`platforms_a000.conf`_
+
+```ini
+[local]
+TYPE = ps
+HOST = worker
+USER = autosubmit
+PROJECT = test
+TEMP_DIR = /tmp
+SCRATCH_DIR = /tmp
+```
+
 ## Autosubmit container
+
+```mermaid
+graph TD;
+autosubmit;
+```
 
 This container will be called `autosubmit` and contains the `autosubmit` command.
 It is the equivalent to a virtual machine with Autosubmit, used to submit workflows.
@@ -212,6 +243,11 @@ url = http://127.0.0.1:8081 # Replace me?
 ```
 
 ## SSH worker
+
+```mermaid
+graph TD;
+worker;
+```
 
 This is a worker node. It is an Alpine based Linux that comes with SSH
 and is very customizable. In real life this worker node would have a
