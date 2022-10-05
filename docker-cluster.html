@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1" /><!-- Begin Jekyll SEO tag v2.7.1 -->
+<title>Autosubmit Docker Cluster | kinow</title>
+<meta name="generator" content="Jekyll v3.9.0" />
+<meta property="og:title" content="Autosubmit Docker Cluster" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Bruno Kinoshita “kinow” personal home page" />
+<meta property="og:description" content="Bruno Kinoshita “kinow” personal home page" />
+<link rel="canonical" href="https://kinoshita.eti.br/docker-cluster.html" />
+<meta property="og:url" content="https://kinoshita.eti.br/docker-cluster.html" />
+<meta property="og:site_name" content="kinow" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Autosubmit Docker Cluster" />
+<script type="application/ld+json">
+{"description":"Bruno Kinoshita “kinow” personal home page","@type":"WebPage","url":"https://kinoshita.eti.br/docker-cluster.html","headline":"Autosubmit Docker Cluster","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/css/main.css" /><link type="application/atom+xml" rel="alternate" href="https://kinoshita.eti.br/feed.xml" title="kinow" /><link href="https://unpkg.com/pattern.css" rel="stylesheet" />
+
+</head>
+<body>
+<div id="mobile-menu"><div class="menu">
+  <ul class="menu">
+    <li class="item">
+      <h1 id="kinow">KINOW</h1>
+    </li>
+    <li class="item">
+      <a href="/" class="">About</a>
+    </li>
+    <li class="item">
+      <a href="/blog/" class="">Blog</a>
+    </li>
+    <li class="item">
+      <a href="/portfolio/" class="">Portfolio</a>
+    </li>
+    <li class="item social-media-item">
+      <a href="https://www.instagram.com/brunokinoshita/" class="inline-link">
+        <img src="/assets/icons/instagram.png" class="inverted-image"  alt="Instagram link" />
+      </a>
+      <a href="https://twitter.com/kinow/" class="inline-link">
+        <img src="/assets/icons/twitter.png" class="inverted-image" alt="Twitter link" />
+      </a>
+      <a href="https://github.com/kinow/" class="inline-link">
+        <img src="/assets/icons/github.png" class="inverted-image" alt="GitHub link" />
+      </a>
+    </li>
+  </ul>
+</div>
+</div>
+<div id="wrapper">
+  <div id="sidebar"><div class="menu">
+  <ul class="menu">
+    <li class="item">
+      <h1 id="kinow">KINOW</h1>
+    </li>
+    <li class="item">
+      <a href="/" class="">About</a>
+    </li>
+    <li class="item">
+      <a href="/blog/" class="">Blog</a>
+    </li>
+    <li class="item">
+      <a href="/portfolio/" class="">Portfolio</a>
+    </li>
+    <li class="item social-media-item">
+      <a href="https://www.instagram.com/brunokinoshita/" class="inline-link">
+        <img src="/assets/icons/instagram.png" class="inverted-image"  alt="Instagram link" />
+      </a>
+      <a href="https://twitter.com/kinow/" class="inline-link">
+        <img src="/assets/icons/twitter.png" class="inverted-image" alt="Twitter link" />
+      </a>
+      <a href="https://github.com/kinow/" class="inline-link">
+        <img src="/assets/icons/github.png" class="inverted-image" alt="GitHub link" />
+      </a>
+    </li>
+  </ul>
+</div>
+</div>
+  <div id="content">
+    <article class="post">
+  <h1 class="ui header" id="top">Autosubmit Docker Cluster</h1><ul>
+  <li><a href="#autosubmit-docker-cluster">Autosubmit Docker Cluster</a>
+    <ul>
+      <li><a href="#autosubmit-container">Autosubmit container</a></li>
+      <li><a href="#ssh-worker">SSH worker</a></li>
+      <li><a href="#docker-compose-cluster">Docker Compose cluster</a></li>
+    </ul>
+  </li>
+</ul>
+
+  <h1 id="autosubmit-docker-cluster">Autosubmit Docker Cluster</h1>
+
+<p>All the files and directories created must be placed in the same base directory.</p>
+
+<h2 id="autosubmit-container">Autosubmit container</h2>
+
+<p>This container will be called <code class="language-plaintext highlighter-rouge">autosubmit</code> and contains the <code class="language-plaintext highlighter-rouge">autosubmit</code> command.
+It is the equivalent to a virtual machine with Autosubmit, used to submit workflows.</p>
+
+<p>The <code class="language-plaintext highlighter-rouge">Dockerfile</code> for Autosubmit, based on Airflow (thanks!). This file can be saved
+somewhere, like <code class="language-plaintext highlighter-rouge">autosubmit/docker/</code> (i.e. inside the Autosubmit checked out source
+code). If saved in a non-empty directory, remember to keep the context to a minimum
+(i.e. use a <code class="language-plaintext highlighter-rouge">.dockerignore</code> file for security and performance):</p>
+
+<p><em><code class="language-plaintext highlighter-rouge">Dockerfile</code></em></p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># syntax=docker/dockerfile:1.4
+#
+# Copyright (C) 2022
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see &lt;http://www.gnu.org/licenses/&gt;.
+
+# Used bits of old images written, as well as the airflow (Apache License 2) production
+# Docker image. Credits to the Airflow team.
+# Note that ALv2 and GPLv3 are compatible for this case:
+# https://www.apache.org/licenses/GPL-compatibility.html
+# Also giving back to Airflow; little but hopefully shows some appreciation
+# for their work: https://github.com/apache/airflow/pull/24397 :^)
+
+# Note: Always review if they changed anything in the Docker best practices document;
+#       https://docs.docker.com/develop/develop-images/dockerfile_best-practices/
+
+ARG AUTOSUBMIT_USER=autosubmit
+ARG AUTOSUBMIT_USER_HOME_DIR=/home/autosubmit
+ARG AUTOSUBMIT_BRANCH=master
+ARG AUTOSUBMIT_GIT_REPOSITORY=https://earth.bsc.es/gitlab/es/autosubmit.git
+ARG AUTOSUBMIT_UID=2000
+ARG AUTOSUBMIT_GID=2000
+
+ARG PYTHON_BASE_IMAGE="python:2.7.18-slim-buster"
+
+##############################################################################################
+# Base image. We can create scripts and other requirements in this base image.
+##############################################################################################
+
+FROM scratch as base-image
+
+##############################################################################################
+# Autosubmit build image. This will be larger, our workbench to create the container.
+# We will discard most of the content here, keeping only the necessary for autosubmit
+# in another layer.
+##############################################################################################
+
+FROM ${PYTHON_BASE_IMAGE} as autosubmit-build-image
+
+ARG AUTOSUBMIT_USER_HOME_DIR
+ARG AUTOSUBMIT_GIT_REPOSITORY
+ARG AUTOSUBMIT_BRANCH
+ARG AUTOSUBMIT_UID
+ARG AUTOSUBMIT_GID
+
+ARG PYTHON_BASE_IMAGE
+ENV PYTHON_BASE_IMAGE=${PYTHON_BASE_IMAGE} \
+    DEBIAN_FRONTEND=noninteractive LANGUAGE=C.UTF-8 LANG=C.UTF-8 LC_ALL=C.UTF-8 \
+    LC_CTYPE=C.UTF-8 LC_MESSAGES=C.UTF-8
+
+ARG DEV_APT_DEPS="\
+  apt-transport-https \
+  apt-utils \
+  git"
+
+# Copy anything from the base image
+# e.g. COPY --from=base-image setup.sh /opt/.../
+
+ENV DEV_APT_DEPS=${DEV_APT_DEPS}
+
+# System dependencies layer
+RUN apt-get update &amp;&amp; \
+    apt-get install -y --no-install-recommends \
+      ${DEV_APT_DEPS} &amp;&amp; \
+    apt-get autoremove -yqq --purge &amp;&amp; \
+    apt-get clean &amp;&amp; \
+    rm -rf /var/lib/apt/lists/*
+
+# Container user
+RUN groupadd -g "${AUTOSUBMIT_GID}" autosubmit &amp;&amp; \
+    adduser --gecos "First Last,RoomNumber,WorkPhone,HomePhone" --disabled-password \
+      --quiet "autosubmit" --uid "${AUTOSUBMIT_UID}" --gid "${AUTOSUBMIT_GID}" --home "${AUTOSUBMIT_USER_HOME_DIR}" &amp;&amp; \
+    mkdir -pv "${AUTOSUBMIT_USER_HOME_DIR}" &amp;&amp; \
+    chown -R "autosubmit:autosubmit" "${AUTOSUBMIT_USER_HOME_DIR}" &amp;&amp; \
+    chmod -R g+rw "${AUTOSUBMIT_USER_HOME_DIR}"
+
+USER autosubmit
+WORKDIR ${AUTOSUBMIT_USER_HOME_DIR}
+
+# Autosubmit layer
+# TODO: requests is a transitive dependency, but apparently not listed in Autosubmit's
+#       install_requires dependencies list.
+RUN pip install --no-cache-dir --user --upgrade pip &amp;&amp; \
+    pip install --no-cache-dir --user requests &amp;&amp; \
+    pip install --no-cache-dir --user git+${AUTOSUBMIT_GIT_REPOSITORY}@${AUTOSUBMIT_BRANCH}
+
+# At this point, autosubmit must be installed and available from ~/.local/site-packages/...
+
+##############################################################################################
+# Actual Autosubmit image, much smaller than the build image.
+##############################################################################################
+
+FROM ${PYTHON_BASE_IMAGE} as main
+
+# TODO: update labels later...
+LABEL maintainer="Bruno P. Kinoshita"
+
+ARG AUTOSUBMIT_USER_HOME_DIR
+ARG AUTOSUBMIT_BRANCH
+ARG AUTOSUBMIT_UID
+ARG AUTOSUBMIT_GID
+ARG PYTHON_BASE_IMAGE
+
+ENV PYTHON_BASE_IMAGE=${PYTHON_BASE_IMAGE} \
+    DEBIAN_FRONTEND=noninteractive LANGUAGE=C.UTF-8 LANG=C.UTF-8 LC_ALL=C.UTF-8 \
+    LC_CTYPE=C.UTF-8 LC_MESSAGES=C.UTF-8
+
+RUN apt-get update &amp;&amp; \
+    apt-get install -y --no-install-recommends \
+      git \
+      graphviz \
+      ssh \
+      sqlite3 &amp;&amp; \
+    apt-get autoremove -yqq --purge &amp;&amp; \
+    apt-get clean &amp;&amp; \
+    rm -rf /var/lib/apt/lists/*
+
+ENV PATH="${AUTOSUBMIT_USER_HOME_DIR}/.local/bin:${PATH}" \
+    AUTOSUBMIT_UID=${AUTOSUBMIT_UID} \
+    AUTOSUBMIT_GID=${AUTOSUBMIT_GID} \
+    AUTOSUBMIT_USER_HOME_DIR=${AUTOSUBMIT_USER_HOME_DIR} \
+    AUTOSUBMIT_BRANCH=${AUTOSUBMIT_BRANCH}
+
+# Container user
+RUN groupadd -g "${AUTOSUBMIT_GID}" autosubmit &amp;&amp; \
+    adduser --gecos "First Last,RoomNumber,WorkPhone,HomePhone" --disabled-password \
+      --quiet "autosubmit" --uid "${AUTOSUBMIT_UID}" --gid "${AUTOSUBMIT_GID}" --home "${AUTOSUBMIT_USER_HOME_DIR}" &amp;&amp; \
+    mkdir -pv "${AUTOSUBMIT_USER_HOME_DIR}" &amp;&amp; \
+    mkdir -pv "${AUTOSUBMIT_USER_HOME_DIR}/autosubmit" &amp;&amp; \
+    chown -R "autosubmit:autosubmit" "${AUTOSUBMIT_USER_HOME_DIR}" &amp;&amp; \
+    chmod -R g+rw "${AUTOSUBMIT_USER_HOME_DIR}" &amp;&amp; \
+    find "${AUTOSUBMIT_USER_HOME_DIR}" -executable -print0 | xargs --null chmod g+x
+
+COPY --from=autosubmit-build-image --chown=autosubmit:autosubmit \
+     "${AUTOSUBMIT_USER_HOME_DIR}/.local" "${AUTOSUBMIT_USER_HOME_DIR}/.local"
+
+ENTRYPOINT ["autosubmit"]
+</code></pre></div></div>
+
+<p>The Docker <code class="language-plaintext highlighter-rouge">autosubmit</code> container will need its own <code class="language-plaintext highlighter-rouge">.autosubmitrc</code> file, as that RC
+file specifies file locations that vary for each server:</p>
+
+<p><em><code class="language-plaintext highlighter-rouge">.autosubmitrc</code></em></p>
+
+<pre><code class="language-rc">[database]
+path = /home/autosubmit/autosubmit
+filename = autosubmit.db
+
+[local]
+path = /home/autosubmit/autosubmit
+
+[globallogs]
+path = /home/autosubmit/autosubmit/logs
+
+[structures]
+path = /home/autosubmit/autosubmit/metadata/structures
+
+[historicdb]
+path = /home/autosubmit/autosubmit/metadata/data
+
+[historiclog]
+path = /home/autosubmit/autosubmit/metadata/logs
+
+[autosubmitapi]
+url = http://127.0.0.1:8081 # Replace me?
+</code></pre>
+
+<h2 id="ssh-worker">SSH worker</h2>
+
+<p>This is a worker node. It is an Alpine based Linux that comes with SSH
+and is very customizable. In real life this worker node would have a
+batch system like Slurm installed, or contain GPU’s, or the utilities
+used by the tools executed in the Autosubmit workflow.</p>
+
+<p>A Linux Server OpenSSH <a href="https://github.com/linuxserver/docker-openssh-server">docker image</a>
+wi.
+The image by default uses port <code class="language-plaintext highlighter-rouge">2222</code>, which is an issue as Autosubmit
+only supports the port <code class="language-plaintext highlighter-rouge">22</code> for all the Paramiko based platforms. We
+can bypass it by customizing the initialization of the OpenSSH (instead
+of doing something more complex like port-forwarding).</p>
+
+<p>Create the file <code class="language-plaintext highlighter-rouge">./custom-cont-init.d/custom-port.sh</code>. The Linux Server
+maintainers create images that load scripts in the <code class="language-plaintext highlighter-rouge">/custom-cont-init.d/</code>
+folder. We will create a volume to bind our <code class="language-plaintext highlighter-rouge">custom-port.sh</code> to that
+location later:</p>
+
+<p><em><code class="language-plaintext highlighter-rouge">./custom-cont-init.d/custom-port.sh</code></em></p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">#!/bin/bash</span>
+
+<span class="c"># Replace 22 with your custom port</span>
+<span class="nb">sed</span> <span class="nt">-i</span> <span class="nt">-e</span> <span class="s1">'s/^USER_NAME=.*/USER_NAME=root/'</span> <span class="nt">-e</span> <span class="s1">'s/2222$/22/'</span> /etc/services.d/openssh-server/run
+
+<span class="c"># Source: https://github.com/linuxserver/docker-openssh-server/issues/30</span>
+</code></pre></div></div>
+
+<h2 id="docker-compose-cluster">Docker Compose cluster</h2>
+
+<p>This cluster uses the Linux Server OpenSSH worker node, and a container for Autosubmit.
+Note that both containers were created to be as ephemeral as possible. This means that
+they are not supposed to retain state, data, or any tools of importance, and can be
+destroyed and replaced by new containers at any time (which is useful for cloud environments
+like AWS, OpenStack, Kubernetes, etc.).</p>
+
+<p>The <code class="language-plaintext highlighter-rouge">docker-compose.yml</code> file below can be used without any overrides (which are
+a possible extension):</p>
+
+<p><em><code class="language-plaintext highlighter-rouge">docker-compose.yml</code></em></p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">version</span><span class="pi">:</span> <span class="s2">"</span><span class="s">3.7"</span>
+<span class="c1"># Autosubmit example cluster.</span>
+<span class="na">services</span><span class="pi">:</span>
+  <span class="c1"># A worker node.</span>
+  <span class="na">worker</span><span class="pi">:</span>
+    <span class="na">image</span><span class="pi">:</span> <span class="s">lscr.io/linuxserver/openssh-server:latest</span>
+    <span class="na">container_name</span><span class="pi">:</span> <span class="s">worker</span>
+    <span class="na">hostname</span><span class="pi">:</span> <span class="s">worker</span>
+    <span class="na">environment</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">PUID=1000</span>
+      <span class="pi">-</span> <span class="s">PGID=1000</span>
+      <span class="pi">-</span> <span class="s">TZ=UTC</span>
+      <span class="c1"># - PUBLIC_KEY=yourpublickey #optional</span>
+      <span class="c1"># - PUBLIC_KEY_FILE=/path/to/file #optional</span>
+      <span class="c1"># - PUBLIC_KEY_DIR=/path/to/directory/containing/_only_/pubkeys #optional</span>
+      <span class="c1"># This is pulling my SSH keys from GitHub, just to make sure it never accesses</span>
+      <span class="c1"># my local files in the container. The linuxserver image offers other</span>
+      <span class="c1"># alternatives for fetching the SSH key.</span>
+      <span class="pi">-</span> <span class="s">PUBLIC_KEY_URL=https://github.com/kinow.keys</span> <span class="c1">#optional</span>
+      <span class="pi">-</span> <span class="s">SUDO_ACCESS=false</span> <span class="c1">#optional</span>
+      <span class="pi">-</span> <span class="s">PASSWORD_ACCESS=false</span> <span class="c1">#optional</span>
+      <span class="c1"># - USER_PASSWORD=password #optional</span>
+      <span class="c1"># - USER_PASSWORD_FILE=/path/to/file #optional</span>
+      <span class="pi">-</span> <span class="s">USER_NAME=autosubmit</span> <span class="c1">#optional</span>
+    <span class="na">volumes</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="na">type</span><span class="pi">:</span> <span class="s">bind</span>
+        <span class="na">source</span><span class="pi">:</span> <span class="s">./custom-cont-init.d</span>
+        <span class="na">target</span><span class="pi">:</span> <span class="s">/custom-cont-init.d</span>
+        <span class="na">read_only</span><span class="pi">:</span> <span class="no">true</span>
+    <span class="na">ports</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s2">"</span><span class="s">2222:2222"</span>
+    <span class="na">restart</span><span class="pi">:</span> <span class="s">unless-stopped</span>
+  <span class="c1"># Autosubmit server to submit experiments.</span>
+  <span class="na">autosubmit</span><span class="pi">:</span>
+    <span class="na">container_name</span><span class="pi">:</span> <span class="s">autosubmit</span>
+    <span class="na">hostname</span><span class="pi">:</span> <span class="s">autosubmit</span>
+    <span class="na">build</span><span class="pi">:</span>
+      <span class="na">context</span><span class="pi">:</span> <span class="s">.</span>
+      <span class="na">dockerfile</span><span class="pi">:</span> <span class="s">Dockerfile</span>
+      <span class="na">args</span><span class="pi">:</span>
+        <span class="pi">-</span> <span class="s">AUTOSUBMIT_UID=1000</span>
+        <span class="pi">-</span> <span class="s">AUTOSUBMIT_GID=1000</span>
+        <span class="pi">-</span> <span class="s">AUTOSUBMIT_BRANCH=v3.14.0</span>
+    <span class="na">user</span><span class="pi">:</span> <span class="s">autosubmit</span>
+    <span class="c1"># Just to keep the container running.</span>
+    <span class="na">entrypoint</span><span class="pi">:</span> <span class="s2">"</span><span class="s">tail</span><span class="nv"> </span><span class="s">-f</span><span class="nv"> </span><span class="s">/dev/null"</span>
+    <span class="c1"># N.B.: The autosubmit container can operate in isolation.</span>
+    <span class="c1"># ports:</span>
+    <span class="na">depends_on</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">worker</span>
+    <span class="c1"># Here we define the SSH socket agent location.</span>
+    <span class="na">environment</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">SSH_AUTH_SOCK=/ssh-agent</span>
+    <span class="na">volumes</span><span class="pi">:</span>
+      <span class="c1"># The .autosubmitrc configuration file, indicating where location</span>
+      <span class="c1"># of files such as the SQLite database file.</span>
+      <span class="pi">-</span> <span class="na">type</span><span class="pi">:</span> <span class="s">bind</span>
+        <span class="na">source</span><span class="pi">:</span> <span class="s">./.autosubmitrc</span>
+        <span class="na">target</span><span class="pi">:</span> <span class="s">/home/autosubmit/.autosubmitrc</span>
+        <span class="na">read_only</span><span class="pi">:</span> <span class="no">true</span>
+      <span class="c1"># The directory that holds the Autosubmit experiments.</span>
+      <span class="pi">-</span> <span class="na">type</span><span class="pi">:</span> <span class="s">bind</span>
+        <span class="na">source</span><span class="pi">:</span> <span class="s">${HOME}/autosubmit</span>
+        <span class="na">target</span><span class="pi">:</span> <span class="s">/home/autosubmit/autosubmit</span>
+        <span class="na">read_only</span><span class="pi">:</span> <span class="no">false</span>
+      <span class="c1"># The SSH agent file, from the host. This prevents copying secrets like SSH keys inside the container.</span>
+      <span class="c1"># e.g. https://dille.name/slides/2020-01-22/110_ecosystem/ssh_forwarding/slides.final/</span>
+      <span class="pi">-</span> <span class="na">type</span><span class="pi">:</span> <span class="s">bind</span>
+        <span class="na">source</span><span class="pi">:</span> <span class="s">${SSH_AUTH_SOCK}</span>
+        <span class="na">target</span><span class="pi">:</span> <span class="s">/ssh-agent</span>
+        <span class="na">read_only</span><span class="pi">:</span> <span class="no">true</span>
+    <span class="na">restart</span><span class="pi">:</span> <span class="s">unless-stopped</span>
+</code></pre></div></div>
+
+<p>There are two services defined in this Docker Compose file. One for Autosubmit,
+using the <code class="language-plaintext highlighter-rouge">Dockerfile</code>. That container can be used as a permanent VM/container
+to submit jobs (although users can also submit jobs locally directly to workers).</p>
+
+<p>It uses a <code class="language-plaintext highlighter-rouge">tail -f /dev/null</code> entrypoint so that Docker Composer sees the container
+as a permanent daemon (otherwise <code class="language-plaintext highlighter-rouge">autosubmit</code> default entrypoint would exit
+immediately).</p>
+
+<p>Volumes are bound to the Autosubmit container, as it is expected</p>
+
+</article>
+
+  </div>
+</div>
+</body>
+</html>
