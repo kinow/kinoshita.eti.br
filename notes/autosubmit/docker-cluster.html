@@ -145,7 +145,7 @@ autosubmit;
 </code></pre>
 
 <p>This container will be called <code class="language-plaintext highlighter-rouge">autosubmit</code> and contains the <code class="language-plaintext highlighter-rouge">autosubmit</code> command.
-It is the equivalent to a virtual machine with Autosubmit, used to submit workflows.</p>
+It is the equivalent to a virtual machine with Autosubmit used to submit workflows.</p>
 
 <p>The <code class="language-plaintext highlighter-rouge">Dockerfile</code> for Autosubmit, based on Airflow (thanks!). This file can be saved
 somewhere, like <code class="language-plaintext highlighter-rouge">autosubmit/docker/</code> (i.e. inside the Autosubmit checked out source
@@ -154,7 +154,11 @@ code). If saved in a non-empty directory, remember to keep the context to a mini
 
 <p><em><code class="language-plaintext highlighter-rouge">Dockerfile</code></em></p>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># syntax=docker/dockerfile:1.4
+<details>
+<summary>Click to expand</summary>
+
+```docker
+# syntax=docker/dockerfile:1.4
 #
 # Copyright (C) 2022
 #
@@ -302,7 +306,8 @@ COPY --from=autosubmit-build-image --chown=autosubmit:autosubmit \
      "${AUTOSUBMIT_USER_HOME_DIR}/.local" "${AUTOSUBMIT_USER_HOME_DIR}/.local"
 
 ENTRYPOINT ["autosubmit"]
-</code></pre></div></div>
+```
+</details>
 
 <p>The Docker <code class="language-plaintext highlighter-rouge">autosubmit</code> container will need its own <code class="language-plaintext highlighter-rouge">.autosubmitrc</code> file, as that RC
 file specifies file locations that vary for each server:</p>
@@ -343,8 +348,7 @@ and is very customizable. In real life this worker node would have a
 batch system like Slurm installed, or contain GPU’s, or the utilities
 used by the tools executed in the Autosubmit workflow.</p>
 
-<p>A Linux Server OpenSSH <a href="https://github.com/linuxserver/docker-openssh-server">docker image</a>
-wi.
+<p>A Linux Server OpenSSH <a href="https://github.com/linuxserver/docker-openssh-server">docker image</a>.
 The image by default uses port <code class="language-plaintext highlighter-rouge">2222</code>, which is an issue as Autosubmit
 only supports the port <code class="language-plaintext highlighter-rouge">22</code> for all the Paramiko based platforms. We
 can bypass it by customizing the initialization of the OpenSSH (instead
@@ -363,6 +367,19 @@ location later:</p>
 <span class="nb">sed</span> <span class="nt">-i</span> <span class="nt">-e</span> <span class="s1">'s/^USER_NAME=.*/USER_NAME=root/'</span> <span class="nt">-e</span> <span class="s1">'s/2222$/22/'</span> /etc/services.d/openssh-server/run
 
 <span class="c"># Source: https://github.com/linuxserver/docker-openssh-server/issues/30</span>
+</code></pre></div></div>
+
+<p>We also need to create the directory used for the workflow platform. We can create
+another file inside <code class="language-plaintext highlighter-rouge">./custom-cont-ini.d</code> for that:</p>
+
+<p><em><code class="language-plaintext highlighter-rouge">./custom-cont-init.d/autosubmit-remote-init.sh</code></em></p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">#!/bin/bash</span>
+
+<span class="c"># Every remote worker needs to have the project folder created.</span>
+<span class="c"># /tmp/ is the SCRATCH_DIR; test is the PROJECT; autosubmit is the USER.</span>
+<span class="nb">mkdir</span> <span class="nt">-pv</span> /tmp/test/autosubmit/
+<span class="nb">chown</span> <span class="nt">-R</span> autosubmit: /tmp/test/
 </code></pre></div></div>
 
 <h2 id="docker-compose-cluster">Docker Compose cluster</h2>
