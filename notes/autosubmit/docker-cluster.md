@@ -398,4 +398,86 @@ It uses a `tail -f /dev/null` entrypoint so that Docker Composer sees the contai
 as a permanent daemon (otherwise `autosubmit` default entrypoint would exit
 immediately).
 
-Volumes are bound to the Autosubmit container, as it is expected
+The other service is the Worker node, that is configured via environment variables
+to fetch a public SSH key from GitHub (there are other ways to add the **public**
+SSH key to the container) and configure it for the cluster.
+
+## Running the cluster
+
+Here's a preview of what your directory structure must look like:
+
+1. First the Host computer with the experiment created, and the platform configured:
+
+![image](https://user-images.githubusercontent.com/304786/193985919-c69bf9bf-4d13-4422-be38-189f25e7c210.png)
+
+2. The cluster configuration files, created inside the Git project of Autosubmit (can be created anywhere actually):
+
+![image](https://user-images.githubusercontent.com/304786/193986080-c9598944-9056-408f-bcfe-35f8f1e79469.png)
+
+3. Both host and cluster running the same version of Autosubmit:
+
+![image](https://user-images.githubusercontent.com/304786/193986274-be744526-8076-40ff-9a05-fadbdd12a408.png)
+
+To start the cluster, open one terminal and execute:
+
+```bash
+$ docker-compose up
+$ # you can optionally use -d to run it as a daemon
+```
+
+That should start the Autosubmit and the OpenSSH containers. You will have to upgrade
+Paramiko due to an issue with an old version of Paramiko imported by Autosubmit
+when using SSH agents.
+
+![image](https://user-images.githubusercontent.com/304786/193986741-5b48e0d0-ed18-41e8-828e-e593891e08f2.png)
+
+With the cluster running, you can confirm the two containers/services are up with
+`docker-compose ps`. Then run the following commands to start a terminal in the
+`autosubmit` container and to upgrade Paramiko.
+
+```bash
+$ docker-compose exec autosubmit /bin/bash
+autosubmit@autosubmit:/$ pip install paramiko==2.11.0
+autosubmit@autosubmit:/$ sed -i -e 's/paramiko.*$/paramiko/' /home/autosubmit/.local/lib/python2.7/site-packages/autosubmit-3.14.0.dist-info/METADATA 
+```
+
+As you are already running a terminal inside the `autosubmit` node,
+now try describing the workflow.
+
+```bash
+autosubmit@autosubmit:/$ autosubmit describe a000
+/home/autosubmit/.local/lib/python2.7/site-packages/paramiko/transport.py:33: CryptographyDeprecationWarning: Python 2 is no longer supported by the Python core team. Support for it is now deprecated in cryptography, and will be removed in the next release.
+  from cryptography.hazmat.backends import default_backend
+id: ‘eadmin’: no such user
+Autosubmit is running with 3.14.0
+Describing a000
+
+Checking configuration files...
+expdef_a000.conf OK
+platforms_a000.conf OK
+jobs_a000.conf OK
+wrappers OK
+autosubmit_a000.conf OK
+Configuration files OK
+
+Owner: autosubmit
+Created: 2022-10-05 01:48:27.571154
+Model: Not Found
+Branch: Not Found
+HPC: local
+```
+
+If you run the same command in your Host node (i.e. in your laptop or computer)
+you should get the same output. Now run the workflow from inside the Docker container.
+
+That should start the workflow that by default has each task running a `sleep 5`
+command. While the workflow is running, you can monitor it from your Host,
+for instance:
+
+```bash
+$ autosubmit monitor a000
+```
+
+![image](https://user-images.githubusercontent.com/304786/193987635-bc70cfc8-9ec6-47cd-9acb-4d70939ba9de.png)
+
+TODO: Use an X server in the Autosubmit container so `monitor` works with plots inside the container
