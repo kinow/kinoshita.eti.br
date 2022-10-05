@@ -575,6 +575,79 @@ for instance:</p>
 
 <p>TODO: Use an X server in the Autosubmit container so <code class="language-plaintext highlighter-rouge">monitor</code> works with plots inside the container</p>
 
+<p>After running it for a few seconds/minutes you should get the following in the terminal
+where you started your workflow.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">(</span>...<span class="o">)</span>
+2 of 7 <span class="nb">jobs </span>remaining <span class="o">(</span>05:28<span class="o">)</span>
+Job a000_20000101_fc0_1_CLEAN is COMPLETED
+a000_20000101_fc0_TRANSFER submitted
+Call from a000_20000101_fc0_TRANSFER with status SUBMITTED
+
+
+1 of 7 <span class="nb">jobs </span>remaining <span class="o">(</span>05:28<span class="o">)</span>
+Job a000_20000101_fc0_TRANSFER is RUNNING
+
+
+1 of 7 <span class="nb">jobs </span>remaining <span class="o">(</span>05:28<span class="o">)</span>
+Job a000_20000101_fc0_TRANSFER is RUNNING
+
+
+1 of 7 <span class="nb">jobs </span>remaining <span class="o">(</span>05:29<span class="o">)</span>
+Job a000_20000101_fc0_TRANSFER is COMPLETED
+No more <span class="nb">jobs </span>to run.
+Run successful
+</code></pre></div></div>
+
+<p>You have successfully used Docker Compose to run a cluster with Autosubmit,
+and run a workflow with no errors. You can inspect the logs in the worker
+log if you would like:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>docker-compose <span class="nb">exec </span>worker /bin/bash
+root@worker:/# <span class="nb">ls</span> <span class="nt">-lah</span> /tmp/test/autosubmit/a000/LOG_a000/
+total 92K
+drwxr-xr-x 2 autosubmit <span class="nb">users </span>4.0K Oct  5 05:29 <span class="nb">.</span>
+drwxr-xr-x 3 autosubmit <span class="nb">users </span>4.0K Oct  5 05:24 ..
+<span class="nt">-rw-r--r--</span> 1 autosubmit <span class="nb">users  </span>686 Oct  5 05:28 a000_20000101_fc0_1_CLEAN.20221005052811.err
+<span class="nt">-rw-r--r--</span> 1 autosubmit <span class="nb">users    </span>0 Oct  5 05:27 a000_20000101_fc0_1_CLEAN.20221005052811.out
+<span class="nt">-rwxr-xr-x</span> 1 autosubmit <span class="nb">users  </span>804 Oct  5 05:27 a000_20000101_fc0_1_CLEAN.cmd
+<span class="nt">-rw-r--r--</span> 1 autosubmit <span class="nb">users    </span>0 Oct  5 05:28 a000_20000101_fc0_1_CLEAN_COMPLETED
+<span class="nt">-rw-r--r--</span> 1 autosubmit <span class="nb">users   </span>22 Oct  5 05:28 a000_20000101_fc0_1_CLEAN_STAT
+<span class="nt">-rw-r--r--</span> 1 autosubmit <span class="nb">users  </span>682 Oct  5 05:27 a000_20000101_fc0_1_POST.20221005052735.err
+<span class="nt">-rw-r--r--</span> 1 autosubmit <span class="nb">users    </span>0 Oct  5 05:27 a000_20000101_fc0_1_POST.20221005052735.out
+<span class="nt">-rwxr-xr-x</span> 1 autosubmit <span class="nb">users  </span>802 Oct  5 05:27 a000_20000101_fc0_1_POST.cmd
+<span class="nt">-rw-r--r--</span> 1 autosubmit <span class="nb">users    </span>0 Oct  5 05:27 a000_20000101_fc0_1_POST_COMPLETED
+<span class="nt">-rw-r--r--</span> 1 autosubmit <span class="nb">users   </span>22 Oct  5 05:27 a000_20000101_fc0_1_POST_STAT
+<span class="nt">-rw-r--r--</span> 1 autosubmit <span class="nb">users  </span>678 Oct  5 05:27 a000_20000101_fc0_1_SIM.20221005052658.err
+<span class="nt">-rw-r--r--</span> 1 autosubmit <span class="nb">users    </span>0 Oct  5 05:26 a000_20000101_fc0_1_SIM.20221005052658.out
+<span class="nt">-rwxr-xr-x</span> 1 autosubmit <span class="nb">users  </span>800 Oct  5 05:26 a000_20000101_fc0_1_SIM.cmd
+<span class="nt">-rw-r--r--</span> 1 autosubmit <span class="nb">users    </span>0 Oct  5 05:27 a000_20000101_fc0_1_SIM_COMPLETED
+<span class="nt">-rw-r--r--</span> 1 autosubmit <span class="nb">users   </span>22 Oct  5 05:27 a000_20000101_fc0_1_SIM_STAT
+<span class="nt">-rw-r--r--</span> 1 autosubmit <span class="nb">users  </span>670 Oct  5 05:26 a000_20000101_fc0_INI.20221005052622.err
+<span class="nt">-rw-r--r--</span> 1 autosubmit <span class="nb">users    </span>0 Oct  5 05:26 a000_20000101_fc0_INI.20221005052622.out
+<span class="nt">-rwxr-xr-x</span> 1 autosubmit <span class="nb">users  </span>798 Oct  5 05:26 a000_20000101_fc0_INI.cmd
+<span class="nt">-rw-r--r--</span> 1 autosubmit <span class="nb">users    </span>0 Oct  5 05:26 a000_20000101_fc0_INI_COMPLETED
+<span class="nt">-rw-r--r--</span> 1 autosubmit <span class="nb">users   </span>22 Oct  5 05:26 a000_20000101_fc0_INI_STAT
+<span class="nt">-rw-r--r--</span> 1 autosubmit <span class="nb">users  </span>690 Oct  5 05:29 a000_20000101_fc0_TRANSFER.20221005052847.err
+<span class="nt">-rw-r--r--</span> 1 autosubmit <span class="nb">users    </span>0 Oct  5 05:28 a000_20000101_fc0_TRANSFER.20221005052847.out
+<span class="nt">-rwxr-xr-x</span> 1 autosubmit <span class="nb">users  </span>808 Oct  5 05:28 a000_20000101_fc0_TRANSFER.cmd
+<span class="nt">-rw-r--r--</span> 1 autosubmit <span class="nb">users    </span>0 Oct  5 05:29 a000_20000101_fc0_TRANSFER_COMPLETED
+<span class="nt">-rw-r--r--</span> 1 autosubmit <span class="nb">users   </span>22 Oct  5 05:29 a000_20000101_fc0_TRANSFER_STAT
+<span class="nt">-rw-r--r--</span> 1 autosubmit <span class="nb">users  </span>650 Oct  5 05:25 a000_LOCAL_SETUP.20221005052510.err
+<span class="nt">-rw-r--r--</span> 1 autosubmit <span class="nb">users    </span>0 Oct  5 05:24 a000_LOCAL_SETUP.20221005052510.out
+<span class="nt">-rwxr-xr-x</span> 1 autosubmit <span class="nb">users  </span>801 Oct  5 05:24 a000_LOCAL_SETUP.cmd
+<span class="nt">-rw-r--r--</span> 1 autosubmit <span class="nb">users    </span>0 Oct  5 05:25 a000_LOCAL_SETUP_COMPLETED
+<span class="nt">-rw-r--r--</span> 1 autosubmit <span class="nb">users   </span>22 Oct  5 05:25 a000_LOCAL_SETUP_STAT
+<span class="nt">-rw-r--r--</span> 1 autosubmit <span class="nb">users  </span>654 Oct  5 05:26 a000_REMOTE_SETUP.20221005052546.err
+<span class="nt">-rw-r--r--</span> 1 autosubmit <span class="nb">users    </span>0 Oct  5 05:25 a000_REMOTE_SETUP.20221005052546.out
+<span class="nt">-rwxr-xr-x</span> 1 autosubmit <span class="nb">users  </span>803 Oct  5 05:25 a000_REMOTE_SETUP.cmd
+<span class="nt">-rw-r--r--</span> 1 autosubmit <span class="nb">users    </span>0 Oct  5 05:26 a000_REMOTE_SETUP_COMPLETED
+<span class="nt">-rw-r--r--</span> 1 autosubmit <span class="nb">users   </span>22 Oct  5 05:26 a000_REMOTE_SETUP_STAT
+root@worker:/# <span class="nb">cat</span> /tmp/test/autosubmit/a000/LOG_a000/a000_20000101_fc0_1_SIM_STAT 
+1664947606
+1664947641
+</code></pre></div></div>
+
 </article>
 
   </div>
