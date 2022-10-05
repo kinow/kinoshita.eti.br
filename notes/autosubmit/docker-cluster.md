@@ -297,15 +297,22 @@ chown -R autosubmit: /tmp/test/
 ## Docker Compose cluster
 
 This cluster uses the Linux Server OpenSSH worker node, and a container for Autosubmit.
-Note that both containers were created to be as ephemeral as possible. This means that
+Note that both containers **were created to be as ephemeral as possible**. This means that
 they are not supposed to retain state, data, or any tools of importance, and can be
 destroyed and replaced by new containers at any time (which is useful for cloud environments
 like AWS, OpenStack, Kubernetes, etc.).
 
-The `docker-compose.yml` file below can be used without any overrides (which are
-a possible extension):
+>**NOTE**: The whole cluster runs without `root` users and without using `sudo`, another
+> Docker best practice. It also helps to migrate it to Singularity, charliecloud, etc.
+
+The `docker-compose.yml` file below can be used without any [override files](https://docs.docker.com/compose/extends/)
+(which can be used, if needed). And it also does not uses [replicas](https://docs.docker.com/compose/compose-file/deploy/)
+(another possibility, if needed):
 
 _`docker-compose.yml`_
+
+<details>
+<summary>Click to expand</summary>
 
 ```yaml
 version: "3.7"
@@ -381,6 +388,7 @@ services:
         read_only: true
     restart: unless-stopped
 ```
+</details>
 
 There are two services defined in this Docker Compose file. One for Autosubmit,
 using the `Dockerfile`. That container can be used as a permanent VM/container
