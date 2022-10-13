@@ -104,6 +104,20 @@ Spring Boot, Tornado, asyncio, Symfony, Vue.js
 
 <table class="ui celled table">
   <tr>
+    <td>IFS Developer Workflow Training</td>
+    <td>ECMWF</td>
+    <td>        Online
+    </td>
+    <td>2022</td>
+  </tr>
+  <tr>
+    <td>Technical Writing</td>
+    <td>Google Developers</td>
+    <td>        Online
+    </td>
+    <td>2022</td>
+  </tr>
+  <tr>
     <td>Machine learning in Python with scikit-learn</td>
     <td>INRIA</td>
     <td>        Online (France Universit\'e Num\'erique MOOC)
