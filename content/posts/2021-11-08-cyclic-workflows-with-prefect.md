@@ -1,16 +1,11 @@
 ---
 date: "2021-11-08T00:00:00Z"
-note: |
-  This post is a sequel to last month's [Cyclic Workflows with Cylc and StackStorm](/2021/10/01/cyclic-workflows-with-cylc-and-stackstorm.html)
+note: This post is a sequel to last month's [Cyclic Workflows with Cylc and StackStorm](/2021/10/01/cyclic-workflows-with-cylc-and-stackstorm.html)
 tags: ["opensource"]
 title: Cyclic Workflows with Prefect
 ---
 
-<img
-src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/prefect.svg"
-alt="Prefect logo"
-class="center-aligned"
-/>
+{{< showimage image=prefect.svg title="Prefect logo" >}}
 
 Last month I wrote about
 [Cyclic Workflows with Cylc and StackStorm](/2021/10/01/cyclic-workflows-with-cylc-and-stackstorm.html)
@@ -27,6 +22,7 @@ src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}
 alt="Example of Unrolled RNN on the forward-pass (image from https://machinelearningmastery.com/rnn-unrolling/)"
 class="center-aligned"
 />
+{{< showimage image=Example-of-Unrolled-RNN-on-the-forward-pass.png alt="Example of Unrolled RNN on the forward-pass (image from https://machinelearningmastery.com/rnn-unrolling/)" >}}
 
 <small>Image source: <a href="https://machinelearningmastery.com/rnn-unrolling/">A Gentle Introduction to RNN Unrolling
 </a></small>
@@ -108,11 +104,7 @@ workflow managers will start supporting cyclic workflows soon. It adds some
 complexity to the code, but so it does add dependency management, good logging,
 configuration, distributed execution, and so on.
 
-<img
-src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/graph-unroll.png"
-alt="Decyclify algorithm (image from https://github.com/kinow/decyclify)"
-class="center-aligned"
-/>
+{{< showimage image="graph-unroll.png" alt="Decyclify algorithm (image from https://github.com/kinow/decyclify)" >}}
 
 I am not sure if the way I linked tasks is following best practices for Prefect. There
 may be better ways so that Prefect can handle restarting workflows, for instance. But
