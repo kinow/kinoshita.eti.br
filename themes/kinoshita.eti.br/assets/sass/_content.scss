@@ -1,0 +1,72 @@
+@import "variables";
+
+/*
+ * Original source: https://ryanmulligan.dev/blog/layout-breakouts/
+ */
+.content, main {
+  padding: 1rem 0;
+
+  --gap: clamp(1rem, 6vw, 3rem);
+  --full: minmax(var(--gap), 1fr);
+  --content: min(75ch, 100% - var(--gap) * 2);
+  --popout: minmax(0, 2rem);
+  --feature: minmax(0, 5rem);
+
+  display: grid;
+  grid-template-columns:
+    [full-start] var(--full)
+    [feature-start] var(--feature)
+    [popout-start] var(--popout)
+    [content-start] var(--content) [content-end]
+    var(--popout) [popout-end]
+    var(--feature) [feature-end]
+    var(--full) [full-end];
+}
+
+.content, main > * {
+  grid-column: content;
+}
+
+.popout {
+  grid-column: popout;
+}
+
+.feature {
+  grid-column: feature;
+}
+
+.full {
+  grid-column: full;
+}
+
+/*
+ * Other.
+ */
+
+main {
+
+  a, a:visited, a:active {
+    color: red;
+    text-decoration: none;
+  }
+
+  figure {
+    figcaption {
+      text-align: center;
+      color: $light-gray;
+      font-size: 0.8rem;
+    }
+  }
+
+  ul#social-media-icons {
+    text-align: center;
+    list-style: none;
+    margin: 2rem 0;
+    padding: 0;
+    li {
+      display: inline-block;
+      margin: 0;
+      padding: 0;
+    }
+  }
+}

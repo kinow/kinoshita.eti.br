@@ -1,0 +1,69 @@
+/* ---- Debug styles ---- */
+.debug {
+  position: fixed;
+  top: 0;
+  left: 0;
+  grid-template-rows: 1fr;
+  width: 100%;
+  height: 100vh;
+  mix-blend-mode: multiply;
+  opacity: 0;
+  transition: opacity 200ms ease-out;
+}
+
+.debug > * {
+  --pseudo-offset: 0.25rem;
+  position: relative;
+  height: 100vh;
+  grid-row: 1 / -1;
+  border-radius: 0;
+  border-inline: 1px dashed crimson;
+}
+
+.debug > *[class]::before,
+.debug > *[class]::after {
+  content: var(--column);
+  writing-mode: vertical-lr;
+  position: absolute;
+  top: 50%;
+  text-transform: uppercase;
+  font-size: 0.8em;
+  transform: translateY(-50%);
+}
+
+.debug > *::before {
+  left: var(--pseudo-offset);
+}
+
+.debug > *::after {
+  right: var(--pseudo-offset);
+}
+
+.debug > .popout {
+  --column: "Popout";
+}
+
+.debug > .feature {
+  --column: "Feature";
+}
+
+.debug > .full {
+  --column: "Full";
+}
+
+[id="debug"],
+[id="debug"] + label {
+  position: relative;
+  z-index: 1;
+  cursor: pointer;
+  user-select: none;
+}
+
+[id="debug"] {
+  margin-block: 2rem;
+  margin-inline-start: 1rem;
+}
+
+[id="debug"]:checked ~ .debug {
+  opacity: 1;
+}
