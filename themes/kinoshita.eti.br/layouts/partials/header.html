@@ -1,16 +1,18 @@
 <header role="banner">
   <nav id="nav" aria-label="Main" role="navigation">
     <ul>
-    {{ range .Site.Menus.main }}
-    <li href="{{ .URL }}" aria-current="false">
+    {{- range .Site.Menus.main -}}
+    <li>
+      <a href="{{ .URL }}" aria-current="false">
       {{ if .Pre }}
-      {{ $icon := printf "<i data-feather=\"%s\"></i> " .Pre | safeHTML }}
-      {{ $icon }}
-      {{ end }}
-      {{ $text := print .Name | safeHTML }}
-      {{ $text }}
+      {{- $icon := printf "<i data-feather=\"%s\"></i> " .Pre | safeHTML -}}
+      {{- $icon -}}
+      {{- end -}}
+      {{- $text := print .Name | safeHTML -}}
+      {{- $text -}}
+      </a>
     </li>
-    {{ end }}
+    {{- end -}}
     </ul>
   </nav>
 </header>
