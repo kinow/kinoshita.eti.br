@@ -2,8 +2,13 @@
 title: About
 ---
 
-<div style="margin: 0; padding: 0;">
-  <img src="/assets/photos/about/2020-me-closeup.png" alt="Bruno's headshot" style="max-height: 200px; float: right; margin: 0 auto .5rem auto;padding-left: .5rem;" />
+<div class="landing-page" style="margin: 0; padding: 0;">
+  <img
+    id="kinow-photo"
+    src="/assets/photos/about/2020-me-closeup.png"
+    alt="Bruno's headshot"
+    style="max-height: 200px; float: right; margin: 0 auto .5rem auto;padding-left: .5rem;"
+  />
 
   <p>Hello! I am Bruno P. Kinoshita or <strong>“kinow”</strong>, born and raised in Casa Verde,
   São Paulo, Brazil. I am a typical <i title="São Paulo city demonym">Paulistano</i>.
@@ -13,12 +18,12 @@ title: About
   Cibele.</p>
 
   <p>Head on to the blog for posts about languages, writing, music, and computer
-  programming. Or check out my portfolio where I upload drawings, illustrations,
+  programming. Or visit my portfolio where I upload drawings, illustrations,
   paintings, and more.</p>
 </div>
 
 <figure class="feature">
-  <img src="/assets/photos/about/255.png" alt="Photo of Sao Paulo City" style="width: 100vw;">
+  <img src="/assets/photos/about/255.png" alt="Photo of Sao Paulo City" style="width: 100vw;" class="dark-enabled">
   <figcaption>Studies of hands and feet.</figcaption>
 </figure>
 
@@ -27,7 +32,7 @@ In arts, I enjoy life drawing, editorial illustration, gouache, watercolors, pas
 on me by my late big brother [Joe Lauviah Morbitus Mortiferus](https://youtu.be/wLhsyyN7T2Q?t=14)
 (he would still want to be called that way, <i>shrugs</i>).
 I use mixed media, but I tend to use more charcoal, graphite, and ink
-for traditional arts. For digital art I use Blender, ClipStudio, Krita,
+for traditional arts. For digital arts I use Blender, ClipStudio, Krita,
 and GIMP.
 
 In computer programming, I write code in Java, Python, JavaScript, PHP,
@@ -45,7 +50,8 @@ had a career working with mainframes at IBM.
 
 This website was created with Open Source software, following accessibility
 practices from the WCAG 2.1 standard, and in pure CSS. It does not use any
-cookies nor trackers. It was tested on an Orca screen reader on Ubuntu Linux.
+cookies nor trackers. It was tested with the Orca screen reader on Ubuntu
+Linux. Feedback to improve accessibility is welcome.
 
 Get in touch if you would like to discuss a project related to computer
 programming and, or, arts.
