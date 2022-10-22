@@ -43,14 +43,6 @@
  * Other.
  */
 
-[data-darkreader-scheme="dark"] * {
-  display: none;
-}
-
-[data-darkreader-scheme="dark"] img.dark-enabled {
-  filter: invert(1);
-}
-
 main {
 
   padding: 2rem 0 1rem 0;
@@ -61,11 +53,18 @@ main {
   }
 
   figure {
-    //@media (prefers-color-scheme: dark) {
-    //  img.dark-enabled {
-    //    filter: invert(1);
-    //  }
+    justify-content: center;
+    align-content: center;
+    display: flex;
+    flex-direction: column;
+
+    img {
+      margin: 0 auto 1rem auto;
+    }
+    //img.dark-enabled {
+    //  filter: invert(100);
     //}
+
     figcaption {
       text-align: center;
       color: var(--color-light-gray);
@@ -76,9 +75,46 @@ main {
   div.landing-page {
     img#kinow-photo {
       filter: grayscale(100%);
-      &:hover {
-        filter: none;
-      }
+      // B&W looked better?
+      //&:hover {
+      //  filter: none;
+      //}
+    }
+  }
+
+  /**
+ * Hugo code block.
+ */
+  .highlight {
+    @extend .feature;
+    margin: 0 0 1rem 0;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    font-family: $monospace;
+    font-size: 0.8rem;
+    pre {
+      padding: 1rem;
+      overflow-x: scroll;
+      background: rgb(215, 225, 235) !important;
+      white-space: pre;
+      border-radius: 12px;
+    }
+  }
+
+  div#portfolio {
+    @extend .full;
+    margin: 1rem 0;
+    display: flex;
+    flex: 0 0 50%;
+    flex-direction: row;
+    overflow-x: scroll;
+    overflow-y: hidden;
+    height: 500px;
+
+    img {
+      max-width: unset;
+      width: auto;
     }
   }
 }

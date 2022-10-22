@@ -1,0 +1,16 @@
+{{ $path        := .Get "directory" }}
+{{ $filepath    := printf "static/%s" $path }}
+{{ $files       := readDir $filepath }}
+
+<div id="portfolio">
+{{ if (fileExists $filepath) }}
+{{- range sort $files ".Name" "asc" -}}
+  {{ if not .IsDir }}
+    <img
+      src="{{ $path }}/{{ .Name }}"
+      loading="lazy"
+    />
+  {{ end }}
+{{- end -}}
+{{ end }}
+</div>

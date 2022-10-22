@@ -5,7 +5,9 @@ tags: ["opensource"]
 title: Cyclic Workflows with Prefect
 ---
 
-{{< showimage image=prefect.svg title="Prefect logo" >}}
+<div style="width: 50%; margin: 0 auto;">
+  {{< showimage image=prefect.svg alt="Prefect logo" >}}
+</div>
 
 Last month I wrote about
 [Cyclic Workflows with Cylc and StackStorm](/2021/10/01/cyclic-workflows-with-cylc-and-stackstorm.html)
@@ -17,15 +19,13 @@ I was surprised today while reading Prefect documentation to see this paragraph:
 > but it's actually trivial to implement. We simply dynamically unroll the loop, similar to how RNN
 > gradients are sometimes computed.
 
-<img
-src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/Example-of-Unrolled-RNN-on-the-forward-pass.png"
-alt="Example of Unrolled RNN on the forward-pass (image from https://machinelearningmastery.com/rnn-unrolling/)"
-class="center-aligned"
-/>
-{{< showimage image=Example-of-Unrolled-RNN-on-the-forward-pass.png alt="Example of Unrolled RNN on the forward-pass (image from https://machinelearningmastery.com/rnn-unrolling/)" >}}
+<!--more-->
 
-<small>Image source: <a href="https://machinelearningmastery.com/rnn-unrolling/">A Gentle Introduction to RNN Unrolling
-</a></small>
+{{< showimage
+      image=Example-of-Unrolled-RNN-on-the-forward-pass.png
+      alt="Example of Unrolled RNN on the forward-pass (image from https://machinelearningmastery.com/rnn-unrolling/)"
+      caption="Image source: <a href=\"https://machinelearningmastery.com/rnn-unrolling/\">A Gentle Introduction to RNN Unrolling</a>"
+>}}
 
 The API for cyclic workflows of Prefect appears to be limited when compared with Cylc and
 StackStorm, but they have a lot of integrations, and good documentation.
