@@ -17,9 +17,9 @@ title: About
   <i title="Māori name for New Zealand (or its North Island)">Aotearoa</i> New Zealand,
   and lived there for 8 years. I currently live with my wife, Cibele, in Barcelona, Spain.</p>
 
-  <p>Head on to the blog for posts about languages, writing, music, and computer
-  programming. Or visit my portfolio where I upload drawings, illustrations,
-  paintings, and more.</p>
+  <p>Head on to the blog for posts about languages, writing, music, arts, and computer
+  programming. Or visit my portfolio where I upload drawings, illustrations, paintings,
+  and more.</p>
 </div>
 
 <figure class="feature">
@@ -31,9 +31,9 @@ In arts, I enjoy life drawing, editorial illustration, gouache, watercolors, pas
 3D, UI/UX, data visualization, and writing. Much of the way I draw and paint was imprinted
 on me by my late big brother [Joe Lauviah Morbitus Mortiferus](https://youtu.be/wLhsyyN7T2Q?t=14)
 (he would still want to be called that way, <i>shrugs</i>).
-I use mixed media, but I tend to use more charcoal, graphite, and ink
-for traditional arts. For digital arts I use Blender, ClipStudio, Krita,
-and GIMP.
+I use mixed media, but tend to use more charcoal, graphite, and ink
+for traditional arts. For digital arts I use GIMP, Krita, Blender,
+ClipStudio Paint, and Inkscape.
 
 In computer programming, I write code in Java, Python, JavaScript, PHP,
 and a few other languages. I am interested in natural language processing,
@@ -49,9 +49,9 @@ had a career working with mainframes at IBM.
 </figure>
 
 This website was created with Open Source software, following accessibility
-practices from the WCAG 2.1 standard, and in pure CSS. It does not use any
-cookies nor trackers. It was tested with the Orca screen reader on Ubuntu
-Linux. Feedback to improve accessibility is welcome.
+practices from the WCAG 2.1 standard, and in pure CSS without JavaScript. It
+does not use any cookies nor trackers. It was tested with the Orca screen
+reader on Ubuntu Linux. Feedback to improve accessibility is welcome.
 
 Get in touch if you would like to discuss a project related to computer
 programming and, or, arts.
