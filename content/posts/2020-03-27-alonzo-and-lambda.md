@@ -17,10 +17,6 @@ Drawn from photo as reference, with Pentel ink brush.
 Used as background in the [r/functionalprogramming](https://old.reddit.com/r/functionalprogramming/)
 subreddit community.
 
-<img
-  src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/Screenshot from 2021-03-29 15-36-53.png"
-  alt="Screenshot of the subreddit community with image in the background"
-  class="center-aligned"
-/>
+<img src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/Screenshot from 2021-03-29 15-36-53.png" alt="Screenshot of the subreddit community with image in the background" class="center-aligned" />
 
 Later used by a PhD student in his thesis presentation for a French university.

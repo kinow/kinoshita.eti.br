@@ -8,11 +8,7 @@ tags:
 title: Blender rendering on NVIDIA Jetson Nano
 ---
 
-<img
-src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/jetson.jpg"
-alt="NVIDIA Jetson Nano computer"
-class="center-aligned"
-/>
+<img src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/jetson.jpg" alt="NVIDIA Jetson Nano computer" class="center-aligned" />
 
 I had used Blender during my graduation at the Mackenzie University and started learning
 Blender 2.8+ again a few weeks ago. Unfortunately rendering the basic tutorials like Andrew
@@ -29,11 +25,7 @@ kits that allow you to connect a GPU to a notebook like mine using an adapter an
 port like thunderbolt, m.2 (removing wi-fi card), etc. But all these options are expensive
 and the bandwidth is not near as good as using a GPU plugged in the motherboard.
 
-<img
-src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/donut.png"
-alt="Andrew Price (Blender Guru) donut"
-class="center-aligned"
-/>
+<img src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/donut.png" alt="Andrew Price (Blender Guru) donut" class="center-aligned" />
 
 A few months ago I heard about the [NVIDIA Jetson Nano](https://developer.nvidia.com/embedded/jetson-nano)
 board computer. They are small board computers for embedded applications. Using an
@@ -42,11 +34,7 @@ with **128 cores**. The computer has **4 GB memory that is shared between the op
 system and the graphics processor**. And the NVIDIA Jetson Nano GPU supports CUDA 5.3,
 which means it can be used by Blender to render scenes in the GPU.
 
-<img
-src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/suzanne.png"
-alt="A blender scene with Suzanne and modifiers"
-class="center-aligned"
-/>
+<img src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/suzanne.png" alt="A blender scene with Suzanne and modifiers" class="center-aligned" />
 
 After following the Jetson Nano documentation to install it using an SD disk,
 and enabling the performance overclock mode, I used `apt-get` to install Blender.
@@ -63,11 +51,7 @@ I installed the same version of Blender, 2.7, on my Ubuntu Thinkpad, and configu
 tiles size on both files, and selected GPU rendering. Then I `scp`ed it to the NVIDIA
 Jetson Nano Ubuntu, and set the render engine back to CPU on my Ubuntu.
 
-<img
-src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/splashscreen.png"
-alt="Blender 2.7 splash demo image"
-class="center-aligned"
-/>
+<img src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/splashscreen.png" alt="Blender 2.7 splash demo image" class="center-aligned" />
 
 First I rendered Suzanne on my Thinkpad using the CPU. It took **11 seconds to render**
 the scene.

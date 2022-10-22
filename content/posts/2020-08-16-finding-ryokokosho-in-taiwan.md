@@ -101,12 +101,7 @@ So now we have a reliable source to identify the location of the mosquito!
 
 >It is located in the middle of present-day Zhongzheng District
 
-<img
-  class="fluid"
-  src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/zhongzheng-district.png"
-  alt="Google Map for Zhongzheng District"
-  aria-label="Google Map for Zhongzheng District"
-  />
+<img class="fluid" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/zhongzheng-district.png" alt="Google Map for Zhongzheng District" />
 
 Unfortunately the translated names like Aiguoli don't match any existing names in Google Maps in Taiwan. The name
 in Chinese does (愛國里). So I entered some of these names to confirm the area of the map of that old village.
@@ -115,23 +110,13 @@ I also found [this map](https://www.facebook.com/IntoChengNan/photos/a.357412827
 on FaceBook, but without knowing Chinese, the only part I could confirm is that
 the light brown area at the top contains the words 「南門」 (South gate?) and 「龍匣口」 (Longxiakou).
 
-<img
-  class="fluid"
-  src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/longxiakou-map-facebook.png"
-  alt="Map with Longxiakou Village"
-  aria-label="Map with Longxiakou Village"
-  />
+<img class="fluid" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/longxiakou-map-facebook.png" alt="Map with Longxiakou Village"  />
 
 Using QGIS 3, the Georeferencer plug-in, quickly adding some points manually,
 and then finally adjusting raster transparency, we have the following map to
 show us where the village used to be.
 
-<img
-  class="fluid"
-  src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/longxiakou-georeferenced.png"
-  alt="Longxiakou village georeferenced on OSM map"
-  aria-label="Longxiakou village georeferenced on OSM map"
-  />
+<img class="fluid" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/longxiakou-georeferenced.png" alt="Longxiakou village georeferenced on OSM map" />
 
 If you would like to import the QGIS files, or have a look at the points I used,
 browse the files over [here](https://github.com/kinow/kinoshita.eti.br/tree/master/assets/posts/2020-08-16-finding-ryukokosho-in-taiwan). 
