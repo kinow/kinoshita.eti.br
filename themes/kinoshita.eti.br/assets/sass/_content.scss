@@ -1,0 +1,131 @@
+@import "variables";
+
+/*
+ * Original source: https://ryanmulligan.dev/blog/layout-breakouts/
+ */
+.content {
+  font-family: $serif;
+
+  --gap: clamp(1rem, 6vw, 3rem);
+  --full: minmax(var(--gap), 1fr);
+  --content: min(75ch, 100% - var(--gap) * 2);
+  --popout: minmax(0, 2rem);
+  --feature: minmax(0, 5rem);
+
+  display: grid;
+  grid-template-columns:
+    [full-start] var(--full)
+    [feature-start] var(--feature)
+    [popout-start] var(--popout)
+    [content-start] var(--content) [content-end]
+    var(--popout) [popout-end]
+    var(--feature) [feature-end]
+    var(--full) [full-end];
+}
+
+.content, main > * {
+  grid-column: content;
+}
+
+.popout {
+  grid-column: popout;
+}
+
+.feature {
+  grid-column: feature;
+}
+
+.full {
+  grid-column: full;
+}
+
+/*
+ * Other.
+ */
+
+main {
+
+  padding: 2rem 0 1rem 0;
+
+  a, a:visited, a:active {
+    color: $red;
+    text-decoration: none;
+  }
+
+  figure {
+    justify-content: center;
+    align-content: center;
+    display: flex;
+    flex-direction: column;
+
+    img {
+      margin: 0 auto 1rem auto;
+    }
+    //img.dark-enabled {
+    //  filter: invert(100);
+    //}
+
+    figcaption {
+      text-align: center;
+      color: var(--color-light-gray);
+      font-size: 0.8rem;
+    }
+  }
+
+  div.landing-page {
+    img#kinow-photo {
+      filter: grayscale(100%);
+      // B&W looked better?
+      //&:hover {
+      //  filter: none;
+      //}
+    }
+  }
+
+  /**
+ * Hugo code block.
+ */
+  .highlight {
+    @extend .feature;
+    margin: 0 0 1rem 0;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    font-family: $monospace;
+    font-size: 0.8rem;
+    pre {
+      padding: 1rem;
+      overflow-x: scroll;
+      background: rgb(215, 225, 235) !important;
+      white-space: pre;
+      border-radius: 12px;
+    }
+  }
+
+  div#portfolio {
+    @extend .full;
+    margin: 1rem 0;
+    display: flex;
+    flex: 0 0 50%;
+    flex-direction: row;
+    overflow-x: scroll;
+    overflow-y: hidden;
+    height: 500px;
+
+    img {
+      max-width: unset;
+      width: auto;
+    }
+  }
+
+  /*
+   * List of posts.
+   */
+  .post-link {
+    margin: 0 0 0.5rem 0;
+
+    .metadata {
+      font-size: 0.8rem;
+    }
+  }
+}
