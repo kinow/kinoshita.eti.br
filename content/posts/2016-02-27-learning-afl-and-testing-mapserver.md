@@ -58,7 +58,12 @@ creating a single layer mapfile. LINZ provides shapefiles for New Zealand
 ([here's an example](https://data.linz.govt.nz/layer/1153-nz-coastlines-and-islands-polygons-topo-150k/))
 that I used for this experiment.
 
-<img class="ui image" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/qgis_settings.png">
+{{< showimage
+  image="qgis_settings.png"
+  alt=""
+  caption=""
+  style=""
+>}}
 
 
 I used [QGIS](http://www.qgis.org/en/site/) to load the shapefile, take a look at the map,
@@ -125,7 +130,12 @@ mkdir fuzz-input fuzz-output
 /opt/afl-2.05b/afl-fuzz -m 500 -i fuzz-input/ -o fuzz-output/ -t 2000 ./mapserv QUERY_STRING="VERSION=1.1.0&REQUEST=GetMap&LAYERS=nz-coastlines-and-islands-polygons-topo-150k&SRS=EPSG:4167&SERVICE=WMS&TEMPLATE=OpenLayers&BBOX=165.869,-52.6209,183.846,-29.2313&FORMAT=image/jpeg&HEIGHT=800&WIDTH=800"
 ```
 
-<img class="ui image" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/afl_testing_mapserver.png">
+{{< showimage
+  image="afl_testing_mapserver.png"
+  alt=""
+  caption=""
+  style=""
+>}}
 
 
 However, it is not mutating the program input as I didn't use "@@" nor a dictionary. When you use @@, afl will replace

@@ -22,57 +22,122 @@ This logo is not actually used. It was an entry to a call for proposals.
 This post won't have much text. It will be more screen shots of the
 process with short commentaire.
 
-<img class="ui fluid image" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/01.png" />
+{{< showimage
+  image="01.png"
+  alt=""
+  caption=""
+  style=""
+>}}
 
 <!--more-->
 
 
-<img class="ui fluid image" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/02.png" />
+{{< showimage
+  image="02.png"
+  alt=""
+  caption=""
+  style=""
+>}}
 
 
 
-<img class="ui fluid image" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/03.png" />
+{{< showimage
+  image="03.png"
+  alt=""
+  caption=""
+  style=""
+>}}
 
 
 
 
-<img class="ui fluid image" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/04.png" />
+{{< showimage
+  image="04.png"
+  alt=""
+  caption=""
+  style=""
+>}}
 
 
 
-<img class="ui fluid image" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/05.png" />
+{{< showimage
+  image="05.png"
+  alt=""
+  caption=""
+  style=""
+>}}
 
 
 
-<img class="ui fluid image" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/06.png" />
+{{< showimage
+  image="06.png"
+  alt=""
+  caption=""
+  style=""
+>}}
 
 
 
-<img class="ui fluid image" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/07.png" />
+{{< showimage
+  image="07.png"
+  alt=""
+  caption=""
+  style=""
+>}}
 
 
 
-<img class="ui fluid image" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/08.png" />
+{{< showimage
+  image="08.png"
+  alt=""
+  caption=""
+  style=""
+>}}
 
 
 
-<img class="ui fluid image" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/09.png" />
+{{< showimage
+  image="09.png"
+  alt=""
+  caption=""
+  style=""
+>}}
 
 
 
-<img class="ui fluid image" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/10.png" />
+{{< showimage
+  image="10.png"
+  alt=""
+  caption=""
+  style=""
+>}}
 
 
 
-<img class="ui fluid image" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/11.png" />
+{{< showimage
+  image="11.png"
+  alt=""
+  caption=""
+  style=""
+>}}
 
 
 
-<img class="ui fluid image" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/12.png" />
+{{< showimage
+  image="12.png"
+  alt=""
+  caption=""
+  style=""
+>}}
 
 
 
-<img class="ui fluid image" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/13.png" />
+{{< showimage
+  image="13.png"
+  alt=""
+  caption=""
+  style=""
+>}}
 
 
 ### And a bug
@@ -82,7 +147,12 @@ text and the bend effect, when moving the ribbon grouped with the text and after
 saving the file, the text changed in some strange way.
 
 
-<img class="ui fluid image" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/bug.png" />
+{{< showimage
+  image="bug.png"
+  alt=""
+  caption=""
+  style=""
+>}}
 
 
 Now just need to finish reading

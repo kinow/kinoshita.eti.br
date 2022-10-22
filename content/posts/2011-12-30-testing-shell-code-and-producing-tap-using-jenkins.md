@@ -26,13 +26,28 @@ Here's what is necessary.
 <!--more-->
 Install Jenkins, tap plug-in and git plug-in. Create a new free style build. Add Bats git repository url under SCM. This way Jenkins will retrieve Bats code from Github (you don't need to install it if you don't want to). Add a build step which executes the following shell code: <tt>./bin/bats test/bats.bats &gt; test.t</tt>
 
-<img class="ui fluid image" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/Screenshot_at_2011_12_30_233256.png">
+{{< showimage
+  image="Screenshot_at_2011_12_30_233256.png"
+  alt=""
+  caption=""
+  style=""
+>}}
 
 Before executing the build, you have to check the option to publish TAP results in the end of the configuration screen. That's it. Execute your job, chug the remaining of your beer and now you can go to bed... or just refresh Hacker News and Reddit once more...
 
-<img class="ui fluid image" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/Screenshot_at_2011_12_30_233313.png">
+{{< showimage
+  image="Screenshot_at_2011_12_30_233313.png"
+  alt=""
+  caption=""
+  style=""
+>}}
 
-<img class="ui fluid image" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/Screenshot_at_2011_12_30_233323.png">
+{{< showimage
+  image="Screenshot_at_2011_12_30_233323.png"
+  alt=""
+  caption=""
+  style=""
+>}}
 
 Bats is a very nice TAP producer for Shell. Haven't had time to play with the other producers for Shell, or explore Bats thoroughly, but it looks very promising. Hope to see more people writing tests for shell code.
 

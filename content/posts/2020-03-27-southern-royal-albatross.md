@@ -8,4 +8,4 @@ note: The southern royal albatross is a large seabird from the albatross family.
 title: Southern Royal Albatross
 ---
 
-<img src="/assets/pages/art/images/southern-royal-albatross.png">
+<img src="/assets/pages/art/images/images/southern-royal-albatross.png">

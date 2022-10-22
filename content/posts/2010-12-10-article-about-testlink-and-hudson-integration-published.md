@@ -10,7 +10,12 @@ tags:
 title: Article about TestLink and Hudson integration published
 ---
 
-<img class="ui left floated image" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/cover12_12_10.jpg">
+{{< showimage
+  image="cover12_12_10.jpg"
+  alt=""
+  caption=""
+  style=""
+>}}
 
 Since September I've been working on a project to integrate TestLink and Hudson. The project consists basically in a Hudson Plug-in that uses <a title="TestLink java api" href="http://testlinkjavaapi.sourceforge.net/">TestLink Java API</a> to retrieve information of Automated Test Cases created in <a title="TestLink" href="http://www.teamst.org">TestLink</a>. You can read more about the plug-in in the following address: <a title="TestLink Hudson Plug-in" href="http://wiki.hudson-ci.org/display/HUDSON/TestLink+Plugin">http://wiki.hudson-ci.org/display/HUDSON/TestLink+Plugin</a>.
 
@@ -22,6 +27,11 @@ The plug-in is being used to automate acceptance tests in a CRM system that was 
 
 In the following days I'll be writing more tutorials, guides and recording some video tutorials. In February of the next year this automation solution will be presented in the <a title="Belgium Testing Days" href="http://www.belgiumtestingdays.com/">Belgium Testing Days</a> event.
 
-<img class="ui image" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/btd2011_speakers_banner_1.png">
+{{< showimage
+  image="btd2011_speakers_banner_1.png"
+  alt=""
+  caption=""
+  style=""
+>}}
 
 Cheers

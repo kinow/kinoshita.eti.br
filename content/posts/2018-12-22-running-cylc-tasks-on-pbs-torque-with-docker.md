@@ -202,7 +202,12 @@ testuser@7ce742eb050c:~$ cylc run --no-detach pbs1
 ```
 
 
-<img class="ui fluid image" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/cylcpbs-screenshot.png" />
+{{< showimage
+  image="cylcpbs-screenshot.png"
+  alt=""
+  caption=""
+  style=""
+>}}
 
 
 ## Reproducing the issue

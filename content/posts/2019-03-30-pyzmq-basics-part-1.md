@@ -11,7 +11,12 @@ title: PyZMQ Basics - Part 1
 ---
 
 <a href="https://www.deviantart.com/kinow/art/Old-man-1-657521623" style="float: left;">
-<img class="ui fluid image" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/old-man-1.png" /></a>
+{{< showimage
+  image="old-man-1.png"
+  alt=""
+  caption=""
+  style=""
+>}}
 
 I am working [on a project](https://cylc.github.io) that is adopting [ZeroMQ](http://zeromq.org/).
 This post series is for self understanding of PyZMQ, a ZeroMQ

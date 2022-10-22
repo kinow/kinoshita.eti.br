@@ -17,7 +17,12 @@ the moment the method `configure()` is called.
 *NB: this is a post to remember things, not really expecting to give someone enough
 information to be able to hack the Cylc Scheduler (though you can and would have fun!).*
 
-<img style="display: inline; width: 100%;" class="ui image" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/cylc-scheduler_configure.png"  />
+{{< showimage
+  image="cylc-scheduler_configure.png"
+  alt=""
+  caption=""
+  style="display: inline; width: 100%;"
+>}}
 
 <!--more-->
 

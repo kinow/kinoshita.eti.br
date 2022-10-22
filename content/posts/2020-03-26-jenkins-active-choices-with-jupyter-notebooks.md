@@ -17,7 +17,12 @@ The experiment was a success, and I am convinced one could achieve the same in J
 workflow manager, or the parameters could be submitted to a different workflow manager or another system.
 
 <a href="https://twitter.com/kinow/status/1234053592203481090" alt="Link to Tweet">
-<img alt="Tweet" class="ui image" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/Screenshot_2020-03-26_17-45-04.png" />
+{{< showimage
+  image="Screenshot_2020-03-26_17-45-04.png"
+  alt="Tweet"
+  caption="Tweet"
+  style=""
+>}}
 </a>
 
 You can see more in the following links:

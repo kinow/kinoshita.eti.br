@@ -11,7 +11,12 @@ It's been a while since the last time I posted something here. The reason is tha
 
 Recently I left <a title="Sysmap Solutions" href="http://www.sysmap.com.br">Sysmap Solutions</a>, where I was a consultant, to have my labor card signed by <a title="Lojas Riachuelo" href="http://www.lojasriachuelo.com.br">Lojas Riachuelo</a>, a famous Brazilian fashion retailer (like C&amp;A, Zara, H&amp;M and so on), part of Guararapes group.
 
-<img class="ui left floated image" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/riachuelo.jpg">
+{{< showimage
+  image="riachuelo.jpg"
+  alt=""
+  caption=""
+  style=""
+>}}
 
 So I am still getting used to the new routine, new systems and be a employee rather than a consultant.
 

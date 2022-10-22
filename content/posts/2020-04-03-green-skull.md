@@ -10,4 +10,4 @@ note: 'The Catacombs of Paris (French: Catacombes de Paris) are underground ossu
 title: Green Skull
 ---
 
-<img src="/assets/pages/art/images/green-skull-full.png">
+<img src="/assets/pages/art/images/images/green-skull-full.png">

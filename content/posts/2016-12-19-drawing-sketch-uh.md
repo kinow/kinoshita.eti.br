@@ -9,10 +9,20 @@ title: 'Drawing sketch: Uh!'
 
 Sketch.
 
-<img class="ui fluid image" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/progress.jpg">
+{{< showimage
+  image="progress.jpg"
+  alt=""
+  caption=""
+  style=""
+>}}
 
 And final work here.
 
-<img style="height: 400px;" class="ui image" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/uh.jpg">
+{{< showimage
+  image="uh.jpg"
+  alt=""
+  caption=""
+  style="height: 400px;"
+>}}
 
 For [redditgetsdrawn](http://kinow.deviantart.com/art/Uh-651490865)

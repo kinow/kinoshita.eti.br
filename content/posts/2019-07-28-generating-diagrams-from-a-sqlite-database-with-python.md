@@ -9,7 +9,12 @@ tags:
 title: Generating diagrams from a SQlite database with Python
 ---
 
-<img class="ui fluid image" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/Amiga.png"  style="float: left; width: 30%;" alt="A 1984 Apple Macintosh drawing" />
+{{< showimage
+  image="Amiga.png"
+  alt="A 1984 Apple Macintosh drawing"
+  caption="A 1984 Apple Macintosh drawing"
+  style="float: left; width: 30%;"
+>}}
 
 There are tools out there that can be used to reverse engineer databases and generate diagrams. These tools
 normally are GUI based. But [I needed](https://github.com/cylc/cylc-doc/pull/29) one that could be used in a
@@ -25,7 +30,12 @@ Running the default `eralchemy -i sqlite:///relative/path/to/db.db -o erd_from_s
 the project database, the diagram generated was not really easy to read. It was very tall,
 and did not appear to respect any order such as number of relationships, alphabetical order, etc.
 
-<img class="ui image" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/default.png" width="50%" />
+{{< showimage
+  image="default.png"
+  alt=""
+  caption=""
+  style=""
+>}}
 
 Looking at the code, I found where it produced a `dot` file. So I decided first to have a go at
 quickly customizing that file and running `dot` to produce a better diagram.
@@ -51,7 +61,12 @@ graph {
 
 That worked initially, producing a horizontal diagram as I wanted.
 
-<img class="ui fluid image" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/custom.png" />
+{{< showimage
+  image="custom.png"
+  alt=""
+  caption=""
+  style=""
+>}}
 
 But the utility tables, those without any relationship, were scattered over the diagram, and I wanted them grouped.
 
@@ -82,7 +97,12 @@ graph {
 }
 ```
 
-<img class="ui fluid image" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/final.png" />
+{{< showimage
+  image="final.png"
+  alt=""
+  caption=""
+  style=""
+>}}
 
 And that way you can generate your database diagram during your build process, and include in your project documentation.
 Here's the [final script](https://gist.github.com/kinow/7c8e1a2da97c9746f0cbc868b33839c3).

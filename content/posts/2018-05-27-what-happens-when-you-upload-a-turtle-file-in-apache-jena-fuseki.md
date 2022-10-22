@@ -19,7 +19,12 @@ something else. So I decided to dig down the rabbit hole and start learning more
 about certain parts of the Apache Jena code base.
 
 <p style='text-align: center;'>
-<img style="display: inline; width: 600px;" class="ui image" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/browser.png"  />
+{{< showimage
+  image="browser.png"
+  alt=""
+  caption=""
+  style="display: inline; width: 600px;"
+>}}
 </p>
 
 This post will be useful to myself in the future, as a note-taking in a series, so that I
@@ -37,7 +42,12 @@ that when I run the application in Eclipse, it is running with Jetty, serving
 servlets (there is no framework like Wicket, Struts, etc, involved).
 
 <p style='text-align: center;'>
-<img style="display: inline; width: 600px;" class="ui image" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/class-hierarchy.png"  />
+{{< showimage
+  image="class-hierarchy.png"
+  alt=""
+  caption=""
+  style="display: inline; width: 600px;"
+>}}
 </p>
 
 Several filters are applied to the HTTP request too, like Cross Origin, Shiro, and
@@ -108,7 +118,12 @@ And also a `StreamRDFCountingBase` to keep track of statistics to display
 back to the user.
 
 <p style='text-align: center;'>
-<img style="display: inline; width: 600px;" class="ui image" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/eclipse.png"  />
+{{< showimage
+  image="eclipse.png"
+  alt=""
+  caption=""
+  style="display: inline; width: 600px;"
+>}}
 </p>
 
 `StreamRDFCountingBase` extends `StreamRDFWrapper`, and wraps - as per name -

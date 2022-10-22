@@ -84,7 +84,12 @@ Anaconda 2. And reproducing the same behaviour in Eclipse was easy.
 
 
 <p style='text-align: center;'>
-<img style="display: inline" class="ui image" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/screenshot1.png" alt="A screen shot of Eclipse with source code" title="Locating the bug" />
+{{< showimage
+  image="screenshot1.png"
+  alt="A screen shot of Eclipse with source code"
+  caption="A screen shot of Eclipse with source code"
+  style="display: inline"
+>}}
 <br/>
 <small>Locating the bug</small>
 </p>
@@ -92,7 +97,12 @@ Anaconda 2. And reproducing the same behaviour in Eclipse was easy.
 Et voil&agrave;! Eclipse was happily debugging again!
 
 <p style='text-align: center;'>
-<img style="display: inline" class="ui image" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/screenshot2.png" alt="A screen shot of Eclipse with source code" title="Locating the bug" />
+{{< showimage
+  image="screenshot2.png"
+  alt="A screen shot of Eclipse with source code"
+  caption="A screen shot of Eclipse with source code"
+  style="display: inline"
+>}}
 <br/>
 <small>Locating the bug</small>
 </p>

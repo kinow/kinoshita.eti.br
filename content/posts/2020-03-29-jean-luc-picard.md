@@ -9,4 +9,4 @@ note: The best Star Trek captain the Enterprise, and the whole Starfleet ever ha
 title: Jean-Luc Picard
 ---
 
-<img src="/assets/pages/art/images/jean-luc-picard-original-size.jpg">
+<img src="/assets/pages/art/images/images/jean-luc-picard-original-size.jpg">

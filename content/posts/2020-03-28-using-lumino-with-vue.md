@@ -13,7 +13,12 @@ title: Using Lumino with Vue
 but some time ago there was a misunderstanding and the author gave up maintaining it.
 Then JupyterLab decided to fork it under this new name.
 
-<img class="ui fluid image" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/demo.gif" />
+{{< showimage
+  image="demo.gif"
+  alt=""
+  caption=""
+  style=""
+>}}
 
 The documentation is still lacking, but it works as expected, and there is already a
 community supporting it. We decided to use it in [Cylc UI](https://github.com/cylc/cylc-ui)
@@ -30,7 +35,12 @@ Lumino handles the DOM directly, while Vue deals with a virtual DOM. So integrat
 both can be a bit tricky. And there are probably more than one way of doing it. So
 I am not claiming the route we went is the best.
 
-<img class="ui fluid image" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/01.png" />
+{{< showimage
+  image="01.png"
+  alt=""
+  caption=""
+  style=""
+>}}
 
 The main component for this integration is called `Lumino`. It has an array in its
 `data` section that holds one entry for each widget that must be added to the Lumino
@@ -39,7 +49,12 @@ ID of each widget added. This ID is the actual HTML element ID, and is used in t
 by even listeners to activate, delete, and maintain the state of the Lumino widgets and
 the Vue components.
 
-<img class="ui image" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/02.png" />
+{{< showimage
+  image="02.png"
+  alt=""
+  caption=""
+  style=""
+>}}
 
 The `BoxPanel` goes into a `div` created in the component template, exclusively for
 Lumino.
@@ -47,7 +62,12 @@ Lumino.
 As Lumino stars working with the DOM before Vue has had time to move things
 from the virtual DOM, we need to compensate by asking Vue to wait before 
 
-<img class="ui image" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/03.png" />
+{{< showimage
+  image="03.png"
+  alt=""
+  caption=""
+  style=""
+>}}
 
 The final step in the integration are wrappers for Vue components. These wrappers
 represent the component, but are actually used to attach the component's HTML element
@@ -58,7 +78,12 @@ is smart enough to remove the element correctly. It should also take care of eve
 listeners automagically, but for safety I prefer to add and remove event listeners
 myself.
 
-<img class="ui image" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/04.png" />
+{{< showimage
+  image="04.png"
+  alt=""
+  caption=""
+  style=""
+>}}
 
 Through even listeners, and controlling when something from the virtual DOM
 can access something from the DOM, and tricking Lumino into creating empty widgets

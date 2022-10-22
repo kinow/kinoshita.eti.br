@@ -44,7 +44,12 @@ First let's take a look at the source code of this workflow with Cylc 8 and plot
 The part `"foo[-P1] => foo => bar"` is where the recursion occurs, creating
 a cycle in the workflow.
 
-<img src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/five-graph-cylc.png" alt="workflow five plot - cylc" class="center-aligned" />
+{{< showimage
+  image="five-graph-cylc.png"
+  alt="workflow five plot - cylc"
+  caption="workflow five plot - cylc"
+  style=""
+>}}
 
 Installing Cylc requires just `pip install cylc-flow`. After that, with the workflow
 installed, we are ready to run it.
@@ -148,7 +153,12 @@ static or dynamically. But there is a community contributed UI called
 [rehearsal](https://github.com/trstruth/rehearsal/) that plots an Orquesta
 workflow given its source.
 
-<img src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/five-graph-stackstorm-rehearsal.png" alt="workflow five plot - stackstorm" class="center-aligned" />
+{{< showimage
+  image="five-graph-stackstorm-rehearsal.png"
+  alt="workflow five plot - stackstorm"
+  caption="workflow five plot - stackstorm"
+  style=""
+>}}
 
 ## Final notes
 
@@ -160,6 +170,16 @@ There are many pros and cons for each tool but that will have to be for a future
 post. To finish this post here's a screenshot of the StackStorm UI, followed by
 one of the Cylc 8 UI. Both showing the workflow `five`.
 
-<img src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/stackstorm-ui.png" alt="stackstorm ui" class="center-aligned" />
+{{< showimage
+  image="stackstorm-ui.png"
+  alt="stackstorm ui"
+  caption="stackstorm ui"
+  style=""
+>}}
 
-<img src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/cylc-ui.png" alt="stackstorm ui" class="center-aligned" />
+{{< showimage
+  image="cylc-ui.png"
+  alt="stackstorm ui"
+  caption="stackstorm ui"
+  style=""
+>}}

@@ -40,7 +40,12 @@ First you need to enable this feature in Eclipse, as it is disabled by default. 
 the preferences *Java* &rarr; *Code Style* &rarr; *Formatter* &rarr; *Edit* &rarr; *Off/On Tags*.
 
 <p style='text-align: center;'>
-<img style="display: inline" class="ui image" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/formatter-tags.png" alt="A screen shot of Eclipse formatter settings" title="Enabling formatter tags in Eclipse" />
+{{< showimage
+  image="formatter-tags.png"
+  alt="A screen shot of Eclipse formatter settings"
+  caption="A screen shot of Eclipse formatter settings"
+  style="display: inline"
+>}}
 <br/>
 <small>Enabling formatter tags in Eclipse</small>
 </p>
@@ -70,7 +75,12 @@ under *Line wrapping policy*. And also check *&ldquo;Force split, even if line s
 maximum line width&rdquo;*.
 
 <p style='text-align: center;'>
-<img style="display: inline" class="ui image" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/global-setting.png" alt="A screen shot of Eclipse formatter settings" title="Enabling custom formatter behaviour globally" />
+{{< showimage
+  image="global-setting.png"
+  alt="A screen shot of Eclipse formatter settings"
+  caption="A screen shot of Eclipse formatter settings"
+  style="display: inline"
+>}}
 <br/>
 <small>Enabling custom formatter behaviour globally</small>
 </p>

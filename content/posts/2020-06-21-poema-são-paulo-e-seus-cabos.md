@@ -8,7 +8,12 @@ title: 'Poema: São Paulo e seus cabos'
 ---
 
 <pre>
-<img class="text-image float-left" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/sao-paulo-e-seus-cabos.png" alt="A drawing with houses in Sao Paulo, with many electricity/tv/telephone cables in front of it" />
+{{< showimage
+  image="sao-paulo-e-seus-cabos.png"
+  alt="A drawing with houses in Sao Paulo, with many electricity/tv/telephone cables in front of it"
+  caption="A drawing with houses in Sao Paulo, with many electricity/tv/telephone cables in front of it"
+  style=""
+>}}
 
 São Paulo tem cabos
 De cabo a rabo

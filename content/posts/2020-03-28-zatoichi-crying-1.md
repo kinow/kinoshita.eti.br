@@ -6,4 +6,4 @@ note: From one of his movies. In this scene he had been betrayed.
 title: Zatoichi Crying 1
 ---
 
-<img src="/assets/pages/art/images/zatoichi-crying-1.png">
+<img src="/assets/pages/art/images/images/zatoichi-crying-1.png">

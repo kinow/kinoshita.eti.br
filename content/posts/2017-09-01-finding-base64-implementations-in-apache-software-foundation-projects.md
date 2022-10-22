@@ -13,7 +13,12 @@ title: Finding Base64 implementations in Apache Software Foundation projects
 
 <p style='text-align: center;'>
 <a href="https://kinow.deviantart.com/art/Grey-Warbler-702099183?ga_submit_new=10%3A1504263729">
-<img style="display: inline" class="ui image" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/GreyWarbler.png" alt="NZ Grey Warbler (riroriro)" title="NZ Grey Warbler (riroriro)" />
+{{< showimage
+  image="GreyWarbler.png"
+  alt="NZ Grey Warbler (riroriro)"
+  caption="NZ Grey Warbler (riroriro)"
+  style="display: inline"
+>}}
 </a>
 <br/>
 <small><a href="http://nzbirdsonline.org.nz/species/grey-warbler">New Zealand Grey Warbler (riroriro)</a></small>

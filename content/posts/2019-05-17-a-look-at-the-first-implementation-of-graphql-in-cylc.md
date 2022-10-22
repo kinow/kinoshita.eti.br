@@ -12,7 +12,12 @@ tags:
 title: A look at the first implementation of GraphQL in Cylc
 ---
 
-<img class="ui image" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/fancy-hands2.png" style="float: right; width: 40%;" />
+{{< showimage
+  image="fancy-hands2.png"
+  alt=""
+  caption=""
+  style="float: right; width: 40%;"
+>}}
 
 For Cylc 8 we are adding an initial implementation of GraphQL, to replace the previous REST API.
 Besides the technologies in the API's, another difference is that for the REST API, its main
@@ -29,7 +34,12 @@ The current implementation is under review in a pull request at the moment. It i
 Python libraries for GraphQL, as it is expected, but also a Protobuf data model that
 can be visualized in the figure below.
 
-<img class="ui fluid image" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/cylc-graphql-protobuf.png" />
+{{< showimage
+  image="cylc-graphql-protobuf.png"
+  alt=""
+  caption=""
+  style=""
+>}}
 
 ## State management
 
@@ -48,7 +58,12 @@ The method `update_data_structure` uses `WsDataMgr`, another new object being ad
 is where the Workflow Tasks, their parent Tasks, Task Families, and other objects required for
 the Workflow such as Prerequisites and Conditions are calculated, and organized into dictionaries.
 
-<img class="ui fluid image" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/graphql.svg.png.jpg" />
+{{< showimage
+  image="graphql.svg.png.jpg"
+  alt=""
+  caption=""
+  style=""
+>}}
 
 These dictionaries are kept in memory, updated periodically by `Scheduler`, and accessed by the
 PyZMQ layer.

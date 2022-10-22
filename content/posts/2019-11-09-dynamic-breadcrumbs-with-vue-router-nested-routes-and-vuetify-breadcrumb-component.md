@@ -104,6 +104,11 @@ with some modifications. You may want to tweak it to your application.
   }
 ``` 
 
-<img class="ui image" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/breadcrumbs.png" />
+{{< showimage
+  image="breadcrumbs.png"
+  alt=""
+  caption=""
+  style=""
+>}}
 
 Working example can be found [here](https://codepen.io/kinow/pen/vYYrWeG).

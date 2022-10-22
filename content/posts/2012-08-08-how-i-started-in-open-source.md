@@ -15,7 +15,12 @@ Although Structured Programming had a list of topics, Brito didn't limit himself
 
 I remember one day we were dismissed before 10PM. I used to run for the bus stop for not being too late at home and cause it could be dangerous lingering on the streets of Consolacao neighborhood by myself, waiting for the bus. But that day I stumbled with Brito near the Professor's Room.
 
-<img class="ui fluid image" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/sensei_09.jpg">
+{{< showimage
+  image="sensei_09.jpg"
+  alt=""
+  caption=""
+  style=""
+>}}
 
 <!--more-->
 

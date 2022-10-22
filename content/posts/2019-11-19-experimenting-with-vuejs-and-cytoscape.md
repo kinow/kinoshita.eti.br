@@ -20,7 +20,12 @@ In Cylc 7, an important visualization was the workflow graph. The screen shot be
 the design sketches done by another contributor from the UK, showing how it should look in
 Cylc 8.
 
-<img class="ui fluid image" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/cylc8-sketch.png" />
+{{< showimage
+  image="cylc8-sketch.png"
+  alt=""
+  caption=""
+  style=""
+>}}
 
 The first library we decided to try is Cytoscape, a well-known graph library, with use cases
 in research, corporate, and other fields. One limitation of Cytoscape is that the way it renders
@@ -41,7 +46,12 @@ Cylc Job icon. The icon is an SVG, with the background colour varying according 
 job status. It is transparent by default, red if the status is "failed", blue if
 "succeeded", etc.
 
-<img class="ui fluid image" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/graph1.png" />
+{{< showimage
+  image="graph1.png"
+  alt=""
+  caption=""
+  style=""
+>}}
 
 No biggie, we simply have here a simplified version of the
 [Cylc Job component](https://github.com/cylc/cylc-ui/blob/c9920f21ffdc96e82038cc480f11adba28310ff5/src/components/cylc/Job.vue).
@@ -52,7 +62,12 @@ Dagre, and the Cytoscape Dagre libraries. While Cytoscape is able to both parse 
 algorithms, and also is able to organize the graph layout, Dagre is focused on the last part. So delegating the
 layout part to Dagre is just to have an example that is easier to visualize, but not really a requirement.
 
-<img class="ui fluid image" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/graph2.png" />
+{{< showimage
+  image="graph2.png"
+  alt=""
+  caption=""
+  style=""
+>}}
 
 The data used for this example is a direct copy-and-paste from a GraphQL response from
 a running workflow in Cylc 8. Plus a `computed` variable to give just the data needed for the
@@ -66,7 +81,12 @@ The third [pen](https://codepen.io/kinow/pen/oNNJreG?editors=1010) has one more 
 the Node HTML Label extension for Cytoscape. With this extension, we are able to use HTML
 to display the graph node.
 
-<img class="ui fluid image" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/graph3.png" />
+{{< showimage
+  image="graph3.png"
+  alt=""
+  caption=""
+  style=""
+>}}
 
 So there is a new component too, a `network` component, which takes a list of components and renders
 a Cytoscape graph. Similar to `VueCytoscape` - which did not provide any improvement to our current
@@ -100,7 +120,12 @@ it occurred to me that instead of creating a new Vuejs component in the graph, i
 to let Vuejs create and manage the component, and just "link" the node HTML label with the component.
 That's in the [next pen](https://codepen.io/kinow/pen/eYYbwXB?editors=1010).
 
-<img class="ui fluid image" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/graph4.png" />
+{{< showimage
+  image="graph4.png"
+  alt=""
+  caption=""
+  style=""
+>}}
 
 Instead of creating the instance in the node HTML label `tpl` function, we are now creating Job
 components with Vuejs, assigning them "refs", and then just grabbing the HTML to render in the
@@ -126,7 +151,12 @@ of concerns. However, there is still the issue of the Vuejs reactivity. In [anot
 I added a function to return a random Job status, and used it within a `setInterval` to
 randomly change the job statuses every three seconds.
 
-<img class="ui fluid image" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/graph5.gif" />
+{{< showimage
+  image="graph5.gif"
+  alt=""
+  caption=""
+  style=""
+>}}
 
 That brings us to the [last pen](https://codepen.io/kinow/pen/XWWOrvW) (whew). It looked like a good
 approach to leave the component creation and lifecycle managed by Cylc, and trying to link the node
@@ -135,7 +165,12 @@ HTML label and the component. But simply setting the HTML content of the Job com
 So instead, for node HTML template I've used a simple div, and for its `id` attribute used the
 node ID (unique in a workflow, returned by the GraphQL query).
 
-<img class="ui fluid image" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/graph6.gif" />
+{{< showimage
+  image="graph6.gif"
+  alt=""
+  caption=""
+  style=""
+>}}
 
 There is a new component in this pen too, a `GraphNode`, which wraps a `Job` component, but adds
 some extra functionality, like observing when the prop changes.

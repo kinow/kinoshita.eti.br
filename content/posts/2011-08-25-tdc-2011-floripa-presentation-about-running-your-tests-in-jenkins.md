@@ -11,7 +11,12 @@ title: TDC 2011 Floripa presentation about running your tests in Jenkins
 
 Last weekend I attended TDC (<a title="The Developers Conference" href="http://www.thedevelopersconference.com.br">The Developers Conference</a>) 2011 in Florian&oacute;polis, in the south of Brazil. It was my first time in Florian&oacute;polis, but the weather was cloudy and cold, so I couldn't check out one of the prettiest cities in Brazil :-( Bummer.
 
-<img class="ui left floated image" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/banner_TDC2011_floripapng">
+{{< showimage
+  image="banner_TDC2011_floripapng"
+  alt=""
+  caption=""
+  style=""
+>}}
 
 Putting the weather aside, TDC was great! Basically, there were many nice, easy-going people gathering together to talk about subjects like Java, SOA, Arduino, Testing, Agile and more. I had the chance to talk with skilled and experienced people, see different talks and catch up Guilherme Motta (<a title="@gfcmotta" href="http://www.twitter.com/gfcmotta">@gfcmotta</a>) from <a title="ThoughtWorks" href="http://www.thoughtworks.com">ThoughtWorks</a>, who I have met in Porto Alegre in the beginning of this year. He gave an interesting talk about crowd testing using games as example, but varying with applications in different areas too.
 

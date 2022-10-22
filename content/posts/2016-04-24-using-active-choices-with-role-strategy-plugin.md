@@ -137,12 +137,22 @@ Eclipse, but that's in Portuguese only).
 
 In this section we have just simple screenshots, showing the script in the job configuration.
 
-<img class="ui fluid image" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/screenshot01.png" alt="Screenshot 01" />
+{{< showimage
+  image="screenshot01.png"
+  alt="Screenshot 01"
+  caption="Screenshot 01"
+  style=""
+>}}
 
 And the resulting screen. The parameter **DeployAPP** will be available during the build,
 and can be used to trigger other jobs or pipelines.
 
-<img class="ui fluid image" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/screenshot02.png"/>
+{{< showimage
+  image="screenshot02.png"
+  alt=""
+  caption=""
+  style=""
+>}}
 
 
 ## Where can you find this script?

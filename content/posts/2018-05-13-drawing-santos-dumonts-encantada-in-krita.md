@@ -16,7 +16,12 @@ an artwork to for the challenge. The topic of this month's challenge is **Home**
 My submission was [Santos Dumont's house in Petropolis, Rio de Janeiro](https://www.google.co.nz/maps/place/Casa+de+Santos+Dumont/@-22.5103512,-43.1864205,17z/data=!3m1!4b1!4m5!3m4!1s0x70145eaee05ea9b:0x33f52a8860f58db9!8m2!3d-22.5103562!4d-43.1842318), called
 [*Encantada*]((https://en.wikipedia.org/wiki/Alberto_Santos-Dumont#A_Encantada)).
 
-<img style="height: 400px;" class="ui image" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/side-by-side.jpg" alt="Line art" />
+{{< showimage
+  image="side-by-side.jpg"
+  alt="Line art"
+  caption="Line art"
+  style="height: 400px;"
+>}}
 
 <!--more-->
 
@@ -34,7 +39,12 @@ They are great! And used the built-in chalk brush for most of the colours.
 I enjoy line art much more than colours, but for the monthly challenge, I tried to use
 some colours. I used the original photo to create the palette for the painting.
 
-<img style="height: 400px;" class="ui image" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/lineart.jpg" alt="Line art" />
+{{< showimage
+  image="lineart.jpg"
+  alt="Line art"
+  caption="Line art"
+  style="height: 400px;"
+>}}
 
 It had been a few months since I used either my Wacom tablet or Krita for painting. But I
 was glad to remember some shortcuts. Krita interface is also quite intuitive. In a few
@@ -46,15 +56,40 @@ with other editors.
 
 I am sure you will be glad with the results.
 
-<img style="height: 400px;" class="ui image" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/Screenshot_2018-05-12_23-16-21.png" alt="Screen shot" />
+{{< showimage
+  image="Screenshot_2018-05-12_23-16-21.png"
+  alt="Screen shot"
+  caption="Screen shot"
+  style="height: 400px;"
+>}}
 
-<img style="height: 400px;" class="ui image" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/Screenshot from 2018-05-12 22-42-51.png" alt="Screen shot" />
+{{< showimage
+  image="Screenshot from 2018-05-12 22-42-51.png"
+  alt="Screen shot"
+  caption="Screen shot"
+  style="height: 400px;"
+>}}
 
-<img style="height: 400px;" class="ui image" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/Screenshot from 2018-05-13 00-11-38.png" alt="Screen shot" />
+{{< showimage
+  image="Screenshot from 2018-05-13 00-11-38.png"
+  alt="Screen shot"
+  caption="Screen shot"
+  style="height: 400px;"
+>}}
 
-<img style="height: 400px;" class="ui image" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/Screenshot from 2018-05-13 00-38-24.png" alt="Screen shot" />
+{{< showimage
+  image="Screenshot from 2018-05-13 00-38-24.png"
+  alt="Screen shot"
+  caption="Screen shot"
+  style="height: 400px;"
+>}}
 
-<img style="height: 400px;" class="ui image" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/Screenshot from 2018-05-13 01-24-27.png" alt="Screen shot" />
+{{< showimage
+  image="Screenshot from 2018-05-13 01-24-27.png"
+  alt="Screen shot"
+  caption="Screen shot"
+  style="height: 400px;"
+>}}
 
 Oh! I also need to find some more time another day to try the newly released
 [Krita's Python scripting](https://docs.krita.org/Introduction_to_Python_Scripting)!

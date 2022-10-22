@@ -10,7 +10,12 @@ tags:
 title: The etymology of bombast
 ---
 
-<img class="fluid left-aligned" style="width: 40%" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/146-1.png" />
+{{< showimage
+  image="146-1.png"
+  alt=""
+  caption=""
+  style="width: 40%"
+>}}
 
 On ["On Writing Well"](https://www.amazon.com/Writing-Well-Classic-Guide-Nonfiction/dp/0060891548),
 Zinsser wrote:
@@ -34,4 +39,9 @@ But it also an interesting [etymology](https://www.etymonline.com/word/bombast).
 >
 >>Bombast was originally applied to a stuff of soft, loose texture, once used to swell the garment. Fustian was also a kind of cloth of stiff expansive character. These terms are applied to a high, swelling style of writing, full of extravagant sentiments and expressions. Bathos is a word which has the same application, meaning generally the mock heroic--that "depth" into which one falls who overleaps the sublime; the step which one makes in order to pass from the sublime to the ridiculous. [James de Mille, "Elements of Rhetoric," 1878]
 
-<img src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/20200107_112644.jpg" />
+{{< showimage
+  image="20200107_112644.jpg"
+  alt=""
+  caption=""
+  style=""
+>}}

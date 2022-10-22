@@ -6,4 +6,4 @@ note: Drawing made from a Photo in a magazine
 title: Daienny Lima
 ---
 
-<img src="/assets/pages/art/images/daienny-lima-compare.jpg">
+<img src="/assets/pages/art/images/images/daienny-lima-compare.jpg">

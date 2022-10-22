@@ -11,7 +11,12 @@ title: What does food have to do with something being easy?
 ---
 
 <a href="/2020/04/04/apple-2.html">
-<img class="fluid left-aligned" style="width: 40%" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/apple-02.png" />
+{{< showimage
+  image="apple-02.png"
+  alt=""
+  caption=""
+  style="width: 40%"
+>}}
 </a>
 
 Some time ago I saw [this post](https://www.reddit.com/r/etymology/comments/dsknqj/japanese_idiom_%E6%9C%9D%E9%A3%AF%E5%89%8D_asameshimae_lit_before/)

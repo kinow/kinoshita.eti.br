@@ -7,7 +7,12 @@ tags:
 title: Code coverage helps, but it's not enough
 ---
 
-<a title="tap4j Cobertura report" href="http://tap4j.sourceforge.net/cobertura/index.html"><img class="ui left floated image" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/coverage.jpg"></a>
+{{< showimage
+  image="coverage.jpg"
+  alt=""
+  caption=""
+  style=""
+>}}
 
 Today I talked to two QA Engineers about code coverage and we all agreed that code coverage helps, but is not enough. And by coincidence today I had to fix a bug in <a title="tap4j - Test Anything Protocol API for Java" href="http://tap4j.sourceforge.net/">tap4j</a> that reminded me the same thing. My <a title="Cobertura homepage" href="http://cobertura.sourceforge.net/">cobertura</a> (the coverage tool that I was using at moment) report said that my code was covered by my tests. However there was a <em>bug in the covered code</em>.
 

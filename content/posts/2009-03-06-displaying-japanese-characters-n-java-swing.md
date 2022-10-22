@@ -31,6 +31,11 @@ All you have to do is to use the hexadecimal representation of the characters in
 
 {{ page.date }}
 
-<img class="ui image" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/kino.png" alt="=" />
+{{< showimage
+  image="kino.png"
+  alt="="
+  caption="="
+  style=""
+>}}
 
 Banzai!

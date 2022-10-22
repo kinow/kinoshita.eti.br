@@ -7,4 +7,4 @@ note: A diesel engine fabricated in Scotland, but now resting in the Auckland Ma
 title: Kelvin Diesel engine
 ---
 
-<img src="/assets/pages/art/images/kelvin-diesel-engine.png">
+<img src="/assets/pages/art/images/images/kelvin-diesel-engine.png">

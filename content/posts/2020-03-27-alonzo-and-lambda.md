@@ -12,11 +12,16 @@ title: Alonzo and Lambda
 
 Drawn from photo as reference, with Pentel ink brush.
 
-<img src="/assets/pages/art/images/alonzo_and_lambda_by_kinow-d5tqvau.png">
+<img src="/assets/pages/art/images/images/alonzo_and_lambda_by_kinow-d5tqvau.png">
 
 Used as background in the [r/functionalprogramming](https://old.reddit.com/r/functionalprogramming/)
 subreddit community.
 
-<img src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/Screenshot from 2021-03-29 15-36-53.png" alt="Screenshot of the subreddit community with image in the background" class="center-aligned" />
+{{< showimage
+  image="Screenshot from 2021-03-29 15-36-53.png"
+  alt="Screenshot of the subreddit community with image in the background"
+  caption="Screenshot of the subreddit community with image in the background"
+  style=""
+>}}
 
 Later used by a PhD student in his thesis presentation for a French university.

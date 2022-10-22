@@ -10,7 +10,12 @@ title: Integrating Nutch 2.x, MySQL and Solr
 
 Right now we are working on a new project using <a href="http://nutch.apache.org" title="Apache Nutch">Apache Nutch</a> 2.x, <a href="http://hadoop.apache.org" title="Apache Hadoop">Apache Hadoop</a>, <a href="http://solr.apache.org" title="Apache Solr">Apache Solr</a> 4 and a lot of other cool tools/modules/API's/etc. After following the instructions found on <a href="http://nlp.solutions.asia/?p=180" title="http://nlp.solutions.asia/?p=180">http://nlp.solutions.asia/?p=180</a>, I've successfully connected Apache Nutch, MySQL and Apache Solr.
 
-<img class="ui fluid image" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/mysql_hadoop_solr_nutch.png">
+{{< showimage
+  image="mysql_hadoop_solr_nutch.png"
+  alt=""
+  caption=""
+  style=""
+>}}
 
 <!--more-->
 

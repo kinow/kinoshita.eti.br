@@ -12,6 +12,11 @@ title: Sketch book page 151
 
 Page 151 of my sketch book, about the [pacará](https://es.wikipedia.org/wiki/Enterolobium_contortisiliquum), or "oreja de negro".
 
-<img style="height: 400px;" class="image" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/151.png" alt="Page 151 of the sketch book" />
+{{< showimage
+  image="151.png"
+  alt="Page 151 of the sketch book"
+  caption="Page 151 of the sketch book"
+  style="height: 400px;"
+>}}
 
 2B cretacolor lead holder.

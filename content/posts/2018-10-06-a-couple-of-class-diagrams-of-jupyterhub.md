@@ -18,7 +18,12 @@ ORM diagram, below.
 
 <p style='text-align: center;'>
 <a href="/assets/posts{{page.path | remove: ".md" | remove: "_posts" }}/jupyterhub-sqlalchemy-graph.png">
-<img style="display: inline; width: 100%;" class="ui image" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/jupyterhub-sqlalchemy-graph.png"  />
+{{< showimage
+  image="jupyterhub-sqlalchemy-graph.png"
+  alt=""
+  caption=""
+  style="display: inline; width: 100%;"
+>}}
 </a>
 </p>
 
@@ -28,7 +33,12 @@ And the class diagram (which I removed `object` and a tried to make it simpler t
 
 <p style='text-align: center;'>
 <a href="/assets/posts{{page.path | remove: ".md" | remove: "_posts" }}/jupyterhub-class-diagram.png">
-<img style="display: inline; width: 100%;" class="ui image" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/jupyterhub-class-diagram.png"  />
+{{< showimage
+  image="jupyterhub-class-diagram.png"
+  alt=""
+  caption=""
+  style="display: inline; width: 100%;"
+>}}
 </a>
 </p>
 

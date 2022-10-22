@@ -18,7 +18,12 @@ intermediary knowledge on *nix OS and sometimes a bit of programming experience.
 
 <!--more-->
 
-<img class="ui fluid image" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/stacks_logo_300_156.png">
+{{< showimage
+  image="stacks_logo_300_156.png"
+  alt=""
+  caption=""
+  style=""
+>}}
 
 **Stacks** is hosted at <a href="http://www.uoregon.edu/" alt="Oregon University" title="Oregon University">Oregon University</a>, so if you are googling about it right now, probably a query including both 'stacks' and 'oregon' may give you better results (it's good to know when you forget the web address). This is the stacks homepage: <a href="http://creskolab.uoregon.edu/stacks/">http://creskolab.uoregon.edu/stacks/</a>.
 
@@ -150,21 +155,46 @@ Following you'll find the raw graphs and another version with legends to help un
 
 ### CPU usage
 
-<img class="ui fluid image" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/cpu.png">
+{{< showimage
+  image="cpu.png"
+  alt=""
+  caption=""
+  style=""
+>}}
 
-<img class="ui fluid image" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/cpu_legends.png">
+{{< showimage
+  image="cpu_legends.png"
+  alt=""
+  caption=""
+  style=""
+>}}
 
 ### Memory usage
 
-<img class="ui fluid image" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/memory.png">
+{{< showimage
+  image="memory.png"
+  alt=""
+  caption=""
+  style=""
+>}}
 
-<img class="ui fluid image" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/memory_legends.png">
+{{< showimage
+  image="memory_legends.png"
+  alt=""
+  caption=""
+  style=""
+>}}
 
 ### Disk usage
 
 I thought the disk graphs from Ganglia wouldn't represent the disk usage very well, specially since my disk has about 500GB, so it's harder to see the changes. So I used some R to plot a graph that I hope can demonstrate the usage for this tutorial. **It is important to highlight that we are using samples from a tutorial, and your analysis may produce high or lower disk usage.**
 
-<img class="ui fluid image" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/disk.png">
+{{< showimage
+  image="disk.png"
+  alt=""
+  caption=""
+  style=""
+>}}
 
 Hope it helps you using Stacks. Kudos to all developers and contributors of this great tool.
 

@@ -12,7 +12,12 @@ title: Learning more about SPARQL and Jena internals
 ---
 
 <p style='text-align: center;'>
-<a href="https://kinow.deviantart.com/art/O-Corvo-742473382"><img style="display: inline; width: 600px;" class="ui image" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/ocorvo.jpg" alt="O Corvo" /></a>
+{{< showimage
+  image="ocorvo.jpg"
+  alt="O Corvo"
+  caption="O Corvo"
+  style="display: inline; width: 600px;"
+>}}
 <br/>
 <small><a href="https://kinow.deviantart.com/art/O-Corvo-742473382">O Corvo</a></small>
 </p>

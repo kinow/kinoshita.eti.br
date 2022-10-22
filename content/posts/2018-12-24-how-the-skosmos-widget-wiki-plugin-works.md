@@ -21,7 +21,12 @@ Here's an image of the plugin in action. Or you can go to
 that has the plugin enabled.
 
 
-<img class="ui fluid image" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/skosmos-widget-wiki-screenshot.png" />
+{{< showimage
+  image="skosmos-widget-wiki-screenshot.png"
+  alt=""
+  caption=""
+  style=""
+>}}
 
 
 <!--more-->

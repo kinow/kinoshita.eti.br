@@ -21,7 +21,12 @@ It will be more based on what I find interesting.
 Oh, the dataset created is **an in-memory dataset**. Here's a simplified sequence diagram. Again,
 these articles are more brain-dumps, used by myself for later reference.
 
-<img style="display: inline; width: 100%;" class="ui image" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/sequence-diagram.png"  />
+{{< showimage
+  image="sequence-diagram.png"
+  alt=""
+  caption=""
+  style="display: inline; width: 100%;"
+>}}
 
 <!--more-->
 

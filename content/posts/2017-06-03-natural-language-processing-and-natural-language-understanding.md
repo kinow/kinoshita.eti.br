@@ -17,7 +17,12 @@ NLU can be seen as a subfield of NLP. NLP englobes all techniques used for parsi
 <div class="ui fluid container">
 <figure>
 <a  href="/assets/posts{{page.path | remove: ".md" | remove: "_posts" }}/nlp-nlu.png" rel="prettyPhoto" class="thumbnail" title="NLP, NLU, and NLG">
-<img style="height: 400px;" class="ui image" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/nlp-nlu.png" alt="NLP, NLU, and NLG" />
+{{< showimage
+  image="nlp-nlu.png"
+  alt="NLP, NLU, and NLG"
+  caption="NLP, NLU, and NLG"
+  style="height: 400px;"
+>}}
 </a>
 </figure>
 </div>
@@ -39,7 +44,12 @@ NLP is an extremely interesting topic. 2001: A Space Odissey, Star Trek, The Fou
 <div class="ui fluid container">
 <figure>
 <a  href="/assets/posts{{page.path | remove: ".md" | remove: "_posts" }}/spock-nlp.png" rel="prettyPhoto" class="thumbnail" title="NLP and Spock">
-<img style="height: 300px;" class="ui image" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/spock-nlp.png" alt="NLP and Spock" />
+{{< showimage
+  image="spock-nlp.png"
+  alt="NLP and Spock"
+  caption="NLP and Spock"
+  style="height: 300px;"
+>}}
 </a>
 </figure>
 </div>

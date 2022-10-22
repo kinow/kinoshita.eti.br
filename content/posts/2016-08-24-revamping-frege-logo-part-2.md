@@ -18,29 +18,79 @@ Followed the following tutorials:
 
 Here are the work in progress, created only with the b&eacute;zier curve.
 
-<img class="ui centered large image" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/Frege_logo_flat_colours.png" alt="Frege updated logo" />
+{{< showimage
+  image="Frege_logo_flat_colours.png"
+  alt="Frege updated logo"
+  caption="Frege updated logo"
+  style=""
+>}}
 
-<img class="ui centered large image" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/Screenshot_2016-08-14_20-19-35.png" alt="Frege 3D #1" />
+{{< showimage
+  image="Screenshot_2016-08-14_20-19-35.png"
+  alt="Frege 3D #1"
+  caption="Frege 3D #1"
+  style=""
+>}}
 
-<img class="ui centered large image" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/Screenshot_2016-08-14_20-39-46.png" alt="Frege 3D #2" />
+{{< showimage
+  image="Screenshot_2016-08-14_20-39-46.png"
+  alt="Frege 3D #2"
+  caption="Frege 3D #2"
+  style=""
+>}}
 
-<img class="ui centered large image" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/Screenshot_2016-08-14_20-41-15.png" alt="Frege 3D #3" />
+{{< showimage
+  image="Screenshot_2016-08-14_20-41-15.png"
+  alt="Frege 3D #3"
+  caption="Frege 3D #3"
+  style=""
+>}}
 
-<img class="ui centered large image" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/Screenshot_2016-08-14_20-41-34.png" alt="Frege 3D #4" />
+{{< showimage
+  image="Screenshot_2016-08-14_20-41-34.png"
+  alt="Frege 3D #4"
+  caption="Frege 3D #4"
+  style=""
+>}}
 
-<img class="ui centered large image" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/Screenshot_2016-08-14_20-57-02.png" alt="Frege 3D #5" />
+{{< showimage
+  image="Screenshot_2016-08-14_20-57-02.png"
+  alt="Frege 3D #5"
+  caption="Frege 3D #5"
+  style=""
+>}}
 
-<img class="ui centered large image" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/Screenshot_2016-08-23_22-07-54.png" alt="Frege 3D #6" />
+{{< showimage
+  image="Screenshot_2016-08-23_22-07-54.png"
+  alt="Frege 3D #6"
+  caption="Frege 3D #6"
+  style=""
+>}}
 
-<img class="ui centered large image" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/Screenshot_2016-08-23_22-30-24.png" alt="Frege 3D #7" />
+{{< showimage
+  image="Screenshot_2016-08-23_22-30-24.png"
+  alt="Frege 3D #7"
+  caption="Frege 3D #7"
+  style=""
+>}}
 
 Here's the result after the mesh was created, and some material applied.
 
-<img class="ui centered large image" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/Frege3d1.png" alt="Frege 3D #8" />
+{{< showimage
+  image="Frege3d1.png"
+  alt="Frege 3D #8"
+  caption="Frege 3D #8"
+  style=""
+>}}
 
 Then using a plane as background, replacing the lamp by a sun, and tweaking a few parameters.
 
-<img class="ui centered image" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/Frege3d2.png" alt="Frege 3D #9" />
+{{< showimage
+  image="Frege3d2.png"
+  alt="Frege 3D #9"
+  caption="Frege 3D #9"
+  style=""
+>}}
 
 And finally playing with animation. Not sure if there was a time line and animation controls in
 Blender the last time I used it, but the controls are not really complex.
@@ -49,7 +99,12 @@ I had to combine both meshes into a single object, in order to add a bone and ro
 is why the logo got back to a single material. The angle of the camera could probably do with
 some tweaking as well.
 
-<img class="ui centered image" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/ezgif.com-resize.gif" alt="Frege 3D #10" />
+{{< showimage
+  image="ezgif.com-resize.gif"
+  alt="Frege 3D #10"
+  caption="Frege 3D #10"
+  style=""
+>}}
 
 But it was my very first time animating in Blender. Some day if I get access to one of those
 3D printers, I will check what are the requirements for printing this logo.

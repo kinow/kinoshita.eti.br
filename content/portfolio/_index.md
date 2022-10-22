@@ -4,6 +4,7 @@ date: 2022-10-18T20:05:00+13:00
 draft: false
 url: "/portfolio"
 layout: "single"
+noheading: true
 ---
 
 Each drawing and illustration below was drawn by hand using any combination of

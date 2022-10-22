@@ -34,7 +34,12 @@ step (Shell) to execute `gcovr`.
 gcovr -x -r samples/src > coverage.xml
 ```
 
-<img class="ui image" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/screenshot_0031.png">
+{{< showimage
+  image="screenshot_0031.png"
+  alt=""
+  caption=""
+  style=""
+>}}
 
 This should produce a file coverage.xml in your build workspace. The last step is add cobertura post build step.
 Of course you'll need [Jenkins Cobertura Plug-in](https://wiki.jenkins-ci.org/display/JENKINS/Cobertura+Plugin)
@@ -44,9 +49,19 @@ gcovr (e.g.: **/coverage.xml).
 
 Voil&agrave; , you should now have coverage reports in Jenkins that looks like the image below.
 
-<img class="ui image" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/screenshot_0011.png">
+{{< showimage
+  image="screenshot_0011.png"
+  alt=""
+  caption=""
+  style=""
+>}}
 
-<img class="ui image" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/screenshot_0021.png">
+{{< showimage
+  image="screenshot_0021.png"
+  alt=""
+  caption=""
+  style=""
+>}}
 
 A final note, is that we used an example project bundled with GoogleTest TAP Listener, and is not very useful,
 as it has no other classes being tested. In a real world project, you'll have many classes that you want to coverage,

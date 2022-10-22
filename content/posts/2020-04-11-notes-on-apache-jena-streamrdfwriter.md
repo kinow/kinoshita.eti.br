@@ -24,7 +24,12 @@ It is responsible for writing graph data in a streaming fashion. (See [stream pr
 
 `StreamRDFWriter` holds several implementations (as `static` members) of `StreamRDFWriterFactory`. The factory has one responsibility only, to create streams (`StreamRDF`), for a certain format and context.
 
-<img class="fluid" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/01.png" />
+{{< showimage
+  image="01.png"
+  alt=""
+  caption=""
+  style=""
+>}}
 
 <!--more-->
 
@@ -34,16 +39,31 @@ All these factories and streams, the writer also needs a `registry`. It is used 
 
 So if you have your graph dataset, and need to retrieve triples as thrift, you will interrogate the registry asking for a factory of that language (Turtle, N-Triples, RDF-Thrift, etc) or format (Flat Turtle, N-Quads, N-Triples-ASCII, RDF-Thrift, etc).
 
-<img class="fluid" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/02.png" />
+{{< showimage
+  image="02.png"
+  alt=""
+  caption=""
+  style=""
+>}}
 
 ## Writing data to streams
 
 Each writer has one responsibility too—I really like the design of certain modules in Jena.
 
-<img class="fluid" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/03.png" />
+{{< showimage
+  image="03.png"
+  alt=""
+  caption=""
+  style=""
+>}}
 
 The action, however, happens somewhere else. In the `StreamRDFOps` and in the `Iterator` implementations is where the stream processing really takes place.
 
-<img class="fluid" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/04.png" />
+{{< showimage
+  image="04.png"
+  alt=""
+  caption=""
+  style=""
+>}}
 
 But this goes beyond the `StreamRDFWriter`. So that's all for today.

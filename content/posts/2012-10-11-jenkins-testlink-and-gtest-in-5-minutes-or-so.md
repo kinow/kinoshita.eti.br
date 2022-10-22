@@ -18,7 +18,12 @@ For this simple guide we will use the samples that come with <a href="https://gi
 
 `gtest_main.cc` has the <a href="http://code.google.com/p/googletest/wiki/Primer#Writing_the_main()_Function" title="GTest main function">main function</a>, and executes the test suite. And `gtest_testHelloWorld.cc` has the test cases and tests. Take note of the test case and tests names.
 
-<img class="ui fluid image" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/screenshot_001.png">
+{{< showimage
+  image="screenshot_001.png"
+  alt=""
+  caption=""
+  style=""
+>}}
 
 <!--more-->
 
@@ -26,9 +31,19 @@ For this simple guide we will use the samples that come with <a href="https://gi
 
 OK. Now create a project in TestLink or use an existing one. And the same goes for Test Suite, Test Cases and Test Plan. The only think you have to take care is to add a custom field, and use the GTest test case names. Take a look at the picture below to have a better idea.
 
-<img class="ui fluid image" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/screenshot_003.png">
+{{< showimage
+  image="screenshot_003.png"
+  alt=""
+  caption=""
+  style=""
+>}}
 
-<img class="ui fluid image" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/screenshot_002.png">
+{{< showimage
+  image="screenshot_002.png"
+  alt=""
+  caption=""
+  style=""
+>}}
 
 If you have trouble configuring TestLink, take a look at <a href="http://tupilabs.com/books/jenkins-testlink-plugin-tutorial/en/ch04s02.html" title="Chapter 4.2">this chapter</a> of <a href="http://tupilabs.com/books/jenkins-testlink-plugin-tutorial/en/" title="Jenkins TestLink Plug-in Tutorial">Jenkins TestLink Plug-in Tutorial</a>.
 
@@ -38,7 +53,12 @@ Almost there, now the only step: <strong>configure Jenkins</strong>! Install Jen
 
 Now create a job, configure Git Plugin to get the code from `git://github.com/kinow/gtest-tap-listener.git`. Add a build step to `Invoke TestLink`. There will be three sections: <strong>TestLink Configuration</strong>, <strong>Test Execution</strong> and <strong>Result Seeking Strategy</strong>.
 
-<img class="ui fluid image" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/screenshot_004.png">
+{{< showimage
+  image="screenshot_004.png"
+  alt=""
+  caption=""
+  style=""
+>}}
 
 Under TestLink Configuration, fill in your TestLink configuration, test project, test plan, any build name
 of your choice (you can try gtest-build-$BUILD_ID ;) and the name (not the label) of your custom field.
@@ -51,7 +71,12 @@ name as `Key Custom Field`.</em>
 
 Run your build, and voil&agrave;  :-)
 
-<img class="ui fluid image" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/screenshot_2012_10_11.png">
+{{< showimage
+  image="screenshot_2012_10_11.png"
+  alt=""
+  caption=""
+  style=""
+>}}
 
 As an exercise, you can try to use Jenkins TestLink Plug-in to display your TAP results. This blog post has been
 created after [JENKINS-15486](https://issues.jenkins-ci.org/browse/JENKINS-15486).

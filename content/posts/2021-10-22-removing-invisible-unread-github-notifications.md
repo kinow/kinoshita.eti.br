@@ -7,11 +7,16 @@ tags:
 title: Removing invisible unread GitHub notifications
 ---
 
-<img src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/notifications.png" alt="GitHub Notifications icon always-on mode" class="center-aligned" />
-
 Some months ago I noticed that even after I marked all my GitHub notifications
 as read, the unread icon displayed at the right top corner was still showing as
 if I had unread notifications.
+
+{{< showimage
+image="notifications.png"
+alt="GitHub Notifications icon always-on mode"
+caption="GitHub Notifications icon always-on mode"
+style=""
+>}}
 
 I tried changing the filters, waiting for a new notification to appear so that
 I could mark it as read, all hoping that icon would then change. But no matter

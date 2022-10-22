@@ -11,4 +11,4 @@ tags:
 title: Auckland CBD Life Drawing 2021-01-18
 ---
 
-<img src="/assets/pages/art/images/196.png">
+<img src="/assets/pages/art/images/images/196.png">

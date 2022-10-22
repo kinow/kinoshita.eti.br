@@ -101,7 +101,12 @@ So now we have a reliable source to identify the location of the mosquito!
 
 >It is located in the middle of present-day Zhongzheng District
 
-<img class="fluid" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/zhongzheng-district.png" alt="Google Map for Zhongzheng District" />
+{{< showimage
+  image="zhongzheng-district.png"
+  alt="Google Map for Zhongzheng District"
+  caption="Google Map for Zhongzheng District"
+  style=""
+>}}
 
 Unfortunately the translated names like Aiguoli don't match any existing names in Google Maps in Taiwan. The name
 in Chinese does (愛國里). So I entered some of these names to confirm the area of the map of that old village.
@@ -110,13 +115,23 @@ I also found [this map](https://www.facebook.com/IntoChengNan/photos/a.357412827
 on FaceBook, but without knowing Chinese, the only part I could confirm is that
 the light brown area at the top contains the words 「南門」 (South gate?) and 「龍匣口」 (Longxiakou).
 
-<img class="fluid" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/longxiakou-map-facebook.png" alt="Map with Longxiakou Village"  />
+{{< showimage
+  image="longxiakou-map-facebook.png"
+  alt="Map with Longxiakou Village"
+  caption="Map with Longxiakou Village"
+  style=""
+>}}
 
 Using QGIS 3, the Georeferencer plug-in, quickly adding some points manually,
 and then finally adjusting raster transparency, we have the following map to
 show us where the village used to be.
 
-<img class="fluid" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/longxiakou-georeferenced.png" alt="Longxiakou village georeferenced on OSM map" />
+{{< showimage
+  image="longxiakou-georeferenced.png"
+  alt="Longxiakou village georeferenced on OSM map"
+  caption="Longxiakou village georeferenced on OSM map"
+  style=""
+>}}
 
 If you would like to import the QGIS files, or have a look at the points I used,
 browse the files over [here](https://github.com/kinow/kinoshita.eti.br/tree/master/assets/posts/2020-08-16-finding-ryukokosho-in-taiwan). 

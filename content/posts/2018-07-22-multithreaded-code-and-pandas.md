@@ -9,7 +9,12 @@ tags:
 title: Multithreaded code and Pandas
 ---
 
-<a href="https://www.deviantart.com/kinow/art/Woman-looking-01-743551195"><img style="float: left; height: 300px;" class="ui image" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/woman-looking-01.png" alt="Woman looking" /></a>
+{{< showimage
+  image="woman-looking-01.png"
+  alt="Woman looking"
+  caption="Woman looking"
+  style="float: left; height: 300px;"
+>}}
 
 Pandas provides high-performance data structures in Python. I think in Java there are
 similar data structures in projects like Apache Commons Collections,

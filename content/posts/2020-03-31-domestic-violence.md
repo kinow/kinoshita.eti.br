@@ -6,4 +6,4 @@ note: Drawing made of a woman victim of domestic violence. Drawn from a journal 
 title: Victim of domestic violence
 ---
 
-<img src="/assets/pages/art/images/domestic-violence.png">
+<img src="/assets/pages/art/images/images/domestic-violence.png">

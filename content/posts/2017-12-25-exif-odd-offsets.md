@@ -28,7 +28,12 @@ The fix was simply checking for odd offsets, adding +1, and later it would be pu
 4 bytes limit.
 
 <p style='text-align: center;'>
-<img style="display: inline" class="ui image" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/screenshot.png" alt="A screen shot of Eclipse with source code" title="Locating the bug" />
+{{< showimage
+  image="screenshot.png"
+  alt="A screen shot of Eclipse with source code"
+  caption="A screen shot of Eclipse with source code"
+  style="display: inline"
+>}}
 <br/>
 <small>Locating the bug</small>
 </p>

@@ -20,7 +20,12 @@ continue right after the `continue()` method returns, going on with the next met
 
 <p style='text-align: center;'>
 <a href="/assets/posts{{page.path | remove: ".md" | remove: "_posts" }}/cylc-scheduler_run.png">
-<img style="display: inline; width: 100%;" class="ui image" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/cylc-scheduler_run.png"  />
+{{< showimage
+  image="cylc-scheduler_run.png"
+  alt=""
+  caption=""
+  style="display: inline; width: 100%;"
+>}}
 </a>
 </p>
 

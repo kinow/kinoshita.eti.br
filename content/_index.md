@@ -2,6 +2,8 @@
 title: About
 ---
 
+<main class="content">
+
 <div class="landing-page" style="margin: 0; padding: 0;">
   <img
     id="kinow-photo"
@@ -57,3 +59,5 @@ Get in touch if you would like to discuss a project related to computer
 programming and, or, arts.
 
 - [Curriculum Vitae](cv.pdf) (PDF)
+
+</main>

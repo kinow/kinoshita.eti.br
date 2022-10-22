@@ -18,7 +18,12 @@ Similar integration has already been proposed in [JinFeng](http://www.sqaopen.ne
 by Olivier Renault. Basically, you write BDD stories in TestLink (a story goes into the Test Case summary),
 Jenkins retrieves these stories and executes them using a skeleton project.
 
-<img class="ui fluid image" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/tl_bdd.png">
+{{< showimage
+  image="tl_bdd.png"
+  alt=""
+  caption=""
+  style=""
+>}}
 
 There are many ways to use BDD. In some of them you write code like Java, Ruby or Perl, and in others you write a DSL. I started working with JBehave, but for this integration, I preferred to use a <a href="http://en.wikipedia.org/wiki/Domain-specific_language" title="DSL">DSL</a> - as TestLink doesn't maintain source code, only test cases -, so I switched to <a href="http://www.easyb.org" title="easyb">easyb</a>.
 
@@ -35,7 +40,12 @@ There are many pros and cons in this integration, and a lot of work to do in the
 echo $TESTLINK_TESTCASE_SUMMARY | perl -pe 's|\&lt;br \/\&gt;|\n|g' | perl -pe 's|\&lt;br\/\&gt;|\n|g' | perl -pe 's|\&lt;\/div\&gt;|\n|g' | sed -e 's/&lt;[a-zA-Z\/][^&gt;]*&gt;//g' | perl -MHTML::Entities -le 'while(&lt;&gt;) {print decode_entities($_);}' | perl -pe 's|^\s+||' | perl -pe 's|\xA0||g' &gt; &quot;$TESTLINK_TESTCASE_EASYB_FILENAME.story&quot;
 ```
 
-<img class="ui fluid image" src="/assets/posts/{{ page.date | date: "%Y-%m-%d" }}-{{ page.title | slugify }}/jenkins_bdd.png">
+{{< showimage
+  image="jenkins_bdd.png"
+  alt=""
+  caption=""
+  style=""
+>}}
 
 I'm working on a [Plug-in API proposal]({% post_url 2012-10-25-a-quick-view-on-wordpress-mantis-and-jenkins-plug-in-api %})
 for TestLink, and I can already imagine a few places where we could use a plug-in and that would help in the
