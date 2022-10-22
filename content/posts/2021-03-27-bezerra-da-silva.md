@@ -10,7 +10,7 @@ title: Bezerra da Silva
 Created with Staedtler colored pencils, then digitalized and post-processed
 in GIMP. Used a photo for reference.
 
-<img src="/assets/pages/art/images/images/bezerra-03.png" alt="Drawing of Bezerra da Silva" class="center-aligned" />
+<img src="/assets/pages/art/images/bezerra-03.png" alt="Drawing of Bezerra da Silva" class="center-aligned" />
 
 {{< showimage
   image="bezerra-03-pre.png"

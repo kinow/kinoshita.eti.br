@@ -6,4 +6,4 @@ note: From a redditgetsdrawn photography.
 title: Doggo White
 ---
 
-<img src="/assets/pages/art/images/images/doggo-white.png">
+<img src="/assets/pages/art/images/doggo-white.png">

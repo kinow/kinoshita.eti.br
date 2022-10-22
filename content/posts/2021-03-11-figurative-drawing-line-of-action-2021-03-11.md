@@ -7,4 +7,4 @@ note: |
 title: Figurative drawing line of action 2021-03-11
 ---
 
-<img src="/assets/pages/art/images/images/255.png" alt="Figurative drawing from Line of Action site">
+<img src="/assets/pages/art/images/255.png" alt="Figurative drawing from Line of Action site">

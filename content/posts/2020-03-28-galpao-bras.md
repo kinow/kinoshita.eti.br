@@ -6,4 +6,4 @@ note: Picture of an abandoned storage shed in Brás neighbourhood of São Paulo
 title: Galpão Brás
 ---
 
-<img src="/assets/pages/art/images/images/galpao-bras.png">
+<img src="/assets/pages/art/images/galpao-bras.png">

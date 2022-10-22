@@ -8,7 +8,7 @@ tags:
 title: Reddit r/functionalprogramming community
 ---
 
-<img class="ui image" src="/assets/pages/art/images/images/alonzo_and_lambda_by_kinow-d5tqvau.png" style="width: 30%; float: left" alt="Alonzo Church caricature">
+<img class="ui image" src="/assets/pages/art/images/alonzo_and_lambda_by_kinow-d5tqvau.png" style="width: 30%; float: left" alt="Alonzo Church caricature">
 
 [r/functionalprogramming](https://reddit.com/r/functionalprogramming/) was created nearly seven years ago.
 It started when I was interested in contributing to

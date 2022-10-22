@@ -13,7 +13,7 @@ title: Tufted Titmouse
 
 From a reference photo by [Ioannis Moutsatsos](https://twitter.com/ioannismou/status/1378365876878069761).
 
-<img src="/assets/pages/art/images/images/tufted-titmouse.png" alt="Drawing of a Tufted Titmouse on a fence" class="center-aligned" />
+<img src="/assets/pages/art/images/tufted-titmouse.png" alt="Drawing of a Tufted Titmouse on a fence" class="center-aligned" />
 
 {{< showimage
   image="EyDv6GkXMAEF36-.jpeg"

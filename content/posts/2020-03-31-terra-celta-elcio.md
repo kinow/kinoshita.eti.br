@@ -9,4 +9,4 @@ note: Lead vocalist of Terra Celta band, Elcio. Terra Celta ("Celtic Land") is a
 title: Terra Celta, Elcio
 ---
 
-<img src="/assets/pages/art/images/images/terra_celta_s_vocal_elcio_by_kinow-dau42sh.png">
+<img src="/assets/pages/art/images/terra_celta_s_vocal_elcio_by_kinow-dau42sh.png">

@@ -13,4 +13,4 @@ note: 'The royal spoonbill (Platalea regia) also known as the black-billed spoon
 title: Royal Spoonbill
 ---
 
-<img src="/assets/pages/art/images/images/royal-spoonbill.png">
+<img src="/assets/pages/art/images/royal-spoonbill.png">

@@ -12,7 +12,7 @@ title: Alonzo and Lambda
 
 Drawn from photo as reference, with Pentel ink brush.
 
-<img src="/assets/pages/art/images/images/alonzo_and_lambda_by_kinow-d5tqvau.png">
+<img src="/assets/pages/art/images/alonzo_and_lambda_by_kinow-d5tqvau.png">
 
 Used as background in the [r/functionalprogramming](https://old.reddit.com/r/functionalprogramming/)
 subreddit community.
