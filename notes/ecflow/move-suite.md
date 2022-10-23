@@ -18,9 +18,10 @@ The user marks a node to be moved in the `ecflow_ui`, and then tells the UI to m
    it will authenticate to the other server (same user ans password of logged-in
    user) and then the `ecflow_server` appears to call same API used in `ecflow_client`,
    to send a client request to the other server to execute `MoveCmd`;
-5. [`MoveCmd`]() also runs some verification checks to make sure it can safely
-   move the suite (node). It handles cases like when you move a node that conflicts
-   with an existing node (e.g. a suite matches the name of a task, I think; then it
-   will make the task a child of the suite?). But if all the checks pass, it creates
-   an object with the suite source, and then add it to the list of definitions in
-   the server (same as if you create a suite with `ecflow_client` or the Python API).
+5. [`MoveCmd::doHandleRequest`](https://github.com/ecmwf/ecflow/blob/08fcc175fcc3cea5e480afc858f209a26ead724b/Base/src/cts/PlugCmd.cpp#L384-L394)
+   also runs some verification checks to make sure it can safely move the suite (node).
+   It handles cases like when you move a node that conflicts with an existing node
+   (e.g. a suite matches the name of a task, I think; then it will make the task a
+   child of the suite?). But if all the checks pass, it creates an object with the
+   suite source, and then add it to the list of definitions in the server (same as
+   if you create a suite with `ecflow_client` or the Python API).
