@@ -2,7 +2,9 @@
 
 *Reference: [Moving suites between ecFlow servers](https://confluence.ecmwf.int/display/ECFLOW/Moving+suites+between+ecFlow+servers)*
 
-The user marks a node to be moved in the `ecflow_ui`, and then tells the UI to move the node to somewhere:
+The user marks a node to be moved in the `ecflow_ui`, and then tells the UI to move the node to somewhere.
+It is possible to skip everything and go to step 5's code for a TL;DR of what happens in the end when the
+suite is moved. Or read along for some commentary:
 
 1. [`VNodeMover::moveMarkedNode`](https://github.com/ecmwf/ecflow/blob/08fcc175fcc3cea5e480afc858f209a26ead724b/Viewer/ecflowUI/src/VNodeMover.cpp#L113-L128)
    performs a series of verifications (same host, configuration exists, etc.)
