@@ -4,11 +4,11 @@
 
 The user marks a node to be moved in the `ecflow_ui`, and then tells the UI to move the node to somewhere:
 
-1. [VNodeMover::moveMarkedNode](https://github.com/ecmwf/ecflow/blob/08fcc175fcc3cea5e480afc858f209a26ead724b/Viewer/ecflowUI/src/VNodeMover.cpp#L113-L128)
+1. [`VNodeMover::moveMarkedNode`](https://github.com/ecmwf/ecflow/blob/08fcc175fcc3cea5e480afc858f209a26ead724b/Viewer/ecflowUI/src/VNodeMover.cpp#L113-L128)
    performs a series of verifications (same host, configuration exists, etc.)
    and if the user confirms the action in the UI, then it instructs the server
    to schedule a task `VTask::PlugTask` to be run;
-2. [ServerComThread::run](https://github.com/ecmwf/ecflow/blob/5ba3d12d364bee7a29783b5c1d254fd8fdc22fe2/Viewer/ecflowUI/src/ServerComThread.cpp#L215-L220)
+2. [`ServerComThread::run`](https://github.com/ecmwf/ecflow/blob/5ba3d12d364bee7a29783b5c1d254fd8fdc22fe2/Viewer/ecflowUI/src/ServerComThread.cpp#L215-L220)
    will pick up this task in its next execution, and then will ask the
    `ClientInvoker` to “plug” the source to the target;
 3. [`ClientInvoker::plug`](https://github.com/ecmwf/ecflow/blob/38d7e1c25f07a62e785256c0ffabb5106ee4f807/Client/src/ClientInvoker.cpp#L1115-L1119)
