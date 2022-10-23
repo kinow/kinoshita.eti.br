@@ -7,7 +7,6 @@ tags:
 title: 'Poema: São Paulo e seus cabos'
 ---
 
-<pre>
 {{< showimage
   image="sao-paulo-e-seus-cabos.png"
   alt="A drawing with houses in Sao Paulo, with many electricity/tv/telephone cables in front of it"
@@ -15,6 +14,7 @@ title: 'Poema: São Paulo e seus cabos'
   style=""
 >}}
 
+<pre>
 São Paulo tem cabos
 De cabo a rabo
 Cabos e mais cabos

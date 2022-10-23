@@ -7,10 +7,10 @@ tags:
 - natural history drawing
 - sciart
 - drawing
-title: Sketch book page 151
+title: Sketchbook page 151
 ---
 
-Page 151 of my sketch book, about the [pacará](https://es.wikipedia.org/wiki/Enterolobium_contortisiliquum), or "oreja de negro".
+Page 151 of my sketchbook, about the [pacará](https://es.wikipedia.org/wiki/Enterolobium_contortisiliquum), or "oreja de negro".
 
 {{< showimage
   image="151.png"
