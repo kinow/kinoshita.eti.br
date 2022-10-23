@@ -1,156 +1,94 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="utf-8" />
-<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-<meta name="viewport" content="width=device-width, initial-scale=1" /><!-- Begin Jekyll SEO tag v2.7.1 -->
-<title>Adding coverage reports in Jenkins with GoogleTest and gcovr | kinow</title>
-<meta name="generator" content="Jekyll v3.9.0" />
-<meta property="og:title" content="Adding coverage reports in Jenkins with GoogleTest and gcovr" />
-<meta property="og:locale" content="en_US" />
-<meta name="description" content="After the last post about GoogleTest and TestLink using Jenkins TestLink Plug-in, I received an e-mail asking about coverage with GoogleTest and Jenkins. I’ve just updated the Makefile in the samples directory, of the GoogleTest TAP listener project, to output coverage data. Basically, you have to add the compiler flags -fprofile-arcs -ftest-coverage and link the executable with -lgcov. Take a look at the project’s Makefile and you’ll notice how simple it is. In order to have Jenkins interpreting your coverage report, you’ll have to convert it to cobertura XML. There is a Python utility that can be used for this: gcovr. Download it and copy it to somewhere where Jenkins can execute it (e.g.: /usr/local/bin). Now, if you’ve followed the instructions from the previous post, you should have a job that reports your GoogleTest tests from Jenkins to TestLink using the plug-in, and is downloading the source code from GitHub. Add an extra build step (Shell) to execute gcovr." />
-<meta property="og:description" content="After the last post about GoogleTest and TestLink using Jenkins TestLink Plug-in, I received an e-mail asking about coverage with GoogleTest and Jenkins. I’ve just updated the Makefile in the samples directory, of the GoogleTest TAP listener project, to output coverage data. Basically, you have to add the compiler flags -fprofile-arcs -ftest-coverage and link the executable with -lgcov. Take a look at the project’s Makefile and you’ll notice how simple it is. In order to have Jenkins interpreting your coverage report, you’ll have to convert it to cobertura XML. There is a Python utility that can be used for this: gcovr. Download it and copy it to somewhere where Jenkins can execute it (e.g.: /usr/local/bin). Now, if you’ve followed the instructions from the previous post, you should have a job that reports your GoogleTest tests from Jenkins to TestLink using the plug-in, and is downloading the source code from GitHub. Add an extra build step (Shell) to execute gcovr." />
-<link rel="canonical" href="https://kinoshita.eti.br/2012/10/16/adding-coverage-reports-in-jenkins-with-googletest-and-gcovr.html" />
-<meta property="og:url" content="https://kinoshita.eti.br/2012/10/16/adding-coverage-reports-in-jenkins-with-googletest-and-gcovr.html" />
-<meta property="og:site_name" content="kinow" />
-<meta property="og:type" content="article" />
-<meta property="article:published_time" content="2012-10-16T00:00:00+13:00" />
-<meta name="twitter:card" content="summary" />
-<meta property="twitter:title" content="Adding coverage reports in Jenkins with GoogleTest and gcovr" />
-<script type="application/ld+json">
-{"description":"After the last post about GoogleTest and TestLink using Jenkins TestLink Plug-in, I received an e-mail asking about coverage with GoogleTest and Jenkins. I’ve just updated the Makefile in the samples directory, of the GoogleTest TAP listener project, to output coverage data. Basically, you have to add the compiler flags -fprofile-arcs -ftest-coverage and link the executable with -lgcov. Take a look at the project’s Makefile and you’ll notice how simple it is. In order to have Jenkins interpreting your coverage report, you’ll have to convert it to cobertura XML. There is a Python utility that can be used for this: gcovr. Download it and copy it to somewhere where Jenkins can execute it (e.g.: /usr/local/bin). Now, if you’ve followed the instructions from the previous post, you should have a job that reports your GoogleTest tests from Jenkins to TestLink using the plug-in, and is downloading the source code from GitHub. Add an extra build step (Shell) to execute gcovr.","@type":"BlogPosting","url":"https://kinoshita.eti.br/2012/10/16/adding-coverage-reports-in-jenkins-with-googletest-and-gcovr.html","headline":"Adding coverage reports in Jenkins with GoogleTest and gcovr","datePublished":"2012-10-16T00:00:00+13:00","dateModified":"2012-10-16T00:00:00+13:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://kinoshita.eti.br/2012/10/16/adding-coverage-reports-in-jenkins-with-googletest-and-gcovr.html"},"@context":"https://schema.org"}</script>
-<!-- End Jekyll SEO tag -->
-<link rel="stylesheet" href="/assets/css/main.css" /><link type="application/atom+xml" rel="alternate" href="https://kinoshita.eti.br/feed.xml" title="kinow" /><link href="https://unpkg.com/pattern.css" rel="stylesheet" />
-
+<!doctype html><html lang=en><head>
+<meta charset=utf-8>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<link rel=stylesheet type=text/css href=https://kinoshita.eti.br/sass/main.e392e97e7e5991e363403c494b51d829efa207842d755622976c2537d0509be0.css integrity="sha256-45Lpfn5ZkeNjQDxJS1HYKe+iB4QtdVYil2wlN9BQm+A=">
+<title>kinow | Adding coverage reports in Jenkins with GoogleTest and gcovr</title>
 </head>
-<body>
-<div id="mobile-menu"><div class="menu">
-  <ul class="menu">
-    <li class="item">
-      <h1 id="kinow">KINOW</h1>
-    </li>
-    <li class="item">
-      <a href="/" class="">About</a>
-    </li>
-    <li class="item">
-      <a href="/blog/" class="current">Blog</a>
-    </li>
-    <li class="item">
-      <a href="/portfolio/" class="">Portfolio</a>
-    </li>
-    <li class="item social-media-item">
-      <a href="https://www.instagram.com/brunokinoshita/" class="inline-link">
-        <img src="/assets/icons/instagram.png" class="inverted-image"  alt="Instagram link" />
-      </a>
-      <a href="https://twitter.com/kinow/" class="inline-link">
-        <img src="/assets/icons/twitter.png" class="inverted-image" alt="Twitter link" />
-      </a>
-      <a href="https://github.com/kinow/" class="inline-link">
-        <img src="/assets/icons/github.png" class="inverted-image" alt="GitHub link" />
-      </a>
-    </li>
-  </ul>
+<body><header role=banner class=content>
+<nav id=nav aria-label=Main role=navigation class=content>
+<ul><li>
+<a href=/>
+<i data-feather=about></i> About</a>
+</li><li>
+<a href=/blog/>
+<i data-feather=blog></i> Blog</a>
+</li><li>
+<a href=/portfolio/>
+<i data-feather=portfolio></i> Portfolio</a>
+</li><li></li>
+</ul>
+</nav>
+</header>
+<main>
+<article class=content>
+<h2>Adding coverage reports in Jenkins with GoogleTest and gcovr</h2><div class=metadata>
+<i data-feather=calendar></i>
+<time datetime=2012-10-16>Oct 16, 2012</time>
 </div>
-</div>
-<div id="wrapper">
-  <div id="sidebar"><div class="menu">
-  <ul class="menu">
-    <li class="item">
-      <h1 id="kinow">KINOW</h1>
-    </li>
-    <li class="item">
-      <a href="/" class="">About</a>
-    </li>
-    <li class="item">
-      <a href="/blog/" class="current">Blog</a>
-    </li>
-    <li class="item">
-      <a href="/portfolio/" class="">Portfolio</a>
-    </li>
-    <li class="item social-media-item">
-      <a href="https://www.instagram.com/brunokinoshita/" class="inline-link">
-        <img src="/assets/icons/instagram.png" class="inverted-image"  alt="Instagram link" />
-      </a>
-      <a href="https://twitter.com/kinow/" class="inline-link">
-        <img src="/assets/icons/twitter.png" class="inverted-image" alt="Twitter link" />
-      </a>
-      <a href="https://github.com/kinow/" class="inline-link">
-        <img src="/assets/icons/github.png" class="inverted-image" alt="GitHub link" />
-      </a>
-    </li>
-  </ul>
-</div>
-</div>
-  <div id="content">
-    <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
-  <header class="post-header">
-    <h1 class="post-title p-name" itemprop="name headline">Adding coverage reports in Jenkins with GoogleTest and gcovr</h1>
-    <span class="post-meta">
-      <time class="dt-published" datetime="2012-10-16T00:00:00+13:00" itemprop="datePublished">Oct 16, 2012
-      </time>
-      <span>&mdash; star date: -310125.68.</span>
-      <span>
-        Number of words: 366.
-      </span></span>
-  </header>
-
-  
-
-
-  <div class="post-content e-content" itemprop="articleBody">
-    <p>After the <a href="/2012/10/11/jenkins-testlink-and-gtest-in-5-minutes-or-so.html">last post</a> about
-<a href="http://code.google.com/p/googletest/">GoogleTest</a> and <a href="http://www.teamst.org">TestLink</a> using
-<a href="https://wiki.jenkins-ci.org/display/JENKINS/TestLink+Plugin">Jenkins TestLink Plug-in</a>, I received an e-mail
-asking about <a href="http://en.wikipedia.org/wiki/Code_coverage">coverage</a> with GoogleTest and
-<a href="http://www.jenkins-ci.org">Jenkins</a>. I’ve just updated the
-<a href="https://github.com/kinow/gtest-tap-listener/blob/master/samples/Makefile">Makefile</a> in the samples
-directory, of the <a href="https://github.com/kinow/gtest-tap-listener">GoogleTest TAP listener project</a>,
+<p>After the [last post]({% post_url 2012-10-11-jenkins-testlink-and-gtest-in-5-minutes-or-so %}) about
+<a href=http://code.google.com/p/googletest/>GoogleTest</a> and <a href=http://www.teamst.org>TestLink</a> using
+<a href=https://wiki.jenkins-ci.org/display/JENKINS/TestLink+Plugin>Jenkins TestLink Plug-in</a>, I received an e-mail
+asking about <a href=http://en.wikipedia.org/wiki/Code_coverage>coverage</a> with GoogleTest and
+<a href=http://www.jenkins-ci.org>Jenkins</a>. I&rsquo;ve just updated the
+<a href=https://github.com/kinow/gtest-tap-listener/blob/master/samples/Makefile>Makefile</a> in the samples
+directory, of the <a href=https://github.com/kinow/gtest-tap-listener>GoogleTest TAP listener project</a>,
 to output coverage data.</p>
-
-<p>Basically, you have to add the compiler flags <code class="language-plaintext highlighter-rouge">-fprofile-arcs -ftest-coverage</code> and link the executable with
-<code class="language-plaintext highlighter-rouge">-lgcov</code>. Take a look at the project’s Makefile and you’ll notice how simple it is. In order to have Jenkins
-interpreting your coverage report, you’ll have to convert it to <a href="http://cobertura.sourceforge.net">cobertura</a>
-XML. There is a Python utility that can be used for this: <a href="https://software.sandia.gov/trac/fast/wiki/gcovr">gcovr</a>.
-Download it and copy it to somewhere where Jenkins can execute it (e.g.: <code class="language-plaintext highlighter-rouge">/usr/local/bin</code>).</p>
-
-<p>Now, if you’ve followed the instructions from the previous post, you should have a job that reports your GoogleTest
+<p>Basically, you have to add the compiler flags <code>-fprofile-arcs -ftest-coverage</code> and link the executable with
+<code>-lgcov</code>. Take a look at the project&rsquo;s Makefile and you&rsquo;ll notice how simple it is. In order to have Jenkins
+interpreting your coverage report, you&rsquo;ll have to convert it to <a href=http://cobertura.sourceforge.net>cobertura</a>
+XML. There is a Python utility that can be used for this: <a href=https://software.sandia.gov/trac/fast/wiki/gcovr>gcovr</a>.
+Download it and copy it to somewhere where Jenkins can execute it (e.g.: <code>/usr/local/bin</code>).</p>
+<p>Now, if you&rsquo;ve followed the instructions from the previous post, you should have a job that reports your GoogleTest
 tests from Jenkins to TestLink using the plug-in, and is downloading the source code from GitHub. Add an extra build
-step (Shell) to execute <code class="language-plaintext highlighter-rouge">gcovr</code>.</p>
-
-<!--more-->
-
-<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>gcovr <span class="nt">-x</span> <span class="nt">-r</span> samples/src <span class="o">&gt;</span> coverage.xml
-</code></pre></div></div>
-
-<p><img class="ui image" src="/assets/posts/2012-10-16-adding-coverage-reports-in-jenkins-with-googletest-and-gcovr/screenshot_0031.png" /></p>
-
+step (Shell) to execute <code>gcovr</code>.</p>
+<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>gcovr -x -r samples/src &gt; coverage.xml
+</code></pre></div><figure class=feature>
+<img src=/assets/posts/2012-10-16-adding-coverage-reports-in-jenkins-with-googletest-and-gcovr/screenshot_0031.png alt title width height>
+<figcaption></figcaption>
+</figure>
 <p>This should produce a file coverage.xml in your build workspace. The last step is add cobertura post build step.
-Of course you’ll need <a href="https://wiki.jenkins-ci.org/display/JENKINS/Cobertura+Plugin">Jenkins Cobertura Plug-in</a>
+Of course you&rsquo;ll need <a href=https://wiki.jenkins-ci.org/display/JENKINS/Cobertura+Plugin>Jenkins Cobertura Plug-in</a>
 (quick tip: if you are using the newest Jenkins, you can install it without restarting, it works well).
 Simply add the cobertura post build step and make sure to use an include pattern that matches your output file from
 gcovr (e.g.: **/coverage.xml).</p>
-
 <p>Voilà , you should now have coverage reports in Jenkins that looks like the image below.</p>
-
-<p><img class="ui image" src="/assets/posts/2012-10-16-adding-coverage-reports-in-jenkins-with-googletest-and-gcovr/screenshot_0011.png" /></p>
-
-<p><img class="ui image" src="/assets/posts/2012-10-16-adding-coverage-reports-in-jenkins-with-googletest-and-gcovr/screenshot_0021.png" /></p>
-
+<figure class=feature>
+<img src=/assets/posts/2012-10-16-adding-coverage-reports-in-jenkins-with-googletest-and-gcovr/screenshot_0011.png alt title width height>
+<figcaption></figcaption>
+</figure>
+<figure class=feature>
+<img src=/assets/posts/2012-10-16-adding-coverage-reports-in-jenkins-with-googletest-and-gcovr/screenshot_0021.png alt title width height>
+<figcaption></figcaption>
+</figure>
 <p>A final note, is that we used an example project bundled with GoogleTest TAP Listener, and is not very useful,
-as it has no other classes being tested. In a real world project, you’ll have many classes that you want to coverage,
-while other you’d prefer to omit from the report. You can do so by using the <code class="language-plaintext highlighter-rouge">-e</code> gcovr flag. For more, try
-<code class="language-plaintext highlighter-rouge">gcovr --help</code>.</p>
-
+as it has no other classes being tested. In a real world project, you&rsquo;ll have many classes that you want to coverage,
+while other you&rsquo;d prefer to omit from the report. You can do so by using the <code>-e</code> gcovr flag. For more, try
+<code>gcovr --help</code>.</p>
 <p>Hope that helps, have fun!</p>
-
-  </div>
-
-  <div class="tags"><p>Tags:&nbsp;<a class="label" href="/tag/jenkins">jenkins</a>,&nbsp;<a class="label" href="/tag/c++">c++</a>,&nbsp;<a class="label" href="/tag/test anything protocol">test anything protocol</a>.<br/></p></div>
-
-  <a class="u-url" href="/2012/10/16/adding-coverage-reports-in-jenkins-with-googletest-and-gcovr.html" hidden></a>
+<aside class=links>
+<a class=previous href=https://kinoshita.eti.br/2012/10/11/jenkins-testlink-and-gtest-in-5-minutes-or-so.html>&#171; Previous</a>
+<a class=next href=https://kinoshita.eti.br/2012/10/20/replacing-a-hashset-with-a-bitset.html>Next &#187;</a>
+</aside>
 </article>
-
-  </div>
-</div>
+</main>
+<footer role=contentinfo>
+<ul id=social-media-icons>
+<li>
+<a href=https://www.instagram.com/brunokinoshita/>
+<img src=/assets/icons/instagram.png alt="Instagram link">
+</a>
+</li>
+<li>
+<a href=https://twitter.com/kinow/>
+<img src=/assets/icons/twitter.png alt="Twitter link">
+</a>
+</li>
+<li>
+<a href=https://github.com/kinow/>
+<img src=/assets/icons/github.png alt="GitHub link">
+</a>
+</li>
+</ul>
+</footer>
 </body>
 </html>

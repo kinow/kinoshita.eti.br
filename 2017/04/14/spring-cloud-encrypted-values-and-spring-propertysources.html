@@ -1,140 +1,59 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="utf-8" />
-<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-<meta name="viewport" content="width=device-width, initial-scale=1" /><!-- Begin Jekyll SEO tag v2.7.1 -->
-<title>Spring Cloud encrypted values and Spring PropertySources | kinow</title>
-<meta name="generator" content="Jekyll v3.9.0" />
-<meta property="og:title" content="Spring Cloud encrypted values and Spring PropertySources" />
-<meta property="og:locale" content="en_US" />
-<meta name="description" content="As I could not find any documentation for that, I decided to write it as a note to myself in case I use the encryption and decryption with Spring Cloud again. In Spring and Spring Boot, you normally have multiple sources of properties, like multiple properties files, environment properties and variables, and so it goes. In the Spring API, these are represented as PropertySource’s. In a Spring Boot application, you would be used to overriding certain properties by defining environments and using an application-production.properties file, or overriding values with environment properties. This is common in Spring Boot applications deployed to Amazon Elastic Beanstalk. Some time ago another team at work found that overriding did not always work when you have encrypted values in your properties files. Even if you specified new values in the Amazon Elastic Beanstalk application configuration. Yesterday, while debugging the issue and reading Spring Cloud source code, I found its EnvironmentDecryptApplicationInitializer. It basically iterates through all loaded property sources, looking for values that start with {cipher}. Then it calls the Spring Security TextEncryptor defined in the application. Finally, it creates a new property source, called decrypted, with the decrypted values. So when your application looks for a property called XPTO, and if it has been encrypted, it will find the value in the decrypted propery source, regardless of whether you tried to override it or not. # Property sources listed in Eclipse IDE [ servletConfigInitParams, servletContextInitParams, systemProperties, systemEnvironment, random, applicationConfigurationProperties, springCloudClientHostInfo, defaultProperties ] # When using encrypted values [ decrypted, &lt;-------- created by Spring Cloud, with decrypted values. Prepended to the list of property sources servletConfigInitParams, servletContextInitParams, systemProperties, systemEnvironment, random, applicationConfigurationProperties, springCloudClientHostInfo, defaultProperties ] So in case you have encrypted values in your Spring application (and you are using Spring Cloud, of course) remember that these values will have higher priority, and can only be overriden by other encrypted values. ♥ Open Source" />
-<meta property="og:description" content="As I could not find any documentation for that, I decided to write it as a note to myself in case I use the encryption and decryption with Spring Cloud again. In Spring and Spring Boot, you normally have multiple sources of properties, like multiple properties files, environment properties and variables, and so it goes. In the Spring API, these are represented as PropertySource’s. In a Spring Boot application, you would be used to overriding certain properties by defining environments and using an application-production.properties file, or overriding values with environment properties. This is common in Spring Boot applications deployed to Amazon Elastic Beanstalk. Some time ago another team at work found that overriding did not always work when you have encrypted values in your properties files. Even if you specified new values in the Amazon Elastic Beanstalk application configuration. Yesterday, while debugging the issue and reading Spring Cloud source code, I found its EnvironmentDecryptApplicationInitializer. It basically iterates through all loaded property sources, looking for values that start with {cipher}. Then it calls the Spring Security TextEncryptor defined in the application. Finally, it creates a new property source, called decrypted, with the decrypted values. So when your application looks for a property called XPTO, and if it has been encrypted, it will find the value in the decrypted propery source, regardless of whether you tried to override it or not. # Property sources listed in Eclipse IDE [ servletConfigInitParams, servletContextInitParams, systemProperties, systemEnvironment, random, applicationConfigurationProperties, springCloudClientHostInfo, defaultProperties ] # When using encrypted values [ decrypted, &lt;-------- created by Spring Cloud, with decrypted values. Prepended to the list of property sources servletConfigInitParams, servletContextInitParams, systemProperties, systemEnvironment, random, applicationConfigurationProperties, springCloudClientHostInfo, defaultProperties ] So in case you have encrypted values in your Spring application (and you are using Spring Cloud, of course) remember that these values will have higher priority, and can only be overriden by other encrypted values. ♥ Open Source" />
-<link rel="canonical" href="https://kinoshita.eti.br/2017/04/14/spring-cloud-encrypted-values-and-spring-propertysources.html" />
-<meta property="og:url" content="https://kinoshita.eti.br/2017/04/14/spring-cloud-encrypted-values-and-spring-propertysources.html" />
-<meta property="og:site_name" content="kinow" />
-<meta property="og:type" content="article" />
-<meta property="article:published_time" content="2017-04-14T00:00:00+12:00" />
-<meta name="twitter:card" content="summary" />
-<meta property="twitter:title" content="Spring Cloud encrypted values and Spring PropertySources" />
-<script type="application/ld+json">
-{"description":"As I could not find any documentation for that, I decided to write it as a note to myself in case I use the encryption and decryption with Spring Cloud again. In Spring and Spring Boot, you normally have multiple sources of properties, like multiple properties files, environment properties and variables, and so it goes. In the Spring API, these are represented as PropertySource’s. In a Spring Boot application, you would be used to overriding certain properties by defining environments and using an application-production.properties file, or overriding values with environment properties. This is common in Spring Boot applications deployed to Amazon Elastic Beanstalk. Some time ago another team at work found that overriding did not always work when you have encrypted values in your properties files. Even if you specified new values in the Amazon Elastic Beanstalk application configuration. Yesterday, while debugging the issue and reading Spring Cloud source code, I found its EnvironmentDecryptApplicationInitializer. It basically iterates through all loaded property sources, looking for values that start with {cipher}. Then it calls the Spring Security TextEncryptor defined in the application. Finally, it creates a new property source, called decrypted, with the decrypted values. So when your application looks for a property called XPTO, and if it has been encrypted, it will find the value in the decrypted propery source, regardless of whether you tried to override it or not. # Property sources listed in Eclipse IDE [ servletConfigInitParams, servletContextInitParams, systemProperties, systemEnvironment, random, applicationConfigurationProperties, springCloudClientHostInfo, defaultProperties ] # When using encrypted values [ decrypted, &lt;-------- created by Spring Cloud, with decrypted values. Prepended to the list of property sources servletConfigInitParams, servletContextInitParams, systemProperties, systemEnvironment, random, applicationConfigurationProperties, springCloudClientHostInfo, defaultProperties ] So in case you have encrypted values in your Spring application (and you are using Spring Cloud, of course) remember that these values will have higher priority, and can only be overriden by other encrypted values. ♥ Open Source","@type":"BlogPosting","url":"https://kinoshita.eti.br/2017/04/14/spring-cloud-encrypted-values-and-spring-propertysources.html","headline":"Spring Cloud encrypted values and Spring PropertySources","datePublished":"2017-04-14T00:00:00+12:00","dateModified":"2017-04-14T00:00:00+12:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://kinoshita.eti.br/2017/04/14/spring-cloud-encrypted-values-and-spring-propertysources.html"},"@context":"https://schema.org"}</script>
-<!-- End Jekyll SEO tag -->
-<link rel="stylesheet" href="/assets/css/main.css" /><link type="application/atom+xml" rel="alternate" href="https://kinoshita.eti.br/feed.xml" title="kinow" /><link href="https://unpkg.com/pattern.css" rel="stylesheet" />
-
+<!doctype html><html lang=en><head>
+<meta charset=utf-8>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<link rel=stylesheet type=text/css href=https://kinoshita.eti.br/sass/main.e392e97e7e5991e363403c494b51d829efa207842d755622976c2537d0509be0.css integrity="sha256-45Lpfn5ZkeNjQDxJS1HYKe+iB4QtdVYil2wlN9BQm+A=">
+<title>kinow | Spring Cloud encrypted values and Spring PropertySources</title>
 </head>
-<body>
-<div id="mobile-menu"><div class="menu">
-  <ul class="menu">
-    <li class="item">
-      <h1 id="kinow">KINOW</h1>
-    </li>
-    <li class="item">
-      <a href="/" class="">About</a>
-    </li>
-    <li class="item">
-      <a href="/blog/" class="current">Blog</a>
-    </li>
-    <li class="item">
-      <a href="/portfolio/" class="">Portfolio</a>
-    </li>
-    <li class="item social-media-item">
-      <a href="https://www.instagram.com/brunokinoshita/" class="inline-link">
-        <img src="/assets/icons/instagram.png" class="inverted-image"  alt="Instagram link" />
-      </a>
-      <a href="https://twitter.com/kinow/" class="inline-link">
-        <img src="/assets/icons/twitter.png" class="inverted-image" alt="Twitter link" />
-      </a>
-      <a href="https://github.com/kinow/" class="inline-link">
-        <img src="/assets/icons/github.png" class="inverted-image" alt="GitHub link" />
-      </a>
-    </li>
-  </ul>
+<body><header role=banner class=content>
+<nav id=nav aria-label=Main role=navigation class=content>
+<ul><li>
+<a href=/>
+<i data-feather=about></i> About</a>
+</li><li>
+<a href=/blog/>
+<i data-feather=blog></i> Blog</a>
+</li><li>
+<a href=/portfolio/>
+<i data-feather=portfolio></i> Portfolio</a>
+</li><li></li>
+</ul>
+</nav>
+</header>
+<main>
+<article class=content>
+<h2>Spring Cloud encrypted values and Spring PropertySources</h2><div class=metadata>
+<i data-feather=calendar></i>
+<time datetime=2017-04-14>Apr 14, 2017</time>
 </div>
-</div>
-<div id="wrapper">
-  <div id="sidebar"><div class="menu">
-  <ul class="menu">
-    <li class="item">
-      <h1 id="kinow">KINOW</h1>
-    </li>
-    <li class="item">
-      <a href="/" class="">About</a>
-    </li>
-    <li class="item">
-      <a href="/blog/" class="current">Blog</a>
-    </li>
-    <li class="item">
-      <a href="/portfolio/" class="">Portfolio</a>
-    </li>
-    <li class="item social-media-item">
-      <a href="https://www.instagram.com/brunokinoshita/" class="inline-link">
-        <img src="/assets/icons/instagram.png" class="inverted-image"  alt="Instagram link" />
-      </a>
-      <a href="https://twitter.com/kinow/" class="inline-link">
-        <img src="/assets/icons/twitter.png" class="inverted-image" alt="Twitter link" />
-      </a>
-      <a href="https://github.com/kinow/" class="inline-link">
-        <img src="/assets/icons/github.png" class="inverted-image" alt="GitHub link" />
-      </a>
-    </li>
-  </ul>
-</div>
-</div>
-  <div id="content">
-    <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
-  <header class="post-header">
-    <h1 class="post-title p-name" itemprop="name headline">Spring Cloud encrypted values and Spring PropertySources</h1>
-    <span class="post-meta">
-      <time class="dt-published" datetime="2017-04-14T00:00:00+12:00" itemprop="datePublished">Apr 14, 2017
-      </time>
-      <span>&mdash; star date: -305635.62.</span>
-      <span>
-        Number of words: 333.
-      </span></span>
-  </header>
-
-  
-
-
-  <div class="post-content e-content" itemprop="articleBody">
-    <p>As I could not find any documentation for that, I decided to write it as a note to myself
+<p>As I could not find any documentation for that, I decided to write it as a note to myself
 in case I use the
-<a href="https://cloud.spring.io/spring-cloud-config/spring-cloud-config.html#_encryption_and_decryption">encryption and decryption</a>
+<a href=https://cloud.spring.io/spring-cloud-config/spring-cloud-config.html#_encryption_and_decryption>encryption and decryption</a>
 with Spring Cloud again.</p>
-
 <p>In Spring and Spring Boot, you normally have multiple sources of properties, like multiple
 properties files, environment properties and variables, and so it goes. In the Spring API,
 these are represented as
-<a href="http://docs.spring.io/spring/docs/current/javadoc-api/org/springframework/context/annotation/PropertySource.html">PropertySource</a>’s.</p>
-
+<a href=http://docs.spring.io/spring/docs/current/javadoc-api/org/springframework/context/annotation/PropertySource.html>PropertySource</a>&rsquo;s.</p>
 <p>In a Spring Boot application, you would be used to overriding certain properties
 by defining environments and using an application-production.properties file, or
 overriding values with environment properties.</p>
-
 <p>This is common in
-<a href="https://aws.amazon.com/blogs/devops/deploying-a-spring-boot-application-on-aws-using-aws-elastic-beanstalk/">Spring Boot applications deployed to Amazon Elastic Beanstalk</a>.</p>
-
+<a href=https://aws.amazon.com/blogs/devops/deploying-a-spring-boot-application-on-aws-using-aws-elastic-beanstalk/>Spring Boot applications deployed to Amazon Elastic Beanstalk</a>.</p>
 <p>Some time ago another team at work found that overriding did not always work when you have
 encrypted values in your properties files. Even if you specified new values in the
 Amazon Elastic Beanstalk application configuration.</p>
-
 <p>Yesterday, while debugging the issue and reading Spring Cloud source code, I found its
-<a href="https://github.com/spring-cloud/spring-cloud-commons/blob/9675df02f6a2c01766711f7dee3c4d2818b7d716/spring-cloud-context/src/main/java/org/springframework/cloud/bootstrap/encrypt/EnvironmentDecryptApplicationInitializer.java#L44">EnvironmentDecryptApplicationInitializer</a>.</p>
-
+<a href=https://github.com/spring-cloud/spring-cloud-commons/blob/9675df02f6a2c01766711f7dee3c4d2818b7d716/spring-cloud-context/src/main/java/org/springframework/cloud/bootstrap/encrypt/EnvironmentDecryptApplicationInitializer.java#L44>EnvironmentDecryptApplicationInitializer</a>.</p>
 <p>It basically iterates through all loaded property sources, looking for values that start with
 {cipher}. Then it calls the
-<a href="http://docs.spring.io/spring-security/site/docs/current/apidocs/org/springframework/security/crypto/encrypt/TextEncryptor.html">Spring Security TextEncryptor</a>
+<a href=http://docs.spring.io/spring-security/site/docs/current/apidocs/org/springframework/security/crypto/encrypt/TextEncryptor.html>Spring Security TextEncryptor</a>
 defined in the application.</p>
-
 <p>Finally, it creates a new property source, called decrypted, with the decrypted values. So when
 your application looks for a property called XPTO, and if it has been encrypted, it will
 find the value in the decrypted propery source, regardless of whether you tried to override it or
 not.</p>
+<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=color:#080;font-style:italic># Property sources listed in Eclipse IDE</span>
 
-<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Property sources listed in Eclipse IDE</span>
-
-<span class="o">[</span>
+[
   servletConfigInitParams,
   servletContextInitParams,
   systemProperties,
@@ -143,12 +62,12 @@ not.</p>
   applicationConfigurationProperties,
   springCloudClientHostInfo,
   defaultProperties
-<span class="o">]</span>
+]
 
-<span class="c"># When using encrypted values</span>
+<span style=color:#080;font-style:italic># When using encrypted values</span>
 
-<span class="o">[</span>
-  decrypted, &lt;<span class="nt">--------</span> created by Spring Cloud, with decrypted values. Prepended to the list of property sources
+[
+  decrypted, &lt;-------- created by Spring Cloud, with decrypted values. Prepended to the list of property sources
   servletConfigInitParams,
   servletContextInitParams,
   systemProperties,
@@ -157,23 +76,35 @@ not.</p>
   applicationConfigurationProperties,
   springCloudClientHostInfo,
   defaultProperties
-<span class="o">]</span>
-</code></pre></div></div>
-
-<p>So in case you have encrypted values in your Spring application (and you are using Spring Cloud, 
+]
+</code></pre></div><p>So in case you have encrypted values in your Spring application (and you are using Spring Cloud,
 of course) remember that these values will have higher priority, and can only be overriden by other
 encrypted values.</p>
-
 <p>♥ Open Source</p>
-
-  </div>
-
-  <div class="tags"><p>Tags:&nbsp;<a class="label" href="/tag/java">java</a>,&nbsp;<a class="label" href="/tag/programming">programming</a>,&nbsp;<a class="label" href="/tag/opensource">opensource</a>.<br/></p></div>
-
-  <a class="u-url" href="/2017/04/14/spring-cloud-encrypted-values-and-spring-propertysources.html" hidden></a>
+<aside class=links>
+<a class=previous href=https://kinoshita.eti.br/2017/04/14/writing-a-binary-parser-in-python-numpy-vs.-construct.html>&#171; Previous</a>
+<a class=next href=https://kinoshita.eti.br/2017/04/17/troubleshooting-a-jenkins-plug-in-compatibility-issue.html>Next &#187;</a>
+</aside>
 </article>
-
-  </div>
-</div>
+</main>
+<footer role=contentinfo>
+<ul id=social-media-icons>
+<li>
+<a href=https://www.instagram.com/brunokinoshita/>
+<img src=/assets/icons/instagram.png alt="Instagram link">
+</a>
+</li>
+<li>
+<a href=https://twitter.com/kinow/>
+<img src=/assets/icons/twitter.png alt="Twitter link">
+</a>
+</li>
+<li>
+<a href=https://github.com/kinow/>
+<img src=/assets/icons/github.png alt="GitHub link">
+</a>
+</li>
+</ul>
+</footer>
 </body>
 </html>

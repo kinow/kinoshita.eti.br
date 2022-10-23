@@ -1,162 +1,93 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="utf-8" />
-<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-<meta name="viewport" content="width=device-width, initial-scale=1" /><!-- Begin Jekyll SEO tag v2.7.1 -->
-<title>Multithreaded code and Pandas | kinow</title>
-<meta name="generator" content="Jekyll v3.9.0" />
-<meta property="og:title" content="Multithreaded code and Pandas" />
-<meta property="og:locale" content="en_US" />
-<meta name="description" content="Pandas provides high-performance data structures in Python. I think in Java there are similar data structures in projects like Apache Commons Collections, Google Guava, and also Trove. In the Java libraries thread-safety is always a must-have feature. Probably as it is quite common for a Java program to have more than one thread, especially if the code runs in some sort of web container. I recently learned that Pandas, on the other hand, does not guarantee any thread-safety. I found that while reading an issue about race condition in the IndexEngine, and after preparing a pull request for that." />
-<meta property="og:description" content="Pandas provides high-performance data structures in Python. I think in Java there are similar data structures in projects like Apache Commons Collections, Google Guava, and also Trove. In the Java libraries thread-safety is always a must-have feature. Probably as it is quite common for a Java program to have more than one thread, especially if the code runs in some sort of web container. I recently learned that Pandas, on the other hand, does not guarantee any thread-safety. I found that while reading an issue about race condition in the IndexEngine, and after preparing a pull request for that." />
-<link rel="canonical" href="https://kinoshita.eti.br/2018/07/22/multithreaded-code-and-pandas.html" />
-<meta property="og:url" content="https://kinoshita.eti.br/2018/07/22/multithreaded-code-and-pandas.html" />
-<meta property="og:site_name" content="kinow" />
-<meta property="og:type" content="article" />
-<meta property="article:published_time" content="2018-07-22T00:00:00+12:00" />
-<meta name="twitter:card" content="summary" />
-<meta property="twitter:title" content="Multithreaded code and Pandas" />
-<script type="application/ld+json">
-{"description":"Pandas provides high-performance data structures in Python. I think in Java there are similar data structures in projects like Apache Commons Collections, Google Guava, and also Trove. In the Java libraries thread-safety is always a must-have feature. Probably as it is quite common for a Java program to have more than one thread, especially if the code runs in some sort of web container. I recently learned that Pandas, on the other hand, does not guarantee any thread-safety. I found that while reading an issue about race condition in the IndexEngine, and after preparing a pull request for that.","@type":"BlogPosting","url":"https://kinoshita.eti.br/2018/07/22/multithreaded-code-and-pandas.html","headline":"Multithreaded code and Pandas","datePublished":"2018-07-22T00:00:00+12:00","dateModified":"2018-07-22T00:00:00+12:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://kinoshita.eti.br/2018/07/22/multithreaded-code-and-pandas.html"},"@context":"https://schema.org"}</script>
-<!-- End Jekyll SEO tag -->
-<link rel="stylesheet" href="/assets/css/main.css" /><link type="application/atom+xml" rel="alternate" href="https://kinoshita.eti.br/feed.xml" title="kinow" /><link href="https://unpkg.com/pattern.css" rel="stylesheet" />
-
+<!doctype html><html lang=en><head>
+<meta charset=utf-8>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<link rel=stylesheet type=text/css href=https://kinoshita.eti.br/sass/main.e392e97e7e5991e363403c494b51d829efa207842d755622976c2537d0509be0.css integrity="sha256-45Lpfn5ZkeNjQDxJS1HYKe+iB4QtdVYil2wlN9BQm+A=">
+<title>kinow | Multithreaded code and Pandas</title>
 </head>
-<body>
-<div id="mobile-menu"><div class="menu">
-  <ul class="menu">
-    <li class="item">
-      <h1 id="kinow">KINOW</h1>
-    </li>
-    <li class="item">
-      <a href="/" class="">About</a>
-    </li>
-    <li class="item">
-      <a href="/blog/" class="current">Blog</a>
-    </li>
-    <li class="item">
-      <a href="/portfolio/" class="">Portfolio</a>
-    </li>
-    <li class="item social-media-item">
-      <a href="https://www.instagram.com/brunokinoshita/" class="inline-link">
-        <img src="/assets/icons/instagram.png" class="inverted-image"  alt="Instagram link" />
-      </a>
-      <a href="https://twitter.com/kinow/" class="inline-link">
-        <img src="/assets/icons/twitter.png" class="inverted-image" alt="Twitter link" />
-      </a>
-      <a href="https://github.com/kinow/" class="inline-link">
-        <img src="/assets/icons/github.png" class="inverted-image" alt="GitHub link" />
-      </a>
-    </li>
-  </ul>
+<body><header role=banner class=content>
+<nav id=nav aria-label=Main role=navigation class=content>
+<ul><li>
+<a href=/>
+<i data-feather=about></i> About</a>
+</li><li>
+<a href=/blog/>
+<i data-feather=blog></i> Blog</a>
+</li><li>
+<a href=/portfolio/>
+<i data-feather=portfolio></i> Portfolio</a>
+</li><li></li>
+</ul>
+</nav>
+</header>
+<main>
+<article class=content>
+<h2>Multithreaded code and Pandas</h2><div class=metadata>
+<i data-feather=calendar></i>
+<time datetime=2018-07-22>Jul 22, 2018</time>
 </div>
-</div>
-<div id="wrapper">
-  <div id="sidebar"><div class="menu">
-  <ul class="menu">
-    <li class="item">
-      <h1 id="kinow">KINOW</h1>
-    </li>
-    <li class="item">
-      <a href="/" class="">About</a>
-    </li>
-    <li class="item">
-      <a href="/blog/" class="current">Blog</a>
-    </li>
-    <li class="item">
-      <a href="/portfolio/" class="">Portfolio</a>
-    </li>
-    <li class="item social-media-item">
-      <a href="https://www.instagram.com/brunokinoshita/" class="inline-link">
-        <img src="/assets/icons/instagram.png" class="inverted-image"  alt="Instagram link" />
-      </a>
-      <a href="https://twitter.com/kinow/" class="inline-link">
-        <img src="/assets/icons/twitter.png" class="inverted-image" alt="Twitter link" />
-      </a>
-      <a href="https://github.com/kinow/" class="inline-link">
-        <img src="/assets/icons/github.png" class="inverted-image" alt="GitHub link" />
-      </a>
-    </li>
-  </ul>
-</div>
-</div>
-  <div id="content">
-    <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
-  <header class="post-header">
-    <h1 class="post-title p-name" itemprop="name headline">Multithreaded code and Pandas</h1>
-    <span class="post-meta">
-      <time class="dt-published" datetime="2018-07-22T00:00:00+12:00" itemprop="datePublished">Jul 22, 2018
-      </time>
-      <span>&mdash; star date: -304361.64.</span>
-      <span>
-        Number of words: 450.
-      </span></span>
-  </header>
-
-  
-
-
-  <div class="post-content e-content" itemprop="articleBody">
-    <p><a href="https://www.deviantart.com/kinow/art/Woman-looking-01-743551195"><img style="float: left; height: 300px;" class="ui image" src="/assets/posts/2018-07-22-multithreaded-code-and-pandas/woman-looking-01.png" alt="Woman looking" /></a></p>
-
+<figure class=feature>
+<img src=/assets/posts/2018-07-22-multithreaded-code-and-pandas/woman-looking-01.png alt="Woman looking" title="Woman looking" style=zgotmplz width height>
+<figcaption>Woman looking</figcaption>
+</figure>
 <p>Pandas provides high-performance data structures in Python. I think in Java there are
 similar data structures in projects like Apache Commons Collections,
 Google Guava, and also Trove.</p>
-
 <p>In the Java libraries thread-safety is always a must-have feature. Probably as it is quite
 common for a Java program to have more than one thread, especially if the code runs in some
 sort of web container.</p>
-
 <p>I recently learned that Pandas, on the other hand, does not guarantee any thread-safety.
 I found that while reading an
-<a href="https://github.com/pandas-dev/pandas/issues/21150">issue about race condition in the <code class="language-plaintext highlighter-rouge">IndexEngine</code></a>,
+<a href=https://github.com/pandas-dev/pandas/issues/21150>issue about race condition in the <code>IndexEngine</code></a>,
 and after preparing a pull request for that.</p>
+<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=color:navy;font-weight:700>from</span> concurrent.futures <span style=color:navy;font-weight:700>import</span> ThreadPoolExecutor
+<span style=color:navy;font-weight:700>import</span> pandas <span style=color:navy;font-weight:700>as</span> pd
 
-<!--more-->
-
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">concurrent.futures</span> <span class="kn">import</span> <span class="n">ThreadPoolExecutor</span>
-<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="n">pd</span>
-
-<span class="n">x</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="n">date_range</span><span class="p">(</span><span class="s">'2001'</span><span class="p">,</span> <span class="s">'2020'</span><span class="p">)</span>
-<span class="k">with</span> <span class="n">ThreadPoolExecutor</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="k">as</span> <span class="n">p</span><span class="p">:</span>
-    <span class="k">assert</span> <span class="nb">all</span><span class="p">(</span><span class="n">p</span><span class="p">.</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">.</span><span class="n">is_unique</span><span class="p">,</span> <span class="p">[</span><span class="n">x</span><span class="p">]</span><span class="o">*</span><span class="mi">2</span><span class="p">))</span>
-</code></pre></div></div>
-
-<p>When you create an index like that, it will delegate most of the hard work to the <code class="language-plaintext highlighter-rouge">IndexEngine</code>.
-Inside the <code class="language-plaintext highlighter-rouge">IndexEngine</code>, the values passed for the index are stored, and then an empty
-<code class="language-plaintext highlighter-rouge">Hashtable</code> is created (as well as several flags for the state of the object, such as
-<code class="language-plaintext highlighter-rouge">unique</code>, which defines whether the index has unique elements or not).</p>
-
-<p>Once a user calls a method like <code class="language-plaintext highlighter-rouge">is_unique</code>, then the flags are updated, the <code class="language-plaintext highlighter-rouge">Hashtable</code>
+x = pd.date_range(<span style=color:#00f>&#39;2001&#39;</span>, <span style=color:#00f>&#39;2020&#39;</span>)
+<span style=color:navy;font-weight:700>with</span> ThreadPoolExecutor(<span style=color:#00f>2</span>) <span style=color:navy;font-weight:700>as</span> p:
+    <span style=color:navy;font-weight:700>assert</span> all(p.map(<span style=color:navy;font-weight:700>lambda</span> x: x.is_unique, [x]*<span style=color:#00f>2</span>))
+</code></pre></div><p>When you create an index like that, it will delegate most of the hard work to the <code>IndexEngine</code>.
+Inside the <code>IndexEngine</code>, the values passed for the index are stored, and then an empty
+<code>Hashtable</code> is created (as well as several flags for the state of the object, such as
+<code>unique</code>, which defines whether the index has unique elements or not).</p>
+<p>Once a user calls a method like <code>is_unique</code>, then the flags are updated, the <code>Hashtable</code>
 mapping is populated, and while doing so, if not all elements are unique, the flag for
-<code class="language-plaintext highlighter-rouge">unique</code> is set to <code class="language-plaintext highlighter-rouge">false</code>, or <code class="language-plaintext highlighter-rouge">true</code> otherwise. But if the user does not need that
+<code>unique</code> is set to <code>false</code>, or <code>true</code> otherwise. But if the user does not need that
 operation, we will avoid populating the mapping until we really need it.</p>
-
 <p>I believe it is done that way for performance. However, at the cost that the state is shared
 among calls, which makes it harder to use this API in a multithreaded environment - though
 still possible by moving the synchronization to your caller code.</p>
-
 <p>Some Apache software also do the same, asking users to synchronize, serialize, or handle
 certain corner cases on their side. There is a huge cost associated with maintaining an Open
 Source project that promises thread-safety.</p>
-
-<p>But maybe <a href="http://dask.pydata.org/en/latest/">Dask</a> provides an alternative to use Pandas
+<p>But maybe <a href=http://dask.pydata.org/en/latest/>Dask</a> provides an alternative to use Pandas
 with multiple threads. But I have not used that yet.</p>
-
 <p>♥ Open Source</p>
-
 <p><em>NB: even though Pandas is not thread-safe, it does not mean you should not use it. Just use
 with care when using multiple threads</em></p>
-
-  </div>
-
-  <div class="tags"><p>Tags:&nbsp;<a class="label" href="/tag/python">python</a>,&nbsp;<a class="label" href="/tag/pandas">pandas</a>,&nbsp;<a class="label" href="/tag/opensource">opensource</a>.<br/></p></div>
-
-  <a class="u-url" href="/2018/07/22/multithreaded-code-and-pandas.html" hidden></a>
+<aside class=links>
+<a class=previous href=https://kinoshita.eti.br/2018/07/14/cylc-scheduler-internals-part-1.html>&#171; Previous</a>
+<a class=next href=https://kinoshita.eti.br/2018/07/27/cylc-scheduler-internals-part-2.html>Next &#187;</a>
+</aside>
 </article>
-
-  </div>
-</div>
+</main>
+<footer role=contentinfo>
+<ul id=social-media-icons>
+<li>
+<a href=https://www.instagram.com/brunokinoshita/>
+<img src=/assets/icons/instagram.png alt="Instagram link">
+</a>
+</li>
+<li>
+<a href=https://twitter.com/kinow/>
+<img src=/assets/icons/twitter.png alt="Twitter link">
+</a>
+</li>
+<li>
+<a href=https://github.com/kinow/>
+<img src=/assets/icons/github.png alt="GitHub link">
+</a>
+</li>
+</ul>
+</footer>
 </body>
 </html>

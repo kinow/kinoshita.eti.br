@@ -1,154 +1,90 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="utf-8" />
-<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-<meta name="viewport" content="width=device-width, initial-scale=1" /><!-- Begin Jekyll SEO tag v2.7.1 -->
-<title>Using Requests Session Objects for web scraping | kinow</title>
-<meta name="generator" content="Jekyll v3.9.0" />
-<meta property="og:title" content="Using Requests Session Objects for web scraping" />
-<meta property="og:locale" content="en_US" />
-<meta name="description" content="I had to write a Python script some months ago, that would retrieve Solar energy data from a web site. It was basically a handful of HTTP calls, parse the response that was mainly in JSON, and store the results as JSON and CSV for processing later. Since it was such a small task, I used the Requests module instead of a complete web scraper. The HTTP requests had to be made with a time out, and also pass certain headers. I started customizing each call, until I learned about the Requests Session Objects. You create a session, as in ORM/JPA, where you can define a context, with certain properties and control an orthogonal behavior. import requests def get(session, url): &quot;&quot;&quot;Utility method to HTTP GET a URL&quot;&quot;&quot; response = session.get(url, timeout=None) return response def post(session, url, data): &quot;&quot;&quot;Utility method to HTTP POST a URL with data parameters&quot;&quot;&quot; response = session.post(url, data=data, timeout=None) if response.status_code != requests.codes.ok: response.raise_for_status() return response with requests.Session() as s: # x-test header will be sent with every request s.headers.update({&#39;x-test&#39;: &#39;true&#39;}) data = {&#39;user&#39;: user, &#39;password&#39;: password, &#39;rememberne&#39;: &#39;false&#39;} r = post(s, &#39;https://portal.login.url&#39;, data) r = get(s, &#39;https://portal.home.url&#39;) Besides the session object, that gives you ability to add headers to all requests, you won’t have to worry about redirects. The library by default takes care of that with a default limit of up to 30. Happy hacking!" />
-<meta property="og:description" content="I had to write a Python script some months ago, that would retrieve Solar energy data from a web site. It was basically a handful of HTTP calls, parse the response that was mainly in JSON, and store the results as JSON and CSV for processing later. Since it was such a small task, I used the Requests module instead of a complete web scraper. The HTTP requests had to be made with a time out, and also pass certain headers. I started customizing each call, until I learned about the Requests Session Objects. You create a session, as in ORM/JPA, where you can define a context, with certain properties and control an orthogonal behavior. import requests def get(session, url): &quot;&quot;&quot;Utility method to HTTP GET a URL&quot;&quot;&quot; response = session.get(url, timeout=None) return response def post(session, url, data): &quot;&quot;&quot;Utility method to HTTP POST a URL with data parameters&quot;&quot;&quot; response = session.post(url, data=data, timeout=None) if response.status_code != requests.codes.ok: response.raise_for_status() return response with requests.Session() as s: # x-test header will be sent with every request s.headers.update({&#39;x-test&#39;: &#39;true&#39;}) data = {&#39;user&#39;: user, &#39;password&#39;: password, &#39;rememberne&#39;: &#39;false&#39;} r = post(s, &#39;https://portal.login.url&#39;, data) r = get(s, &#39;https://portal.home.url&#39;) Besides the session object, that gives you ability to add headers to all requests, you won’t have to worry about redirects. The library by default takes care of that with a default limit of up to 30. Happy hacking!" />
-<link rel="canonical" href="https://kinoshita.eti.br/2016/11/25/using-requests-session-objects-for-web-scraping.html" />
-<meta property="og:url" content="https://kinoshita.eti.br/2016/11/25/using-requests-session-objects-for-web-scraping.html" />
-<meta property="og:site_name" content="kinow" />
-<meta property="og:type" content="article" />
-<meta property="article:published_time" content="2016-11-25T00:00:00+13:00" />
-<meta name="twitter:card" content="summary" />
-<meta property="twitter:title" content="Using Requests Session Objects for web scraping" />
-<script type="application/ld+json">
-{"description":"I had to write a Python script some months ago, that would retrieve Solar energy data from a web site. It was basically a handful of HTTP calls, parse the response that was mainly in JSON, and store the results as JSON and CSV for processing later. Since it was such a small task, I used the Requests module instead of a complete web scraper. The HTTP requests had to be made with a time out, and also pass certain headers. I started customizing each call, until I learned about the Requests Session Objects. You create a session, as in ORM/JPA, where you can define a context, with certain properties and control an orthogonal behavior. import requests def get(session, url): &quot;&quot;&quot;Utility method to HTTP GET a URL&quot;&quot;&quot; response = session.get(url, timeout=None) return response def post(session, url, data): &quot;&quot;&quot;Utility method to HTTP POST a URL with data parameters&quot;&quot;&quot; response = session.post(url, data=data, timeout=None) if response.status_code != requests.codes.ok: response.raise_for_status() return response with requests.Session() as s: # x-test header will be sent with every request s.headers.update({&#39;x-test&#39;: &#39;true&#39;}) data = {&#39;user&#39;: user, &#39;password&#39;: password, &#39;rememberne&#39;: &#39;false&#39;} r = post(s, &#39;https://portal.login.url&#39;, data) r = get(s, &#39;https://portal.home.url&#39;) Besides the session object, that gives you ability to add headers to all requests, you won’t have to worry about redirects. The library by default takes care of that with a default limit of up to 30. Happy hacking!","@type":"BlogPosting","url":"https://kinoshita.eti.br/2016/11/25/using-requests-session-objects-for-web-scraping.html","headline":"Using Requests Session Objects for web scraping","datePublished":"2016-11-25T00:00:00+13:00","dateModified":"2016-11-25T00:00:00+13:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://kinoshita.eti.br/2016/11/25/using-requests-session-objects-for-web-scraping.html"},"@context":"https://schema.org"}</script>
-<!-- End Jekyll SEO tag -->
-<link rel="stylesheet" href="/assets/css/main.css" /><link type="application/atom+xml" rel="alternate" href="https://kinoshita.eti.br/feed.xml" title="kinow" /><link href="https://unpkg.com/pattern.css" rel="stylesheet" />
-
+<!doctype html><html lang=en><head>
+<meta charset=utf-8>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<link rel=stylesheet type=text/css href=https://kinoshita.eti.br/sass/main.e392e97e7e5991e363403c494b51d829efa207842d755622976c2537d0509be0.css integrity="sha256-45Lpfn5ZkeNjQDxJS1HYKe+iB4QtdVYil2wlN9BQm+A=">
+<title>kinow | Using Requests Session Objects for web scraping</title>
 </head>
-<body>
-<div id="mobile-menu"><div class="menu">
-  <ul class="menu">
-    <li class="item">
-      <h1 id="kinow">KINOW</h1>
-    </li>
-    <li class="item">
-      <a href="/" class="">About</a>
-    </li>
-    <li class="item">
-      <a href="/blog/" class="current">Blog</a>
-    </li>
-    <li class="item">
-      <a href="/portfolio/" class="">Portfolio</a>
-    </li>
-    <li class="item social-media-item">
-      <a href="https://www.instagram.com/brunokinoshita/" class="inline-link">
-        <img src="/assets/icons/instagram.png" class="inverted-image"  alt="Instagram link" />
-      </a>
-      <a href="https://twitter.com/kinow/" class="inline-link">
-        <img src="/assets/icons/twitter.png" class="inverted-image" alt="Twitter link" />
-      </a>
-      <a href="https://github.com/kinow/" class="inline-link">
-        <img src="/assets/icons/github.png" class="inverted-image" alt="GitHub link" />
-      </a>
-    </li>
-  </ul>
+<body><header role=banner class=content>
+<nav id=nav aria-label=Main role=navigation class=content>
+<ul><li>
+<a href=/>
+<i data-feather=about></i> About</a>
+</li><li>
+<a href=/blog/>
+<i data-feather=blog></i> Blog</a>
+</li><li>
+<a href=/portfolio/>
+<i data-feather=portfolio></i> Portfolio</a>
+</li><li></li>
+</ul>
+</nav>
+</header>
+<main>
+<article class=content>
+<h2>Using Requests Session Objects for web scraping</h2><div class=metadata>
+<i data-feather=calendar></i>
+<time datetime=2016-11-25>Nov 25, 2016</time>
 </div>
-</div>
-<div id="wrapper">
-  <div id="sidebar"><div class="menu">
-  <ul class="menu">
-    <li class="item">
-      <h1 id="kinow">KINOW</h1>
-    </li>
-    <li class="item">
-      <a href="/" class="">About</a>
-    </li>
-    <li class="item">
-      <a href="/blog/" class="current">Blog</a>
-    </li>
-    <li class="item">
-      <a href="/portfolio/" class="">Portfolio</a>
-    </li>
-    <li class="item social-media-item">
-      <a href="https://www.instagram.com/brunokinoshita/" class="inline-link">
-        <img src="/assets/icons/instagram.png" class="inverted-image"  alt="Instagram link" />
-      </a>
-      <a href="https://twitter.com/kinow/" class="inline-link">
-        <img src="/assets/icons/twitter.png" class="inverted-image" alt="Twitter link" />
-      </a>
-      <a href="https://github.com/kinow/" class="inline-link">
-        <img src="/assets/icons/github.png" class="inverted-image" alt="GitHub link" />
-      </a>
-    </li>
-  </ul>
-</div>
-</div>
-  <div id="content">
-    <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
-  <header class="post-header">
-    <h1 class="post-title p-name" itemprop="name headline">Using Requests Session Objects for web scraping</h1>
-    <span class="post-meta">
-      <time class="dt-published" datetime="2016-11-25T00:00:00+13:00" itemprop="datePublished">Nov 25, 2016
-      </time>
-      <span>&mdash; star date: -306019.13.</span>
-      <span>
-        Number of words: 359.
-      </span></span>
-  </header>
-
-  
-
-
-  <div class="post-content e-content" itemprop="articleBody">
-    <p>I had to write a Python script some months ago, that would retrieve Solar energy
+<p>I had to write a Python script some months ago, that would retrieve Solar energy
 data from a web site. It was basically a handful of HTTP calls, parse the response
 that was mainly in JSON, and store the results as JSON and CSV for processing later.</p>
-
-<p>Since it was such a small task, I used the <a href="http://docs.python-requests.org">Requests</a>
+<p>Since it was such a small task, I used the <a href=http://docs.python-requests.org>Requests</a>
 module instead of a complete web scraper. The HTTP requests had to be made with a
 time out, and also pass certain headers. I started customizing each call, until
-I learned about the Requests <a href="http://docs.python-requests.org/en/master/user/advanced/">Session Objects</a>.</p>
-
+I learned about the Requests <a href=http://docs.python-requests.org/en/master/user/advanced/>Session Objects</a>.</p>
 <p>You create a session, as in ORM/JPA, where you can define a context, with certain properties
 and control an orthogonal behavior.</p>
+<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=color:navy;font-weight:700>import</span> requests
 
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">requests</span>
+<span style=color:navy;font-weight:700>def</span> get(session, url):
+    <span style=color:#00f>&#34;&#34;&#34;Utility method to HTTP GET a URL&#34;&#34;&#34;</span>
+    response = session.get(url, timeout=<span style=color:navy;font-weight:700>None</span>)
+    <span style=color:navy;font-weight:700>return</span> response
 
-<span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="n">session</span><span class="p">,</span> <span class="n">url</span><span class="p">):</span>
-    <span class="s">"""Utility method to HTTP GET a URL"""</span>
-    <span class="n">response</span> <span class="o">=</span> <span class="n">session</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">response</span>
+<span style=color:navy;font-weight:700>def</span> post(session, url, data):
+    <span style=color:#00f>&#34;&#34;&#34;Utility method to HTTP POST a URL with data parameters&#34;&#34;&#34;</span>
+    response = session.post(url, data=data, timeout=<span style=color:navy;font-weight:700>None</span>)
+    <span style=color:navy;font-weight:700>if</span> response.status_code != requests.codes.ok:
+        response.raise_for_status()
+    <span style=color:navy;font-weight:700>return</span> response
 
-<span class="k">def</span> <span class="nf">post</span><span class="p">(</span><span class="n">session</span><span class="p">,</span> <span class="n">url</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
-    <span class="s">"""Utility method to HTTP POST a URL with data parameters"""</span>
-    <span class="n">response</span> <span class="o">=</span> <span class="n">session</span><span class="p">.</span><span class="n">post</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">response</span><span class="p">.</span><span class="n">status_code</span> <span class="o">!=</span> <span class="n">requests</span><span class="p">.</span><span class="n">codes</span><span class="p">.</span><span class="n">ok</span><span class="p">:</span>
-        <span class="n">response</span><span class="p">.</span><span class="n">raise_for_status</span><span class="p">()</span>
-    <span class="k">return</span> <span class="n">response</span>
+<span style=color:navy;font-weight:700>with</span> requests.Session() <span style=color:navy;font-weight:700>as</span> s:
+    <span style=color:#080;font-style:italic># x-test header will be sent with every request</span>
+    s.headers.update({<span style=color:#00f>&#39;x-test&#39;</span>: <span style=color:#00f>&#39;true&#39;</span>})
 
-<span class="k">with</span> <span class="n">requests</span><span class="p">.</span><span class="n">Session</span><span class="p">()</span> <span class="k">as</span> <span class="n">s</span><span class="p">:</span>
-    <span class="c1"># x-test header will be sent with every request
-</span>    <span class="n">s</span><span class="p">.</span><span class="n">headers</span><span class="p">.</span><span class="n">update</span><span class="p">({</span><span class="s">'x-test'</span><span class="p">:</span> <span class="s">'true'</span><span class="p">})</span>
+    data = {<span style=color:#00f>&#39;user&#39;</span>: user, <span style=color:#00f>&#39;password&#39;</span>: password, <span style=color:#00f>&#39;rememberne&#39;</span>: <span style=color:#00f>&#39;false&#39;</span>}
+    r = post(s, <span style=color:#00f>&#39;https://portal.login.url&#39;</span>, data)
 
-    <span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s">'user'</span><span class="p">:</span> <span class="n">user</span><span class="p">,</span> <span class="s">'password'</span><span class="p">:</span> <span class="n">password</span><span class="p">,</span> <span class="s">'rememberne'</span><span class="p">:</span> <span class="s">'false'</span><span class="p">}</span>
-    <span class="n">r</span> <span class="o">=</span> <span class="n">post</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="s">'https://portal.login.url'</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
-
-    <span class="n">r</span> <span class="o">=</span> <span class="n">get</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="s">'https://portal.home.url'</span><span class="p">)</span>
-</code></pre></div></div>
-
-<p>Besides the session object, that gives you ability to add headers to all requests,
-you won’t have to worry about redirects. The library by default takes care
-<a href="https://github.com/kennethreitz/requests/blob/dfad00a6e84bc75b12468ca29ccf4f971c813fc8/requests/sessions.py#L110">of that</a>
-with a <a href="https://github.com/kennethreitz/requests/blob/dfad00a6e84bc75b12468ca29ccf4f971c813fc8/requests/models.py#L54">default limit of up to 30</a>.</p>
-
+    r = get(s, <span style=color:#00f>&#39;https://portal.home.url&#39;</span>)
+</code></pre></div><p>Besides the session object, that gives you ability to add headers to all requests,
+you won&rsquo;t have to worry about redirects. The library by default takes care
+<a href=https://github.com/kennethreitz/requests/blob/dfad00a6e84bc75b12468ca29ccf4f971c813fc8/requests/sessions.py#L110>of that</a>
+with a <a href=https://github.com/kennethreitz/requests/blob/dfad00a6e84bc75b12468ca29ccf4f971c813fc8/requests/models.py#L54>default limit of up to 30</a>.</p>
 <p>Happy hacking!</p>
-
-  </div>
-
-  <div class="tags"><p>Tags:&nbsp;<a class="label" href="/tag/python">python</a>.<br/></p></div>
-
-  <a class="u-url" href="/2016/11/25/using-requests-session-objects-for-web-scraping.html" hidden></a>
+<aside class=links>
+<a class=previous href=https://kinoshita.eti.br/2016/11/21/changing-spring-boot-environment-variables-in-the-command-line.html>&#171; Previous</a>
+<a class=next href=https://kinoshita.eti.br/2016/12/19/permgen-errors-and-java.lang.classcastexception-com.sun.crypto.provider.aescipher-cannot-be-cast-to-javax.crypto.cipherspi-running-jenkins-plug-in-tests-with-powermock.html>Next &#187;</a>
+</aside>
 </article>
-
-  </div>
-</div>
+</main>
+<footer role=contentinfo>
+<ul id=social-media-icons>
+<li>
+<a href=https://www.instagram.com/brunokinoshita/>
+<img src=/assets/icons/instagram.png alt="Instagram link">
+</a>
+</li>
+<li>
+<a href=https://twitter.com/kinow/>
+<img src=/assets/icons/twitter.png alt="Twitter link">
+</a>
+</li>
+<li>
+<a href=https://github.com/kinow/>
+<img src=/assets/icons/github.png alt="GitHub link">
+</a>
+</li>
+</ul>
+</footer>
 </body>
 </html>

@@ -1,209 +1,142 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="utf-8" />
-<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-<meta name="viewport" content="width=device-width, initial-scale=1" /><!-- Begin Jekyll SEO tag v2.7.1 -->
-<title>Dynamic breadcrumbs with Vue Router nested routes and Vuetify Breadcrumb component | kinow</title>
-<meta name="generator" content="Jekyll v3.9.0" />
-<meta property="og:title" content="Dynamic breadcrumbs with Vue Router nested routes and Vuetify Breadcrumb component" />
-<meta property="og:locale" content="en_US" />
-<meta name="description" content="Vue Router supports nested routes, which allow developers to create a hierarchical navigation structure. This is handy if you want to create breadcrumbs based on this hierarchy dynamically. Here’s how you should create your nested routes: const routes = [ { path: &#39;/&#39;, component: { template: `&lt;h1&gt;Home View&lt;/h1&gt;` } }, { path: &#39;/users&#39;, component: { render (c) { return c(&#39;router-view&#39;) } }, meta: { breadCrumb: &#39;Users&#39; }, children: [ { path: &#39;&#39;, component: { template: ` &lt;div&gt; &lt;h1&gt;Users View&lt;/h1&gt; &lt;router-link to=&quot;/users/1&quot;&gt;View User 1&lt;/router-link&gt; &lt;/div&gt; ` } }, { path: &#39;:id&#39;, component: { render (c) { return c(&#39;router-view&#39;) } }, meta: { breadCrumb: &#39;View User&#39; }, children: [ { path: &#39;&#39;, component: { template: ` &lt;div&gt; &lt;h1&gt;User View&lt;/h1&gt; &lt;router-link to=&quot;/users/1/edit&quot;&gt;Edit User&lt;/router-link&gt; &lt;/div&gt; ` } }, { path: &#39;edit&#39;, component: { template: `&lt;h1&gt;Edit User&lt;/h1&gt;` }, meta: { breadCrumb: &#39;Edit User&#39; } } ] } ] } ]" />
-<meta property="og:description" content="Vue Router supports nested routes, which allow developers to create a hierarchical navigation structure. This is handy if you want to create breadcrumbs based on this hierarchy dynamically. Here’s how you should create your nested routes: const routes = [ { path: &#39;/&#39;, component: { template: `&lt;h1&gt;Home View&lt;/h1&gt;` } }, { path: &#39;/users&#39;, component: { render (c) { return c(&#39;router-view&#39;) } }, meta: { breadCrumb: &#39;Users&#39; }, children: [ { path: &#39;&#39;, component: { template: ` &lt;div&gt; &lt;h1&gt;Users View&lt;/h1&gt; &lt;router-link to=&quot;/users/1&quot;&gt;View User 1&lt;/router-link&gt; &lt;/div&gt; ` } }, { path: &#39;:id&#39;, component: { render (c) { return c(&#39;router-view&#39;) } }, meta: { breadCrumb: &#39;View User&#39; }, children: [ { path: &#39;&#39;, component: { template: ` &lt;div&gt; &lt;h1&gt;User View&lt;/h1&gt; &lt;router-link to=&quot;/users/1/edit&quot;&gt;Edit User&lt;/router-link&gt; &lt;/div&gt; ` } }, { path: &#39;edit&#39;, component: { template: `&lt;h1&gt;Edit User&lt;/h1&gt;` }, meta: { breadCrumb: &#39;Edit User&#39; } } ] } ] } ]" />
-<link rel="canonical" href="https://kinoshita.eti.br/2019/11/09/dynamic-breadcrumbs-with-vue-router-nested-routes-and-vuetify-breadcrumb-component.html" />
-<meta property="og:url" content="https://kinoshita.eti.br/2019/11/09/dynamic-breadcrumbs-with-vue-router-nested-routes-and-vuetify-breadcrumb-component.html" />
-<meta property="og:site_name" content="kinow" />
-<meta property="og:type" content="article" />
-<meta property="article:published_time" content="2019-11-09T00:00:00+13:00" />
-<meta name="twitter:card" content="summary" />
-<meta property="twitter:title" content="Dynamic breadcrumbs with Vue Router nested routes and Vuetify Breadcrumb component" />
-<script type="application/ld+json">
-{"description":"Vue Router supports nested routes, which allow developers to create a hierarchical navigation structure. This is handy if you want to create breadcrumbs based on this hierarchy dynamically. Here’s how you should create your nested routes: const routes = [ { path: &#39;/&#39;, component: { template: `&lt;h1&gt;Home View&lt;/h1&gt;` } }, { path: &#39;/users&#39;, component: { render (c) { return c(&#39;router-view&#39;) } }, meta: { breadCrumb: &#39;Users&#39; }, children: [ { path: &#39;&#39;, component: { template: ` &lt;div&gt; &lt;h1&gt;Users View&lt;/h1&gt; &lt;router-link to=&quot;/users/1&quot;&gt;View User 1&lt;/router-link&gt; &lt;/div&gt; ` } }, { path: &#39;:id&#39;, component: { render (c) { return c(&#39;router-view&#39;) } }, meta: { breadCrumb: &#39;View User&#39; }, children: [ { path: &#39;&#39;, component: { template: ` &lt;div&gt; &lt;h1&gt;User View&lt;/h1&gt; &lt;router-link to=&quot;/users/1/edit&quot;&gt;Edit User&lt;/router-link&gt; &lt;/div&gt; ` } }, { path: &#39;edit&#39;, component: { template: `&lt;h1&gt;Edit User&lt;/h1&gt;` }, meta: { breadCrumb: &#39;Edit User&#39; } } ] } ] } ]","@type":"BlogPosting","url":"https://kinoshita.eti.br/2019/11/09/dynamic-breadcrumbs-with-vue-router-nested-routes-and-vuetify-breadcrumb-component.html","headline":"Dynamic breadcrumbs with Vue Router nested routes and Vuetify Breadcrumb component","datePublished":"2019-11-09T00:00:00+13:00","dateModified":"2019-11-09T00:00:00+13:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://kinoshita.eti.br/2019/11/09/dynamic-breadcrumbs-with-vue-router-nested-routes-and-vuetify-breadcrumb-component.html"},"@context":"https://schema.org"}</script>
-<!-- End Jekyll SEO tag -->
-<link rel="stylesheet" href="/assets/css/main.css" /><link type="application/atom+xml" rel="alternate" href="https://kinoshita.eti.br/feed.xml" title="kinow" /><link href="https://unpkg.com/pattern.css" rel="stylesheet" />
-
+<!doctype html><html lang=en><head>
+<meta charset=utf-8>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<link rel=stylesheet type=text/css href=https://kinoshita.eti.br/sass/main.e392e97e7e5991e363403c494b51d829efa207842d755622976c2537d0509be0.css integrity="sha256-45Lpfn5ZkeNjQDxJS1HYKe+iB4QtdVYil2wlN9BQm+A=">
+<title>kinow | Dynamic breadcrumbs with Vue Router nested routes and Vuetify Breadcrumb component</title>
 </head>
-<body>
-<div id="mobile-menu"><div class="menu">
-  <ul class="menu">
-    <li class="item">
-      <h1 id="kinow">KINOW</h1>
-    </li>
-    <li class="item">
-      <a href="/" class="">About</a>
-    </li>
-    <li class="item">
-      <a href="/blog/" class="current">Blog</a>
-    </li>
-    <li class="item">
-      <a href="/portfolio/" class="">Portfolio</a>
-    </li>
-    <li class="item social-media-item">
-      <a href="https://www.instagram.com/brunokinoshita/" class="inline-link">
-        <img src="/assets/icons/instagram.png" class="inverted-image"  alt="Instagram link" />
-      </a>
-      <a href="https://twitter.com/kinow/" class="inline-link">
-        <img src="/assets/icons/twitter.png" class="inverted-image" alt="Twitter link" />
-      </a>
-      <a href="https://github.com/kinow/" class="inline-link">
-        <img src="/assets/icons/github.png" class="inverted-image" alt="GitHub link" />
-      </a>
-    </li>
-  </ul>
+<body><header role=banner class=content>
+<nav id=nav aria-label=Main role=navigation class=content>
+<ul><li>
+<a href=/>
+<i data-feather=about></i> About</a>
+</li><li>
+<a href=/blog/>
+<i data-feather=blog></i> Blog</a>
+</li><li>
+<a href=/portfolio/>
+<i data-feather=portfolio></i> Portfolio</a>
+</li><li></li>
+</ul>
+</nav>
+</header>
+<main>
+<article class=content>
+<h2>Dynamic breadcrumbs with Vue Router nested routes and Vuetify Breadcrumb component</h2><div class=metadata>
+<i data-feather=calendar></i>
+<time datetime=2019-11-09>Nov 9, 2019</time>
 </div>
-</div>
-<div id="wrapper">
-  <div id="sidebar"><div class="menu">
-  <ul class="menu">
-    <li class="item">
-      <h1 id="kinow">KINOW</h1>
-    </li>
-    <li class="item">
-      <a href="/" class="">About</a>
-    </li>
-    <li class="item">
-      <a href="/blog/" class="current">Blog</a>
-    </li>
-    <li class="item">
-      <a href="/portfolio/" class="">Portfolio</a>
-    </li>
-    <li class="item social-media-item">
-      <a href="https://www.instagram.com/brunokinoshita/" class="inline-link">
-        <img src="/assets/icons/instagram.png" class="inverted-image"  alt="Instagram link" />
-      </a>
-      <a href="https://twitter.com/kinow/" class="inline-link">
-        <img src="/assets/icons/twitter.png" class="inverted-image" alt="Twitter link" />
-      </a>
-      <a href="https://github.com/kinow/" class="inline-link">
-        <img src="/assets/icons/github.png" class="inverted-image" alt="GitHub link" />
-      </a>
-    </li>
-  </ul>
-</div>
-</div>
-  <div id="content">
-    <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
-  <header class="post-header">
-    <h1 class="post-title p-name" itemprop="name headline">Dynamic breadcrumbs with Vue Router nested routes and Vuetify Breadcrumb component</h1>
-    <span class="post-meta">
-      <time class="dt-published" datetime="2019-11-09T00:00:00+13:00" itemprop="datePublished">Nov 9, 2019
-      </time>
-      <span>&mdash; star date: -303063.01.</span>
-      <span>
-        Number of words: 611.
-      </span></span>
-  </header>
-
-  
-
-
-  <div class="post-content e-content" itemprop="articleBody">
-    <p>Vue Router supports nested routes, which allow developers to create a hierarchical navigation structure.
+<p>Vue Router supports nested routes, which allow developers to create a hierarchical navigation structure.
 This is handy if you want to create breadcrumbs based on this hierarchy dynamically.</p>
-
-<p>Here’s how you should create your nested routes:</p>
-
-<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">const</span> <span class="nx">routes</span> <span class="o">=</span> <span class="p">[</span>
-  <span class="p">{</span> <span class="na">path</span><span class="p">:</span> <span class="dl">'</span><span class="s1">/</span><span class="dl">'</span><span class="p">,</span> <span class="na">component</span><span class="p">:</span> <span class="p">{</span> <span class="na">template</span><span class="p">:</span> <span class="s2">`&lt;h1&gt;Home View&lt;/h1&gt;`</span> <span class="p">}</span> <span class="p">},</span>
-  <span class="p">{</span>
-    <span class="na">path</span><span class="p">:</span> <span class="dl">'</span><span class="s1">/users</span><span class="dl">'</span><span class="p">,</span>
-    <span class="na">component</span><span class="p">:</span> <span class="p">{</span>
-      <span class="nx">render</span> <span class="p">(</span><span class="nx">c</span><span class="p">)</span> <span class="p">{</span>
-        <span class="k">return</span> <span class="nx">c</span><span class="p">(</span><span class="dl">'</span><span class="s1">router-view</span><span class="dl">'</span><span class="p">)</span>
-      <span class="p">}</span>
-    <span class="p">},</span>
-    <span class="na">meta</span><span class="p">:</span> <span class="p">{</span> <span class="na">breadCrumb</span><span class="p">:</span> <span class="dl">'</span><span class="s1">Users</span><span class="dl">'</span> <span class="p">},</span>
-    <span class="na">children</span><span class="p">:</span> <span class="p">[</span>
-      <span class="p">{</span>
-        <span class="na">path</span><span class="p">:</span> <span class="dl">''</span><span class="p">,</span>
-        <span class="na">component</span><span class="p">:</span> <span class="p">{</span>
-          <span class="na">template</span><span class="p">:</span> <span class="s2">`
-            &lt;div&gt;
-              &lt;h1&gt;Users View&lt;/h1&gt;
-              &lt;router-link to="/users/1"&gt;View User 1&lt;/router-link&gt;
-            &lt;/div&gt;
-          `</span>
-        <span class="p">}</span>
-      <span class="p">},</span>
-      <span class="p">{</span>
-        <span class="na">path</span><span class="p">:</span> <span class="dl">'</span><span class="s1">:id</span><span class="dl">'</span><span class="p">,</span>
-        <span class="na">component</span><span class="p">:</span> <span class="p">{</span>
-          <span class="nx">render</span> <span class="p">(</span><span class="nx">c</span><span class="p">)</span> <span class="p">{</span>
-            <span class="k">return</span> <span class="nx">c</span><span class="p">(</span><span class="dl">'</span><span class="s1">router-view</span><span class="dl">'</span><span class="p">)</span>
-          <span class="p">}</span>
-        <span class="p">},</span>
-        <span class="na">meta</span><span class="p">:</span> <span class="p">{</span> <span class="na">breadCrumb</span><span class="p">:</span> <span class="dl">'</span><span class="s1">View User</span><span class="dl">'</span> <span class="p">},</span>
-        <span class="na">children</span><span class="p">:</span> <span class="p">[</span>
-          <span class="p">{</span>
-            <span class="na">path</span><span class="p">:</span> <span class="dl">''</span><span class="p">,</span>
-            <span class="na">component</span><span class="p">:</span> <span class="p">{</span>
-              <span class="na">template</span><span class="p">:</span> <span class="s2">`
-                &lt;div&gt;
-                  &lt;h1&gt;User View&lt;/h1&gt;
-                  &lt;router-link to="/users/1/edit"&gt;Edit User&lt;/router-link&gt;
-                &lt;/div&gt;
-              `</span>
-            <span class="p">}</span>
-          <span class="p">},</span>
-          <span class="p">{</span>
-            <span class="na">path</span><span class="p">:</span> <span class="dl">'</span><span class="s1">edit</span><span class="dl">'</span><span class="p">,</span>
-            <span class="na">component</span><span class="p">:</span> <span class="p">{</span>
-              <span class="na">template</span><span class="p">:</span> <span class="s2">`&lt;h1&gt;Edit User&lt;/h1&gt;`</span>
-            <span class="p">},</span>
-            <span class="na">meta</span><span class="p">:</span> <span class="p">{</span> <span class="na">breadCrumb</span><span class="p">:</span> <span class="dl">'</span><span class="s1">Edit User</span><span class="dl">'</span> <span class="p">}</span>
-          <span class="p">}</span>
-        <span class="p">]</span>
-      <span class="p">}</span>
-    <span class="p">]</span>
-  <span class="p">}</span>
-<span class="p">]</span>
-</code></pre></div></div>
-
-<!--more-->
-
-<p>The tricky part is that you need to remember that the parent breadcrumb must not have a component rendering anything,
-but instead simply use <code class="language-plaintext highlighter-rouge">&lt;router-view&gt;&lt;/router-view&gt;</code> instead, to display the children routes. And have a child route
-with the <code class="language-plaintext highlighter-rouge">path: '''</code>.</p>
-
-<p>So if you have <code class="language-plaintext highlighter-rouge">/users</code> as the parent breadcrumb, it won’t have any template, except for the call to <code class="language-plaintext highlighter-rouge">&lt;router-view&gt;</code>.
-Then its child route that is bound to the path <code class="language-plaintext highlighter-rouge">''</code> will be rendered and replace the <code class="language-plaintext highlighter-rouge">&lt;router-view&gt;</code> call.</p>
-
+<p>Here&rsquo;s how you should create your nested routes:</p>
+<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-js data-lang=js><span style=color:navy;font-weight:700>const</span> routes = [
+  { path: <span style=color:#00f>&#39;/&#39;</span>, component: { template: <span style=color:#00f>`&lt;h1&gt;Home View&lt;/h1&gt;`</span> } },
+  {
+    path: <span style=color:#00f>&#39;/users&#39;</span>,
+    component: {
+      render (c) {
+        <span style=color:navy;font-weight:700>return</span> c(<span style=color:#00f>&#39;router-view&#39;</span>)
+      }
+    },
+    meta: { breadCrumb: <span style=color:#00f>&#39;Users&#39;</span> },
+    children: [
+      {
+        path: <span style=color:#00f>&#39;&#39;</span>,
+        component: {
+          template: <span style=color:#00f>`
+</span><span style=color:#00f>            &lt;div&gt;
+</span><span style=color:#00f>              &lt;h1&gt;Users View&lt;/h1&gt;
+</span><span style=color:#00f>              &lt;router-link to=&#34;/users/1&#34;&gt;View User 1&lt;/router-link&gt;
+</span><span style=color:#00f>            &lt;/div&gt;
+</span><span style=color:#00f>          `</span>
+        }
+      },
+      {
+        path: <span style=color:#00f>&#39;:id&#39;</span>,
+        component: {
+          render (c) {
+            <span style=color:navy;font-weight:700>return</span> c(<span style=color:#00f>&#39;router-view&#39;</span>)
+          }
+        },
+        meta: { breadCrumb: <span style=color:#00f>&#39;View User&#39;</span> },
+        children: [
+          {
+            path: <span style=color:#00f>&#39;&#39;</span>,
+            component: {
+              template: <span style=color:#00f>`
+</span><span style=color:#00f>                &lt;div&gt;
+</span><span style=color:#00f>                  &lt;h1&gt;User View&lt;/h1&gt;
+</span><span style=color:#00f>                  &lt;router-link to=&#34;/users/1/edit&#34;&gt;Edit User&lt;/router-link&gt;
+</span><span style=color:#00f>                &lt;/div&gt;
+</span><span style=color:#00f>              `</span>
+            }
+          },
+          {
+            path: <span style=color:#00f>&#39;edit&#39;</span>,
+            component: {
+              template: <span style=color:#00f>`&lt;h1&gt;Edit User&lt;/h1&gt;`</span>
+            },
+            meta: { breadCrumb: <span style=color:#00f>&#39;Edit User&#39;</span> }
+          }
+        ]
+      }
+    ]
+  }
+]
+</code></pre></div><p>The tricky part is that you need to remember that the parent breadcrumb must not have a component rendering anything,
+but instead simply use <code>&lt;router-view>&lt;/router-view></code> instead, to display the children routes. And have a child route
+with the <code>path: '''</code>.</p>
+<p>So if you have <code>/users</code> as the parent breadcrumb, it won&rsquo;t have any template, except for the call to <code>&lt;router-view></code>.
+Then its child route that is bound to the path <code>''</code> will be rendered and replace the <code>&lt;router-view></code> call.</p>
 <p>The last thing necessary is some code to compute the breadcrumbs, and prepare the data structure required for the
-<a href="https://vuetifyjs.com/en/components/breadcrumbs">Vuetify Breadcrumb component</a>. I’ve used
-<a href="https://medium.com/@pratheekhegde/displaying-application-breadcrumbs-in-vue-js-85456dc8a370">this example by Pratheek Hegde</a>
+<a href=https://vuetifyjs.com/en/components/breadcrumbs>Vuetify Breadcrumb component</a>. I&rsquo;ve used
+<a href=https://medium.com/@pratheekhegde/displaying-application-breadcrumbs-in-vue-js-85456dc8a370>this example by Pratheek Hegde</a>
 with some modifications. You may want to tweak it to your application.</p>
-
-<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="nx">computed</span><span class="p">:</span> <span class="p">{</span>
-    <span class="nl">crumbs</span><span class="p">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-      <span class="kd">let</span> <span class="nx">pathArray</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">$route</span><span class="p">.</span><span class="nx">path</span><span class="p">.</span><span class="nx">split</span><span class="p">(</span><span class="dl">"</span><span class="s2">/</span><span class="dl">"</span><span class="p">)</span>
-      <span class="nx">pathArray</span><span class="p">.</span><span class="nx">shift</span><span class="p">()</span>
-      <span class="kd">let</span> <span class="nx">breadcrumbs</span> <span class="o">=</span> <span class="nx">pathArray</span><span class="p">.</span><span class="nx">reduce</span><span class="p">((</span><span class="nx">breadcrumbArray</span><span class="p">,</span> <span class="nx">path</span><span class="p">,</span> <span class="nx">idx</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
-        <span class="nx">breadcrumbArray</span><span class="p">.</span><span class="nx">push</span><span class="p">({</span>
-          <span class="na">path</span><span class="p">:</span> <span class="nx">path</span><span class="p">,</span>
-          <span class="na">to</span><span class="p">:</span> <span class="nx">breadcrumbArray</span><span class="p">[</span><span class="nx">idx</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span>
-            <span class="p">?</span> <span class="dl">"</span><span class="s2">/</span><span class="dl">"</span> <span class="o">+</span> <span class="nx">breadcrumbArray</span><span class="p">[</span><span class="nx">idx</span> <span class="o">-</span> <span class="mi">1</span><span class="p">].</span><span class="nx">path</span> <span class="o">+</span> <span class="dl">"</span><span class="s2">/</span><span class="dl">"</span> <span class="o">+</span> <span class="nx">path</span>
-            <span class="p">:</span> <span class="dl">"</span><span class="s2">/</span><span class="dl">"</span> <span class="o">+</span> <span class="nx">path</span><span class="p">,</span>
-          <span class="na">text</span><span class="p">:</span> <span class="k">this</span><span class="p">.</span><span class="nx">$route</span><span class="p">.</span><span class="nx">matched</span><span class="p">[</span><span class="nx">idx</span><span class="p">].</span><span class="nx">meta</span><span class="p">.</span><span class="nx">breadCrumb</span> <span class="o">||</span> <span class="nx">path</span><span class="p">,</span>
-        <span class="p">});</span>
-        <span class="k">return</span> <span class="nx">breadcrumbArray</span><span class="p">;</span>
-      <span class="p">},</span> <span class="p">[])</span>
-      <span class="k">return</span> <span class="nx">breadcrumbs</span><span class="p">;</span>
-    <span class="p">}</span>
-  <span class="p">}</span>
-</code></pre></div></div>
-
-<p><img class="ui image" src="/assets/posts/2019-11-09-dynamic-breadcrumbs-with-vue-router-nested-routes-and-vuetify-breadcrumb-component/breadcrumbs.png" /></p>
-
-<p>Working example can be found <a href="https://codepen.io/kinow/pen/vYYrWeG">here</a>.</p>
-
-  </div>
-
-  <div class="tags"><p>Tags:&nbsp;<a class="label" href="/tag/javascript">javascript</a>,&nbsp;<a class="label" href="/tag/vuejs">vuejs</a>.<br/></p></div>
-
-  <a class="u-url" href="/2019/11/09/dynamic-breadcrumbs-with-vue-router-nested-routes-and-vuetify-breadcrumb-component.html" hidden></a>
+<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-js data-lang=js>  computed: {
+    crumbs: <span style=color:navy;font-weight:700>function</span>() {
+      <span style=color:navy;font-weight:700>let</span> pathArray = <span style=color:navy;font-weight:700>this</span>.$route.path.split(<span style=color:#00f>&#34;/&#34;</span>)
+      pathArray.shift()
+      <span style=color:navy;font-weight:700>let</span> breadcrumbs = pathArray.reduce((breadcrumbArray, path, idx) =&gt; {
+        breadcrumbArray.push({
+          path: path,
+          to: breadcrumbArray[idx - <span style=color:#00f>1</span>]
+            ? <span style=color:#00f>&#34;/&#34;</span> + breadcrumbArray[idx - <span style=color:#00f>1</span>].path + <span style=color:#00f>&#34;/&#34;</span> + path
+            : <span style=color:#00f>&#34;/&#34;</span> + path,
+          text: <span style=color:navy;font-weight:700>this</span>.$route.matched[idx].meta.breadCrumb || path,
+        });
+        <span style=color:navy;font-weight:700>return</span> breadcrumbArray;
+      }, [])
+      <span style=color:navy;font-weight:700>return</span> breadcrumbs;
+    }
+  }
+</code></pre></div><figure class=feature>
+<img src=/assets/posts/2019-11-09-dynamic-breadcrumbs-with-vue-router-nested-routes-and-vuetify-breadcrumb-component/breadcrumbs.png alt title width height>
+<figcaption></figcaption>
+</figure>
+<p>Working example can be found <a href=https://codepen.io/kinow/pen/vYYrWeG>here</a>.</p>
+<aside class=links>
+<a class=previous href=https://kinoshita.eti.br/2019/10/01/reddit-r/functionalprogramming-community.html>&#171; Previous</a>
+<a class=next href=https://kinoshita.eti.br/2019/11/19/experimenting-with-vuejs-and-cytoscape.html>Next &#187;</a>
+</aside>
 </article>
-
-  </div>
-</div>
+</main>
+<footer role=contentinfo>
+<ul id=social-media-icons>
+<li>
+<a href=https://www.instagram.com/brunokinoshita/>
+<img src=/assets/icons/instagram.png alt="Instagram link">
+</a>
+</li>
+<li>
+<a href=https://twitter.com/kinow/>
+<img src=/assets/icons/twitter.png alt="Twitter link">
+</a>
+</li>
+<li>
+<a href=https://github.com/kinow/>
+<img src=/assets/icons/github.png alt="GitHub link">
+</a>
+</li>
+</ul>
+</footer>
 </body>
 </html>

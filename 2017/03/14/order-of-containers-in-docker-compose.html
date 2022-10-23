@@ -1,133 +1,57 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="utf-8" />
-<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-<meta name="viewport" content="width=device-width, initial-scale=1" /><!-- Begin Jekyll SEO tag v2.7.1 -->
-<title>Order of containers in Docker Compose | kinow</title>
-<meta name="generator" content="Jekyll v3.9.0" />
-<meta property="og:title" content="Order of containers in Docker Compose" />
-<meta property="og:locale" content="en_US" />
-<meta name="description" content="In Docker Compose you are able to control the startup order of the containers via the depends_on statement. This is documented in Controlling startup order in Compose. If you have a simple setup, with Tomcat and Postgres, sometimes Postgres will start first, but Compose will initialize Tomcat before Postgres has fully booted. When that happens, you may receive 401, 404, or other application errors. You can fix it by combining depends_on with a healthcheck. For example: # File: docker-compose.yml version: &#39;2.1&#39; services: db: container_name: twpg build: context: . dockerfile: Dockerfile.postgres restart: always ports: - &quot;5432:5432&quot; healthcheck: test: &quot;pg_isready -h localhost -p 5432 -q -U postgres&quot; interval: 10s timeout: 5s retries: 5 web: container_name: twtc build: context: . dockerfile: Dockerfile.tomcat restart: always depends_on: db: condition: service_healthy links: - db ports: - &quot;80:8080&quot; In the example docker-compose.yml, there are two containers, db and web. web is running a Tomcat, and db is running Postgres. Web depends on db (see depends_on), and uses a condition service_healthy. Which indicates it depends that that container is healthy. The healthcheck entry under the db container settings define how to check whether Postgres is running or not. In this case, we are using pg_isready, which is available in the vanilla Postgres 9 container. It will try 5 times, with a 10 seconds interval, and will time out after 5 seconds. You may have to tune these parameters for your application. This code snippet is from a pull request submitted to Foxoncz/docker-thingworx. ♥ Open Source" />
-<meta property="og:description" content="In Docker Compose you are able to control the startup order of the containers via the depends_on statement. This is documented in Controlling startup order in Compose. If you have a simple setup, with Tomcat and Postgres, sometimes Postgres will start first, but Compose will initialize Tomcat before Postgres has fully booted. When that happens, you may receive 401, 404, or other application errors. You can fix it by combining depends_on with a healthcheck. For example: # File: docker-compose.yml version: &#39;2.1&#39; services: db: container_name: twpg build: context: . dockerfile: Dockerfile.postgres restart: always ports: - &quot;5432:5432&quot; healthcheck: test: &quot;pg_isready -h localhost -p 5432 -q -U postgres&quot; interval: 10s timeout: 5s retries: 5 web: container_name: twtc build: context: . dockerfile: Dockerfile.tomcat restart: always depends_on: db: condition: service_healthy links: - db ports: - &quot;80:8080&quot; In the example docker-compose.yml, there are two containers, db and web. web is running a Tomcat, and db is running Postgres. Web depends on db (see depends_on), and uses a condition service_healthy. Which indicates it depends that that container is healthy. The healthcheck entry under the db container settings define how to check whether Postgres is running or not. In this case, we are using pg_isready, which is available in the vanilla Postgres 9 container. It will try 5 times, with a 10 seconds interval, and will time out after 5 seconds. You may have to tune these parameters for your application. This code snippet is from a pull request submitted to Foxoncz/docker-thingworx. ♥ Open Source" />
-<link rel="canonical" href="https://kinoshita.eti.br/2017/03/14/order-of-containers-in-docker-compose.html" />
-<meta property="og:url" content="https://kinoshita.eti.br/2017/03/14/order-of-containers-in-docker-compose.html" />
-<meta property="og:site_name" content="kinow" />
-<meta property="og:type" content="article" />
-<meta property="article:published_time" content="2017-03-14T00:00:00+13:00" />
-<meta name="twitter:card" content="summary" />
-<meta property="twitter:title" content="Order of containers in Docker Compose" />
-<script type="application/ld+json">
-{"description":"In Docker Compose you are able to control the startup order of the containers via the depends_on statement. This is documented in Controlling startup order in Compose. If you have a simple setup, with Tomcat and Postgres, sometimes Postgres will start first, but Compose will initialize Tomcat before Postgres has fully booted. When that happens, you may receive 401, 404, or other application errors. You can fix it by combining depends_on with a healthcheck. For example: # File: docker-compose.yml version: &#39;2.1&#39; services: db: container_name: twpg build: context: . dockerfile: Dockerfile.postgres restart: always ports: - &quot;5432:5432&quot; healthcheck: test: &quot;pg_isready -h localhost -p 5432 -q -U postgres&quot; interval: 10s timeout: 5s retries: 5 web: container_name: twtc build: context: . dockerfile: Dockerfile.tomcat restart: always depends_on: db: condition: service_healthy links: - db ports: - &quot;80:8080&quot; In the example docker-compose.yml, there are two containers, db and web. web is running a Tomcat, and db is running Postgres. Web depends on db (see depends_on), and uses a condition service_healthy. Which indicates it depends that that container is healthy. The healthcheck entry under the db container settings define how to check whether Postgres is running or not. In this case, we are using pg_isready, which is available in the vanilla Postgres 9 container. It will try 5 times, with a 10 seconds interval, and will time out after 5 seconds. You may have to tune these parameters for your application. This code snippet is from a pull request submitted to Foxoncz/docker-thingworx. ♥ Open Source","@type":"BlogPosting","url":"https://kinoshita.eti.br/2017/03/14/order-of-containers-in-docker-compose.html","headline":"Order of containers in Docker Compose","datePublished":"2017-03-14T00:00:00+13:00","dateModified":"2017-03-14T00:00:00+13:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://kinoshita.eti.br/2017/03/14/order-of-containers-in-docker-compose.html"},"@context":"https://schema.org"}</script>
-<!-- End Jekyll SEO tag -->
-<link rel="stylesheet" href="/assets/css/main.css" /><link type="application/atom+xml" rel="alternate" href="https://kinoshita.eti.br/feed.xml" title="kinow" /><link href="https://unpkg.com/pattern.css" rel="stylesheet" />
-
+<!doctype html><html lang=en><head>
+<meta charset=utf-8>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<link rel=stylesheet type=text/css href=https://kinoshita.eti.br/sass/main.e392e97e7e5991e363403c494b51d829efa207842d755622976c2537d0509be0.css integrity="sha256-45Lpfn5ZkeNjQDxJS1HYKe+iB4QtdVYil2wlN9BQm+A=">
+<title>kinow | Order of containers in Docker Compose</title>
 </head>
-<body>
-<div id="mobile-menu"><div class="menu">
-  <ul class="menu">
-    <li class="item">
-      <h1 id="kinow">KINOW</h1>
-    </li>
-    <li class="item">
-      <a href="/" class="">About</a>
-    </li>
-    <li class="item">
-      <a href="/blog/" class="current">Blog</a>
-    </li>
-    <li class="item">
-      <a href="/portfolio/" class="">Portfolio</a>
-    </li>
-    <li class="item social-media-item">
-      <a href="https://www.instagram.com/brunokinoshita/" class="inline-link">
-        <img src="/assets/icons/instagram.png" class="inverted-image"  alt="Instagram link" />
-      </a>
-      <a href="https://twitter.com/kinow/" class="inline-link">
-        <img src="/assets/icons/twitter.png" class="inverted-image" alt="Twitter link" />
-      </a>
-      <a href="https://github.com/kinow/" class="inline-link">
-        <img src="/assets/icons/github.png" class="inverted-image" alt="GitHub link" />
-      </a>
-    </li>
-  </ul>
+<body><header role=banner class=content>
+<nav id=nav aria-label=Main role=navigation class=content>
+<ul><li>
+<a href=/>
+<i data-feather=about></i> About</a>
+</li><li>
+<a href=/blog/>
+<i data-feather=blog></i> Blog</a>
+</li><li>
+<a href=/portfolio/>
+<i data-feather=portfolio></i> Portfolio</a>
+</li><li></li>
+</ul>
+</nav>
+</header>
+<main>
+<article class=content>
+<h2>Order of containers in Docker Compose</h2><div class=metadata>
+<i data-feather=calendar></i>
+<time datetime=2017-03-14>Mar 14, 2017</time>
 </div>
-</div>
-<div id="wrapper">
-  <div id="sidebar"><div class="menu">
-  <ul class="menu">
-    <li class="item">
-      <h1 id="kinow">KINOW</h1>
-    </li>
-    <li class="item">
-      <a href="/" class="">About</a>
-    </li>
-    <li class="item">
-      <a href="/blog/" class="current">Blog</a>
-    </li>
-    <li class="item">
-      <a href="/portfolio/" class="">Portfolio</a>
-    </li>
-    <li class="item social-media-item">
-      <a href="https://www.instagram.com/brunokinoshita/" class="inline-link">
-        <img src="/assets/icons/instagram.png" class="inverted-image"  alt="Instagram link" />
-      </a>
-      <a href="https://twitter.com/kinow/" class="inline-link">
-        <img src="/assets/icons/twitter.png" class="inverted-image" alt="Twitter link" />
-      </a>
-      <a href="https://github.com/kinow/" class="inline-link">
-        <img src="/assets/icons/github.png" class="inverted-image" alt="GitHub link" />
-      </a>
-    </li>
-  </ul>
-</div>
-</div>
-  <div id="content">
-    <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
-  <header class="post-header">
-    <h1 class="post-title p-name" itemprop="name headline">Order of containers in Docker Compose</h1>
-    <span class="post-meta">
-      <time class="dt-published" datetime="2017-03-14T00:00:00+13:00" itemprop="datePublished">Mar 14, 2017
-      </time>
-      <span>&mdash; star date: -305717.81.</span>
-      <span>
-        Number of words: 263.
-      </span></span>
-  </header>
-
-  
-
-
-  <div class="post-content e-content" itemprop="articleBody">
-    <p>In Docker Compose you are able to control the startup order of the containers via
-the <em>depends_on</em> statement. This is documented in <a href="https://docs.docker.com/compose/startup-order/">Controlling startup order in Compose</a>.</p>
-
+<p>In Docker Compose you are able to control the startup order of the containers via
+the <em>depends_on</em> statement. This is documented in <a href=https://docs.docker.com/compose/startup-order/>Controlling startup order in Compose</a>.</p>
 <p>If you have a simple setup, with Tomcat and Postgres, sometimes Postgres will start first, but Compose
 will initialize Tomcat before Postgres has fully booted. When that happens, you may receive 401, 404, or other
 application errors.</p>
-
 <p>You can fix it by combining <em>depends_on</em> with a <em>healthcheck</em>. For example:</p>
-
-<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># File: docker-compose.yml</span>
-version: <span class="s1">'2.1'</span>
+<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=color:#080;font-style:italic># File: docker-compose.yml</span>
+version: <span style=color:#00f>&#39;2.1&#39;</span>
 services:
   db:
     container_name: twpg
     build:
-      context: <span class="nb">.</span>
+      context: .
       dockerfile: Dockerfile.postgres
     restart: always
     ports:
-      - <span class="s2">"5432:5432"</span>
+      - <span style=color:#00f>&#34;5432:5432&#34;</span>
     healthcheck:
-      <span class="nb">test</span>: <span class="s2">"pg_isready -h localhost -p 5432 -q -U postgres"</span>
+      test: <span style=color:#00f>&#34;pg_isready -h localhost -p 5432 -q -U postgres&#34;</span>
       interval: 10s
-      <span class="nb">timeout</span>: 5s
-      retries: 5
+      timeout: 5s
+      retries: <span style=color:#00f>5</span>
 
   web:
     container_name: twtc
     build:
-      context: <span class="nb">.</span>
+      context: .
       dockerfile: Dockerfile.tomcat
     restart: always
     depends_on:
@@ -136,33 +60,42 @@ services:
     links:
       - db
     ports:
-      - <span class="s2">"80:8080"</span>
-</code></pre></div></div>
-
-<p>In the example docker-compose.yml, there are two containers, <em>db</em> and <em>web</em>. web is running
+      - <span style=color:#00f>&#34;80:8080&#34;</span>
+</code></pre></div><p>In the example docker-compose.yml, there are two containers, <em>db</em> and <em>web</em>. web is running
 a Tomcat, and db is running Postgres. Web depends on db (see depends_on), and uses a condition
 <em>service_healthy</em>. Which indicates it depends that that container is healthy.</p>
-
 <p>The <em>healthcheck</em> entry under the db container settings define how to check whether Postgres
 is running or not. In this case, we are using <em>pg_isready</em>, which is available in the
 vanilla Postgres 9 container.</p>
-
 <p>It will try 5 times, with a 10 seconds interval, and will time out after 5 seconds. You may
 have to tune these parameters for your application.</p>
-
 <p>This code snippet is from a
-<a href="https://github.com/Foxoncz/docker-thingworx/pull/3/files">pull request submitted to Foxoncz/docker-thingworx</a>.</p>
-
+<a href=https://github.com/Foxoncz/docker-thingworx/pull/3/files>pull request submitted to Foxoncz/docker-thingworx</a>.</p>
 <p>♥ Open Source</p>
-
-  </div>
-
-  <div class="tags"><p>Tags:&nbsp;<a class="label" href="/tag/docker">docker</a>.<br/></p></div>
-
-  <a class="u-url" href="/2017/03/14/order-of-containers-in-docker-compose.html" hidden></a>
+<aside class=links>
+<a class=previous href=https://kinoshita.eti.br/2017/02/28/using-aws-mfa-without-a-mobile-phone.html>&#171; Previous</a>
+<a class=next href=https://kinoshita.eti.br/2017/03/15/using-google-natural-language-api-in-an-aws-elastic-beanstalk-application.html>Next &#187;</a>
+</aside>
 </article>
-
-  </div>
-</div>
+</main>
+<footer role=contentinfo>
+<ul id=social-media-icons>
+<li>
+<a href=https://www.instagram.com/brunokinoshita/>
+<img src=/assets/icons/instagram.png alt="Instagram link">
+</a>
+</li>
+<li>
+<a href=https://twitter.com/kinow/>
+<img src=/assets/icons/twitter.png alt="Twitter link">
+</a>
+</li>
+<li>
+<a href=https://github.com/kinow/>
+<img src=/assets/icons/github.png alt="GitHub link">
+</a>
+</li>
+</ul>
+</footer>
 </body>
 </html>

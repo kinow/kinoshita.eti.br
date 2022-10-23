@@ -1,160 +1,91 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="utf-8" />
-<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-<meta name="viewport" content="width=device-width, initial-scale=1" /><!-- Begin Jekyll SEO tag v2.7.1 -->
-<title>Invoking Testopia XML-RPC or JSON methods using Java | kinow</title>
-<meta name="generator" content="Jekyll v3.9.0" />
-<meta property="og:title" content="Invoking Testopia XML-RPC or JSON methods using Java" />
-<meta property="og:locale" content="en_US" />
-<meta name="description" content="Most TestLink [1] users are aware that there is an external API, maybe for the external API token being displayed in the user profile section. Today after a meeting with Peter Florijn [2], I realized that the same may not be true for Testopia [3] users. I am quite new to Testopia, and there are many features that I haven’t used yet. But if I understand it correctly, the database is interfaced by several Perl scripts that are, by its turns, exposed as Web Service (most of them). The web services are available via a JSON and a XML-RPC API (what is very useful, TestLink supports supports only XML-RPC). The communication between different programming languages and the external API’s is accomplished by a client API. In TestLink you have testlink-java-api [4] and testlink-api-java-client [5]. Testopia has a Java client too, available in Testopia source repository [6] and can be used to integrate your existing Java code with Testopia." />
-<meta property="og:description" content="Most TestLink [1] users are aware that there is an external API, maybe for the external API token being displayed in the user profile section. Today after a meeting with Peter Florijn [2], I realized that the same may not be true for Testopia [3] users. I am quite new to Testopia, and there are many features that I haven’t used yet. But if I understand it correctly, the database is interfaced by several Perl scripts that are, by its turns, exposed as Web Service (most of them). The web services are available via a JSON and a XML-RPC API (what is very useful, TestLink supports supports only XML-RPC). The communication between different programming languages and the external API’s is accomplished by a client API. In TestLink you have testlink-java-api [4] and testlink-api-java-client [5]. Testopia has a Java client too, available in Testopia source repository [6] and can be used to integrate your existing Java code with Testopia." />
-<link rel="canonical" href="https://kinoshita.eti.br/2012/09/09/invoking-testopia-xml-rpc-or-json-methods-using-java.html" />
-<meta property="og:url" content="https://kinoshita.eti.br/2012/09/09/invoking-testopia-xml-rpc-or-json-methods-using-java.html" />
-<meta property="og:site_name" content="kinow" />
-<meta property="og:type" content="article" />
-<meta property="article:published_time" content="2012-09-09T00:00:00+12:00" />
-<meta name="twitter:card" content="summary" />
-<meta property="twitter:title" content="Invoking Testopia XML-RPC or JSON methods using Java" />
-<script type="application/ld+json">
-{"description":"Most TestLink [1] users are aware that there is an external API, maybe for the external API token being displayed in the user profile section. Today after a meeting with Peter Florijn [2], I realized that the same may not be true for Testopia [3] users. I am quite new to Testopia, and there are many features that I haven’t used yet. But if I understand it correctly, the database is interfaced by several Perl scripts that are, by its turns, exposed as Web Service (most of them). The web services are available via a JSON and a XML-RPC API (what is very useful, TestLink supports supports only XML-RPC). The communication between different programming languages and the external API’s is accomplished by a client API. In TestLink you have testlink-java-api [4] and testlink-api-java-client [5]. Testopia has a Java client too, available in Testopia source repository [6] and can be used to integrate your existing Java code with Testopia.","@type":"BlogPosting","url":"https://kinoshita.eti.br/2012/09/09/invoking-testopia-xml-rpc-or-json-methods-using-java.html","headline":"Invoking Testopia XML-RPC or JSON methods using Java","datePublished":"2012-09-09T00:00:00+12:00","dateModified":"2012-09-09T00:00:00+12:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://kinoshita.eti.br/2012/09/09/invoking-testopia-xml-rpc-or-json-methods-using-java.html"},"@context":"https://schema.org"}</script>
-<!-- End Jekyll SEO tag -->
-<link rel="stylesheet" href="/assets/css/main.css" /><link type="application/atom+xml" rel="alternate" href="https://kinoshita.eti.br/feed.xml" title="kinow" /><link href="https://unpkg.com/pattern.css" rel="stylesheet" />
-
+<!doctype html><html lang=en><head>
+<meta charset=utf-8>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<link rel=stylesheet type=text/css href=https://kinoshita.eti.br/sass/main.e392e97e7e5991e363403c494b51d829efa207842d755622976c2537d0509be0.css integrity="sha256-45Lpfn5ZkeNjQDxJS1HYKe+iB4QtdVYil2wlN9BQm+A=">
+<title>kinow | Invoking Testopia XML-RPC or JSON methods using Java</title>
 </head>
-<body>
-<div id="mobile-menu"><div class="menu">
-  <ul class="menu">
-    <li class="item">
-      <h1 id="kinow">KINOW</h1>
-    </li>
-    <li class="item">
-      <a href="/" class="">About</a>
-    </li>
-    <li class="item">
-      <a href="/blog/" class="current">Blog</a>
-    </li>
-    <li class="item">
-      <a href="/portfolio/" class="">Portfolio</a>
-    </li>
-    <li class="item social-media-item">
-      <a href="https://www.instagram.com/brunokinoshita/" class="inline-link">
-        <img src="/assets/icons/instagram.png" class="inverted-image"  alt="Instagram link" />
-      </a>
-      <a href="https://twitter.com/kinow/" class="inline-link">
-        <img src="/assets/icons/twitter.png" class="inverted-image" alt="Twitter link" />
-      </a>
-      <a href="https://github.com/kinow/" class="inline-link">
-        <img src="/assets/icons/github.png" class="inverted-image" alt="GitHub link" />
-      </a>
-    </li>
-  </ul>
+<body><header role=banner class=content>
+<nav id=nav aria-label=Main role=navigation class=content>
+<ul><li>
+<a href=/>
+<i data-feather=about></i> About</a>
+</li><li>
+<a href=/blog/>
+<i data-feather=blog></i> Blog</a>
+</li><li>
+<a href=/portfolio/>
+<i data-feather=portfolio></i> Portfolio</a>
+</li><li></li>
+</ul>
+</nav>
+</header>
+<main>
+<article class=content>
+<h2>Invoking Testopia XML-RPC or JSON methods using Java</h2><div class=metadata>
+<i data-feather=calendar></i>
+<time datetime=2012-09-09>Sep 9, 2012</time>
 </div>
-</div>
-<div id="wrapper">
-  <div id="sidebar"><div class="menu">
-  <ul class="menu">
-    <li class="item">
-      <h1 id="kinow">KINOW</h1>
-    </li>
-    <li class="item">
-      <a href="/" class="">About</a>
-    </li>
-    <li class="item">
-      <a href="/blog/" class="current">Blog</a>
-    </li>
-    <li class="item">
-      <a href="/portfolio/" class="">Portfolio</a>
-    </li>
-    <li class="item social-media-item">
-      <a href="https://www.instagram.com/brunokinoshita/" class="inline-link">
-        <img src="/assets/icons/instagram.png" class="inverted-image"  alt="Instagram link" />
-      </a>
-      <a href="https://twitter.com/kinow/" class="inline-link">
-        <img src="/assets/icons/twitter.png" class="inverted-image" alt="Twitter link" />
-      </a>
-      <a href="https://github.com/kinow/" class="inline-link">
-        <img src="/assets/icons/github.png" class="inverted-image" alt="GitHub link" />
-      </a>
-    </li>
-  </ul>
-</div>
-</div>
-  <div id="content">
-    <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
-  <header class="post-header">
-    <h1 class="post-title p-name" itemprop="name headline">Invoking Testopia XML-RPC or JSON methods using Java</h1>
-    <span class="post-meta">
-      <time class="dt-published" datetime="2012-09-09T00:00:00+12:00" itemprop="datePublished">Sep 9, 2012
-      </time>
-      <span>&mdash; star date: -310229.51.</span>
-      <span>
-        Number of words: 534.
-      </span></span>
-  </header>
-
-  
-
-
-  <div class="post-content e-content" itemprop="articleBody">
-    <p>Most <a href="http://www.teamst.org" title="TestLink">TestLink</a> [1] users are aware that there is an external API, maybe for the external API token being displayed in the user profile section. Today after a meeting with <a href="http://twitter.com/peterflorijn" title="Peter Florijn">Peter Florijn</a> [2], I realized that the same may not be true for <a href="http://www.mozilla.org/projects/testopia/" title="Testopia">Testopia</a>  [3] users.</p>
-
-<p>I am quite new to Testopia, and there are many features that I haven’t used yet. But if I understand it correctly, the database is interfaced by several Perl scripts that are, by its turns, exposed as Web Service (most of them). The web services are available via a JSON and a XML-RPC API (what is very useful, TestLink supports supports only XML-RPC).</p>
-
-<p>The communication between different programming languages and the external API’s is accomplished by a client API. In TestLink you have <a href="http://testlinkjavaapi.sourceforge.net/" title="TestLink Java API">testlink-java-api</a> [4] and <a href="http://code.google.com/p/testlink-api-java-client/" title="TestLink API Java Client">testlink-api-java-client</a> [5].</p>
-
-<p>Testopia has a Java client too, available in <a href="http://bzr.mozilla.org/bugzilla/extensions/testopia/2.2-bugzilla-3.2/files/head:/testopia/contrib/drivers/java/" title="Testopia source repository">Testopia source repository</a> [6] and can be used to integrate your existing Java code with Testopia.</p>
-
-<!--more-->
-
-<p><img src="/assets/posts/2012-09-09-invoking-testopia-xml-rpc-or-json-methods-using-java/testopia_java_300_120.png" /></p>
-
-<p>Peter and I have been working on <a href="https://wiki.jenkins-ci.org/display/JENKINS/Testopia+Plugin" title="Jenkins Testopia Plug-in">Jenkins Testopia Plug-in</a> [7], released few weeks ago and with its new version being released at this very moment. It’s been fun to write this new plug-in, and we are using a type of Scrum to manage the project, what makes it even more interesting.</p>
-
+<p>Most <a href=http://www.teamst.org title=TestLink>TestLink</a> [1] users are aware that there is an external API, maybe for the external API token being displayed in the user profile section. Today after a meeting with <a href=http://twitter.com/peterflorijn title="Peter Florijn">Peter Florijn</a> [2], I realized that the same may not be true for <a href=http://www.mozilla.org/projects/testopia/ title=Testopia>Testopia</a> [3] users.</p>
+<p>I am quite new to Testopia, and there are many features that I haven&rsquo;t used yet. But if I understand it correctly, the database is interfaced by several Perl scripts that are, by its turns, exposed as Web Service (most of them). The web services are available via a JSON and a XML-RPC API (what is very useful, TestLink supports supports only XML-RPC).</p>
+<p>The communication between different programming languages and the external API&rsquo;s is accomplished by a client API. In TestLink you have <a href=http://testlinkjavaapi.sourceforge.net/ title="TestLink Java API">testlink-java-api</a> [4] and <a href=http://code.google.com/p/testlink-api-java-client/ title="TestLink API Java Client">testlink-api-java-client</a> [5].</p>
+<p>Testopia has a Java client too, available in <a href=http://bzr.mozilla.org/bugzilla/extensions/testopia/2.2-bugzilla-3.2/files/head:/testopia/contrib/drivers/java/ title="Testopia source repository">Testopia source repository</a> [6] and can be used to integrate your existing Java code with Testopia.</p>
+<figure class=feature>
+<img src=/assets/posts/2012-09-09-invoking-testopia-xml-rpc-or-json-methods-using-java/testopia_java_300_120.png alt title width height>
+<figcaption></figcaption>
+</figure>
+<p>Peter and I have been working on <a href=https://wiki.jenkins-ci.org/display/JENKINS/Testopia+Plugin title="Jenkins Testopia Plug-in">Jenkins Testopia Plug-in</a> [7], released few weeks ago and with its new version being released at this very moment. It&rsquo;s been fun to write this new plug-in, and we are using a type of Scrum to manage the project, what makes it even more interesting.</p>
 <p>During the project feature definition and initial structure, we created a new implementation, motivated by the following reasons (in no special order):</p>
-
 <ul>
 <li>Provide an API for Maven developers</li>
 <li>Publish this new API to Maven central repository (so Gradle, Ivy and Maven users could use it too)</li>
 <li>Use a non DDD (Domain Driven Design) approach, as it helps debugging serialization issues in Jenkins (only one element talks to Testopia. So we put this element in Jenkins master, and don't have to worry about calls to objects methods serialized to slaves)</li>
 <li>Test doubles, so we could increase test coverage without the need of a Testopia instance running</li>
 </ul>
-
-<p>We haven’t released this API to Maven central yet, as we still have to polish the code, add tests and more methods. But you can already start playing with this API, the code is at GitHub, <a href="http://www.github.com/kinow/testopia-java-driver" title="Testopia Java Driver">http://www.github.com/kinow/testopia-java-driver</a> [8], and here’s a Snippet of code to get you started with the API.</p>
-
-<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">TestopiaAPI</span> <span class="n">api</span> <span class="o">=</span> <span class="k">new</span> <span class="no">URL</span><span class="o">(</span><span class="s">"http://localhost/bugzilla-4.2.1/xmlrpc.cgi"</span><span class="o">);</span>
-<span class="n">api</span><span class="o">.</span><span class="na">login</span><span class="o">(</span><span class="s">"root"</span><span class="o">,</span> <span class="s">"pass"</span><span class="o">);</span>
-<span class="nc">TestRun</span> <span class="n">testCaseRun</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="na">getTestRun</span><span class="o">(</span><span class="mi">1</span><span class="o">);</span>
-<span class="nc">TestCase</span><span class="o">[]</span> <span class="n">testCases</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="na">getTestCases</span><span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">getTestRunId</span><span class="o">());</span>
-<span class="k">for</span><span class="o">(</span><span class="nc">TestCase</span> <span class="n">testCase</span> <span class="o">:</span> <span class="n">testCases</span><span class="o">)</span> <span class="o">{</span>
-  <span class="nc">Status</span> <span class="n">status</span> <span class="o">=</span> <span class="nc">Status</span><span class="o">.</span><span class="na">BLOCKED</span><span class="o">;</span>
-  <span class="n">testCase</span><span class="o">.</span><span class="na">setStatusId</span><span class="o">(</span><span class="n">status</span><span class="o">.</span><span class="na">getValue</span><span class="o">());</span>
-  <span class="n">api</span><span class="o">.</span><span class="na">update</span><span class="o">(</span><span class="n">testCase</span><span class="o">,</span> <span class="n">testCase</span><span class="o">.</span><span class="na">getRunId</span><span class="o">(),</span> <span class="n">testCase</span><span class="o">.</span><span class="na">getBuildId</span><span class="o">(),</span> <span class="n">testCase</span><span class="o">.</span><span class="na">getEnvId</span><span class="o">());</span>
-<span class="o">}</span>
-</code></pre></div></div>
-
-<p>Have fun!</p>
-
+<p>We haven&rsquo;t released this API to Maven central yet, as we still have to polish the code, add tests and more methods. But you can already start playing with this API, the code is at GitHub, <a href=http://www.github.com/kinow/testopia-java-driver title="Testopia Java Driver"><a href=http://www.github.com/kinow/testopia-java-driver>http://www.github.com/kinow/testopia-java-driver</a></a> [8], and here&rsquo;s a Snippet of code to get you started with the API.</p>
+<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java>TestopiaAPI api = <span style=color:navy;font-weight:700>new</span> URL(<span style=color:#00f>&#34;http://localhost/bugzilla-4.2.1/xmlrpc.cgi&#34;</span>);
+api.<span style=color:red>login</span>(<span style=color:#00f>&#34;root&#34;</span>, <span style=color:#00f>&#34;pass&#34;</span>);
+TestRun testCaseRun = api.<span style=color:red>getTestRun</span>(1);
+TestCase[] testCases = api.<span style=color:red>getTestCases</span>(<span style=color:navy;font-weight:700>this</span>.<span style=color:red>getTestRunId</span>());
+<span style=color:navy;font-weight:700>for</span>(TestCase testCase : testCases) {
+  Status status = Status.<span style=color:red>BLOCKED</span>;
+  testCase.<span style=color:red>setStatusId</span>(status.<span style=color:red>getValue</span>());
+  api.<span style=color:red>update</span>(testCase, testCase.<span style=color:red>getRunId</span>(), testCase.<span style=color:red>getBuildId</span>(), testCase.<span style=color:red>getEnvId</span>());
+}
+</code></pre></div><p>Have fun!</p>
 <ul>
-  <li>[1] http://www.teamst.org</li>
-  <li>[2] http://twitter.com/peterflorijn</li>
-  <li>[3] http://www.mozilla.org/projects/testopia/</li>
-  <li>[4] http://testlinkjavaapi.sourceforge.net/</li>
-  <li>[5] http://code.google.com/p/testlink-api-java-client/</li>
-  <li>[6] http://bzr.mozilla.org/bugzilla/extensions/testopia/2.2-bugzilla-3.2/files/head:/testopia/contrib/drivers/java/</li>
-  <li>[7] https://wiki.jenkins-ci.org/display/JENKINS/Testopia+Plugin</li>
-  <li>[8] http://www.github.com/kinow/testopia-java-driver</li>
+<li>[1] <a href=http://www.teamst.org>http://www.teamst.org</a></li>
+<li>[2] <a href=http://twitter.com/peterflorijn>http://twitter.com/peterflorijn</a></li>
+<li>[3] <a href=http://www.mozilla.org/projects/testopia/>http://www.mozilla.org/projects/testopia/</a></li>
+<li>[4] <a href=http://testlinkjavaapi.sourceforge.net/>http://testlinkjavaapi.sourceforge.net/</a></li>
+<li>[5] <a href=http://code.google.com/p/testlink-api-java-client/>http://code.google.com/p/testlink-api-java-client/</a></li>
+<li>[6] <a href=http://bzr.mozilla.org/bugzilla/extensions/testopia/2.2-bugzilla-3.2/files/head:/testopia/contrib/drivers/java/>http://bzr.mozilla.org/bugzilla/extensions/testopia/2.2-bugzilla-3.2/files/head:/testopia/contrib/drivers/java/</a></li>
+<li>[7] <a href=https://wiki.jenkins-ci.org/display/JENKINS/Testopia+Plugin>https://wiki.jenkins-ci.org/display/JENKINS/Testopia+Plugin</a></li>
+<li>[8] <a href=http://www.github.com/kinow/testopia-java-driver>http://www.github.com/kinow/testopia-java-driver</a></li>
 </ul>
-
-  </div>
-
-  <div class="tags"><p>Tags:&nbsp;<a class="label" href="/tag/java">java</a>.<br/></p></div>
-
-  <a class="u-url" href="/2012/09/09/invoking-testopia-xml-rpc-or-json-methods-using-java.html" hidden></a>
+<aside class=links>
+<a class=previous href=https://kinoshita.eti.br/2012/08/08/how-i-started-in-open-source.html>&#171; Previous</a>
+<a class=next href=https://kinoshita.eti.br/2012/09/14/integrating-nutch-2.x-mysql-and-solr.html>Next &#187;</a>
+</aside>
 </article>
-
-  </div>
-</div>
+</main>
+<footer role=contentinfo>
+<ul id=social-media-icons>
+<li>
+<a href=https://www.instagram.com/brunokinoshita/>
+<img src=/assets/icons/instagram.png alt="Instagram link">
+</a>
+</li>
+<li>
+<a href=https://twitter.com/kinow/>
+<img src=/assets/icons/twitter.png alt="Twitter link">
+</a>
+</li>
+<li>
+<a href=https://github.com/kinow/>
+<img src=/assets/icons/github.png alt="GitHub link">
+</a>
+</li>
+</ul>
+</footer>
 </body>
 </html>

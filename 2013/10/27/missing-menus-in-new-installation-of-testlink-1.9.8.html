@@ -1,0 +1,70 @@
+<!doctype html><html lang=en><head>
+<meta charset=utf-8>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<link rel=stylesheet type=text/css href=https://kinoshita.eti.br/sass/main.e392e97e7e5991e363403c494b51d829efa207842d755622976c2537d0509be0.css integrity="sha256-45Lpfn5ZkeNjQDxJS1HYKe+iB4QtdVYil2wlN9BQm+A=">
+<title>kinow | Missing menus in new installation of TestLink 1.9.8</title>
+</head>
+<body><header role=banner class=content>
+<nav id=nav aria-label=Main role=navigation class=content>
+<ul><li>
+<a href=/>
+<i data-feather=about></i> About</a>
+</li><li>
+<a href=/blog/>
+<i data-feather=blog></i> Blog</a>
+</li><li>
+<a href=/portfolio/>
+<i data-feather=portfolio></i> Portfolio</a>
+</li><li></li>
+</ul>
+</nav>
+</header>
+<main>
+<article class=content>
+<h2>Missing menus in new installation of TestLink 1.9.8</h2><div class=metadata>
+<i data-feather=calendar></i>
+<time datetime=2013-10-27>Oct 27, 2013</time>
+</div>
+<p>I recently installed TestLink 1.9.8 and noticed that the menus and some other parts
+of the UI we missing. Looking at <code>/var/log/testlink/userlog1.log</code> (the location
+may change depending on your settings) I realized that there was something wrong
+with my PHP installation. There were log messages like the below.</p>
+<pre><code>include_once(ADORecordSet_ext_empty.class.php): failed to open stream: No such file or directory - in /home/kinow/php/workspace/testlink-1.9.8/lib/functions/common.php - Line 92
+[13/Sep/18 12:51:09][WARNING][2o0h173pdgg5fjqh1pukr83og2][GUI]
+E_WARNING
+include_once(): Failed opening 'ADORecordSet_ext_empty.class.php' for inclusion (include_path='.:/usr/share/php:/usr/share/pear:.:/home/kinow/php/workspace/testlink-1.9.8/lib/functions/:/home/kinow/php/workspace/testlink-1.9.8/lib/issuet
+...
+</code></pre>
+<p>I found a post in a forum (but unfortunately I forgot to save the link) that suggested
+these ADORecordSet were being caused by the module <strong>php5-adodb</strong>. Removing the module, and
+cleaning the templates cache directory (<code>$TESTLINK_HOME/gui/templates_c/*</code>)
+fixed the issue for me.</p>
+<p>Hope that helps.
+Happy testing!</p>
+<aside class=links>
+<a class=previous href=https://kinoshita.eti.br/2013/09/29/the-apache-way-and-on-writing-software-reviews.html>&#171; Previous</a>
+<a class=next href=https://kinoshita.eti.br/2014/02/11/writing-a-custom-schemaspy-command-for-laravel-4.html>Next &#187;</a>
+</aside>
+</article>
+</main>
+<footer role=contentinfo>
+<ul id=social-media-icons>
+<li>
+<a href=https://www.instagram.com/brunokinoshita/>
+<img src=/assets/icons/instagram.png alt="Instagram link">
+</a>
+</li>
+<li>
+<a href=https://twitter.com/kinow/>
+<img src=/assets/icons/twitter.png alt="Twitter link">
+</a>
+</li>
+<li>
+<a href=https://github.com/kinow/>
+<img src=/assets/icons/github.png alt="GitHub link">
+</a>
+</li>
+</ul>
+</footer>
+</body>
+</html>

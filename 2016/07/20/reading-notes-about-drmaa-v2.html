@@ -1,204 +1,134 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="utf-8" />
-<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-<meta name="viewport" content="width=device-width, initial-scale=1" /><!-- Begin Jekyll SEO tag v2.7.1 -->
-<title>Reading notes about DRMAA v2 | kinow</title>
-<meta name="generator" content="Jekyll v3.9.0" />
-<meta property="og:title" content="Reading notes about DRMAA v2" />
-<meta property="og:locale" content="en_US" />
-<meta name="description" content="The DRMAA v2 specification draft is ready to be published, and is in public comment until 31st July this year. I used DRMAA v1 to integrate Jenkins and PBS some time ago, but it was not a very elegant solution. And in the end integrating other grid computing implementations like SGE would not be very simple. This post contains my reading notes for DRMAA v2, and a short analysis of how this new specification could be used in a new tentative to integrate Jenkins and several grid computing implementations in a single plug-in." />
-<meta property="og:description" content="The DRMAA v2 specification draft is ready to be published, and is in public comment until 31st July this year. I used DRMAA v1 to integrate Jenkins and PBS some time ago, but it was not a very elegant solution. And in the end integrating other grid computing implementations like SGE would not be very simple. This post contains my reading notes for DRMAA v2, and a short analysis of how this new specification could be used in a new tentative to integrate Jenkins and several grid computing implementations in a single plug-in." />
-<link rel="canonical" href="https://kinoshita.eti.br/2016/07/20/reading-notes-about-drmaa-v2.html" />
-<meta property="og:url" content="https://kinoshita.eti.br/2016/07/20/reading-notes-about-drmaa-v2.html" />
-<meta property="og:site_name" content="kinow" />
-<meta property="og:type" content="article" />
-<meta property="article:published_time" content="2016-07-20T00:00:00+12:00" />
-<meta name="twitter:card" content="summary" />
-<meta property="twitter:title" content="Reading notes about DRMAA v2" />
-<script type="application/ld+json">
-{"description":"The DRMAA v2 specification draft is ready to be published, and is in public comment until 31st July this year. I used DRMAA v1 to integrate Jenkins and PBS some time ago, but it was not a very elegant solution. And in the end integrating other grid computing implementations like SGE would not be very simple. This post contains my reading notes for DRMAA v2, and a short analysis of how this new specification could be used in a new tentative to integrate Jenkins and several grid computing implementations in a single plug-in.","@type":"BlogPosting","url":"https://kinoshita.eti.br/2016/07/20/reading-notes-about-drmaa-v2.html","headline":"Reading notes about DRMAA v2","datePublished":"2016-07-20T00:00:00+12:00","dateModified":"2016-07-20T00:00:00+12:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://kinoshita.eti.br/2016/07/20/reading-notes-about-drmaa-v2.html"},"@context":"https://schema.org"}</script>
-<!-- End Jekyll SEO tag -->
-<link rel="stylesheet" href="/assets/css/main.css" /><link type="application/atom+xml" rel="alternate" href="https://kinoshita.eti.br/feed.xml" title="kinow" /><link href="https://unpkg.com/pattern.css" rel="stylesheet" />
-
+<!doctype html><html lang=en><head>
+<meta charset=utf-8>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<link rel=stylesheet type=text/css href=https://kinoshita.eti.br/sass/main.e392e97e7e5991e363403c494b51d829efa207842d755622976c2537d0509be0.css integrity="sha256-45Lpfn5ZkeNjQDxJS1HYKe+iB4QtdVYil2wlN9BQm+A=">
+<title>kinow | Reading notes about DRMAA v2</title>
 </head>
-<body>
-<div id="mobile-menu"><div class="menu">
-  <ul class="menu">
-    <li class="item">
-      <h1 id="kinow">KINOW</h1>
-    </li>
-    <li class="item">
-      <a href="/" class="">About</a>
-    </li>
-    <li class="item">
-      <a href="/blog/" class="current">Blog</a>
-    </li>
-    <li class="item">
-      <a href="/portfolio/" class="">Portfolio</a>
-    </li>
-    <li class="item social-media-item">
-      <a href="https://www.instagram.com/brunokinoshita/" class="inline-link">
-        <img src="/assets/icons/instagram.png" class="inverted-image"  alt="Instagram link" />
-      </a>
-      <a href="https://twitter.com/kinow/" class="inline-link">
-        <img src="/assets/icons/twitter.png" class="inverted-image" alt="Twitter link" />
-      </a>
-      <a href="https://github.com/kinow/" class="inline-link">
-        <img src="/assets/icons/github.png" class="inverted-image" alt="GitHub link" />
-      </a>
-    </li>
-  </ul>
-</div>
-</div>
-<div id="wrapper">
-  <div id="sidebar"><div class="menu">
-  <ul class="menu">
-    <li class="item">
-      <h1 id="kinow">KINOW</h1>
-    </li>
-    <li class="item">
-      <a href="/" class="">About</a>
-    </li>
-    <li class="item">
-      <a href="/blog/" class="current">Blog</a>
-    </li>
-    <li class="item">
-      <a href="/portfolio/" class="">Portfolio</a>
-    </li>
-    <li class="item social-media-item">
-      <a href="https://www.instagram.com/brunokinoshita/" class="inline-link">
-        <img src="/assets/icons/instagram.png" class="inverted-image"  alt="Instagram link" />
-      </a>
-      <a href="https://twitter.com/kinow/" class="inline-link">
-        <img src="/assets/icons/twitter.png" class="inverted-image" alt="Twitter link" />
-      </a>
-      <a href="https://github.com/kinow/" class="inline-link">
-        <img src="/assets/icons/github.png" class="inverted-image" alt="GitHub link" />
-      </a>
-    </li>
-  </ul>
-</div>
-</div>
-  <div id="content">
-    <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
-  <header class="post-header">
-    <h1 class="post-title p-name" itemprop="name headline">Reading notes about DRMAA v2</h1>
-    <span class="post-meta">
-      <time class="dt-published" datetime="2016-07-20T00:00:00+12:00" itemprop="datePublished">Jul 20, 2016
-      </time>
-      <span>&mdash; star date: -306366.12.</span>
-      <span>
-        Number of words: 601.
-      </span></span>
-  </header>
-
-  <ul>
-  <li><a href="#notes-about-the-new-specification">Notes about the new specification</a></li>
-  <li><a href="#how-a-drmaa-v2-java-implementation-could-be-used-with-jenkins">How a DRMAA v2 Java implementation could be used with Jenkins</a></li>
+<body><header role=banner class=content>
+<nav id=nav aria-label=Main role=navigation class=content>
+<ul><li>
+<a href=/>
+<i data-feather=about></i> About</a>
+</li><li>
+<a href=/blog/>
+<i data-feather=blog></i> Blog</a>
+</li><li>
+<a href=/portfolio/>
+<i data-feather=portfolio></i> Portfolio</a>
+</li><li></li>
 </ul>
-
-
-  <div class="post-content e-content" itemprop="articleBody">
-    <p>The DRMAA v2 specification draft is ready to be published, and is in <a href="https://redmine.ogf.org/boards/36/topics/494">public
+</nav>
+</header>
+<main>
+<article class=content>
+<h2>Reading notes about DRMAA v2</h2><div class=metadata>
+<i data-feather=calendar></i>
+<time datetime=2016-07-20>Jul 20, 2016</time>
+</div>
+<p>The DRMAA v2 specification draft is ready to be published, and is in <a href=https://redmine.ogf.org/boards/36/topics/494>public
 comment</a> until 31st July this year.
 I used DRMAA v1 to integrate Jenkins and PBS some time ago, but it was not a
 very elegant solution.</p>
-
 <p>And in the end integrating other grid computing implementations like SGE would
 not be very simple.</p>
-
 <p>This post contains my reading notes for DRMAA v2, and a short analysis of how
 this new specification could be used in a new tentative to integrate
 Jenkins and several grid computing implementations in a single plug-in.</p>
-
-<!--more-->
-
-<h3 id="notes-about-the-new-specification">Notes about the new specification</h3>
-
+<h3 id=notes-about-the-new-specification>Notes about the new specification</h3>
 <ul>
-  <li>Jobs can have categories, like OpenMP jobs, MPI jobs, Java jobs, R jobs,
+<li>Jobs can have categories, like OpenMP jobs, MPI jobs, Java jobs, R jobs,
 institute-X jobs, etc
-    <ul>
-      <li>in Jenkins this could be displayed as a label to
+<ul>
+<li>in Jenkins this could be displayed as a label to
 the jobs in the job queue, or as a filter</li>
-    </ul>
-  </li>
-  <li>DRMAA implementations offer DRMAA capabilities, with the features and data
+</ul>
+</li>
+<li>DRMAA implementations offer DRMAA capabilities, with the features and data
 attributes supported
-    <ul>
-      <li>this could be used while creating a slave/cloud computer in Jenkins</li>
-    </ul>
-  </li>
-  <li>queue, machine, slot, job, reservation have structures that may vary,
+<ul>
+<li>this could be used while creating a slave/cloud computer in Jenkins</li>
+</ul>
+</li>
+<li>queue, machine, slot, job, reservation have structures that may vary,
 but can tell more about the environment</li>
-  <li>sessions must have an unique name, otherwise you will get an
+<li>sessions must have an unique name, otherwise you will get an
 InvalidArgumentException</li>
-  <li>the method <strong>openMonitoring</strong> can be used to open a stateless <em>MonitoringSession</em>
+<li>the method <strong>openMonitoring</strong> can be used to open a stateless <em>MonitoringSession</em>
 for querying about the DRM system
-    <ul>
-      <li><strong>Question: maybe it would be nice to have a note saying that implementations could
-  use caching or other mechanisms to alleviate resource usage, as long as it is
-  guaranteed that users will always get the latest valid information about the DRM
-  system?</strong></li>
-      <li><strong>Question: what is the output of this method? Does it include information
-  about jobs too?</strong></li>
-    </ul>
-  </li>
-  <li>for Jobs, you will have JobSession, Job and JobArray. JobSession = control and
+<ul>
+<li><strong>Question: maybe it would be nice to have a note saying that implementations could
+use caching or other mechanisms to alleviate resource usage, as long as it is
+guaranteed that users will always get the latest valid information about the DRM
+system?</strong></li>
+<li><strong>Question: what is the output of this method? Does it include information
+about jobs too?</strong></li>
+</ul>
+</li>
+<li>for Jobs, you will have JobSession, Job and JobArray. JobSession = control and
 monitoring of jobs. Job = control of a single job. JobArray = bulk submission.</li>
-  <li>a job has the valid states UNDETERMINED, QUEUED, QUEUED_HELD, RUNNING,
+<li>a job has the valid states UNDETERMINED, QUEUED, QUEUED_HELD, RUNNING,
 SUSPENDED, REQUEUED, REQUEUED_HELD, DONE, and FAILED</li>
 </ul>
-
-<p><img class="ui centered large bordered image" src="/assets/posts/2016-07-20-reading-notes-about-drmaa-v2/drmaav2_screen.png" alt="DRMAA Job States" /></p>
-
+<figure class=feature>
+<img src=/assets/posts/2016-07-20-reading-notes-about-drmaa-v2/drmaav2_screen.png alt="DRMAA Job States" title="DRMAA Job States" width height>
+<figcaption>DRMAA Job States</figcaption>
+</figure>
 <ul>
-  <li>
-    <blockquote>If a DRMAA job state has no representation in the underlying DRMS, the DRMAA implementation MAY
-never report it</blockquote>
-    <ul>
-      <li>Important to include in the plug-in documentation, and also troubleshooting page. As
-  jobs could be considered not found, but simply because of its state</li>
-      <li><strong>Question: is UNDETERMINED state assigned to a job that does not exist, or
-  only to a job that exists but state cannot be determined?</strong></li>
-    </ul>
-  </li>
-  <li>The callbacks look interesting too, but not required for all implementations, so
-we can’t use it in the Jenkins plug-in</li>
-  <li>the monitoring method <em>getAllReservations</em> could be used to show future jobs, scheduled
+<li>
+<blockquote>If a DRMAA job state has no representation in the underlying DRMS, the DRMAA implementation MAY
+</li>
+</ul>
+<p>never report it</blockquote>
+* Important to include in the plug-in documentation, and also troubleshooting page. As
+jobs could be considered not found, but simply because of its state
+* <strong>Question: is UNDETERMINED state assigned to a job that does not exist, or
+only to a job that exists but state cannot be determined?</strong></p>
+<ul>
+<li>The callbacks look interesting too, but not required for all implementations, so
+we can&rsquo;t use it in the Jenkins plug-in</li>
+<li>the monitoring method <em>getAllReservations</em> could be used to show future jobs, scheduled
 jobs? Not a question to the working group, more internal work.</li>
-  <li>the monitoring method <em>getAllJobs</em> can be used to query for all jobs that the use
+<li>the monitoring method <em>getAllJobs</em> can be used to query for all jobs that the use
 has access to, with a given filter too</li>
 </ul>
-
-<h3 id="how-a-drmaa-v2-java-implementation-could-be-used-with-jenkins">How a DRMAA v2 Java implementation could be used with Jenkins</h3>
-
+<h3 id=how-a-drmaa-v2-java-implementation-could-be-used-with-jenkins>How a DRMAA v2 Java implementation could be used with Jenkins</h3>
 <ol>
-  <li>The Eclipse Science project <a href="https://projects.eclipse.org/projects/technology.triquetrum">Triquetrum</a>
-is working <a href="https://www.ogf.org/pipermail/drmaa-wg/2016-July/001562.html">on a Java implementation</a>
+<li>The Eclipse Science project <a href=https://projects.eclipse.org/projects/technology.triquetrum>Triquetrum</a>
+is working <a href=https://www.ogf.org/pipermail/drmaa-wg/2016-July/001562.html>on a Java implementation</a>
 that could possibly be re-used in BioUno to integrate DRM systems with Jenkins.</li>
-  <li>The new monitoring methods - if widely used by implementers - could replace
+<li>The new monitoring methods - if widely used by implementers - could replace
 most of the code that was written to parse the output of the response of qsub/qstat or
 even DRMAA v1 methods</li>
-  <li>Setting up nodes in Jenkins could be simplified by querying the server capabilities</li>
+<li>Setting up nodes in Jenkins could be simplified by querying the server capabilities</li>
 </ol>
-
 <p>Time to go back to the blackboard, but in the meantime, will start a development cycle
-for Jenkins plug-ins, and will work with the <a href="https://github.com/w3c/sparql-exists">EXISTS W3C working group</a>
+for Jenkins plug-ins, and will work with the <a href=https://github.com/w3c/sparql-exists>EXISTS W3C working group</a>
 for a while.</p>
-
 <p><small>What I was listening while writing this blog post: <a href="https://www.youtube.com/watch?v=vh9RI0aLidQ">Paola Pequena - Sonata heróica</a></small></p>
-
-  </div>
-
-  <div class="tags"><p>Tags:&nbsp;<a class="label" href="/tag/programming">programming</a>,&nbsp;<a class="label" href="/tag/hpc">hpc</a>.<br/></p></div>
-
-  <a class="u-url" href="/2016/07/20/reading-notes-about-drmaa-v2.html" hidden></a>
+<aside class=links>
+<a class=previous href=https://kinoshita.eti.br/2016/07/17/reasons-for-having-pt-and-pt-br-in-a-software.html>&#171; Previous</a>
+<a class=next href=https://kinoshita.eti.br/2016/08/16/revamping-frege-logo.html>Next &#187;</a>
+</aside>
 </article>
-
-  </div>
-</div>
+</main>
+<footer role=contentinfo>
+<ul id=social-media-icons>
+<li>
+<a href=https://www.instagram.com/brunokinoshita/>
+<img src=/assets/icons/instagram.png alt="Instagram link">
+</a>
+</li>
+<li>
+<a href=https://twitter.com/kinow/>
+<img src=/assets/icons/twitter.png alt="Twitter link">
+</a>
+</li>
+<li>
+<a href=https://github.com/kinow/>
+<img src=/assets/icons/github.png alt="GitHub link">
+</a>
+</li>
+</ul>
+</footer>
 </body>
 </html>

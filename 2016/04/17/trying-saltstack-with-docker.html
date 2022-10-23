@@ -1,184 +1,106 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="utf-8" />
-<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-<meta name="viewport" content="width=device-width, initial-scale=1" /><!-- Begin Jekyll SEO tag v2.7.1 -->
-<title>Trying SaltStack with Docker | kinow</title>
-<meta name="generator" content="Jekyll v3.9.0" />
-<meta property="og:title" content="Trying SaltStack with Docker" />
-<meta property="og:locale" content="en_US" />
-<meta name="description" content="Some weeks ago I started learning SaltStack for a project at work. But I couldn’t find a good Docker image for that and I had to ask the Ops team for some VM’s. We are having a rainy weekend in Auckland, so I decided to have another look at the Jenkins SaltStack Plug-in. But now since I was at home, I couldn’t use the VM’s that I had access to at work. So decided to look again at Docker or Vagrant images. After playing with a few images, I found bbinet/salt-master. It not only sets up a master, but also provides an easy way to enable the cherrypy API (necessary for the Jenkins plug-in). This post describes the steps that I took to have a running Salt Master with the API enabled. First you need to create some directories and files to use with the image. shell$ mkdir ~/master &amp;&amp; cd ~/master shell$ mkdir -p config/master.d/ shell$ vim config/master.d/api.conf The api.conf contains the SaltStack API configuration. You can change port, user and other settings if necessary. Just remember to add a credential in Jenkins for the plug-in. # File: api.conf external_auth: pam: saltapiuser: - .* - &#39;@runner&#39; - &#39;@wheel&#39; - &#39;@jobs&#39; rest_cherrypy: port: 8000 host: 0.0.0.0 disable_ssl: True static: /opt/molten static_path: /assets app: /opt/molten/index.html app_path: /molten The image also conveniently provides a script that is executed before the entry point (if provided). So we can also create a user for the API automatically when the image is created. shell$ vim config/before-exec.sh #!/bin/bash # File: before-exec.sh useradd saltapiuser echo -e &quot;nosecret\nnosecret\n&quot; | passwd saltapiuser exit 0 Also make the script executable. chmod +x config/before-exec.sh And finally start the container. docker run --name salt-master -v $PWD/config:/config \ -p 4505:4505 -p 4506:4506 -p 443:443 -p 8000:8000 \ bbinet/salt-master Once the container is running, you can go to http://localhost:8000 and log in as saltapiuser:nosecret, and also configure your plug-in in Jenkins. Happy hacking!" />
-<meta property="og:description" content="Some weeks ago I started learning SaltStack for a project at work. But I couldn’t find a good Docker image for that and I had to ask the Ops team for some VM’s. We are having a rainy weekend in Auckland, so I decided to have another look at the Jenkins SaltStack Plug-in. But now since I was at home, I couldn’t use the VM’s that I had access to at work. So decided to look again at Docker or Vagrant images. After playing with a few images, I found bbinet/salt-master. It not only sets up a master, but also provides an easy way to enable the cherrypy API (necessary for the Jenkins plug-in). This post describes the steps that I took to have a running Salt Master with the API enabled. First you need to create some directories and files to use with the image. shell$ mkdir ~/master &amp;&amp; cd ~/master shell$ mkdir -p config/master.d/ shell$ vim config/master.d/api.conf The api.conf contains the SaltStack API configuration. You can change port, user and other settings if necessary. Just remember to add a credential in Jenkins for the plug-in. # File: api.conf external_auth: pam: saltapiuser: - .* - &#39;@runner&#39; - &#39;@wheel&#39; - &#39;@jobs&#39; rest_cherrypy: port: 8000 host: 0.0.0.0 disable_ssl: True static: /opt/molten static_path: /assets app: /opt/molten/index.html app_path: /molten The image also conveniently provides a script that is executed before the entry point (if provided). So we can also create a user for the API automatically when the image is created. shell$ vim config/before-exec.sh #!/bin/bash # File: before-exec.sh useradd saltapiuser echo -e &quot;nosecret\nnosecret\n&quot; | passwd saltapiuser exit 0 Also make the script executable. chmod +x config/before-exec.sh And finally start the container. docker run --name salt-master -v $PWD/config:/config \ -p 4505:4505 -p 4506:4506 -p 443:443 -p 8000:8000 \ bbinet/salt-master Once the container is running, you can go to http://localhost:8000 and log in as saltapiuser:nosecret, and also configure your plug-in in Jenkins. Happy hacking!" />
-<link rel="canonical" href="https://kinoshita.eti.br/2016/04/17/trying-saltstack-with-docker.html" />
-<meta property="og:url" content="https://kinoshita.eti.br/2016/04/17/trying-saltstack-with-docker.html" />
-<meta property="og:site_name" content="kinow" />
-<meta property="og:type" content="article" />
-<meta property="article:published_time" content="2016-04-17T00:00:00+12:00" />
-<meta name="twitter:card" content="summary" />
-<meta property="twitter:title" content="Trying SaltStack with Docker" />
-<script type="application/ld+json">
-{"description":"Some weeks ago I started learning SaltStack for a project at work. But I couldn’t find a good Docker image for that and I had to ask the Ops team for some VM’s. We are having a rainy weekend in Auckland, so I decided to have another look at the Jenkins SaltStack Plug-in. But now since I was at home, I couldn’t use the VM’s that I had access to at work. So decided to look again at Docker or Vagrant images. After playing with a few images, I found bbinet/salt-master. It not only sets up a master, but also provides an easy way to enable the cherrypy API (necessary for the Jenkins plug-in). This post describes the steps that I took to have a running Salt Master with the API enabled. First you need to create some directories and files to use with the image. shell$ mkdir ~/master &amp;&amp; cd ~/master shell$ mkdir -p config/master.d/ shell$ vim config/master.d/api.conf The api.conf contains the SaltStack API configuration. You can change port, user and other settings if necessary. Just remember to add a credential in Jenkins for the plug-in. # File: api.conf external_auth: pam: saltapiuser: - .* - &#39;@runner&#39; - &#39;@wheel&#39; - &#39;@jobs&#39; rest_cherrypy: port: 8000 host: 0.0.0.0 disable_ssl: True static: /opt/molten static_path: /assets app: /opt/molten/index.html app_path: /molten The image also conveniently provides a script that is executed before the entry point (if provided). So we can also create a user for the API automatically when the image is created. shell$ vim config/before-exec.sh #!/bin/bash # File: before-exec.sh useradd saltapiuser echo -e &quot;nosecret\\nnosecret\\n&quot; | passwd saltapiuser exit 0 Also make the script executable. chmod +x config/before-exec.sh And finally start the container. docker run --name salt-master -v $PWD/config:/config \\ -p 4505:4505 -p 4506:4506 -p 443:443 -p 8000:8000 \\ bbinet/salt-master Once the container is running, you can go to http://localhost:8000 and log in as saltapiuser:nosecret, and also configure your plug-in in Jenkins. Happy hacking!","@type":"BlogPosting","url":"https://kinoshita.eti.br/2016/04/17/trying-saltstack-with-docker.html","headline":"Trying SaltStack with Docker","datePublished":"2016-04-17T00:00:00+12:00","dateModified":"2016-04-17T00:00:00+12:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://kinoshita.eti.br/2016/04/17/trying-saltstack-with-docker.html"},"@context":"https://schema.org"}</script>
-<!-- End Jekyll SEO tag -->
-<link rel="stylesheet" href="/assets/css/main.css" /><link type="application/atom+xml" rel="alternate" href="https://kinoshita.eti.br/feed.xml" title="kinow" /><link href="https://unpkg.com/pattern.css" rel="stylesheet" />
-
+<!doctype html><html lang=en><head>
+<meta charset=utf-8>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<link rel=stylesheet type=text/css href=https://kinoshita.eti.br/sass/main.e392e97e7e5991e363403c494b51d829efa207842d755622976c2537d0509be0.css integrity="sha256-45Lpfn5ZkeNjQDxJS1HYKe+iB4QtdVYil2wlN9BQm+A=">
+<title>kinow | Trying SaltStack with Docker</title>
 </head>
-<body>
-<div id="mobile-menu"><div class="menu">
-  <ul class="menu">
-    <li class="item">
-      <h1 id="kinow">KINOW</h1>
-    </li>
-    <li class="item">
-      <a href="/" class="">About</a>
-    </li>
-    <li class="item">
-      <a href="/blog/" class="current">Blog</a>
-    </li>
-    <li class="item">
-      <a href="/portfolio/" class="">Portfolio</a>
-    </li>
-    <li class="item social-media-item">
-      <a href="https://www.instagram.com/brunokinoshita/" class="inline-link">
-        <img src="/assets/icons/instagram.png" class="inverted-image"  alt="Instagram link" />
-      </a>
-      <a href="https://twitter.com/kinow/" class="inline-link">
-        <img src="/assets/icons/twitter.png" class="inverted-image" alt="Twitter link" />
-      </a>
-      <a href="https://github.com/kinow/" class="inline-link">
-        <img src="/assets/icons/github.png" class="inverted-image" alt="GitHub link" />
-      </a>
-    </li>
-  </ul>
+<body><header role=banner class=content>
+<nav id=nav aria-label=Main role=navigation class=content>
+<ul><li>
+<a href=/>
+<i data-feather=about></i> About</a>
+</li><li>
+<a href=/blog/>
+<i data-feather=blog></i> Blog</a>
+</li><li>
+<a href=/portfolio/>
+<i data-feather=portfolio></i> Portfolio</a>
+</li><li></li>
+</ul>
+</nav>
+</header>
+<main>
+<article class=content>
+<h2>Trying SaltStack with Docker</h2><div class=metadata>
+<i data-feather=calendar></i>
+<time datetime=2016-04-17>Apr 17, 2016</time>
 </div>
-</div>
-<div id="wrapper">
-  <div id="sidebar"><div class="menu">
-  <ul class="menu">
-    <li class="item">
-      <h1 id="kinow">KINOW</h1>
-    </li>
-    <li class="item">
-      <a href="/" class="">About</a>
-    </li>
-    <li class="item">
-      <a href="/blog/" class="current">Blog</a>
-    </li>
-    <li class="item">
-      <a href="/portfolio/" class="">Portfolio</a>
-    </li>
-    <li class="item social-media-item">
-      <a href="https://www.instagram.com/brunokinoshita/" class="inline-link">
-        <img src="/assets/icons/instagram.png" class="inverted-image"  alt="Instagram link" />
-      </a>
-      <a href="https://twitter.com/kinow/" class="inline-link">
-        <img src="/assets/icons/twitter.png" class="inverted-image" alt="Twitter link" />
-      </a>
-      <a href="https://github.com/kinow/" class="inline-link">
-        <img src="/assets/icons/github.png" class="inverted-image" alt="GitHub link" />
-      </a>
-    </li>
-  </ul>
-</div>
-</div>
-  <div id="content">
-    <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
-  <header class="post-header">
-    <h1 class="post-title p-name" itemprop="name headline">Trying SaltStack with Docker</h1>
-    <span class="post-meta">
-      <time class="dt-published" datetime="2016-04-17T00:00:00+12:00" itemprop="datePublished">Apr 17, 2016
-      </time>
-      <span>&mdash; star date: -306625.68.</span>
-      <span>
-        Number of words: 386.
-      </span></span>
-  </header>
-
-  
-
-
-  <div class="post-content e-content" itemprop="articleBody">
-    <p>Some weeks ago I started learning <a href="http://saltstack.com/">SaltStack</a> for a project at work. But I couldn’t
-find a good Docker image for that and I had to ask the Ops team for some VM’s. We
+<p>Some weeks ago I started learning <a href=http://saltstack.com/>SaltStack</a> for a project at work. But I couldn&rsquo;t
+find a good Docker image for that and I had to ask the Ops team for some VM&rsquo;s. We
 are having a rainy weekend in Auckland, so I decided to have another look at the
-<a href="https://wiki.jenkins-ci.org/display/JENKINS/saltstack-plugin">Jenkins SaltStack Plug-in</a>.</p>
-
-<p>But now since I was at home, I couldn’t use the VM’s that I had access to at
+<a href=https://wiki.jenkins-ci.org/display/JENKINS/saltstack-plugin>Jenkins SaltStack Plug-in</a>.</p>
+<p>But now since I was at home, I couldn&rsquo;t use the VM&rsquo;s that I had access to at
 work. So decided to look again at Docker or Vagrant images. After playing
-with a few images, I found <a href="https://hub.docker.com/r/bbinet/salt-master/">bbinet/salt-master</a>.
+with a few images, I found <a href=https://hub.docker.com/r/bbinet/salt-master/>bbinet/salt-master</a>.
 It not only sets up a master, but also provides an easy way to enable the cherrypy
 API (necessary for the Jenkins plug-in).</p>
-
 <p>This post describes the steps that I took to have a running Salt Master with the API
 enabled. First you need to create some directories and files to use with the image.</p>
-
-<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>shell<span class="nv">$ </span><span class="nb">mkdir</span> ~/master <span class="o">&amp;&amp;</span> <span class="nb">cd</span> ~/master
-shell<span class="nv">$ </span><span class="nb">mkdir</span> <span class="nt">-p</span> config/master.d/
-shell<span class="nv">$ </span>vim config/master.d/api.conf
-</code></pre></div></div>
-
-<p>The api.conf contains the SaltStack API configuration. You can change port, user
+<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>shell$ mkdir ~/master &amp;&amp; cd ~/master
+shell$ mkdir -p config/master.d/
+shell$ vim config/master.d/api.conf
+</code></pre></div><p>The api.conf contains the SaltStack API configuration. You can change port, user
 and other settings if necessary. Just remember to add a credential in Jenkins
 for the plug-in.</p>
-
-<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># File: api.conf</span>
+<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=color:#080;font-style:italic># File: api.conf</span>
 external_auth:
   pam:
     saltapiuser:
-      - .<span class="k">*</span>
-      - <span class="s1">'@runner'</span>
-      - <span class="s1">'@wheel'</span>
-      - <span class="s1">'@jobs'</span>
+      - .*
+      - <span style=color:#00f>&#39;@runner&#39;</span>
+      - <span style=color:#00f>&#39;@wheel&#39;</span>
+      - <span style=color:#00f>&#39;@jobs&#39;</span>
 rest_cherrypy:
-  port: 8000
+  port: <span style=color:#00f>8000</span>
   host: 0.0.0.0
   disable_ssl: True
   static: /opt/molten
   static_path: /assets
   app: /opt/molten/index.html
   app_path: /molten
-</code></pre></div></div>
-
-<p>The image also conveniently provides a script that is executed before the
+</code></pre></div><p>The image also conveniently provides a script that is executed before the
 entry point (if provided). So we can also create a user for the API automatically
 when the image is created.</p>
-
-<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>shell<span class="nv">$ </span>vim config/before-exec.sh
-</code></pre></div></div>
-
-<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">#!/bin/bash</span>
-<span class="c"># File: before-exec.sh</span>
+<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>shell$ vim config/before-exec.sh
+</code></pre></div><div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=color:teal>#!/bin/bash
+</span><span style=color:teal></span><span style=color:#080;font-style:italic># File: before-exec.sh</span>
 useradd saltapiuser
-<span class="nb">echo</span> <span class="nt">-e</span> <span class="s2">"nosecret</span><span class="se">\n</span><span class="s2">nosecret</span><span class="se">\n</span><span class="s2">"</span> | passwd saltapiuser
-<span class="nb">exit </span>0
-</code></pre></div></div>
-
-<p>Also make the script executable.</p>
-
-<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">chmod</span> +x config/before-exec.sh
-</code></pre></div></div>
-
-<p>And finally start the container.</p>
-
-<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker run <span class="nt">--name</span> salt-master <span class="nt">-v</span> <span class="nv">$PWD</span>/config:/config <span class="se">\</span>
-    <span class="nt">-p</span> 4505:4505 <span class="nt">-p</span> 4506:4506 <span class="nt">-p</span> 443:443 <span class="nt">-p</span> 8000:8000 <span class="se">\</span>
-    bbinet/salt-master
-</code></pre></div></div>
-
-<p>Once the container is running, you can go to http://localhost:8000 and
+echo -e <span style=color:#00f>&#34;nosecret\nnosecret\n&#34;</span> | passwd saltapiuser
+exit <span style=color:#00f>0</span>
+</code></pre></div><p>Also make the script executable.</p>
+<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>chmod +x config/before-exec.sh
+</code></pre></div><p>And finally start the container.</p>
+<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>docker run --name salt-master -v $PWD/config:/config <span style=color:#00f>\
+</span><span style=color:#00f></span>    -p 4505:4505 -p 4506:4506 -p 443:443 -p 8000:8000 <span style=color:#00f>\
+</span><span style=color:#00f></span>    bbinet/salt-master
+</code></pre></div><p>Once the container is running, you can go to http://localhost:8000 and
 log in as saltapiuser:nosecret, and also configure your plug-in
 in Jenkins.</p>
-
 <p>Happy hacking!</p>
-
-  </div>
-
-  <div class="tags"><p>Tags:&nbsp;<a class="label" href="/tag/jenkins">jenkins</a>,&nbsp;<a class="label" href="/tag/docker">docker</a>,&nbsp;<a class="label" href="/tag/saltstack">saltstack</a>.<br/></p></div>
-
-  <a class="u-url" href="/2016/04/17/trying-saltstack-with-docker.html" hidden></a>
+<aside class=links>
+<a class=previous href=https://kinoshita.eti.br/2016/04/08/geek-vacation-2016.html>&#171; Previous</a>
+<a class=next href=https://kinoshita.eti.br/2016/04/19/drawing-kumamoto-kenjinkai-mascot.html>Next &#187;</a>
+</aside>
 </article>
-
-  </div>
-</div>
+</main>
+<footer role=contentinfo>
+<ul id=social-media-icons>
+<li>
+<a href=https://www.instagram.com/brunokinoshita/>
+<img src=/assets/icons/instagram.png alt="Instagram link">
+</a>
+</li>
+<li>
+<a href=https://twitter.com/kinow/>
+<img src=/assets/icons/twitter.png alt="Twitter link">
+</a>
+</li>
+<li>
+<a href=https://github.com/kinow/>
+<img src=/assets/icons/github.png alt="GitHub link">
+</a>
+</li>
+</ul>
+</footer>
 </body>
 </html>

@@ -1,227 +1,139 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="utf-8" />
-<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-<meta name="viewport" content="width=device-width, initial-scale=1" /><!-- Begin Jekyll SEO tag v2.7.1 -->
-<title>Building Jenkins with Eclipse and m2e plug-in | kinow</title>
-<meta name="generator" content="Jekyll v3.9.0" />
-<meta property="og:title" content="Building Jenkins with Eclipse and m2e plug-in" />
-<meta property="og:locale" content="en_US" />
-<meta name="description" content="Yesterday I finally managed to build Jenkins using Eclipse and m2e plug-in. With Eclipse Indigo release came a new version of the Maven plug-in for Eclipse (former M2Eclipse), m2e. Since I started using Eclipse Indigo and this new plug-in I hadn&#39;t been able to build Jenkins in Eclipse anymore. I&#39;ve been having a terrible fever and thought that it would be a good thing to stop playing Minecraft for a while and find a way to build Jenkins in Eclipse + m2e :-). 1. Maven Plug-ins execution in project life cycle The first thing I&#39;ve noticed were the messages regarding the execution of some Maven plug-ins in the project life cycle. m2e delegates the execution of Maven plug-ins to an external executor. As not all Maven plug-ins have an existing executor for m2e you will receive a message similar to &quot;Plugin execution not covered by lifecycle configuration: ...&quot;." />
-<meta property="og:description" content="Yesterday I finally managed to build Jenkins using Eclipse and m2e plug-in. With Eclipse Indigo release came a new version of the Maven plug-in for Eclipse (former M2Eclipse), m2e. Since I started using Eclipse Indigo and this new plug-in I hadn&#39;t been able to build Jenkins in Eclipse anymore. I&#39;ve been having a terrible fever and thought that it would be a good thing to stop playing Minecraft for a while and find a way to build Jenkins in Eclipse + m2e :-). 1. Maven Plug-ins execution in project life cycle The first thing I&#39;ve noticed were the messages regarding the execution of some Maven plug-ins in the project life cycle. m2e delegates the execution of Maven plug-ins to an external executor. As not all Maven plug-ins have an existing executor for m2e you will receive a message similar to &quot;Plugin execution not covered by lifecycle configuration: ...&quot;." />
-<link rel="canonical" href="https://kinoshita.eti.br/2011/09/20/building-jenkins-with-eclipse-and-m2e-plug-in.html" />
-<meta property="og:url" content="https://kinoshita.eti.br/2011/09/20/building-jenkins-with-eclipse-and-m2e-plug-in.html" />
-<meta property="og:site_name" content="kinow" />
-<meta property="og:type" content="article" />
-<meta property="article:published_time" content="2011-09-20T00:00:00+12:00" />
-<meta name="twitter:card" content="summary" />
-<meta property="twitter:title" content="Building Jenkins with Eclipse and m2e plug-in" />
-<script type="application/ld+json">
-{"description":"Yesterday I finally managed to build Jenkins using Eclipse and m2e plug-in. With Eclipse Indigo release came a new version of the Maven plug-in for Eclipse (former M2Eclipse), m2e. Since I started using Eclipse Indigo and this new plug-in I hadn&#39;t been able to build Jenkins in Eclipse anymore. I&#39;ve been having a terrible fever and thought that it would be a good thing to stop playing Minecraft for a while and find a way to build Jenkins in Eclipse + m2e :-). 1. Maven Plug-ins execution in project life cycle The first thing I&#39;ve noticed were the messages regarding the execution of some Maven plug-ins in the project life cycle. m2e delegates the execution of Maven plug-ins to an external executor. As not all Maven plug-ins have an existing executor for m2e you will receive a message similar to &quot;Plugin execution not covered by lifecycle configuration: ...&quot;.","@type":"BlogPosting","url":"https://kinoshita.eti.br/2011/09/20/building-jenkins-with-eclipse-and-m2e-plug-in.html","headline":"Building Jenkins with Eclipse and m2e plug-in","datePublished":"2011-09-20T00:00:00+12:00","dateModified":"2011-09-20T00:00:00+12:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://kinoshita.eti.br/2011/09/20/building-jenkins-with-eclipse-and-m2e-plug-in.html"},"@context":"https://schema.org"}</script>
-<!-- End Jekyll SEO tag -->
-<link rel="stylesheet" href="/assets/css/main.css" /><link type="application/atom+xml" rel="alternate" href="https://kinoshita.eti.br/feed.xml" title="kinow" /><link href="https://unpkg.com/pattern.css" rel="stylesheet" />
-
+<!doctype html><html lang=en><head>
+<meta charset=utf-8>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<link rel=stylesheet type=text/css href=https://kinoshita.eti.br/sass/main.e392e97e7e5991e363403c494b51d829efa207842d755622976c2537d0509be0.css integrity="sha256-45Lpfn5ZkeNjQDxJS1HYKe+iB4QtdVYil2wlN9BQm+A=">
+<title>kinow | Building Jenkins with Eclipse and m2e plug-in</title>
 </head>
-<body>
-<div id="mobile-menu"><div class="menu">
-  <ul class="menu">
-    <li class="item">
-      <h1 id="kinow">KINOW</h1>
-    </li>
-    <li class="item">
-      <a href="/" class="">About</a>
-    </li>
-    <li class="item">
-      <a href="/blog/" class="current">Blog</a>
-    </li>
-    <li class="item">
-      <a href="/portfolio/" class="">Portfolio</a>
-    </li>
-    <li class="item social-media-item">
-      <a href="https://www.instagram.com/brunokinoshita/" class="inline-link">
-        <img src="/assets/icons/instagram.png" class="inverted-image"  alt="Instagram link" />
-      </a>
-      <a href="https://twitter.com/kinow/" class="inline-link">
-        <img src="/assets/icons/twitter.png" class="inverted-image" alt="Twitter link" />
-      </a>
-      <a href="https://github.com/kinow/" class="inline-link">
-        <img src="/assets/icons/github.png" class="inverted-image" alt="GitHub link" />
-      </a>
-    </li>
-  </ul>
-</div>
-</div>
-<div id="wrapper">
-  <div id="sidebar"><div class="menu">
-  <ul class="menu">
-    <li class="item">
-      <h1 id="kinow">KINOW</h1>
-    </li>
-    <li class="item">
-      <a href="/" class="">About</a>
-    </li>
-    <li class="item">
-      <a href="/blog/" class="current">Blog</a>
-    </li>
-    <li class="item">
-      <a href="/portfolio/" class="">Portfolio</a>
-    </li>
-    <li class="item social-media-item">
-      <a href="https://www.instagram.com/brunokinoshita/" class="inline-link">
-        <img src="/assets/icons/instagram.png" class="inverted-image"  alt="Instagram link" />
-      </a>
-      <a href="https://twitter.com/kinow/" class="inline-link">
-        <img src="/assets/icons/twitter.png" class="inverted-image" alt="Twitter link" />
-      </a>
-      <a href="https://github.com/kinow/" class="inline-link">
-        <img src="/assets/icons/github.png" class="inverted-image" alt="GitHub link" />
-      </a>
-    </li>
-  </ul>
-</div>
-</div>
-  <div id="content">
-    <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
-  <header class="post-header">
-    <h1 class="post-title p-name" itemprop="name headline">Building Jenkins with Eclipse and m2e plug-in</h1>
-    <span class="post-meta">
-      <time class="dt-published" datetime="2011-09-20T00:00:00+12:00" itemprop="datePublished">Sep 20, 2011
-      </time>
-      <span>&mdash; star date: -311200.0.</span>
-      <span>
-        Number of words: 766.
-      </span></span>
-  </header>
-
-  <ul>
-  <li><a href="#">1. Maven Plug-ins execution in project life cycle</a></li>
-  <li><a href="#">2. Conflicting Maven repository ids</a></li>
-  <li><a href="#">3. maven-localizer-plugin</a></li>
-  <li><a href="#">Removing remaining Eclipse errors and warnings</a></li>
+<body><header role=banner class=content>
+<nav id=nav aria-label=Main role=navigation class=content>
+<ul><li>
+<a href=/>
+<i data-feather=about></i> About</a>
+</li><li>
+<a href=/blog/>
+<i data-feather=blog></i> Blog</a>
+</li><li>
+<a href=/portfolio/>
+<i data-feather=portfolio></i> Portfolio</a>
+</li><li></li>
 </ul>
-
-
-  <div class="post-content e-content" itemprop="articleBody">
-    <p>Yesterday I finally managed to build <a title="Jenkins" href="http://www.jenkins-ci.org">Jenkins</a> using <a title="Eclipse" href="http://www.eclipse.org/">Eclipse</a> and <a title="m2e plug-in" href="http://eclipse.org/m2e/">m2e plug-in</a>. With <a title="Eclipse Indigo" href="http://www.eclipse.org/indigo">Eclipse Indigo</a> release came a new version of the <a title="Maven" href="http://maven.apache.org">Maven</a> plug-in for Eclipse (former <a title="M2Eclipse" href="http://m2eclipse.sonatype.org/">M2Eclipse</a>), m2e. Since I started using Eclipse Indigo and this new plug-in I hadn't been able to build Jenkins in Eclipse anymore.</p>
-
-<p>I've been having a terrible fever and thought that it would be a good thing to stop playing <a href="http://www.minecraft.net" title="Minecraft">Minecraft</a> for a while and find a way to build Jenkins in Eclipse + m2e :-).</p>
-
+</nav>
+</header>
+<main>
+<article class=content>
+<h2>Building Jenkins with Eclipse and m2e plug-in</h2><div class=metadata>
+<i data-feather=calendar></i>
+<time datetime=2011-09-20>Sep 20, 2011</time>
+</div>
+<p>Yesterday I finally managed to build <a title=Jenkins href=http://www.jenkins-ci.org>Jenkins</a> using <a title=Eclipse href=http://www.eclipse.org/>Eclipse</a> and <a title="m2e plug-in" href=http://eclipse.org/m2e/>m2e plug-in</a>. With <a title="Eclipse Indigo" href=http://www.eclipse.org/indigo>Eclipse Indigo</a> release came a new version of the <a title=Maven href=http://maven.apache.org>Maven</a> plug-in for Eclipse (former <a title=M2Eclipse href=http://m2eclipse.sonatype.org/>M2Eclipse</a>), m2e. Since I started using Eclipse Indigo and this new plug-in I hadn't been able to build Jenkins in Eclipse anymore.</p>
+<p>I've been having a terrible fever and thought that it would be a good thing to stop playing <a href=http://www.minecraft.net title=Minecraft>Minecraft</a> for a while and find a way to build Jenkins in Eclipse + m2e :-).</p>
 <h2>1. Maven Plug-ins execution in project life cycle</h2>
-
 <p>The first thing I've noticed were the messages regarding the execution of some Maven plug-ins in the project life cycle. m2e delegates the execution of Maven plug-ins to an external executor. As not all Maven plug-ins have an existing executor for m2e you will receive a message similar to "Plugin execution not covered by lifecycle configuration: ...".</p>
-
-<!--more-->
-
 <p>The solution for this issue was adding a rule for each plug-in execution. This rule must contain a version or version range and declare whether this plug-in execution must be executed or ignored by m2e. You have two ways of adding these rules. You could a) Google for an example, b) replace group, artifact name and version. Or you could a) open pom.xml and select the tab "pom.xml" (this will open the XML source of your pom.xml) b) go to the line marked with an error in Eclipse, leave your mouse pointer over it and select the option "Permanently mark goal...", choose the parent pom.xml (jenkins/pom.xml) and save all documents.</p>
-
-<div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;plugin&gt;</span>
-  <span class="nt">&lt;groupid&gt;</span>org.eclipse.m2e<span class="nt">&lt;/groupid&gt;</span>
-  <span class="nt">&lt;artifactid&gt;</span>lifecycle-mapping<span class="nt">&lt;/artifactid&gt;</span>
-  <span class="nt">&lt;version&gt;</span>1.0.0<span class="nt">&lt;/version&gt;</span>
-  <span class="nt">&lt;configuration&gt;</span>
-    <span class="nt">&lt;lifecyclemappingmetadata&gt;</span>
-      <span class="nt">&lt;pluginexecutions&gt;</span>
-        <span class="nt">&lt;pluginexecution&gt;</span>
-          <span class="nt">&lt;pluginexecutionfilter&gt;</span>
-            <span class="nt">&lt;groupid&gt;</span>org.codehaus.mojo<span class="nt">&lt;/groupid&gt;</span>
-            <span class="nt">&lt;artifactid&gt;</span>build-helper-maven-plugin<span class="nt">&lt;/artifactid&gt;</span>
-            <span class="nt">&lt;versionrange&gt;</span>[1.7,)<span class="nt">&lt;/versionrange&gt;</span>
-            <span class="nt">&lt;goals&gt;</span>
-              <span class="nt">&lt;goal&gt;</span>timestamp-property<span class="nt">&lt;/goal&gt;</span>
-              <span class="nt">&lt;goal&gt;</span>regex-property<span class="nt">&lt;/goal&gt;</span>
-            <span class="nt">&lt;/goals&gt;</span>
-         <span class="nt">&lt;/pluginexecutionfilter&gt;</span>
-         <span class="nt">&lt;action&gt;</span>
-           <span class="nt">&lt;execute</span> <span class="nt">/&gt;</span>
-         <span class="nt">&lt;/action&gt;</span>
-       <span class="nt">&lt;/pluginexecution&gt;</span>
-       <span class="c">&lt;!-- other plug-ins... ---&gt;</span>
-     <span class="nt">&lt;/pluginexecutions&gt;</span>
-   <span class="nt">&lt;/lifecyclemappingmetadata&gt;</span>
-  <span class="nt">&lt;/configuration&gt;</span>
-<span class="nt">&lt;/plugin&gt;</span>
-</code></pre></div></div>
-
-<h2>2. Conflicting Maven repository ids</h2>
-
+<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-xml data-lang=xml><span style=color:navy;font-weight:700>&lt;plugin&gt;</span>
+  <span style=color:navy;font-weight:700>&lt;groupid&gt;</span>org.eclipse.m2e<span style=color:navy;font-weight:700>&lt;/groupid&gt;</span>
+  <span style=color:navy;font-weight:700>&lt;artifactid&gt;</span>lifecycle-mapping<span style=color:navy;font-weight:700>&lt;/artifactid&gt;</span>
+  <span style=color:navy;font-weight:700>&lt;version&gt;</span>1.0.0<span style=color:navy;font-weight:700>&lt;/version&gt;</span>
+  <span style=color:navy;font-weight:700>&lt;configuration&gt;</span>
+    <span style=color:navy;font-weight:700>&lt;lifecyclemappingmetadata&gt;</span>
+      <span style=color:navy;font-weight:700>&lt;pluginexecutions&gt;</span>
+        <span style=color:navy;font-weight:700>&lt;pluginexecution&gt;</span>
+          <span style=color:navy;font-weight:700>&lt;pluginexecutionfilter&gt;</span>
+            <span style=color:navy;font-weight:700>&lt;groupid&gt;</span>org.codehaus.mojo<span style=color:navy;font-weight:700>&lt;/groupid&gt;</span>
+            <span style=color:navy;font-weight:700>&lt;artifactid&gt;</span>build-helper-maven-plugin<span style=color:navy;font-weight:700>&lt;/artifactid&gt;</span>
+            <span style=color:navy;font-weight:700>&lt;versionrange&gt;</span>[1.7,)<span style=color:navy;font-weight:700>&lt;/versionrange&gt;</span>
+            <span style=color:navy;font-weight:700>&lt;goals&gt;</span>
+              <span style=color:navy;font-weight:700>&lt;goal&gt;</span>timestamp-property<span style=color:navy;font-weight:700>&lt;/goal&gt;</span>
+              <span style=color:navy;font-weight:700>&lt;goal&gt;</span>regex-property<span style=color:navy;font-weight:700>&lt;/goal&gt;</span>
+            <span style=color:navy;font-weight:700>&lt;/goals&gt;</span>
+         <span style=color:navy;font-weight:700>&lt;/pluginexecutionfilter&gt;</span>
+         <span style=color:navy;font-weight:700>&lt;action&gt;</span>
+           <span style=color:navy;font-weight:700>&lt;execute</span> <span style=color:navy;font-weight:700>/&gt;</span>
+         <span style=color:navy;font-weight:700>&lt;/action&gt;</span>
+       <span style=color:navy;font-weight:700>&lt;/pluginexecution&gt;</span>
+       <span style=color:#080;font-style:italic>&lt;!-- other plug-ins... ---&gt;</span>
+     <span style=color:navy;font-weight:700>&lt;/pluginexecutions&gt;</span>
+   <span style=color:navy;font-weight:700>&lt;/lifecyclemappingmetadata&gt;</span>
+  <span style=color:navy;font-weight:700>&lt;/configuration&gt;</span>
+<span style=color:navy;font-weight:700>&lt;/plugin&gt;</span>
+</code></pre></div><h2>2. Conflicting Maven repository ids</h2>
 <p>Another problem building Jenkins in Eclipse was that as there were SNAPSHOT dependencies in jenkins/pom.xml a snapshots repository was added with the id maven.jenkins-ci.org. This is the same repository id used in some tutorials to build Jenkins plug-ins. Thus, Maven will ignore this repository, using the one from settings.xml.</p>
-
 <p>The solution for this issue was changing the repository id from maven.jenkins-ci.org to maven.jenkins-ci.org-snapshots.</p>
-
-<div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;repository&gt;</span><span class="c">&lt;!-- only until we release ant and javadoc plugins --&gt;</span>
-  <span class="nt">&lt;id&gt;</span>maven.jenkins-ci.org-snapshots<span class="nt">&lt;/id&gt;</span>
-  <span class="nt">&lt;url&gt;</span>http://maven.jenkins-ci.org/content/repositories/snapshots/<span class="nt">&lt;/url&gt;</span>
-  <span class="nt">&lt;releases&gt;</span>
-    <span class="nt">&lt;enabled&gt;</span>false<span class="nt">&lt;/enabled&gt;</span>
-  <span class="nt">&lt;/releases&gt;</span>
-  <span class="nt">&lt;snapshots&gt;</span>
-    <span class="nt">&lt;enabled&gt;</span>true<span class="nt">&lt;/enabled&gt;</span>
-  <span class="nt">&lt;/snapshots&gt;</span>
-<span class="nt">&lt;/repository&gt;</span>
-</code></pre></div></div>
-
-<div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;snapshotRepository&gt;</span>
-  <span class="nt">&lt;id&gt;</span>maven.jenkins-ci.org-snapshots<span class="nt">&lt;/id&gt;</span>
-  <span class="nt">&lt;url&gt;</span>http://maven.jenkins-ci.org:8081/content/repositories/snapshots<span class="nt">&lt;/url&gt;</span>
-<span class="nt">&lt;/snapshotRepository&gt;</span>
-</code></pre></div></div>
-
-<h2>3. maven-localizer-plugin</h2>
-
+<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-xml data-lang=xml><span style=color:navy;font-weight:700>&lt;repository&gt;</span><span style=color:#080;font-style:italic>&lt;!-- only until we release ant and javadoc plugins --&gt;</span>
+  <span style=color:navy;font-weight:700>&lt;id&gt;</span>maven.jenkins-ci.org-snapshots<span style=color:navy;font-weight:700>&lt;/id&gt;</span>
+  <span style=color:navy;font-weight:700>&lt;url&gt;</span>http://maven.jenkins-ci.org/content/repositories/snapshots/<span style=color:navy;font-weight:700>&lt;/url&gt;</span>
+  <span style=color:navy;font-weight:700>&lt;releases&gt;</span>
+    <span style=color:navy;font-weight:700>&lt;enabled&gt;</span>false<span style=color:navy;font-weight:700>&lt;/enabled&gt;</span>
+  <span style=color:navy;font-weight:700>&lt;/releases&gt;</span>
+  <span style=color:navy;font-weight:700>&lt;snapshots&gt;</span>
+    <span style=color:navy;font-weight:700>&lt;enabled&gt;</span>true<span style=color:navy;font-weight:700>&lt;/enabled&gt;</span>
+  <span style=color:navy;font-weight:700>&lt;/snapshots&gt;</span>
+<span style=color:navy;font-weight:700>&lt;/repository&gt;</span>
+</code></pre></div><div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-xml data-lang=xml><span style=color:navy;font-weight:700>&lt;snapshotRepository&gt;</span>
+  <span style=color:navy;font-weight:700>&lt;id&gt;</span>maven.jenkins-ci.org-snapshots<span style=color:navy;font-weight:700>&lt;/id&gt;</span>
+  <span style=color:navy;font-weight:700>&lt;url&gt;</span>http://maven.jenkins-ci.org:8081/content/repositories/snapshots<span style=color:navy;font-weight:700>&lt;/url&gt;</span>
+<span style=color:navy;font-weight:700>&lt;/snapshotRepository&gt;</span>
+</code></pre></div><h2>3. maven-localizer-plugin</h2>
 <p>This issue was related to the generation of the localization Java classes. maven-localizer-plugin reads properties files and generates Java classes with the text in a locale to be used by the plug-in. But sometimes Eclipse doesn't include all the source folders generated by this plug-in, causing the project to have compilation errors.</p>
-
 <p>The solution for this issue was to add the generated sources manually in jenkins/pom.xml under the build-helper-maven-plugin plug-in configuration.</p>
-
-<div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;plugin&gt;</span>
-  <span class="nt">&lt;groupId&gt;</span>org.codehaus.mojo<span class="nt">&lt;/groupId&gt;</span>
-  <span class="nt">&lt;artifactId&gt;</span>build-helper-maven-plugin<span class="nt">&lt;/artifactId&gt;</span>
-  <span class="nt">&lt;version&gt;</span>1.7<span class="nt">&lt;/version&gt;</span>
-  <span class="nt">&lt;executions&gt;</span>
-    <span class="nt">&lt;execution&gt;</span>
-      <span class="nt">&lt;id&gt;</span>add-eclipse-sources<span class="nt">&lt;/id&gt;</span>
-      <span class="nt">&lt;phase&gt;</span>generate-sources<span class="err">&lt;</span>/p<span class="nt">&lt;hase&gt;</span>
-      <span class="nt">&lt;goals&gt;</span>
-          <span class="nt">&lt;goal&gt;</span>add-source<span class="nt">&lt;/goal&gt;</span>
-      <span class="nt">&lt;/goals&gt;</span>
-      <span class="nt">&lt;configuration&gt;</span>
-      <span class="nt">&lt;sources&gt;</span>
-          <span class="nt">&lt;source&gt;</span>${basedir}/target/generated-sources/groovy-stubs/main<span class="nt">&lt;/source&gt;</span>
-          <span class="nt">&lt;source&gt;</span>${basedir}/target/generated-sources/localizer<span class="nt">&lt;/source&gt;</span>
-          <span class="nt">&lt;source&gt;</span>${basedir}/target/generated-sources/taglib-interface<span class="nt">&lt;/source&gt;</span>
-      <span class="nt">&lt;/sources&gt;</span>
-   <span class="nt">&lt;/configuration&gt;</span>
-  <span class="nt">&lt;/execution&gt;</span>
-  <span class="nt">&lt;/executions&gt;</span>
-<span class="nt">&lt;/plugin&gt;</span>
-</code></pre></div></div>
-
-<h2>Removing remaining Eclipse errors and warnings</h2>
-
+<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-xml data-lang=xml><span style=color:navy;font-weight:700>&lt;plugin&gt;</span>
+  <span style=color:navy;font-weight:700>&lt;groupId&gt;</span>org.codehaus.mojo<span style=color:navy;font-weight:700>&lt;/groupId&gt;</span>
+  <span style=color:navy;font-weight:700>&lt;artifactId&gt;</span>build-helper-maven-plugin<span style=color:navy;font-weight:700>&lt;/artifactId&gt;</span>
+  <span style=color:navy;font-weight:700>&lt;version&gt;</span>1.7<span style=color:navy;font-weight:700>&lt;/version&gt;</span>
+  <span style=color:navy;font-weight:700>&lt;executions&gt;</span>
+    <span style=color:navy;font-weight:700>&lt;execution&gt;</span>
+      <span style=color:navy;font-weight:700>&lt;id&gt;</span>add-eclipse-sources<span style=color:navy;font-weight:700>&lt;/id&gt;</span>
+      <span style=color:navy;font-weight:700>&lt;phase&gt;</span>generate-sources<span style=color:#a61717;background-color:#e3d2d2>&lt;</span>/p<span style=color:navy;font-weight:700>&lt;hase&gt;</span>
+      <span style=color:navy;font-weight:700>&lt;goals&gt;</span>
+          <span style=color:navy;font-weight:700>&lt;goal&gt;</span>add-source<span style=color:navy;font-weight:700>&lt;/goal&gt;</span>
+      <span style=color:navy;font-weight:700>&lt;/goals&gt;</span>
+      <span style=color:navy;font-weight:700>&lt;configuration&gt;</span>
+      <span style=color:navy;font-weight:700>&lt;sources&gt;</span>
+          <span style=color:navy;font-weight:700>&lt;source&gt;</span>${basedir}/target/generated-sources/groovy-stubs/main<span style=color:navy;font-weight:700>&lt;/source&gt;</span>
+          <span style=color:navy;font-weight:700>&lt;source&gt;</span>${basedir}/target/generated-sources/localizer<span style=color:navy;font-weight:700>&lt;/source&gt;</span>
+          <span style=color:navy;font-weight:700>&lt;source&gt;</span>${basedir}/target/generated-sources/taglib-interface<span style=color:navy;font-weight:700>&lt;/source&gt;</span>
+      <span style=color:navy;font-weight:700>&lt;/sources&gt;</span>
+   <span style=color:navy;font-weight:700>&lt;/configuration&gt;</span>
+  <span style=color:navy;font-weight:700>&lt;/execution&gt;</span>
+  <span style=color:navy;font-weight:700>&lt;/executions&gt;</span>
+<span style=color:navy;font-weight:700>&lt;/plugin&gt;</span>
+</code></pre></div><h2>Removing remaining Eclipse errors and warnings</h2>
 <p>Matthieu Vincent managed to overcome other Eclipse errors and warnings with the following steps:</p>
-
 <ul>
-  <li>run mvn generate-sources.&lt;/li&gt;</li>
-  <li>this will generate many source files under target/generated-sources sub directories.&lt;/li&gt;</li>
-  <li>now go to each project and look for target/generated-sources/localizer, right click on it and Build Path → Use as Source Folder.&lt;/li&gt;</li>
-  <li>the core project generates other files too. Like antlr,taglib-interfaces and other sources. Right click on these folders and use them as source too.&lt;/li&gt;</li>
-  <li>look for src/main/groovy (in core project).&lt;/li&gt;</li>
-  <li>then again, right click on it, Build Path → Use as Source Folder.&lt;/li&gt;</li>
-  <li>Do the usual Project → Clean, Project → Build Project, F5 your projects, and your environment must be fine&lt;/li&gt;</li>
+<li>run mvn generate-sources.</li></li>
+<li>this will generate many source files under target/generated-sources sub directories.</li></li>
+<li>now go to each project and look for target/generated-sources/localizer, right click on it and Build Path → Use as Source Folder.</li></li>
+<li>the core project generates other files too. Like antlr,taglib-interfaces and other sources. Right click on these folders and use them as source too.</li></li>
+<li>look for src/main/groovy (in core project).</li></li>
+<li>then again, right click on it, Build Path → Use as Source Folder.</li></li>
+<li>Do the usual Project → Clean, Project → Build Project, F5 your projects, and your environment must be fine</li></li>
 </ul>
-
 <p>Now you can follow the instructions in Jenkins Wiki for building Jenkins and have fun in your Eclipse. There still seems to have few issues to be solved. I can't see the version number in the footer, and the default plug-ins are missing. Time to go back to Minecraft now :D!</p>
-
 <p>Cheers</p>
-
-  </div>
-
-  <div class="tags"><p>Tags:&nbsp;<a class="label" href="/tag/java">java</a>,&nbsp;<a class="label" href="/tag/jenkins">jenkins</a>.<br/></p></div>
-
-  <a class="u-url" href="/2011/09/20/building-jenkins-with-eclipse-and-m2e-plug-in.html" hidden></a>
+<aside class=links>
+<a class=previous href=https://kinoshita.eti.br/2011/09/07/missed-jcertif.html>&#171; Previous</a>
+<a class=next href=https://kinoshita.eti.br/2011/10/23/practical-test-doubles-adding-stubs-to-testlink-java-api.html>Next &#187;</a>
+</aside>
 </article>
-
-  </div>
-</div>
+</main>
+<footer role=contentinfo>
+<ul id=social-media-icons>
+<li>
+<a href=https://www.instagram.com/brunokinoshita/>
+<img src=/assets/icons/instagram.png alt="Instagram link">
+</a>
+</li>
+<li>
+<a href=https://twitter.com/kinow/>
+<img src=/assets/icons/twitter.png alt="Twitter link">
+</a>
+</li>
+<li>
+<a href=https://github.com/kinow/>
+<img src=/assets/icons/github.png alt="GitHub link">
+</a>
+</li>
+</ul>
+</footer>
 </body>
 </html>

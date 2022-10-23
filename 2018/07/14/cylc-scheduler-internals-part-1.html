@@ -1,157 +1,89 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="utf-8" />
-<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-<meta name="viewport" content="width=device-width, initial-scale=1" /><!-- Begin Jekyll SEO tag v2.7.1 -->
-<title>Cylc Scheduler Internals - Part 1 | kinow</title>
-<meta name="generator" content="Jekyll v3.9.0" />
-<meta property="og:title" content="Cylc Scheduler Internals - Part 1" />
-<meta property="og:locale" content="en_US" />
-<meta name="description" content="This is the first post in a series of three (or maybe four later) based on diagrams I collected while debugging the Cylc scheduler. The scheduler is called by the cylc start utility. NB: this is a post to remember things, not really expecting to give someone enough information to be able to hack the Cylc Scheduler (though you can and would have fun!). Instead of going at length on what happens (and there is quite a bit happening when you run cylc start my.suite), I will use the following diagram, followed by a few paragraphs to highlight certain parts. The code used was based on Cylc 7.7.1." />
-<meta property="og:description" content="This is the first post in a series of three (or maybe four later) based on diagrams I collected while debugging the Cylc scheduler. The scheduler is called by the cylc start utility. NB: this is a post to remember things, not really expecting to give someone enough information to be able to hack the Cylc Scheduler (though you can and would have fun!). Instead of going at length on what happens (and there is quite a bit happening when you run cylc start my.suite), I will use the following diagram, followed by a few paragraphs to highlight certain parts. The code used was based on Cylc 7.7.1." />
-<link rel="canonical" href="https://kinoshita.eti.br/2018/07/14/cylc-scheduler-internals-part-1.html" />
-<meta property="og:url" content="https://kinoshita.eti.br/2018/07/14/cylc-scheduler-internals-part-1.html" />
-<meta property="og:site_name" content="kinow" />
-<meta property="og:type" content="article" />
-<meta property="article:published_time" content="2018-07-14T00:00:00+12:00" />
-<meta name="twitter:card" content="summary" />
-<meta property="twitter:title" content="Cylc Scheduler Internals - Part 1" />
-<script type="application/ld+json">
-{"description":"This is the first post in a series of three (or maybe four later) based on diagrams I collected while debugging the Cylc scheduler. The scheduler is called by the cylc start utility. NB: this is a post to remember things, not really expecting to give someone enough information to be able to hack the Cylc Scheduler (though you can and would have fun!). Instead of going at length on what happens (and there is quite a bit happening when you run cylc start my.suite), I will use the following diagram, followed by a few paragraphs to highlight certain parts. The code used was based on Cylc 7.7.1.","@type":"BlogPosting","url":"https://kinoshita.eti.br/2018/07/14/cylc-scheduler-internals-part-1.html","headline":"Cylc Scheduler Internals - Part 1","datePublished":"2018-07-14T00:00:00+12:00","dateModified":"2018-07-14T00:00:00+12:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://kinoshita.eti.br/2018/07/14/cylc-scheduler-internals-part-1.html"},"@context":"https://schema.org"}</script>
-<!-- End Jekyll SEO tag -->
-<link rel="stylesheet" href="/assets/css/main.css" /><link type="application/atom+xml" rel="alternate" href="https://kinoshita.eti.br/feed.xml" title="kinow" /><link href="https://unpkg.com/pattern.css" rel="stylesheet" />
-
+<!doctype html><html lang=en><head>
+<meta charset=utf-8>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<link rel=stylesheet type=text/css href=https://kinoshita.eti.br/sass/main.e392e97e7e5991e363403c494b51d829efa207842d755622976c2537d0509be0.css integrity="sha256-45Lpfn5ZkeNjQDxJS1HYKe+iB4QtdVYil2wlN9BQm+A=">
+<title>kinow | Cylc Scheduler Internals - Part 1</title>
 </head>
-<body>
-<div id="mobile-menu"><div class="menu">
-  <ul class="menu">
-    <li class="item">
-      <h1 id="kinow">KINOW</h1>
-    </li>
-    <li class="item">
-      <a href="/" class="">About</a>
-    </li>
-    <li class="item">
-      <a href="/blog/" class="current">Blog</a>
-    </li>
-    <li class="item">
-      <a href="/portfolio/" class="">Portfolio</a>
-    </li>
-    <li class="item social-media-item">
-      <a href="https://www.instagram.com/brunokinoshita/" class="inline-link">
-        <img src="/assets/icons/instagram.png" class="inverted-image"  alt="Instagram link" />
-      </a>
-      <a href="https://twitter.com/kinow/" class="inline-link">
-        <img src="/assets/icons/twitter.png" class="inverted-image" alt="Twitter link" />
-      </a>
-      <a href="https://github.com/kinow/" class="inline-link">
-        <img src="/assets/icons/github.png" class="inverted-image" alt="GitHub link" />
-      </a>
-    </li>
-  </ul>
+<body><header role=banner class=content>
+<nav id=nav aria-label=Main role=navigation class=content>
+<ul><li>
+<a href=/>
+<i data-feather=about></i> About</a>
+</li><li>
+<a href=/blog/>
+<i data-feather=blog></i> Blog</a>
+</li><li>
+<a href=/portfolio/>
+<i data-feather=portfolio></i> Portfolio</a>
+</li><li></li>
+</ul>
+</nav>
+</header>
+<main>
+<article class=content>
+<h2>Cylc Scheduler Internals - Part 1</h2><div class=metadata>
+<i data-feather=calendar></i>
+<time datetime=2018-07-14>Jul 14, 2018</time>
 </div>
-</div>
-<div id="wrapper">
-  <div id="sidebar"><div class="menu">
-  <ul class="menu">
-    <li class="item">
-      <h1 id="kinow">KINOW</h1>
-    </li>
-    <li class="item">
-      <a href="/" class="">About</a>
-    </li>
-    <li class="item">
-      <a href="/blog/" class="current">Blog</a>
-    </li>
-    <li class="item">
-      <a href="/portfolio/" class="">Portfolio</a>
-    </li>
-    <li class="item social-media-item">
-      <a href="https://www.instagram.com/brunokinoshita/" class="inline-link">
-        <img src="/assets/icons/instagram.png" class="inverted-image"  alt="Instagram link" />
-      </a>
-      <a href="https://twitter.com/kinow/" class="inline-link">
-        <img src="/assets/icons/twitter.png" class="inverted-image" alt="Twitter link" />
-      </a>
-      <a href="https://github.com/kinow/" class="inline-link">
-        <img src="/assets/icons/github.png" class="inverted-image" alt="GitHub link" />
-      </a>
-    </li>
-  </ul>
-</div>
-</div>
-  <div id="content">
-    <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
-  <header class="post-header">
-    <h1 class="post-title p-name" itemprop="name headline">Cylc Scheduler Internals - Part 1</h1>
-    <span class="post-meta">
-      <time class="dt-published" datetime="2018-07-14T00:00:00+12:00" itemprop="datePublished">Jul 14, 2018
-      </time>
-      <span>&mdash; star date: -304383.56.</span>
-      <span>
-        Number of words: 424.
-      </span></span>
-  </header>
-
-  
-
-
-  <div class="post-content e-content" itemprop="articleBody">
-    <p>This is the first post in a series of three (or maybe four later) based on diagrams
-I collected while debugging the Cylc scheduler. The scheduler is called by the <code class="language-plaintext highlighter-rouge">cylc start</code>
+<p>This is the first post in a series of three (or maybe four later) based on diagrams
+I collected while debugging the Cylc scheduler. The scheduler is called by the <code>cylc start</code>
 utility.</p>
-
 <p><em>NB: this is a post to remember things, not really expecting to give someone enough
 information to be able to hack the Cylc Scheduler (though you can and would have fun!).</em></p>
-
 <p>Instead of going at length on what happens (and there is quite a bit happening when
-you run <code class="language-plaintext highlighter-rouge">cylc start my.suite</code>), I will use the following diagram, followed by a few paragraphs
-to highlight certain parts. The code used was based on <a href="https://github.com/cylc/cylc/tree/7.7.1">Cylc 7.7.1</a>.</p>
-
-<p><img style="display: inline; width: 100%;" class="ui image" src="/assets/posts/2018-07-14-cylc-scheduler-internals-part-1/cylc-scheduler_cli-workflow.png" /></p>
-
-<!--more-->
-
-<p>When a Cylc command like <code class="language-plaintext highlighter-rouge">cylc start</code> is invoked, it actually gets translated into
-<code class="language-plaintext highlighter-rouge">bin/cylc-$command_name</code>. <code class="language-plaintext highlighter-rouge">cylc-start</code> is a Shell file, that will simply call <code class="language-plaintext highlighter-rouge">cylc-run</code>.
-<code class="language-plaintext highlighter-rouge">cylc-run</code> then imports <code class="language-plaintext highlighter-rouge">scheduler_cli</code>… but what you need to know is that in the end
-<code class="language-plaintext highlighter-rouge">scheduler_cli</code> will create an instance of <code class="language-plaintext highlighter-rouge">Scheduler</code> with the right constructor
-arguments, and call its <code class="language-plaintext highlighter-rouge">start</code> method.</p>
-
-<p>After that point, you are at the left-most lifeline, on the <code class="language-plaintext highlighter-rouge">Scheduler</code> constructor
-(i.e. the <strong>init</strong> method of the scheduler.py’s Scheduler class).</p>
-
+you run <code>cylc start my.suite</code>), I will use the following diagram, followed by a few paragraphs
+to highlight certain parts. The code used was based on <a href=https://github.com/cylc/cylc/tree/7.7.1>Cylc 7.7.1</a>.</p>
+<figure class=feature>
+<img src=/assets/posts/2018-07-14-cylc-scheduler-internals-part-1/cylc-scheduler_cli-workflow.png alt title style=zgotmplz width height>
+<figcaption></figcaption>
+</figure>
+<p>When a Cylc command like <code>cylc start</code> is invoked, it actually gets translated into
+<code>bin/cylc-$command_name</code>. <code>cylc-start</code> is a Shell file, that will simply call <code>cylc-run</code>.
+<code>cylc-run</code> then imports <code>scheduler_cli</code>&mldr; but what you need to know is that in the end
+<code>scheduler_cli</code> will create an instance of <code>Scheduler</code> with the right constructor
+arguments, and call its <code>start</code> method.</p>
+<p>After that point, you are at the left-most lifeline, on the <code>Scheduler</code> constructor
+(i.e. the <strong>init</strong> method of the scheduler.py&rsquo;s Scheduler class).</p>
 <p>If you follow the method calls - which are hopefully easy to understand and follow -
 you will find that the constructor merely creates a few objects, prepares the suite
 information, and the suite database.</p>
-
-<p>Then the <code class="language-plaintext highlighter-rouge">start</code> method kicks things off, interacting with previously created objects,
-but also with some singletons for logging and configuration. Oh, that <code class="language-plaintext highlighter-rouge">Cylc</code> banner
+<p>Then the <code>start</code> method kicks things off, interacting with previously created objects,
+but also with some singletons for logging and configuration. Oh, that <code>Cylc</code> banner
 is also printed here (in case you would like to customize it as in SpringBoot).</p>
-
 <p>After that, if you are running the suite as daemon, it will be
-<a href="http://code.activestate.com/recipes/66012-fork-a-daemon-process-on-unix/">daemonized</a>,
+<a href=http://code.activestate.com/recipes/66012-fork-a-daemon-process-on-unix/>daemonized</a>,
 by forking the current process, but with Python.</p>
-
 <p>One important step that happens here, is the initialization of the HTTP Server. This server
 will be used to communicate with the <strong>Suite Server Program</strong>. It will be listening to
-connections with the right endpoints available only after the <code class="language-plaintext highlighter-rouge">configure</code> method.</p>
-
-<p>Lastly, we have <code class="language-plaintext highlighter-rouge">configure</code> and <code class="language-plaintext highlighter-rouge">run</code> methods, which are two very important methods to be discussed
+connections with the right endpoints available only after the <code>configure</code> method.</p>
+<p>Lastly, we have <code>configure</code> and <code>run</code> methods, which are two very important methods to be discussed
 in the next part of this series, as they are quite extensive, and deserve their own diagrams.</p>
-
-<p>You can download the <a href="/assets/posts/2018-07-14-cylc-scheduler-internals-part-1/cylc-scheduler_cli-workflow-src.png">source file</a> for the diagram used in this post, and edit it
-with <a href="https://draw.io">draw.io</a>.</p>
-
-  </div>
-
-  <div class="tags"><p>Tags:&nbsp;<a class="label" href="/tag/cylc">cylc</a>,&nbsp;<a class="label" href="/tag/python">python</a>,&nbsp;<a class="label" href="/tag/opensource">opensource</a>.<br/></p></div>
-
-  <a class="u-url" href="/2018/07/14/cylc-scheduler-internals-part-1.html" hidden></a>
+<p>You can download the &lt;a href="/assets/posts{{page.path | remove: &ldquo;.md&rdquo; | remove: &ldquo;_posts&rdquo; }}/cylc-scheduler_cli-workflow-src.png">source file</a> for the diagram used in this post, and edit it
+with <a href=https://draw.io>draw.io</a>.</p>
+<aside class=links>
+<a class=previous href=https://kinoshita.eti.br/2018/07/10/importerror-when-debugging-cylc-in-eclipse.html>&#171; Previous</a>
+<a class=next href=https://kinoshita.eti.br/2018/07/22/multithreaded-code-and-pandas.html>Next &#187;</a>
+</aside>
 </article>
-
-  </div>
-</div>
+</main>
+<footer role=contentinfo>
+<ul id=social-media-icons>
+<li>
+<a href=https://www.instagram.com/brunokinoshita/>
+<img src=/assets/icons/instagram.png alt="Instagram link">
+</a>
+</li>
+<li>
+<a href=https://twitter.com/kinow/>
+<img src=/assets/icons/twitter.png alt="Twitter link">
+</a>
+</li>
+<li>
+<a href=https://github.com/kinow/>
+<img src=/assets/icons/github.png alt="GitHub link">
+</a>
+</li>
+</ul>
+</footer>
 </body>
 </html>

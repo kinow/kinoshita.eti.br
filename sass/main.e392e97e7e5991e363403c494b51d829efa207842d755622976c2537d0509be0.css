@@ -1,0 +1,237 @@
+/* colors */
+/* typography */
+/*
+  1. Use a more-intuitive box-sizing model.
+*/
+*, *::before, *::after {
+  box-sizing: border-box; }
+
+/*
+  2. Remove default margin
+*/
+* {
+  margin: 0; }
+
+/*
+  3. Allow percentage-based heights in the application
+*/
+html, body {
+  height: 100%; }
+
+/*
+  Typographic tweaks!
+  4. Add accessible line-height
+  5. Improve text rendering
+*/
+body {
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased; }
+
+/*
+  6. Improve media defaults
+*/
+img, picture, video, canvas, svg {
+  display: block;
+  max-width: 100%; }
+
+/*
+  7. Remove built-in form typography styles
+*/
+input, button, textarea, select {
+  font: inherit; }
+
+/*
+  8. Avoid text overflows
+*/
+p, h1, h2, h3, h4, h5, h6 {
+  overflow-wrap: break-word; }
+
+/*
+  9. Create a root stacking context
+*/
+#root, #__next {
+  isolation: isolate; }
+
+/* colors */
+/* typography */
+:root {
+  --color-text: #222222;
+  --color-black: #050708;
+  --color-white: white;
+  --color-light-black: #222222;
+  --color-light-gray: #666666; }
+
+html {
+  font-family: "Source Serif Pro", "Iowan Old Style", "Apple Garamond", "Palatino Linotype", "georgia", "Times New Roman", "Droid Serif", Times, serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  font-size: 1.2rem;
+  color: var(--color-text); }
+  html body {
+    overflow-x: hidden; }
+  html p, html ul, html img {
+    margin: 0 0 1rem 0; }
+  html h1, html h2, html h3, html h4, html h5, html h6 {
+    margin: 0 0 1rem 0;
+    font-family: Verdana, Consolas, monospace, serif; }
+  html figure, html pre {
+    margin: 1rem 0; }
+
+/* colors */
+/* typography */
+/* colors */
+/* typography */
+nav#nav {
+  min-width: 400px;
+  overflow: hidden;
+  display: block; }
+  nav#nav ul {
+    font-family: Verdana, Consolas, monospace, serif;
+    list-style: none;
+    margin: 0.25rem 0 0 0;
+    padding: 0; }
+    nav#nav ul li {
+      display: inline-block;
+      margin: 0;
+      padding: 0; }
+      nav#nav ul li:first-of-type {
+        margin: 0; }
+      nav#nav ul li:last-of-type {
+        margin: 0; }
+      nav#nav ul li a, nav#nav ul li a:visited, nav#nav ul li a:active {
+        display: inline-block;
+        position: relative;
+        padding: 0.5rem 0.5rem;
+        color: var(--color-white);
+        text-decoration: none; }
+        nav#nav ul li a.active, nav#nav ul li a:visited.active, nav#nav ul li a:active.active {
+          background-color: var(--color-white);
+          color: var(--color-black); }
+        nav#nav ul li a:hover:after, nav#nav ul li a:visited:hover:after, nav#nav ul li a:active:hover:after {
+          content: '';
+          position: absolute;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          margin: 0 auto;
+          width: 0;
+          height: 0;
+          border-bottom: 0.5rem solid var(--color-white);
+          border-left: 0.5rem solid transparent;
+          border-right: 0.5rem solid transparent; }
+
+header {
+  background-color: var(--color-black);
+  font-family: Verdana, Consolas, monospace, serif;
+  padding: unset !important;
+  overflow-x: scroll; }
+
+/* colors */
+/* typography */
+/*
+ * Original source: https://ryanmulligan.dev/blog/layout-breakouts/
+ */
+.content {
+  font-family: "Source Serif Pro", "Iowan Old Style", "Apple Garamond", "Palatino Linotype", "georgia", "Times New Roman", "Droid Serif", Times, serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  --gap: clamp(1rem, 6vw, 3rem);
+  --full: minmax(var(--gap), 1fr);
+  --content: min(75ch, 100% - var(--gap) * 2);
+  --popout: minmax(0, 2rem);
+  --feature: minmax(0, 5rem);
+  display: grid;
+  grid-template-columns: [full-start] var(--full) [feature-start] var(--feature) [popout-start] var(--popout) [content-start] var(--content) [content-end] var(--popout) [popout-end] var(--feature) [feature-end] var(--full) [full-end]; }
+
+.content > * {
+  grid-column: content; }
+
+.popout {
+  grid-column: popout; }
+
+.feature, article.content .highlight, main.content .highlight {
+  grid-column: feature; }
+
+.full, article.content div#portfolio, main.content div#portfolio {
+  grid-column: full; }
+
+/*
+ * Other.
+ */
+article.content, main.content {
+  padding: 2rem 0 1rem 0;
+  /**
+ * Hugo code block.
+ */
+  /*
+   * List of posts.
+   */ }
+  article.content a, article.content a:visited, article.content a:active, main.content a, main.content a:visited, main.content a:active {
+    color: #d22737;
+    text-decoration: none; }
+  article.content .metadata, main.content .metadata {
+    font-size: 0.8rem; }
+  article.content figure, main.content figure {
+    justify-content: center;
+    align-content: center;
+    display: flex;
+    flex-direction: column; }
+    article.content figure img, main.content figure img {
+      margin: 0 auto 1rem auto; }
+    article.content figure figcaption, main.content figure figcaption {
+      text-align: center;
+      color: var(--color-light-gray);
+      font-size: 0.8rem; }
+  article.content div.landing-page img#kinow-photo, main.content div.landing-page img#kinow-photo {
+    filter: grayscale(100%); }
+  article.content code, article.content pre, main.content code, main.content pre {
+    font-family: "Noto Sans Mono", monospace;
+    font-size: 0.8rem; }
+  article.content .highlight, main.content .highlight {
+    margin: 0 0 1rem 0;
+    justify-content: center;
+    align-items: center; }
+    article.content .highlight pre, main.content .highlight pre {
+      font-family: "Noto Sans Mono", monospace;
+      font-size: 0.8rem;
+      padding: 1rem;
+      overflow-x: scroll;
+      background: #d7e1eb !important;
+      white-space: pre;
+      border-radius: 12px; }
+  article.content div#portfolio, main.content div#portfolio {
+    margin: 1rem 0;
+    display: flex;
+    flex: 0 0 50%;
+    flex-direction: row;
+    overflow-x: scroll;
+    overflow-y: hidden;
+    max-height: 700px;
+    height: 75vmin; }
+    article.content div#portfolio img, main.content div#portfolio img {
+      max-width: unset;
+      width: auto; }
+  article.content .post-link, main.content .post-link {
+    margin: 0 0 0.5rem 0; }
+    article.content .post-link .metadata, main.content .post-link .metadata {
+      font-size: 0.8rem; }
+  article.content aside.links, main.content aside.links {
+    display: flex; }
+    article.content aside.links *:nth-child(2), main.content aside.links *:nth-child(2) {
+      display: flex;
+      margin-left: auto; }
+
+footer {
+  display: inline-block;
+  width: 100%;
+  padding: 0 1rem; }
+  footer ul#social-media-icons {
+    display: inline-block;
+    width: 100%;
+    text-align: center;
+    list-style: none;
+    margin: 1rem 0 1rem 0;
+    padding: 0; }
+    footer ul#social-media-icons li {
+      display: inline-block;
+      margin: 0;
+      padding: 0; }
+      @media (prefers-color-scheme: dark) {
+        footer ul#social-media-icons li img {
+          filter: invert(0.5); } }

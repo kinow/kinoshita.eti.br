@@ -1,0 +1,84 @@
+<!doctype html><html lang=en><head>
+<meta charset=utf-8>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<link rel=stylesheet type=text/css href=https://kinoshita.eti.br/sass/main.e392e97e7e5991e363403c494b51d829efa207842d755622976c2537d0509be0.css integrity="sha256-45Lpfn5ZkeNjQDxJS1HYKe+iB4QtdVYil2wlN9BQm+A=">
+<title>kinow | Too many SQL variables exception in Graphite with SQLite3</title>
+</head>
+<body><header role=banner class=content>
+<nav id=nav aria-label=Main role=navigation class=content>
+<ul><li>
+<a href=/>
+<i data-feather=about></i> About</a>
+</li><li>
+<a href=/blog/>
+<i data-feather=blog></i> Blog</a>
+</li><li>
+<a href=/portfolio/>
+<i data-feather=portfolio></i> Portfolio</a>
+</li><li></li>
+</ul>
+</nav>
+</header>
+<main>
+<article class=content>
+<h2>Too many SQL variables exception in Graphite with SQLite3</h2><div class=metadata>
+<i data-feather=calendar></i>
+<time datetime=2013-07-04>Jul 4, 2013</time>
+</div>
+<p>Having run <a href=http://graphite.wikidot.com/>Graphite</a> for a while, today I found a rather annoying issue. We were using
+<a href=https://code.launchpad.net/~lucio.torre/graphite/add-events/+merge/69142>events</a>, and everything was working perfectly fine so far. But for the 24 last hours,
+the graph was blank.</p>
+<p>Actually, in the dashboard, the graph was <em>missing</em>, being displayed as a gray box.
+Enabling the web inspector in Google Chrome I got the graph URL. Opening the link in
+a new tab gave me the exception message: <strong>too many SQL variables</strong> (<sup>1</sup>).</p>
+<p>After some research, I found out this was a bug in SQLite. After trying to hack the code,
+and being concerned about using a patched version of Graphite and having to update it
+later, I decided to switch database.</p>
+<p>But to avoid losing the graphs, users and other settings, including the events, I
+migrated the SQLite database to a MySQL server. This MySQL server was already installed in
+the server machine, since this machine hosted a <a href=http://www.zabbix.com/>Zabbix</a> server too.</p>
+<p>Here are the steps required to migrate your database from SQLite to MySQL (<sup>2</sup>).</p>
+<ul>
+<li>Download <strong>sqlite3_mysql</strong> python script from <a href=http://www.redmine.org/boards/2/topics/12793>http://www.redmine.org/boards/2/topics/12793</a></li>
+<li>Stop Apache/Nginx</li>
+<li>mysql -u user -p -e &ldquo;create database redmine graphite set utf8;&rdquo;</li>
+<li>sqlite3 graphite.db .dump | sqlite3-to-mysql.py | mysql -uroot -pyourpass graphite</li>
+<li>Start Apache again</li>
+</ul>
+<p>After tail&rsquo;ing the Graphite webapp log file,</p>
+<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>tail f- storage/log/webapp/error.log
+</code></pre></div><p>I noticed the Python MySQLdb wasn&rsquo;t installed.</p>
+<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python>ImproperlyConfigured: Error loading MySQLdb module: No module named MySQLdb
+</code></pre></div><p>My server was an Ubuntu 13.04, so I installed the module simply with the following
+command.</p>
+<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>apt-get install python-mysqldb
+</code></pre></div><p>Hope that helps!</p>
+<p><small><sup>1</sup> You may have to enable *DEBUG* in your Django settings for seeing the exception in your browser</small></p>
+<p><small><sup>2</sup> Zabbix needed some minor tweaks in order to use [MariaDB](https://mariadb.org/), but probably you can give it a try too</small></p>
+<aside class=links>
+<a class=previous href=https://kinoshita.eti.br/2013/04/17/graphite-broken-images.html>&#171; Previous</a>
+<a class=next href=https://kinoshita.eti.br/2013/09/29/the-apache-way-and-on-writing-software-reviews.html>Next &#187;</a>
+</aside>
+</article>
+</main>
+<footer role=contentinfo>
+<ul id=social-media-icons>
+<li>
+<a href=https://www.instagram.com/brunokinoshita/>
+<img src=/assets/icons/instagram.png alt="Instagram link">
+</a>
+</li>
+<li>
+<a href=https://twitter.com/kinow/>
+<img src=/assets/icons/twitter.png alt="Twitter link">
+</a>
+</li>
+<li>
+<a href=https://github.com/kinow/>
+<img src=/assets/icons/github.png alt="GitHub link">
+</a>
+</li>
+</ul>
+</footer>
+</body>
+</html>

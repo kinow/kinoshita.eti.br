@@ -1,258 +1,162 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="utf-8" />
-<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-<meta name="viewport" content="width=device-width, initial-scale=1" /><!-- Begin Jekyll SEO tag v2.7.1 -->
-<title>Cypher, Gremlin and SPARQL: Graph dialects | kinow</title>
-<meta name="generator" content="Jekyll v3.9.0" />
-<meta property="og:title" content="Cypher, Gremlin and SPARQL: Graph dialects" />
-<meta property="og:locale" content="en_US" />
-<meta name="description" content="When I was younger and my older brother was living in Germany, I asked him if he had learned German. He said that he did, and explained that there are several dialects, and he was quite proud for some people told him that he was using the Bavarian dialect correctly. Even though Cypher, Gremlin and SPARQL are all query languages, I think we can consider them dialects of a common graph language. Cypher is the query language used in neo4j, a graph database. Gremlin is part of the Tinkerpop, an open source project that contains graph server, graph algorithms, graph language, among other sub-projects. And last but not least, SPARQL is used to query RDF documents. Let’s use the example of the Matrix movie provided by neo4j to take a look at the three languages. Cypher First we create the graph. create (matrix1:Movie {id : &#39;603&#39;, title : &#39;The Matrix&#39;, year : &#39;1999-03-31&#39;}), (matrix2:Movie {id : &#39;604&#39;, title : &#39;The Matrix Reloaded&#39;, year : &#39;2003-05-07&#39;}), (matrix3:Movie {id : &#39;605&#39;, title : &#39;The Matrix Revolutions&#39;, year : &#39;2003-10-27&#39;}), (neo:Actor {name:&#39;Keanu Reeves&#39;}), (morpheus:Actor {name:&#39;Laurence Fishburne&#39;}), (trinity:Actor {name:&#39;Carrie-Anne Moss&#39;}), (matrix1)&lt;-[:ACTS_IN {role : &#39;Neo&#39;}]-(neo), (matrix2)&lt;-[:ACTS_IN {role : &#39;Neo&#39;}]-(neo), (matrix3)&lt;-[:ACTS_IN {role : &#39;Neo&#39;}]-(neo), (matrix1)&lt;-[:ACTS_IN {role : &#39;Morpheus&#39;}]-(morpheus), (matrix2)&lt;-[:ACTS_IN {role : &#39;Morpheus&#39;}]-(morpheus), (matrix3)&lt;-[:ACTS_IN {role : &#39;Morpheus&#39;}]-(morpheus), (matrix1)&lt;-[:ACTS_IN {role : &#39;Trinity&#39;}]-(trinity), (matrix2)&lt;-[:ACTS_IN {role : &#39;Trinity&#39;}]-(trinity), (matrix3)&lt;-[:ACTS_IN {role : &#39;Trinity&#39;}]-(trinity) Added 6 labels, created 6 nodes, set 21 properties, created 9 relationships, returned 0 rows in 2791 ms And execute a simple query. MATCH (a:Actor { name:&quot;Keanu Reeves&quot; }) RETURN a (9:Actor {name:&quot;Keanu Reeves&quot;}) Gremlin Again, let’s start by creating our graph. g = new TinkerGraph(); matrix1 = g.addVertex([&quot;_id&quot;:603,&quot;title&quot;:&quot;The Matrix&quot;, &quot;year&quot;: &quot;1999-03-31&quot;]); matrix2 = g.addVertex([&quot;_id&quot;:604,&quot;title&quot;:&quot;The Matrix Reloaded&quot;, &quot;year&quot;: &quot;2003-05-07&quot;]); matrix3 = g.addVertex([&quot;_id&quot;:605,&quot;title&quot;:&quot;The Matrix Revolutions&quot;, &quot;year&quot;: &quot;2003-10-27&quot;]); neo = g.addVertex([&quot;name&quot;: &quot;Keanu Reeves&quot;]); morpheus = g.addVertex([&quot;name&quot;: &quot;Laurence Fishburne&quot;]); trinity = g.addVertex([&quot;name&quot;: &quot;Carrie-Anne Moss&quot;]); neo.addEdge(&quot;actsIn&quot;, matrix1); neo.addEdge(&quot;actsIn&quot;, matrix2); neo.addEdge(&quot;actsIn&quot;, matrix3); morpheus.addEdge(&quot;actsIn&quot;, matrix1); morpheus.addEdge(&quot;actsIn&quot;, matrix2); morpheus.addEdge(&quot;actsIn&quot;, matrix3); trinity.addEdge(&quot;actsIn&quot;, matrix1); trinity.addEdge(&quot;actsIn&quot;, matrix2); trinity.addEdge(&quot;actsIn&quot;, matrix3); And execute a simple query. g.V.has(&#39;name&#39;, &#39;Keanu Reeves&#39;).map gremlin&gt; g.V.has(&#39;name&#39;, &#39;Keanu Reeves&#39;).map ==&gt;{name=Keanu Reeves} gremlin&gt; Quite similar to neo4j. SPARQL Let’s load our example (thanks to Kendall G. Clark). I used Fuseki to run these queries. @prefix : &lt;http://example.org/matrix/&gt; . :m1 a :Movie; :title &quot;The Matrix&quot;; :year &quot;1999-03-31&quot;. :m2 a :Movie; :title &quot;The Matrix Reloaded&quot;; :year &quot;2003-05-07&quot;. :m3 a :Movie; :title &quot;The Matrix Revolutions&quot;; :year &quot;2003-10-27&quot;. :neo a :Actor; :name &quot;Keanu Reeves&quot;. :morpheus a :Actor; :name &quot;Laurence Fishburne&quot;. :trinity a :Actor; :name &quot;Carrie-Anne Moss&quot;. :neo :hasRole [:as &quot;Neo&quot;; :in :m1]. :neo :hasRole [:as &quot;Neo&quot;; :in :m2]. :neo :hasRole [:as &quot;Neo&quot;; :in :m2]. :morpheus :hasRole [:as &quot;Morpheus&quot;; :in :m1]. :morpheus :hasRole [:as &quot;Morpheus&quot;; :in :m2]. :morpheus :hasRole [:as &quot;Morpheus&quot;; :in :m2]. :trinity :hasRole [:as &quot;Trinity&quot;; :in :m1]. :trinity :hasRole [:as &quot;Trinity&quot;; :in :m2]. :trinity :hasRole [:as &quot;Trinity&quot;; :in :m2]. And finally the SPARQL query. SELECT ?a WHERE { ?a a &lt;http://example.org/matrix/Actor&gt; . ?a &lt;http://example.org/matrix/name&gt; ?name . FILTER(?name = &quot;Keanu Reeves&quot;) } Returning the Keanu Reeves actor instance. ----------------------------------- | a | =================================== | &lt;http://example.org/matrix/neo&gt; | ----------------------------------- SPARQL supports inference (or I must say that OWL, RDFS and the reasoners do), but it is easier to define the depth of a search in the graph using neo4j. As for Gremlin, it has native support to Groovy and Java. There is a common denominator for these three languages, but what makes them really powerful are their unique features. I hope you enjoyed, and that this post gave you a quick overview of some of the existing graph languages. Make sure you ponder the pros and cons of each server/language, and make the best decision for your project. Take a look at other graph query languages too. Happy hacking! This post has been updated as suggested by @kendall (Thank you!). You can check the diff at GitHub" />
-<meta property="og:description" content="When I was younger and my older brother was living in Germany, I asked him if he had learned German. He said that he did, and explained that there are several dialects, and he was quite proud for some people told him that he was using the Bavarian dialect correctly. Even though Cypher, Gremlin and SPARQL are all query languages, I think we can consider them dialects of a common graph language. Cypher is the query language used in neo4j, a graph database. Gremlin is part of the Tinkerpop, an open source project that contains graph server, graph algorithms, graph language, among other sub-projects. And last but not least, SPARQL is used to query RDF documents. Let’s use the example of the Matrix movie provided by neo4j to take a look at the three languages. Cypher First we create the graph. create (matrix1:Movie {id : &#39;603&#39;, title : &#39;The Matrix&#39;, year : &#39;1999-03-31&#39;}), (matrix2:Movie {id : &#39;604&#39;, title : &#39;The Matrix Reloaded&#39;, year : &#39;2003-05-07&#39;}), (matrix3:Movie {id : &#39;605&#39;, title : &#39;The Matrix Revolutions&#39;, year : &#39;2003-10-27&#39;}), (neo:Actor {name:&#39;Keanu Reeves&#39;}), (morpheus:Actor {name:&#39;Laurence Fishburne&#39;}), (trinity:Actor {name:&#39;Carrie-Anne Moss&#39;}), (matrix1)&lt;-[:ACTS_IN {role : &#39;Neo&#39;}]-(neo), (matrix2)&lt;-[:ACTS_IN {role : &#39;Neo&#39;}]-(neo), (matrix3)&lt;-[:ACTS_IN {role : &#39;Neo&#39;}]-(neo), (matrix1)&lt;-[:ACTS_IN {role : &#39;Morpheus&#39;}]-(morpheus), (matrix2)&lt;-[:ACTS_IN {role : &#39;Morpheus&#39;}]-(morpheus), (matrix3)&lt;-[:ACTS_IN {role : &#39;Morpheus&#39;}]-(morpheus), (matrix1)&lt;-[:ACTS_IN {role : &#39;Trinity&#39;}]-(trinity), (matrix2)&lt;-[:ACTS_IN {role : &#39;Trinity&#39;}]-(trinity), (matrix3)&lt;-[:ACTS_IN {role : &#39;Trinity&#39;}]-(trinity) Added 6 labels, created 6 nodes, set 21 properties, created 9 relationships, returned 0 rows in 2791 ms And execute a simple query. MATCH (a:Actor { name:&quot;Keanu Reeves&quot; }) RETURN a (9:Actor {name:&quot;Keanu Reeves&quot;}) Gremlin Again, let’s start by creating our graph. g = new TinkerGraph(); matrix1 = g.addVertex([&quot;_id&quot;:603,&quot;title&quot;:&quot;The Matrix&quot;, &quot;year&quot;: &quot;1999-03-31&quot;]); matrix2 = g.addVertex([&quot;_id&quot;:604,&quot;title&quot;:&quot;The Matrix Reloaded&quot;, &quot;year&quot;: &quot;2003-05-07&quot;]); matrix3 = g.addVertex([&quot;_id&quot;:605,&quot;title&quot;:&quot;The Matrix Revolutions&quot;, &quot;year&quot;: &quot;2003-10-27&quot;]); neo = g.addVertex([&quot;name&quot;: &quot;Keanu Reeves&quot;]); morpheus = g.addVertex([&quot;name&quot;: &quot;Laurence Fishburne&quot;]); trinity = g.addVertex([&quot;name&quot;: &quot;Carrie-Anne Moss&quot;]); neo.addEdge(&quot;actsIn&quot;, matrix1); neo.addEdge(&quot;actsIn&quot;, matrix2); neo.addEdge(&quot;actsIn&quot;, matrix3); morpheus.addEdge(&quot;actsIn&quot;, matrix1); morpheus.addEdge(&quot;actsIn&quot;, matrix2); morpheus.addEdge(&quot;actsIn&quot;, matrix3); trinity.addEdge(&quot;actsIn&quot;, matrix1); trinity.addEdge(&quot;actsIn&quot;, matrix2); trinity.addEdge(&quot;actsIn&quot;, matrix3); And execute a simple query. g.V.has(&#39;name&#39;, &#39;Keanu Reeves&#39;).map gremlin&gt; g.V.has(&#39;name&#39;, &#39;Keanu Reeves&#39;).map ==&gt;{name=Keanu Reeves} gremlin&gt; Quite similar to neo4j. SPARQL Let’s load our example (thanks to Kendall G. Clark). I used Fuseki to run these queries. @prefix : &lt;http://example.org/matrix/&gt; . :m1 a :Movie; :title &quot;The Matrix&quot;; :year &quot;1999-03-31&quot;. :m2 a :Movie; :title &quot;The Matrix Reloaded&quot;; :year &quot;2003-05-07&quot;. :m3 a :Movie; :title &quot;The Matrix Revolutions&quot;; :year &quot;2003-10-27&quot;. :neo a :Actor; :name &quot;Keanu Reeves&quot;. :morpheus a :Actor; :name &quot;Laurence Fishburne&quot;. :trinity a :Actor; :name &quot;Carrie-Anne Moss&quot;. :neo :hasRole [:as &quot;Neo&quot;; :in :m1]. :neo :hasRole [:as &quot;Neo&quot;; :in :m2]. :neo :hasRole [:as &quot;Neo&quot;; :in :m2]. :morpheus :hasRole [:as &quot;Morpheus&quot;; :in :m1]. :morpheus :hasRole [:as &quot;Morpheus&quot;; :in :m2]. :morpheus :hasRole [:as &quot;Morpheus&quot;; :in :m2]. :trinity :hasRole [:as &quot;Trinity&quot;; :in :m1]. :trinity :hasRole [:as &quot;Trinity&quot;; :in :m2]. :trinity :hasRole [:as &quot;Trinity&quot;; :in :m2]. And finally the SPARQL query. SELECT ?a WHERE { ?a a &lt;http://example.org/matrix/Actor&gt; . ?a &lt;http://example.org/matrix/name&gt; ?name . FILTER(?name = &quot;Keanu Reeves&quot;) } Returning the Keanu Reeves actor instance. ----------------------------------- | a | =================================== | &lt;http://example.org/matrix/neo&gt; | ----------------------------------- SPARQL supports inference (or I must say that OWL, RDFS and the reasoners do), but it is easier to define the depth of a search in the graph using neo4j. As for Gremlin, it has native support to Groovy and Java. There is a common denominator for these three languages, but what makes them really powerful are their unique features. I hope you enjoyed, and that this post gave you a quick overview of some of the existing graph languages. Make sure you ponder the pros and cons of each server/language, and make the best decision for your project. Take a look at other graph query languages too. Happy hacking! This post has been updated as suggested by @kendall (Thank you!). You can check the diff at GitHub" />
-<link rel="canonical" href="https://kinoshita.eti.br/2014/09/09/cypher-gremlin-and-sparql-graph-dialects.html" />
-<meta property="og:url" content="https://kinoshita.eti.br/2014/09/09/cypher-gremlin-and-sparql-graph-dialects.html" />
-<meta property="og:site_name" content="kinow" />
-<meta property="og:type" content="article" />
-<meta property="article:published_time" content="2014-09-09T00:00:00+12:00" />
-<meta name="twitter:card" content="summary" />
-<meta property="twitter:title" content="Cypher, Gremlin and SPARQL: Graph dialects" />
-<script type="application/ld+json">
-{"description":"When I was younger and my older brother was living in Germany, I asked him if he had learned German. He said that he did, and explained that there are several dialects, and he was quite proud for some people told him that he was using the Bavarian dialect correctly. Even though Cypher, Gremlin and SPARQL are all query languages, I think we can consider them dialects of a common graph language. Cypher is the query language used in neo4j, a graph database. Gremlin is part of the Tinkerpop, an open source project that contains graph server, graph algorithms, graph language, among other sub-projects. And last but not least, SPARQL is used to query RDF documents. Let’s use the example of the Matrix movie provided by neo4j to take a look at the three languages. Cypher First we create the graph. create (matrix1:Movie {id : &#39;603&#39;, title : &#39;The Matrix&#39;, year : &#39;1999-03-31&#39;}), (matrix2:Movie {id : &#39;604&#39;, title : &#39;The Matrix Reloaded&#39;, year : &#39;2003-05-07&#39;}), (matrix3:Movie {id : &#39;605&#39;, title : &#39;The Matrix Revolutions&#39;, year : &#39;2003-10-27&#39;}), (neo:Actor {name:&#39;Keanu Reeves&#39;}), (morpheus:Actor {name:&#39;Laurence Fishburne&#39;}), (trinity:Actor {name:&#39;Carrie-Anne Moss&#39;}), (matrix1)&lt;-[:ACTS_IN {role : &#39;Neo&#39;}]-(neo), (matrix2)&lt;-[:ACTS_IN {role : &#39;Neo&#39;}]-(neo), (matrix3)&lt;-[:ACTS_IN {role : &#39;Neo&#39;}]-(neo), (matrix1)&lt;-[:ACTS_IN {role : &#39;Morpheus&#39;}]-(morpheus), (matrix2)&lt;-[:ACTS_IN {role : &#39;Morpheus&#39;}]-(morpheus), (matrix3)&lt;-[:ACTS_IN {role : &#39;Morpheus&#39;}]-(morpheus), (matrix1)&lt;-[:ACTS_IN {role : &#39;Trinity&#39;}]-(trinity), (matrix2)&lt;-[:ACTS_IN {role : &#39;Trinity&#39;}]-(trinity), (matrix3)&lt;-[:ACTS_IN {role : &#39;Trinity&#39;}]-(trinity) Added 6 labels, created 6 nodes, set 21 properties, created 9 relationships, returned 0 rows in 2791 ms And execute a simple query. MATCH (a:Actor { name:&quot;Keanu Reeves&quot; }) RETURN a (9:Actor {name:&quot;Keanu Reeves&quot;}) Gremlin Again, let’s start by creating our graph. g = new TinkerGraph(); matrix1 = g.addVertex([&quot;_id&quot;:603,&quot;title&quot;:&quot;The Matrix&quot;, &quot;year&quot;: &quot;1999-03-31&quot;]); matrix2 = g.addVertex([&quot;_id&quot;:604,&quot;title&quot;:&quot;The Matrix Reloaded&quot;, &quot;year&quot;: &quot;2003-05-07&quot;]); matrix3 = g.addVertex([&quot;_id&quot;:605,&quot;title&quot;:&quot;The Matrix Revolutions&quot;, &quot;year&quot;: &quot;2003-10-27&quot;]); neo = g.addVertex([&quot;name&quot;: &quot;Keanu Reeves&quot;]); morpheus = g.addVertex([&quot;name&quot;: &quot;Laurence Fishburne&quot;]); trinity = g.addVertex([&quot;name&quot;: &quot;Carrie-Anne Moss&quot;]); neo.addEdge(&quot;actsIn&quot;, matrix1); neo.addEdge(&quot;actsIn&quot;, matrix2); neo.addEdge(&quot;actsIn&quot;, matrix3); morpheus.addEdge(&quot;actsIn&quot;, matrix1); morpheus.addEdge(&quot;actsIn&quot;, matrix2); morpheus.addEdge(&quot;actsIn&quot;, matrix3); trinity.addEdge(&quot;actsIn&quot;, matrix1); trinity.addEdge(&quot;actsIn&quot;, matrix2); trinity.addEdge(&quot;actsIn&quot;, matrix3); And execute a simple query. g.V.has(&#39;name&#39;, &#39;Keanu Reeves&#39;).map gremlin&gt; g.V.has(&#39;name&#39;, &#39;Keanu Reeves&#39;).map ==&gt;{name=Keanu Reeves} gremlin&gt; Quite similar to neo4j. SPARQL Let’s load our example (thanks to Kendall G. Clark). I used Fuseki to run these queries. @prefix : &lt;http://example.org/matrix/&gt; . :m1 a :Movie; :title &quot;The Matrix&quot;; :year &quot;1999-03-31&quot;. :m2 a :Movie; :title &quot;The Matrix Reloaded&quot;; :year &quot;2003-05-07&quot;. :m3 a :Movie; :title &quot;The Matrix Revolutions&quot;; :year &quot;2003-10-27&quot;. :neo a :Actor; :name &quot;Keanu Reeves&quot;. :morpheus a :Actor; :name &quot;Laurence Fishburne&quot;. :trinity a :Actor; :name &quot;Carrie-Anne Moss&quot;. :neo :hasRole [:as &quot;Neo&quot;; :in :m1]. :neo :hasRole [:as &quot;Neo&quot;; :in :m2]. :neo :hasRole [:as &quot;Neo&quot;; :in :m2]. :morpheus :hasRole [:as &quot;Morpheus&quot;; :in :m1]. :morpheus :hasRole [:as &quot;Morpheus&quot;; :in :m2]. :morpheus :hasRole [:as &quot;Morpheus&quot;; :in :m2]. :trinity :hasRole [:as &quot;Trinity&quot;; :in :m1]. :trinity :hasRole [:as &quot;Trinity&quot;; :in :m2]. :trinity :hasRole [:as &quot;Trinity&quot;; :in :m2]. And finally the SPARQL query. SELECT ?a WHERE { ?a a &lt;http://example.org/matrix/Actor&gt; . ?a &lt;http://example.org/matrix/name&gt; ?name . FILTER(?name = &quot;Keanu Reeves&quot;) } Returning the Keanu Reeves actor instance. ----------------------------------- | a | =================================== | &lt;http://example.org/matrix/neo&gt; | ----------------------------------- SPARQL supports inference (or I must say that OWL, RDFS and the reasoners do), but it is easier to define the depth of a search in the graph using neo4j. As for Gremlin, it has native support to Groovy and Java. There is a common denominator for these three languages, but what makes them really powerful are their unique features. I hope you enjoyed, and that this post gave you a quick overview of some of the existing graph languages. Make sure you ponder the pros and cons of each server/language, and make the best decision for your project. Take a look at other graph query languages too. Happy hacking! This post has been updated as suggested by @kendall (Thank you!). You can check the diff at GitHub","@type":"BlogPosting","url":"https://kinoshita.eti.br/2014/09/09/cypher-gremlin-and-sparql-graph-dialects.html","headline":"Cypher, Gremlin and SPARQL: Graph dialects","datePublished":"2014-09-09T00:00:00+12:00","dateModified":"2014-09-09T00:00:00+12:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://kinoshita.eti.br/2014/09/09/cypher-gremlin-and-sparql-graph-dialects.html"},"@context":"https://schema.org"}</script>
-<!-- End Jekyll SEO tag -->
-<link rel="stylesheet" href="/assets/css/main.css" /><link type="application/atom+xml" rel="alternate" href="https://kinoshita.eti.br/feed.xml" title="kinow" /><link href="https://unpkg.com/pattern.css" rel="stylesheet" />
-
+<!doctype html><html lang=en><head>
+<meta charset=utf-8>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<link rel=stylesheet type=text/css href=https://kinoshita.eti.br/sass/main.e392e97e7e5991e363403c494b51d829efa207842d755622976c2537d0509be0.css integrity="sha256-45Lpfn5ZkeNjQDxJS1HYKe+iB4QtdVYil2wlN9BQm+A=">
+<title>kinow | Cypher, Gremlin and SPARQL: Graph dialects</title>
 </head>
-<body>
-<div id="mobile-menu"><div class="menu">
-  <ul class="menu">
-    <li class="item">
-      <h1 id="kinow">KINOW</h1>
-    </li>
-    <li class="item">
-      <a href="/" class="">About</a>
-    </li>
-    <li class="item">
-      <a href="/blog/" class="current">Blog</a>
-    </li>
-    <li class="item">
-      <a href="/portfolio/" class="">Portfolio</a>
-    </li>
-    <li class="item social-media-item">
-      <a href="https://www.instagram.com/brunokinoshita/" class="inline-link">
-        <img src="/assets/icons/instagram.png" class="inverted-image"  alt="Instagram link" />
-      </a>
-      <a href="https://twitter.com/kinow/" class="inline-link">
-        <img src="/assets/icons/twitter.png" class="inverted-image" alt="Twitter link" />
-      </a>
-      <a href="https://github.com/kinow/" class="inline-link">
-        <img src="/assets/icons/github.png" class="inverted-image" alt="GitHub link" />
-      </a>
-    </li>
-  </ul>
-</div>
-</div>
-<div id="wrapper">
-  <div id="sidebar"><div class="menu">
-  <ul class="menu">
-    <li class="item">
-      <h1 id="kinow">KINOW</h1>
-    </li>
-    <li class="item">
-      <a href="/" class="">About</a>
-    </li>
-    <li class="item">
-      <a href="/blog/" class="current">Blog</a>
-    </li>
-    <li class="item">
-      <a href="/portfolio/" class="">Portfolio</a>
-    </li>
-    <li class="item social-media-item">
-      <a href="https://www.instagram.com/brunokinoshita/" class="inline-link">
-        <img src="/assets/icons/instagram.png" class="inverted-image"  alt="Instagram link" />
-      </a>
-      <a href="https://twitter.com/kinow/" class="inline-link">
-        <img src="/assets/icons/twitter.png" class="inverted-image" alt="Twitter link" />
-      </a>
-      <a href="https://github.com/kinow/" class="inline-link">
-        <img src="/assets/icons/github.png" class="inverted-image" alt="GitHub link" />
-      </a>
-    </li>
-  </ul>
-</div>
-</div>
-  <div id="content">
-    <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
-  <header class="post-header">
-    <h1 class="post-title p-name" itemprop="name headline">Cypher, Gremlin and SPARQL: Graph dialects</h1>
-    <span class="post-meta">
-      <time class="dt-published" datetime="2014-09-09T00:00:00+12:00" itemprop="datePublished">Sep 9, 2014
-      </time>
-      <span>&mdash; star date: -308230.14.</span>
-      <span>
-        Number of words: 885.
-      </span></span>
-  </header>
-
-  <ul>
-  <li><a href="#cypher">Cypher</a></li>
-  <li><a href="#gremlin">Gremlin</a></li>
-  <li><a href="#sparql">SPARQL</a></li>
+<body><header role=banner class=content>
+<nav id=nav aria-label=Main role=navigation class=content>
+<ul><li>
+<a href=/>
+<i data-feather=about></i> About</a>
+</li><li>
+<a href=/blog/>
+<i data-feather=blog></i> Blog</a>
+</li><li>
+<a href=/portfolio/>
+<i data-feather=portfolio></i> Portfolio</a>
+</li><li></li>
 </ul>
-
-
-  <div class="post-content e-content" itemprop="articleBody">
-    <p>When I was younger and my older brother was living in Germany, I asked him if he 
-had learned German. He said that he did, and explained that there are several 
-dialects, and he was quite proud for some people told him that he was using the 
+</nav>
+</header>
+<main>
+<article class=content>
+<h2>Cypher, Gremlin and SPARQL: Graph dialects</h2><div class=metadata>
+<i data-feather=calendar></i>
+<time datetime=2014-09-09>Sep 9, 2014</time>
+</div>
+<p>When I was younger and my older brother was living in Germany, I asked him if he
+had learned German. He said that he did, and explained that there are several
+dialects, and he was quite proud for some people told him that he was using the
 Bavarian dialect correctly.</p>
-
-<p>Even though <a href="http://www.neo4j.org/learn/cypher">Cypher</a>, 
-<a href="http://gremlindocs.com/">Gremlin</a> and <a href="http://en.wikipedia.org/wiki/SPARQL">SPARQL</a> 
-are all query languages, I think we can consider them dialects of a common graph language. 
-Cypher is the query language used in <a href="http://www.neo4j.org/">neo4j</a>, a graph database. 
-Gremlin is part of the <a href="http://www.tinkerpop.com/">Tinkerpop</a>, an open source project 
-that contains graph server, graph algorithms, graph language, among other sub-projects. 
-And last but not least, SPARQL is used to query <a href="http://en.wikipedia.org/wiki/Resource_Description_Framework">RDF documents</a>.</p>
-
-<p>Let’s use the example of the Matrix movie provided by neo4j to take a look at the 
+<p>Even though <a href=http://www.neo4j.org/learn/cypher>Cypher</a>,
+<a href=http://gremlindocs.com/>Gremlin</a> and <a href=http://en.wikipedia.org/wiki/SPARQL>SPARQL</a>
+are all query languages, I think we can consider them dialects of a common graph language.
+Cypher is the query language used in <a href=http://www.neo4j.org/>neo4j</a>, a graph database.
+Gremlin is part of the <a href=http://www.tinkerpop.com/>Tinkerpop</a>, an open source project
+that contains graph server, graph algorithms, graph language, among other sub-projects.
+And last but not least, SPARQL is used to query <a href=http://en.wikipedia.org/wiki/Resource_Description_Framework>RDF documents</a>.</p>
+<p>Let&rsquo;s use the example of the Matrix movie provided by neo4j to take a look at the
 three languages.</p>
-
-<h2 id="cypher">Cypher</h2>
-
+<h2 id=cypher>Cypher</h2>
 <p>First we create the graph.</p>
-
-<pre><code class="language-SQL">create (matrix1:Movie {id : '603', title : 'The Matrix', year : '1999-03-31'}),
- (matrix2:Movie {id : '604', title : 'The Matrix Reloaded', year : '2003-05-07'}),
- (matrix3:Movie {id : '605', title : 'The Matrix Revolutions', year : '2003-10-27'}),
-
- (neo:Actor {name:'Keanu Reeves'}),
- (morpheus:Actor {name:'Laurence Fishburne'}),
- (trinity:Actor {name:'Carrie-Anne Moss'}),
-
- (matrix1)&lt;-[:ACTS_IN {role : 'Neo'}]-(neo),
- (matrix2)&lt;-[:ACTS_IN {role : 'Neo'}]-(neo),
- (matrix3)&lt;-[:ACTS_IN {role : 'Neo'}]-(neo),
- (matrix1)&lt;-[:ACTS_IN {role : 'Morpheus'}]-(morpheus),
- (matrix2)&lt;-[:ACTS_IN {role : 'Morpheus'}]-(morpheus),
- (matrix3)&lt;-[:ACTS_IN {role : 'Morpheus'}]-(morpheus),
- (matrix1)&lt;-[:ACTS_IN {role : 'Trinity'}]-(trinity),
- (matrix2)&lt;-[:ACTS_IN {role : 'Trinity'}]-(trinity),
- (matrix3)&lt;-[:ACTS_IN {role : 'Trinity'}]-(trinity)
-</code></pre>
-
-<p><code>Added 6 labels, created 6 nodes, set 21 properties, created 9 relationships, returned 0 rows in 2791 ms</code></p>
-
+<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-SQL data-lang=SQL><span style=color:navy;font-weight:700>create</span><span style=color:#bbb> </span>(matrix1:Movie<span style=color:#bbb> </span><span style=color:#a61717;background-color:#e3d2d2>{</span>id<span style=color:#bbb> </span>:<span style=color:#bbb> </span><span style=color:#00f>&#39;603&#39;</span>,<span style=color:#bbb> </span>title<span style=color:#bbb> </span>:<span style=color:#bbb> </span><span style=color:#00f>&#39;The Matrix&#39;</span>,<span style=color:#bbb> </span><span style=color:navy;font-weight:700>year</span><span style=color:#bbb> </span>:<span style=color:#bbb> </span><span style=color:#00f>&#39;1999-03-31&#39;</span><span style=color:#a61717;background-color:#e3d2d2>}</span>),<span style=color:#bbb>
+</span><span style=color:#bbb> </span>(matrix2:Movie<span style=color:#bbb> </span><span style=color:#a61717;background-color:#e3d2d2>{</span>id<span style=color:#bbb> </span>:<span style=color:#bbb> </span><span style=color:#00f>&#39;604&#39;</span>,<span style=color:#bbb> </span>title<span style=color:#bbb> </span>:<span style=color:#bbb> </span><span style=color:#00f>&#39;The Matrix Reloaded&#39;</span>,<span style=color:#bbb> </span><span style=color:navy;font-weight:700>year</span><span style=color:#bbb> </span>:<span style=color:#bbb> </span><span style=color:#00f>&#39;2003-05-07&#39;</span><span style=color:#a61717;background-color:#e3d2d2>}</span>),<span style=color:#bbb>
+</span><span style=color:#bbb> </span>(matrix3:Movie<span style=color:#bbb> </span><span style=color:#a61717;background-color:#e3d2d2>{</span>id<span style=color:#bbb> </span>:<span style=color:#bbb> </span><span style=color:#00f>&#39;605&#39;</span>,<span style=color:#bbb> </span>title<span style=color:#bbb> </span>:<span style=color:#bbb> </span><span style=color:#00f>&#39;The Matrix Revolutions&#39;</span>,<span style=color:#bbb> </span><span style=color:navy;font-weight:700>year</span><span style=color:#bbb> </span>:<span style=color:#bbb> </span><span style=color:#00f>&#39;2003-10-27&#39;</span><span style=color:#a61717;background-color:#e3d2d2>}</span>),<span style=color:#bbb>
+</span><span style=color:#bbb>
+</span><span style=color:#bbb> </span>(neo:Actor<span style=color:#bbb> </span><span style=color:#a61717;background-color:#e3d2d2>{</span>name:<span style=color:#00f>&#39;Keanu Reeves&#39;</span><span style=color:#a61717;background-color:#e3d2d2>}</span>),<span style=color:#bbb>
+</span><span style=color:#bbb> </span>(morpheus:Actor<span style=color:#bbb> </span><span style=color:#a61717;background-color:#e3d2d2>{</span>name:<span style=color:#00f>&#39;Laurence Fishburne&#39;</span><span style=color:#a61717;background-color:#e3d2d2>}</span>),<span style=color:#bbb>
+</span><span style=color:#bbb> </span>(trinity:Actor<span style=color:#bbb> </span><span style=color:#a61717;background-color:#e3d2d2>{</span>name:<span style=color:#00f>&#39;Carrie-Anne Moss&#39;</span><span style=color:#a61717;background-color:#e3d2d2>}</span>),<span style=color:#bbb>
+</span><span style=color:#bbb>
+</span><span style=color:#bbb> </span>(matrix1)&lt;-[:ACTS_IN<span style=color:#bbb> </span><span style=color:#a61717;background-color:#e3d2d2>{</span><span style=color:navy;font-weight:700>role</span><span style=color:#bbb> </span>:<span style=color:#bbb> </span><span style=color:#00f>&#39;Neo&#39;</span><span style=color:#a61717;background-color:#e3d2d2>}</span>]-(neo),<span style=color:#bbb>
+</span><span style=color:#bbb> </span>(matrix2)&lt;-[:ACTS_IN<span style=color:#bbb> </span><span style=color:#a61717;background-color:#e3d2d2>{</span><span style=color:navy;font-weight:700>role</span><span style=color:#bbb> </span>:<span style=color:#bbb> </span><span style=color:#00f>&#39;Neo&#39;</span><span style=color:#a61717;background-color:#e3d2d2>}</span>]-(neo),<span style=color:#bbb>
+</span><span style=color:#bbb> </span>(matrix3)&lt;-[:ACTS_IN<span style=color:#bbb> </span><span style=color:#a61717;background-color:#e3d2d2>{</span><span style=color:navy;font-weight:700>role</span><span style=color:#bbb> </span>:<span style=color:#bbb> </span><span style=color:#00f>&#39;Neo&#39;</span><span style=color:#a61717;background-color:#e3d2d2>}</span>]-(neo),<span style=color:#bbb>
+</span><span style=color:#bbb> </span>(matrix1)&lt;-[:ACTS_IN<span style=color:#bbb> </span><span style=color:#a61717;background-color:#e3d2d2>{</span><span style=color:navy;font-weight:700>role</span><span style=color:#bbb> </span>:<span style=color:#bbb> </span><span style=color:#00f>&#39;Morpheus&#39;</span><span style=color:#a61717;background-color:#e3d2d2>}</span>]-(morpheus),<span style=color:#bbb>
+</span><span style=color:#bbb> </span>(matrix2)&lt;-[:ACTS_IN<span style=color:#bbb> </span><span style=color:#a61717;background-color:#e3d2d2>{</span><span style=color:navy;font-weight:700>role</span><span style=color:#bbb> </span>:<span style=color:#bbb> </span><span style=color:#00f>&#39;Morpheus&#39;</span><span style=color:#a61717;background-color:#e3d2d2>}</span>]-(morpheus),<span style=color:#bbb>
+</span><span style=color:#bbb> </span>(matrix3)&lt;-[:ACTS_IN<span style=color:#bbb> </span><span style=color:#a61717;background-color:#e3d2d2>{</span><span style=color:navy;font-weight:700>role</span><span style=color:#bbb> </span>:<span style=color:#bbb> </span><span style=color:#00f>&#39;Morpheus&#39;</span><span style=color:#a61717;background-color:#e3d2d2>}</span>]-(morpheus),<span style=color:#bbb>
+</span><span style=color:#bbb> </span>(matrix1)&lt;-[:ACTS_IN<span style=color:#bbb> </span><span style=color:#a61717;background-color:#e3d2d2>{</span><span style=color:navy;font-weight:700>role</span><span style=color:#bbb> </span>:<span style=color:#bbb> </span><span style=color:#00f>&#39;Trinity&#39;</span><span style=color:#a61717;background-color:#e3d2d2>}</span>]-(trinity),<span style=color:#bbb>
+</span><span style=color:#bbb> </span>(matrix2)&lt;-[:ACTS_IN<span style=color:#bbb> </span><span style=color:#a61717;background-color:#e3d2d2>{</span><span style=color:navy;font-weight:700>role</span><span style=color:#bbb> </span>:<span style=color:#bbb> </span><span style=color:#00f>&#39;Trinity&#39;</span><span style=color:#a61717;background-color:#e3d2d2>}</span>]-(trinity),<span style=color:#bbb>
+</span><span style=color:#bbb> </span>(matrix3)&lt;-[:ACTS_IN<span style=color:#bbb> </span><span style=color:#a61717;background-color:#e3d2d2>{</span><span style=color:navy;font-weight:700>role</span><span style=color:#bbb> </span>:<span style=color:#bbb> </span><span style=color:#00f>&#39;Trinity&#39;</span><span style=color:#a61717;background-color:#e3d2d2>}</span>]-(trinity)<span style=color:#bbb>
+</span></code></pre></div><p><code>Added 6 labels, created 6 nodes, set 21 properties, created 9 relationships, returned 0 rows in 2791 ms</code></p>
 <p>And execute a simple query.</p>
-
-<pre><code class="language-SQL">MATCH (a:Actor { name:"Keanu Reeves" })
-RETURN a
-</code></pre>
-
-<p><code>(9:Actor {name:"Keanu Reeves"})</code></p>
-
-<h2 id="gremlin">Gremlin</h2>
-
-<p>Again, let’s start by creating our graph.</p>
-
-<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">g</span> <span class="o">=</span> <span class="k">new</span> <span class="n">TinkerGraph</span><span class="p">();</span>
-<span class="n">matrix1</span> <span class="o">=</span> <span class="k">g</span><span class="p">.</span><span class="n">addVertex</span><span class="p">([</span><span class="nv">"_id"</span><span class="p">:</span><span class="mi">603</span><span class="p">,</span><span class="nv">"title"</span><span class="p">:</span><span class="nv">"The Matrix"</span><span class="p">,</span> <span class="nv">"year"</span><span class="p">:</span> <span class="nv">"1999-03-31"</span><span class="p">]);</span>
-<span class="n">matrix2</span> <span class="o">=</span> <span class="k">g</span><span class="p">.</span><span class="n">addVertex</span><span class="p">([</span><span class="nv">"_id"</span><span class="p">:</span><span class="mi">604</span><span class="p">,</span><span class="nv">"title"</span><span class="p">:</span><span class="nv">"The Matrix Reloaded"</span><span class="p">,</span> <span class="nv">"year"</span><span class="p">:</span> <span class="nv">"2003-05-07"</span><span class="p">]);</span>
-<span class="n">matrix3</span> <span class="o">=</span> <span class="k">g</span><span class="p">.</span><span class="n">addVertex</span><span class="p">([</span><span class="nv">"_id"</span><span class="p">:</span><span class="mi">605</span><span class="p">,</span><span class="nv">"title"</span><span class="p">:</span><span class="nv">"The Matrix Revolutions"</span><span class="p">,</span> <span class="nv">"year"</span><span class="p">:</span> <span class="nv">"2003-10-27"</span><span class="p">]);</span>
-
-<span class="n">neo</span> <span class="o">=</span> <span class="k">g</span><span class="p">.</span><span class="n">addVertex</span><span class="p">([</span><span class="nv">"name"</span><span class="p">:</span> <span class="nv">"Keanu Reeves"</span><span class="p">]);</span>
-<span class="n">morpheus</span> <span class="o">=</span> <span class="k">g</span><span class="p">.</span><span class="n">addVertex</span><span class="p">([</span><span class="nv">"name"</span><span class="p">:</span> <span class="nv">"Laurence Fishburne"</span><span class="p">]);</span>
-<span class="n">trinity</span> <span class="o">=</span> <span class="k">g</span><span class="p">.</span><span class="n">addVertex</span><span class="p">([</span><span class="nv">"name"</span><span class="p">:</span> <span class="nv">"Carrie-Anne Moss"</span><span class="p">]);</span>
-
-<span class="n">neo</span><span class="p">.</span><span class="n">addEdge</span><span class="p">(</span><span class="nv">"actsIn"</span><span class="p">,</span> <span class="n">matrix1</span><span class="p">);</span> 
-<span class="n">neo</span><span class="p">.</span><span class="n">addEdge</span><span class="p">(</span><span class="nv">"actsIn"</span><span class="p">,</span> <span class="n">matrix2</span><span class="p">);</span> 
-<span class="n">neo</span><span class="p">.</span><span class="n">addEdge</span><span class="p">(</span><span class="nv">"actsIn"</span><span class="p">,</span> <span class="n">matrix3</span><span class="p">);</span> 
-<span class="n">morpheus</span><span class="p">.</span><span class="n">addEdge</span><span class="p">(</span><span class="nv">"actsIn"</span><span class="p">,</span> <span class="n">matrix1</span><span class="p">);</span> 
-<span class="n">morpheus</span><span class="p">.</span><span class="n">addEdge</span><span class="p">(</span><span class="nv">"actsIn"</span><span class="p">,</span> <span class="n">matrix2</span><span class="p">);</span> 
-<span class="n">morpheus</span><span class="p">.</span><span class="n">addEdge</span><span class="p">(</span><span class="nv">"actsIn"</span><span class="p">,</span> <span class="n">matrix3</span><span class="p">);</span> 
-<span class="n">trinity</span><span class="p">.</span><span class="n">addEdge</span><span class="p">(</span><span class="nv">"actsIn"</span><span class="p">,</span> <span class="n">matrix1</span><span class="p">);</span> 
-<span class="n">trinity</span><span class="p">.</span><span class="n">addEdge</span><span class="p">(</span><span class="nv">"actsIn"</span><span class="p">,</span> <span class="n">matrix2</span><span class="p">);</span> 
-<span class="n">trinity</span><span class="p">.</span><span class="n">addEdge</span><span class="p">(</span><span class="nv">"actsIn"</span><span class="p">,</span> <span class="n">matrix3</span><span class="p">);</span> 
-</code></pre></div></div>
-
-<p>And execute a simple query.</p>
-
-<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">g</span><span class="p">.</span><span class="n">V</span><span class="p">.</span><span class="n">has</span><span class="p">(</span><span class="s1">'name'</span><span class="p">,</span> <span class="s1">'Keanu Reeves'</span><span class="p">).</span><span class="k">map</span>
-</code></pre></div></div>
-
-<p><code>gremlin&gt; g.V.has('name', 'Keanu Reeves').map
-==&gt;{name=Keanu Reeves}
-gremlin&gt;</code></p>
-
+<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-SQL data-lang=SQL><span style=color:navy;font-weight:700>MATCH</span><span style=color:#bbb> </span>(a:Actor<span style=color:#bbb> </span><span style=color:#a61717;background-color:#e3d2d2>{</span><span style=color:#bbb> </span>name:<span style=color:#00f>&#34;Keanu Reeves&#34;</span><span style=color:#bbb> </span><span style=color:#a61717;background-color:#e3d2d2>}</span>)<span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:navy;font-weight:700>RETURN</span><span style=color:#bbb> </span>a<span style=color:#bbb>
+</span></code></pre></div><p><code>(9:Actor {name:&ldquo;Keanu Reeves&rdquo;})</code></p>
+<h2 id=gremlin>Gremlin</h2>
+<p>Again, let&rsquo;s start by creating our graph.</p>
+<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sql data-lang=sql><span style=color:navy;font-weight:700>g</span><span style=color:#bbb> </span>=<span style=color:#bbb> </span><span style=color:navy;font-weight:700>new</span><span style=color:#bbb> </span>TinkerGraph();<span style=color:#bbb>
+</span><span style=color:#bbb></span>matrix1<span style=color:#bbb> </span>=<span style=color:#bbb> </span><span style=color:navy;font-weight:700>g</span>.addVertex([<span style=color:#00f>&#34;_id&#34;</span>:<span style=color:#00f>603</span>,<span style=color:#00f>&#34;title&#34;</span>:<span style=color:#00f>&#34;The Matrix&#34;</span>,<span style=color:#bbb> </span><span style=color:#00f>&#34;year&#34;</span>:<span style=color:#bbb> </span><span style=color:#00f>&#34;1999-03-31&#34;</span>]);<span style=color:#bbb>
+</span><span style=color:#bbb></span>matrix2<span style=color:#bbb> </span>=<span style=color:#bbb> </span><span style=color:navy;font-weight:700>g</span>.addVertex([<span style=color:#00f>&#34;_id&#34;</span>:<span style=color:#00f>604</span>,<span style=color:#00f>&#34;title&#34;</span>:<span style=color:#00f>&#34;The Matrix Reloaded&#34;</span>,<span style=color:#bbb> </span><span style=color:#00f>&#34;year&#34;</span>:<span style=color:#bbb> </span><span style=color:#00f>&#34;2003-05-07&#34;</span>]);<span style=color:#bbb>
+</span><span style=color:#bbb></span>matrix3<span style=color:#bbb> </span>=<span style=color:#bbb> </span><span style=color:navy;font-weight:700>g</span>.addVertex([<span style=color:#00f>&#34;_id&#34;</span>:<span style=color:#00f>605</span>,<span style=color:#00f>&#34;title&#34;</span>:<span style=color:#00f>&#34;The Matrix Revolutions&#34;</span>,<span style=color:#bbb> </span><span style=color:#00f>&#34;year&#34;</span>:<span style=color:#bbb> </span><span style=color:#00f>&#34;2003-10-27&#34;</span>]);<span style=color:#bbb>
+</span><span style=color:#bbb>
+</span><span style=color:#bbb></span>neo<span style=color:#bbb> </span>=<span style=color:#bbb> </span><span style=color:navy;font-weight:700>g</span>.addVertex([<span style=color:#00f>&#34;name&#34;</span>:<span style=color:#bbb> </span><span style=color:#00f>&#34;Keanu Reeves&#34;</span>]);<span style=color:#bbb>
+</span><span style=color:#bbb></span>morpheus<span style=color:#bbb> </span>=<span style=color:#bbb> </span><span style=color:navy;font-weight:700>g</span>.addVertex([<span style=color:#00f>&#34;name&#34;</span>:<span style=color:#bbb> </span><span style=color:#00f>&#34;Laurence Fishburne&#34;</span>]);<span style=color:#bbb>
+</span><span style=color:#bbb></span>trinity<span style=color:#bbb> </span>=<span style=color:#bbb> </span><span style=color:navy;font-weight:700>g</span>.addVertex([<span style=color:#00f>&#34;name&#34;</span>:<span style=color:#bbb> </span><span style=color:#00f>&#34;Carrie-Anne Moss&#34;</span>]);<span style=color:#bbb>
+</span><span style=color:#bbb>
+</span><span style=color:#bbb></span>neo.addEdge(<span style=color:#00f>&#34;actsIn&#34;</span>,<span style=color:#bbb> </span>matrix1);<span style=color:#bbb> 
+</span><span style=color:#bbb></span>neo.addEdge(<span style=color:#00f>&#34;actsIn&#34;</span>,<span style=color:#bbb> </span>matrix2);<span style=color:#bbb> 
+</span><span style=color:#bbb></span>neo.addEdge(<span style=color:#00f>&#34;actsIn&#34;</span>,<span style=color:#bbb> </span>matrix3);<span style=color:#bbb> 
+</span><span style=color:#bbb></span>morpheus.addEdge(<span style=color:#00f>&#34;actsIn&#34;</span>,<span style=color:#bbb> </span>matrix1);<span style=color:#bbb> 
+</span><span style=color:#bbb></span>morpheus.addEdge(<span style=color:#00f>&#34;actsIn&#34;</span>,<span style=color:#bbb> </span>matrix2);<span style=color:#bbb> 
+</span><span style=color:#bbb></span>morpheus.addEdge(<span style=color:#00f>&#34;actsIn&#34;</span>,<span style=color:#bbb> </span>matrix3);<span style=color:#bbb> 
+</span><span style=color:#bbb></span>trinity.addEdge(<span style=color:#00f>&#34;actsIn&#34;</span>,<span style=color:#bbb> </span>matrix1);<span style=color:#bbb> 
+</span><span style=color:#bbb></span>trinity.addEdge(<span style=color:#00f>&#34;actsIn&#34;</span>,<span style=color:#bbb> </span>matrix2);<span style=color:#bbb> 
+</span><span style=color:#bbb></span>trinity.addEdge(<span style=color:#00f>&#34;actsIn&#34;</span>,<span style=color:#bbb> </span>matrix3);<span style=color:#bbb> 
+</span></code></pre></div><p>And execute a simple query.</p>
+<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sql data-lang=sql><span style=color:navy;font-weight:700>g</span>.V.has(<span style=color:#00f>&#39;name&#39;</span>,<span style=color:#bbb> </span><span style=color:#00f>&#39;Keanu Reeves&#39;</span>).<span style=color:navy;font-weight:700>map</span><span style=color:#bbb>
+</span></code></pre></div><p><code>gremlin> g.V.has(&lsquo;name&rsquo;, &lsquo;Keanu Reeves&rsquo;).map
+==>{name=Keanu Reeves}
+gremlin></code></p>
 <p>Quite similar to neo4j.</p>
+<h2 id=sparql>SPARQL</h2>
+<p>Let&rsquo;s load our example (thanks to <a href=https://twitter.com/kendall>Kendall G. Clark</a>). I used
+<a href=http://jena.apache.org/documentation/serving_data/>Fuseki</a> to run these queries.</p>
+<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-xml data-lang=xml>@prefix :          <span style=color:navy;font-weight:700>&lt;http:</span><span style=color:#a61717;background-color:#e3d2d2>//example.org/matrix</span><span style=color:navy;font-weight:700>/&gt;</span> .
 
-<h2 id="sparql">SPARQL</h2>
-
-<p>Let’s load our example (thanks to <a href="https://twitter.com/kendall">Kendall G. Clark</a>). I used 
-<a href="http://jena.apache.org/documentation/serving_data/">Fuseki</a> to run these queries.</p>
-
-<div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code>@prefix :          <span class="nt">&lt;http:</span><span class="err">//example.org/matrix</span><span class="nt">/&gt;</span> .
-
- :m1 a :Movie; :title "The Matrix"; :year "1999-03-31".
- :m2 a :Movie; :title "The Matrix Reloaded"; :year "2003-05-07".
- :m3 a :Movie; :title "The Matrix Revolutions"; :year "2003-10-27".
+ :m1 a :Movie; :title &#34;The Matrix&#34;; :year &#34;1999-03-31&#34;.
+ :m2 a :Movie; :title &#34;The Matrix Reloaded&#34;; :year &#34;2003-05-07&#34;.
+ :m3 a :Movie; :title &#34;The Matrix Revolutions&#34;; :year &#34;2003-10-27&#34;.
  
- :neo a :Actor; :name "Keanu Reeves".
- :morpheus a :Actor; :name "Laurence Fishburne".
- :trinity a :Actor; :name "Carrie-Anne Moss".
+ :neo a :Actor; :name &#34;Keanu Reeves&#34;.
+ :morpheus a :Actor; :name &#34;Laurence Fishburne&#34;.
+ :trinity a :Actor; :name &#34;Carrie-Anne Moss&#34;.
  
- :neo :hasRole [:as "Neo"; :in :m1].
- :neo :hasRole [:as "Neo"; :in :m2].
- :neo :hasRole [:as "Neo"; :in :m2].
- :morpheus :hasRole [:as "Morpheus"; :in :m1].
- :morpheus :hasRole [:as "Morpheus"; :in :m2].
- :morpheus :hasRole [:as "Morpheus"; :in :m2].
- :trinity :hasRole [:as "Trinity"; :in :m1].
- :trinity :hasRole [:as "Trinity"; :in :m2].
- :trinity :hasRole [:as "Trinity"; :in :m2].
-</code></pre></div></div>
-
-<p>And finally the SPARQL query.</p>
-
-<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">SELECT</span> <span class="o">?</span><span class="n">a</span> <span class="k">WHERE</span> <span class="err">{</span>
-   <span class="o">?</span><span class="n">a</span> <span class="n">a</span> <span class="o">&lt;</span><span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">example</span><span class="p">.</span><span class="n">org</span><span class="o">/</span><span class="n">matrix</span><span class="o">/</span><span class="n">Actor</span><span class="o">&gt;</span> <span class="p">.</span>
-   <span class="o">?</span><span class="n">a</span> <span class="o">&lt;</span><span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">example</span><span class="p">.</span><span class="n">org</span><span class="o">/</span><span class="n">matrix</span><span class="o">/</span><span class="n">name</span><span class="o">&gt;</span> <span class="o">?</span><span class="n">name</span> <span class="p">.</span>
-   <span class="n">FILTER</span><span class="p">(</span><span class="o">?</span><span class="n">name</span>  <span class="o">=</span> <span class="nv">"Keanu Reeves"</span><span class="p">)</span>
-<span class="err">}</span>
-</code></pre></div></div>
-
-<p>Returning the Keanu Reeves actor instance.</p>
-
+ :neo :hasRole [:as &#34;Neo&#34;; :in :m1].
+ :neo :hasRole [:as &#34;Neo&#34;; :in :m2].
+ :neo :hasRole [:as &#34;Neo&#34;; :in :m2].
+ :morpheus :hasRole [:as &#34;Morpheus&#34;; :in :m1].
+ :morpheus :hasRole [:as &#34;Morpheus&#34;; :in :m2].
+ :morpheus :hasRole [:as &#34;Morpheus&#34;; :in :m2].
+ :trinity :hasRole [:as &#34;Trinity&#34;; :in :m1].
+ :trinity :hasRole [:as &#34;Trinity&#34;; :in :m2].
+ :trinity :hasRole [:as &#34;Trinity&#34;; :in :m2].
+</code></pre></div><p>And finally the SPARQL query.</p>
+<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sql data-lang=sql><span style=color:navy;font-weight:700>SELECT</span><span style=color:#bbb> </span>?a<span style=color:#bbb> </span><span style=color:navy;font-weight:700>WHERE</span><span style=color:#bbb> </span><span style=color:#a61717;background-color:#e3d2d2>{</span><span style=color:#bbb>
+</span><span style=color:#bbb>   </span>?a<span style=color:#bbb> </span>a<span style=color:#bbb> </span>&lt;http://example.org/matrix/Actor&gt;<span style=color:#bbb> </span>.<span style=color:#bbb>
+</span><span style=color:#bbb>   </span>?a<span style=color:#bbb> </span>&lt;http://example.org/matrix/name&gt;<span style=color:#bbb> </span>?name<span style=color:#bbb> </span>.<span style=color:#bbb>
+</span><span style=color:#bbb>   </span>FILTER(?name<span style=color:#bbb>  </span>=<span style=color:#bbb> </span><span style=color:#00f>&#34;Keanu Reeves&#34;</span>)<span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:#a61717;background-color:#e3d2d2>}</span><span style=color:#bbb>
+</span></code></pre></div><p>Returning the Keanu Reeves actor instance.</p>
 <pre>-----------------------------------
 | a                               |
 ===================================
 | &lt;http://example.org/matrix/neo&gt; |
 -----------------------------------</pre>
-
-<p>SPARQL supports inference (or I must say that OWL, RDFS and the reasoners do), 
-but it is easier to define the depth of a search in the graph using neo4j. As for 
-Gremlin, it has native support to Groovy and Java. There is a common denominator 
+<p>SPARQL supports inference (or I must say that OWL, RDFS and the reasoners do),
+but it is easier to define the depth of a search in the graph using neo4j. As for
+Gremlin, it has native support to Groovy and Java. There is a common denominator
 for these three languages, but what makes them really powerful are their unique features.</p>
-
-<p>I hope you enjoyed, and that this post gave you a quick overview of some of the existing 
-graph languages. Make sure you ponder the pros and cons of each server/language, and 
-make the best decision for your project. Take a look at <a href="http://en.wikipedia.org/wiki/Graph_database#APIs_and_Graph_Query.2FProgramming_Languages">other graph query languages</a> too.</p>
-
+<p>I hope you enjoyed, and that this post gave you a quick overview of some of the existing
+graph languages. Make sure you ponder the pros and cons of each server/language, and
+make the best decision for your project. Take a look at <a href=http://en.wikipedia.org/wiki/Graph_database#APIs_and_Graph_Query.2FProgramming_Languages>other graph query languages</a> too.</p>
 <p>Happy hacking!</p>
-
-<hr />
-
-<p>This post has been updated as suggested by <a href="https://twitter.com/kendall">@kendall</a> (Thank you!).
-You can check the diff at <a href="https://github.com/kinow/kinoshita.eti.br/commits/master/site/_content/posts/2014-09-09_cypher-gremlin-and-sparql-graph-dialects.html">GitHub</a></p>
-
-  </div>
-
-  <div class="tags"><p>Tags:&nbsp;<a class="label" href="/tag/graphs">graphs</a>,&nbsp;<a class="label" href="/tag/programming">programming</a>.<br/></p></div>
-
-  <a class="u-url" href="/2014/09/09/cypher-gremlin-and-sparql-graph-dialects.html" hidden></a>
+<hr>
+<p>This post has been updated as suggested by <a href=https://twitter.com/kendall>@kendall</a> (Thank you!).
+You can check the diff at <a href=https://github.com/kinow/kinoshita.eti.br/commits/master/site/_content/posts/2014-09-09_cypher-gremlin-and-sparql-graph-dialects.html>GitHub</a></p>
+<aside class=links>
+<a class=previous href=https://kinoshita.eti.br/2014/08/09/strings-transliteration-in-java-with-apache-commons-lang.html>&#171; Previous</a>
+<a class=next href=https://kinoshita.eti.br/2014/10/11/basic-workflow-of-a-sparql-query-in-fuseki.html>Next &#187;</a>
+</aside>
 </article>
-
-  </div>
-</div>
+</main>
+<footer role=contentinfo>
+<ul id=social-media-icons>
+<li>
+<a href=https://www.instagram.com/brunokinoshita/>
+<img src=/assets/icons/instagram.png alt="Instagram link">
+</a>
+</li>
+<li>
+<a href=https://twitter.com/kinow/>
+<img src=/assets/icons/twitter.png alt="Twitter link">
+</a>
+</li>
+<li>
+<a href=https://github.com/kinow/>
+<img src=/assets/icons/github.png alt="GitHub link">
+</a>
+</li>
+</ul>
+</footer>
 </body>
 </html>

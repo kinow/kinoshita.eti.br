@@ -1,237 +1,158 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="utf-8" />
-<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-<meta name="viewport" content="width=device-width, initial-scale=1" /><!-- Begin Jekyll SEO tag v2.7.1 -->
-<title>How the Skosmos Widget Wiki plugin works | kinow</title>
-<meta name="generator" content="Jekyll v3.9.0" />
-<meta property="og:title" content="How the Skosmos Widget Wiki plugin works" />
-<meta property="og:locale" content="en_US" />
-<meta name="description" content="Skosmos can be extended through plugins, or widgets (a widget is a plugin for Skosmos). You can read more about how plugins work in Skosmos here. This post is a note-to-self, explaining how the Skosmos Widget Wiki plugin works. This is a plugin - or widget - that displays Wikipedia information when the concept supports it. Here’s an image of the plugin in action. Or you can go to a live instance of Skosmos that has the plugin enabled." />
-<meta property="og:description" content="Skosmos can be extended through plugins, or widgets (a widget is a plugin for Skosmos). You can read more about how plugins work in Skosmos here. This post is a note-to-self, explaining how the Skosmos Widget Wiki plugin works. This is a plugin - or widget - that displays Wikipedia information when the concept supports it. Here’s an image of the plugin in action. Or you can go to a live instance of Skosmos that has the plugin enabled." />
-<link rel="canonical" href="https://kinoshita.eti.br/2018/12/24/how-the-skosmos-widget-wiki-plugin-works.html" />
-<meta property="og:url" content="https://kinoshita.eti.br/2018/12/24/how-the-skosmos-widget-wiki-plugin-works.html" />
-<meta property="og:site_name" content="kinow" />
-<meta property="og:type" content="article" />
-<meta property="article:published_time" content="2018-12-24T00:00:00+13:00" />
-<meta name="twitter:card" content="summary" />
-<meta property="twitter:title" content="How the Skosmos Widget Wiki plugin works" />
-<script type="application/ld+json">
-{"description":"Skosmos can be extended through plugins, or widgets (a widget is a plugin for Skosmos). You can read more about how plugins work in Skosmos here. This post is a note-to-self, explaining how the Skosmos Widget Wiki plugin works. This is a plugin - or widget - that displays Wikipedia information when the concept supports it. Here’s an image of the plugin in action. Or you can go to a live instance of Skosmos that has the plugin enabled.","@type":"BlogPosting","url":"https://kinoshita.eti.br/2018/12/24/how-the-skosmos-widget-wiki-plugin-works.html","headline":"How the Skosmos Widget Wiki plugin works","datePublished":"2018-12-24T00:00:00+13:00","dateModified":"2018-12-24T00:00:00+13:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://kinoshita.eti.br/2018/12/24/how-the-skosmos-widget-wiki-plugin-works.html"},"@context":"https://schema.org"}</script>
-<!-- End Jekyll SEO tag -->
-<link rel="stylesheet" href="/assets/css/main.css" /><link type="application/atom+xml" rel="alternate" href="https://kinoshita.eti.br/feed.xml" title="kinow" /><link href="https://unpkg.com/pattern.css" rel="stylesheet" />
-
+<!doctype html><html lang=en><head>
+<meta charset=utf-8>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<link rel=stylesheet type=text/css href=https://kinoshita.eti.br/sass/main.e392e97e7e5991e363403c494b51d829efa207842d755622976c2537d0509be0.css integrity="sha256-45Lpfn5ZkeNjQDxJS1HYKe+iB4QtdVYil2wlN9BQm+A=">
+<title>kinow | How the Skosmos Widget Wiki plugin works</title>
 </head>
-<body>
-<div id="mobile-menu"><div class="menu">
-  <ul class="menu">
-    <li class="item">
-      <h1 id="kinow">KINOW</h1>
-    </li>
-    <li class="item">
-      <a href="/" class="">About</a>
-    </li>
-    <li class="item">
-      <a href="/blog/" class="current">Blog</a>
-    </li>
-    <li class="item">
-      <a href="/portfolio/" class="">Portfolio</a>
-    </li>
-    <li class="item social-media-item">
-      <a href="https://www.instagram.com/brunokinoshita/" class="inline-link">
-        <img src="/assets/icons/instagram.png" class="inverted-image"  alt="Instagram link" />
-      </a>
-      <a href="https://twitter.com/kinow/" class="inline-link">
-        <img src="/assets/icons/twitter.png" class="inverted-image" alt="Twitter link" />
-      </a>
-      <a href="https://github.com/kinow/" class="inline-link">
-        <img src="/assets/icons/github.png" class="inverted-image" alt="GitHub link" />
-      </a>
-    </li>
-  </ul>
-</div>
-</div>
-<div id="wrapper">
-  <div id="sidebar"><div class="menu">
-  <ul class="menu">
-    <li class="item">
-      <h1 id="kinow">KINOW</h1>
-    </li>
-    <li class="item">
-      <a href="/" class="">About</a>
-    </li>
-    <li class="item">
-      <a href="/blog/" class="current">Blog</a>
-    </li>
-    <li class="item">
-      <a href="/portfolio/" class="">Portfolio</a>
-    </li>
-    <li class="item social-media-item">
-      <a href="https://www.instagram.com/brunokinoshita/" class="inline-link">
-        <img src="/assets/icons/instagram.png" class="inverted-image"  alt="Instagram link" />
-      </a>
-      <a href="https://twitter.com/kinow/" class="inline-link">
-        <img src="/assets/icons/twitter.png" class="inverted-image" alt="Twitter link" />
-      </a>
-      <a href="https://github.com/kinow/" class="inline-link">
-        <img src="/assets/icons/github.png" class="inverted-image" alt="GitHub link" />
-      </a>
-    </li>
-  </ul>
-</div>
-</div>
-  <div id="content">
-    <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
-  <header class="post-header">
-    <h1 class="post-title p-name" itemprop="name headline">How the Skosmos Widget Wiki plugin works</h1>
-    <span class="post-meta">
-      <time class="dt-published" datetime="2018-12-24T00:00:00+13:00" itemprop="datePublished">Dec 24, 2018
-      </time>
-      <span>&mdash; star date: -304936.99.</span>
-      <span>
-        Number of words: 828.
-      </span></span>
-  </header>
-
-  <ul>
-  <li><a href="#under-the-hood">Under the hood</a></li>
+<body><header role=banner class=content>
+<nav id=nav aria-label=Main role=navigation class=content>
+<ul><li>
+<a href=/>
+<i data-feather=about></i> About</a>
+</li><li>
+<a href=/blog/>
+<i data-feather=blog></i> Blog</a>
+</li><li>
+<a href=/portfolio/>
+<i data-feather=portfolio></i> Portfolio</a>
+</li><li></li>
 </ul>
-
-
-  <div class="post-content e-content" itemprop="articleBody">
-    <p>Skosmos can be extended through plugins, or widgets (a widget is a plugin for Skosmos).
-You can read more about how <a href="https://github.com/NatLibFi/Skosmos/wiki/Plugins">plugins work in Skosmos here</a>.</p>
-
+</nav>
+</header>
+<main>
+<article class=content>
+<h2>How the Skosmos Widget Wiki plugin works</h2><div class=metadata>
+<i data-feather=calendar></i>
+<time datetime=2018-12-24>Dec 24, 2018</time>
+</div>
+<p>Skosmos can be extended through plugins, or widgets (a widget is a plugin for Skosmos).
+You can read more about how <a href=https://github.com/NatLibFi/Skosmos/wiki/Plugins>plugins work in Skosmos here</a>.</p>
 <p>This post is a note-to-self, explaining how the <strong>Skosmos Widget Wiki plugin</strong> works. This
 is a plugin - or widget - that displays Wikipedia information when the concept supports it.</p>
-
-<p>Here’s an image of the plugin in action. Or you can go to
-<a href="http://finto.fi/yso-paikat/en/page/p107650">a live instance of Skosmos</a>
+<p>Here&rsquo;s an image of the plugin in action. Or you can go to
+<a href=http://finto.fi/yso-paikat/en/page/p107650>a live instance of Skosmos</a>
 that has the plugin enabled.</p>
-
-<p><img class="ui fluid image" src="/assets/posts/2018-12-24-how-the-skosmos-widget-wiki-plugin-works/skosmos-widget-wiki-screenshot.png" /></p>
-
-<!--more-->
-
-<h3 id="under-the-hood">Under the hood</h3>
-
-<p>The plugin exposes a JavaScript callback via its <code class="language-plaintext highlighter-rouge">plugin.json</code> file. In the callback, it
-receives a <code class="language-plaintext highlighter-rouge">data</code> object, with the following properties.</p>
-
+<figure class=feature>
+<img src=/assets/posts/2018-12-24-how-the-skosmos-widget-wiki-plugin-works/skosmos-widget-wiki-screenshot.png alt title width height>
+<figcaption></figcaption>
+</figure>
+<h3 id=under-the-hood>Under the hood</h3>
+<p>The plugin exposes a JavaScript callback via its <code>plugin.json</code> file. In the callback, it
+receives a <code>data</code> object, with the following properties.</p>
 <ul>
-  <li><code class="language-plaintext highlighter-rouge">uri</code>, the concept identifier, e.g. <em>http://www.yso.fi/onto/yso/p107650”</em></li>
-  <li><code class="language-plaintext highlighter-rouge">prefLabels</code>, the concepts preferred labels, e.g. <em>“Central Asia”@en</em>, <em>“Keski-Aasia”@fi</em></li>
-  <li><code class="language-plaintext highlighter-rouge">pageType</code>, defaults to <code class="language-plaintext highlighter-rouge">page</code></li>
-  <li><code class="language-plaintext highlighter-rouge">json-ld</code>, which contains the JSON-LD <code class="language-plaintext highlighter-rouge">@context</code>, as well as a <code class="language-plaintext highlighter-rouge">graph</code> property</li>
+<li><code>uri</code>, the concept identifier, e.g. <em><a href=http://www.yso.fi/onto/yso/p107650%22>http://www.yso.fi/onto/yso/p107650"</a></em></li>
+<li><code>prefLabels</code>, the concepts preferred labels, e.g. <em>&ldquo;Central Asia&rdquo;@en</em>, <em>&ldquo;Keski-Aasia&rdquo;@fi</em></li>
+<li><code>pageType</code>, defaults to <code>page</code></li>
+<li><code>json-ld</code>, which contains the JSON-LD <code>@context</code>, as well as a <code>graph</code> property</li>
 </ul>
-
-<p>If the <code class="language-plaintext highlighter-rouge">pageType</code> is not <code class="language-plaintext highlighter-rouge">page</code>, or if there are no preferred labels, or if there is no
+<p>If the <code>pageType</code> is not <code>page</code>, or if there are no preferred labels, or if there is no
 JSON-LD data, the plugin is not activated.</p>
-
 <p>When the plugin is activated, it will iterate through all entries in the graph, looking
-for one which <code class="language-plaintext highlighter-rouge">uri</code> starts with <code class="language-plaintext highlighter-rouge">wd:</code> (for wikidata). Here’s what the <code class="language-plaintext highlighter-rouge">wikidata</code> object
+for one which <code>uri</code> starts with <code>wd:</code> (for wikidata). Here&rsquo;s what the <code>wikidata</code> object
 will look like.</p>
-
-<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span>
-  <span class="dl">"</span><span class="s2">uri</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">wd:Q27275</span><span class="dl">"</span><span class="p">,</span>
-  <span class="dl">"</span><span class="s2">type</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">http://wikiba.se/ontology#Item</span><span class="dl">"</span><span class="p">,</span>
-  <span class="dl">"</span><span class="s2">schema:description</span><span class="dl">"</span><span class="p">:</span> <span class="p">[</span>
-    <span class="p">{</span>
-      <span class="dl">"</span><span class="s2">lang</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">ko</span><span class="dl">"</span><span class="p">,</span>
-      <span class="dl">"</span><span class="s2">value</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">아시아의 중앙부.</span><span class="dl">"</span>
-    <span class="p">},</span>
-    <span class="p">{</span>
-      <span class="dl">"</span><span class="s2">lang</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">pt-br</span><span class="dl">"</span><span class="p">,</span>
-      <span class="dl">"</span><span class="s2">value</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">região entre o leste do mar Cáspio e o centro-oeste da China, entre o norte do Irã e o Afeganistão, e o sul da Sibéria</span><span class="dl">"</span>
-    <span class="p">},</span>
-    <span class="p">{</span>
-      <span class="dl">"</span><span class="s2">lang</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">en</span><span class="dl">"</span><span class="p">,</span>
-      <span class="dl">"</span><span class="s2">value</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">core region of the Asian continent</span><span class="dl">"</span>
-    <span class="p">},</span>
-    <span class="c1">//...</span>
-  <span class="p">],</span>
-  <span class="dl">"</span><span class="s2">schema:name</span><span class="dl">"</span><span class="p">:</span> <span class="p">[</span>
-    <span class="p">{</span>
-      <span class="dl">"</span><span class="s2">lang</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">ko</span><span class="dl">"</span><span class="p">,</span>
-      <span class="dl">"</span><span class="s2">value</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">중앙아시아</span><span class="dl">"</span>
-    <span class="p">},</span>
-    <span class="c1">//...</span>
-  <span class="p">],</span>
-  <span class="dl">"</span><span class="s2">label</span><span class="dl">"</span><span class="p">:</span> <span class="p">[</span>
-    <span class="p">{</span>
-      <span class="dl">"</span><span class="s2">lang</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">ko</span><span class="dl">"</span><span class="p">,</span>
-      <span class="dl">"</span><span class="s2">value</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">중앙아시아</span><span class="dl">"</span>
-    <span class="p">},</span>
-    <span class="c1">//...</span>
-  <span class="p">],</span>
-  <span class="dl">"</span><span class="s2">prefLabel</span><span class="dl">"</span><span class="p">:</span> <span class="p">[</span>
-    <span class="p">{</span>
-      <span class="dl">"</span><span class="s2">lang</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">ko</span><span class="dl">"</span><span class="p">,</span>
-      <span class="dl">"</span><span class="s2">value</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">중앙아시아</span><span class="dl">"</span>
-    <span class="p">},</span>
-    <span class="c1">//...</span>
-  <span class="p">],</span>
-  <span class="dl">"</span><span class="s2">wdt:P31</span><span class="dl">"</span><span class="p">:</span> <span class="p">[</span>
-    <span class="p">{</span>
-      <span class="dl">"</span><span class="s2">uri</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">wd:Q82794</span><span class="dl">"</span>
-    <span class="p">},</span>
-    <span class="p">{</span>
-      <span class="dl">"</span><span class="s2">uri</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">wd:Q3502482</span><span class="dl">"</span>
-    <span class="p">}</span>
-  <span class="p">],</span>
-  <span class="dl">"</span><span class="s2">wdt:P625</span><span class="dl">"</span><span class="p">:</span> <span class="p">{</span>
-    <span class="dl">"</span><span class="s2">type</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">http://www.opengis.net/ont/geosparql#wktLiteral</span><span class="dl">"</span><span class="p">,</span>
-    <span class="dl">"</span><span class="s2">value</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">Point(63.9 45.3)</span><span class="dl">"</span>
-  <span class="p">}</span>
-<span class="p">}</span>
-</code></pre></div></div>
-
-<p>Now the plugin will iterate the <code class="language-plaintext highlighter-rouge">graph</code> object once again, looking for entries
-which the object type is <code class="language-plaintext highlighter-rouge">schema:Article</code>, and the <code class="language-plaintext highlighter-rouge">schema:isPartOf</code> ends with
-<code class="language-plaintext highlighter-rouge">.wikipedia.org/</code>. These entries are aggregated into a list, <code class="language-plaintext highlighter-rouge">wikiArticlesList</code>.</p>
-
-<p>This list is then iterated, building a reverse dictionary <code class="language-plaintext highlighter-rouge">keyLangUriValue</code>
-with the language as key, and the URI as value. <code class="language-plaintext highlighter-rouge">keyLangUriValue</code> will look
+<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-javascript data-lang=javascript>{
+  <span style=color:#00f>&#34;uri&#34;</span>: <span style=color:#00f>&#34;wd:Q27275&#34;</span>,
+  <span style=color:#00f>&#34;type&#34;</span>: <span style=color:#00f>&#34;http://wikiba.se/ontology#Item&#34;</span>,
+  <span style=color:#00f>&#34;schema:description&#34;</span>: [
+    {
+      <span style=color:#00f>&#34;lang&#34;</span>: <span style=color:#00f>&#34;ko&#34;</span>,
+      <span style=color:#00f>&#34;value&#34;</span>: <span style=color:#00f>&#34;아시아의 중앙부.&#34;</span>
+    },
+    {
+      <span style=color:#00f>&#34;lang&#34;</span>: <span style=color:#00f>&#34;pt-br&#34;</span>,
+      <span style=color:#00f>&#34;value&#34;</span>: <span style=color:#00f>&#34;região entre o leste do mar Cáspio e o centro-oeste da China, entre o norte do Irã e o Afeganistão, e o sul da Sibéria&#34;</span>
+    },
+    {
+      <span style=color:#00f>&#34;lang&#34;</span>: <span style=color:#00f>&#34;en&#34;</span>,
+      <span style=color:#00f>&#34;value&#34;</span>: <span style=color:#00f>&#34;core region of the Asian continent&#34;</span>
+    },
+    <span style=color:#080;font-style:italic>//...
+</span><span style=color:#080;font-style:italic></span>  ],
+  <span style=color:#00f>&#34;schema:name&#34;</span>: [
+    {
+      <span style=color:#00f>&#34;lang&#34;</span>: <span style=color:#00f>&#34;ko&#34;</span>,
+      <span style=color:#00f>&#34;value&#34;</span>: <span style=color:#00f>&#34;중앙아시아&#34;</span>
+    },
+    <span style=color:#080;font-style:italic>//...
+</span><span style=color:#080;font-style:italic></span>  ],
+  <span style=color:#00f>&#34;label&#34;</span>: [
+    {
+      <span style=color:#00f>&#34;lang&#34;</span>: <span style=color:#00f>&#34;ko&#34;</span>,
+      <span style=color:#00f>&#34;value&#34;</span>: <span style=color:#00f>&#34;중앙아시아&#34;</span>
+    },
+    <span style=color:#080;font-style:italic>//...
+</span><span style=color:#080;font-style:italic></span>  ],
+  <span style=color:#00f>&#34;prefLabel&#34;</span>: [
+    {
+      <span style=color:#00f>&#34;lang&#34;</span>: <span style=color:#00f>&#34;ko&#34;</span>,
+      <span style=color:#00f>&#34;value&#34;</span>: <span style=color:#00f>&#34;중앙아시아&#34;</span>
+    },
+    <span style=color:#080;font-style:italic>//...
+</span><span style=color:#080;font-style:italic></span>  ],
+  <span style=color:#00f>&#34;wdt:P31&#34;</span>: [
+    {
+      <span style=color:#00f>&#34;uri&#34;</span>: <span style=color:#00f>&#34;wd:Q82794&#34;</span>
+    },
+    {
+      <span style=color:#00f>&#34;uri&#34;</span>: <span style=color:#00f>&#34;wd:Q3502482&#34;</span>
+    }
+  ],
+  <span style=color:#00f>&#34;wdt:P625&#34;</span>: {
+    <span style=color:#00f>&#34;type&#34;</span>: <span style=color:#00f>&#34;http://www.opengis.net/ont/geosparql#wktLiteral&#34;</span>,
+    <span style=color:#00f>&#34;value&#34;</span>: <span style=color:#00f>&#34;Point(63.9 45.3)&#34;</span>
+  }
+}
+</code></pre></div><p>Now the plugin will iterate the <code>graph</code> object once again, looking for entries
+which the object type is <code>schema:Article</code>, and the <code>schema:isPartOf</code> ends with
+<code>.wikipedia.org/</code>. These entries are aggregated into a list, <code>wikiArticlesList</code>.</p>
+<p>This list is then iterated, building a reverse dictionary <code>keyLangUriValue</code>
+with the language as key, and the URI as value. <code>keyLangUriValue</code> will look
 something like the next example.</p>
-
-<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span>
-  <span class="dl">"</span><span class="s2">ace</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">https://ace.wikipedia.org/wiki/Asia_Teung%C3%B6h</span><span class="dl">"</span><span class="p">,</span>
-  <span class="dl">"</span><span class="s2">af</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">https://af.wikipedia.org/wiki/Sentraal-Asi%C3%AB</span><span class="dl">"</span><span class="p">,</span>
-  <span class="dl">"</span><span class="s2">am</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">https://am.wikipedia.org/wiki/%E1%88%98%E1%8A%AB%E1%8A%A8%E1%88%88%E1%8A%9B_%E1%8A%A5%E1%88%B5%E1%8B%AB</span><span class="dl">"</span><span class="p">,</span>
-  <span class="c1">//...</span>
-<span class="p">}</span>
-</code></pre></div></div>
-
-<p>Now comes the penultimate step. The plugin has access to some global variables,
-including <code class="language-plaintext highlighter-rouge">languageOrder</code>, which contains the list of languages available in the
+<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-javascript data-lang=javascript>{
+  <span style=color:#00f>&#34;ace&#34;</span>: <span style=color:#00f>&#34;https://ace.wikipedia.org/wiki/Asia_Teung%C3%B6h&#34;</span>,
+  <span style=color:#00f>&#34;af&#34;</span>: <span style=color:#00f>&#34;https://af.wikipedia.org/wiki/Sentraal-Asi%C3%AB&#34;</span>,
+  <span style=color:#00f>&#34;am&#34;</span>: <span style=color:#00f>&#34;https://am.wikipedia.org/wiki/%E1%88%98%E1%8A%AB%E1%8A%A8%E1%88%88%E1%8A%9B_%E1%8A%A5%E1%88%B5%E1%8B%AB&#34;</span>,
+  <span style=color:#080;font-style:italic>//...
+</span><span style=color:#080;font-style:italic></span>}
+</code></pre></div><p>Now comes the penultimate step. The plugin has access to some global variables,
+including <code>languageOrder</code>, which contains the list of languages available in the
 vocabulary used by the concept (actually the current vocabulary configuration).</p>
-
 <p>For each of these languages, we grab the language code, and try to find it in
-<code class="language-plaintext highlighter-rouge">keyLangUriValue</code>. Oh, the languages are ordered, and first comes the one we are
+<code>keyLangUriValue</code>. Oh, the languages are ordered, and first comes the one we are
 currently using! Important to mention it.</p>
-
-<p>So once it locates one match in <code class="language-plaintext highlighter-rouge">keyLangUriValue</code>, the plugin then crafts the
-URL (e.g. <em>https://en.wikipedia.org/api/rest_v1/page/html/Central_Asia</em>).</p>
-
+<p>So once it locates one match in <code>keyLangUriValue</code>, the plugin then crafts the
+URL (e.g. _<a href=https://en.wikipedia.org/api/rest_v1/page/html/Central_Asia_)>https://en.wikipedia.org/api/rest_v1/page/html/Central_Asia_)</a>.</p>
 <p>If there is no match, the plugin will render a 404 message. But when there is a
 match, and the REST URL was created, it uses JQuery to submit an Ajax request.</p>
-
 <p>Upon a success after querying the Wikipedia public REST API, the plugin will
 use JQuery, an existing template.html plus Handlebars to render the template
-under the <code class="language-plaintext highlighter-rouge">.concept-info</code> element. It also customizes a scroll bar, and there
+under the <code>.concept-info</code> element. It also customizes a scroll bar, and there
 are stylesheets applied for theming.</p>
-
-<p>And that’s how the plugin works under the hood!</p>
-
-  </div>
-
-  <div class="tags"><p>Tags:&nbsp;<a class="label" href="/tag/php">php</a>,&nbsp;<a class="label" href="/tag/skosmos">skosmos</a>,&nbsp;<a class="label" href="/tag/semantic web">semantic web</a>,&nbsp;<a class="label" href="/tag/vocabulary server">vocabulary server</a>.<br/></p></div>
-
-  <a class="u-url" href="/2018/12/24/how-the-skosmos-widget-wiki-plugin-works.html" hidden></a>
+<p>And that&rsquo;s how the plugin works under the hood!</p>
+<aside class=links>
+<a class=previous href=https://kinoshita.eti.br/2018/12/22/running-cylc-tasks-on-pbs-torque-with-docker.html>&#171; Previous</a>
+<a class=next href=https://kinoshita.eti.br/2019/02/16/creating-a-logo-in-inkscape-process.html>Next &#187;</a>
+</aside>
 </article>
-
-  </div>
-</div>
+</main>
+<footer role=contentinfo>
+<ul id=social-media-icons>
+<li>
+<a href=https://www.instagram.com/brunokinoshita/>
+<img src=/assets/icons/instagram.png alt="Instagram link">
+</a>
+</li>
+<li>
+<a href=https://twitter.com/kinow/>
+<img src=/assets/icons/twitter.png alt="Twitter link">
+</a>
+</li>
+<li>
+<a href=https://github.com/kinow/>
+<img src=/assets/icons/github.png alt="GitHub link">
+</a>
+</li>
+</ul>
+</footer>
 </body>
 </html>

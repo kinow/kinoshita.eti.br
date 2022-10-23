@@ -1,279 +1,166 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="utf-8" />
-<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-<meta name="viewport" content="width=device-width, initial-scale=1" /><!-- Begin Jekyll SEO tag v2.7.1 -->
-<title>UUID’s in Apache Jena | kinow</title>
-<meta name="generator" content="Jekyll v3.9.0" />
-<meta property="og:title" content="UUID’s in Apache Jena" />
-<meta property="og:locale" content="en_US" />
-<meta name="description" content="In this post I won’t talk about what are UUID’s, or how they work in Java. Here’s a great article on that. Or access the always reliable Wikipedia article about it. (or if you would rather, read the RFC 4122) I found out that Jena had UUID implementations after writing a previous post. And then decided to look into which UUID’s Jena has, and where these UUID’s were used. This way I would either understand why Jena needed UUID’s, or just be more educated in case I ever stumbled with a change in Jena that required related work." />
-<meta property="og:description" content="In this post I won’t talk about what are UUID’s, or how they work in Java. Here’s a great article on that. Or access the always reliable Wikipedia article about it. (or if you would rather, read the RFC 4122) I found out that Jena had UUID implementations after writing a previous post. And then decided to look into which UUID’s Jena has, and where these UUID’s were used. This way I would either understand why Jena needed UUID’s, or just be more educated in case I ever stumbled with a change in Jena that required related work." />
-<link rel="canonical" href="https://kinoshita.eti.br/2018/08/11/uuids-in-apache-jena.html" />
-<meta property="og:url" content="https://kinoshita.eti.br/2018/08/11/uuids-in-apache-jena.html" />
-<meta property="og:site_name" content="kinow" />
-<meta property="og:type" content="article" />
-<meta property="article:published_time" content="2018-08-11T00:00:00+12:00" />
-<meta name="twitter:card" content="summary" />
-<meta property="twitter:title" content="UUID’s in Apache Jena" />
-<script type="application/ld+json">
-{"description":"In this post I won’t talk about what are UUID’s, or how they work in Java. Here’s a great article on that. Or access the always reliable Wikipedia article about it. (or if you would rather, read the RFC 4122) I found out that Jena had UUID implementations after writing a previous post. And then decided to look into which UUID’s Jena has, and where these UUID’s were used. This way I would either understand why Jena needed UUID’s, or just be more educated in case I ever stumbled with a change in Jena that required related work.","@type":"BlogPosting","url":"https://kinoshita.eti.br/2018/08/11/uuids-in-apache-jena.html","headline":"UUID’s in Apache Jena","datePublished":"2018-08-11T00:00:00+12:00","dateModified":"2018-08-11T00:00:00+12:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://kinoshita.eti.br/2018/08/11/uuids-in-apache-jena.html"},"@context":"https://schema.org"}</script>
-<!-- End Jekyll SEO tag -->
-<link rel="stylesheet" href="/assets/css/main.css" /><link type="application/atom+xml" rel="alternate" href="https://kinoshita.eti.br/feed.xml" title="kinow" /><link href="https://unpkg.com/pattern.css" rel="stylesheet" />
-
+<!doctype html><html lang=en><head>
+<meta charset=utf-8>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<link rel=stylesheet type=text/css href=https://kinoshita.eti.br/sass/main.e392e97e7e5991e363403c494b51d829efa207842d755622976c2537d0509be0.css integrity="sha256-45Lpfn5ZkeNjQDxJS1HYKe+iB4QtdVYil2wlN9BQm+A=">
+<title>kinow | UUID's in Apache Jena</title>
 </head>
-<body>
-<div id="mobile-menu"><div class="menu">
-  <ul class="menu">
-    <li class="item">
-      <h1 id="kinow">KINOW</h1>
-    </li>
-    <li class="item">
-      <a href="/" class="">About</a>
-    </li>
-    <li class="item">
-      <a href="/blog/" class="current">Blog</a>
-    </li>
-    <li class="item">
-      <a href="/portfolio/" class="">Portfolio</a>
-    </li>
-    <li class="item social-media-item">
-      <a href="https://www.instagram.com/brunokinoshita/" class="inline-link">
-        <img src="/assets/icons/instagram.png" class="inverted-image"  alt="Instagram link" />
-      </a>
-      <a href="https://twitter.com/kinow/" class="inline-link">
-        <img src="/assets/icons/twitter.png" class="inverted-image" alt="Twitter link" />
-      </a>
-      <a href="https://github.com/kinow/" class="inline-link">
-        <img src="/assets/icons/github.png" class="inverted-image" alt="GitHub link" />
-      </a>
-    </li>
-  </ul>
-</div>
-</div>
-<div id="wrapper">
-  <div id="sidebar"><div class="menu">
-  <ul class="menu">
-    <li class="item">
-      <h1 id="kinow">KINOW</h1>
-    </li>
-    <li class="item">
-      <a href="/" class="">About</a>
-    </li>
-    <li class="item">
-      <a href="/blog/" class="current">Blog</a>
-    </li>
-    <li class="item">
-      <a href="/portfolio/" class="">Portfolio</a>
-    </li>
-    <li class="item social-media-item">
-      <a href="https://www.instagram.com/brunokinoshita/" class="inline-link">
-        <img src="/assets/icons/instagram.png" class="inverted-image"  alt="Instagram link" />
-      </a>
-      <a href="https://twitter.com/kinow/" class="inline-link">
-        <img src="/assets/icons/twitter.png" class="inverted-image" alt="Twitter link" />
-      </a>
-      <a href="https://github.com/kinow/" class="inline-link">
-        <img src="/assets/icons/github.png" class="inverted-image" alt="GitHub link" />
-      </a>
-    </li>
-  </ul>
-</div>
-</div>
-  <div id="content">
-    <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
-  <header class="post-header">
-    <h1 class="post-title p-name" itemprop="name headline">UUID&#39;s in Apache Jena</h1>
-    <span class="post-meta">
-      <time class="dt-published" datetime="2018-08-11T00:00:00+12:00" itemprop="datePublished">Aug 11, 2018
-      </time>
-      <span>&mdash; star date: -304306.85.</span>
-      <span>
-        Number of words: 1068.
-      </span></span>
-  </header>
-
-  <ul>
-  <li><a href="#jena-cores-orgapachejenashareduuid">Jena Core’s org.apache.jena.shared.uuid</a>
-    <ul>
-      <li><a href="#uuid_v1-and-uuid_v4">UUID_V1 and UUID_V4</a></li>
-    </ul>
-  </li>
-  <li><a href="#transaction-id-uuid-txniduuid--uses-jenauuid">Transaction ID UUID (TxnIdUuid) — uses JenaUUID</a></li>
-  <li><a href="#create-a-new-dataset-in-fuseki-actiondatasets--uses-jenauuid">Create a new dataset in Fuseki (ActionDatasets) — uses JenaUUID</a></li>
-  <li><a href="#blank-node-ids-blanknodeid--uses-javas-uuid">Blank node IDs (BlankNodeId) — uses Java’s UUID</a></li>
-  <li><a href="#sparql-functions-and-nodefunctions--uses-javas-uuid">SPARQL functions, and NodeFunctions — uses Java’s UUID</a></li>
-  <li><a href="#files-and-directories-for-databases--datasets--uses-javas-uuid">Files and directories for databases / datasets — uses Java’s UUID</a></li>
-  <li><a href="#conclusion">Conclusion</a></li>
+<body><header role=banner class=content>
+<nav id=nav aria-label=Main role=navigation class=content>
+<ul><li>
+<a href=/>
+<i data-feather=about></i> About</a>
+</li><li>
+<a href=/blog/>
+<i data-feather=blog></i> Blog</a>
+</li><li>
+<a href=/portfolio/>
+<i data-feather=portfolio></i> Portfolio</a>
+</li><li></li>
 </ul>
-
-
-  <div class="post-content e-content" itemprop="articleBody">
-    <p>In this post I won’t talk about what are UUID’s, or how they work in Java.
-<a href="https://www.baeldung.com/java-uuid">Here</a>’s a great article on that. Or access the always reliable <a href="https://en.wikipedia.org/wiki/Universally_unique_identifier">Wikipedia article</a>
-about it. <em>(or if you would rather, read the <a href="http://www.ietf.org/rfc/rfc4122.txt">RFC 4122</a>)</em></p>
-
-<p>I found out that Jena had UUID implementations after writing a 
-<a href="/2018/05/29/what-happens-when-you-create-a-new-dataset-in-apache-jena-fuseki.html">previous post</a>.
-And then decided to look into which UUID’s Jena has, and where these UUID’s
-were used. This way I would either understand why Jena needed UUID’s, or
+</nav>
+</header>
+<main>
+<article class=content>
+<h2>UUID's in Apache Jena</h2><div class=metadata>
+<i data-feather=calendar></i>
+<time datetime=2018-08-11>Aug 11, 2018</time>
+</div>
+<p>In this post I won&rsquo;t talk about what are UUID&rsquo;s, or how they work in Java.
+<a href=https://www.baeldung.com/java-uuid>Here</a>&rsquo;s a great article on that. Or access the always reliable <a href=https://en.wikipedia.org/wiki/Universally_unique_identifier>Wikipedia article</a>
+about it. <em>(or if you would rather, read the <a href=http://www.ietf.org/rfc/rfc4122.txt>RFC 4122</a>)</em></p>
+<p>I found out that Jena had UUID implementations after writing a
+[previous post]({% post_url 2018-05-29-what-happens-when-you-create-a-new-dataset-in-apache-jena-fuseki %}).
+And then decided to look into which UUID&rsquo;s Jena has, and where these UUID&rsquo;s
+were used. This way I would either understand why Jena needed UUID&rsquo;s, or
 just be more educated in case I ever stumbled with a change in Jena that
 required related work.</p>
-
-<!--more-->
-
-<h3 id="jena-cores-orgapachejenashareduuid">Jena Core’s <em>org.apache.jena.shared.uuid</em></h3>
-
+<h3 id=jena-cores-_orgapachejenashareduuid_>Jena Core&rsquo;s <em>org.apache.jena.shared.uuid</em></h3>
 <p>This package is small and simply contains: <em>factories</em>,</p>
-
-<p><a href="https://www.deviantart.com/kinow/art/Zatoichi-Crying-from-A-Tale-of-Zatoichi-758902187"><img style="float: right; height: 300px;" class="ui image" src="/assets/posts/2018-08-11-uuid-s-in-apache-jena/zatoichi_crying.png" alt="Zatoichi Crying" /></a></p>
-
+<figure class=feature>
+<img src=/assets/posts/2018-08-11-uuids-in-apache-jena/zatoichi_crying.png alt="Zatoichi Crying" title="Zatoichi Crying" style=zgotmplz width height>
+<figcaption>Zatoichi Crying</figcaption>
+</figure>
 <ul>
-  <li><code class="language-plaintext highlighter-rouge">UUIDFactory</code>: interface for a factory of UUID’s</li>
-  <li><code class="language-plaintext highlighter-rouge">UUID_V1_Gen</code>: a factory for <code class="language-plaintext highlighter-rouge">UUID_V1</code></li>
-  <li><code class="language-plaintext highlighter-rouge">UUID_V4_Gen</code>: a factory for <code class="language-plaintext highlighter-rouge">UUID_V4</code></li>
+<li><code>UUIDFactory</code>: interface for a factory of UUID&rsquo;s</li>
+<li><code>UUID_V1_Gen</code>: a factory for <code>UUID_V1</code></li>
+<li><code>UUID_V4_Gen</code>: a factory for <code>UUID_V4</code></li>
 </ul>
-
 <p>and <em>UUID implementations</em>,</p>
-
 <ul>
-  <li><code class="language-plaintext highlighter-rouge">JenaUUID</code>: abstract base class for UUID implementations</li>
-  <li><code class="language-plaintext highlighter-rouge">UUID_nil</code>: a special UUID, <em>nil</em>, filled with zeroes</li>
-  <li><code class="language-plaintext highlighter-rouge">UUID_V1</code>: UUID V1</li>
-  <li><code class="language-plaintext highlighter-rouge">UUID_V4</code>: UUID V4</li>
+<li><code>JenaUUID</code>: abstract base class for UUID implementations</li>
+<li><code>UUID_nil</code>: a special UUID, <em>nil</em>, filled with zeroes</li>
+<li><code>UUID_V1</code>: UUID V1</li>
+<li><code>UUID_V4</code>: UUID V4</li>
 </ul>
-
 <p>and a <em>utility class</em></p>
-
 <ul>
-  <li><code class="language-plaintext highlighter-rouge">LibUUID</code>: with methods to create a <code class="language-plaintext highlighter-rouge">Random</code> and to create <code class="language-plaintext highlighter-rouge">byte[]</code> seeds.</li>
+<li><code>LibUUID</code>: with methods to create a <code>Random</code> and to create <code>byte[]</code> seeds.</li>
 </ul>
-
-<p><code class="language-plaintext highlighter-rouge">JenaUUID</code> contains a method to return a <code class="language-plaintext highlighter-rouge">JenaUUID</code> as a Java’s <code class="language-plaintext highlighter-rouge">UUID</code>. And is used
-in the command line utility <code class="language-plaintext highlighter-rouge">juuid</code>, for transaction ID’s, and when a new
+<p><code>JenaUUID</code> contains a method to return a <code>JenaUUID</code> as a Java&rsquo;s <code>UUID</code>. And is used
+in the command line utility <code>juuid</code>, for transaction ID&rsquo;s, and when a new
 dataset is created. For the new dataset, Fuseki will create files in a temporary
 location. The name of the temporary location is created using an instance of
-<code class="language-plaintext highlighter-rouge">JenaUUID</code>.</p>
-
-<h4 id="uuid_v1-and-uuid_v4"><em>UUID_V1</em> and <em>UUID_V4</em></h4>
-
-<p>Jena’s <code class="language-plaintext highlighter-rouge">UUID_V1</code> is an implementation of Version 1 (<em>time based</em>),
+<code>JenaUUID</code>.</p>
+<h4 id=_uuid_v1_-and-_uuid_v4_><em>UUID_V1</em> and <em>UUID_V4</em></h4>
+<p>Jena&rsquo;s <code>UUID_V1</code> is an implementation of Version 1 (<em>time based</em>),
 variant 2 (<em>DCE</em>). Which means it uses MAC address and
-timestamp to generate the universal unique ID’s.</p>
-
-<p>It uses <code class="language-plaintext highlighter-rouge">NetworkInterface.getNetworkInterfaces()</code> to retrieve the MAC
+timestamp to generate the universal unique ID&rsquo;s.</p>
+<p>It uses <code>NetworkInterface.getNetworkInterfaces()</code> to retrieve the MAC
 address of the node running Jena. When using localhost, the MAC
 address is not available, so it resorts to using a random number.</p>
-
-<hr />
-
-<p>And Jena’s <code class="language-plaintext highlighter-rouge">UUID_V4</code> is an implementation of Version 4(<em>random</em>),
+<hr>
+<p>And Jena&rsquo;s <code>UUID_V4</code> is an implementation of Version 4(<em>random</em>),
 variant 2 (<em>DCE</em>). Which means it uses random numbers to generate
-the universal unique ID’s.</p>
-
+the universal unique ID&rsquo;s.</p>
 <p>The factory for V4 will have a random for the most significant bits,
 and for the least significant bits of the UUID (also including version
-and variant). The random for the factory is created by <code class="language-plaintext highlighter-rouge">LibUUID#makeRandom()</code>.
-This method returns a <code class="language-plaintext highlighter-rouge">SecureRandom</code> with two seeds, one being random, and
-the other created with <code class="language-plaintext highlighter-rouge">LibUUID#makeSeed()</code>.</p>
-
-<p><code class="language-plaintext highlighter-rouge">UUID_V4</code> uses a <code class="language-plaintext highlighter-rouge">SecureRandom</code> created locally but with the seed also set by
-<code class="language-plaintext highlighter-rouge">LibUUID#makeSeed()</code>. The seed returned by this method may use the
-MAC address, but will also use the <code class="language-plaintext highlighter-rouge">os.version</code>, <code class="language-plaintext highlighter-rouge">user.name</code>, <code class="language-plaintext highlighter-rouge">java.version</code>,
+and variant). The random for the factory is created by <code>LibUUID#makeRandom()</code>.
+This method returns a <code>SecureRandom</code> with two seeds, one being random, and
+the other created with <code>LibUUID#makeSeed()</code>.</p>
+<p><code>UUID_V4</code> uses a <code>SecureRandom</code> created locally but with the seed also set by
+<code>LibUUID#makeSeed()</code>. The seed returned by this method may use the
+MAC address, but will also use the <code>os.version</code>, <code>user.name</code>, <code>java.version</code>,
 number of active threads, total memory, free memory, and the hash code
-of a newly created <code class="language-plaintext highlighter-rouge">Object</code>.</p>
-
-<h3 id="transaction-id-uuid-txniduuid--uses-jenauuid">Transaction ID UUID (<em>TxnIdUuid</em>) — uses JenaUUID</h3>
-
-<p>Jena contains two implementations of <code class="language-plaintext highlighter-rouge">TxnId</code> (transaction identifiers),</p>
-
+of a newly created <code>Object</code>.</p>
+<h3 id=transaction-id-uuid-_txniduuid_-mdash-uses-jenauuid>Transaction ID UUID (<em>TxnIdUuid</em>) — uses JenaUUID</h3>
+<p>Jena contains two implementations of <code>TxnId</code> (transaction identifiers),</p>
 <ul>
-  <li><code class="language-plaintext highlighter-rouge">TxnIdSimple</code>: transaction IDs are created with a counter within each JVM</li>
-  <li><code class="language-plaintext highlighter-rouge">TxnIdUuid</code>: transaction IDs are created using <code class="language-plaintext highlighter-rouge">JenaUUID</code>.</li>
+<li><code>TxnIdSimple</code>: transaction IDs are created with a counter within each JVM</li>
+<li><code>TxnIdUuid</code>: transaction IDs are created using <code>JenaUUID</code>.</li>
 </ul>
-
 <p>The first thing that called my eye in this class was the inconsistency with the
 name - which is quite normal in large projects such as Jena.</p>
-
-<p>As <code class="language-plaintext highlighter-rouge">TxnIdUuid</code> calls <code class="language-plaintext highlighter-rouge">JenaUUID#generate()</code>, it will use the default factory,
-<code class="language-plaintext highlighter-rouge">UUID_V1_Gen</code>. Then it will call <code class="language-plaintext highlighter-rouge">asUUID</code> to return a Java <code class="language-plaintext highlighter-rouge">UUID</code> object but
+<p>As <code>TxnIdUuid</code> calls <code>JenaUUID#generate()</code>, it will use the default factory,
+<code>UUID_V1_Gen</code>. Then it will call <code>asUUID</code> to return a Java <code>UUID</code> object but
 with the same UUID.</p>
-
-<h3 id="create-a-new-dataset-in-fuseki-actiondatasets--uses-jenauuid">Create a new dataset in Fuseki (<em>ActionDatasets</em>) — uses JenaUUID</h3>
-
+<h3 id=create-a-new-dataset-in-fuseki-_actiondatasets_-mdash-uses-jenauuid>Create a new dataset in Fuseki (<em>ActionDatasets</em>) — uses JenaUUID</h3>
 <p>When you create a new dataset in Fuseki, as explained in the
-<a href="/2018/05/29/what-happens-when-you-create-a-new-dataset-in-apache-jena-fuseki.html">previous post</a>,
+[previous post]({% post_url 2018-05-29-what-happens-when-you-create-a-new-dataset-in-apache-jena-fuseki %}),
 Fuseki will create some temporary files and folders. For at least one folder, it will
-use an instance of <code class="language-plaintext highlighter-rouge">JenaUUID</code>, in <code class="language-plaintext highlighter-rouge">ActionDatasets#execPostContainer()</code>.</p>
-
-<h3 id="blank-node-ids-blanknodeid--uses-javas-uuid">Blank node IDs (<em>BlankNodeId</em>) — uses Java’s UUID</h3>
-
+use an instance of <code>JenaUUID</code>, in <code>ActionDatasets#execPostContainer()</code>.</p>
+<h3 id=blank-node-ids-_blanknodeid_-mdash-uses-javas-uuid>Blank node IDs (<em>BlankNodeId</em>) — uses Java&rsquo;s UUID</h3>
 <p>Blank nodes in Jena need an identifier too. It is possible to configure Jena
-to either return a JVM bound counter (similarly to how <code class="language-plaintext highlighter-rouge">TxnIdSimple</code> works),
+to either return a JVM bound counter (similarly to how <code>TxnIdSimple</code> works),
 or otherwise blank nodes identifiers will be generated with
-<code class="language-plaintext highlighter-rouge">java.util.UUID.randomUUID()</code>.</p>
-
-<p><em><strong>I wonder why the transaction ID’s use Jena’s <code class="language-plaintext highlighter-rouge">JenaUUID</code>s, but the blank
-node IDs use Java’s UUID</strong></em>? They are <a href="https://github.com/apache/jena/blob/7b011c30b6bf54db44b5b14408f103009adbdd67/jena-core/src/test/java/org/apache/jena/shared/uuid/TestUUID_JRE.java">compatible</a> anyway.</p>
-
-<p>Other methods related to blank nodes also use Java’s <code class="language-plaintext highlighter-rouge">UUID</code>,</p>
-
+<code>java.util.UUID.randomUUID()</code>.</p>
+<p><em><strong>I wonder why the transaction ID&rsquo;s use Jena&rsquo;s <code>JenaUUID</code>s, but the blank
+node IDs use Java&rsquo;s UUID</strong></em>? They are <a href=https://github.com/apache/jena/blob/7b011c30b6bf54db44b5b14408f103009adbdd67/jena-core/src/test/java/org/apache/jena/shared/uuid/TestUUID_JRE.java>compatible</a> anyway.</p>
+<p>Other methods related to blank nodes also use Java&rsquo;s <code>UUID</code>,</p>
 <ul>
-  <li><code class="language-plaintext highlighter-rouge">BlankNodeAllocatorFixedSeedHash</code></li>
-  <li><code class="language-plaintext highlighter-rouge">BlankNodeAllocatorHash#freshSeed()</code>.</li>
+<li><code>BlankNodeAllocatorFixedSeedHash</code></li>
+<li><code>BlankNodeAllocatorHash#freshSeed()</code>.</li>
 </ul>
-
-<h3 id="sparql-functions-and-nodefunctions--uses-javas-uuid">SPARQL functions, and <em>NodeFunctions</em> — uses Java’s UUID</h3>
-
-<p>SPARQL 1.1 contains functions <a href="https://www.w3.org/TR/sparql11-query/#func-uuid"><code class="language-plaintext highlighter-rouge">UUID</code></a> and
-<a href="https://www.w3.org/TR/sparql11-query/#func-struuid"><code class="language-plaintext highlighter-rouge">STRUUID</code></a>. Apache Jena provides
+<h3 id=sparql-functions-and-_nodefunctions_-mdash-uses-javas-uuid>SPARQL functions, and <em>NodeFunctions</em> — uses Java&rsquo;s UUID</h3>
+<p>SPARQL 1.1 contains functions <a href=https://www.w3.org/TR/sparql11-query/#func-uuid><code>UUID</code></a> and
+<a href=https://www.w3.org/TR/sparql11-query/#func-struuid><code>STRUUID</code></a>. Apache Jena provides
 these two functions, and users can use them in queries such as</p>
-
-<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">SELECT</span> <span class="p">(</span><span class="n">UUID</span><span class="p">()</span> <span class="k">AS</span> <span class="o">?</span><span class="n">uuid</span><span class="p">)</span> <span class="p">(</span><span class="n">StrUUID</span><span class="p">()</span> <span class="k">AS</span> <span class="o">?</span><span class="n">strUuid</span><span class="p">)</span> <span class="k">WHERE</span> <span class="err">{</span> <span class="err">}</span>
-</code></pre></div></div>
-
-<p>(but before users would have to call extra functions in a different namespace).</p>
-
-<p>The function implementations use <code class="language-plaintext highlighter-rouge">NodeFunctions</code> methods <code class="language-plaintext highlighter-rouge">struuid</code> and <code class="language-plaintext highlighter-rouge">uuid</code>. Both methods in
-<code class="language-plaintext highlighter-rouge">NodeFunctions</code> use Java’s <code class="language-plaintext highlighter-rouge">UUID</code>, and not <code class="language-plaintext highlighter-rouge">JenaUUID</code>.</p>
-
-<h3 id="files-and-directories-for-databases--datasets--uses-javas-uuid">Files and directories for databases / datasets — uses Java’s UUID</h3>
-
-<p>Files and directories created in Jena use Java’s <code class="language-plaintext highlighter-rouge">UUID</code>,</p>
-
+<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sql data-lang=sql><span style=color:navy;font-weight:700>SELECT</span><span style=color:#bbb> </span>(UUID()<span style=color:#bbb> </span><span style=color:navy;font-weight:700>AS</span><span style=color:#bbb> </span>?uuid)<span style=color:#bbb> </span>(StrUUID()<span style=color:#bbb> </span><span style=color:navy;font-weight:700>AS</span><span style=color:#bbb> </span>?strUuid)<span style=color:#bbb> </span><span style=color:navy;font-weight:700>WHERE</span><span style=color:#bbb> </span><span style=color:#a61717;background-color:#e3d2d2>{</span><span style=color:#bbb> </span><span style=color:#a61717;background-color:#e3d2d2>}</span><span style=color:#bbb>
+</span></code></pre></div><p>(but before users would have to call extra functions in a different namespace).</p>
+<p>The function implementations use <code>NodeFunctions</code> methods <code>struuid</code> and <code>uuid</code>. Both methods in
+<code>NodeFunctions</code> use Java&rsquo;s <code>UUID</code>, and not <code>JenaUUID</code>.</p>
+<h3 id=files-and-directories-for-databases--datasets-mdash-uses-javas-uuid>Files and directories for databases / datasets — uses Java&rsquo;s UUID</h3>
+<p>Files and directories created in Jena use Java&rsquo;s <code>UUID</code>,</p>
 <ul>
-  <li><code class="language-plaintext highlighter-rouge">BufferAllocatorMapped#getNewTemporaryFile()</code></li>
-  <li><code class="language-plaintext highlighter-rouge">TDBBuilder#create</code> methods and <code class="language-plaintext highlighter-rouge">ComponentIdMgr</code> constructor</li>
-  <li><code class="language-plaintext highlighter-rouge">AbstractDataBag#getNewTemporaryFile()</code>.</li>
+<li><code>BufferAllocatorMapped#getNewTemporaryFile()</code></li>
+<li><code>TDBBuilder#create</code> methods and <code>ComponentIdMgr</code> constructor</li>
+<li><code>AbstractDataBag#getNewTemporaryFile()</code>.</li>
 </ul>
-
-<h3 id="conclusion">Conclusion</h3>
-
-<p>In Jena there are places where instances of <code class="language-plaintext highlighter-rouge">JenaUUID</code> are used to produce a
-UUID, and other places where Java’s <code class="language-plaintext highlighter-rouge">UUID</code> is used.</p>
-
-<p>Java’s <code class="language-plaintext highlighter-rouge">UUID</code> provides a variant 2 version 4 (random DCE), which is equivalent to
-<code class="language-plaintext highlighter-rouge">UUID_V4</code>. But there is no equivalent of <code class="language-plaintext highlighter-rouge">UUID_V1</code>, the default used in Jena.</p>
-
-<p>And even though <code class="language-plaintext highlighter-rouge">UUID_V4</code> and <code class="language-plaintext highlighter-rouge">UUID</code> are compatible, I believe Jena’s version is using
-a seed with so many JVM and operating system related settings (<code class="language-plaintext highlighter-rouge">os.version</code>, free memory, etc)
+<h3 id=conclusion>Conclusion</h3>
+<p>In Jena there are places where instances of <code>JenaUUID</code> are used to produce a
+UUID, and other places where Java&rsquo;s <code>UUID</code> is used.</p>
+<p>Java&rsquo;s <code>UUID</code> provides a variant 2 version 4 (random DCE), which is equivalent to
+<code>UUID_V4</code>. But there is no equivalent of <code>UUID_V1</code>, the default used in Jena.</p>
+<p>And even though <code>UUID_V4</code> and <code>UUID</code> are compatible, I believe Jena&rsquo;s version is using
+a seed with so many JVM and operating system related settings (<code>os.version</code>, free memory, etc)
 in order to have a unique seed per node running Jena, independent of whether there
-are multiple JVM’s in the same node.</p>
-
+are multiple JVM&rsquo;s in the same node.</p>
 <p>But to be honest, I am still not sure which one I would have to use, nor if there are
-cases where I should pick one over the other…</p>
-
-<p><em>EDIT: Apache Jena’s lead dev <a href="https://markmail.org/thread/vnys264p4c6lkc6l#query:+page:1+mid:raa7gaxconcnqbzp+state:results">replied</a> with a bit of history about the project too (:</em></p>
-
-  </div>
-
-  <div class="tags"><p>Tags:&nbsp;<a class="label" href="/tag/apache software foundation">apache software foundation</a>,&nbsp;<a class="label" href="/tag/java">java</a>,&nbsp;<a class="label" href="/tag/jena">jena</a>,&nbsp;<a class="label" href="/tag/opensource">opensource</a>.<br/></p></div>
-
-  <a class="u-url" href="/2018/08/11/uuids-in-apache-jena.html" hidden></a>
+cases where I should pick one over the other&mldr;</p>
+<p><em>EDIT: Apache Jena&rsquo;s lead dev <a href=https://markmail.org/thread/vnys264p4c6lkc6l#query:+page:1+mid:raa7gaxconcnqbzp+state:results>replied</a> with a bit of history about the project too (:</em></p>
+<aside class=links>
+<a class=previous href=https://kinoshita.eti.br/2018/08/04/creating-a-docker-container-to-run-as-a-command.html>&#171; Previous</a>
+<a class=next href=https://kinoshita.eti.br/2018/08/12/use-of-logging-in-java-image-processing-libraries.html>Next &#187;</a>
+</aside>
 </article>
-
-  </div>
-</div>
+</main>
+<footer role=contentinfo>
+<ul id=social-media-icons>
+<li>
+<a href=https://www.instagram.com/brunokinoshita/>
+<img src=/assets/icons/instagram.png alt="Instagram link">
+</a>
+</li>
+<li>
+<a href=https://twitter.com/kinow/>
+<img src=/assets/icons/twitter.png alt="Twitter link">
+</a>
+</li>
+<li>
+<a href=https://github.com/kinow/>
+<img src=/assets/icons/github.png alt="GitHub link">
+</a>
+</li>
+</ul>
+</footer>
 </body>
 </html>

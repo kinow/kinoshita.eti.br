@@ -1,156 +1,89 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="utf-8" />
-<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-<meta name="viewport" content="width=device-width, initial-scale=1" /><!-- Begin Jekyll SEO tag v2.7.1 -->
-<title>Replacing a HashSet with a BitSet | kinow</title>
-<meta name="generator" content="Jekyll v3.9.0" />
-<meta property="og:title" content="Replacing a HashSet with a BitSet" />
-<meta property="og:locale" content="en_US" />
-<meta name="description" content="I always read the messages in the Apache dev mailing lists, including Apache Commons dev mailing list. And you should too. There are always interesting discussions. Sometimes you participate, other times you only watch what&#39;s happening, but in the end you always learn something new. A few days ago, I found an issue where it was being proposed to replace an unnecessary HashSet in ArrayUtils#removeElements() by a BitSet. Here&#39;s how the code looked like:" />
-<meta property="og:description" content="I always read the messages in the Apache dev mailing lists, including Apache Commons dev mailing list. And you should too. There are always interesting discussions. Sometimes you participate, other times you only watch what&#39;s happening, but in the end you always learn something new. A few days ago, I found an issue where it was being proposed to replace an unnecessary HashSet in ArrayUtils#removeElements() by a BitSet. Here&#39;s how the code looked like:" />
-<link rel="canonical" href="https://kinoshita.eti.br/2012/10/20/replacing-a-hashset-with-a-bitset.html" />
-<meta property="og:url" content="https://kinoshita.eti.br/2012/10/20/replacing-a-hashset-with-a-bitset.html" />
-<meta property="og:site_name" content="kinow" />
-<meta property="og:type" content="article" />
-<meta property="article:published_time" content="2012-10-20T00:00:00+13:00" />
-<meta name="twitter:card" content="summary" />
-<meta property="twitter:title" content="Replacing a HashSet with a BitSet" />
-<script type="application/ld+json">
-{"description":"I always read the messages in the Apache dev mailing lists, including Apache Commons dev mailing list. And you should too. There are always interesting discussions. Sometimes you participate, other times you only watch what&#39;s happening, but in the end you always learn something new. A few days ago, I found an issue where it was being proposed to replace an unnecessary HashSet in ArrayUtils#removeElements() by a BitSet. Here&#39;s how the code looked like:","@type":"BlogPosting","url":"https://kinoshita.eti.br/2012/10/20/replacing-a-hashset-with-a-bitset.html","headline":"Replacing a HashSet with a BitSet","datePublished":"2012-10-20T00:00:00+13:00","dateModified":"2012-10-20T00:00:00+13:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://kinoshita.eti.br/2012/10/20/replacing-a-hashset-with-a-bitset.html"},"@context":"https://schema.org"}</script>
-<!-- End Jekyll SEO tag -->
-<link rel="stylesheet" href="/assets/css/main.css" /><link type="application/atom+xml" rel="alternate" href="https://kinoshita.eti.br/feed.xml" title="kinow" /><link href="https://unpkg.com/pattern.css" rel="stylesheet" />
-
+<!doctype html><html lang=en><head>
+<meta charset=utf-8>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<link rel=stylesheet type=text/css href=https://kinoshita.eti.br/sass/main.e392e97e7e5991e363403c494b51d829efa207842d755622976c2537d0509be0.css integrity="sha256-45Lpfn5ZkeNjQDxJS1HYKe+iB4QtdVYil2wlN9BQm+A=">
+<title>kinow | Replacing a HashSet with a BitSet</title>
 </head>
-<body>
-<div id="mobile-menu"><div class="menu">
-  <ul class="menu">
-    <li class="item">
-      <h1 id="kinow">KINOW</h1>
-    </li>
-    <li class="item">
-      <a href="/" class="">About</a>
-    </li>
-    <li class="item">
-      <a href="/blog/" class="current">Blog</a>
-    </li>
-    <li class="item">
-      <a href="/portfolio/" class="">Portfolio</a>
-    </li>
-    <li class="item social-media-item">
-      <a href="https://www.instagram.com/brunokinoshita/" class="inline-link">
-        <img src="/assets/icons/instagram.png" class="inverted-image"  alt="Instagram link" />
-      </a>
-      <a href="https://twitter.com/kinow/" class="inline-link">
-        <img src="/assets/icons/twitter.png" class="inverted-image" alt="Twitter link" />
-      </a>
-      <a href="https://github.com/kinow/" class="inline-link">
-        <img src="/assets/icons/github.png" class="inverted-image" alt="GitHub link" />
-      </a>
-    </li>
-  </ul>
+<body><header role=banner class=content>
+<nav id=nav aria-label=Main role=navigation class=content>
+<ul><li>
+<a href=/>
+<i data-feather=about></i> About</a>
+</li><li>
+<a href=/blog/>
+<i data-feather=blog></i> Blog</a>
+</li><li>
+<a href=/portfolio/>
+<i data-feather=portfolio></i> Portfolio</a>
+</li><li></li>
+</ul>
+</nav>
+</header>
+<main>
+<article class=content>
+<h2>Replacing a HashSet with a BitSet</h2><div class=metadata>
+<i data-feather=calendar></i>
+<time datetime=2012-10-20>Oct 20, 2012</time>
 </div>
-</div>
-<div id="wrapper">
-  <div id="sidebar"><div class="menu">
-  <ul class="menu">
-    <li class="item">
-      <h1 id="kinow">KINOW</h1>
-    </li>
-    <li class="item">
-      <a href="/" class="">About</a>
-    </li>
-    <li class="item">
-      <a href="/blog/" class="current">Blog</a>
-    </li>
-    <li class="item">
-      <a href="/portfolio/" class="">Portfolio</a>
-    </li>
-    <li class="item social-media-item">
-      <a href="https://www.instagram.com/brunokinoshita/" class="inline-link">
-        <img src="/assets/icons/instagram.png" class="inverted-image"  alt="Instagram link" />
-      </a>
-      <a href="https://twitter.com/kinow/" class="inline-link">
-        <img src="/assets/icons/twitter.png" class="inverted-image" alt="Twitter link" />
-      </a>
-      <a href="https://github.com/kinow/" class="inline-link">
-        <img src="/assets/icons/github.png" class="inverted-image" alt="GitHub link" />
-      </a>
-    </li>
-  </ul>
-</div>
-</div>
-  <div id="content">
-    <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
-  <header class="post-header">
-    <h1 class="post-title p-name" itemprop="name headline">Replacing a HashSet with a BitSet</h1>
-    <span class="post-meta">
-      <time class="dt-published" datetime="2012-10-20T00:00:00+13:00" itemprop="datePublished">Oct 20, 2012
-      </time>
-      <span>&mdash; star date: -310114.75.</span>
-      <span>
-        Number of words: 635.
-      </span></span>
-  </header>
-
-  
-
-
-  <div class="post-content e-content" itemprop="articleBody">
-    <p>I always read the messages in the <a href="http://www.apache.org/foundation/mailinglists.html" title="Apache mailing lists">Apache dev mailing lists</a>, including Apache Commons <a href="http://commons.apache.org/mail-lists.html" title="Apache Commons mailing lists">dev mailing list</a>. And you should too. There are always interesting discussions. Sometimes you participate, other times you only watch what's happening, but in the end <strong>you always learn something new</strong>.</p>
-
-<p><img class="ui image" src="/assets/posts/2012-10-20-replacing-a-hashset-with-a-bitset/feather_small.gif" /></p>
-
-<p>A few days ago, I found <a href="https://issues.apache.org/jira/browse/LANG-839" title="LANG-839">an issue</a> where it was being proposed to replace an unnecessary <a href="http://docs.oracle.com/javase/6/docs/api/java/util/HashSet.html" title="HashSet">HashSet</a> in <a href="http://commons.apache.org/lang/api-release/org/apache/commons/lang3/ArrayUtils.html" title="ArrayUtils">ArrayUtils</a>#removeElements() by a <a href="http://docs.oracle.com/javase/6/docs/api/java/util/BitSet.html" title="BitSet">BitSet</a>. Here's how the code looked like: </p>
-
-<!--more-->
-
-<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">HashSet</span><span class="o">&lt;</span><span class="nc">Integer</span><span class="o">&gt;</span> <span class="n">toRemove</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">HashSet</span><span class="o">&lt;</span><span class="nc">Integer</span><span class="o">&gt;();</span>
-<span class="k">for</span> <span class="o">(</span><span class="nc">Map</span><span class="o">.</span><span class="na">Entry</span><span class="o">&lt;</span><span class="nc">Character</span><span class="o">,</span> <span class="nc">MutableInt</span><span class="o">&gt;</span> <span class="n">e</span> <span class="o">:</span> <span class="n">occurrences</span><span class="o">.</span><span class="na">entrySet</span><span class="o">())</span> <span class="o">{</span>
-    <span class="nc">Character</span> <span class="n">v</span> <span class="o">=</span> <span class="n">e</span><span class="o">.</span><span class="na">getKey</span><span class="o">();</span>
-    <span class="kt">int</span> <span class="n">found</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
-    <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">,</span> <span class="n">ct</span> <span class="o">=</span> <span class="n">e</span><span class="o">.</span><span class="na">getValue</span><span class="o">().</span><span class="na">intValue</span><span class="o">();</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">ct</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
-        <span class="n">found</span> <span class="o">=</span> <span class="n">indexOf</span><span class="o">(</span><span class="n">array</span><span class="o">,</span> <span class="n">v</span><span class="o">.</span><span class="na">charValue</span><span class="o">(),</span> <span class="n">found</span><span class="o">);</span>
-        <span class="k">if</span> <span class="o">(</span><span class="n">found</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="o">)</span> <span class="o">{</span>
-            <span class="k">break</span><span class="o">;</span>
-        <span class="o">}</span>
-        <span class="n">toRemove</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">found</span><span class="o">++);</span>
-    <span class="o">}</span>
-<span class="o">}</span>
-<span class="k">return</span> <span class="o">(</span><span class="kt">char</span><span class="o">[])</span> <span class="n">removeAll</span><span class="o">((</span><span class="nc">Object</span><span class="o">)</span><span class="n">array</span><span class="o">,</span> <span class="n">extractIndices</span><span class="o">(</span><span class="n">toRemove</span><span class="o">));</span>
-</code></pre></div></div>
-
-<p>The HashSet created at line 1, in the code above, was used to store the array index of the elements that should be removed. And at line 13 there is a call to removeAll method, passing the indexes to be removed. And here's how the new code looks like: </p>
-
-<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">BitSet</span> <span class="n">toRemove</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">BitSet</span><span class="o">();</span>
-<span class="k">for</span> <span class="o">(</span><span class="nc">Map</span><span class="o">.</span><span class="na">Entry</span><span class="o">&lt;</span><span class="nc">Character</span><span class="o">,</span> <span class="nc">MutableInt</span><span class="o">&gt;</span> <span class="n">e</span> <span class="o">:</span> <span class="n">occurrences</span><span class="o">.</span><span class="na">entrySet</span><span class="o">())</span> <span class="o">{</span>
-    <span class="nc">Character</span> <span class="n">v</span> <span class="o">=</span> <span class="n">e</span><span class="o">.</span><span class="na">getKey</span><span class="o">();</span>
-    <span class="kt">int</span> <span class="n">found</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
-    <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">,</span> <span class="n">ct</span> <span class="o">=</span> <span class="n">e</span><span class="o">.</span><span class="na">getValue</span><span class="o">().</span><span class="na">intValue</span><span class="o">();</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">ct</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
-        <span class="n">found</span> <span class="o">=</span> <span class="n">indexOf</span><span class="o">(</span><span class="n">array</span><span class="o">,</span> <span class="n">v</span><span class="o">.</span><span class="na">charValue</span><span class="o">(),</span> <span class="n">found</span><span class="o">);</span>
-        <span class="k">if</span> <span class="o">(</span><span class="n">found</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="o">)</span> <span class="o">{</span>
-            <span class="k">break</span><span class="o">;</span>
-        <span class="o">}</span>
-        <span class="n">toRemove</span><span class="o">.</span><span class="na">set</span><span class="o">(</span><span class="n">found</span><span class="o">++);</span>
-    <span class="o">}</span>
-<span class="o">}</span>
-<span class="k">return</span> <span class="o">(</span><span class="kt">char</span><span class="o">[])</span> <span class="n">removeAll</span><span class="o">(</span><span class="n">array</span><span class="o">,</span> <span class="n">toRemove</span><span class="o">);</span>
-</code></pre></div></div>
-
-<p>The first difference is at line 1. Instead of a HashSet, it is now using a BitSet. And at line 10, instead of adding a new element to the HashSet, now it "sets" a bit in the set (the bit at the specified position is now true). But there are important changes at line 13. The method removeAll was changed, and now the array doesn't require a cast anymore. And the it is not necessary to cast the elements from HashSet anymore, as now the bit in the index position of the set is set to true. So the extractIndices method could be removed.</p>
-
-<p>The code got simpler. But that's not all. At <a href="http://www.apache.org" title="Apache Software Foundation">Apache Software Foundation</a> you can find a lot of talented developers - that's why I got so excited after joining them. Besides simplifying the code, the developer responsible for these changes (<strong>sebb</strong>) also pointed out that the new code <strong>consumes less memory and is faster</strong>. Ah! And he also wrote <strong>unit tests</strong>
-</p>
-
-  </div>
-
-  <div class="tags"><p>Tags:&nbsp;<a class="label" href="/tag/apache software foundation">apache software foundation</a>,&nbsp;<a class="label" href="/tag/java">java</a>,&nbsp;<a class="label" href="/tag/opensource">opensource</a>,&nbsp;<a class="label" href="/tag/programming">programming</a>.<br/></p></div>
-
-  <a class="u-url" href="/2012/10/20/replacing-a-hashset-with-a-bitset.html" hidden></a>
+<p>I always read the messages in the <a href=http://www.apache.org/foundation/mailinglists.html title="Apache mailing lists">Apache dev mailing lists</a>, including Apache Commons <a href=http://commons.apache.org/mail-lists.html title="Apache Commons mailing lists">dev mailing list</a>. And you should too. There are always interesting discussions. Sometimes you participate, other times you only watch what's happening, but in the end <strong>you always learn something new</strong>.</p>
+<figure class=feature>
+<img src=/assets/posts/2012-10-20-replacing-a-hashset-with-a-bitset/feather_small.gif alt title width height>
+<figcaption></figcaption>
+</figure>
+<p>A few days ago, I found <a href=https://issues.apache.org/jira/browse/LANG-839 title=LANG-839>an issue</a> where it was being proposed to replace an unnecessary <a href=http://docs.oracle.com/javase/6/docs/api/java/util/HashSet.html title=HashSet>HashSet</a> in <a href=http://commons.apache.org/lang/api-release/org/apache/commons/lang3/ArrayUtils.html title=ArrayUtils>ArrayUtils</a>#removeElements() by a <a href=http://docs.oracle.com/javase/6/docs/api/java/util/BitSet.html title=BitSet>BitSet</a>. Here's how the code looked like: </p>
+<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java>HashSet&lt;Integer&gt; toRemove = <span style=color:navy;font-weight:700>new</span> HashSet&lt;Integer&gt;();
+<span style=color:navy;font-weight:700>for</span> (Map.<span style=color:red>Entry</span>&lt;Character, MutableInt&gt; e : occurrences.<span style=color:red>entrySet</span>()) {
+    Character v = e.<span style=color:red>getKey</span>();
+    <span style=color:navy;font-weight:700>int</span> found = 0;
+    <span style=color:navy;font-weight:700>for</span> (<span style=color:navy;font-weight:700>int</span> i = 0, ct = e.<span style=color:red>getValue</span>().<span style=color:red>intValue</span>(); i &lt; ct; i++) {
+        found = indexOf(array, v.<span style=color:red>charValue</span>(), found);
+        <span style=color:navy;font-weight:700>if</span> (found &lt; 0) {
+            <span style=color:navy;font-weight:700>break</span>;
+        }
+        toRemove.<span style=color:red>add</span>(found++);
+    }
+}
+<span style=color:navy;font-weight:700>return</span> (<span style=color:navy;font-weight:700>char</span>[]) removeAll((Object)array, extractIndices(toRemove));
+</code></pre></div><p>The HashSet created at line 1, in the code above, was used to store the array index of the elements that should be removed. And at line 13 there is a call to removeAll method, passing the indexes to be removed. And here's how the new code looks like: </p>
+<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java>BitSet toRemove = <span style=color:navy;font-weight:700>new</span> BitSet();
+<span style=color:navy;font-weight:700>for</span> (Map.<span style=color:red>Entry</span>&lt;Character, MutableInt&gt; e : occurrences.<span style=color:red>entrySet</span>()) {
+    Character v = e.<span style=color:red>getKey</span>();
+    <span style=color:navy;font-weight:700>int</span> found = 0;
+    <span style=color:navy;font-weight:700>for</span> (<span style=color:navy;font-weight:700>int</span> i = 0, ct = e.<span style=color:red>getValue</span>().<span style=color:red>intValue</span>(); i &lt; ct; i++) {
+        found = indexOf(array, v.<span style=color:red>charValue</span>(), found);
+        <span style=color:navy;font-weight:700>if</span> (found &lt; 0) {
+            <span style=color:navy;font-weight:700>break</span>;
+        }
+        toRemove.<span style=color:red>set</span>(found++);
+    }
+}
+<span style=color:navy;font-weight:700>return</span> (<span style=color:navy;font-weight:700>char</span>[]) removeAll(array, toRemove);
+</code></pre></div><p>The first difference is at line 1. Instead of a HashSet, it is now using a BitSet. And at line 10, instead of adding a new element to the HashSet, now it "sets" a bit in the set (the bit at the specified position is now true). But there are important changes at line 13. The method removeAll was changed, and now the array doesn't require a cast anymore. And the it is not necessary to cast the elements from HashSet anymore, as now the bit in the index position of the set is set to true. So the extractIndices method could be removed.</p>
+<p>The code got simpler. But that's not all. At <a href=http://www.apache.org title="Apache Software Foundation">Apache Software Foundation</a> you can find a lot of talented developers - that's why I got so excited after joining them. Besides simplifying the code, the developer responsible for these changes (<strong>sebb</strong>) also pointed out that the new code <strong>consumes less memory and is faster</strong>. Ah! And he also wrote <strong>unit tests</strong>
+<aside class=links>
+<a class=previous href=https://kinoshita.eti.br/2012/10/16/adding-coverage-reports-in-jenkins-with-googletest-and-gcovr.html>&#171; Previous</a>
+<a class=next href=https://kinoshita.eti.br/2012/10/25/a-quick-view-on-wordpress-mantis-and-jenkins-plug-in-api.html>Next &#187;</a>
+</aside>
 </article>
-
-  </div>
-</div>
+</main>
+<footer role=contentinfo>
+<ul id=social-media-icons>
+<li>
+<a href=https://www.instagram.com/brunokinoshita/>
+<img src=/assets/icons/instagram.png alt="Instagram link">
+</a>
+</li>
+<li>
+<a href=https://twitter.com/kinow/>
+<img src=/assets/icons/twitter.png alt="Twitter link">
+</a>
+</li>
+<li>
+<a href=https://github.com/kinow/>
+<img src=/assets/icons/github.png alt="GitHub link">
+</a>
+</li>
+</ul>
+</footer>
 </body>
 </html>

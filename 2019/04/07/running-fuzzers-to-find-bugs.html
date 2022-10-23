@@ -1,286 +1,153 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="utf-8" />
-<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-<meta name="viewport" content="width=device-width, initial-scale=1" /><!-- Begin Jekyll SEO tag v2.7.1 -->
-<title>Running fuzzers to find bugs | kinow</title>
-<meta name="generator" content="Jekyll v3.9.0" />
-<meta property="og:title" content="Running fuzzers to find bugs" />
-<meta property="og:locale" content="en_US" />
-<meta name="description" content="Fuzzifying is a technique used in automated tests to find bugs in programs with unexpected data. fuzzer is the name given to the program used for running these tests. Some fuzzers also generate random data used for the tests." />
-<meta property="og:description" content="Fuzzifying is a technique used in automated tests to find bugs in programs with unexpected data. fuzzer is the name given to the program used for running these tests. Some fuzzers also generate random data used for the tests." />
-<link rel="canonical" href="https://kinoshita.eti.br/2019/04/07/running-fuzzers-to-find-bugs.html" />
-<meta property="og:url" content="https://kinoshita.eti.br/2019/04/07/running-fuzzers-to-find-bugs.html" />
-<meta property="og:site_name" content="kinow" />
-<meta property="og:type" content="article" />
-<meta property="article:published_time" content="2019-04-07T00:00:00+13:00" />
-<meta name="twitter:card" content="summary" />
-<meta property="twitter:title" content="Running fuzzers to find bugs" />
-<script type="application/ld+json">
-{"description":"Fuzzifying is a technique used in automated tests to find bugs in programs with unexpected data. fuzzer is the name given to the program used for running these tests. Some fuzzers also generate random data used for the tests.","@type":"BlogPosting","url":"https://kinoshita.eti.br/2019/04/07/running-fuzzers-to-find-bugs.html","headline":"Running fuzzers to find bugs","datePublished":"2019-04-07T00:00:00+13:00","dateModified":"2019-04-07T00:00:00+13:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://kinoshita.eti.br/2019/04/07/running-fuzzers-to-find-bugs.html"},"@context":"https://schema.org"}</script>
-<!-- End Jekyll SEO tag -->
-<link rel="stylesheet" href="/assets/css/main.css" /><link type="application/atom+xml" rel="alternate" href="https://kinoshita.eti.br/feed.xml" title="kinow" /><link href="https://unpkg.com/pattern.css" rel="stylesheet" />
-
+<!doctype html><html lang=en><head>
+<meta charset=utf-8>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<link rel=stylesheet type=text/css href=https://kinoshita.eti.br/sass/main.e392e97e7e5991e363403c494b51d829efa207842d755622976c2537d0509be0.css integrity="sha256-45Lpfn5ZkeNjQDxJS1HYKe+iB4QtdVYil2wlN9BQm+A=">
+<title>kinow | Running fuzzers to find bugs</title>
 </head>
-<body>
-<div id="mobile-menu"><div class="menu">
-  <ul class="menu">
-    <li class="item">
-      <h1 id="kinow">KINOW</h1>
-    </li>
-    <li class="item">
-      <a href="/" class="">About</a>
-    </li>
-    <li class="item">
-      <a href="/blog/" class="current">Blog</a>
-    </li>
-    <li class="item">
-      <a href="/portfolio/" class="">Portfolio</a>
-    </li>
-    <li class="item social-media-item">
-      <a href="https://www.instagram.com/brunokinoshita/" class="inline-link">
-        <img src="/assets/icons/instagram.png" class="inverted-image"  alt="Instagram link" />
-      </a>
-      <a href="https://twitter.com/kinow/" class="inline-link">
-        <img src="/assets/icons/twitter.png" class="inverted-image" alt="Twitter link" />
-      </a>
-      <a href="https://github.com/kinow/" class="inline-link">
-        <img src="/assets/icons/github.png" class="inverted-image" alt="GitHub link" />
-      </a>
-    </li>
-  </ul>
-</div>
-</div>
-<div id="wrapper">
-  <div id="sidebar"><div class="menu">
-  <ul class="menu">
-    <li class="item">
-      <h1 id="kinow">KINOW</h1>
-    </li>
-    <li class="item">
-      <a href="/" class="">About</a>
-    </li>
-    <li class="item">
-      <a href="/blog/" class="current">Blog</a>
-    </li>
-    <li class="item">
-      <a href="/portfolio/" class="">Portfolio</a>
-    </li>
-    <li class="item social-media-item">
-      <a href="https://www.instagram.com/brunokinoshita/" class="inline-link">
-        <img src="/assets/icons/instagram.png" class="inverted-image"  alt="Instagram link" />
-      </a>
-      <a href="https://twitter.com/kinow/" class="inline-link">
-        <img src="/assets/icons/twitter.png" class="inverted-image" alt="Twitter link" />
-      </a>
-      <a href="https://github.com/kinow/" class="inline-link">
-        <img src="/assets/icons/github.png" class="inverted-image" alt="GitHub link" />
-      </a>
-    </li>
-  </ul>
-</div>
-</div>
-  <div id="content">
-    <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
-  <header class="post-header">
-    <h1 class="post-title p-name" itemprop="name headline">Running fuzzers to find bugs</h1><div class="note"><p>The comparison does not focus so much on how fuzzers work, which one is best than the other, etc. It looks only into its advertised features, whether it is maintained by a group or individual (<a href="https://en.wikipedia.org/wiki/Bus_factor">bus factor</a> is always important), and the license.</p>
-</div>
-    <span class="post-meta">
-      <time class="dt-published" datetime="2019-04-07T00:00:00+13:00" itemprop="datePublished">Apr 7, 2019
-      </time>
-      <span>&mdash; star date: -303654.79.</span>
-      <span>
-        Number of words: 1696.
-      </span></span>
-  </header>
-
-  <ul>
-  <li><a href="#comparing-a-few-fuzzers">Comparing a few fuzzers</a>
-    <ul>
-      <li><a href="#afl">afl</a></li>
-      <li><a href="#gramtest">GramTest</a></li>
-      <li><a href="#ramfuzz">RamFuzz</a></li>
-      <li><a href="#javan-warty-pig">Javan Warty Pig</a></li>
-      <li><a href="#kelinci">Kelinci</a></li>
-      <li><a href="#sandsifter">sandsifter</a></li>
-      <li><a href="#jfuzz">jFuzz</a></li>
-      <li><a href="#kif">KiF</a></li>
-      <li><a href="#zzuf">zzuf</a></li>
-    </ul>
-  </li>
-  <li><a href="#conclusion">Conclusion</a></li>
-  <li><a href="#other-links">Other links</a></li>
+<body><header role=banner class=content>
+<nav id=nav aria-label=Main role=navigation class=content>
+<ul><li>
+<a href=/>
+<i data-feather=about></i> About</a>
+</li><li>
+<a href=/blog/>
+<i data-feather=blog></i> Blog</a>
+</li><li>
+<a href=/portfolio/>
+<i data-feather=portfolio></i> Portfolio</a>
+</li><li></li>
 </ul>
-
-
-  <div class="post-content e-content" itemprop="articleBody">
-    <p>Fuzzifying is a technique used in automated tests to find bugs in programs with unexpected data. fuzzer is the name given to the program used for running these tests. Some fuzzers also generate random data used for the tests.</p>
-
-<p><img class="ui fluid image" src="/assets/posts/2019-04-07-running-fuzzers-to-find-bugs/stink-bug-smaller.png" /></p>
-
-<!--more-->
-
+</nav>
+</header>
+<main>
+<article class=content>
+<h2>Running fuzzers to find bugs</h2><div class=metadata>
+<i data-feather=calendar></i>
+<time datetime=2019-04-07>Apr 7, 2019</time>
+</div>
+<p>Fuzzifying is a technique used in automated tests to find bugs in programs with unexpected data. fuzzer is the name given to the program used for running these tests. Some fuzzers also generate random data used for the tests.</p>
+<figure class=feature>
+<img src=/assets/posts/2019-04-07-running-fuzzers-to-find-bugs/stink-bug-smaller.png alt title width height>
+<figcaption></figcaption>
+</figure>
 <p>This technique is useful as programmers do not always write the code worrying about what if a user inputs binary data into a field that is expecting the name of a user? Crashes in programs due to unexpected data are used in security attacks.</p>
-
-<p>Google offers <a href="https://github.com/google/oss-fuzz">OSS-Fuzz</a>, a project that offers infrastructure for any Open Source project that is considered important to be tested. This project is extremely useful, as running fuzzers is something that normally takes days or weeks. So you would need either a server or leave your computer running for a long time. And if you use SSD disks, it may reduce the life span of your disk.</p>
-
-<p><em>NOTE: In this <a href="https://en.wikipedia.org/wiki/Fuzzing">Wikipedia page</a> you can read more about fuzzers, and the types of fuzzers. Or <a href="https://johanengelen.github.io/ldc/2018/01/14/Fuzzing-with-LDC.html">this other article from Johan Engelen</a> which has a great introduction, and also talks about LLVM libFuzzer project, not mentioned in this post.</em></p>
-
-<h2 id="comparing-a-few-fuzzers">Comparing a few fuzzers</h2>
-
-<p>The most well-known fuzzer is probably <a href="http://lcamtuf.coredump.cx/afl/"><code class="language-plaintext highlighter-rouge">afl</code></a>, or american fuzzy lop. If you would like to run it against your project, you have to create a small utility that accepts the test parameters and calls your program - unless your program contains an interface compatible with what the fuzzer expects.</p>
-
+<p>Google offers <a href=https://github.com/google/oss-fuzz>OSS-Fuzz</a>, a project that offers infrastructure for any Open Source project that is considered important to be tested. This project is extremely useful, as running fuzzers is something that normally takes days or weeks. So you would need either a server or leave your computer running for a long time. And if you use SSD disks, it may reduce the life span of your disk.</p>
+<p><em>NOTE: In this <a href=https://en.wikipedia.org/wiki/Fuzzing>Wikipedia page</a> you can read more about fuzzers, and the types of fuzzers. Or <a href=https://johanengelen.github.io/ldc/2018/01/14/Fuzzing-with-LDC.html>this other article from Johan Engelen</a> which has a great introduction, and also talks about LLVM libFuzzer project, not mentioned in this post.</em></p>
+<h2 id=comparing-a-few-fuzzers>Comparing a few fuzzers</h2>
+<p>The most well-known fuzzer is probably <a href=http://lcamtuf.coredump.cx/afl/><code>afl</code></a>, or american fuzzy lop. If you would like to run it against your project, you have to create a small utility that accepts the test parameters and calls your program - unless your program contains an interface compatible with what the fuzzer expects.</p>
 <p>But there are fuzzers with integration with build tools, other fuzzers that use neural networks, some are created specifically to run against a certain tool or programming language.</p>
-
-<p>Most of these fuzzers listed here appeared in issues in projects that I monitor, such as projects from Jenkins, Apache Software Foundation, Mozilla, and others. I use <code class="language-plaintext highlighter-rouge">afl</code> whenever I need to fuzz a project. But knowing only one tool (or programming language FWIW) is not normally a good idea, so in this post I will compare a few fuzzers.</p>
-
-<h3 id="afl">afl</h3>
-
-<p><a href="http://lcamtuf.coredump.cx/afl/">http://lcamtuf.coredump.cx/afl/</a></p>
-
+<p>Most of these fuzzers listed here appeared in issues in projects that I monitor, such as projects from Jenkins, Apache Software Foundation, Mozilla, and others. I use <code>afl</code> whenever I need to fuzz a project. But knowing only one tool (or programming language FWIW) is not normally a good idea, so in this post I will compare a few fuzzers.</p>
+<h3 id=afl>afl</h3>
+<p><a href=http://lcamtuf.coredump.cx/afl/>http://lcamtuf.coredump.cx/afl/</a></p>
 <blockquote>
-  <p>American fuzzy lop is a security-oriented fuzzer that employs a novel type of compile-time instrumentation and genetic algorithms to automatically discover clean, interesting test cases that trigger new internal states in the targeted binary. This substantially improves the functional coverage for the fuzzed code.</p>
+<p>American fuzzy lop is a security-oriented fuzzer that employs a novel type of compile-time instrumentation and genetic algorithms to automatically discover clean, interesting test cases that trigger new internal states in the targeted binary. This substantially improves the functional coverage for the fuzzed code.</p>
 </blockquote>
-
 <p>Probably the most famous. Used to find issues in programming languages, browsers, and many famous projects. Applies genetic algorithms for the data generation.</p>
-
-<p>Licensed under the Apache License, maintained by one person. Code shared as a <code class="language-plaintext highlighter-rouge">.tar.gz</code> via the author website.</p>
-
-<h3 id="gramtest">GramTest</h3>
-
-<p><a href="https://github.com/codelion/gramtest">https://github.com/codelion/gramtest</a></p>
-
+<p>Licensed under the Apache License, maintained by one person. Code shared as a <code>.tar.gz</code> via the author website.</p>
+<h3 id=gramtest>GramTest</h3>
+<p><a href=https://github.com/codelion/gramtest>https://github.com/codelion/gramtest</a></p>
 <blockquote>
-  <p>This tool allows you to generate test cases based on arbitrary user defined grammars. The input grammar is given in BNF notation. Potential applications include fuzzing and automated testing.</p>
+<p>This tool allows you to generate test cases based on arbitrary user defined grammars. The input grammar is given in BNF notation. Potential applications include fuzzing and automated testing.</p>
 </blockquote>
-
-<p>Learned about GramTest in an <a href="https://issues.apache.org/jira/browse/VALIDATOR-410">Apache Commons Validator</a> issue. It is interesting that you can define how your program expects the inputs to be via a BNF grammar.</p>
-
-<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code># file: csv.bnf
-<span class="nt">&lt;CSV&gt;</span>       ::= [<span class="nt">&lt;header&gt;</span>] <span class="nt">&lt;record&gt;</span> {<span class="nt">&lt;crlf&gt;</span> <span class="nt">&lt;record&gt;</span>}  [ <span class="nt">&lt;crlf&gt;</span> ]
-<span class="nt">&lt;header&gt;</span>    ::= <span class="nt">&lt;name&gt;</span> { <span class="nt">&lt;comma&gt;</span> <span class="nt">&lt;name&gt;</span>}
-<span class="nt">&lt;record&gt;</span>    ::= <span class="nt">&lt;field&gt;</span> { <span class="nt">&lt;comma&gt;</span> <span class="nt">&lt;field&gt;</span>}
-<span class="nt">&lt;name&gt;</span>      ::= <span class="nt">&lt;field&gt;</span>
-<span class="nt">&lt;field&gt;</span>     ::= <span class="nt">&lt;escaped&gt;</span> | <span class="nt">&lt;nonescaped&gt;</span>
-<span class="nt">&lt;escaped&gt;</span>   ::= <span class="nt">&lt;dquote&gt;</span> (<span class="nt">&lt;textdata&gt;</span> | <span class="nt">&lt;comma&gt;</span> | <span class="nt">&lt;cr&gt;</span> | <span class="nt">&lt;lf&gt;</span>) <span class="nt">&lt;dquote&gt;</span>
-<span class="nt">&lt;nonescaped&gt;</span> ::= (<span class="nt">&lt;textdata&gt;</span>)
-<span class="nt">&lt;comma&gt;</span>     ::= ","
-<span class="nt">&lt;cr&gt;</span>        ::= "\r"
-<span class="nt">&lt;dquote&gt;</span>    ::= """
-<span class="nt">&lt;lf&gt;</span>        ::= "\n"
-<span class="nt">&lt;crlf&gt;</span>      ::= <span class="nt">&lt;cr&gt;</span> <span class="nt">&lt;lf&gt;</span>
-<span class="nt">&lt;textdata&gt;</span>  ::= <span class="nt">&lt;text&gt;</span> [<span class="nt">&lt;textdata&gt;</span>]
-<span class="nt">&lt;text&gt;</span> ::= Ŝ | a | b | c | d | e | f | g | h | i | j | k | l | m | n | o | p | q | r | s | t | u | v | w | x | y | z | A | B | C | D | E | F | G | H | I | J | K | L | M | N | O | P | Q | R | S | T | U | V | W | X | Y | Z | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9
-</code></pre></div></div>
-
-<p>The grammar is then used to generate the random data fed into the program under test.</p>
-
+<p>Learned about GramTest in an <a href=https://issues.apache.org/jira/browse/VALIDATOR-410>Apache Commons Validator</a> issue. It is interesting that you can define how your program expects the inputs to be via a BNF grammar.</p>
+<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-html data-lang=html># file: csv.bnf
+&lt;<span style=color:navy;font-weight:700>CSV</span>&gt;       ::= [&lt;<span style=color:navy;font-weight:700>header</span>&gt;] &lt;<span style=color:navy;font-weight:700>record</span>&gt; {&lt;<span style=color:navy;font-weight:700>crlf</span>&gt; &lt;<span style=color:navy;font-weight:700>record</span>&gt;}  [ &lt;<span style=color:navy;font-weight:700>crlf</span>&gt; ]
+&lt;<span style=color:navy;font-weight:700>header</span>&gt;    ::= &lt;<span style=color:navy;font-weight:700>name</span>&gt; { &lt;<span style=color:navy;font-weight:700>comma</span>&gt; &lt;<span style=color:navy;font-weight:700>name</span>&gt;}
+&lt;<span style=color:navy;font-weight:700>record</span>&gt;    ::= &lt;<span style=color:navy;font-weight:700>field</span>&gt; { &lt;<span style=color:navy;font-weight:700>comma</span>&gt; &lt;<span style=color:navy;font-weight:700>field</span>&gt;}
+&lt;<span style=color:navy;font-weight:700>name</span>&gt;      ::= &lt;<span style=color:navy;font-weight:700>field</span>&gt;
+&lt;<span style=color:navy;font-weight:700>field</span>&gt;     ::= &lt;<span style=color:navy;font-weight:700>escaped</span>&gt; | &lt;<span style=color:navy;font-weight:700>nonescaped</span>&gt;
+&lt;<span style=color:navy;font-weight:700>escaped</span>&gt;   ::= &lt;<span style=color:navy;font-weight:700>dquote</span>&gt; (&lt;<span style=color:navy;font-weight:700>textdata</span>&gt; | &lt;<span style=color:navy;font-weight:700>comma</span>&gt; | &lt;<span style=color:navy;font-weight:700>cr</span>&gt; | &lt;<span style=color:navy;font-weight:700>lf</span>&gt;) &lt;<span style=color:navy;font-weight:700>dquote</span>&gt;
+&lt;<span style=color:navy;font-weight:700>nonescaped</span>&gt; ::= (&lt;<span style=color:navy;font-weight:700>textdata</span>&gt;)
+&lt;<span style=color:navy;font-weight:700>comma</span>&gt;     ::= &#34;,&#34;
+&lt;<span style=color:navy;font-weight:700>cr</span>&gt;        ::= &#34;\r&#34;
+&lt;<span style=color:navy;font-weight:700>dquote</span>&gt;    ::= &#34;&#34;&#34;
+&lt;<span style=color:navy;font-weight:700>lf</span>&gt;        ::= &#34;\n&#34;
+&lt;<span style=color:navy;font-weight:700>crlf</span>&gt;      ::= &lt;<span style=color:navy;font-weight:700>cr</span>&gt; &lt;<span style=color:navy;font-weight:700>lf</span>&gt;
+&lt;<span style=color:navy;font-weight:700>textdata</span>&gt;  ::= &lt;<span style=color:navy;font-weight:700>text</span>&gt; [&lt;<span style=color:navy;font-weight:700>textdata</span>&gt;]
+&lt;<span style=color:navy;font-weight:700>text</span>&gt; ::= Ŝ | a | b | c | d | e | f | g | h | i | j | k | l | m | n | o | p | q | r | s | t | u | v | w | x | y | z | A | B | C | D | E | F | G | H | I | J | K | L | M | N | O | P | Q | R | S | T | U | V | W | X | Y | Z | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9
+</code></pre></div><p>The grammar is then used to generate the random data fed into the program under test.</p>
 <p>The project has two contributors in GitHub, 60 stars, and is licensed under the Apache License.</p>
-
-<h3 id="ramfuzz">RamFuzz</h3>
-
-<p><a href="https://github.com/dekimir/RamFuzz">https://github.com/dekimir/RamFuzz</a></p>
-
+<h3 id=ramfuzz>RamFuzz</h3>
+<p><a href=https://github.com/dekimir/RamFuzz>https://github.com/dekimir/RamFuzz</a></p>
 <blockquote>
-  <p>RamFuzz is a fuzzer for individual method parameters in unit tests. A unit test can use RamFuzz to generate random parameter values for methods under test. The values are logged, and the log can be replayed to repeat the exact same test scenario. But random parameter values aren’t limited to just fundamental types: RamFuzz can also automatically produce random objects of any class from the user’s code.</p>
+<p>RamFuzz is a fuzzer for individual method parameters in unit tests. A unit test can use RamFuzz to generate random parameter values for methods under test. The values are logged, and the log can be replayed to repeat the exact same test scenario. But random parameter values aren&rsquo;t limited to just fundamental types: RamFuzz can also automatically produce random objects of any class from the user&rsquo;s code.</p>
 </blockquote>
-
 <p>Learned about this one after <a href="https://news.ycombinator.com/item?id=15795961">a post on Hacker News</a>. It appears to be limited to C++, as it parses the source code to create random objects and data (i.e. it reads the class, structs, variables, etc).</p>
-
 <p>Has one contributor, 267 stars, and is licensed under the Apache License.</p>
-
-<h3 id="javan-warty-pig">Javan Warty Pig</h3>
-
-<p><a href="https://github.com/cretz/javan-warty-pig">https://github.com/cretz/javan-warty-pig</a></p>
-
+<h3 id=javan-warty-pig>Javan Warty Pig</h3>
+<p><a href=https://github.com/cretz/javan-warty-pig>https://github.com/cretz/javan-warty-pig</a></p>
 <blockquote>
-  <p>Javan Warty Pig, or JWP, is an AFL-like fuzzer for the JVM. It uses bytecode instrumentation to trace execution. It is written in Java and requires Java 8+.</p>
+<p>Javan Warty Pig, or JWP, is an AFL-like fuzzer for the JVM. It uses bytecode instrumentation to trace execution. It is written in Java and requires Java 8+.</p>
 </blockquote>
-
-<p>Java only. You write a test in Java, importing the classes from <code class="language-plaintext highlighter-rouge">jwp.fuzz.*</code> in order to create the test scenarios.</p>
-
+<p>Java only. You write a test in Java, importing the classes from <code>jwp.fuzz.*</code> in order to create the test scenarios.</p>
 <p>One maintainer, 31 stars, licensed under the MIT License.</p>
-
-<h3 id="kelinci">Kelinci</h3>
-
-<p><a href="https://github.com/isstac/kelinci">https://github.com/isstac/kelinci</a></p>
-
+<h3 id=kelinci>Kelinci</h3>
+<p><a href=https://github.com/isstac/kelinci>https://github.com/isstac/kelinci</a></p>
 <blockquote>
-  <p>Interface to run AFL on Java programs.</p>
+<p>Interface to run AFL on Java programs.</p>
 </blockquote>
-
-<p>Learned about this one from an <a href="https://issues.apache.org/jira/browse/IMAGING-215">Apache Commons Imaging</a> issue. You must install <code class="language-plaintext highlighter-rouge">afl</code> first, then the documentation guides you through the steps to create the Java layer with Kelinci. That will trigger <code class="language-plaintext highlighter-rouge">afl</code> for your Java program.</p>
-
+<p>Learned about this one from an <a href=https://issues.apache.org/jira/browse/IMAGING-215>Apache Commons Imaging</a> issue. You must install <code>afl</code> first, then the documentation guides you through the steps to create the Java layer with Kelinci. That will trigger <code>afl</code> for your Java program.</p>
 <p>Two contributors, 92 stars, licensed under the Apache License.</p>
-
-<h3 id="sandsifter">sandsifter</h3>
-
-<p><a href="https://github.com/Battelle/sandsifter">https://github.com/Battelle/sandsifter</a></p>
-
+<h3 id=sandsifter>sandsifter</h3>
+<p><a href=https://github.com/Battelle/sandsifter>https://github.com/Battelle/sandsifter</a></p>
 <blockquote>
-  <p>The sandsifter audits x86 processors for hidden instructions and hardware bugs, by systematically generating machine code to search through a processor’s instruction set, and monitoring execution for anomalies. Sandsifter has uncovered secret processor instructions from every major vendor; ubiquitous software bugs in disassemblers, assemblers, and emulators; flaws in enterprise hypervisors; and both benign and security-critical hardware bugs in x86 chips.</p>
+<p>The sandsifter audits x86 processors for hidden instructions and hardware bugs, by systematically generating machine code to search through a processor&rsquo;s instruction set, and monitoring execution for anomalies. Sandsifter has uncovered secret processor instructions from every major vendor; ubiquitous software bugs in disassemblers, assemblers, and emulators; flaws in enterprise hypervisors; and both benign and security-critical hardware bugs in x86 chips.</p>
 </blockquote>
-
 <p>Useful for searching bugs in the processor, not so much for common libraries and applications I reckon.</p>
-
 <p>One contributor, 201 stars, licensed under the BSD-3 license.</p>
-
-<h3 id="jfuzz">jFuzz</h3>
-
+<h3 id=jfuzz>jFuzz</h3>
 <p><a href="https://ntrs.nasa.gov/search.jsp?R=20100024457">https://ntrs.nasa.gov/search.jsp?R=20100024457</a></p>
-
 <blockquote>
-  <p>jFuzz is a concolic whitebox fuzzer, built on the NASA Java PathFinder, an explicit-state Java model checker, and a framework for developing reliability and analysis tools for Java. Starting from a seed input, jFuzz automatically and systematically generates inputs that exercise new program paths. jFuzz uses a combination of concrete and symbolic execution, and constraint solving. Time spent on solving constraints can be significant. We implemented several well-known optimizations and name-independent caching, which aggressively normalizes the constraints to reduce the number of calls to the constraint solver. We present preliminary results due to the optimizations, and demonstrate the effectiveness of jFuzz in creating good test inputs. The source code of jFuzz is available as part of the NASA Java PathFinder. jFuzz is intended to be a research testbed for investigating new testing and analysis techniques based on concrete and symbolic execution. The source code of jFuzz is available as part of the NASA Java PathFinder.</p>
+<p>jFuzz is a concolic whitebox fuzzer, built on the NASA Java PathFinder, an explicit-state Java model checker, and a framework for developing reliability and analysis tools for Java. Starting from a seed input, jFuzz automatically and systematically generates inputs that exercise new program paths. jFuzz uses a combination of concrete and symbolic execution, and constraint solving. Time spent on solving constraints can be significant. We implemented several well-known optimizations and name-independent caching, which aggressively normalizes the constraints to reduce the number of calls to the constraint solver. We present preliminary results due to the optimizations, and demonstrate the effectiveness of jFuzz in creating good test inputs. The source code of jFuzz is available as part of the NASA Java PathFinder. jFuzz is intended to be a research testbed for investigating new testing and analysis techniques based on concrete and symbolic execution. The source code of jFuzz is available as part of the NASA Java PathFinder.</p>
 </blockquote>
-
-<p>I could not easily find the code. It looks like I would have to search by the code of PathFinder. And I could not find any of these in NASA’s GitHub. But appears to have good features, and to be built for Java.</p>
-
+<p>I could not easily find the code. It looks like I would have to search by the code of PathFinder. And I could not find any of these in NASA&rsquo;s GitHub. But appears to have good features, and to be built for Java.</p>
 <p>Would be nice to see some of its features compared (and maybe contributed) to other tools.</p>
-
-<h3 id="kif">KiF</h3>
-
+<h3 id=kif>KiF</h3>
 <p><a href="https://dl.acm.org/citation.cfm?id=1326313">https://dl.acm.org/citation.cfm?id=1326313</a></p>
-
 <blockquote>
-  <p>Our paper describes a stateful protocol fuzzer for SIP. The main contribution of our paper is a flexible, adaptive fuzzer capable  to  track  the  state  of  the  targeted  application  and device.  One of the components of our work is quite generic and reusable for any protocol for which an underlying gram-mar is known.  The second one is dependent on the domain specifics  (SIP).  To  the  best  of  our  knowledge,  this  is  the first SIP fuzzer capable to go beyond the simple generation of random input data.  Our method is based on a learning algorithm where real network traces are used to learn and train an attack automata.</p>
+<p>Our paper describes a stateful protocol fuzzer for SIP. The main contribution of our paper is a flexible, adaptive fuzzer capable to track the state of the targeted application and device. One of the components of our work is quite generic and reusable for any protocol for which an underlying gram-mar is known. The second one is dependent on the domain specifics (SIP). To the best of our knowledge, this is the first SIP fuzzer capable to go beyond the simple generation of random input data. Our method is based on a learning algorithm where real network traces are used to learn and train an attack automata.</p>
 </blockquote>
-
 <p>Could not find the source code (common for some papers unfortunately). It seems to have a grammar too, like GramTest.</p>
-
-<h3 id="zzuf">zzuf</h3>
-
-<p><a href="https://github.com/samhocevar/zzuf">https://github.com/samhocevar/zzuf</a></p>
-
+<h3 id=zzuf>zzuf</h3>
+<p><a href=https://github.com/samhocevar/zzuf>https://github.com/samhocevar/zzuf</a></p>
 <blockquote>
-  <p>zzuf is a transparent application input fuzzer. It works by intercepting file operations and changing random bits in the program’s input. zzuf’s behaviour is deterministic, making it easy to reproduce bugs.</p>
+<p>zzuf is a transparent application input fuzzer. It works by intercepting file operations and changing random bits in the program&rsquo;s input. zzuf&rsquo;s behaviour is deterministic, making it easy to reproduce bugs.</p>
 </blockquote>
-
-<p>Has an extensive list of bugs found in many applications, like <code class="language-plaintext highlighter-rouge">afl</code>. Few bugs in the website, but the git repository appears to be actively maintained. It appears to modify the existing input (e.g. your normal test data).</p>
-
+<p>Has an extensive list of bugs found in many applications, like <code>afl</code>. Few bugs in the website, but the git repository appears to be actively maintained. It appears to modify the existing input (e.g. your normal test data).</p>
 <p>Eight contributors, 261 stars, licensed under the <em>Do What The F*ck You Want To Public License</em>.</p>
-
-<h2 id="conclusion">Conclusion</h2>
-
-<p>There are several different fuzzers, many more than the ones listed here. I will keep using <code class="language-plaintext highlighter-rouge">afl</code> for now, with plans to use it against <a href="https://cylc.github.io">Cylc</a>. But might try GramTest and its BNF grammar, as well as zzuf as Cylc has an extensive test battery. Adjusting the settings for how much the data is modified in zzuf could lead to interesting test failures, but I wonder if it will be able to distinguish failures from crashes.</p>
-
-<h2 id="other-links">Other links</h2>
-
+<h2 id=conclusion>Conclusion</h2>
+<p>There are several different fuzzers, many more than the ones listed here. I will keep using <code>afl</code> for now, with plans to use it against <a href=https://cylc.github.io>Cylc</a>. But might try GramTest and its BNF grammar, as well as zzuf as Cylc has an extensive test battery. Adjusting the settings for how much the data is modified in zzuf could lead to interesting test failures, but I wonder if it will be able to distinguish failures from crashes.</p>
+<h2 id=other-links>Other links</h2>
 <ul>
-  <li><a href="https://en.wikipedia.org/wiki/Fuzzing">Wikipedia page on Fuzzing</a></li>
-  <li><a href="https://johanengelen.github.io/ldc/2018/01/14/Fuzzing-with-LDC.html">Fuzzing D code with LDC, Programming blog of Johan Engelen. D, C++, LLVM, LDC, … </a></li>
-  <li><a href="https://kciredor.com/fuzzing-adobe-reader-for-exploitable-vulns-fun-not-profit.html">Fuzzing Adobe Reader for exploitable vulns (fun != profit), kciredor’s information security blog</a></li>
-  <li><a href="https://fuzzing-project.org/">The Fuzzing Project, by Hanno Böck</a></li>
+<li><a href=https://en.wikipedia.org/wiki/Fuzzing>Wikipedia page on Fuzzing</a></li>
+<li><a href=https://johanengelen.github.io/ldc/2018/01/14/Fuzzing-with-LDC.html>Fuzzing D code with LDC, Programming blog of Johan Engelen. D, C++, LLVM, LDC, &mldr; </a></li>
+<li><a href=https://kciredor.com/fuzzing-adobe-reader-for-exploitable-vulns-fun-not-profit.html>Fuzzing Adobe Reader for exploitable vulns (fun != profit), kciredor&rsquo;s information security blog</a></li>
+<li><a href=https://fuzzing-project.org/>The Fuzzing Project, by Hanno Böck</a></li>
 </ul>
-
-  </div>
-
-  <div class="tags"><p>Tags:&nbsp;<a class="label" href="/tag/opensource">opensource</a>,&nbsp;<a class="label" href="/tag/security">security</a>,&nbsp;<a class="label" href="/tag/programming">programming</a>,&nbsp;<a class="label" href="/tag/fuzzing">fuzzing</a>.<br/></p></div>
-
-  <a class="u-url" href="/2019/04/07/running-fuzzers-to-find-bugs.html" hidden></a>
+<aside class=links>
+<a class=previous href=https://kinoshita.eti.br/2019/03/30/pyzmq-basics-part-1.html>&#171; Previous</a>
+<a class=next href=https://kinoshita.eti.br/2019/05/17/a-look-at-the-first-implementation-of-graphql-in-cylc.html>Next &#187;</a>
+</aside>
 </article>
-
-  </div>
-</div>
+</main>
+<footer role=contentinfo>
+<ul id=social-media-icons>
+<li>
+<a href=https://www.instagram.com/brunokinoshita/>
+<img src=/assets/icons/instagram.png alt="Instagram link">
+</a>
+</li>
+<li>
+<a href=https://twitter.com/kinow/>
+<img src=/assets/icons/twitter.png alt="Twitter link">
+</a>
+</li>
+<li>
+<a href=https://github.com/kinow/>
+<img src=/assets/icons/github.png alt="GitHub link">
+</a>
+</li>
+</ul>
+</footer>
 </body>
 </html>

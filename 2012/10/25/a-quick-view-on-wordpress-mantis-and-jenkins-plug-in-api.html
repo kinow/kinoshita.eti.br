@@ -1,344 +1,212 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="utf-8" />
-<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-<meta name="viewport" content="width=device-width, initial-scale=1" /><!-- Begin Jekyll SEO tag v2.7.1 -->
-<title>A quick view on Wordpress, Mantis and Jenkins plug-in API | kinow</title>
-<meta name="generator" content="Jekyll v3.9.0" />
-<meta property="og:title" content="A quick view on Wordpress, Mantis and Jenkins plug-in API" />
-<meta property="og:locale" content="en_US" />
-<meta name="description" content="I&#39;m preparing a plug-in API proposal for TestLink, and thought that the best way to learn how to write a good plug-in API would be by looking at other application&#39;s plug-in API&#39;s. This post contains information that I gathered for creating this new API, but that may also be useful for other programmers. I used Wordpress, Mantis and Jenkins in this study. Let me know if you find any mistakes or if you have any other suggestions." />
-<meta property="og:description" content="I&#39;m preparing a plug-in API proposal for TestLink, and thought that the best way to learn how to write a good plug-in API would be by looking at other application&#39;s plug-in API&#39;s. This post contains information that I gathered for creating this new API, but that may also be useful for other programmers. I used Wordpress, Mantis and Jenkins in this study. Let me know if you find any mistakes or if you have any other suggestions." />
-<link rel="canonical" href="https://kinoshita.eti.br/2012/10/25/a-quick-view-on-wordpress-mantis-and-jenkins-plug-in-api.html" />
-<meta property="og:url" content="https://kinoshita.eti.br/2012/10/25/a-quick-view-on-wordpress-mantis-and-jenkins-plug-in-api.html" />
-<meta property="og:site_name" content="kinow" />
-<meta property="og:type" content="article" />
-<meta property="article:published_time" content="2012-10-25T00:00:00+13:00" />
-<meta name="twitter:card" content="summary" />
-<meta property="twitter:title" content="A quick view on Wordpress, Mantis and Jenkins plug-in API" />
-<script type="application/ld+json">
-{"description":"I&#39;m preparing a plug-in API proposal for TestLink, and thought that the best way to learn how to write a good plug-in API would be by looking at other application&#39;s plug-in API&#39;s. This post contains information that I gathered for creating this new API, but that may also be useful for other programmers. I used Wordpress, Mantis and Jenkins in this study. Let me know if you find any mistakes or if you have any other suggestions.","@type":"BlogPosting","url":"https://kinoshita.eti.br/2012/10/25/a-quick-view-on-wordpress-mantis-and-jenkins-plug-in-api.html","headline":"A quick view on Wordpress, Mantis and Jenkins plug-in API","datePublished":"2012-10-25T00:00:00+13:00","dateModified":"2012-10-25T00:00:00+13:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://kinoshita.eti.br/2012/10/25/a-quick-view-on-wordpress-mantis-and-jenkins-plug-in-api.html"},"@context":"https://schema.org"}</script>
-<!-- End Jekyll SEO tag -->
-<link rel="stylesheet" href="/assets/css/main.css" /><link type="application/atom+xml" rel="alternate" href="https://kinoshita.eti.br/feed.xml" title="kinow" /><link href="https://unpkg.com/pattern.css" rel="stylesheet" />
-
+<!doctype html><html lang=en><head>
+<meta charset=utf-8>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<link rel=stylesheet type=text/css href=https://kinoshita.eti.br/sass/main.e392e97e7e5991e363403c494b51d829efa207842d755622976c2537d0509be0.css integrity="sha256-45Lpfn5ZkeNjQDxJS1HYKe+iB4QtdVYil2wlN9BQm+A=">
+<title>kinow | A quick view on Wordpress, Mantis and Jenkins plug-in API</title>
 </head>
-<body>
-<div id="mobile-menu"><div class="menu">
-  <ul class="menu">
-    <li class="item">
-      <h1 id="kinow">KINOW</h1>
-    </li>
-    <li class="item">
-      <a href="/" class="">About</a>
-    </li>
-    <li class="item">
-      <a href="/blog/" class="current">Blog</a>
-    </li>
-    <li class="item">
-      <a href="/portfolio/" class="">Portfolio</a>
-    </li>
-    <li class="item social-media-item">
-      <a href="https://www.instagram.com/brunokinoshita/" class="inline-link">
-        <img src="/assets/icons/instagram.png" class="inverted-image"  alt="Instagram link" />
-      </a>
-      <a href="https://twitter.com/kinow/" class="inline-link">
-        <img src="/assets/icons/twitter.png" class="inverted-image" alt="Twitter link" />
-      </a>
-      <a href="https://github.com/kinow/" class="inline-link">
-        <img src="/assets/icons/github.png" class="inverted-image" alt="GitHub link" />
-      </a>
-    </li>
-  </ul>
-</div>
-</div>
-<div id="wrapper">
-  <div id="sidebar"><div class="menu">
-  <ul class="menu">
-    <li class="item">
-      <h1 id="kinow">KINOW</h1>
-    </li>
-    <li class="item">
-      <a href="/" class="">About</a>
-    </li>
-    <li class="item">
-      <a href="/blog/" class="current">Blog</a>
-    </li>
-    <li class="item">
-      <a href="/portfolio/" class="">Portfolio</a>
-    </li>
-    <li class="item social-media-item">
-      <a href="https://www.instagram.com/brunokinoshita/" class="inline-link">
-        <img src="/assets/icons/instagram.png" class="inverted-image"  alt="Instagram link" />
-      </a>
-      <a href="https://twitter.com/kinow/" class="inline-link">
-        <img src="/assets/icons/twitter.png" class="inverted-image" alt="Twitter link" />
-      </a>
-      <a href="https://github.com/kinow/" class="inline-link">
-        <img src="/assets/icons/github.png" class="inverted-image" alt="GitHub link" />
-      </a>
-    </li>
-  </ul>
-</div>
-</div>
-  <div id="content">
-    <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
-  <header class="post-header">
-    <h1 class="post-title p-name" itemprop="name headline">A quick view on Wordpress, Mantis and Jenkins plug-in API</h1>
-    <span class="post-meta">
-      <time class="dt-published" datetime="2012-10-25T00:00:00+13:00" itemprop="datePublished">Oct 25, 2012
-      </time>
-      <span>&mdash; star date: -310101.09.</span>
-      <span>
-        Number of words: 1642.
-      </span></span>
-  </header>
-
-  <ul>
-  <li><a href="#">Wordpress</a>
-    <ul>
-      <li><a href="#">Plug-ins installation</a></li>
-      <li><a href="#">Plug-ins API</a></li>
-      <li><a href="#">Plug-ins configuration</a></li>
-    </ul>
-  </li>
-  <li><a href="#">Mantis</a>
-    <ul>
-      <li><a href="#">Plug-ins installation</a></li>
-      <li><a href="#">Plug-ins API</a></li>
-      <li><a href="#">Plug-ins configuration</a></li>
-    </ul>
-  </li>
-  <li><a href="#">Jenkins</a>
-    <ul>
-      <li><a href="#">Plug-ins installation</a></li>
-      <li><a href="#">Plug-ins API</a></li>
-      <li><a href="#">Plug-ins configuration</a></li>
-    </ul>
-  </li>
+<body><header role=banner class=content>
+<nav id=nav aria-label=Main role=navigation class=content>
+<ul><li>
+<a href=/>
+<i data-feather=about></i> About</a>
+</li><li>
+<a href=/blog/>
+<i data-feather=blog></i> Blog</a>
+</li><li>
+<a href=/portfolio/>
+<i data-feather=portfolio></i> Portfolio</a>
+</li><li></li>
 </ul>
-
-
-  <div class="post-content e-content" itemprop="articleBody">
-    <p>I'm preparing a <em>plug-in API proposal for <a href="http://www.teamst.org" title="TestLink">TestLink</a></em>, and thought that the best way to learn how to write a good plug-in API would be by looking at other application's plug-in API's.</p>
-
-<p><img class="ui image" src="/assets/posts/2012-10-25-a-quick-view-on-wordpress-mantis-and-jenkins-plug-in-api/testlink_logo_2.jpg " /></p>
-
-<p>This post contains information that I gathered for creating this new API, but that may also be useful for other programmers. I used <a href="#wp">Wordpress</a>, <a href="#mantis">Mantis</a> and <a href="#jenkins">Jenkins</a> in this study. Let me know if you find any mistakes or if you have any other suggestions.</p>
-
-<!--more-->
-
-<hr />
-
-<h3><a name="wp">Wordpress</a></h3>
-
-<p><a href="http://www.wordpress.org" title="http://www.wordpress.org">http://www.wordpress.org</a></p>
-
-<p><img class="ui image" src="/assets/posts/2012-10-25-a-quick-view-on-wordpress-mantis-and-jenkins-plug-in-api/wordpress_logo_notext_rgb_300_300.png" /></p>
-
+</nav>
+</header>
+<main>
+<article class=content>
+<h2>A quick view on Wordpress, Mantis and Jenkins plug-in API</h2><div class=metadata>
+<i data-feather=calendar></i>
+<time datetime=2012-10-25>Oct 25, 2012</time>
+</div>
+<p>I'm preparing a <em>plug-in API proposal for <a href=http://www.teamst.org title=TestLink>TestLink</a></em>, and thought that the best way to learn how to write a good plug-in API would be by looking at other application's plug-in API's.</p>
+<figure class=feature>
+<img src=/assets/posts/2012-10-25-a-quick-view-on-wordpress-mantis-and-jenkins-plug-in-api/testlink_logo_2.jpg%20 alt title width height>
+<figcaption></figcaption>
+</figure>
+<p>This post contains information that I gathered for creating this new API, but that may also be useful for other programmers. I used <a href=#wp>Wordpress</a>, <a href=#mantis>Mantis</a> and <a href=#jenkins>Jenkins</a> in this study. Let me know if you find any mistakes or if you have any other suggestions.</p>
+<hr>
+<h3><a name=wp>Wordpress</a></h3>
+<p><a href=http://www.wordpress.org title=http://www.wordpress.org>http://www.wordpress.org</a></p>
+<figure class=feature>
+<img src=/assets/posts/2012-10-25-a-quick-view-on-wordpress-mantis-and-jenkins-plug-in-api/wordpress_logo_notext_rgb_300_300.png alt title width height>
+<figcaption></figcaption>
+</figure>
 <ul>
-	<li>Supported programming languages: PHP</li>
-	<li>Configurations available for plug-ins: Yes</li>
-	<li>Plug-in packages: Yes (zip)</li>
-	<li>Extension points : Action and Filter hooks, and pluggable functions.</li>
+<li>Supported programming languages: PHP</li>
+<li>Configurations available for plug-ins: Yes</li>
+<li>Plug-in packages: Yes (zip)</li>
+<li>Extension points : Action and Filter hooks, and pluggable functions.</li>
 </ul>
-
 <h4>Plug-ins installation</h4>
-
 <p>Wordpress has a directory for plug-ins, by default it is <em>$WP_HOME/wp-content/plugins</em>. You can copy the plug-in PHP file, or its directory, or even a zip file to the Wordpress plug-ins folder. Should you copy a zip file, Wordpress decompresses the file for you.</p>
-
 <p>In the Wordpress administration interface you can download and install plug-ins, as well as active, deactivate or uninstall plug-ins. There you can manage plug-in updates, as well as see if the plug-in version is compatible with the current version of Wordpress (users can vote).</p>
-
 <h4>Plug-ins API</h4>
-
 <p>You can get a list of plug-ins in the admin screen of Wordpress. Wordpress can tell whether a plug-in is installed or not, activated or not, using data from database. For each plug-in, Wordpress scans its directory (or include directly a PHP file, if present in the plug-ins folder) and searches for PHP files. What Wordpress is actually looking for, are PHP files that contain comments with information about the plug-in such as name, version, author, etc.</p>
-
 <p>Wordpress provides two hook types, action and filter. The <strong>action hook</strong> is used to execute some action when an event occurs. For instance, you can add an action for when the plug-in is activated.</p>
-
-<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="nc">MyPlugin</span> <span class="p">{</span>
-     <span class="k">static</span> <span class="k">function</span> <span class="n">install</span><span class="p">()</span> <span class="p">{</span>
-            <span class="c1">// do not generate any output here</span>
-     <span class="p">}</span>
-<span class="p">}</span>
-<span class="nf">register_activation_hook</span><span class="p">(</span> <span class="k">__FILE__</span><span class="p">,</span> <span class="k">array</span><span class="p">(</span><span class="s1">'MyPlugin'</span><span class="p">,</span> <span class="s1">'install'</span><span class="p">)</span> <span class="p">);</span>
-</code></pre></div></div>
-
-<p>And the <strong>filter hook</strong> is used to modify content. For instance, you could want to modify the title of a post, so you could apply a filter on the function that displays the blog title. This filter could, say, upper case the title.</p>
-
-<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">&lt;?php</span>
-<span class="k">function</span> <span class="n">theme_slug_filter_the_content</span><span class="p">(</span> <span class="nv">$content</span> <span class="p">)</span> <span class="p">{</span>
-    <span class="nv">$custom_content</span> <span class="o">=</span> <span class="s1">'YOUR CONTENT GOES HERE'</span><span class="p">;</span>
-    <span class="nv">$custom_content</span> <span class="mf">.</span><span class="o">=</span> <span class="nv">$content</span><span class="p">;</span>
-    <span class="k">return</span> <span class="nv">$custom_content</span><span class="p">;</span>
-<span class="p">}</span>
-<span class="nf">add_filter</span><span class="p">(</span> <span class="s1">'the_content'</span><span class="p">,</span> <span class="s1">'theme_slug_filter_the_content'</span> <span class="p">);</span>
-<span class="cp">?&gt;</span>
-</code></pre></div></div>
-
-<p>There is also the possibility to use <strong>pluggable functions</strong>. With them themes and plug-ins can define functions to be overriden by themes (or child themes) and plug-ins.</p>
-
-<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="nb">function_exists</span><span class="p">(</span> <span class="s1">'mytheme_nav_menu'</span> <span class="p">)</span> <span class="p">)</span> <span class="o">:</span>
-<span class="k">function</span> <span class="n">mytheme_nav_menu</span><span class="p">()</span> <span class="p">{</span>
-    <span class="k">if</span> <span class="p">(</span> <span class="nf">current_theme_supports</span><span class="p">(</span> <span class="s1">'menus'</span> <span class="p">)</span> <span class="p">)</span> <span class="o">:</span>
-        <span class="nf">wp_nav_menu</span><span class="p">(</span> <span class="k">array</span><span class="p">(</span> <span class="s1">'theme_location'</span> <span class="o">=&amp;</span><span class="n">gt</span><span class="p">;</span> <span class="s1">'primary_nav'</span><span class="p">,</span> <span class="s1">'fallback_cb'</span> <span class="o">=&amp;</span><span class="n">gt</span><span class="p">;</span> <span class="s1">'wp_list_pages'</span> <span class="p">)</span> <span class="p">);</span>
-    <span class="k">else</span> <span class="o">:</span>
-        <span class="nf">wp_list_pages</span><span class="p">();</span>
-    <span class="k">endif</span><span class="p">;</span>
-<span class="p">}</span>
-<span class="k">endif</span><span class="p">;</span>
-</code></pre></div></div>
-
-<h4>Plug-ins configuration</h4>
-
+<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-php data-lang=php><span style=color:navy;font-weight:700>class</span> MyPlugin {
+     <span style=color:navy;font-weight:700>static</span> <span style=color:navy;font-weight:700>function</span> install() {
+            <span style=color:#080;font-style:italic>// do not generate any output here
+</span><span style=color:#080;font-style:italic></span>     }
+}
+register_activation_hook( __FILE__, <span style=color:navy;font-weight:700>array</span>(<span style=color:#00f>&#39;MyPlugin&#39;</span>, <span style=color:#00f>&#39;install&#39;</span>) );
+</code></pre></div><p>And the <strong>filter hook</strong> is used to modify content. For instance, you could want to modify the title of a post, so you could apply a filter on the function that displays the blog title. This filter could, say, upper case the title.</p>
+<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-php data-lang=php>&lt;?php
+<span style=color:navy;font-weight:700>function</span> theme_slug_filter_the_content( $content ) {
+    $custom_content = <span style=color:#00f>&#39;YOUR CONTENT GOES HERE&#39;</span>;
+    $custom_content .= $content;
+    <span style=color:navy;font-weight:700>return</span> $custom_content;
+}
+add_filter( <span style=color:#00f>&#39;the_content&#39;</span>, <span style=color:#00f>&#39;theme_slug_filter_the_content&#39;</span> );
+<span style=color:teal>?&gt;</span><span style=color:#a61717;background-color:#e3d2d2>
+</span></code></pre></div><p>There is also the possibility to use <strong>pluggable functions</strong>. With them themes and plug-ins can define functions to be overriden by themes (or child themes) and plug-ins.</p>
+<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-php data-lang=php><span style=color:navy;font-weight:700>if</span> ( !function_exists( <span style=color:#00f>&#39;mytheme_nav_menu&#39;</span> ) ) :
+<span style=color:navy;font-weight:700>function</span> mytheme_nav_menu() {
+    <span style=color:navy;font-weight:700>if</span> ( current_theme_supports( <span style=color:#00f>&#39;menus&#39;</span> ) ) :
+        wp_nav_menu( <span style=color:navy;font-weight:700>array</span>( <span style=color:#00f>&#39;theme_location&#39;</span> =&amp;gt; <span style=color:#00f>&#39;primary_nav&#39;</span>, <span style=color:#00f>&#39;fallback_cb&#39;</span> =&amp;gt; <span style=color:#00f>&#39;wp_list_pages&#39;</span> ) );
+    <span style=color:navy;font-weight:700>else</span> :
+        wp_list_pages();
+    <span style=color:navy;font-weight:700>endif</span>;
+}
+<span style=color:navy;font-weight:700>endif</span>;
+</code></pre></div><h4>Plug-ins configuration</h4>
 <p>Plug-in can create tables or use the configurations table in Wordpress. It's also possible to create an admin page to modify these configuration from Wordpress administration section.</p>
-
-<hr />
-
-<h3><a name="mantis">Mantis</a></h3>
-
-<p><a href="http://www.mantisbt.org/" title="http://www.mantisbt.org">http://www.mantisbt.org/</a></p>
-
-<p><img class="ui image" src="/assets/posts/2012-10-25-a-quick-view-on-wordpress-mantis-and-jenkins-plug-in-api/Mantis_logo.gif" /></p>
-
+<hr>
+<h3><a name=mantis>Mantis</a></h3>
+<p><a href=http://www.mantisbt.org/ title=http://www.mantisbt.org>http://www.mantisbt.org/</a></p>
+<figure class=feature>
+<img src=/assets/posts/2012-10-25-a-quick-view-on-wordpress-mantis-and-jenkins-plug-in-api/Mantis_logo.gif alt title width height>
+<figcaption></figcaption>
+</figure>
 <ul>
-	<li>Supported programming languages: PHP</li>
-	<li>Configurations available for plug-ins: Yes</li>
-	<li>Plug-in packages: No</li>
-	<li>Extension points : Hooks for events</li>
+<li>Supported programming languages: PHP</li>
+<li>Configurations available for plug-ins: Yes</li>
+<li>Plug-in packages: No</li>
+<li>Extension points : Hooks for events</li>
 </ul>
-
 <h4>Plug-ins installation</h4>
-
 <p>The plug-ins installation happens copying the plug-in folder to the plug-ins folder in Mantis. By default, this folder is located at <em>$MANTIS_HOME/plugins</em>.</p>
-
 <h4>Plug-ins API</h4>
-
 <p>Mantis scans the plug-ins folder looking for other folders. For each folder, there should exist a PHP file with the same name of the directory, plus the extension .php. This file must include Mantis plug-ins API (class <em>MantisPlugin.class.php</em>).</p>
-
 <p>The Mantis plug-ins API has general configurations for the plug-in, such as name, description, author, web site, configuration page (optional) among others. As well as functions for initializing and finalizing the plug-in.</p>
-
 <p>By default the plug-in is not persisted in the database, only when installed. During the installation, the initialization functions are called. The plug-in hooks are also registered.</p>
-
 <p>Certain actions in Mantis generate <strong>events</strong> (see: <em>$MANTIS_HOME/core/events_inc.php</em>). A plug-in can register functions for these events. This way, Mantis will call these functions when such event occurs.</p>
+<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-php data-lang=php>**
+ * requires MantisPlugin.class.php
+ */
+<span style=color:navy;font-weight:700>require_once</span>( config_get( <span style=color:#00f>&#39;class_path&#39;</span> ) . <span style=color:#00f>&#39;MantisPlugin.class.php&#39;</span> );
 
-<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">**</span>
- <span class="o">*</span> <span class="n">requires</span> <span class="nc">MantisPlugin</span><span class="mf">.</span><span class="n">class</span><span class="mf">.</span><span class="n">php</span>
- <span class="o">*/</span>
-<span class="k">require_once</span><span class="p">(</span> <span class="nf">config_get</span><span class="p">(</span> <span class="s1">'class_path'</span> <span class="p">)</span> <span class="mf">.</span> <span class="s1">'MantisPlugin.class.php'</span> <span class="p">);</span>
-
-<span class="cd">/**
- * XmlImportExportPlugin Class
- */</span>
-<span class="kd">class</span> <span class="nc">XmlImportExportPlugin</span> <span class="kd">extends</span> <span class="nc">MantisPlugin</span> <span class="p">{</span>
+<span style=color:#00f>/**
+</span><span style=color:#00f> * XmlImportExportPlugin Class
+</span><span style=color:#00f> */</span>
+<span style=color:navy;font-weight:700>class</span> XmlImportExportPlugin <span style=color:navy;font-weight:700>extends</span> MantisPlugin {
 	
-	<span class="c1">//...</span>
-
-	<span class="cd">/**
-	 * Default plugin configuration.
-	 */</span>
-	<span class="k">function</span> <span class="n">hooks</span><span class="p">(</span> <span class="p">)</span> <span class="p">{</span>
-		<span class="nv">$hooks</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span>
-			<span class="s1">'EVENT_MENU_MANAGE'</span> <span class="o">=&amp;</span><span class="n">gt</span><span class="p">;</span> <span class="s1">'import_issues_menu'</span><span class="p">,</span>
-			<span class="s1">'EVENT_MENU_FILTER'</span> <span class="o">=&amp;</span><span class="n">gt</span><span class="p">;</span> <span class="s1">'export_issues_menu'</span><span class="p">,</span>
-		<span class="p">);</span>
-		<span class="k">return</span> <span class="nv">$hooks</span><span class="p">;</span>
-	<span class="p">}</span>
-<span class="p">}</span>
-</code></pre></div></div>
-
-<p>There is a plug-in that comes bundled with Mantis, the Core plug-in. This plug-in allows other plug-ins to use it to verify required compatibility with the plug-ins API.</p>
-
+	<span style=color:#080;font-style:italic>//...
+</span><span style=color:#080;font-style:italic></span>
+	<span style=color:#00f>/**
+</span><span style=color:#00f>	 * Default plugin configuration.
+</span><span style=color:#00f>	 */</span>
+	<span style=color:navy;font-weight:700>function</span> hooks( ) {
+		$hooks = <span style=color:navy;font-weight:700>array</span>(
+			<span style=color:#00f>&#39;EVENT_MENU_MANAGE&#39;</span> =&amp;gt; <span style=color:#00f>&#39;import_issues_menu&#39;</span>,
+			<span style=color:#00f>&#39;EVENT_MENU_FILTER&#39;</span> =&amp;gt; <span style=color:#00f>&#39;export_issues_menu&#39;</span>,
+		);
+		<span style=color:navy;font-weight:700>return</span> $hooks;
+	}
+}
+</code></pre></div><p>There is a plug-in that comes bundled with Mantis, the Core plug-in. This plug-in allows other plug-ins to use it to verify required compatibility with the plug-ins API.</p>
 <h4>Plug-ins configuration</h4>
-
 <p>Plug-ins can define a set of configurations, with a default value. If a plug-in provides a configuration page, so it is possible to change these configurations with this page too (the programmer must prepare this page).</p>
-
 <p>If a configuration has a default value, then it is not persisted in the database. But if the administrator changes the configuration, then it is persisted in the database, overriding the default value.</p>
-
-<p>In the database, the configurations are stored in the same table for general configurations, but with the prefix <em>plugin_&lt;pluginname&gt;_&lt;configuration&gt;, e.g.: </em><em>plugin_MantisGraph_font</em> (configuration font of MantisGraph plug-in).</p>
-
-<hr />
-
-<h3><a name="jenkins">Jenkins</a></h3>
-
-<p><a href="http://www.jenkins-ci.org" title="http://www.jenkins-ci.org">http://www.jenkins-ci.org</a></p>
-
-<p><img class="ui image" src="/assets/posts/2012-10-25-a-quick-view-on-wordpress-mantis-and-jenkins-plug-in-api/Jenkins1_300_224.png" /></p>
-
+<p>In the database, the configurations are stored in the same table for general configurations, but with the prefix <em>plugin_&lt;pluginname>_&lt;configuration>, e.g.: </em><em>plugin_MantisGraph_font</em> (configuration font of MantisGraph plug-in).</p>
+<hr>
+<h3><a name=jenkins>Jenkins</a></h3>
+<p><a href=http://www.jenkins-ci.org title=http://www.jenkins-ci.org>http://www.jenkins-ci.org</a></p>
+<figure class=feature>
+<img src=/assets/posts/2012-10-25-a-quick-view-on-wordpress-mantis-and-jenkins-plug-in-api/Jenkins1_300_224.png alt title width height>
+<figcaption></figcaption>
+</figure>
 <ul>
-	<li>Supported programming languages: Java, Ruby, Groovy, Python (work in progress)</li>
-	<li>Configurations available for plug-ins: Yes</li>
-	<li>Plug-in packages: Yes</li>
-	<li>Extension points : An API for plug-ins that combine inheritance, interfaces and annotations</li>
+<li>Supported programming languages: Java, Ruby, Groovy, Python (work in progress)</li>
+<li>Configurations available for plug-ins: Yes</li>
+<li>Plug-in packages: Yes</li>
+<li>Extension points : An API for plug-ins that combine inheritance, interfaces and annotations</li>
 </ul>
-
 <h4>Plug-ins installation</h4>
-
 <p>Plug-ins in Jenkins stay at the <em>$JENKINS_HOME/plugins</em> folder. You can copy the <em>hpi</em> or <em>jpi</em> files into this folder, or copy the plug-in's folder directly in there too. Jenkins will take care of initializing your plug-in, both during Jenkins start up or during runtime.</p>
-
 <p>You can install, update or uninstall using Jenkins interface. You get notifications from the plug-ins updates available and compatibility with Jenkins current version.</p>
-
 <h4>Plug-ins API</h4>
+<p>There are several <strong>extension points</strong> in Jenkins (see: <a href=https://wiki.jenkins-ci.org/display/JENKINS/Extension+points title="Jenkins Wiki page for Extension Points">Jenkins Wiki page for Extension Points</a>). Each one has a goal and is executed at certain point in Jenkins code. Normally your plug-in will have one extension point and one goal, but it is possible too that you use more than one extension point, create your own extension point or use other plug-ins too.</p>
+<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=color:navy;font-weight:700>public</span> <span style=color:navy;font-weight:700>class</span> HelloWorldBuilder <span style=color:navy;font-weight:700>extends</span> Builder {
 
-<p>There are several <strong>extension points</strong> in Jenkins (see: <a href="https://wiki.jenkins-ci.org/display/JENKINS/Extension+points" title="Jenkins Wiki page for Extension Points">Jenkins Wiki page for Extension Points</a>). Each one has a goal and is executed at certain point in Jenkins code. Normally your plug-in will have one extension point and one goal, but it is possible too that you use more than one extension point, create your own extension point or use other plug-ins too.</p>
+    <span style=color:navy;font-weight:700>private</span> <span style=color:navy;font-weight:700>final</span> String name;
 
-<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">HelloWorldBuilder</span> <span class="kd">extends</span> <span class="nc">Builder</span> <span class="o">{</span>
+    <span style=color:#080;font-style:italic>// Fields in config.jelly must match the parameter names in the &#34;DataBoundConstructor&#34;
+</span><span style=color:#080;font-style:italic></span>    @DataBoundConstructor
+    <span style=color:navy;font-weight:700>public</span> HelloWorldBuilder(String name) {
+        <span style=color:navy;font-weight:700>this</span>.<span style=color:red>name</span> = name;
+    }
 
-    <span class="kd">private</span> <span class="kd">final</span> <span class="nc">String</span> <span class="n">name</span><span class="o">;</span>
+    <span style=color:#080;font-style:italic>// ...
+</span><span style=color:#080;font-style:italic></span>
+    @Override
+    <span style=color:navy;font-weight:700>public</span> <span style=color:navy;font-weight:700>boolean</span> perform(AbstractBuild build, Launcher launcher, BuildListener listener) {
+        <span style=color:#080;font-style:italic>// This is where you &#39;build&#39; the project.
+</span><span style=color:#080;font-style:italic></span>        <span style=color:#080;font-style:italic>// Since this is a dummy, we just say &#39;hello world&#39; and call that a build.
+</span><span style=color:#080;font-style:italic></span>
+        <span style=color:#080;font-style:italic>// This also shows how you can consult the global configuration of the builder
+</span><span style=color:#080;font-style:italic></span>        <span style=color:navy;font-weight:700>if</span> (getDescriptor().<span style=color:red>getUseFrench</span>())
+            listener.<span style=color:red>getLogger</span>().<span style=color:red>println</span>(&amp;quot;Bonjour, &amp;quot;+name+&amp;quot;!&amp;quot;);
+        <span style=color:navy;font-weight:700>else</span>
+            listener.<span style=color:red>getLogger</span>().<span style=color:red>println</span>(&amp;quot;Hello, &amp;quot;+name+&amp;quot;!&amp;quot;);
+        <span style=color:navy;font-weight:700>return</span> <span style=color:navy;font-weight:700>true</span>;
+    }
 
-    <span class="c1">// Fields in config.jelly must match the parameter names in the "DataBoundConstructor"</span>
-    <span class="nd">@DataBoundConstructor</span>
-    <span class="kd">public</span> <span class="nf">HelloWorldBuilder</span><span class="o">(</span><span class="nc">String</span> <span class="n">name</span><span class="o">)</span> <span class="o">{</span>
-        <span class="k">this</span><span class="o">.</span><span class="na">name</span> <span class="o">=</span> <span class="n">name</span><span class="o">;</span>
-    <span class="o">}</span>
-
-    <span class="c1">// ...</span>
-
-    <span class="nd">@Override</span>
-    <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">perform</span><span class="o">(</span><span class="nc">AbstractBuild</span> <span class="n">build</span><span class="o">,</span> <span class="nc">Launcher</span> <span class="n">launcher</span><span class="o">,</span> <span class="nc">BuildListener</span> <span class="n">listener</span><span class="o">)</span> <span class="o">{</span>
-        <span class="c1">// This is where you 'build' the project.</span>
-        <span class="c1">// Since this is a dummy, we just say 'hello world' and call that a build.</span>
-
-        <span class="c1">// This also shows how you can consult the global configuration of the builder</span>
-        <span class="k">if</span> <span class="o">(</span><span class="n">getDescriptor</span><span class="o">().</span><span class="na">getUseFrench</span><span class="o">())</span>
-            <span class="n">listener</span><span class="o">.</span><span class="na">getLogger</span><span class="o">().</span><span class="na">println</span><span class="o">(&amp;</span><span class="n">quot</span><span class="o">;</span><span class="nc">Bonjour</span><span class="o">,</span> <span class="o">&amp;</span><span class="n">quot</span><span class="o">;+</span><span class="n">name</span><span class="o">+&amp;</span><span class="n">quot</span><span class="o">;!&amp;</span><span class="n">quot</span><span class="o">;);</span>
-        <span class="k">else</span>
-            <span class="n">listener</span><span class="o">.</span><span class="na">getLogger</span><span class="o">().</span><span class="na">println</span><span class="o">(&amp;</span><span class="n">quot</span><span class="o">;</span><span class="nc">Hello</span><span class="o">,</span> <span class="o">&amp;</span><span class="n">quot</span><span class="o">;+</span><span class="n">name</span><span class="o">+&amp;</span><span class="n">quot</span><span class="o">;!&amp;</span><span class="n">quot</span><span class="o">;);</span>
-        <span class="k">return</span> <span class="kc">true</span><span class="o">;</span>
-    <span class="o">}</span>
-
-    <span class="c1">// ...</span>
-
-<span class="o">}</span>
-</code></pre></div></div>
-
-<p>When you initialize Jenkins, it scans the plug-ins directory and, for each plug-in found, it prepares a ClassLoader and call the initializion methods (if any) in the plug-in. There are methods for when the plug-in is stopping too.</p>
-
+    <span style=color:#080;font-style:italic>// ...
+</span><span style=color:#080;font-style:italic></span>
+}
+</code></pre></div><p>When you initialize Jenkins, it scans the plug-ins directory and, for each plug-in found, it prepares a ClassLoader and call the initializion methods (if any) in the plug-in. There are methods for when the plug-in is stopping too.</p>
 <p>After that, you can use the plug-ins features from the job configuration screen, or in other parts of the system. In the case of a job, you can use the Builder of a plug-in, for instance, configuring it according to the plug-in requirements, and then during the job execution a method (<em>perform()</em>) is executed for each one of the Builders configured in the job.</p>
-
 <h4>Plug-ins configuration</h4>
-
-<p>Each plug-in can have global of local configurations. It is also possible to modify Jenkins UI and add new screens to configure the plug-in. The configuration screen for the plug-in requires only snippets of <a href="http://commons.apache.org/jelly/" title="Apache Jelly">Jelly</a> or <a href="http://groovy.codehaus.org/" title="Groovy">Groovy</a>, that are embedded by Jenkins in the right configuration screen.</p>
-
+<p>Each plug-in can have global of local configurations. It is also possible to modify Jenkins UI and add new screens to configure the plug-in. The configuration screen for the plug-in requires only snippets of <a href=http://commons.apache.org/jelly/ title="Apache Jelly">Jelly</a> or <a href=http://groovy.codehaus.org/ title=Groovy>Groovy</a>, that are embedded by Jenkins in the right configuration screen.</p>
 <p>Below is the local (job) configuration for the plug-in shown above.</p>
-
-<p>[xml]&lt;j:jelly xmlns:j="jelly:core" xmlns:st="jelly:stapler" xmlns:d="jelly:define" xmlns:l="/lib/layout" xmlns:t="/lib/hudson" xmlns:f="/lib/form"&gt;
-  &lt;f:entry title="Name" field="name"&gt;
-    &lt;f:textbox /&gt;
-  &lt;/f:entry&gt;
-&lt;/j:jelly&gt;[/xml]</p>
-
-<hr />
-
-<p>In the next days I'll finish the proposal for TestLink and will post the details here too. And to keep the momentum, I'll investigate an idea posted <a href="http://www.tupilabs.com/2012/10/02/use-jenkins-plug-ins-api-in-apache-nutch.html" title="Use Jenkins plug-ins API in Apache Nutch">here</a>, about enhancing <a href="http://nutch.apache.org" title="Apache Nutch">Apache Nutch</a>'s plug-in API using parts of the Jenkins API.</p>
-
-  </div>
-
-  <div class="tags"><p>Tags:&nbsp;<a class="label" href="/tag/jenkins">jenkins</a>,&nbsp;<a class="label" href="/tag/testlink">testlink</a>.<br/></p></div>
-
-  <a class="u-url" href="/2012/10/25/a-quick-view-on-wordpress-mantis-and-jenkins-plug-in-api.html" hidden></a>
+<p>[xml]&lt;j:jelly xmlns:j="jelly:core" xmlns:st="jelly:stapler" xmlns:d="jelly:define" xmlns:l="/lib/layout" xmlns:t="/lib/hudson" xmlns:f="/lib/form">
+&lt;f:entry title="Name" field="name">
+&lt;f:textbox />
+&lt;/f:entry>
+&lt;/j:jelly>[/xml]</p>
+<hr>
+<p>In the next days I'll finish the proposal for TestLink and will post the details here too. And to keep the momentum, I'll investigate an idea posted <a href=http://www.tupilabs.com/2012/10/02/use-jenkins-plug-ins-api-in-apache-nutch.html title="Use Jenkins plug-ins API in Apache Nutch">here</a>, about enhancing <a href=http://nutch.apache.org title="Apache Nutch">Apache Nutch</a>'s plug-in API using parts of the Jenkins API.</p>
+<aside class=links>
+<a class=previous href=https://kinoshita.eti.br/2012/10/20/replacing-a-hashset-with-a-bitset.html>&#171; Previous</a>
+<a class=next href=https://kinoshita.eti.br/2012/11/07/running-bdd-tests-from-testlink-in-jenkins.html>Next &#187;</a>
+</aside>
 </article>
-
-  </div>
-</div>
+</main>
+<footer role=contentinfo>
+<ul id=social-media-icons>
+<li>
+<a href=https://www.instagram.com/brunokinoshita/>
+<img src=/assets/icons/instagram.png alt="Instagram link">
+</a>
+</li>
+<li>
+<a href=https://twitter.com/kinow/>
+<img src=/assets/icons/twitter.png alt="Twitter link">
+</a>
+</li>
+<li>
+<a href=https://github.com/kinow/>
+<img src=/assets/icons/github.png alt="GitHub link">
+</a>
+</li>
+</ul>
+</footer>
 </body>
 </html>

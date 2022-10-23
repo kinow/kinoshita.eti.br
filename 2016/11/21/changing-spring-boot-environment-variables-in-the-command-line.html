@@ -1,154 +1,79 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="utf-8" />
-<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-<meta name="viewport" content="width=device-width, initial-scale=1" /><!-- Begin Jekyll SEO tag v2.7.1 -->
-<title>Changing Spring Boot environment variables in the command line | kinow</title>
-<meta name="generator" content="Jekyll v3.9.0" />
-<meta property="og:title" content="Changing Spring Boot environment variables in the command line" />
-<meta property="og:locale" content="en_US" />
-<meta name="description" content="This week while helping developers and testers to experiment with a backend application, some of them found useful to learn a simple trick to change Spring Boot properties when you can run the application locally (our testers build, compile, change the code, how cool is that?). Here’s how it works. Say you have the following settings in your application’s application.properties: my.application.database.username=sa my.application.database.password=notasimplepassword And that you want to change these parameters in order to, for instance, create an application error, so that you can code and test what happens to the frontend application in that situation. You replace dots by underscores, and put all your words in upper case. So the variables above would be: MY_APPLICATION_DATABASE_USERNAME and MY_APPLICATION_DATABASE_PASSWORD. Furthermore, you do not need to edit your application.properties file, if you are on Linux or Mac OS. You can start the application and override environment variables at the same time with the following syntax. $ MY_APPLICATION_DATABASE_USERNAME=olivei MY_APPLICATION_DATABASE_PASSWORD=7655432222a mvn clean spring-boot:run This way your application will start with the new values. Happy hacking! –EDIT– As pointed by Stéphane Nicoll (thanks!), you could change the property values without having to use the upper case syntax. mvn -Dmy.application.database.username=anotheruser clean spring-boot:run And he even included a link to docs! ♥ the Internet and Open Source! @kinow you can also specify them as command-line arguments (no need for the upper case thing)https://t.co/zBKpgcXN1Cor `-Drun.arguments`&mdash; Stéphane Nicoll (@snicoll) November 22, 2016" />
-<meta property="og:description" content="This week while helping developers and testers to experiment with a backend application, some of them found useful to learn a simple trick to change Spring Boot properties when you can run the application locally (our testers build, compile, change the code, how cool is that?). Here’s how it works. Say you have the following settings in your application’s application.properties: my.application.database.username=sa my.application.database.password=notasimplepassword And that you want to change these parameters in order to, for instance, create an application error, so that you can code and test what happens to the frontend application in that situation. You replace dots by underscores, and put all your words in upper case. So the variables above would be: MY_APPLICATION_DATABASE_USERNAME and MY_APPLICATION_DATABASE_PASSWORD. Furthermore, you do not need to edit your application.properties file, if you are on Linux or Mac OS. You can start the application and override environment variables at the same time with the following syntax. $ MY_APPLICATION_DATABASE_USERNAME=olivei MY_APPLICATION_DATABASE_PASSWORD=7655432222a mvn clean spring-boot:run This way your application will start with the new values. Happy hacking! –EDIT– As pointed by Stéphane Nicoll (thanks!), you could change the property values without having to use the upper case syntax. mvn -Dmy.application.database.username=anotheruser clean spring-boot:run And he even included a link to docs! ♥ the Internet and Open Source! @kinow you can also specify them as command-line arguments (no need for the upper case thing)https://t.co/zBKpgcXN1Cor `-Drun.arguments`&mdash; Stéphane Nicoll (@snicoll) November 22, 2016" />
-<link rel="canonical" href="https://kinoshita.eti.br/2016/11/21/changing-spring-boot-environment-variables-in-the-command-line.html" />
-<meta property="og:url" content="https://kinoshita.eti.br/2016/11/21/changing-spring-boot-environment-variables-in-the-command-line.html" />
-<meta property="og:site_name" content="kinow" />
-<meta property="og:type" content="article" />
-<meta property="article:published_time" content="2016-11-21T00:00:00+13:00" />
-<meta name="twitter:card" content="summary" />
-<meta property="twitter:title" content="Changing Spring Boot environment variables in the command line" />
-<script type="application/ld+json">
-{"description":"This week while helping developers and testers to experiment with a backend application, some of them found useful to learn a simple trick to change Spring Boot properties when you can run the application locally (our testers build, compile, change the code, how cool is that?). Here’s how it works. Say you have the following settings in your application’s application.properties: my.application.database.username=sa my.application.database.password=notasimplepassword And that you want to change these parameters in order to, for instance, create an application error, so that you can code and test what happens to the frontend application in that situation. You replace dots by underscores, and put all your words in upper case. So the variables above would be: MY_APPLICATION_DATABASE_USERNAME and MY_APPLICATION_DATABASE_PASSWORD. Furthermore, you do not need to edit your application.properties file, if you are on Linux or Mac OS. You can start the application and override environment variables at the same time with the following syntax. $ MY_APPLICATION_DATABASE_USERNAME=olivei MY_APPLICATION_DATABASE_PASSWORD=7655432222a mvn clean spring-boot:run This way your application will start with the new values. Happy hacking! –EDIT– As pointed by Stéphane Nicoll (thanks!), you could change the property values without having to use the upper case syntax. mvn -Dmy.application.database.username=anotheruser clean spring-boot:run And he even included a link to docs! ♥ the Internet and Open Source! @kinow you can also specify them as command-line arguments (no need for the upper case thing)https://t.co/zBKpgcXN1Cor `-Drun.arguments`&mdash; Stéphane Nicoll (@snicoll) November 22, 2016","@type":"BlogPosting","url":"https://kinoshita.eti.br/2016/11/21/changing-spring-boot-environment-variables-in-the-command-line.html","headline":"Changing Spring Boot environment variables in the command line","datePublished":"2016-11-21T00:00:00+13:00","dateModified":"2016-11-21T00:00:00+13:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://kinoshita.eti.br/2016/11/21/changing-spring-boot-environment-variables-in-the-command-line.html"},"@context":"https://schema.org"}</script>
-<!-- End Jekyll SEO tag -->
-<link rel="stylesheet" href="/assets/css/main.css" /><link type="application/atom+xml" rel="alternate" href="https://kinoshita.eti.br/feed.xml" title="kinow" /><link href="https://unpkg.com/pattern.css" rel="stylesheet" />
-
+<!doctype html><html lang=en><head>
+<meta charset=utf-8>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<link rel=stylesheet type=text/css href=https://kinoshita.eti.br/sass/main.e392e97e7e5991e363403c494b51d829efa207842d755622976c2537d0509be0.css integrity="sha256-45Lpfn5ZkeNjQDxJS1HYKe+iB4QtdVYil2wlN9BQm+A=">
+<title>kinow | Changing Spring Boot environment variables in the command line</title>
 </head>
-<body>
-<div id="mobile-menu"><div class="menu">
-  <ul class="menu">
-    <li class="item">
-      <h1 id="kinow">KINOW</h1>
-    </li>
-    <li class="item">
-      <a href="/" class="">About</a>
-    </li>
-    <li class="item">
-      <a href="/blog/" class="current">Blog</a>
-    </li>
-    <li class="item">
-      <a href="/portfolio/" class="">Portfolio</a>
-    </li>
-    <li class="item social-media-item">
-      <a href="https://www.instagram.com/brunokinoshita/" class="inline-link">
-        <img src="/assets/icons/instagram.png" class="inverted-image"  alt="Instagram link" />
-      </a>
-      <a href="https://twitter.com/kinow/" class="inline-link">
-        <img src="/assets/icons/twitter.png" class="inverted-image" alt="Twitter link" />
-      </a>
-      <a href="https://github.com/kinow/" class="inline-link">
-        <img src="/assets/icons/github.png" class="inverted-image" alt="GitHub link" />
-      </a>
-    </li>
-  </ul>
+<body><header role=banner class=content>
+<nav id=nav aria-label=Main role=navigation class=content>
+<ul><li>
+<a href=/>
+<i data-feather=about></i> About</a>
+</li><li>
+<a href=/blog/>
+<i data-feather=blog></i> Blog</a>
+</li><li>
+<a href=/portfolio/>
+<i data-feather=portfolio></i> Portfolio</a>
+</li><li></li>
+</ul>
+</nav>
+</header>
+<main>
+<article class=content>
+<h2>Changing Spring Boot environment variables in the command line</h2><div class=metadata>
+<i data-feather=calendar></i>
+<time datetime=2016-11-21>Nov 21, 2016</time>
 </div>
-</div>
-<div id="wrapper">
-  <div id="sidebar"><div class="menu">
-  <ul class="menu">
-    <li class="item">
-      <h1 id="kinow">KINOW</h1>
-    </li>
-    <li class="item">
-      <a href="/" class="">About</a>
-    </li>
-    <li class="item">
-      <a href="/blog/" class="current">Blog</a>
-    </li>
-    <li class="item">
-      <a href="/portfolio/" class="">Portfolio</a>
-    </li>
-    <li class="item social-media-item">
-      <a href="https://www.instagram.com/brunokinoshita/" class="inline-link">
-        <img src="/assets/icons/instagram.png" class="inverted-image"  alt="Instagram link" />
-      </a>
-      <a href="https://twitter.com/kinow/" class="inline-link">
-        <img src="/assets/icons/twitter.png" class="inverted-image" alt="Twitter link" />
-      </a>
-      <a href="https://github.com/kinow/" class="inline-link">
-        <img src="/assets/icons/github.png" class="inverted-image" alt="GitHub link" />
-      </a>
-    </li>
-  </ul>
-</div>
-</div>
-  <div id="content">
-    <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
-  <header class="post-header">
-    <h1 class="post-title p-name" itemprop="name headline">Changing Spring Boot environment variables in the command line</h1>
-    <span class="post-meta">
-      <time class="dt-published" datetime="2016-11-21T00:00:00+13:00" itemprop="datePublished">Nov 21, 2016
-      </time>
-      <span>&mdash; star date: -306030.05.</span>
-      <span>
-        Number of words: 269.
-      </span></span>
-  </header>
-
-  
-
-
-  <div class="post-content e-content" itemprop="articleBody">
-    <p>This week while helping developers and testers to experiment with a backend application,
+<p>This week while helping developers and testers to experiment with a backend application,
 some of them found useful to learn a simple trick to change Spring Boot properties
 when you can run the application locally (our testers build, compile, change the code, how cool
 is that?).</p>
-
-<p>Here’s how it works. Say you have the following settings in your application’s
+<p>Here&rsquo;s how it works. Say you have the following settings in your application&rsquo;s
 <strong>application.properties</strong>:</p>
-
-<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>my.application.database.username<span class="o">=</span>sa
-my.application.database.password<span class="o">=</span>notasimplepassword
-</code></pre></div></div>
-
-<p>And that you want to change these parameters in order to, for instance, create an application
+<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>my.application.database.username=sa
+my.application.database.password=notasimplepassword
+</code></pre></div><p>And that you want to change these parameters in order to, for instance, create an application
 error, so that you can code and test what happens to the frontend application in that situation.</p>
-
 <p>You replace <em>dots</em> by <em>underscores</em>, and put all your words in upper case. So the variables
 above would be: MY_APPLICATION_DATABASE_USERNAME and MY_APPLICATION_DATABASE_PASSWORD.</p>
-
 <p>Furthermore, you do not need to edit your application.properties file, if you are on Linux or
 Mac OS. You can start the application and override environment variables at the same time
 with the following syntax.</p>
-
-<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ MY_APPLICATION_DATABASE_USERNAME</span><span class="o">=</span>olivei <span class="nv">MY_APPLICATION_DATABASE_PASSWORD</span><span class="o">=</span>7655432222a mvn clean spring-boot:run
-</code></pre></div></div>
-
-<p>This way your application will start with the new values.</p>
-
+<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>$ MY_APPLICATION_DATABASE_USERNAME=olivei MY_APPLICATION_DATABASE_PASSWORD=7655432222a mvn clean spring-boot:run
+</code></pre></div><p>This way your application will start with the new values.</p>
 <p>Happy hacking!</p>
-
-<p><strong>–EDIT–</strong></p>
-
+<p><strong>&ndash;EDIT&ndash;</strong></p>
 <p>As pointed by Stéphane Nicoll (thanks!), you could change the property values
 without having to use the upper case syntax.</p>
-
-<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mvn <span class="nt">-Dmy</span>.application.database.username<span class="o">=</span>anotheruser clean spring-boot:run
-</code></pre></div></div>
-
-<p>And he even included a link to <a href="http://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#boot-features-external-config">docs</a>! ♥ the Internet and Open Source!</p>
-
-<blockquote class="twitter-tweet" data-lang="en"><p lang="en" dir="ltr"><a href="https://twitter.com/kinow">@kinow</a> you can also specify them as command-line arguments (no need for the upper case thing)<a href="https://t.co/zBKpgcXN1C">https://t.co/zBKpgcXN1C</a><br /><br />or `-Drun.arguments`</p>&mdash; Stéphane Nicoll (@snicoll) <a href="https://twitter.com/snicoll/status/800965565120708608">November 22, 2016</a></blockquote>
-<script async="" src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
-
-
-  </div>
-
-  <div class="tags"><p>Tags:&nbsp;<a class="label" href="/tag/shell script">shell script</a>,&nbsp;<a class="label" href="/tag/java">java</a>.<br/></p></div>
-
-  <a class="u-url" href="/2016/11/21/changing-spring-boot-environment-variables-in-the-command-line.html" hidden></a>
+<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>mvn -Dmy.application.database.username=anotheruser clean spring-boot:run
+</code></pre></div><p>And he even included a link to <a href=http://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#boot-features-external-config>docs</a>! ♥ the Internet and Open Source!</p>
+<blockquote class=twitter-tweet data-lang=en><p lang=en dir=ltr><a href=https://twitter.com/kinow>@kinow</a> you can also specify them as command-line arguments (no need for the upper case thing)<a href=https://t.co/zBKpgcXN1C>https://t.co/zBKpgcXN1C</a><br><br>or `-Drun.arguments`</p>&mdash; Stéphane Nicoll (@snicoll) <a href=https://twitter.com/snicoll/status/800965565120708608>November 22, 2016</a></blockquote>
+<script async src=//platform.twitter.com/widgets.js></script>
+<aside class=links>
+<a class=previous href=https://kinoshita.eti.br/2016/11/12/add-a-header-to-a-file-with-shell-script-sed.html>&#171; Previous</a>
+<a class=next href=https://kinoshita.eti.br/2016/11/25/using-requests-session-objects-for-web-scraping.html>Next &#187;</a>
+</aside>
 </article>
-
-  </div>
-</div>
+</main>
+<footer role=contentinfo>
+<ul id=social-media-icons>
+<li>
+<a href=https://www.instagram.com/brunokinoshita/>
+<img src=/assets/icons/instagram.png alt="Instagram link">
+</a>
+</li>
+<li>
+<a href=https://twitter.com/kinow/>
+<img src=/assets/icons/twitter.png alt="Twitter link">
+</a>
+</li>
+<li>
+<a href=https://github.com/kinow/>
+<img src=/assets/icons/github.png alt="GitHub link">
+</a>
+</li>
+</ul>
+</footer>
 </body>
 </html>

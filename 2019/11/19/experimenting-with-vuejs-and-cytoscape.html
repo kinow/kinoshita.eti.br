@@ -1,285 +1,210 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="utf-8" />
-<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-<meta name="viewport" content="width=device-width, initial-scale=1" /><!-- Begin Jekyll SEO tag v2.7.1 -->
-<title>Experimenting with Vuejs and Cytoscape | kinow</title>
-<meta name="generator" content="Jekyll v3.9.0" />
-<meta property="og:title" content="Experimenting with Vuejs and Cytoscape" />
-<meta property="og:locale" content="en_US" />
-<meta name="description" content="The project I work on at work had a GUI interface with Python and PyGTK, which is now being ported to the web. We have adopted Vuejs as the JS framework, and have been building the components required for our UI over the past months. The project is hosted on GitHub licensed under GPLv3. In Cylc 7, an important visualization was the workflow graph. The screen shot below is from the design sketches done by another contributor from the UK, showing how it should look in Cylc 8. The first library we decided to try is Cytoscape, a well-known graph library, with use cases in research, corporate, and other fields. One limitation of Cytoscape is that the way it renders the graph nodes is limited. Limited, meaning that you won’t be able to easily add HTML, images, SVG, animation, etc. Though not impossible." />
-<meta property="og:description" content="The project I work on at work had a GUI interface with Python and PyGTK, which is now being ported to the web. We have adopted Vuejs as the JS framework, and have been building the components required for our UI over the past months. The project is hosted on GitHub licensed under GPLv3. In Cylc 7, an important visualization was the workflow graph. The screen shot below is from the design sketches done by another contributor from the UK, showing how it should look in Cylc 8. The first library we decided to try is Cytoscape, a well-known graph library, with use cases in research, corporate, and other fields. One limitation of Cytoscape is that the way it renders the graph nodes is limited. Limited, meaning that you won’t be able to easily add HTML, images, SVG, animation, etc. Though not impossible." />
-<link rel="canonical" href="https://kinoshita.eti.br/2019/11/19/experimenting-with-vuejs-and-cytoscape.html" />
-<meta property="og:url" content="https://kinoshita.eti.br/2019/11/19/experimenting-with-vuejs-and-cytoscape.html" />
-<meta property="og:site_name" content="kinow" />
-<meta property="og:type" content="article" />
-<meta property="article:published_time" content="2019-11-19T00:00:00+13:00" />
-<meta name="twitter:card" content="summary" />
-<meta property="twitter:title" content="Experimenting with Vuejs and Cytoscape" />
-<script type="application/ld+json">
-{"description":"The project I work on at work had a GUI interface with Python and PyGTK, which is now being ported to the web. We have adopted Vuejs as the JS framework, and have been building the components required for our UI over the past months. The project is hosted on GitHub licensed under GPLv3. In Cylc 7, an important visualization was the workflow graph. The screen shot below is from the design sketches done by another contributor from the UK, showing how it should look in Cylc 8. The first library we decided to try is Cytoscape, a well-known graph library, with use cases in research, corporate, and other fields. One limitation of Cytoscape is that the way it renders the graph nodes is limited. Limited, meaning that you won’t be able to easily add HTML, images, SVG, animation, etc. Though not impossible.","@type":"BlogPosting","url":"https://kinoshita.eti.br/2019/11/19/experimenting-with-vuejs-and-cytoscape.html","headline":"Experimenting with Vuejs and Cytoscape","datePublished":"2019-11-19T00:00:00+13:00","dateModified":"2019-11-19T00:00:00+13:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://kinoshita.eti.br/2019/11/19/experimenting-with-vuejs-and-cytoscape.html"},"@context":"https://schema.org"}</script>
-<!-- End Jekyll SEO tag -->
-<link rel="stylesheet" href="/assets/css/main.css" /><link type="application/atom+xml" rel="alternate" href="https://kinoshita.eti.br/feed.xml" title="kinow" /><link href="https://unpkg.com/pattern.css" rel="stylesheet" />
-
+<!doctype html><html lang=en><head>
+<meta charset=utf-8>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<link rel=stylesheet type=text/css href=https://kinoshita.eti.br/sass/main.e392e97e7e5991e363403c494b51d829efa207842d755622976c2537d0509be0.css integrity="sha256-45Lpfn5ZkeNjQDxJS1HYKe+iB4QtdVYil2wlN9BQm+A=">
+<title>kinow | Experimenting with Vuejs and Cytoscape</title>
 </head>
-<body>
-<div id="mobile-menu"><div class="menu">
-  <ul class="menu">
-    <li class="item">
-      <h1 id="kinow">KINOW</h1>
-    </li>
-    <li class="item">
-      <a href="/" class="">About</a>
-    </li>
-    <li class="item">
-      <a href="/blog/" class="current">Blog</a>
-    </li>
-    <li class="item">
-      <a href="/portfolio/" class="">Portfolio</a>
-    </li>
-    <li class="item social-media-item">
-      <a href="https://www.instagram.com/brunokinoshita/" class="inline-link">
-        <img src="/assets/icons/instagram.png" class="inverted-image"  alt="Instagram link" />
-      </a>
-      <a href="https://twitter.com/kinow/" class="inline-link">
-        <img src="/assets/icons/twitter.png" class="inverted-image" alt="Twitter link" />
-      </a>
-      <a href="https://github.com/kinow/" class="inline-link">
-        <img src="/assets/icons/github.png" class="inverted-image" alt="GitHub link" />
-      </a>
-    </li>
-  </ul>
+<body><header role=banner class=content>
+<nav id=nav aria-label=Main role=navigation class=content>
+<ul><li>
+<a href=/>
+<i data-feather=about></i> About</a>
+</li><li>
+<a href=/blog/>
+<i data-feather=blog></i> Blog</a>
+</li><li>
+<a href=/portfolio/>
+<i data-feather=portfolio></i> Portfolio</a>
+</li><li></li>
+</ul>
+</nav>
+</header>
+<main>
+<article class=content>
+<h2>Experimenting with Vuejs and Cytoscape</h2><div class=metadata>
+<i data-feather=calendar></i>
+<time datetime=2019-11-19>Nov 19, 2019</time>
 </div>
-</div>
-<div id="wrapper">
-  <div id="sidebar"><div class="menu">
-  <ul class="menu">
-    <li class="item">
-      <h1 id="kinow">KINOW</h1>
-    </li>
-    <li class="item">
-      <a href="/" class="">About</a>
-    </li>
-    <li class="item">
-      <a href="/blog/" class="current">Blog</a>
-    </li>
-    <li class="item">
-      <a href="/portfolio/" class="">Portfolio</a>
-    </li>
-    <li class="item social-media-item">
-      <a href="https://www.instagram.com/brunokinoshita/" class="inline-link">
-        <img src="/assets/icons/instagram.png" class="inverted-image"  alt="Instagram link" />
-      </a>
-      <a href="https://twitter.com/kinow/" class="inline-link">
-        <img src="/assets/icons/twitter.png" class="inverted-image" alt="Twitter link" />
-      </a>
-      <a href="https://github.com/kinow/" class="inline-link">
-        <img src="/assets/icons/github.png" class="inverted-image" alt="GitHub link" />
-      </a>
-    </li>
-  </ul>
-</div>
-</div>
-  <div id="content">
-    <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
-  <header class="post-header">
-    <h1 class="post-title p-name" itemprop="name headline">Experimenting with Vuejs and Cytoscape</h1>
-    <span class="post-meta">
-      <time class="dt-published" datetime="2019-11-19T00:00:00+13:00" itemprop="datePublished">Nov 19, 2019
-      </time>
-      <span>&mdash; star date: -303035.62.</span>
-      <span>
-        Number of words: 1373.
-      </span></span>
-  </header>
-
-  
-
-
-  <div class="post-content e-content" itemprop="articleBody">
-    <p>The project I work on at work had a GUI interface with Python and PyGTK, which is now being
+<p>The project I work on at work had a GUI interface with Python and PyGTK, which is now being
 ported to the web. We have adopted Vuejs as the JS framework, and have been building the
 components required for our UI over the past months. The project is hosted
-<a href="https://github.com/cylc/cylc-ui">on GitHub</a> licensed under GPLv3.</p>
-
+<a href=https://github.com/cylc/cylc-ui>on GitHub</a> licensed under GPLv3.</p>
 <p>In Cylc 7, an important visualization was the workflow graph. The screen shot below is from
 the design sketches done by another contributor from the UK, showing how it should look in
 Cylc 8.</p>
-
-<p><img class="ui fluid image" src="/assets/posts/2019-11-19-experimenting-with-vuejs-and-cytoscape/cylc8-sketch.png" /></p>
-
+<figure class=feature>
+<img src=/assets/posts/2019-11-19-experimenting-with-vuejs-and-cytoscape/cylc8-sketch.png alt title width height>
+<figcaption></figcaption>
+</figure>
 <p>The first library we decided to try is Cytoscape, a well-known graph library, with use cases
 in research, corporate, and other fields. One limitation of Cytoscape is that the way it renders
 the graph nodes is limited.</p>
-
-<p>Limited, meaning that you won’t be able to easily add HTML, images, SVG, animation, etc. Though
+<p>Limited, meaning that you won&rsquo;t be able to easily add HTML, images, SVG, animation, etc. Though
 not impossible.</p>
-
-<!--more-->
-
 <p>This post contains links to Codepen pens with the progress from a basic example with
 a simple component that displays an SVG, to a final example where we had the component
-data being updated periodically, and the graph also being updated through Vuejs’
+data being updated periodically, and the graph also being updated through Vuejs'
 reactivity.</p>
-
-<p>This is the <a href="https://codepen.io/kinow/pen/OJJELJe">first pen</a>, which displays just a
+<p>This is the <a href=https://codepen.io/kinow/pen/OJJELJe>first pen</a>, which displays just a
 Cylc Job icon. The icon is an SVG, with the background colour varying according to the
-job status. It is transparent by default, red if the status is “failed”, blue if
-“succeeded”, etc.</p>
-
-<p><img class="ui fluid image" src="/assets/posts/2019-11-19-experimenting-with-vuejs-and-cytoscape/graph1.png" /></p>
-
+job status. It is transparent by default, red if the status is &ldquo;failed&rdquo;, blue if
+&ldquo;succeeded&rdquo;, etc.</p>
+<figure class=feature>
+<img src=/assets/posts/2019-11-19-experimenting-with-vuejs-and-cytoscape/graph1.png alt title width height>
+<figcaption></figcaption>
+</figure>
 <p>No biggie, we simply have here a simplified version of the
-<a href="https://github.com/cylc/cylc-ui/blob/c9920f21ffdc96e82038cc480f11adba28310ff5/src/components/cylc/Job.vue">Cylc Job component</a>.
+<a href=https://github.com/cylc/cylc-ui/blob/c9920f21ffdc96e82038cc480f11adba28310ff5/src/components/cylc/Job.vue>Cylc Job component</a>.
 This pen is using Vue and Vuetify.</p>
-
 <p>In the next <a href="https://codepen.io/kinow/pen/YzzvKwR?editors=1010">pen</a> we have a few more JS scripts, namely Cytoscape,
 Dagre, and the Cytoscape Dagre libraries. While Cytoscape is able to both parse the graph data, supports graph
 algorithms, and also is able to organize the graph layout, Dagre is focused on the last part. So delegating the
 layout part to Dagre is just to have an example that is easier to visualize, but not really a requirement.</p>
-
-<p><img class="ui fluid image" src="/assets/posts/2019-11-19-experimenting-with-vuejs-and-cytoscape/graph2.png" /></p>
-
+<figure class=feature>
+<img src=/assets/posts/2019-11-19-experimenting-with-vuejs-and-cytoscape/graph2.png alt title width height>
+<figcaption></figcaption>
+</figure>
 <p>The data used for this example is a direct copy-and-paste from a GraphQL response from
-a running workflow in Cylc 8. Plus a <code class="language-plaintext highlighter-rouge">computed</code> variable to give just the data needed for the
+a running workflow in Cylc 8. Plus a <code>computed</code> variable to give just the data needed for the
 graph component.</p>
-
 <p>So the first pen had a component and basic libraries. The second pen the test data, and a few more libraries.
 I prefer to break down problems and slowly build up a solution this way. Feel free to skip to the end of this
 post if you just want the final working pen.</p>
-
 <p>The third <a href="https://codepen.io/kinow/pen/oNNJreG?editors=1010">pen</a> has one more JS library,
 the Node HTML Label extension for Cytoscape. With this extension, we are able to use HTML
 to display the graph node.</p>
-
-<p><img class="ui fluid image" src="/assets/posts/2019-11-19-experimenting-with-vuejs-and-cytoscape/graph3.png" /></p>
-
-<p>So there is a new component too, a <code class="language-plaintext highlighter-rouge">network</code> component, which takes a list of components and renders
-a Cytoscape graph. Similar to <code class="language-plaintext highlighter-rouge">VueCytoscape</code> - which did not provide any improvement to our current
+<figure class=feature>
+<img src=/assets/posts/2019-11-19-experimenting-with-vuejs-and-cytoscape/graph3.png alt title width height>
+<figcaption></figcaption>
+</figure>
+<p>So there is a new component too, a <code>network</code> component, which takes a list of components and renders
+a Cytoscape graph. Similar to <code>VueCytoscape</code> - which did not provide any improvement to our current
 use case, so we are not using it.</p>
-
 <p>One trick part was how to put the contents of the Job component inside the node HTML label
-in the graph. Basically, it is necessary to mount the component, and then access its <code class="language-plaintext highlighter-rouge">$el</code>
-which is an <code class="language-plaintext highlighter-rouge">HTMLElement</code>.</p>
-
-<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">cy1</span><span class="p">.</span><span class="nx">nodeHtmlLabel</span><span class="p">([</span>
-  <span class="p">{</span>
-    <span class="na">query</span><span class="p">:</span> <span class="dl">'</span><span class="s1">node</span><span class="dl">'</span><span class="p">,</span>
-    <span class="na">tpl</span><span class="p">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">data</span><span class="p">)</span> <span class="p">{</span>
-      <span class="kd">const</span> <span class="nx">JobClass</span> <span class="o">=</span> <span class="nx">Vue</span><span class="p">.</span><span class="nx">extend</span><span class="p">(</span><span class="nx">Job</span><span class="p">)</span>
-      <span class="kd">const</span> <span class="nx">theJob</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">JobClass</span><span class="p">({</span>
-        <span class="na">propsData</span><span class="p">:</span> <span class="p">{</span>
-          <span class="na">status</span><span class="p">:</span> <span class="nx">data</span><span class="p">.</span><span class="nx">status</span>
-        <span class="p">}</span>
-      <span class="p">}).</span><span class="nx">$mount</span><span class="p">()</span>
-      <span class="k">return</span> <span class="nx">theJob</span><span class="p">.</span><span class="nx">$el</span><span class="p">.</span><span class="nx">outerHTML</span>
-    <span class="p">}</span>
-  <span class="p">}</span>
-<span class="p">])</span>
-</code></pre></div></div>
-
-<p>While it does put the SVG within the node, we don’t have reactivity.</p>
-
-<p>After going for a walk and reading some chapters of Peter F. Hamilton’s Reality Dysfunction,
+in the graph. Basically, it is necessary to mount the component, and then access its <code>$el</code>
+which is an <code>HTMLElement</code>.</p>
+<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-js data-lang=js>cy1.nodeHtmlLabel([
+  {
+    query: <span style=color:#00f>&#39;node&#39;</span>,
+    tpl: <span style=color:navy;font-weight:700>function</span> (data) {
+      <span style=color:navy;font-weight:700>const</span> JobClass = Vue.extend(Job)
+      <span style=color:navy;font-weight:700>const</span> theJob = <span style=color:navy;font-weight:700>new</span> JobClass({
+        propsData: {
+          status: data.status
+        }
+      }).$mount()
+      <span style=color:navy;font-weight:700>return</span> theJob.$el.outerHTML
+    }
+  }
+])
+</code></pre></div><p>While it does put the SVG within the node, we don&rsquo;t have reactivity.</p>
+<p>After going for a walk and reading some chapters of Peter F. Hamilton&rsquo;s Reality Dysfunction,
 it occurred to me that instead of creating a new Vuejs component in the graph, it should be possible
-to let Vuejs create and manage the component, and just “link” the node HTML label with the component.
-That’s in the <a href="https://codepen.io/kinow/pen/eYYbwXB?editors=1010">next pen</a>.</p>
-
-<p><img class="ui fluid image" src="/assets/posts/2019-11-19-experimenting-with-vuejs-and-cytoscape/graph4.png" /></p>
-
-<p>Instead of creating the instance in the node HTML label <code class="language-plaintext highlighter-rouge">tpl</code> function, we are now creating Job
-components with Vuejs, assigning them “refs”, and then just grabbing the HTML to render in the
+to let Vuejs create and manage the component, and just &ldquo;link&rdquo; the node HTML label with the component.
+That&rsquo;s in the <a href="https://codepen.io/kinow/pen/eYYbwXB?editors=1010">next pen</a>.</p>
+<figure class=feature>
+<img src=/assets/posts/2019-11-19-experimenting-with-vuejs-and-cytoscape/graph4.png alt title width height>
+<figcaption></figcaption>
+</figure>
+<p>Instead of creating the instance in the node HTML label <code>tpl</code> function, we are now creating Job
+components with Vuejs, assigning them &ldquo;refs&rdquo;, and then just grabbing the HTML to render in the
 node.</p>
-
-<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">cy1</span><span class="p">.</span><span class="nx">nodeHtmlLabel</span><span class="p">([</span>
-  <span class="p">{</span>
-    <span class="na">query</span><span class="p">:</span> <span class="dl">'</span><span class="s1">node</span><span class="dl">'</span><span class="p">,</span>
-    <span class="na">tpl</span><span class="p">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">data</span><span class="p">)</span> <span class="p">{</span>
-      <span class="kd">const</span> <span class="nx">jobForThisNode</span> <span class="o">=</span> <span class="nb">window</span><span class="p">.</span><span class="nx">vm</span><span class="p">.</span><span class="nx">$refs</span><span class="p">[</span><span class="nx">data</span><span class="p">.</span><span class="nx">id</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
-      <span class="k">if</span> <span class="p">(</span><span class="nb">Object</span><span class="p">.</span><span class="nx">hasOwnProperty</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="nx">jobForThisNode</span><span class="p">,</span> <span class="dl">'</span><span class="s1">$el</span><span class="dl">'</span><span class="p">))</span> <span class="p">{</span>
-        <span class="k">return</span> <span class="nx">jobForThisNode</span><span class="p">.</span><span class="nx">$el</span><span class="p">.</span><span class="nx">outerHTML</span>
-      <span class="p">}</span>
-      <span class="k">return</span> <span class="dl">''</span>
-    <span class="p">}</span>
-  <span class="p">}</span>
-<span class="p">])</span>
-</code></pre></div></div>
-
-<p>Slightly better. Now the <code class="language-plaintext highlighter-rouge">tpl</code> function has less responsibility, and there is a better separation
-of concerns. However, there is still the issue of the Vuejs reactivity. In <a href="https://codepen.io/kinow/pen/abbPeqj">another pen</a>
-I added a function to return a random Job status, and used it within a <code class="language-plaintext highlighter-rouge">setInterval</code> to
+<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-js data-lang=js>cy1.nodeHtmlLabel([
+  {
+    query: <span style=color:#00f>&#39;node&#39;</span>,
+    tpl: <span style=color:navy;font-weight:700>function</span> (data) {
+      <span style=color:navy;font-weight:700>const</span> jobForThisNode = window.vm.$refs[data.id][<span style=color:#00f>0</span>]
+      <span style=color:navy;font-weight:700>if</span> (Object.hasOwnProperty.call(jobForThisNode, <span style=color:#00f>&#39;$el&#39;</span>)) {
+        <span style=color:navy;font-weight:700>return</span> jobForThisNode.$el.outerHTML
+      }
+      <span style=color:navy;font-weight:700>return</span> <span style=color:#00f>&#39;&#39;</span>
+    }
+  }
+])
+</code></pre></div><p>Slightly better. Now the <code>tpl</code> function has less responsibility, and there is a better separation
+of concerns. However, there is still the issue of the Vuejs reactivity. In <a href=https://codepen.io/kinow/pen/abbPeqj>another pen</a>
+I added a function to return a random Job status, and used it within a <code>setInterval</code> to
 randomly change the job statuses every three seconds.</p>
-
-<p><img class="ui fluid image" src="/assets/posts/2019-11-19-experimenting-with-vuejs-and-cytoscape/graph5.gif" /></p>
-
-<p>That brings us to the <a href="https://codepen.io/kinow/pen/XWWOrvW">last pen</a> (whew). It looked like a good
+<figure class=feature>
+<img src=/assets/posts/2019-11-19-experimenting-with-vuejs-and-cytoscape/graph5.gif alt title width height>
+<figcaption></figcaption>
+</figure>
+<p>That brings us to the <a href=https://codepen.io/kinow/pen/XWWOrvW>last pen</a> (whew). It looked like a good
 approach to leave the component creation and lifecycle managed by Cylc, and trying to link the node
 HTML label and the component. But simply setting the HTML content of the Job component would not work.</p>
-
-<p>So instead, for node HTML template I’ve used a simple div, and for its <code class="language-plaintext highlighter-rouge">id</code> attribute used the
+<p>So instead, for node HTML template I&rsquo;ve used a simple div, and for its <code>id</code> attribute used the
 node ID (unique in a workflow, returned by the GraphQL query).</p>
-
-<p><img class="ui fluid image" src="/assets/posts/2019-11-19-experimenting-with-vuejs-and-cytoscape/graph6.gif" /></p>
-
-<p>There is a new component in this pen too, a <code class="language-plaintext highlighter-rouge">GraphNode</code>, which wraps a <code class="language-plaintext highlighter-rouge">Job</code> component, but adds
+<figure class=feature>
+<img src=/assets/posts/2019-11-19-experimenting-with-vuejs-and-cytoscape/graph6.gif alt title width height>
+<figcaption></figcaption>
+</figure>
+<p>There is a new component in this pen too, a <code>GraphNode</code>, which wraps a <code>Job</code> component, but adds
 some extra functionality, like observing when the prop changes.</p>
-
-<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">const</span> <span class="nx">GraphNode</span> <span class="o">=</span> <span class="nx">Vue</span><span class="p">.</span><span class="nx">component</span><span class="p">(</span><span class="dl">'</span><span class="s1">graph-node</span><span class="dl">'</span><span class="p">,</span> <span class="p">{</span>
-  <span class="na">name</span><span class="p">:</span> <span class="dl">'</span><span class="s1">GraphNode</span><span class="dl">'</span><span class="p">,</span>
-  <span class="na">components</span><span class="p">:</span> <span class="p">{</span>
-    <span class="na">job</span><span class="p">:</span> <span class="nx">Job</span>
-  <span class="p">},</span>
-  <span class="na">props</span><span class="p">:</span> <span class="p">{</span>
-    <span class="na">node</span><span class="p">:</span> <span class="p">{</span>
-      <span class="na">type</span><span class="p">:</span> <span class="nb">Object</span><span class="p">,</span>
-      <span class="na">required</span><span class="p">:</span> <span class="kc">true</span>
-    <span class="p">}</span>
-  <span class="p">},</span>
-  <span class="na">watch</span><span class="p">:</span> <span class="p">{</span>
-    <span class="na">node</span><span class="p">:</span> <span class="p">{</span>
-      <span class="na">immediate</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
-      <span class="na">deep</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
-      <span class="nx">handler</span> <span class="p">(</span><span class="nx">newValue</span><span class="p">,</span> <span class="nx">oldValue</span><span class="p">)</span> <span class="p">{</span>
-        <span class="kd">const</span> <span class="nx">nodeElem</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="nx">newValue</span><span class="p">.</span><span class="nx">id</span><span class="p">)</span>
-        <span class="kd">const</span> <span class="nx">vm</span> <span class="o">=</span> <span class="k">this</span>
-        <span class="k">if</span> <span class="p">(</span><span class="nx">nodeElem</span><span class="p">)</span> <span class="p">{</span>
-          <span class="nx">Vue</span><span class="p">.</span><span class="nx">nextTick</span><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
-            <span class="nx">nodeElem</span><span class="p">.</span><span class="nx">innerHTML</span> <span class="o">=</span> <span class="nx">vm</span><span class="p">.</span><span class="nx">$mount</span><span class="p">().</span><span class="nx">$el</span><span class="p">.</span><span class="nx">outerHTML</span>
-          <span class="p">})</span>
-        <span class="p">}</span>
-      <span class="p">}</span>
-    <span class="p">}</span>
-  <span class="p">},</span>
-  <span class="na">template</span><span class="p">:</span> <span class="s2">`&lt;span&gt;
-  &lt;job :status="node.state" /&gt;
-&lt;/span&gt;`</span>
-<span class="p">})</span>
-</code></pre></div></div>
-
-<p>The <code class="language-plaintext highlighter-rouge">node</code> passed is a node of the GraphQL response. With a <code class="language-plaintext highlighter-rouge">watch</code> that runs immediately upon
-the component initialization (<code class="language-plaintext highlighter-rouge">immediate: true</code>) and that reacts to changes in the object
-attributes (<code class="language-plaintext highlighter-rouge">deep: true</code>, for <code class="language-plaintext highlighter-rouge">node.state = anotherValue</code>), we get the desired behaviour.</p>
-
+<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-js data-lang=js><span style=color:navy;font-weight:700>const</span> GraphNode = Vue.component(<span style=color:#00f>&#39;graph-node&#39;</span>, {
+  name: <span style=color:#00f>&#39;GraphNode&#39;</span>,
+  components: {
+    job: Job
+  },
+  props: {
+    node: {
+      type: Object,
+      required: <span style=color:navy;font-weight:700>true</span>
+    }
+  },
+  watch: {
+    node: {
+      immediate: <span style=color:navy;font-weight:700>true</span>,
+      deep: <span style=color:navy;font-weight:700>true</span>,
+      handler (newValue, oldValue) {
+        <span style=color:navy;font-weight:700>const</span> nodeElem = document.getElementById(newValue.id)
+        <span style=color:navy;font-weight:700>const</span> vm = <span style=color:navy;font-weight:700>this</span>
+        <span style=color:navy;font-weight:700>if</span> (nodeElem) {
+          Vue.nextTick(<span style=color:navy;font-weight:700>function</span> () {
+            nodeElem.innerHTML = vm.$mount().$el.outerHTML
+          })
+        }
+      }
+    }
+  },
+  template: <span style=color:#00f>`&lt;span&gt;
+</span><span style=color:#00f>  &lt;job :status=&#34;node.state&#34; /&gt;
+</span><span style=color:#00f>&lt;/span&gt;`</span>
+})
+</code></pre></div><p>The <code>node</code> passed is a node of the GraphQL response. With a <code>watch</code> that runs immediately upon
+the component initialization (<code>immediate: true</code>) and that reacts to changes in the object
+attributes (<code>deep: true</code>, for <code>node.state = anotherValue</code>), we get the desired behaviour.</p>
 <p>The component is not perfect. It does not match our design sketch, I am not sure if there are
-no cases where Cytoscape and Vuejs would get “out of sync” with each other (probably not as
-both are using the same data, but still…), and I am not sure what the performance would look
+no cases where Cytoscape and Vuejs would get &ldquo;out of sync&rdquo; with each other (probably not as
+both are using the same data, but still&mldr;), and I am not sure what the performance would look
 like with hundreds or thousands of nodes for larger Cylc workflows.</p>
-
 <p>But this is a good example of i) using Vuejs with Cytoscape, ii) displaying SVG in Cytoscape nodes,
 and iii) updating the Cytoscape data based on Vuejs reactivity. And we will probably use some of what
 was learned here for building the new web interface for Cylc 8.</p>
-
 <p>Stay tuned!</p>
-
-  </div>
-
-  <div class="tags"><p>Tags:&nbsp;<a class="label" href="/tag/javascript">javascript</a>,&nbsp;<a class="label" href="/tag/vuejs">vuejs</a>,&nbsp;<a class="label" href="/tag/cylc">cylc</a>,&nbsp;<a class="label" href="/tag/cytoscape">cytoscape</a>,&nbsp;<a class="label" href="/tag/graph">graph</a>.<br/></p></div>
-
-  <a class="u-url" href="/2019/11/19/experimenting-with-vuejs-and-cytoscape.html" hidden></a>
+<aside class=links>
+<a class=previous href=https://kinoshita.eti.br/2019/11/09/dynamic-breadcrumbs-with-vue-router-nested-routes-and-vuetify-breadcrumb-component.html>&#171; Previous</a>
+<a class=next href=https://kinoshita.eti.br/2019/12/30/a-baby.html>Next &#187;</a>
+</aside>
 </article>
-
-  </div>
-</div>
+</main>
+<footer role=contentinfo>
+<ul id=social-media-icons>
+<li>
+<a href=https://www.instagram.com/brunokinoshita/>
+<img src=/assets/icons/instagram.png alt="Instagram link">
+</a>
+</li>
+<li>
+<a href=https://twitter.com/kinow/>
+<img src=/assets/icons/twitter.png alt="Twitter link">
+</a>
+</li>
+<li>
+<a href=https://github.com/kinow/>
+<img src=/assets/icons/github.png alt="GitHub link">
+</a>
+</li>
+</ul>
+</footer>
 </body>
 </html>

@@ -1,0 +1,137 @@
+<!doctype html><html lang=en><head>
+<meta charset=utf-8>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<link rel=stylesheet type=text/css href=https://kinoshita.eti.br/sass/main.e392e97e7e5991e363403c494b51d829efa207842d755622976c2537d0509be0.css integrity="sha256-45Lpfn5ZkeNjQDxJS1HYKe+iB4QtdVYil2wlN9BQm+A=">
+<title>kinow | ImportError when debugging cylc in Eclipse</title>
+</head>
+<body><header role=banner class=content>
+<nav id=nav aria-label=Main role=navigation class=content>
+<ul><li>
+<a href=/>
+<i data-feather=about></i> About</a>
+</li><li>
+<a href=/blog/>
+<i data-feather=blog></i> Blog</a>
+</li><li>
+<a href=/portfolio/>
+<i data-feather=portfolio></i> Portfolio</a>
+</li><li></li>
+</ul>
+</nav>
+</header>
+<main>
+<article class=content>
+<h2>ImportError when debugging cylc in Eclipse</h2><div class=metadata>
+<i data-feather=calendar></i>
+<time datetime=2018-07-10>Jul 10, 2018</time>
+</div>
+<p>Since I started reading cylc&rsquo;s source code in Eclipse to create some
+sequence diagrams, I have not been able to debug it properly without
+hitting errors in some part of the program execution.</p>
+<p>The error message was <strong>_“ImportError: cannot import name <em>remove_dead_weakref”</em></strong>,
+which was a bit enigmatic as I never heard about that function, but it seemed to be
+something internal, or at least not from the project code base. And searching the Internet
+did not help much.</p>
+<p>Here is the complete console output in Eclipse.</p>
+<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>pydev debugger: starting (pid: 15124)
+timeout <span style=color:#00f>10</span> ps -opid,args <span style=color:#00f>13640</span>  <span style=color:#080;font-style:italic># return 1</span>
+
+            ._.                                                       
+            | |            The Cylc Suite Engine [7.7.1-37-g09c8a]    
+._____._. ._| |_____.           Copyright (C) 2008-2018 NIWA          
+| .___| | | | | .___|  _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+| !___| !_! | | !___.  This program comes with ABSOLUTELY NO WARRANTY;
+!_____!___. |_!_____!  see <span style=color:#00f>`</span>cylc warranty<span style=color:#00f>`</span>.  It is free software, you 
+      .___! |           are welcome to redistribute it under certain  
+      !_____!                conditions; see <span style=color:#00f>`</span>cylc conditions<span style=color:#00f>`</span>.       
+2018-07-10T01:00:47+12 INFO - Suite starting: server=localhost:44444 pid=<span style=color:#00f>15124</span>
+2018-07-10T01:00:47+12 INFO - Cylc version: 7.7.1-37-g09c8a
+2018-07-10T01:00:47+12 INFO - Run mode: live
+2018-07-10T01:00:47+12 INFO - Initial point: <span style=color:#00f>1</span>
+2018-07-10T01:00:47+12 INFO - Final point: None
+2018-07-10T01:00:47+12 INFO - Cold Start <span style=color:#00f>1</span>
+2018-07-10T01:00:47+12 DEBUG - [hello.1] -released to the task pool
+2018-07-10T01:00:47+12 DEBUG - BEGIN TASK PROCESSING
+2018-07-10T01:00:47+12 DEBUG - [hello.1] -waiting =&gt; queued
+2018-07-10T01:00:47+12 DEBUG - <span style=color:#00f>1</span> task(s) de-queued
+2018-07-10T01:00:47+12 INFO - [hello.1] -submit-num=1, owner@host=localhost
+2018-07-10T01:00:47+12 DEBUG - [hello.1] -queued =&gt; ready
+2018-07-10T01:00:47+12 DEBUG - END TASK PROCESSING (took 0.023609161377 seconds)
+2018-07-10T01:00:48+12 DEBUG - [<span style=color:#00f>&#39;cylc&#39;</span>, <span style=color:#00f>&#39;jobs-submit&#39;</span>, <span style=color:#00f>&#39;--debug&#39;</span>, <span style=color:#00f>&#39;--&#39;</span>, <span style=color:#00f>&#39;/home/kinow/Development/python/workspace/example-suite/log/job&#39;</span>, <span style=color:#00f>&#39;1/hello/01&#39;</span>]
+2018-07-10T01:00:48+12 ERROR - [jobs-submit cmd] cylc jobs-submit --debug -- /home/kinow/Development/python/workspace/example-suite/log/job 1/hello/01
+	[jobs-submit ret_code] <span style=color:#00f>1</span>
+	[jobs-submit err]
+	Traceback (most recent call last):
+	  File <span style=color:#00f>&#34;/home/kinow/Development/python/workspace/cylc/bin/cylc-jobs-submit&#34;</span>, line 52, in &lt;module&gt;
+	    from cylc.batch_sys_manager import BatchSysManager
+	  File <span style=color:#00f>&#34;/home/kinow/Development/python/workspace/cylc/lib/cylc/batch_sys_manager.py&#34;</span>, line 114, in &lt;module&gt;
+	    from cylc.task_message import (
+	  File <span style=color:#00f>&#34;/home/kinow/Development/python/workspace/cylc/lib/cylc/task_message.py&#34;</span>, line 26, in &lt;module&gt;
+	    from logging import getLevelName, WARNING, ERROR, CRITICAL
+	  File <span style=color:#00f>&#34;/home/kinow/Development/python/anaconda2/lib/python2.7/logging/__init__.py&#34;</span>, line 26, in &lt;module&gt;
+	    import sys, os, time, cStringIO, traceback, warnings, weakref, collections
+	  File <span style=color:#00f>&#34;/home/kinow/Development/python/anaconda2/lib/python2.7/weakref.py&#34;</span>, line 14, in &lt;module&gt;
+	    from _weakref import (
+	ImportError: cannot import name _remove_dead_weakref
+2018-07-10T01:00:48+12 ERROR - [jobs-submit cmd] cylc jobs-submit --debug -- /home/kinow/Development/python/workspace/example-suite/log/job 1/hello/01
+	[jobs-submit ret_code] <span style=color:#00f>1</span>
+	[jobs-submit out] 2018-07-10T01:00:48+12|1/hello/01|<span style=color:#00f>1</span>
+2018-07-10T01:00:48+12 INFO - [hello.1] -(current:ready) submission failed at 2018-07-10T01:00:48+12
+2018-07-10T01:00:48+12 ERROR - [hello.1] -submission failed
+2018-07-10T01:00:48+12 DEBUG - [hello.1] -ready =&gt; submit-failed
+2018-07-10T01:00:48+12 DEBUG - BEGIN TASK PROCESSING
+2018-07-10T01:00:48+12 DEBUG - <span style=color:#00f>0</span> task(s) de-queued
+2018-07-10T01:00:48+12 DEBUG - END TASK PROCESSING (took 0.00175499916077 seconds)
+2018-07-10T01:00:49+12 WARNING - suite stalled
+</code></pre></div><p>As the current diagram I am working on has quite a few <code>if</code>&rsquo;s and <code>else</code>&rsquo;s, I decided
+to investigate why this error was occurring. Then, after some elimination I found that
+it was due to the missing Anaconda 2 entry in my <code>$PATH</code> environment variable.</p>
+<p>I had this variable configured in a custom script I load whenever I decide to use
+Anaconda 2. And reproducing the same behaviour in Eclipse was easy.</p>
+<p style=text-align:center>
+<figure class=feature>
+<img src=/assets/posts/2018-07-10-import-error-when-debugging-cylc-in-eclipse/screenshot1.png alt="A screen shot of Eclipse with source code" title="A screen shot of Eclipse with source code" style=display:inline width height>
+<figcaption>A screen shot of Eclipse with source code</figcaption>
+</figure>
+<br>
+<small>Locating the bug</small>
+</p>
+<p>Et voilà! Eclipse was happily debugging again!</p>
+<p style=text-align:center>
+<figure class=feature>
+<img src=/assets/posts/2018-07-10-import-error-when-debugging-cylc-in-eclipse/screenshot2.png alt="A screen shot of Eclipse with source code" title="A screen shot of Eclipse with source code" style=display:inline width height>
+<figcaption>A screen shot of Eclipse with source code</figcaption>
+</figure>
+<br>
+<small>Locating the bug</small>
+</p>
+<p>So if you have a similar problem, try comparing your environment variables and check if you
+have some entries missing, and try adding them in Eclipse Debug configuration.</p>
+<p>Happy cycling!</p>
+<aside class=links>
+<a class=previous href=https://kinoshita.eti.br/2018/07/08/a-simple-cylc-suite.html>&#171; Previous</a>
+<a class=next href=https://kinoshita.eti.br/2018/07/14/cylc-scheduler-internals-part-1.html>Next &#187;</a>
+</aside>
+</article>
+</main>
+<footer role=contentinfo>
+<ul id=social-media-icons>
+<li>
+<a href=https://www.instagram.com/brunokinoshita/>
+<img src=/assets/icons/instagram.png alt="Instagram link">
+</a>
+</li>
+<li>
+<a href=https://twitter.com/kinow/>
+<img src=/assets/icons/twitter.png alt="Twitter link">
+</a>
+</li>
+<li>
+<a href=https://github.com/kinow/>
+<img src=/assets/icons/github.png alt="GitHub link">
+</a>
+</li>
+</ul>
+</footer>
+</body>
+</html>

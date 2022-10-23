@@ -1,181 +1,95 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="utf-8" />
-<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-<meta name="viewport" content="width=device-width, initial-scale=1" /><!-- Begin Jekyll SEO tag v2.7.1 -->
-<title>Using AWS MFA without a mobile phone | kinow</title>
-<meta name="generator" content="Jekyll v3.9.0" />
-<meta property="og:title" content="Using AWS MFA without a mobile phone" />
-<meta property="og:locale" content="en_US" />
-<meta name="description" content="If you use AWS, the chances are that you use MFA - Multi-factor Authentication - to authenticate. I don’t like to install apps in my mobile phone, unless I need to, so having bought a new phone recently, I decided to find a replacement for Google Authenticator. There are several command line utilities, browser extensions, libraries, and tools (free and paid) that implement the TOTP - time-based one-time password -, the standard required by Amazon for MFA authentication. I decided to use a Go tool for the first time: gauth. Note that you won’t be able to use it from home, in case you don’t bring your laptop home. You can have one MFA device linked to your AWS account, so you may have to remove an existing one. Follow these instructions with care :^) Install Go sudo apt update &amp;&amp; sudo apt upgrade -y cd tmp/ &amp;&amp; wget https://storage.googleapis.com/golang/go1.8.linux-amd64.tar.gz tar -zxvf go1.*.tar.gz sudo mv go /usr/local vim ~/.bashrc Add the following at the bottom of the file. GOROOT=/usr/local/go GOPATH=&quot;$HOME/go&quot; PATH=&quot;$GOPATH/bin:$GOROOT/bin:$PATH&quot; And you can test it with . ~/.bashrc &amp;&amp; go version. Install gauth Given your environment is correctly set up, you should be able to use the following command to install gauth, and have it available in your $PATH. go get github.com/pcarrier/gauth Edit ~/.config/gauth.csv adding a value for the AWS MFA key. Getting the AWS MFA key To get the value that you must place in your gauth.csv file, you must add a new MFA device. When asked to scan a QR code, look for an option to enter the manual value. That will give you a long string. That’s the value you are looking for. Extra: Auto copy-paste from command line If you would like to quickly copy and paste, try creating an alias as described on this gist. I used these instructions, and can now run one command line, that will put the next MFA code in my clipboard. Then just paste into my browser, and that’s that! Happy hacking! References gauth: replace Google Authenticator Enabling a Virtual Multi-factor Authentication (MFA) Device How to Install Go 1.7 on Ubuntu 16.04 &amp; 14.04 Use pbcopy on Ubuntu" />
-<meta property="og:description" content="If you use AWS, the chances are that you use MFA - Multi-factor Authentication - to authenticate. I don’t like to install apps in my mobile phone, unless I need to, so having bought a new phone recently, I decided to find a replacement for Google Authenticator. There are several command line utilities, browser extensions, libraries, and tools (free and paid) that implement the TOTP - time-based one-time password -, the standard required by Amazon for MFA authentication. I decided to use a Go tool for the first time: gauth. Note that you won’t be able to use it from home, in case you don’t bring your laptop home. You can have one MFA device linked to your AWS account, so you may have to remove an existing one. Follow these instructions with care :^) Install Go sudo apt update &amp;&amp; sudo apt upgrade -y cd tmp/ &amp;&amp; wget https://storage.googleapis.com/golang/go1.8.linux-amd64.tar.gz tar -zxvf go1.*.tar.gz sudo mv go /usr/local vim ~/.bashrc Add the following at the bottom of the file. GOROOT=/usr/local/go GOPATH=&quot;$HOME/go&quot; PATH=&quot;$GOPATH/bin:$GOROOT/bin:$PATH&quot; And you can test it with . ~/.bashrc &amp;&amp; go version. Install gauth Given your environment is correctly set up, you should be able to use the following command to install gauth, and have it available in your $PATH. go get github.com/pcarrier/gauth Edit ~/.config/gauth.csv adding a value for the AWS MFA key. Getting the AWS MFA key To get the value that you must place in your gauth.csv file, you must add a new MFA device. When asked to scan a QR code, look for an option to enter the manual value. That will give you a long string. That’s the value you are looking for. Extra: Auto copy-paste from command line If you would like to quickly copy and paste, try creating an alias as described on this gist. I used these instructions, and can now run one command line, that will put the next MFA code in my clipboard. Then just paste into my browser, and that’s that! Happy hacking! References gauth: replace Google Authenticator Enabling a Virtual Multi-factor Authentication (MFA) Device How to Install Go 1.7 on Ubuntu 16.04 &amp; 14.04 Use pbcopy on Ubuntu" />
-<link rel="canonical" href="https://kinoshita.eti.br/2017/02/28/using-aws-mfa-without-a-mobile-phone.html" />
-<meta property="og:url" content="https://kinoshita.eti.br/2017/02/28/using-aws-mfa-without-a-mobile-phone.html" />
-<meta property="og:site_name" content="kinow" />
-<meta property="og:type" content="article" />
-<meta property="article:published_time" content="2017-02-28T00:00:00+13:00" />
-<meta name="twitter:card" content="summary" />
-<meta property="twitter:title" content="Using AWS MFA without a mobile phone" />
-<script type="application/ld+json">
-{"description":"If you use AWS, the chances are that you use MFA - Multi-factor Authentication - to authenticate. I don’t like to install apps in my mobile phone, unless I need to, so having bought a new phone recently, I decided to find a replacement for Google Authenticator. There are several command line utilities, browser extensions, libraries, and tools (free and paid) that implement the TOTP - time-based one-time password -, the standard required by Amazon for MFA authentication. I decided to use a Go tool for the first time: gauth. Note that you won’t be able to use it from home, in case you don’t bring your laptop home. You can have one MFA device linked to your AWS account, so you may have to remove an existing one. Follow these instructions with care :^) Install Go sudo apt update &amp;&amp; sudo apt upgrade -y cd tmp/ &amp;&amp; wget https://storage.googleapis.com/golang/go1.8.linux-amd64.tar.gz tar -zxvf go1.*.tar.gz sudo mv go /usr/local vim ~/.bashrc Add the following at the bottom of the file. GOROOT=/usr/local/go GOPATH=&quot;$HOME/go&quot; PATH=&quot;$GOPATH/bin:$GOROOT/bin:$PATH&quot; And you can test it with . ~/.bashrc &amp;&amp; go version. Install gauth Given your environment is correctly set up, you should be able to use the following command to install gauth, and have it available in your $PATH. go get github.com/pcarrier/gauth Edit ~/.config/gauth.csv adding a value for the AWS MFA key. Getting the AWS MFA key To get the value that you must place in your gauth.csv file, you must add a new MFA device. When asked to scan a QR code, look for an option to enter the manual value. That will give you a long string. That’s the value you are looking for. Extra: Auto copy-paste from command line If you would like to quickly copy and paste, try creating an alias as described on this gist. I used these instructions, and can now run one command line, that will put the next MFA code in my clipboard. Then just paste into my browser, and that’s that! Happy hacking! References gauth: replace Google Authenticator Enabling a Virtual Multi-factor Authentication (MFA) Device How to Install Go 1.7 on Ubuntu 16.04 &amp; 14.04 Use pbcopy on Ubuntu","@type":"BlogPosting","url":"https://kinoshita.eti.br/2017/02/28/using-aws-mfa-without-a-mobile-phone.html","headline":"Using AWS MFA without a mobile phone","datePublished":"2017-02-28T00:00:00+13:00","dateModified":"2017-02-28T00:00:00+13:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://kinoshita.eti.br/2017/02/28/using-aws-mfa-without-a-mobile-phone.html"},"@context":"https://schema.org"}</script>
-<!-- End Jekyll SEO tag -->
-<link rel="stylesheet" href="/assets/css/main.css" /><link type="application/atom+xml" rel="alternate" href="https://kinoshita.eti.br/feed.xml" title="kinow" /><link href="https://unpkg.com/pattern.css" rel="stylesheet" />
-
+<!doctype html><html lang=en><head>
+<meta charset=utf-8>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<link rel=stylesheet type=text/css href=https://kinoshita.eti.br/sass/main.e392e97e7e5991e363403c494b51d829efa207842d755622976c2537d0509be0.css integrity="sha256-45Lpfn5ZkeNjQDxJS1HYKe+iB4QtdVYil2wlN9BQm+A=">
+<title>kinow | Using AWS MFA without a mobile phone</title>
 </head>
-<body>
-<div id="mobile-menu"><div class="menu">
-  <ul class="menu">
-    <li class="item">
-      <h1 id="kinow">KINOW</h1>
-    </li>
-    <li class="item">
-      <a href="/" class="">About</a>
-    </li>
-    <li class="item">
-      <a href="/blog/" class="current">Blog</a>
-    </li>
-    <li class="item">
-      <a href="/portfolio/" class="">Portfolio</a>
-    </li>
-    <li class="item social-media-item">
-      <a href="https://www.instagram.com/brunokinoshita/" class="inline-link">
-        <img src="/assets/icons/instagram.png" class="inverted-image"  alt="Instagram link" />
-      </a>
-      <a href="https://twitter.com/kinow/" class="inline-link">
-        <img src="/assets/icons/twitter.png" class="inverted-image" alt="Twitter link" />
-      </a>
-      <a href="https://github.com/kinow/" class="inline-link">
-        <img src="/assets/icons/github.png" class="inverted-image" alt="GitHub link" />
-      </a>
-    </li>
-  </ul>
-</div>
-</div>
-<div id="wrapper">
-  <div id="sidebar"><div class="menu">
-  <ul class="menu">
-    <li class="item">
-      <h1 id="kinow">KINOW</h1>
-    </li>
-    <li class="item">
-      <a href="/" class="">About</a>
-    </li>
-    <li class="item">
-      <a href="/blog/" class="current">Blog</a>
-    </li>
-    <li class="item">
-      <a href="/portfolio/" class="">Portfolio</a>
-    </li>
-    <li class="item social-media-item">
-      <a href="https://www.instagram.com/brunokinoshita/" class="inline-link">
-        <img src="/assets/icons/instagram.png" class="inverted-image"  alt="Instagram link" />
-      </a>
-      <a href="https://twitter.com/kinow/" class="inline-link">
-        <img src="/assets/icons/twitter.png" class="inverted-image" alt="Twitter link" />
-      </a>
-      <a href="https://github.com/kinow/" class="inline-link">
-        <img src="/assets/icons/github.png" class="inverted-image" alt="GitHub link" />
-      </a>
-    </li>
-  </ul>
-</div>
-</div>
-  <div id="content">
-    <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
-  <header class="post-header">
-    <h1 class="post-title p-name" itemprop="name headline">Using AWS MFA without a mobile phone</h1>
-    <span class="post-meta">
-      <time class="dt-published" datetime="2017-02-28T00:00:00+13:00" itemprop="datePublished">Feb 28, 2017
-      </time>
-      <span>&mdash; star date: -305764.38.</span>
-      <span>
-        Number of words: 416.
-      </span></span>
-  </header>
-
-  <ul>
-  <li><a href="#install-go">Install Go</a></li>
-  <li><a href="#install-gauth">Install gauth</a></li>
-  <li><a href="#getting-the-aws-mfa-key">Getting the AWS MFA key</a></li>
-  <li><a href="#extra-auto-copy-paste-from-command-line">Extra: Auto copy-paste from command line</a></li>
-  <li><a href="#references">References</a></li>
+<body><header role=banner class=content>
+<nav id=nav aria-label=Main role=navigation class=content>
+<ul><li>
+<a href=/>
+<i data-feather=about></i> About</a>
+</li><li>
+<a href=/blog/>
+<i data-feather=blog></i> Blog</a>
+</li><li>
+<a href=/portfolio/>
+<i data-feather=portfolio></i> Portfolio</a>
+</li><li></li>
 </ul>
-
-
-  <div class="post-content e-content" itemprop="articleBody">
-    <p>If you use AWS, the chances are that you use MFA - Multi-factor Authentication - to authenticate.
-I don’t like to install apps in my mobile phone, unless I need to, so having bought a new phone
+</nav>
+</header>
+<main>
+<article class=content>
+<h2>Using AWS MFA without a mobile phone</h2><div class=metadata>
+<i data-feather=calendar></i>
+<time datetime=2017-02-28>Feb 28, 2017</time>
+</div>
+<p>If you use AWS, the chances are that you use MFA - Multi-factor Authentication - to authenticate.
+I don&rsquo;t like to install apps in my mobile phone, unless I need to, so having bought a new phone
 recently, I decided to find a replacement for Google Authenticator.</p>
-
 <p>There are several command line utilities, browser extensions, libraries, and tools (free and paid)
 that implement the TOTP - time-based one-time password -, the standard
-<a href="http://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_mfa_enable_virtual.html">required by Amazon</a>
+<a href=http://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_mfa_enable_virtual.html>required by Amazon</a>
 for MFA authentication.</p>
-
-<p>I decided to use a Go tool for the first time: <a href="https://github.com/pcarrier/gauth">gauth</a>. Note that you
-won’t be able to use it from home, in case you don’t bring your laptop home. You can have one MFA device
+<p>I decided to use a Go tool for the first time: <a href=https://github.com/pcarrier/gauth>gauth</a>. Note that you
+won&rsquo;t be able to use it from home, in case you don&rsquo;t bring your laptop home. You can have one MFA device
 linked to your AWS account, so you may have to remove an existing one. Follow these instructions with care :^)</p>
-
-<h3 id="install-go">Install Go</h3>
-
-<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>apt update <span class="o">&amp;&amp;</span> <span class="nb">sudo </span>apt upgrade <span class="nt">-y</span>
-<span class="nb">cd </span>tmp/ <span class="o">&amp;&amp;</span> wget https://storage.googleapis.com/golang/go1.8.linux-amd64.tar.gz
-<span class="nb">tar</span> <span class="nt">-zxvf</span> go1.<span class="k">*</span>.tar.gz
-<span class="nb">sudo mv </span>go /usr/local
+<h3 id=install-go>Install Go</h3>
+<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>sudo apt update &amp;&amp; sudo apt upgrade -y
+cd tmp/ &amp;&amp; wget https://storage.googleapis.com/golang/go1.8.linux-amd64.tar.gz
+tar -zxvf go1.*.tar.gz
+sudo mv go /usr/local
 vim ~/.bashrc
-</code></pre></div></div>
-
-<p>Add the following at the bottom of the file.</p>
-
-<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">GOROOT</span><span class="o">=</span>/usr/local/go
-<span class="nv">GOPATH</span><span class="o">=</span><span class="s2">"</span><span class="nv">$HOME</span><span class="s2">/go"</span>
-<span class="nv">PATH</span><span class="o">=</span><span class="s2">"</span><span class="nv">$GOPATH</span><span class="s2">/bin:</span><span class="nv">$GOROOT</span><span class="s2">/bin:</span><span class="nv">$PATH</span><span class="s2">"</span>
-</code></pre></div></div>
-
-<p>And you can test it with <code class="language-plaintext highlighter-rouge">. ~/.bashrc &amp;&amp; go version</code>.</p>
-
-<h3 id="install-gauth">Install gauth</h3>
-
+</code></pre></div><p>Add the following at the bottom of the file.</p>
+<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>GOROOT=/usr/local/go
+GOPATH=<span style=color:#00f>&#34;</span>$HOME<span style=color:#00f>/go&#34;</span>
+PATH=<span style=color:#00f>&#34;</span>$GOPATH<span style=color:#00f>/bin:</span>$GOROOT<span style=color:#00f>/bin:</span>$PATH<span style=color:#00f>&#34;</span>
+</code></pre></div><p>And you can test it with <code>. ~/.bashrc && go version</code>.</p>
+<h3 id=install-gauth>Install gauth</h3>
 <p>Given your environment is correctly set up, you should be able to use the following command to install
 gauth, and have it available in your <em>$PATH</em>.</p>
-
-<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>go get github.com/pcarrier/gauth
-</code></pre></div></div>
-
-<p>Edit <em>~/.config/gauth.csv</em> adding a value for the AWS MFA key.</p>
-
-<h3 id="getting-the-aws-mfa-key">Getting the AWS MFA key</h3>
-
-<p>To get the value that you must place in your <em>gauth.csv</em> file, you must add a new MFA device. When asked to scan a QR code, look for an option to enter the manual value. That will give you a long string. That’s the value you are looking for.</p>
-
-<h3 id="extra-auto-copy-paste-from-command-line">Extra: Auto copy-paste from command line</h3>
-
+<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>go get github.com/pcarrier/gauth
+</code></pre></div><p>Edit <em>~/.config/gauth.csv</em> adding a value for the AWS MFA key.</p>
+<h3 id=getting-the-aws-mfa-key>Getting the AWS MFA key</h3>
+<p>To get the value that you must place in your <em>gauth.csv</em> file, you must add a new MFA device. When asked to scan a QR code, look for an option to enter the manual value. That will give you a long string. That&rsquo;s the value you are looking for.</p>
+<h3 id=extra-auto-copy-paste-from-command-line>Extra: Auto copy-paste from command line</h3>
 <p>If you would like to quickly copy and paste, try creating an alias as described
-<a href="https://gist.github.com/ehime/9fd8810442daf64686a34f885e18be01">on this gist</a>.</p>
-
+<a href=https://gist.github.com/ehime/9fd8810442daf64686a34f885e18be01>on this gist</a>.</p>
 <p>I used these instructions, and can now run one command line, that will put the next MFA code in my
-clipboard. Then just paste into my browser, and that’s that!</p>
-
+clipboard. Then just paste into my browser, and that&rsquo;s that!</p>
 <p>Happy hacking!</p>
-
-<h3 id="references">References</h3>
-
+<h3 id=references>References</h3>
 <ul>
-  <li><a href="https://github.com/pcarrier/gauth">gauth: replace Google Authenticator</a></li>
-  <li><a href="http://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_mfa_enable_virtual.html">Enabling a Virtual Multi-factor Authentication (MFA) Device</a></li>
-  <li><a href="http://tecadmin.net/install-go-on-ubuntu/">How to Install Go 1.7 on Ubuntu 16.04 &amp; 14.04</a></li>
-  <li><a href="http://garywoodfine.com/use-pbcopy-on-ubuntu/">Use pbcopy on Ubuntu</a></li>
+<li><a href=https://github.com/pcarrier/gauth>gauth: replace Google Authenticator</a></li>
+<li><a href=http://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_mfa_enable_virtual.html>Enabling a Virtual Multi-factor Authentication (MFA) Device</a></li>
+<li><a href=http://tecadmin.net/install-go-on-ubuntu/>How to Install Go 1.7 on Ubuntu 16.04 & 14.04</a></li>
+<li><a href=http://garywoodfine.com/use-pbcopy-on-ubuntu/>Use pbcopy on Ubuntu</a></li>
 </ul>
-
-  </div>
-
-  <div class="tags"><p>Tags:&nbsp;<a class="label" href="/tag/go">go</a>,&nbsp;<a class="label" href="/tag/aws">aws</a>,&nbsp;<a class="label" href="/tag/security">security</a>.<br/></p></div>
-
-  <a class="u-url" href="/2017/02/28/using-aws-mfa-without-a-mobile-phone.html" hidden></a>
+<aside class=links>
+<a class=previous href=https://kinoshita.eti.br/2017/01/15/proposed-logos-for-opennlp.html>&#171; Previous</a>
+<a class=next href=https://kinoshita.eti.br/2017/03/14/order-of-containers-in-docker-compose.html>Next &#187;</a>
+</aside>
 </article>
-
-  </div>
-</div>
+</main>
+<footer role=contentinfo>
+<ul id=social-media-icons>
+<li>
+<a href=https://www.instagram.com/brunokinoshita/>
+<img src=/assets/icons/instagram.png alt="Instagram link">
+</a>
+</li>
+<li>
+<a href=https://twitter.com/kinow/>
+<img src=/assets/icons/twitter.png alt="Twitter link">
+</a>
+</li>
+<li>
+<a href=https://github.com/kinow/>
+<img src=/assets/icons/github.png alt="GitHub link">
+</a>
+</li>
+</ul>
+</footer>
 </body>
 </html>

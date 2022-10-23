@@ -1,152 +1,83 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="utf-8" />
-<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-<meta name="viewport" content="width=device-width, initial-scale=1" /><!-- Begin Jekyll SEO tag v2.7.1 -->
-<title>Notes on Apache Jena StreamRDFWriter | kinow</title>
-<meta name="generator" content="Jekyll v3.9.0" />
-<meta property="og:title" content="Notes on Apache Jena StreamRDFWriter" />
-<meta property="og:locale" content="en_US" />
-<meta name="description" content="Apache Jena project is like a box full of interesting things—at least if you love programming. One of its many features, is stream processing. The graphs in Jena may contain very large datasets, with giga- or terabytes. Some queries may be very large, and then sending the whole result would be simply impracticable. Instead, the data will go through ARQ. ARQ is a query engine for Jena that supports SPARQL. There is one piece of code there that I found interesting while reviewing a small pull request: org.apache.jena.riot.system.StreamRDFWriter. It is responsible for writing graph data in a streaming fashion. (See stream processing for programming models and more.) Stream factories StreamRDFWriter holds several implementations (as static members) of StreamRDFWriterFactory. The factory has one responsibility only, to create streams (StreamRDF), for a certain format and context." />
-<meta property="og:description" content="Apache Jena project is like a box full of interesting things—at least if you love programming. One of its many features, is stream processing. The graphs in Jena may contain very large datasets, with giga- or terabytes. Some queries may be very large, and then sending the whole result would be simply impracticable. Instead, the data will go through ARQ. ARQ is a query engine for Jena that supports SPARQL. There is one piece of code there that I found interesting while reviewing a small pull request: org.apache.jena.riot.system.StreamRDFWriter. It is responsible for writing graph data in a streaming fashion. (See stream processing for programming models and more.) Stream factories StreamRDFWriter holds several implementations (as static members) of StreamRDFWriterFactory. The factory has one responsibility only, to create streams (StreamRDF), for a certain format and context." />
-<link rel="canonical" href="https://kinoshita.eti.br/2020/04/11/notes-on-apache-jena-streamrdfwriter.html" />
-<meta property="og:url" content="https://kinoshita.eti.br/2020/04/11/notes-on-apache-jena-streamrdfwriter.html" />
-<meta property="og:site_name" content="kinow" />
-<meta property="og:type" content="article" />
-<meta property="article:published_time" content="2020-04-11T00:00:00+12:00" />
-<meta name="twitter:card" content="summary" />
-<meta property="twitter:title" content="Notes on Apache Jena StreamRDFWriter" />
-<script type="application/ld+json">
-{"description":"Apache Jena project is like a box full of interesting things—at least if you love programming. One of its many features, is stream processing. The graphs in Jena may contain very large datasets, with giga- or terabytes. Some queries may be very large, and then sending the whole result would be simply impracticable. Instead, the data will go through ARQ. ARQ is a query engine for Jena that supports SPARQL. There is one piece of code there that I found interesting while reviewing a small pull request: org.apache.jena.riot.system.StreamRDFWriter. It is responsible for writing graph data in a streaming fashion. (See stream processing for programming models and more.) Stream factories StreamRDFWriter holds several implementations (as static members) of StreamRDFWriterFactory. The factory has one responsibility only, to create streams (StreamRDF), for a certain format and context.","@type":"BlogPosting","url":"https://kinoshita.eti.br/2020/04/11/notes-on-apache-jena-streamrdfwriter.html","headline":"Notes on Apache Jena StreamRDFWriter","datePublished":"2020-04-11T00:00:00+12:00","dateModified":"2020-04-11T00:00:00+12:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://kinoshita.eti.br/2020/04/11/notes-on-apache-jena-streamrdfwriter.html"},"@context":"https://schema.org"}</script>
-<!-- End Jekyll SEO tag -->
-<link rel="stylesheet" href="/assets/css/main.css" /><link type="application/atom+xml" rel="alternate" href="https://kinoshita.eti.br/feed.xml" title="kinow" /><link href="https://unpkg.com/pattern.css" rel="stylesheet" />
-
+<!doctype html><html lang=en><head>
+<meta charset=utf-8>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<link rel=stylesheet type=text/css href=https://kinoshita.eti.br/sass/main.e392e97e7e5991e363403c494b51d829efa207842d755622976c2537d0509be0.css integrity="sha256-45Lpfn5ZkeNjQDxJS1HYKe+iB4QtdVYil2wlN9BQm+A=">
+<title>kinow | Notes on Apache Jena StreamRDFWriter</title>
 </head>
-<body>
-<div id="mobile-menu"><div class="menu">
-  <ul class="menu">
-    <li class="item">
-      <h1 id="kinow">KINOW</h1>
-    </li>
-    <li class="item">
-      <a href="/" class="">About</a>
-    </li>
-    <li class="item">
-      <a href="/blog/" class="current">Blog</a>
-    </li>
-    <li class="item">
-      <a href="/portfolio/" class="">Portfolio</a>
-    </li>
-    <li class="item social-media-item">
-      <a href="https://www.instagram.com/brunokinoshita/" class="inline-link">
-        <img src="/assets/icons/instagram.png" class="inverted-image"  alt="Instagram link" />
-      </a>
-      <a href="https://twitter.com/kinow/" class="inline-link">
-        <img src="/assets/icons/twitter.png" class="inverted-image" alt="Twitter link" />
-      </a>
-      <a href="https://github.com/kinow/" class="inline-link">
-        <img src="/assets/icons/github.png" class="inverted-image" alt="GitHub link" />
-      </a>
-    </li>
-  </ul>
-</div>
-</div>
-<div id="wrapper">
-  <div id="sidebar"><div class="menu">
-  <ul class="menu">
-    <li class="item">
-      <h1 id="kinow">KINOW</h1>
-    </li>
-    <li class="item">
-      <a href="/" class="">About</a>
-    </li>
-    <li class="item">
-      <a href="/blog/" class="current">Blog</a>
-    </li>
-    <li class="item">
-      <a href="/portfolio/" class="">Portfolio</a>
-    </li>
-    <li class="item social-media-item">
-      <a href="https://www.instagram.com/brunokinoshita/" class="inline-link">
-        <img src="/assets/icons/instagram.png" class="inverted-image"  alt="Instagram link" />
-      </a>
-      <a href="https://twitter.com/kinow/" class="inline-link">
-        <img src="/assets/icons/twitter.png" class="inverted-image" alt="Twitter link" />
-      </a>
-      <a href="https://github.com/kinow/" class="inline-link">
-        <img src="/assets/icons/github.png" class="inverted-image" alt="GitHub link" />
-      </a>
-    </li>
-  </ul>
-</div>
-</div>
-  <div id="content">
-    <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
-  <header class="post-header">
-    <h1 class="post-title p-name" itemprop="name headline">Notes on Apache Jena StreamRDFWriter</h1><div class="note"><p>Notes taken while reading a piece of Apache Jena’s source code.</p>
-</div>
-    <span class="post-meta">
-      <time class="dt-published" datetime="2020-04-11T00:00:00+12:00" itemprop="datePublished">Apr 11, 2020
-      </time>
-      <span>&mdash; star date: -302642.08.</span>
-      <span>
-        Number of words: 292.
-      </span></span>
-  </header>
-
-  <ul>
-  <li><a href="#stream-factories">Stream factories</a></li>
-  <li><a href="#streams-writer-registry">Streams writer registry</a></li>
-  <li><a href="#writing-data-to-streams">Writing data to streams</a></li>
+<body><header role=banner class=content>
+<nav id=nav aria-label=Main role=navigation class=content>
+<ul><li>
+<a href=/>
+<i data-feather=about></i> About</a>
+</li><li>
+<a href=/blog/>
+<i data-feather=blog></i> Blog</a>
+</li><li>
+<a href=/portfolio/>
+<i data-feather=portfolio></i> Portfolio</a>
+</li><li></li>
 </ul>
-
-
-  <div class="post-content e-content" itemprop="articleBody">
-    <p><a href="https://jena.apache.org/">Apache Jena</a> project is like a box full of interesting things—at least if you love programming. One of its many features, is <strong>stream processing</strong>.</p>
-
-<p>The graphs in Jena may contain very large datasets, with giga- or terabytes. Some queries may be very large, and then sending the whole result would be simply impracticable.</p>
-
-<p>Instead, the data will go through ARQ. ARQ is a query engine for Jena that supports SPARQL. There is one piece of code there that I found interesting while reviewing a small pull request: <a href="https://github.com/apache/jena/blob/cbdba5edb47041a4181a00bd7660e5d4c212530a/jena-arq/src/main/java/org/apache/jena/riot/system/StreamRDFWriter.java"><code class="language-plaintext highlighter-rouge">org.apache.jena.riot.system.StreamRDFWriter</code></a>.</p>
-
-<p>It is responsible for writing graph data in a streaming fashion. (See <a href="https://en.wikipedia.org/wiki/Stream_processing">stream processing</a> for programming models and more.)</p>
-
-<h2 id="stream-factories">Stream factories</h2>
-
-<p><code class="language-plaintext highlighter-rouge">StreamRDFWriter</code> holds several implementations (as <code class="language-plaintext highlighter-rouge">static</code> members) of <code class="language-plaintext highlighter-rouge">StreamRDFWriterFactory</code>. The factory has one responsibility only, to create streams (<code class="language-plaintext highlighter-rouge">StreamRDF</code>), for a certain format and context.</p>
-
-<p><img class="fluid" src="/assets/posts/2020-04-11-notes-on-apache-jena-streamrdfwriter/01.png" /></p>
-
-<!--more-->
-
-<h2 id="streams-writer-registry">Streams writer registry</h2>
-
-<p>All these factories and streams, the writer also needs a <code class="language-plaintext highlighter-rouge">registry</code>. It is used to access the writers required for streams using certain languages.</p>
-
-<p>So if you have your graph dataset, and need to retrieve triples as thrift, you will interrogate the registry asking for a factory of that language (Turtle, N-Triples, RDF-Thrift, etc) or format (Flat Turtle, N-Quads, N-Triples-ASCII, RDF-Thrift, etc).</p>
-
-<p><img class="fluid" src="/assets/posts/2020-04-11-notes-on-apache-jena-streamrdfwriter/02.png" /></p>
-
-<h2 id="writing-data-to-streams">Writing data to streams</h2>
-
-<p>Each writer has one responsibility too—I really like the design of certain modules in Jena.</p>
-
-<p><img class="fluid" src="/assets/posts/2020-04-11-notes-on-apache-jena-streamrdfwriter/03.png" /></p>
-
-<p>The action, however, happens somewhere else. In the <code class="language-plaintext highlighter-rouge">StreamRDFOps</code> and in the <code class="language-plaintext highlighter-rouge">Iterator</code> implementations is where the stream processing really takes place.</p>
-
-<p><img class="fluid" src="/assets/posts/2020-04-11-notes-on-apache-jena-streamrdfwriter/04.png" /></p>
-
-<p>But this goes beyond the <code class="language-plaintext highlighter-rouge">StreamRDFWriter</code>. So that’s all for today.</p>
-
-  </div>
-
-  <div class="tags"><p>Tags:&nbsp;<a class="label" href="/tag/apache software foundation">apache software foundation</a>,&nbsp;<a class="label" href="/tag/apache jena">apache jena</a>,&nbsp;<a class="label" href="/tag/stream processing">stream processing</a>,&nbsp;<a class="label" href="/tag/open source">open source</a>,&nbsp;<a class="label" href="/tag/java">java</a>.<br/></p></div>
-
-  <a class="u-url" href="/2020/04/11/notes-on-apache-jena-streamrdfwriter.html" hidden></a>
-</article>
-
-  </div>
+</nav>
+</header>
+<main>
+<article class=content>
+<h2>Notes on Apache Jena StreamRDFWriter</h2><div class=metadata>
+<i data-feather=calendar></i>
+<time datetime=2020-04-11>Apr 11, 2020</time>
 </div>
+<p><a href=https://jena.apache.org/>Apache Jena</a> project is like a box full of interesting things—at least if you love programming. One of its many features, is <strong>stream processing</strong>.</p>
+<p>The graphs in Jena may contain very large datasets, with giga- or terabytes. Some queries may be very large, and then sending the whole result would be simply impracticable.</p>
+<p>Instead, the data will go through ARQ. ARQ is a query engine for Jena that supports SPARQL. There is one piece of code there that I found interesting while reviewing a small pull request: <a href=https://github.com/apache/jena/blob/cbdba5edb47041a4181a00bd7660e5d4c212530a/jena-arq/src/main/java/org/apache/jena/riot/system/StreamRDFWriter.java><code>org.apache.jena.riot.system.StreamRDFWriter</code></a>.</p>
+<p>It is responsible for writing graph data in a streaming fashion. (See <a href=https://en.wikipedia.org/wiki/Stream_processing>stream processing</a> for programming models and more.)</p>
+<h2 id=stream-factories>Stream factories</h2>
+<p><code>StreamRDFWriter</code> holds several implementations (as <code>static</code> members) of <code>StreamRDFWriterFactory</code>. The factory has one responsibility only, to create streams (<code>StreamRDF</code>), for a certain format and context.</p>
+<figure class=feature>
+<img src=/assets/posts/2020-04-11-notes-on-apache-jena-streamrdfwriter/01.png alt title width height>
+<figcaption></figcaption>
+</figure>
+<h2 id=streams-writer-registry>Streams writer registry</h2>
+<p>All these factories and streams, the writer also needs a <code>registry</code>. It is used to access the writers required for streams using certain languages.</p>
+<p>So if you have your graph dataset, and need to retrieve triples as thrift, you will interrogate the registry asking for a factory of that language (Turtle, N-Triples, RDF-Thrift, etc) or format (Flat Turtle, N-Quads, N-Triples-ASCII, RDF-Thrift, etc).</p>
+<figure class=feature>
+<img src=/assets/posts/2020-04-11-notes-on-apache-jena-streamrdfwriter/02.png alt title width height>
+<figcaption></figcaption>
+</figure>
+<h2 id=writing-data-to-streams>Writing data to streams</h2>
+<p>Each writer has one responsibility too—I really like the design of certain modules in Jena.</p>
+<figure class=feature>
+<img src=/assets/posts/2020-04-11-notes-on-apache-jena-streamrdfwriter/03.png alt title width height>
+<figcaption></figcaption>
+</figure>
+<p>The action, however, happens somewhere else. In the <code>StreamRDFOps</code> and in the <code>Iterator</code> implementations is where the stream processing really takes place.</p>
+<figure class=feature>
+<img src=/assets/posts/2020-04-11-notes-on-apache-jena-streamrdfwriter/04.png alt title width height>
+<figcaption></figcaption>
+</figure>
+<p>But this goes beyond the <code>StreamRDFWriter</code>. So that&rsquo;s all for today.</p>
+<aside class=links>
+<a class=previous href=https://kinoshita.eti.br/2020/04/04/apple-2.html>&#171; Previous</a>
+<a class=next href=https://kinoshita.eti.br/2020/05/23/learning-new-vocabulary-with-shimura-ken-jailbreak-story.html>Next &#187;</a>
+</aside>
+</article>
+</main>
+<footer role=contentinfo>
+<ul id=social-media-icons>
+<li>
+<a href=https://www.instagram.com/brunokinoshita/>
+<img src=/assets/icons/instagram.png alt="Instagram link">
+</a>
+</li>
+<li>
+<a href=https://twitter.com/kinow/>
+<img src=/assets/icons/twitter.png alt="Twitter link">
+</a>
+</li>
+<li>
+<a href=https://github.com/kinow/>
+<img src=/assets/icons/github.png alt="GitHub link">
+</a>
+</li>
+</ul>
+</footer>
 </body>
 </html>

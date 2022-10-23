@@ -1,175 +1,107 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="utf-8" />
-<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-<meta name="viewport" content="width=device-width, initial-scale=1" /><!-- Begin Jekyll SEO tag v2.7.1 -->
-<title>Treemapping Jenkins Extension Points with R | kinow</title>
-<meta name="generator" content="Jekyll v3.9.0" />
-<meta property="og:title" content="Treemapping Jenkins Extension Points with R" />
-<meta property="og:locale" content="en_US" />
-<meta name="description" content="I have been playing with R and its packages for some time, and decided to study it a bit harder. Last week I started reading the Advanced R Programming by Hadley Wickham. One of the first chapters talks about the basic data structures in R. In order to get my feet wet I thought about a simple example: treemapping Jenkins extension points." />
-<meta property="og:description" content="I have been playing with R and its packages for some time, and decided to study it a bit harder. Last week I started reading the Advanced R Programming by Hadley Wickham. One of the first chapters talks about the basic data structures in R. In order to get my feet wet I thought about a simple example: treemapping Jenkins extension points." />
-<link rel="canonical" href="https://kinoshita.eti.br/2014/05/19/treemapping-jenkins-extension-points-with-r.html" />
-<meta property="og:url" content="https://kinoshita.eti.br/2014/05/19/treemapping-jenkins-extension-points-with-r.html" />
-<meta property="og:site_name" content="kinow" />
-<meta property="og:type" content="article" />
-<meta property="article:published_time" content="2014-05-19T00:00:00+12:00" />
-<meta name="twitter:card" content="summary" />
-<meta property="twitter:title" content="Treemapping Jenkins Extension Points with R" />
-<script type="application/ld+json">
-{"description":"I have been playing with R and its packages for some time, and decided to study it a bit harder. Last week I started reading the Advanced R Programming by Hadley Wickham. One of the first chapters talks about the basic data structures in R. In order to get my feet wet I thought about a simple example: treemapping Jenkins extension points.","@type":"BlogPosting","url":"https://kinoshita.eti.br/2014/05/19/treemapping-jenkins-extension-points-with-r.html","headline":"Treemapping Jenkins Extension Points with R","datePublished":"2014-05-19T00:00:00+12:00","dateModified":"2014-05-19T00:00:00+12:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://kinoshita.eti.br/2014/05/19/treemapping-jenkins-extension-points-with-r.html"},"@context":"https://schema.org"}</script>
-<!-- End Jekyll SEO tag -->
-<link rel="stylesheet" href="/assets/css/main.css" /><link type="application/atom+xml" rel="alternate" href="https://kinoshita.eti.br/feed.xml" title="kinow" /><link href="https://unpkg.com/pattern.css" rel="stylesheet" />
-
+<!doctype html><html lang=en><head>
+<meta charset=utf-8>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<link rel=stylesheet type=text/css href=https://kinoshita.eti.br/sass/main.e392e97e7e5991e363403c494b51d829efa207842d755622976c2537d0509be0.css integrity="sha256-45Lpfn5ZkeNjQDxJS1HYKe+iB4QtdVYil2wlN9BQm+A=">
+<title>kinow | Treemapping Jenkins Extension Points with R</title>
 </head>
-<body>
-<div id="mobile-menu"><div class="menu">
-  <ul class="menu">
-    <li class="item">
-      <h1 id="kinow">KINOW</h1>
-    </li>
-    <li class="item">
-      <a href="/" class="">About</a>
-    </li>
-    <li class="item">
-      <a href="/blog/" class="current">Blog</a>
-    </li>
-    <li class="item">
-      <a href="/portfolio/" class="">Portfolio</a>
-    </li>
-    <li class="item social-media-item">
-      <a href="https://www.instagram.com/brunokinoshita/" class="inline-link">
-        <img src="/assets/icons/instagram.png" class="inverted-image"  alt="Instagram link" />
-      </a>
-      <a href="https://twitter.com/kinow/" class="inline-link">
-        <img src="/assets/icons/twitter.png" class="inverted-image" alt="Twitter link" />
-      </a>
-      <a href="https://github.com/kinow/" class="inline-link">
-        <img src="/assets/icons/github.png" class="inverted-image" alt="GitHub link" />
-      </a>
-    </li>
-  </ul>
+<body><header role=banner class=content>
+<nav id=nav aria-label=Main role=navigation class=content>
+<ul><li>
+<a href=/>
+<i data-feather=about></i> About</a>
+</li><li>
+<a href=/blog/>
+<i data-feather=blog></i> Blog</a>
+</li><li>
+<a href=/portfolio/>
+<i data-feather=portfolio></i> Portfolio</a>
+</li><li></li>
+</ul>
+</nav>
+</header>
+<main>
+<article class=content>
+<h2>Treemapping Jenkins Extension Points with R</h2><div class=metadata>
+<i data-feather=calendar></i>
+<time datetime=2014-05-19>May 19, 2014</time>
 </div>
-</div>
-<div id="wrapper">
-  <div id="sidebar"><div class="menu">
-  <ul class="menu">
-    <li class="item">
-      <h1 id="kinow">KINOW</h1>
-    </li>
-    <li class="item">
-      <a href="/" class="">About</a>
-    </li>
-    <li class="item">
-      <a href="/blog/" class="current">Blog</a>
-    </li>
-    <li class="item">
-      <a href="/portfolio/" class="">Portfolio</a>
-    </li>
-    <li class="item social-media-item">
-      <a href="https://www.instagram.com/brunokinoshita/" class="inline-link">
-        <img src="/assets/icons/instagram.png" class="inverted-image"  alt="Instagram link" />
-      </a>
-      <a href="https://twitter.com/kinow/" class="inline-link">
-        <img src="/assets/icons/twitter.png" class="inverted-image" alt="Twitter link" />
-      </a>
-      <a href="https://github.com/kinow/" class="inline-link">
-        <img src="/assets/icons/github.png" class="inverted-image" alt="GitHub link" />
-      </a>
-    </li>
-  </ul>
-</div>
-</div>
-  <div id="content">
-    <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
-  <header class="post-header">
-    <h1 class="post-title p-name" itemprop="name headline">Treemapping Jenkins Extension Points with R</h1>
-    <span class="post-meta">
-      <time class="dt-published" datetime="2014-05-19T00:00:00+12:00" itemprop="datePublished">May 19, 2014
-      </time>
-      <span>&mdash; star date: -308536.99.</span>
-      <span>
-        Number of words: 752.
-      </span></span>
-  </header>
-
-  
-
-
-  <div class="post-content e-content" itemprop="articleBody">
-    <p>I have been playing with R and its packages for some time, and decided to study it a 
-bit harder. Last week I started reading the <a href="http://adv-r.had.co.nz/">Advanced R Programming</a> 
+<p>I have been playing with R and its packages for some time, and decided to study it a
+bit harder. Last week I started reading the <a href=http://adv-r.had.co.nz/>Advanced R Programming</a>
 by Hadley Wickham.</p>
-
-<p>One of the first chapters talks about the basic data structures in R. In order to 
-get my feet wet I thought about a simple example: <a href="http://en.wikipedia.org/wiki/Treemapping">treemapping</a> 
+<p>One of the first chapters talks about the basic data structures in R. In order to
+get my feet wet I thought about a simple example: <a href=http://en.wikipedia.org/wiki/Treemapping>treemapping</a>
 Jenkins extension points.</p>
-
-<p><img class="ui image" src="/assets/posts/2014-05-19-treemapping-jenkins-extension-points-with-r/extension_points.png" /></p>
-
-<!--more-->
-
-<p>There is a <a href="https://wiki.jenkins-ci.org/display/JENKINS/Extension+points">Wiki page with the extension points in Jenkins</a> (what parts of Jenkins can be customized) 
-and its implementations. That page is generated by a <a href="https://ci.jenkins-ci.org/view/Infrastructure/job/infra_extension-indexer/">Jenkins job</a>.</p>
-
-<p>That job outputs a JSON file that contains each available extension points, as well as 
-an array with its implementations. The R code below will produce two vectors, one with the 
+<figure class=feature>
+<img src=/assets/posts/2014-05-19-treemapping-jenkins-extension-points-with-r/extension_points.png alt title width height>
+<figcaption></figcaption>
+</figure>
+<p>There is a <a href=https://wiki.jenkins-ci.org/display/JENKINS/Extension+points>Wiki page with the extension points in Jenkins</a> (what parts of Jenkins can be customized)
+and its implementations. That page is generated by a <a href=https://ci.jenkins-ci.org/view/Infrastructure/job/infra_extension-indexer/>Jenkins job</a>.</p>
+<p>That job outputs a JSON file that contains each available extension points, as well as
+an array with its implementations. The R code below will produce two vectors, one with the
 count of implementations of each extension point, and the other with the class name.</p>
-
-<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">nExtensionPoints</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">length</span><span class="p">(</span><span class="n">extensionPointsJson</span><span class="o">$</span><span class="n">extensionPoints</span><span class="p">)</span><span class="w">
-</span><span class="n">numberOfImplementations</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">vector</span><span class="p">(</span><span class="n">length</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">nExtensionPoints</span><span class="p">)</span><span class="w">
-</span><span class="n">namesOfTheExtensionPoints</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">vector</span><span class="p">(</span><span class="n">length</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">nExtensionPoints</span><span class="p">)</span><span class="w">
-</span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="nf">seq_along</span><span class="p">(</span><span class="n">extensionPoints</span><span class="p">))</span><span class="w"> </span><span class="p">{</span><span class="w">
-  </span><span class="n">extensionName</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">extensionPoints</span><span class="p">[[</span><span class="n">i</span><span class="p">]]</span><span class="o">$</span><span class="n">className</span><span class="w">
-  </span><span class="n">lastIndexOfDot</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">regexpr</span><span class="p">(</span><span class="s2">"\\.[^\\.]*$"</span><span class="p">,</span><span class="w"> </span><span class="n">extensionName</span><span class="p">)</span><span class="w">
-  </span><span class="n">namesOfTheExtensionPoints</span><span class="p">[[</span><span class="n">i</span><span class="p">]]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">substr</span><span class="p">(</span><span class="n">extensionName</span><span class="p">,</span><span class="w"> </span><span class="n">lastIndexOfDot</span><span class="p">[</span><span class="m">1</span><span class="p">]</span><span class="m">+1</span><span class="p">,</span><span class="w"> </span><span class="n">nchar</span><span class="p">(</span><span class="n">extensionName</span><span class="p">))</span><span class="w">
-  </span><span class="n">numberOfImplementations</span><span class="p">[[</span><span class="n">i</span><span class="p">]]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">length</span><span class="p">(</span><span class="n">extensionPoints</span><span class="p">[[</span><span class="n">i</span><span class="p">]]</span><span class="o">$</span><span class="n">implementations</span><span class="p">)</span><span class="w">
-  </span><span class="n">print</span><span class="p">(</span><span class="n">paste</span><span class="p">(</span><span class="n">namesOfTheExtensionPoints</span><span class="p">[[</span><span class="n">i</span><span class="p">]],</span><span class="w"> </span><span class="s2">" -&gt; "</span><span class="p">,</span><span class="w"> </span><span class="n">numberOfImplementations</span><span class="p">[[</span><span class="n">i</span><span class="p">]]))</span><span class="w">
-</span><span class="p">}</span><span class="w">
-</span></code></pre></div></div>
-
-<p>For creating the treemap I used the <strong><a href="http://flowingdata.com/2010/02/11/an-easy-way-to-make-a-treemap/">portfolio package</a></strong>, and the <code>map.market</code> 
-function. The structures previously created and the next snippet of code are all that is 
+<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-r data-lang=r>nExtensionPoints &lt;- length(extensionPointsJson$extensionPoints)
+numberOfImplementations &lt;- vector(length = nExtensionPoints)
+namesOfTheExtensionPoints &lt;- vector(length = nExtensionPoints)
+for (i in seq_along(extensionPoints)) {
+  extensionName = extensionPoints[[i]]$className
+  lastIndexOfDot = regexpr(<span style=color:#00f>&#34;\\.[^\\.]*$&#34;</span>, extensionName)
+  namesOfTheExtensionPoints[[i]] = substr(extensionName, lastIndexOfDot[1]<span style=color:#00f>+1</span>, nchar(extensionName))
+  numberOfImplementations[[i]] = length(extensionPoints[[i]]$implementations)
+  print(paste(namesOfTheExtensionPoints[[i]], <span style=color:#00f>&#34; -&gt; &#34;</span>, numberOfImplementations[[i]]))
+}
+</code></pre></div><p>For creating the treemap I used the <strong><a href=http://flowingdata.com/2010/02/11/an-easy-way-to-make-a-treemap/>portfolio package</a></strong>, and the <code>map.market</code>
+function. The structures previously created and the next snippet of code are all that is
 needed to create the treemap of the Jenkins extension points.</p>
-
-<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">map.market</span><span class="p">(</span><span class="n">id</span><span class="o">=</span><span class="nf">seq_along</span><span class="p">(</span><span class="n">extensionPoints</span><span class="p">),</span><span class="w"> </span><span class="n">area</span><span class="o">=</span><span class="n">numberOfImplementations</span><span class="p">,</span><span class="w"> </span><span class="n">group</span><span class="o">=</span><span class="n">namesOfTheExtensionPoints</span><span class="p">,</span><span class="w"> </span><span class="n">color</span><span class="o">=</span><span class="n">numberOfImplementations</span><span class="p">,</span><span class="w"> </span><span class="n">main</span><span class="o">=</span><span class="s2">"Jenkins Extension Points"</span><span class="p">)</span><span class="w">
-</span></code></pre></div></div>
-
-<p>You can also use the <a href="https://wiki.jenkins-ci.org/display/JENKINS/R+Plugin">Jenkins R Plug-in</a> to produce this graph, 
-as in this <a href="http://builds.tupilabs.com/job/backend-extension-points-treemap/2/">sample job</a>. 
-You can get the complete script in this <a href="https://gist.github.com/kinow/d5a2221c32dce3aa1076">gist</a>, or just 
+<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-r data-lang=r>map.market(id=seq_along(extensionPoints), area=numberOfImplementations, group=namesOfTheExtensionPoints, color=numberOfImplementations, main=<span style=color:#00f>&#34;Jenkins Extension Points&#34;</span>)
+</code></pre></div><p>You can also use the <a href=https://wiki.jenkins-ci.org/display/JENKINS/R+Plugin>Jenkins R Plug-in</a> to produce this graph,
+as in this <a href=http://builds.tupilabs.com/job/backend-extension-points-treemap/2/>sample job</a>.
+You can get the complete script in this <a href=https://gist.github.com/kinow/d5a2221c32dce3aa1076>gist</a>, or just
 copy it here.</p>
-
-<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">library</span><span class="p">(</span><span class="s1">'rjson'</span><span class="p">)</span><span class="w">
-</span><span class="n">library</span><span class="p">(</span><span class="s1">'portfolio'</span><span class="p">)</span><span class="w">
+<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-r data-lang=r>library(<span style=color:#00f>&#39;rjson&#39;</span>)
+library(<span style=color:#00f>&#39;portfolio&#39;</span>)
  
-</span><span class="n">download.file</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="s2">"https://ci.jenkins-ci.org/view/Infrastructure/job/infra_extension-indexer/ws/extension-points.json"</span><span class="p">,</span><span class="w"> </span><span class="n">destfile</span><span class="o">=</span><span class="s2">"extension-points.json"</span><span class="p">,</span><span class="w"> </span><span class="n">method</span><span class="o">=</span><span class="s2">"wget"</span><span class="p">)</span><span class="w">
-</span><span class="n">extensionPointsJson</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">fromJSON</span><span class="p">(</span><span class="n">paste</span><span class="p">(</span><span class="n">readLines</span><span class="p">(</span><span class="s2">"extension-points.json"</span><span class="p">),</span><span class="w"> </span><span class="n">collapse</span><span class="o">=</span><span class="s2">""</span><span class="p">))</span><span class="w">
-</span><span class="n">extensionPoints</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">extensionPointsJson</span><span class="o">$</span><span class="n">extensionPoints</span><span class="w">
-</span><span class="n">nExtensionPoints</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">length</span><span class="p">(</span><span class="n">extensionPointsJson</span><span class="o">$</span><span class="n">extensionPoints</span><span class="p">)</span><span class="w">
-</span><span class="n">numberOfImplementations</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">vector</span><span class="p">(</span><span class="n">length</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">nExtensionPoints</span><span class="p">)</span><span class="w">
-</span><span class="n">namesOfTheExtensionPoints</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">vector</span><span class="p">(</span><span class="n">length</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">nExtensionPoints</span><span class="p">)</span><span class="w">
-</span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="nf">seq_along</span><span class="p">(</span><span class="n">extensionPoints</span><span class="p">))</span><span class="w"> </span><span class="p">{</span><span class="w">
-  </span><span class="n">extensionName</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">extensionPoints</span><span class="p">[[</span><span class="n">i</span><span class="p">]]</span><span class="o">$</span><span class="n">className</span><span class="w">
-  </span><span class="n">lastIndexOfDot</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">regexpr</span><span class="p">(</span><span class="s2">"\\.[^\\.]*$"</span><span class="p">,</span><span class="w"> </span><span class="n">extensionName</span><span class="p">)</span><span class="w">
-  </span><span class="n">namesOfTheExtensionPoints</span><span class="p">[[</span><span class="n">i</span><span class="p">]]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">substr</span><span class="p">(</span><span class="n">extensionName</span><span class="p">,</span><span class="w"> </span><span class="n">lastIndexOfDot</span><span class="p">[</span><span class="m">1</span><span class="p">]</span><span class="m">+1</span><span class="p">,</span><span class="w"> </span><span class="n">nchar</span><span class="p">(</span><span class="n">extensionName</span><span class="p">))</span><span class="w">
-  </span><span class="n">numberOfImplementations</span><span class="p">[[</span><span class="n">i</span><span class="p">]]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">length</span><span class="p">(</span><span class="n">extensionPoints</span><span class="p">[[</span><span class="n">i</span><span class="p">]]</span><span class="o">$</span><span class="n">implementations</span><span class="p">)</span><span class="w">
-  </span><span class="n">print</span><span class="p">(</span><span class="n">paste</span><span class="p">(</span><span class="n">namesOfTheExtensionPoints</span><span class="p">[[</span><span class="n">i</span><span class="p">]],</span><span class="w"> </span><span class="s2">" -&gt; "</span><span class="p">,</span><span class="w"> </span><span class="n">numberOfImplementations</span><span class="p">[[</span><span class="n">i</span><span class="p">]]))</span><span class="w">
-</span><span class="p">}</span><span class="w">
-</span><span class="n">png</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s2">"extension-points.png"</span><span class="p">,</span><span class="w"> </span><span class="n">width</span><span class="o">=</span><span class="m">2048</span><span class="p">,</span><span class="w"> </span><span class="n">height</span><span class="o">=</span><span class="m">1536</span><span class="p">,</span><span class="w"> </span><span class="n">units</span><span class="o">=</span><span class="s2">"px"</span><span class="p">,</span><span class="w"> </span><span class="n">bg</span><span class="o">=</span><span class="s2">"white"</span><span class="p">)</span><span class="w">
-</span><span class="n">map.market</span><span class="p">(</span><span class="n">id</span><span class="o">=</span><span class="nf">seq_along</span><span class="p">(</span><span class="n">extensionPoints</span><span class="p">),</span><span class="w"> </span><span class="n">area</span><span class="o">=</span><span class="n">numberOfImplementations</span><span class="p">,</span><span class="w"> </span><span class="n">group</span><span class="o">=</span><span class="n">namesOfTheExtensionPoints</span><span class="p">,</span><span class="w"> </span><span class="n">color</span><span class="o">=</span><span class="n">numberOfImplementations</span><span class="p">,</span><span class="w"> </span><span class="n">main</span><span class="o">=</span><span class="s2">"Jenkins Extension Points"</span><span class="p">)</span><span class="w">
-</span><span class="n">dev.off</span><span class="p">()</span><span class="w">
-</span></code></pre></div></div>
-
-  </div>
-
-  <div class="tags"><p>Tags:&nbsp;<a class="label" href="/tag/jenkins">jenkins</a>,&nbsp;<a class="label" href="/tag/r">r</a>.<br/></p></div>
-
-  <a class="u-url" href="/2014/05/19/treemapping-jenkins-extension-points-with-r.html" hidden></a>
+download.file(url=<span style=color:#00f>&#34;https://ci.jenkins-ci.org/view/Infrastructure/job/infra_extension-indexer/ws/extension-points.json&#34;</span>, destfile=<span style=color:#00f>&#34;extension-points.json&#34;</span>, method=<span style=color:#00f>&#34;wget&#34;</span>)
+extensionPointsJson &lt;- fromJSON(paste(readLines(<span style=color:#00f>&#34;extension-points.json&#34;</span>), collapse=<span style=color:#00f>&#34;&#34;</span>))
+extensionPoints &lt;- extensionPointsJson$extensionPoints
+nExtensionPoints &lt;- length(extensionPointsJson$extensionPoints)
+numberOfImplementations &lt;- vector(length = nExtensionPoints)
+namesOfTheExtensionPoints &lt;- vector(length = nExtensionPoints)
+for (i in seq_along(extensionPoints)) {
+  extensionName = extensionPoints[[i]]$className
+  lastIndexOfDot = regexpr(<span style=color:#00f>&#34;\\.[^\\.]*$&#34;</span>, extensionName)
+  namesOfTheExtensionPoints[[i]] = substr(extensionName, lastIndexOfDot[1]<span style=color:#00f>+1</span>, nchar(extensionName))
+  numberOfImplementations[[i]] = length(extensionPoints[[i]]$implementations)
+  print(paste(namesOfTheExtensionPoints[[i]], <span style=color:#00f>&#34; -&gt; &#34;</span>, numberOfImplementations[[i]]))
+}
+png(filename=<span style=color:#00f>&#34;extension-points.png&#34;</span>, width=<span style=color:#00f>2048</span>, height=<span style=color:#00f>1536</span>, units=<span style=color:#00f>&#34;px&#34;</span>, bg=<span style=color:#00f>&#34;white&#34;</span>)
+map.market(id=seq_along(extensionPoints), area=numberOfImplementations, group=namesOfTheExtensionPoints, color=numberOfImplementations, main=<span style=color:#00f>&#34;Jenkins Extension Points&#34;</span>)
+dev.off()
+</code></pre></div>
+<aside class=links>
+<a class=previous href=https://kinoshita.eti.br/2014/02/11/writing-a-custom-schemaspy-command-for-laravel-4.html>&#171; Previous</a>
+<a class=next href=https://kinoshita.eti.br/2014/08/09/strings-transliteration-in-java-with-apache-commons-lang.html>Next &#187;</a>
+</aside>
 </article>
-
-  </div>
-</div>
+</main>
+<footer role=contentinfo>
+<ul id=social-media-icons>
+<li>
+<a href=https://www.instagram.com/brunokinoshita/>
+<img src=/assets/icons/instagram.png alt="Instagram link">
+</a>
+</li>
+<li>
+<a href=https://twitter.com/kinow/>
+<img src=/assets/icons/twitter.png alt="Twitter link">
+</a>
+</li>
+<li>
+<a href=https://github.com/kinow/>
+<img src=/assets/icons/github.png alt="GitHub link">
+</a>
+</li>
+</ul>
+</footer>
 </body>
 </html>

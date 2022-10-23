@@ -1,267 +1,175 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="utf-8" />
-<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-<meta name="viewport" content="width=device-width, initial-scale=1" /><!-- Begin Jekyll SEO tag v2.7.1 -->
-<title>Getting the maximum from TestNG with TAP | kinow</title>
-<meta name="generator" content="Jekyll v3.9.0" />
-<meta property="og:title" content="Getting the maximum from TestNG with TAP" />
-<meta property="og:locale" content="en_US" />
-<meta name="description" content="Strangely enough, today I decided start to write about TAP (Test Anything Protocol) and received a mail from a Linkedin Group with a white paper about data integration in information systems. Well, let me first explain what is TAP, or Test Anything Protocol. This protocol was created in the beginning of Perl to log test results and is still being used by Perl and other languages (PHPUnit can output TAP too, for instance). Now, if you already know about TAP and YAML, or if you are like me and like trying things out before reading a long text, then go to the hands on part of this post. An output in TAP, or a TAP stream, is written in pure text in a human readable way. Like follows: TAP version 13 1..2 ok 1 Test 1 not ok 2 Missing test parameter: url" />
-<meta property="og:description" content="Strangely enough, today I decided start to write about TAP (Test Anything Protocol) and received a mail from a Linkedin Group with a white paper about data integration in information systems. Well, let me first explain what is TAP, or Test Anything Protocol. This protocol was created in the beginning of Perl to log test results and is still being used by Perl and other languages (PHPUnit can output TAP too, for instance). Now, if you already know about TAP and YAML, or if you are like me and like trying things out before reading a long text, then go to the hands on part of this post. An output in TAP, or a TAP stream, is written in pure text in a human readable way. Like follows: TAP version 13 1..2 ok 1 Test 1 not ok 2 Missing test parameter: url" />
-<link rel="canonical" href="https://kinoshita.eti.br/2011/03/10/getting-the-maximum-from-testng-with-tap.html" />
-<meta property="og:url" content="https://kinoshita.eti.br/2011/03/10/getting-the-maximum-from-testng-with-tap.html" />
-<meta property="og:site_name" content="kinow" />
-<meta property="og:type" content="article" />
-<meta property="article:published_time" content="2011-03-10T00:00:00+13:00" />
-<meta name="twitter:card" content="summary" />
-<meta property="twitter:title" content="Getting the maximum from TestNG with TAP" />
-<script type="application/ld+json">
-{"description":"Strangely enough, today I decided start to write about TAP (Test Anything Protocol) and received a mail from a Linkedin Group with a white paper about data integration in information systems. Well, let me first explain what is TAP, or Test Anything Protocol. This protocol was created in the beginning of Perl to log test results and is still being used by Perl and other languages (PHPUnit can output TAP too, for instance). Now, if you already know about TAP and YAML, or if you are like me and like trying things out before reading a long text, then go to the hands on part of this post. An output in TAP, or a TAP stream, is written in pure text in a human readable way. Like follows: TAP version 13 1..2 ok 1 Test 1 not ok 2 Missing test parameter: url","@type":"BlogPosting","url":"https://kinoshita.eti.br/2011/03/10/getting-the-maximum-from-testng-with-tap.html","headline":"Getting the maximum from TestNG with TAP","datePublished":"2011-03-10T00:00:00+13:00","dateModified":"2011-03-10T00:00:00+13:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://kinoshita.eti.br/2011/03/10/getting-the-maximum-from-testng-with-tap.html"},"@context":"https://schema.org"}</script>
-<!-- End Jekyll SEO tag -->
-<link rel="stylesheet" href="/assets/css/main.css" /><link type="application/atom+xml" rel="alternate" href="https://kinoshita.eti.br/feed.xml" title="kinow" /><link href="https://unpkg.com/pattern.css" rel="stylesheet" />
-
+<!doctype html><html lang=en><head>
+<meta charset=utf-8>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<link rel=stylesheet type=text/css href=https://kinoshita.eti.br/sass/main.e392e97e7e5991e363403c494b51d829efa207842d755622976c2537d0509be0.css integrity="sha256-45Lpfn5ZkeNjQDxJS1HYKe+iB4QtdVYil2wlN9BQm+A=">
+<title>kinow | Getting the maximum from TestNG with TAP</title>
 </head>
-<body>
-<div id="mobile-menu"><div class="menu">
-  <ul class="menu">
-    <li class="item">
-      <h1 id="kinow">KINOW</h1>
-    </li>
-    <li class="item">
-      <a href="/" class="">About</a>
-    </li>
-    <li class="item">
-      <a href="/blog/" class="current">Blog</a>
-    </li>
-    <li class="item">
-      <a href="/portfolio/" class="">Portfolio</a>
-    </li>
-    <li class="item social-media-item">
-      <a href="https://www.instagram.com/brunokinoshita/" class="inline-link">
-        <img src="/assets/icons/instagram.png" class="inverted-image"  alt="Instagram link" />
-      </a>
-      <a href="https://twitter.com/kinow/" class="inline-link">
-        <img src="/assets/icons/twitter.png" class="inverted-image" alt="Twitter link" />
-      </a>
-      <a href="https://github.com/kinow/" class="inline-link">
-        <img src="/assets/icons/github.png" class="inverted-image" alt="GitHub link" />
-      </a>
-    </li>
-  </ul>
-</div>
-</div>
-<div id="wrapper">
-  <div id="sidebar"><div class="menu">
-  <ul class="menu">
-    <li class="item">
-      <h1 id="kinow">KINOW</h1>
-    </li>
-    <li class="item">
-      <a href="/" class="">About</a>
-    </li>
-    <li class="item">
-      <a href="/blog/" class="current">Blog</a>
-    </li>
-    <li class="item">
-      <a href="/portfolio/" class="">Portfolio</a>
-    </li>
-    <li class="item social-media-item">
-      <a href="https://www.instagram.com/brunokinoshita/" class="inline-link">
-        <img src="/assets/icons/instagram.png" class="inverted-image"  alt="Instagram link" />
-      </a>
-      <a href="https://twitter.com/kinow/" class="inline-link">
-        <img src="/assets/icons/twitter.png" class="inverted-image" alt="Twitter link" />
-      </a>
-      <a href="https://github.com/kinow/" class="inline-link">
-        <img src="/assets/icons/github.png" class="inverted-image" alt="GitHub link" />
-      </a>
-    </li>
-  </ul>
-</div>
-</div>
-  <div id="content">
-    <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
-  <header class="post-header">
-    <h1 class="post-title p-name" itemprop="name headline">Getting the maximum from TestNG with TAP</h1>
-    <span class="post-meta">
-      <time class="dt-published" datetime="2011-03-10T00:00:00+13:00" itemprop="datePublished">Mar 10, 2011
-      </time>
-      <span>&mdash; star date: -311728.77.</span>
-      <span>
-        Number of words: 1539.
-      </span></span>
-  </header>
-
-  <ul>
-  <li><a href="#">So it&#8217;s hammer time!</a></li>
+<body><header role=banner class=content>
+<nav id=nav aria-label=Main role=navigation class=content>
+<ul><li>
+<a href=/>
+<i data-feather=about></i> About</a>
+</li><li>
+<a href=/blog/>
+<i data-feather=blog></i> Blog</a>
+</li><li>
+<a href=/portfolio/>
+<i data-feather=portfolio></i> Portfolio</a>
+</li><li></li>
 </ul>
-
-
-  <div class="post-content e-content" itemprop="articleBody">
-    <p>Strangely enough, today I decided start to write about <a href="http://www.testanything.org">TAP</a> (Test Anything Protocol) and received a mail from a <a href="http://www.linkedin.com">Linkedin</a> Group with a white paper about data integration in information systems. Well, let me first explain what is TAP, or Test Anything Protocol. This protocol was created in the beginning of Perl to log test results and is still being used by Perl and other languages (<a href="https://github.com/sebastianbergmann/phpunit/">PHPUnit</a> can output TAP too, for instance).</p>
-
-<p>Now, if you already know about TAP and YAML, or if you are like me and like trying things out before reading a long text, then go to the <a href="#hammertime">hands on part</a> of this post.</p>
-
+</nav>
+</header>
+<main>
+<article class=content>
+<h2>Getting the maximum from TestNG with TAP</h2><div class=metadata>
+<i data-feather=calendar></i>
+<time datetime=2011-03-10>Mar 10, 2011</time>
+</div>
+<p>Strangely enough, today I decided start to write about <a href=http://www.testanything.org>TAP</a> (Test Anything Protocol) and received a mail from a <a href=http://www.linkedin.com>Linkedin</a> Group with a white paper about data integration in information systems. Well, let me first explain what is TAP, or Test Anything Protocol. This protocol was created in the beginning of Perl to log test results and is still being used by Perl and other languages (<a href=https://github.com/sebastianbergmann/phpunit/>PHPUnit</a> can output TAP too, for instance).</p>
+<p>Now, if you already know about TAP and YAML, or if you are like me and like trying things out before reading a long text, then go to the <a href=#hammertime>hands on part</a> of this post.</p>
 <p>An output in TAP, or a TAP stream, is written in pure text in a human readable way. Like follows:</p>
-
-<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>TAP version 13
+<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>TAP version <span style=color:#00f>13</span>
 1..2
-ok 1 Test 1
-not ok 2 Missing <span class="nb">test </span>parameter: url
-</code></pre></div></div>
-
-<!--more-->
-
-<p>What does the TAP Stream above tells you? It tells you that you are using <span style="font-family: courier, sans-serif">TAP version 13</span> (duh, I know), you have a test plan with 2 tests (<span style="font-family: courier, sans-serif">1..2</span>) where the first test passed successfully (<span style="font-family: courier, sans-serif">ok 1</span>) and the second test failed (<span style="font-family: courier, sans-serif">not ok 2</span>). Besides the test status, you also have a description that tells you that the second test failed for missing a test parameter.</p>
-
-<p>And that's it. Really? I don't need to learn anything else? Sorry, I was kidding, but I promise it is not like learning complex dynamic systems or how to find the equilibrium point in a differential equation :-). And I am not going to get in details about all the details of TAP, probably you should check <a href="http://www.testanything.org">http://www.testanything.org</a>, the home of Test Anything Protocol, for complete specification, history and links.</p>
-
-<p>The last thing I need explain to you before putting <a href="http://www.testng.org">TestNG</a> in the story, is <a href="http://yaml.org/">YAML</a>. YAML stands for YAML Ain't Markup Language. It is a data serialization standard, just like <a href="http://www.json.org/">JSON</a>. The main difference you will find between both APIs is that YAML can be a little more human friendly while JSON requires more symbols like {, }, [, ] and ". And it is said too that you can parse JSON with YAML, but the contrary is not always true. Let's see how YAML looks like.</p>
-
-<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">---</span>
+ok <span style=color:#00f>1</span> Test <span style=color:#00f>1</span>
+not ok <span style=color:#00f>2</span> Missing test parameter: url
+</code></pre></div><p>What does the TAP Stream above tells you? It tells you that you are using <span style=font-family:courier,sans-serif>TAP version 13</span> (duh, I know), you have a test plan with 2 tests (<span style=font-family:courier,sans-serif>1..2</span>) where the first test passed successfully (<span style=font-family:courier,sans-serif>ok 1</span>) and the second test failed (<span style=font-family:courier,sans-serif>not ok 2</span>). Besides the test status, you also have a description that tells you that the second test failed for missing a test parameter.</p>
+<p>And that's it. Really? I don't need to learn anything else? Sorry, I was kidding, but I promise it is not like learning complex dynamic systems or how to find the equilibrium point in a differential equation :-). And I am not going to get in details about all the details of TAP, probably you should check <a href=http://www.testanything.org>http://www.testanything.org</a>, the home of Test Anything Protocol, for complete specification, history and links.</p>
+<p>The last thing I need explain to you before putting <a href=http://www.testng.org>TestNG</a> in the story, is <a href=http://yaml.org/>YAML</a>. YAML stands for YAML Ain't Markup Language. It is a data serialization standard, just like <a href=http://www.json.org/>JSON</a>. The main difference you will find between both APIs is that YAML can be a little more human friendly while JSON requires more symbols like {, }, [, ] and ". And it is said too that you can parse JSON with YAML, but the contrary is not always true. Let's see how YAML looks like.</p>
+<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>---
 name: Bruno
-age: 26
+age: <span style=color:#00f>26</span>
 country: Brazil
 ...
-</code></pre></div></div>
-
-<p>TAP utilizes YAML to have '<i><a href="http://testanything.org/wiki/index.php/TAP_diagnostic_syntax">diagnostics</a></i>' of tests. This is the name used in TAP, but probably you will prefer think about it as a way to extend TAP by adding YAML to each test result.</p>
-
-<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>TAP version 13
+</code></pre></div><p>TAP utilizes YAML to have '<i><a href=http://testanything.org/wiki/index.php/TAP_diagnostic_syntax>diagnostics</a></i>' of tests. This is the name used in TAP, but probably you will prefer think about it as a way to extend TAP by adding YAML to each test result.</p>
+<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>TAP version <span style=color:#00f>13</span>
 1..2
-ok 1 Test 1
-not ok 2 Missing <span class="nb">test </span>parameter: url
-<span class="nt">---</span>
+ok <span style=color:#00f>1</span> Test <span style=color:#00f>1</span>
+not ok <span style=color:#00f>2</span> Missing test parameter: url
+---
      file:        selenium_sample_test.t
-     line:        12
-     description: Missing <span class="nb">test </span>parameter: url
+     line:        <span style=color:#00f>12</span>
+     description: Missing test parameter: url
      found:       null
      wanted:      string
      extensions:
        screenshot:     /var/tmp/selenium/cath-xp/748344874_screenshot.jpg
 ...
-</code></pre></div></div>
-
-<h2><a name="hammertime">So it's hammer time!</a></h2>
-
+</code></pre></div><h2><a name=hammertime>So it's hammer time!</a></h2>
 <p>Ok! So you got here either because you couldn't wait to see how you were going to use TAP, YAML and TestNG together, or because you read all the text (if you didn't, I recommend you try reading it later). I will assume here you are familiar with Java and can create a project in your favorite IDE, import libraries and set up a basic test project. I am an Eclipse and Maven user, so all these things are pretty easy for me ;-). Here is my sample test.</p>
+<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=color:navy;font-weight:700>package</span> br.eti.kinoshita.testngtap;
 
-<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">package</span> <span class="nn">br.eti.kinoshita.testngtap</span><span class="o">;</span>
+<span style=color:navy;font-weight:700>import</span> org.testng.Assert;
+<span style=color:navy;font-weight:700>import</span> org.testng.annotations.Test;
 
-<span class="kn">import</span> <span class="nn">org.testng.Assert</span><span class="o">;</span>
-<span class="kn">import</span> <span class="nn">org.testng.annotations.Test</span><span class="o">;</span>
+<span style=color:navy;font-weight:700>public</span> <span style=color:navy;font-weight:700>class</span> SampleTest
+{
 
-<span class="kd">public</span> <span class="kd">class</span> <span class="nc">SampleTest</span>
-<span class="o">{</span>
-
-	<span class="nd">@Test</span>
-	<span class="kd">public</span> <span class="kt">void</span> <span class="nf">sampleTest</span><span class="o">()</span>
-	<span class="o">{</span>
-		<span class="nc">Assert</span><span class="o">.</span><span class="na">assertTrue</span><span class="o">(</span> <span class="nc">System</span><span class="o">.</span><span class="na">currentTimeMillis</span><span class="o">()</span> <span class="o">&gt;</span> <span class="mi">1984</span> <span class="o">);</span>
-	<span class="o">}</span>
+	@Test
+	<span style=color:navy;font-weight:700>public</span> <span style=color:navy;font-weight:700>void</span> sampleTest()
+	{
+		Assert.<span style=color:red>assertTrue</span>( System.<span style=color:red>currentTimeMillis</span>() &gt; 1984 );
+	}
 	
-<span class="o">}</span>
-</code></pre></div></div>
+}
+</code></pre></div><p>This is a test that only checks if the current time in ms is greater than 1984. If so, it will follow the normal flow and output XML and HTML. Now I challenge you! How can you make this test output TAP? Drum roll... with two simple steps: a) add <a href=http://tap4j.sourceforge.net>tap4j</a> library into your project and b) add a <a href=http://testng.org/doc/documentation-main.html#testng-listeners>Listener</a> to your test.</p>
+<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=color:navy;font-weight:700>package</span> br.eti.kinoshita.testngtap;
 
-<p>This is a test that only checks if the current time in ms is greater than 1984. If so, it will follow the normal flow and output XML and HTML. Now I challenge you! How can you make this test output TAP? Drum roll... with two simple steps: a) add <a href="http://tap4j.sourceforge.net">tap4j</a> library into your project and b) add a <a href="http://testng.org/doc/documentation-main.html#testng-listeners">Listener</a> to your test.</p>
+<span style=color:navy;font-weight:700>import</span> org.testng.Assert;
+<span style=color:navy;font-weight:700>import</span> org.testng.annotations.Listeners;
+<span style=color:navy;font-weight:700>import</span> org.testng.annotations.Test;
 
-<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">package</span> <span class="nn">br.eti.kinoshita.testngtap</span><span class="o">;</span>
+<span style=color:navy;font-weight:700>import</span> br.eti.kinoshita.tap4j.ext.testng.TestTAPReporter;
 
-<span class="kn">import</span> <span class="nn">org.testng.Assert</span><span class="o">;</span>
-<span class="kn">import</span> <span class="nn">org.testng.annotations.Listeners</span><span class="o">;</span>
-<span class="kn">import</span> <span class="nn">org.testng.annotations.Test</span><span class="o">;</span>
+@Listeners(TestTAPReporter.<span style=color:red>class</span>)
+<span style=color:navy;font-weight:700>public</span> <span style=color:navy;font-weight:700>class</span> SampleTest
+{
 
-<span class="kn">import</span> <span class="nn">br.eti.kinoshita.tap4j.ext.testng.TestTAPReporter</span><span class="o">;</span>
-
-<span class="nd">@Listeners</span><span class="o">(</span><span class="nc">TestTAPReporter</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
-<span class="kd">public</span> <span class="kd">class</span> <span class="nc">SampleTest</span>
-<span class="o">{</span>
-
-	<span class="nd">@Test</span>
-	<span class="kd">public</span> <span class="kt">void</span> <span class="nf">sampleTest</span><span class="o">()</span>
-	<span class="o">{</span>
-		<span class="nc">Assert</span><span class="o">.</span><span class="na">assertTrue</span><span class="o">(</span> <span class="nc">System</span><span class="o">.</span><span class="na">currentTimeMillis</span><span class="o">()</span> <span class="o">&gt;</span> <span class="mi">1984</span> <span class="o">);</span>
-	<span class="o">}</span>
+	@Test
+	<span style=color:navy;font-weight:700>public</span> <span style=color:navy;font-weight:700>void</span> sampleTest()
+	{
+		Assert.<span style=color:red>assertTrue</span>( System.<span style=color:red>currentTimeMillis</span>() &gt; 1984 );
+	}
 	
-<span class="o">}</span>
-</code></pre></div></div>
+}
+</code></pre></div><p>Did you find the difference between the last code and the previous one? No? Come on, what about line 9? Yeah, that is the TAP listener. You can find more information about tap4j and TestNG integration <a href=http://tap4j.sourceforge.net/testng_support.html>here</a>. Run this test again and take a look at the output directories of TestNG. You will find some .tap files. These files contain the result of your tests alongside the diagnostic information about them. But wait! You may be asking yourself what is the point in outputting TestNG in another format? Well, apart of having integration with TAP and being able to share your test results with programs that are compatible with TAP (like Perl programs, or Smolder), you can also add customized information to your TAP Stream, transforming it into a perfect evidence for your automated tests, for instance. Look at the following code.</p>
+<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=color:navy;font-weight:700>package</span> br.eti.kinoshita.testngtap;
 
-<p>Did you find the difference between the last code and the previous one? No? Come on, what about line 9? Yeah, that is the TAP listener. You can find more information about tap4j and TestNG integration <a href="http://tap4j.sourceforge.net/testng_support.html">here</a>. Run this test again and take a look at the output directories of TestNG. You will find some .tap files. These files contain the result of your tests alongside the diagnostic information about them. But wait! You may be asking yourself what is the point in outputting TestNG in another format? Well, apart of having integration with TAP and being able to share your test results with programs that are compatible with TAP (like Perl programs, or Smolder), you can also add customized information to your TAP Stream, transforming it into a perfect evidence for your automated tests, for instance. Look at the following code.</p>
+<span style=color:navy;font-weight:700>import</span> java.lang.reflect.Method;
 
-<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">package</span> <span class="nn">br.eti.kinoshita.testngtap</span><span class="o">;</span>
+<span style=color:navy;font-weight:700>import</span> org.testng.Assert;
+<span style=color:navy;font-weight:700>import</span> org.testng.ITestContext;
+<span style=color:navy;font-weight:700>import</span> org.testng.annotations.Listeners;
+<span style=color:navy;font-weight:700>import</span> org.testng.annotations.Test;
 
-<span class="kn">import</span> <span class="nn">java.lang.reflect.Method</span><span class="o">;</span>
+<span style=color:navy;font-weight:700>import</span> br.eti.kinoshita.tap4j.ext.testng.TAPAttribute;
+<span style=color:navy;font-weight:700>import</span> br.eti.kinoshita.tap4j.ext.testng.TestTAPReporter;
 
-<span class="kn">import</span> <span class="nn">org.testng.Assert</span><span class="o">;</span>
-<span class="kn">import</span> <span class="nn">org.testng.ITestContext</span><span class="o">;</span>
-<span class="kn">import</span> <span class="nn">org.testng.annotations.Listeners</span><span class="o">;</span>
-<span class="kn">import</span> <span class="nn">org.testng.annotations.Test</span><span class="o">;</span>
+@Listeners(TestTAPReporter.<span style=color:red>class</span>)
+<span style=color:navy;font-weight:700>public</span> <span style=color:navy;font-weight:700>class</span> SampleTest
+{
 
-<span class="kn">import</span> <span class="nn">br.eti.kinoshita.tap4j.ext.testng.TAPAttribute</span><span class="o">;</span>
-<span class="kn">import</span> <span class="nn">br.eti.kinoshita.tap4j.ext.testng.TestTAPReporter</span><span class="o">;</span>
-
-<span class="nd">@Listeners</span><span class="o">(</span><span class="nc">TestTAPReporter</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
-<span class="kd">public</span> <span class="kd">class</span> <span class="nc">SampleTest</span>
-<span class="o">{</span>
-
-	<span class="nd">@Test</span>
-	<span class="kd">public</span> <span class="kt">void</span> <span class="nf">sampleTest</span><span class="o">(</span> <span class="nc">ITestContext</span> <span class="n">injectedCtx</span><span class="o">,</span> <span class="nc">Method</span> <span class="n">injectedMethod</span><span class="o">)</span>
-	<span class="o">{</span>
+	@Test
+	<span style=color:navy;font-weight:700>public</span> <span style=color:navy;font-weight:700>void</span> sampleTest( ITestContext injectedCtx, Method injectedMethod)
+	{
 		
-		<span class="nc">TAPAttribute</span> <span class="n">attribute</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">TAPAttribute</span><span class="o">(</span><span class="n">injectedMethod</span><span class="o">,</span> <span class="mi">1984</span><span class="o">);</span>
+		TAPAttribute attribute = <span style=color:navy;font-weight:700>new</span> TAPAttribute(injectedMethod, 1984);
 		
-		<span class="c1">// Setting an attribute in the test context for this method.</span>
-		<span class="n">injectedCtx</span><span class="o">.</span><span class="na">setAttribute</span><span class="o">(</span><span class="s">"myBirthdayYear"</span><span class="o">,</span> <span class="n">attribute</span><span class="o">);</span>
+		<span style=color:#080;font-style:italic>// Setting an attribute in the test context for this method.
+</span><span style=color:#080;font-style:italic></span>		injectedCtx.<span style=color:red>setAttribute</span>(<span style=color:#00f>&#34;myBirthdayYear&#34;</span>, attribute);
 		
-		<span class="nc">Assert</span><span class="o">.</span><span class="na">assertTrue</span><span class="o">(</span> <span class="nc">System</span><span class="o">.</span><span class="na">currentTimeMillis</span><span class="o">()</span> <span class="o">&gt;</span> <span class="mi">1984</span> <span class="o">);</span>
-	<span class="o">}</span>
+		Assert.<span style=color:red>assertTrue</span>( System.<span style=color:red>currentTimeMillis</span>() &gt; 1984 );
+	}
 	
-<span class="o">}</span>
-</code></pre></div></div>
-
-<p>ITestContext and Method are injected by TestNG during execution. Then you create a TAPAttribute object and add this attribute to the test context, along with an identifier for this attribute. After that you run your test again and take another look at the TAP streams that were generated. You will have two files, br.eti.kinoshita.testngtap.SampleTest.tap and br.eti.kinoshita.testngtap.SampleTest#sampleTest.tap. The first is a TAP Stream for your test class and the latter is a TAP stream for the method of your test class (it generates one TAP Stream for each method). With tap4j listeners you have support to generate TAP per method, per class, per suite or per group (thanks to Cesar Fernandes Almeida). Here is the output for the test class in TAP.</p>
-
-<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>1..1
-ok 1 - br.eti.kinoshita.testngtap.SampleTest#sampleTest
-  <span class="nt">---</span>
+}
+</code></pre></div><p>ITestContext and Method are injected by TestNG during execution. Then you create a TAPAttribute object and add this attribute to the test context, along with an identifier for this attribute. After that you run your test again and take another look at the TAP streams that were generated. You will have two files, br.eti.kinoshita.testngtap.SampleTest.tap and br.eti.kinoshita.testngtap.SampleTest#sampleTest.tap. The first is a TAP Stream for your test class and the latter is a TAP stream for the method of your test class (it generates one TAP Stream for each method). With tap4j listeners you have support to generate TAP per method, per class, per suite or per group (thanks to Cesar Fernandes Almeida). Here is the output for the test class in TAP.</p>
+<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>1..1
+ok <span style=color:#00f>1</span> - br.eti.kinoshita.testngtap.SampleTest#sampleTest
+  ---
   message: TestNG Test sampleTest
-  severity: <span class="s1">'~'</span>
-  <span class="nb">source</span>: br.eti.kinoshita.testngtap.SampleTest#sampleTest
-  datetime: <span class="s1">'2011-03-09T23:32:42'</span>
+  severity: <span style=color:#00f>&#39;~&#39;</span>
+  source: br.eti.kinoshita.testngtap.SampleTest#sampleTest
+  datetime: <span style=color:#00f>&#39;2011-03-09T23:32:42&#39;</span>
   file: br.eti.kinoshita.testngtap.SampleTest
-  line: <span class="s1">'~'</span>
+  line: <span style=color:#00f>&#39;~&#39;</span>
   name: sampleTest
   extensions:
-    myBirthdayYear: 1984
-  got: <span class="s1">'~'</span>
-  expected: <span class="s1">'~'</span>
-  display: <span class="s1">'~'</span>
-  dump: <span class="s1">'{param1=org.testng.TestRunner@ff2413, param2=public void br.eti.kinoshita.testngtap.SampleTest.sampleTest(org.testng.ITestContext,java.lang.reflect.Method)}'</span>
-  error: <span class="s1">'~'</span>
-  backtrace: <span class="s1">'~'</span>
+    myBirthdayYear: <span style=color:#00f>1984</span>
+  got: <span style=color:#00f>&#39;~&#39;</span>
+  expected: <span style=color:#00f>&#39;~&#39;</span>
+  display: <span style=color:#00f>&#39;~&#39;</span>
+  dump: <span style=color:#00f>&#39;{param1=org.testng.TestRunner@ff2413, param2=public void br.eti.kinoshita.testngtap.SampleTest.sampleTest(org.testng.ITestContext,java.lang.reflect.Method)}&#39;</span>
+  error: <span style=color:#00f>&#39;~&#39;</span>
+  backtrace: <span style=color:#00f>&#39;~&#39;</span>
   ...
-</code></pre></div></div>
-
-<p>Each attribute is added as an YAML entry under the 'extensions' entry. You have just gave voice to your TestNG tests. Now they can speak! They can add information to your test results. Perhaps you may be thinking: "Cool, but I don't know where am I going to use it, so I'm going stop reading this bible-like post and will find something more interesting on <a href="http://www.reddit.com">reddit</a>". Hold on, not so fast buddy.</p>
-
-<p>I started using TAP after I had to lead a test automation project with my company. We were using <a href="http://www.teamst.org">TestLink</a> and <a href="http://www.hudson-ci.org">Hudson</a> (and now <a href="http://www.jenkins-ci.org">Jenkins</a>), and in TestLink's forum I read the <a href="http://www.teamst.org/index.php/news-mainmenu-2/13-development/86-testlink-automation-with-tap-successful-story">case of an user</a> who successfully automated his tests with TestLink and TAP. One thing leads to another, and here we are now, with a plug-in that integrates both tools in a simple way.</p>
-
-<p>In this example, we are using <a href="http://testng.org/doc/selenium.html">Selenium and TestNG</a>. But one particularity is that after we take the screen shot in Selenium we use TAP to output the screen shot of that test within the rest of the test report. So TestNG, with a little help of tap4j, generates a TAP Stream that contains a reference for this screenshot file. You can find a sample code that executes Selenium with TestNG and outputs TAP with Selenium screen shots. This strategy is being used in <a href="http://wiki.jenkins-ci.org/display/JENKINS/TestLink+Plugin">TestLink Jenkins Plug-in</a> to execute and update automated tests. We are planning start using TAP in other projects, and build a plug-in for Jenkins that will set Jenkins as an alternative for <a href="http://search.cpan.org/~wonko/Smolder-1.51/bin/smolder">Smolder</a>.</p>
-
+</code></pre></div><p>Each attribute is added as an YAML entry under the 'extensions' entry. You have just gave voice to your TestNG tests. Now they can speak! They can add information to your test results. Perhaps you may be thinking: "Cool, but I don't know where am I going to use it, so I'm going stop reading this bible-like post and will find something more interesting on <a href=http://www.reddit.com>reddit</a>". Hold on, not so fast buddy.</p>
+<p>I started using TAP after I had to lead a test automation project with my company. We were using <a href=http://www.teamst.org>TestLink</a> and <a href=http://www.hudson-ci.org>Hudson</a> (and now <a href=http://www.jenkins-ci.org>Jenkins</a>), and in TestLink's forum I read the <a href=http://www.teamst.org/index.php/news-mainmenu-2/13-development/86-testlink-automation-with-tap-successful-story>case of an user</a> who successfully automated his tests with TestLink and TAP. One thing leads to another, and here we are now, with a plug-in that integrates both tools in a simple way.</p>
+<p>In this example, we are using <a href=http://testng.org/doc/selenium.html>Selenium and TestNG</a>. But one particularity is that after we take the screen shot in Selenium we use TAP to output the screen shot of that test within the rest of the test report. So TestNG, with a little help of tap4j, generates a TAP Stream that contains a reference for this screenshot file. You can find a sample code that executes Selenium with TestNG and outputs TAP with Selenium screen shots. This strategy is being used in <a href=http://wiki.jenkins-ci.org/display/JENKINS/TestLink+Plugin>TestLink Jenkins Plug-in</a> to execute and update automated tests. We are planning start using TAP in other projects, and build a plug-in for Jenkins that will set Jenkins as an alternative for <a href=http://search.cpan.org/~wonko/Smolder-1.51/bin/smolder>Smolder</a>.</p>
 <p>Now I believe that you are ready to have new ideas about how integrate your test data with different systems in your organization environment and take the maximum from TestNG with TAP.</p>
-
 <p>Valeu! Cheers!</p>
-
-  </div>
-
-  <div class="tags"><p>Tags:&nbsp;<a class="label" href="/tag/test anything protocol">test anything protocol</a>,&nbsp;<a class="label" href="/tag/java">java</a>,&nbsp;<a class="label" href="/tag/software quality">software quality</a>.<br/></p></div>
-
-  <a class="u-url" href="/2011/03/10/getting-the-maximum-from-testng-with-tap.html" hidden></a>
+<aside class=links>
+<a class=previous href=https://kinoshita.eti.br/2011/02/25/belgium-testing-days-2011-manage-automated-tests-with-testlink-and-hudson/jenkins.html>&#171; Previous</a>
+<a class=next href=https://kinoshita.eti.br/2011/03/20/discussing-the-flexibility-of-tap-to-cover-information-generated-by-testng.html>Next &#187;</a>
+</aside>
 </article>
-
-  </div>
-</div>
+</main>
+<footer role=contentinfo>
+<ul id=social-media-icons>
+<li>
+<a href=https://www.instagram.com/brunokinoshita/>
+<img src=/assets/icons/instagram.png alt="Instagram link">
+</a>
+</li>
+<li>
+<a href=https://twitter.com/kinow/>
+<img src=/assets/icons/twitter.png alt="Twitter link">
+</a>
+</li>
+<li>
+<a href=https://github.com/kinow/>
+<img src=/assets/icons/github.png alt="GitHub link">
+</a>
+</li>
+</ul>
+</footer>
 </body>
 </html>
