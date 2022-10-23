@@ -9,7 +9,6 @@ title: About
     id="kinow-photo"
     src="/assets/photos/about/2020-me-closeup.png"
     alt="kinow"
-    title="kinow"
     style="max-height: 200px; float: right; margin: 0 auto .5rem auto;padding-left: .5rem;"
   />
 
@@ -25,7 +24,7 @@ title: About
 </div>
 
 <figure class="feature">
-  <img src="/assets/photos/about/255.png" alt="Photo of Sao Paulo City" style="width: 100vw;" class="dark-enabled">
+  <img src="/assets/photos/about/255.png" alt="Drawing with studies of hands and feet" style="width: 100%;" class="dark-enabled">
   <figcaption>Studies of hands and feet.</figcaption>
 </figure>
 
