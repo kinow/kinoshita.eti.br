@@ -1,0 +1,19 @@
+name: Test GitHub Pages pull request
+on:
+  pull_request:
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: SCM
+        uses: actions/checkout@v3
+      - name: Setup Hugo
+        uses: peaceiris/actions-hugo@v2
+        with:
+          hugo-version: '0.91.2'
+          extended: true
+      - name: Build
+        run: hugo --minify
+      - name: List files
+        run: ls ./public

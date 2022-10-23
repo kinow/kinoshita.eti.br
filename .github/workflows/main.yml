@@ -3,21 +3,23 @@ on:
   push:
     branches:
       - master
+  workflow_dispatch:
 jobs:
   build_and_deploy:
     runs-on: ubuntu-latest
     steps:
       - name: SCM
-        uses: actions/checkout@v2
-      - uses: ruby/setup-ruby@v1
+        uses: actions/checkout@v3
+      - name: Setup Hugo
+        uses: peaceiris/actions-hugo@v2
         with:
-          ruby-version: 2.6
-          bundler-cache: true
+          hugo-version: '0.91.2'
+          # extended: true
       - name: Build
-        run: bundle exec jekyll build
+        run: hugo --minify
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.ACCESS_TOKEN }}
-          publish_dir: ./build
+          publish_dir: ./public
           publish_branch: gh-pages
