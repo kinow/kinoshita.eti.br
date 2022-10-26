@@ -1,0 +1,132 @@
+<!doctype html><html lang=en><head>
+<meta charset=utf-8>
+<meta name=viewport content="width=device-width,initial-scale=1"><link rel=stylesheet type=text/css href=https://kinoshita.eti.br/sass/main.bb12278f082614f093646fd8c21cd5db009382bf5777a5ca1b84c705f7ff5e2d.css integrity="sha256-uxInjwgmFPCTZG/YwhzV2wCTgr9Xd6XKG4THBff/Xi0=">
+<title>kinow | Generating diagrams from a SQlite database with Python</title>
+</head>
+<body>
+<header role=banner class=content>
+<nav id=nav aria-label=Main role=navigation class=content>
+<ul>
+<li>
+<a href=/><i data-feather=about></i> About</a>
+</li>
+<li>
+<a href=/blog/><i data-feather=blog></i> Blog</a>
+</li>
+<li>
+<a href=/portfolio/><i data-feather=portfolio></i> Portfolio</a>
+</li>
+</ul>
+</nav>
+</header>
+<main>
+<article class=content>
+<h2>Generating diagrams from a SQlite database with Python</h2><div class=metadata>
+<i data-feather=calendar></i>
+<time datetime=2019-07-28>Jul 28, 2019</time>
+</div>
+<figure class=feature>
+<img src=/assets/posts/2019-07-28-generating-diagrams-from-a-sqlite-database-with-python/Amiga.png alt="A 1984 Apple Macintosh drawing" title="A 1984 Apple Macintosh drawing" style=float:left;width:30% width height>
+<figcaption>A 1984 Apple Macintosh drawing</figcaption>
+</figure>
+<p>There are tools out there that can be used to reverse engineer databases and generate diagrams. These tools
+normally are GUI based. But <a href=https://github.com/cylc/cylc-doc/pull/29>I needed</a> one that could be used in a
+project build to generate a simple diagram for documentation.</p>
+<p>A tool in Python would be ideal, as that is the language the project I was working on was written in. After
+searching in DuckDuckGo and PYPI, I found <a href=https://pypi.org/project/ERAlchemy/>ERAlchemy</a> that
+seemed to have the features I needed - kinda.</p>
+<p>Running the default <code>eralchemy -i sqlite:///relative/path/to/db.db -o erd_from_sqlite.pdf</code> against
+the project database, the diagram generated was not really easy to read. It was very tall,
+and did not appear to respect any order such as number of relationships, alphabetical order, etc.</p>
+<figure class=feature>
+<img src=/assets/posts/2019-07-28-generating-diagrams-from-a-sqlite-database-with-python/default.png alt title width height>
+<figcaption></figcaption>
+</figure>
+<p>Looking at the code, I found where it produced a <code>dot</code> file. So I decided first to have a go at
+quickly customizing that file and running <code>dot</code> to produce a better diagram.</p>
+<pre tabindex=0><code class=language-dot data-lang=dot># file: custom.dot
+graph {
+	node [label = &quot;\N&quot;, shape = plaintext];
+	edge [color = gray50, minlen = 2, style = dashed];
+	rankdir = &quot;TB&quot;;
+	newrank=&quot;true&quot;
+
+	&quot;broadcast_events&quot; [label=&lt;&lt;FONT FACE=&quot;Helvetica&quot;&gt;&lt;TABLE BORDER=&quot;0&quot; CELLBORDER=&quot;1&quot; CELLPADDING=&quot;4&quot; CELLSPACING=&quot;0&quot;&gt;&lt;TR&gt;&lt;TD&gt;&lt;B&gt;&lt;FONT POINT-SIZE=&quot;16&quot;&gt;broadcast_events&lt;/FONT&gt;&lt;/B&gt;&lt;/TD&gt;&lt;/TR&gt;&lt;TR&gt;&lt;TD ALIGN=&quot;LEFT&quot;&gt;&lt;FONT&gt;time&lt;/FONT&gt;&lt;/TD&gt;&lt;/TR&gt;&lt;TR&gt;&lt;TD ALIGN=&quot;LEFT&quot;&gt;&lt;FONT&gt;change&lt;/FONT&gt;&lt;/TD&gt;&lt;/TR&gt;&lt;TR&gt;&lt;TD ALIGN=&quot;LEFT&quot;&gt;&lt;FONT&gt;point&lt;/FONT&gt;&lt;/TD&gt;&lt;/TR&gt;&lt;TR&gt;&lt;TD ALIGN=&quot;LEFT&quot;&gt;&lt;FONT&gt;namespace&lt;/FONT&gt;&lt;/TD&gt;&lt;/TR&gt;&lt;TR&gt;&lt;TD ALIGN=&quot;LEFT&quot;&gt;&lt;FONT&gt;key&lt;/FONT&gt;&lt;/TD&gt;&lt;/TR&gt;&lt;TR&gt;&lt;TD ALIGN=&quot;LEFT&quot;&gt;&lt;FONT&gt;value&lt;/FONT&gt;&lt;/TD&gt;&lt;/TR&gt;&lt;/TABLE&gt;&lt;/FONT&gt;&gt;];
+	&quot;broadcast_states&quot; [label=&lt;&lt;FONT FACE=&quot;Helvetica&quot;&gt;&lt;TABLE BORDER=&quot;0&quot; CELLBORDER=&quot;1&quot; CELLPADDING=&quot;4&quot; CELLSPACING=&quot;0&quot;&gt;&lt;TR&gt;&lt;TD&gt;&lt;B&gt;&lt;FONT POINT-SIZE=&quot;16&quot;&gt;broadcast_states&lt;/FONT&gt;&lt;/B&gt;&lt;/TD&gt;&lt;/TR&gt;&lt;TR&gt;&lt;TD ALIGN=&quot;LEFT&quot;&gt;&lt;u&gt;&lt;FONT&gt;point&lt;/FONT&gt;&lt;/u&gt;&lt;/TD&gt;&lt;/TR&gt;&lt;TR&gt;&lt;TD ALIGN=&quot;LEFT&quot;&gt;&lt;u&gt;&lt;FONT&gt;namespace&lt;/FONT&gt;&lt;/u&gt;&lt;/TD&gt;&lt;/TR&gt;&lt;TR&gt;&lt;TD ALIGN=&quot;LEFT&quot;&gt;&lt;u&gt;&lt;FONT&gt;key&lt;/FONT&gt;&lt;/u&gt;&lt;/TD&gt;&lt;/TR&gt;&lt;TR&gt;&lt;TD ALIGN=&quot;LEFT&quot;&gt;&lt;FONT&gt;value&lt;/FONT&gt;&lt;/TD&gt;&lt;/TR&gt;&lt;/TABLE&gt;&lt;/FONT&gt;&gt;];
+	...
+	&quot;task_timeout_timers&quot; [label=&lt;&lt;FONT FACE=&quot;Helvetica&quot;&gt;&lt;TABLE BORDER=&quot;0&quot; CELLBORDER=&quot;1&quot; CELLPADDING=&quot;4&quot; CELLSPACING=&quot;0&quot;&gt;&lt;TR&gt;&lt;TD&gt;&lt;B&gt;&lt;FONT POINT-SIZE=&quot;16&quot;&gt;task_timeout_timers&lt;/FONT&gt;&lt;/B&gt;&lt;/TD&gt;&lt;/TR&gt;&lt;TR&gt;&lt;TD ALIGN=&quot;LEFT&quot;&gt;&lt;u&gt;&lt;FONT&gt;cycle&lt;/FONT&gt;&lt;/u&gt;&lt;/TD&gt;&lt;/TR&gt;&lt;TR&gt;&lt;TD ALIGN=&quot;LEFT&quot;&gt;&lt;u&gt;&lt;FONT&gt;name&lt;/FONT&gt;&lt;/u&gt;&lt;/TD&gt;&lt;/TR&gt;&lt;TR&gt;&lt;TD ALIGN=&quot;LEFT&quot;&gt;&lt;FONT&gt;timeout&lt;/FONT&gt;&lt;/TD&gt;&lt;/TR&gt;&lt;/TABLE&gt;&lt;/FONT&gt;&gt;];
+	&quot;xtriggers&quot; [label=&lt;&lt;FONT FACE=&quot;Helvetica&quot;&gt;&lt;TABLE BORDER=&quot;0&quot; CELLBORDER=&quot;1&quot; CELLPADDING=&quot;4&quot; CELLSPACING=&quot;0&quot;&gt;&lt;TR&gt;&lt;TD&gt;&lt;B&gt;&lt;FONT POINT-SIZE=&quot;16&quot;&gt;xtriggers&lt;/FONT&gt;&lt;/B&gt;&lt;/TD&gt;&lt;/TR&gt;&lt;TR&gt;&lt;TD ALIGN=&quot;LEFT&quot;&gt;&lt;u&gt;&lt;FONT&gt;signature&lt;/FONT&gt;&lt;/u&gt;&lt;/TD&gt;&lt;/TR&gt;&lt;TR&gt;&lt;TD ALIGN=&quot;LEFT&quot;&gt;&lt;FONT&gt;results&lt;/FONT&gt;&lt;/TD&gt;&lt;/TR&gt;&lt;/TABLE&gt;&lt;/FONT&gt;&gt;];
+	&quot;task_states&quot; -- &quot;task_events&quot; [taillabel=&lt;&lt;FONT&gt;0..N&lt;/FONT&gt;&gt;,headlabel=&lt;&lt;FONT&gt;{0,1}&lt;/FONT&gt;&gt;];
+	...
+	&quot;task_pool&quot; -- &quot;task_timeout_timers&quot; [taillabel=&lt;&lt;FONT&gt;{0,1}&lt;/FONT&gt;&gt;,headlabel=&lt;&lt;FONT&gt;{0,1}&lt;/FONT&gt;&gt;];
+}
+</code></pre><p>That worked initially, producing a horizontal diagram as I wanted.</p>
+<figure class=feature>
+<img src=/assets/posts/2019-07-28-generating-diagrams-from-a-sqlite-database-with-python/custom.png alt title width height>
+<figcaption></figcaption>
+</figure>
+<p>But the utility tables, those without any relationship, were scattered over the diagram, and I wanted them grouped.</p>
+<p>After fiddling with the graph syntax, and finding an example with a subgraph, I was able to organize the tables in a way that
+seemed easier for other developers and users to read and understand it.</p>
+<pre tabindex=0><code class=language-dot data-lang=dot># file: final.dot
+graph {
+	node [label = &quot;\N&quot;, shape = plaintext];
+	edge [color = gray50, minlen = 2, style = dashed];
+	rankdir = &quot;TB&quot;;
+	newrank=&quot;true&quot;
+
+	subgraph orphan {rank = sink
+		&quot;broadcast_events&quot; [label=&lt;&lt;FONT FACE=&quot;Helvetica&quot;&gt;&lt;TABLE BORDER=&quot;0&quot; CELLBORDER=&quot;1&quot; CELLPADDING=&quot;4&quot; CELLSPACING=&quot;0&quot;&gt;&lt;TR&gt;&lt;TD&gt;&lt;B&gt;&lt;FONT POINT-SIZE=&quot;16&quot;&gt;broadcast_events&lt;/FONT&gt;&lt;/B&gt;&lt;/TD&gt;&lt;/TR&gt;&lt;TR&gt;&lt;TD ALIGN=&quot;LEFT&quot;&gt;&lt;FONT&gt;time&lt;/FONT&gt;&lt;/TD&gt;&lt;/TR&gt;&lt;TR&gt;&lt;TD ALIGN=&quot;LEFT&quot;&gt;&lt;FONT&gt;change&lt;/FONT&gt;&lt;/TD&gt;&lt;/TR&gt;&lt;TR&gt;&lt;TD ALIGN=&quot;LEFT&quot;&gt;&lt;FONT&gt;point&lt;/FONT&gt;&lt;/TD&gt;&lt;/TR&gt;&lt;TR&gt;&lt;TD ALIGN=&quot;LEFT&quot;&gt;&lt;FONT&gt;namespace&lt;/FONT&gt;&lt;/TD&gt;&lt;/TR&gt;&lt;TR&gt;&lt;TD ALIGN=&quot;LEFT&quot;&gt;&lt;FONT&gt;key&lt;/FONT&gt;&lt;/TD&gt;&lt;/TR&gt;&lt;TR&gt;&lt;TD ALIGN=&quot;LEFT&quot;&gt;&lt;FONT&gt;value&lt;/FONT&gt;&lt;/TD&gt;&lt;/TR&gt;&lt;/TABLE&gt;&lt;/FONT&gt;&gt;];
+		&quot;inheritance&quot; [label=&lt;&lt;FONT FACE=&quot;Helvetica&quot;&gt;&lt;TABLE BORDER=&quot;0&quot; CELLBORDER=&quot;1&quot; CELLPADDING=&quot;4&quot; CELLSPACING=&quot;0&quot;&gt;&lt;TR&gt;&lt;TD&gt;&lt;B&gt;&lt;FONT POINT-SIZE=&quot;16&quot;&gt;inheritance&lt;/FONT&gt;&lt;/B&gt;&lt;/TD&gt;&lt;/TR&gt;&lt;TR&gt;&lt;TD ALIGN=&quot;LEFT&quot;&gt;&lt;u&gt;&lt;FONT&gt;namespace&lt;/FONT&gt;&lt;/u&gt;&lt;/TD&gt;&lt;/TR&gt;&lt;TR&gt;&lt;TD ALIGN=&quot;LEFT&quot;&gt;&lt;FONT&gt;inheritance&lt;/FONT&gt;&lt;/TD&gt;&lt;/TR&gt;&lt;/TABLE&gt;&lt;/FONT&gt;&gt;];
+		&quot;suite_template_vars&quot; [label=&lt;&lt;FONT FACE=&quot;Helvetica&quot;&gt;&lt;TABLE BORDER=&quot;0&quot; CELLBORDER=&quot;1&quot; CELLPADDING=&quot;4&quot; CELLSPACING=&quot;0&quot;&gt;&lt;TR&gt;&lt;TD&gt;&lt;B&gt;&lt;FONT POINT-SIZE=&quot;16&quot;&gt;suite_template_vars&lt;/FONT&gt;&lt;/B&gt;&lt;/TD&gt;&lt;/TR&gt;&lt;TR&gt;&lt;TD ALIGN=&quot;LEFT&quot;&gt;&lt;u&gt;&lt;FONT&gt;key&lt;/FONT&gt;&lt;/u&gt;&lt;/TD&gt;&lt;/TR&gt;&lt;TR&gt;&lt;TD ALIGN=&quot;LEFT&quot;&gt;&lt;FONT&gt;value&lt;/FONT&gt;&lt;/TD&gt;&lt;/TR&gt;&lt;/TABLE&gt;&lt;/FONT&gt;&gt;];
+		&quot;xtriggers&quot; [label=&lt;&lt;FONT FACE=&quot;Helvetica&quot;&gt;&lt;TABLE BORDER=&quot;0&quot; CELLBORDER=&quot;1&quot; CELLPADDING=&quot;4&quot; CELLSPACING=&quot;0&quot;&gt;&lt;TR&gt;&lt;TD&gt;&lt;B&gt;&lt;FONT POINT-SIZE=&quot;16&quot;&gt;xtriggers&lt;/FONT&gt;&lt;/B&gt;&lt;/TD&gt;&lt;/TR&gt;&lt;TR&gt;&lt;TD ALIGN=&quot;LEFT&quot;&gt;&lt;u&gt;&lt;FONT&gt;signature&lt;/FONT&gt;&lt;/u&gt;&lt;/TD&gt;&lt;/TR&gt;&lt;TR&gt;&lt;TD ALIGN=&quot;LEFT&quot;&gt;&lt;FONT&gt;results&lt;/FONT&gt;&lt;/TD&gt;&lt;/TR&gt;&lt;/TABLE&gt;&lt;/FONT&gt;&gt;];
+		&quot;broadcast_states&quot; [label=&lt;&lt;FONT FACE=&quot;Helvetica&quot;&gt;&lt;TABLE BORDER=&quot;0&quot; CELLBORDER=&quot;1&quot; CELLPADDING=&quot;4&quot; CELLSPACING=&quot;0&quot;&gt;&lt;TR&gt;&lt;TD&gt;&lt;B&gt;&lt;FONT POINT-SIZE=&quot;16&quot;&gt;broadcast_states&lt;/FONT&gt;&lt;/B&gt;&lt;/TD&gt;&lt;/TR&gt;&lt;TR&gt;&lt;TD ALIGN=&quot;LEFT&quot;&gt;&lt;u&gt;&lt;FONT&gt;point&lt;/FONT&gt;&lt;/u&gt;&lt;/TD&gt;&lt;/TR&gt;&lt;TR&gt;&lt;TD ALIGN=&quot;LEFT&quot;&gt;&lt;u&gt;&lt;FONT&gt;namespace&lt;/FONT&gt;&lt;/u&gt;&lt;/TD&gt;&lt;/TR&gt;&lt;TR&gt;&lt;TD ALIGN=&quot;LEFT&quot;&gt;&lt;u&gt;&lt;FONT&gt;key&lt;/FONT&gt;&lt;/u&gt;&lt;/TD&gt;&lt;/TR&gt;&lt;TR&gt;&lt;TD ALIGN=&quot;LEFT&quot;&gt;&lt;FONT&gt;value&lt;/FONT&gt;&lt;/TD&gt;&lt;/TR&gt;&lt;/TABLE&gt;&lt;/FONT&gt;&gt;];
+	}
+	&quot;broadcast_states_checkpoints&quot; [label=&lt;&lt;FONT FACE=&quot;Helvetica&quot;&gt;&lt;TABLE BORDER=&quot;0&quot; CELLBORDER=&quot;1&quot; CELLPADDING=&quot;4&quot; CELLSPACING=&quot;0&quot;&gt;&lt;TR&gt;&lt;TD&gt;&lt;B&gt;&lt;FONT POINT-SIZE=&quot;16&quot;&gt;broadcast_states_checkpoints&lt;/FONT&gt;&lt;/B&gt;&lt;/TD&gt;&lt;/TR&gt;&lt;TR&gt;&lt;TD ALIGN=&quot;LEFT&quot;&gt;&lt;u&gt;&lt;FONT&gt;id&lt;/FONT&gt;&lt;/u&gt;&lt;/TD&gt;&lt;/TR&gt;&lt;TR&gt;&lt;TD ALIGN=&quot;LEFT&quot;&gt;&lt;u&gt;&lt;FONT&gt;point&lt;/FONT&gt;&lt;/u&gt;&lt;/TD&gt;&lt;/TR&gt;&lt;TR&gt;&lt;TD ALIGN=&quot;LEFT&quot;&gt;&lt;u&gt;&lt;FONT&gt;namespace&lt;/FONT&gt;&lt;/u&gt;&lt;/TD&gt;&lt;/TR&gt;&lt;TR&gt;&lt;TD ALIGN=&quot;LEFT&quot;&gt;&lt;u&gt;&lt;FONT&gt;key&lt;/FONT&gt;&lt;/u&gt;&lt;/TD&gt;&lt;/TR&gt;&lt;TR&gt;&lt;TD ALIGN=&quot;LEFT&quot;&gt;&lt;FONT&gt;value&lt;/FONT&gt;&lt;/TD&gt;&lt;/TR&gt;&lt;/TABLE&gt;&lt;/FONT&gt;&gt;];
+	...
+	&quot;task_timeout_timers&quot; [label=&lt;&lt;FONT FACE=&quot;Helvetica&quot;&gt;&lt;TABLE BORDER=&quot;0&quot; CELLBORDER=&quot;1&quot; CELLPADDING=&quot;4&quot; CELLSPACING=&quot;0&quot;&gt;&lt;TR&gt;&lt;TD&gt;&lt;B&gt;&lt;FONT POINT-SIZE=&quot;16&quot;&gt;task_timeout_timers&lt;/FONT&gt;&lt;/B&gt;&lt;/TD&gt;&lt;/TR&gt;&lt;TR&gt;&lt;TD ALIGN=&quot;LEFT&quot;&gt;&lt;u&gt;&lt;FONT&gt;cycle&lt;/FONT&gt;&lt;/u&gt;&lt;/TD&gt;&lt;/TR&gt;&lt;TR&gt;&lt;TD ALIGN=&quot;LEFT&quot;&gt;&lt;u&gt;&lt;FONT&gt;name&lt;/FONT&gt;&lt;/u&gt;&lt;/TD&gt;&lt;/TR&gt;&lt;TR&gt;&lt;TD ALIGN=&quot;LEFT&quot;&gt;&lt;FONT&gt;timeout&lt;/FONT&gt;&lt;/TD&gt;&lt;/TR&gt;&lt;/TABLE&gt;&lt;/FONT&gt;&gt;];
+	&quot;task_states&quot; -- &quot;task_events&quot; [taillabel=&lt;&lt;FONT&gt;0..N&lt;/FONT&gt;&gt;,headlabel=&lt;&lt;FONT&gt;{0,1}&lt;/FONT&gt;&gt;];
+	...
+	&quot;task_pool&quot; -- &quot;task_timeout_timers&quot; [taillabel=&lt;&lt;FONT&gt;{0,1}&lt;/FONT&gt;&gt;,headlabel=&lt;&lt;FONT&gt;{0,1}&lt;/FONT&gt;&gt;];
+}
+</code></pre>
+<figure class=feature>
+<img src=/assets/posts/2019-07-28-generating-diagrams-from-a-sqlite-database-with-python/final.png alt title width height>
+<figcaption></figcaption>
+</figure>
+<p>And that way you can generate your database diagram during your build process, and include in your project documentation.
+Here&rsquo;s the <a href=https://gist.github.com/kinow/7c8e1a2da97c9746f0cbc868b33839c3>final script</a>.</p>
+<p>And an <a href=https://github.com/Alexis-benoist/eralchemy/issues/63>issue</a> created asking to allow
+more customization for cases like this one.</p>
+<aside class=links>
+<a class=previous href=https://kinoshita.eti.br/2019/05/17/a-look-at-the-first-implementation-of-graphql-in-cylc.html>&#171; Previous</a>
+<a class=next href=https://kinoshita.eti.br/2019/09/22/cylc-videos.html>Next &#187;</a>
+</aside>
+</article>
+</main>
+<footer role=contentinfo>
+<ul id=social-media-icons>
+<li>
+<a href=https://www.instagram.com/brunokinoshita/>
+<img src=/assets/icons/instagram.png alt="Instagram link">
+</a>
+</li>
+<li>
+<a href=https://twitter.com/kinow/>
+<img src=/assets/icons/twitter.png alt="Twitter link">
+</a>
+</li>
+<li>
+<a href=https://github.com/kinow/>
+<img src=/assets/icons/github.png alt="GitHub link">
+</a>
+</li>
+<li>
+<a href=/feed.xml>
+<img src=/assets/icons/news.png alt="RSS feed link">
+</a>
+</li>
+</ul>
+</footer>
+</body>
+</html>

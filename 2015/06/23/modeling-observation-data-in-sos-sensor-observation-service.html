@@ -1,0 +1,110 @@
+<!doctype html><html lang=en><head>
+<meta charset=utf-8>
+<meta name=viewport content="width=device-width,initial-scale=1"><link rel=stylesheet type=text/css href=https://kinoshita.eti.br/sass/main.bb12278f082614f093646fd8c21cd5db009382bf5777a5ca1b84c705f7ff5e2d.css integrity="sha256-uxInjwgmFPCTZG/YwhzV2wCTgr9Xd6XKG4THBff/Xi0=">
+<title>kinow | Modeling observation data in SOS (Sensor Observation Service)</title>
+</head>
+<body>
+<header role=banner class=content>
+<nav id=nav aria-label=Main role=navigation class=content>
+<ul>
+<li>
+<a href=/><i data-feather=about></i> About</a>
+</li>
+<li>
+<a href=/blog/><i data-feather=blog></i> Blog</a>
+</li>
+<li>
+<a href=/portfolio/><i data-feather=portfolio></i> Portfolio</a>
+</li>
+</ul>
+</nav>
+</header>
+<main>
+<article class=content>
+<h2>Modeling observation data in SOS (Sensor Observation Service)</h2><div class=metadata>
+<i data-feather=calendar></i>
+<time datetime=2015-06-23>Jun 23, 2015</time>
+</div>
+<p>This week NZ Herald published an <a href="http://www.nzherald.co.nz/technology/news/article.cfm?c_id=5&objectid=11469418">article</a>
+about a device created by an Irish farmer enterpreneur that sends a message to a farmer when the cow is about to give birth.
+The device monitors &ldquo;heightened tail moviment&rdquo;.</p>
+<p>In this post I will try to apply what I am learning following the <a href=http://www.ogcnetwork.net/SOS_2_0/tutorial>SOS Tutorial</a>
+(the Open Geospatial Consortium standard for Sensor Observation Service). Feel free to drop me a message via
+<a href=https://twitter.com/kinow>@kinow</a> if you find any mistakes or have any suggestions.</p>
+<h2 id=modeling-the-tail-moviment-observation-data-in-sos>Modeling the tail moviment observation data in SOS</h2>
+<p>SOS is a standard designed to provide access to observation data. There are several server implementations, such as Kisters KiWIS,
+istSOS and 52North SOS.</p>
+<p>The standard mentions and utilises several other standards, such as SensorML, WFS, XML, WMS, etc. The SOS Tutorial on
+how to model your observation data for SOS starts by defining <em>procedure</em>, <em>observed property</em>, <em>feature of interest</em>,
+<em>phenomenon and result times</em>, and the <em>result value</em>.</p>
+<p>Let&rsquo;s try to model the data from the tail moviment sensors in the following table.</p>
+<table class="table table-bordered">
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+<th>Our example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<th>Procedure</th>
+<td>The process that has generated the observation, such as a sensor, from the O&M specification. In our example that could be a sensor identification</td>
+<td>moocall_001</td>
+</tr>
+<tr>
+<th>Observed Property</th>
+<td>A property which is observed (look at NASA SWEET ontology for existing values)</td>
+<td>Heightned tail moviment</td>
+</tr>
+<tr>
+<th>Feature of Interest</th>
+<td>A feature that carries the property which is observed</td>
+<td>Pregnant cow</td>
+</tr>
+<tr>
+<th>Phenomenon and Result Times</th>
+<td>The phenomenon time is when the data has been taken, and the result time when it has been created. If both are the same, the resultTime can point to the phenomenonTime</td>
+<td>20150623142000</td>
+</tr>
+<tr>
+<th>Result value</th>
+<td>This is the result of the observation. Can be a OM_Measurement if numeric, OM_TruthObservation, etc (O&M)</td>
+<td>3 (supposing we have a scale from 1 to 5)</td>
+</tr>
+</tbody>
+</table>
+<p>In the next post I will try to show how to load this model and some dummy data into a fresh installation of
+52North SOS server.</p>
+<aside class=links>
+<a class=previous href=https://kinoshita.eti.br/2015/04/12/groovy-hooks-in-jenkins-for-increasing-logging-level.html>&#171; Previous</a>
+<a class=next href=https://kinoshita.eti.br/2015/09/07/how-does-the-jenkins-credentials-plug-in-store-passwords.html>Next &#187;</a>
+</aside>
+</article>
+</main>
+<footer role=contentinfo>
+<ul id=social-media-icons>
+<li>
+<a href=https://www.instagram.com/brunokinoshita/>
+<img src=/assets/icons/instagram.png alt="Instagram link">
+</a>
+</li>
+<li>
+<a href=https://twitter.com/kinow/>
+<img src=/assets/icons/twitter.png alt="Twitter link">
+</a>
+</li>
+<li>
+<a href=https://github.com/kinow/>
+<img src=/assets/icons/github.png alt="GitHub link">
+</a>
+</li>
+<li>
+<a href=/feed.xml>
+<img src=/assets/icons/news.png alt="RSS feed link">
+</a>
+</li>
+</ul>
+</footer>
+</body>
+</html>

@@ -1,0 +1,83 @@
+<!doctype html><html lang=en><head>
+<meta charset=utf-8>
+<meta name=viewport content="width=device-width,initial-scale=1"><link rel=stylesheet type=text/css href=https://kinoshita.eti.br/sass/main.bb12278f082614f093646fd8c21cd5db009382bf5777a5ca1b84c705f7ff5e2d.css integrity="sha256-uxInjwgmFPCTZG/YwhzV2wCTgr9Xd6XKG4THBff/Xi0=">
+<title>kinow | Removing invisible unread GitHub notifications</title>
+</head>
+<body>
+<header role=banner class=content>
+<nav id=nav aria-label=Main role=navigation class=content>
+<ul>
+<li>
+<a href=/><i data-feather=about></i> About</a>
+</li>
+<li>
+<a href=/blog/><i data-feather=blog></i> Blog</a>
+</li>
+<li>
+<a href=/portfolio/><i data-feather=portfolio></i> Portfolio</a>
+</li>
+</ul>
+</nav>
+</header>
+<main>
+<article class=content>
+<h2>Removing invisible unread GitHub notifications</h2><div class=metadata>
+<i data-feather=calendar></i>
+<time datetime=2021-10-22>Oct 22, 2021</time>
+</div>
+<p>Some months ago I noticed that even after I marked all my GitHub notifications
+as read, the unread icon displayed at the right top corner was still showing as
+if I had unread notifications.</p>
+<figure class=feature>
+<img src=/assets/posts/2021-10-22-removing-invisible-unread-github-notifications/notifications.png alt="GitHub Notifications icon always-on mode" title="GitHub Notifications icon always-on mode" width height>
+<figcaption>GitHub Notifications icon always-on mode</figcaption>
+</figure>
+<p>I tried changing the filters, waiting for a new notification to appear so that
+I could mark it as read, all hoping that icon would then change. But no matter
+what I tried in the GitHub UI, the icon was still there.</p>
+<p>Then I opened a ticket with GitHub support and within a couple of days they
+replied suggesting me to use their
+<a href=https://docs.github.com/en/rest/reference/activity#mark-notifications-as-read>REST API</a>
+to mark notifications as read.
+So if you have the same issue, try the following
+<a href=https://github.com/kinow/dork-scripts/blob/master/github/mark-notifications-as-read.sh>code</a>:</p>
+<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=color:#080;font-style:italic># https://docs.github.com/en/rest/reference/activity#mark-notifications-as-read</span>
+curl -X PUT <span style=color:#00f>\
+</span><span style=color:#00f></span>  -H <span style=color:#00f>&#34;Accept: application/vnd.github.v3+json&#34;</span> <span style=color:#00f>\
+</span><span style=color:#00f></span>  -H <span style=color:#00f>&#34;Authorization: token </span>$TOKEN_GOES_HERE<span style=color:#00f>&#34;</span> <span style=color:#00f>\
+</span><span style=color:#00f></span>  https://api.github.com/notifications -d <span style=color:#00f>&#39;{&#34;last_read_at&#34;: &#34;&#39;</span><span style=color:navy;font-weight:700>$(</span>date <span style=color:#00f>&#39;+%Y-%m-%dT%H:%M:%SZ&#39;</span><span style=color:navy;font-weight:700>)</span><span style=color:#00f>&#39;&#34;}&#39;</span>
+</code></pre></div><p>You will have to create a <a href=https://github.com/settings/tokens>token</a> and use
+it in the command above. Just give it &ldquo;Notifications&rdquo; permission, and delete
+it after you have used it.</p>
+<aside class=links>
+<a class=previous href=https://kinoshita.eti.br/2021/10/17/blender-rendering-on-nvidia-jetson-nano.html>&#171; Previous</a>
+<a class=next href=https://kinoshita.eti.br/2021/11/08/cyclic-workflows-with-prefect.html>Next &#187;</a>
+</aside>
+</article>
+</main>
+<footer role=contentinfo>
+<ul id=social-media-icons>
+<li>
+<a href=https://www.instagram.com/brunokinoshita/>
+<img src=/assets/icons/instagram.png alt="Instagram link">
+</a>
+</li>
+<li>
+<a href=https://twitter.com/kinow/>
+<img src=/assets/icons/twitter.png alt="Twitter link">
+</a>
+</li>
+<li>
+<a href=https://github.com/kinow/>
+<img src=/assets/icons/github.png alt="GitHub link">
+</a>
+</li>
+<li>
+<a href=/feed.xml>
+<img src=/assets/icons/news.png alt="RSS feed link">
+</a>
+</li>
+</ul>
+</footer>
+</body>
+</html>

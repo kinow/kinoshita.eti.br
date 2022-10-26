@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>tomcat on kinow</title><link>https://kinoshita.eti.br/tags/tomcat.html</link><description>Recent content in tomcat on kinow</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><managingEditor>[email protected] (Bruno P. Kinoshita)</managingEditor><webMaster>[email protected] (Bruno P. Kinoshita)</webMaster><copyright>Bruno P. Kinoshita All rights reserved</copyright><lastBuildDate>Sun, 20 Mar 2016 00:00:00 +0000</lastBuildDate><atom:link href="https://kinoshita.eti.br/tags/tomcat/feed.xml" rel="self" type="application/rss+xml"/><item><title>Deploying WAR files to Tomcat with Jenkins</title><link>https://kinoshita.eti.br/2016/03/20/deploying-war-files-to-tomcat-with-jenkins.html</link><pubDate>Sun, 20 Mar 2016 00:00:00 +0000</pubDate><author>[email protected] (Bruno P. Kinoshita)</author><guid>https://kinoshita.eti.br/2016/03/20/deploying-war-files-to-tomcat-with-jenkins.html</guid><description>&lt;p>&lt;strong>Table of Contents&lt;/strong>&lt;/p>
+&lt;ul>
+&lt;li>&lt;a href="#1-deploying-with-custom-scripts">Deploying with custom scripts&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#2-deploying-with-a-build-tool">Deploying with a build tool&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#3-deploying-with-a-build-server">Deploying with a build server&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#final-thoughts">Final thoughts&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;p>A co-worker asked me this week about how to deploy a WAR file to Tomcat with Jenkins. In my team we are
+currently maintaining and deploying about 10 Java web systems, but we have no consistent way of deploying
+the applications to Tomcat yet. In the past I used Ant, Maven, Cargo, Grunt, and Jenkins, so I
+decided to write this short post to show a few different ways it can be achieved, à la
+&lt;a href="https://en.wikipedia.org/wiki/There's_more_than_one_way_to_do_it">Perl&amp;rsquo;s TMTOWTDI&lt;/a> motto.&lt;/p>
+&lt;h2>&lt;a name="1-deploying-with-custom-scripts" style="color: #222222;">#1 Deploying with custom scripts&lt;/a>&lt;/h2>
+&lt;p>At first you may be tempted to write your own script to deploy to Tomcat with some Shell, Perl, Python
+or Java. But I think I would choose this option only because either I needed some feature that is not
+available in the other options, or in order to call other tasks or debug some problem.&lt;/p>
+&lt;p>Example:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">$ docker run -d -p 8888:8080 jeanblanchard/tomcat:8
+$ git clone https://github.com/spring-projects/spring-petclinic.git &amp;amp;&amp;amp; cd spring-petclinic &amp;amp;&amp;amp; mvn package
+$ curl --upload-file target/petclinic.war &lt;span style="color:#00f">&amp;#34;http://admin:admin@localhost:8888/manager/text/deploy?path=/spring-petclinic&amp;amp;update=true&amp;#34;&lt;/span>
+OK - Deployed application at context path /spring-petclinic
+&lt;/code>&lt;/pre>&lt;/div></description></item></channel></rss>
