@@ -30,7 +30,7 @@ title: About
 
 In arts, I enjoy life drawing, editorial illustration, gouache, watercolors, pastels,
 3D, UI/UX, data visualization, and writing. Much of the way I draw and paint was imprinted
-on me by my late big brother [Joe Lauviah Morbitus Mortiferus](https://youtu.be/wLhsyyN7T2Q?t=14)
+on me by my late big brother, [Joe Lauviah Morbitus Mortiferus](https://youtu.be/wLhsyyN7T2Q?t=14)
 (he would still want to be called that way, <i>shrugs</i>).
 I use mixed media, but tend to use more charcoal, graphite, and ink
 for traditional arts. For digital arts I use GIMP, Krita, Blender,

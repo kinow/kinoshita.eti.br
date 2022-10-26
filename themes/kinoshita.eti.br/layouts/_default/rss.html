@@ -1,0 +1,22 @@
+{{ define "main" }}
+<main>
+  <article class="content">
+    {{ with .Title }}
+    <h2>{{ . }}</h2>
+    {{ end }}
+    {{ with .Content }}{{ . }}{{ end }}
+    {{ range $taxonomyName, $taxonomy := .Site.Taxonomies }}
+    {{ if ne $taxonomyName "tags" }}
+    <h3>{{ $taxonomyName | title }}</h3>
+    <ul>
+      {{ range $key, $value := $taxonomy }}
+      {{ with $value.Page.OutputFormats.Get "rss" }}
+      <li><a href="{{ .Permalink }}">{{ $value.Page.Title }}</a></li>
+      {{ end }}
+      {{ end }}
+    </ul>
+    {{ end }}
+    {{ end }}
+  </article>
+</main>
+{{ end }}
