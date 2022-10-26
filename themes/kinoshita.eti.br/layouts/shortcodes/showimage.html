@@ -1,11 +1,17 @@
-<figure class="feature">
+{{ $css_class := default "feature" (.Get "class") }}
+{{ $show_figure := default true (.Get "showfigure") }}
+{{ if eq $show_figure true }}
+<figure class="{{ $css_class }}">
+{{ end }}
   <img
     src='/assets/posts/{{ .Page.File.BaseFileName }}/{{ .Get "image" }}'
     alt='{{ .Get "alt" }}'
     title='{{ .Get "alt" }}'
-    style='{{ .Get "style" }}'
+    style='{{ .Get "style" | safeCSS }}'
     width='{{ .Get "width" }}'
     height='{{ .Get "height" }}'
     />
   <figcaption>{{ .Get "caption" | safeHTML }}</figcaption>
+{{ if eq $show_figure true }}
 </figure>
+{{ end }}
