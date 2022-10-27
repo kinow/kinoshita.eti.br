@@ -15,17 +15,17 @@ portfolio:
     - name: 03.png
       caption: Catacombs in Paris. Ink, watercolors, gouache. Ink, watercolors, gouache.
     - name: 04.png
-      caption: Live Action sketches. Graphite sticks.
+      caption: Line of Action sketches. Graphite sticks.
     - name: 05.png
       caption: Auckland Art Gallery life drawing. Graphite sticks.
     - name: 06.png
-      caption: Auckland CBD life drawing. Graphite sticks.
+      caption: Auckland CBD life Drawing. Graphite sticks.
     - name: 07.png
       caption: Auckland CBD Life Drawing sketches. Graphite sticks.
     - name: 08.png
-      caption: Rooster. Fine liner, Krita.
+      caption: Rooster bird. Fine liner, Krita.
     - name: 09.png
-      caption: Bezerra da Silva, for SpeakLikeABrazilian.com. 2B graphite, GIMP.
+      caption: Bezerra da Silva drawing, for SpeakLikeABrazilian.com. 2B graphite, GIMP.
     - name: 10.png
       caption: Dog and Christmas. Brush pen.
     - name: 11.png
