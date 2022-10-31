@@ -1,23 +1,25 @@
 #!/usr/bin/env python3
 
-import requests
+import csv
+import getpass
 import json
-from pprint import pprint as pp
 import locale
-from functools import cmp_to_key
 import os
+from functools import cmp_to_key
 from os.path import join, dirname
+
+import requests
 from dotenv import load_dotenv
 
 dotenv_path = join(dirname(__file__), '.env')
 load_dotenv(dotenv_path)
 
-import getpass
+import keyring
 
 USER = os.environ.get("movielens_user")
 PASS = os.environ.get("movielens_pass")
 
-if PASS == None or PASS == '':
+if not PASS:
     PASS = getpass.getpass("Enter password:")
 
 class MovieLens(object):
@@ -27,22 +29,26 @@ class MovieLens(object):
         self.timeout = 30.0 #seconds
         self.headers = {
             'Accept': 'application/json, text/plain, */*',
-            'Accept-Encoding': 'gzip, deflate',
+            'Accept-Encoding': 'gzip, deflate, br',
             'Accept-Language': 'en-US,en;q=0.5',
             'Cache-Control': 'no-cache',
             'Connection': 'keep-alive',
             'Content-Type': 'application/json;charset=utf-8',
-            'DNT': '1',
             'Host': 'movielens.org',
             'Pragma': 'no-cache',
-            'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.10; rv:42.0) Gecko/20100101 Firefox/42.0'
+            'User-Agent': 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:67.0) Gecko/20100101 Firefox/67.0'
         }
 
     def login(self, username, password):
-        self.headers['Referer'] = 'https://movielens.org/login'
+        if not username or not password:
+            raise ValueError("Must provide non-empty credentials")
+        headers = self.headers.copy()
+        headers['Referer'] = 'https://movielens.org/login'
         url = "%s/%s" % (self.base_url, "sessions")
         payload = {'userName': username, 'password': password}
-        r = requests.post(url, data=json.dumps(payload), headers=self.headers, timeout=self.timeout)
+        r = requests.post(url, data=json.dumps(payload), headers=headers, timeout=self.timeout)
+        if not r.cookies:
+            raise Exception("No Cookie set after auth! Response: " + str(r.json()))
         return r.cookies
 
     def explore(self, params, cookies):
@@ -61,11 +67,19 @@ class MovieLens(object):
         return movies
 
     def list_all_rated_movies(self, cookies):
+        """
+        Lists all rated movies, navigating through each page of the listing of
+        rated movies. This is much slower, and sends multiple requests to the
+        server. Use with caution.
+
+        :param cookies: Dict or CookieJar, passed to request module
+        :return: list of movies
+        """
         movies = []
         current_page = 1
 
         while True:
-            print("Downloading page %d" % (current_page))
+            print("Downloading page %d" % current_page)
             resp = self.explore(params={'hasRated': 'yes', 'sortBy': 'userRatedDate', 'page': current_page}, cookies=cookies)
             movies.extend(self._get_movies(resp))
             last_page = self._get_last_page(resp)
@@ -75,22 +89,36 @@ class MovieLens(object):
 
         return movies
 
+    def list_all_rated_movies_csv(self, cookies):
+        """
+        Lists all rated movies, sending a single request to the URL that
+        exports users rated movies as CSV. This may take a few seconds,
+        but at least avoids sending multiple requests to the server
+        (be nice).
+
+        :param cookies: Dict or CookieJar, passed to request module
+        :return: list of movies
+        """
+        url = "%s/%s" % (self.base_url, "users/me/movielens-ratings.csv")
+        r = requests.get(url, cookies=cookies, headers=self.headers, timeout=self.timeout)
+        decoded_content = r.content.decode('utf-8')
+        reader = csv.reader(decoded_content.splitlines(), delimiter=',', quotechar='"')
+        next(reader, None)
+        return [result[5] for result in reader]
+
 def main():
     locale.setlocale(locale.LC_ALL, 'pt_BR.UTF-8')
     ml = MovieLens()
     cookies = ml.login(USER, PASS)
-    movies = ml.list_all_rated_movies(cookies)
+    movies = ml.list_all_rated_movies_csv(cookies)
     movies = sorted(movies, key=cmp_to_key(locale.strcoll))  # locale-aware sort order
-    movies_html_file = dotenv_path = join(dirname(__file__), '../pages/movies.html')
+    movies_html_file = join(dirname(__file__), '../content/movies.md')
     header = """---
 title: 'Movies'
-author: kinow
-tags: {  }
-date: '2017-04-17'
-time: '23:30:33'
+layout: page
+permalink: "/movies/"
+note: "Some of the movies I have watched so far. Suggestions are welcome."
 ---
-
-Feel free to suggest me some good movies that may be missing from my list!
 
 """
     with open(movies_html_file, 'w+') as outfile:
