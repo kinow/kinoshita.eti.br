@@ -1,27 +1,27 @@
-<header role="banner" class="content">
-  <nav id="nav" aria-label="Main" role="navigation" class="content">
-    <ul>
-    {{- $currentPage := . -}}
-    {{- range .Site.Menus.main -}}
-      {{- $menu_item_url := .URL | relLangURL -}}
-      {{- $page_url:= $currentPage.RelPermalink | relLangURL }}
-      <li>
-        <a
-          href="{{- .URL -}}"
-          {{ if eq $menu_item_url $page_url }}
-          class="active"
-          aria-current="true"
+  <header role="banner" class="content">
+    <nav id="nav" aria-label="Main" role="navigation" class="content">
+      <ul>
+      {{- $currentPage := . -}}
+      {{- range .Site.Menus.main -}}
+        {{- $menu_item_url := .URL | relLangURL -}}
+        {{- $page_url:= $currentPage.RelPermalink | relLangURL }}
+        <li>
+          <a
+            href="{{- .URL -}}"
+            {{ if eq $menu_item_url $page_url }}
+            class="active"
+            aria-current="true"
+            {{- end -}}
+          >
+          {{- if .Pre -}}
+          {{- $icon := printf "<i data-feather=\"%s\"></i> " .Pre | safeHTML -}}
+          {{- $icon -}}
           {{- end -}}
-        >
-        {{- if .Pre -}}
-        {{- $icon := printf "<i data-feather=\"%s\"></i> " .Pre | safeHTML -}}
-        {{- $icon -}}
-        {{- end -}}
-        {{- $text := print .Name | safeHTML -}}
-        {{- $text -}}
-        </a>
-      </li>
-      {{- end }}
-    </ul>
-  </nav>
-</header>
+          {{- $text := print .Name | safeHTML -}}
+          {{- $text -}}
+          </a>
+        </li>
+        {{- end }}
+      </ul>
+    </nav>
+  </header>

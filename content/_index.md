@@ -1,5 +1,8 @@
 ---
 title: About
+description: Personal website of Bruno P. Kinoshita, or kinow
+images:
+  - /assets/photos/about/255.png
 ---
 
 <main class="content">
