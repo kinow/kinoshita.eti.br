@@ -1,6 +1,49 @@
-<!doctype html><html lang=en><head>
+<!doctype html><html lang=en>
+<head>
 <meta charset=utf-8>
-<meta name=viewport content="width=device-width,initial-scale=1"><link rel=stylesheet type=text/css href=https://kinoshita.eti.br/sass/main.bb12278f082614f093646fd8c21cd5db009382bf5777a5ca1b84c705f7ff5e2d.css integrity="sha256-uxInjwgmFPCTZG/YwhzV2wCTgr9Xd6XKG4THBff/Xi0=">
+<meta name=viewport content="width=device-width,initial-scale=1">
+<meta property="og:title" content="A comparison of TAP (Test Anything Protocol) and SubUnit">
+<meta property="og:description" content="
+    I have been playing with TAP for some time and even implemented a Java API to let TestNG, JUnit and other Test Frameworks to produce and consume TAP. TAP is a standard
+    format for test output that first appeared with Perl 1 in 1987. It is human and machine readable, easy to be
+    serialized, language independent and extensible1 through the use of YAML.
+
+
+    Some days ago while I was designing a plug-in to show TAP test results in Jenkins
+    I stumbled across a message in Jenkins
+        dev-list where Max Magee and Nick Wiesmueller were discussing about a way of showing more details about the test
+    executions. I thought that the TAP Plug-in would fit perfectly, until one of the users, Robert Collins, mentioned SubUnit.
+
+
+    Shame on me, but I hadn't heard of SubUnit until that message. Max Magee and I exchanged some messages after that,
+    talking about a initial design and analysis for the TAP Plug-in2. Here is the initial
+    idea:
+
+
+    The plug-in will be able to parse one or more test formats (maybe SubUnit, TAP and the formats available in
+        xUnit?).
+    The test results will be displayed the same way JUnit tests are displayed in Jenkins (I think Jenkins
+        supports JUnit format by default, but you can use objects and create test results data, independently of the
+        test framework that you are using).
+    There will be a table containing the Test Name, Description and Status and an expandable section.
+    Inside this expandable section will be available all the details about the test.
+    In case there are images within the test details, they should be displayed as a lightbox gallery.3
+
+
+    Although I have worked with TAP and spent some good time writing the tap4j port for Java, I am not convinced it is
+    the best solution for this issue yet. Hence I am posting this initial comparison between TAP and SubUnit hoping that
+    more people will contribute with the design of this solution. My goal is not only having a super cool plug-in for
+    Jenkins, but ease integration of test results in different tools and collaborate with both TAP and SubUnit. Another
+    objective that I have in mind is improving the way that test results are displayed in Jenkins and enabling it to be
+    an alternative for tools like Smolder, TestRepository or Tribunal.
+    Because I believe the tasks done by these tools could be all done in my favorite CI Server, and it would increase
+    the productivity of Build & Release professionals :-))
+">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kinoshita.eti.br/2011/06/04/a-comparison-of-tap-test-anything-protocol-and-subunit.html"><meta property="article:section" content="posts">
+<meta property="article:published_time" content="2011-06-04T00:00:00+00:00">
+<meta property="article:modified_time" content="2011-06-04T00:00:00+00:00">
+<link rel=stylesheet type=text/css href=https://kinoshita.eti.br/sass/main.bb12278f082614f093646fd8c21cd5db009382bf5777a5ca1b84c705f7ff5e2d.css integrity="sha256-uxInjwgmFPCTZG/YwhzV2wCTgr9Xd6XKG4THBff/Xi0=">
 <title>kinow | A comparison of TAP (Test Anything Protocol) and SubUnit</title>
 </head>
 <body>
