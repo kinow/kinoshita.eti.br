@@ -17,7 +17,7 @@ MD=$(BUILD_DIR)/cv.md
 ifneq ("$(wildcard cv.hidden.yaml)","")
 	YAML_FILES = cv.yaml cv.hidden.yaml
 else
-	YAML_FILES = cv.yaml
+	YAML_FILES = cv_onepage.yaml
 endif
 
 .PHONY: all public serve push clean
