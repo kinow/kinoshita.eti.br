@@ -12,7 +12,6 @@ images:
     id="kinow-photo"
     src="/assets/photos/about/2020-me-closeup.png"
     alt="kinow"
-    style="max-height: 200px; float: right; margin: 0 auto .5rem auto;padding-left: .5rem;"
   />
 
   <p>Hello! I am Bruno P. Kinoshita or <strong>“kinow”</strong>, born and raised in
