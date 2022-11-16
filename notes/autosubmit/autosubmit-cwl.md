@@ -112,9 +112,6 @@ steps:
           type: autosubmit_statuses
           # outputBinding:
           #   outputEval: $("COMPLETE")
-  # a000_REMOTE_SETUP:
-  #   run:
-  #     class: 
   a000_REMOTE_SETUP:
     in:
       previous_statuses:
