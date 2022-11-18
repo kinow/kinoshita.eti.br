@@ -446,6 +446,7 @@ requirements:
       DATELIST: 20220401 20220402
       MEMBERS: "fc0 fc1"
       CHUNKSIZEUNIT: month
+      # In CWL envVar values are strings, not ints. Could it be a problem later?
       CHUNKSIZE: '4'
       NUMCHUNKS: '2'
       CHUNKINI: ''
@@ -456,6 +457,7 @@ requirements:
       PROJECT_BRANCH: ''
       PROJECT_COMMIT: ''
       PROJECT_SUBMODULES: ''
+      # In CWL envVar values are strings, not booleans. Could it be a problem later?
       FETCH_SINGLE_BRANCH: 'True'
       PROJECT_URL: ''
       PROJECT_REVISION: ''
@@ -465,6 +467,4 @@ requirements:
       JOB_SCRIPTS_TYPE: ''
       RERUN: 'FALSE'
       RERUN_JOBLIST: ''
-inputs: []
-outputs: []
 ```
