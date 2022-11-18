@@ -952,3 +952,8 @@ steps:
         status:
           type: autosubmit_statuses
 ```
+
+The script above was saved to this same repository, in order to visualize it online with CWL Viewer:
+
+- https://github.com/kinow/kinoshita.eti.br/blob/master/notes/autosubmit/autosubmit.cwl
+- https://view.commonwl.org/workflows/github.com/kinow/kinoshita.eti.br/blob/master/notes/autosubmit/autosubmit.cwl# (TODO: apparently a bug in CWL Viewer? I will investigate another day.)
