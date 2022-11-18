@@ -380,7 +380,7 @@ steps:
           type: autosubmit_statuses
 ```
 
-Plotting it with `wltool --print-dot autosubmit.cwl | dot -Tpng | feh -`:
+Plotting it with `cwltool --print-dot autosubmit.cwl | dot -Tpng | feh -`:
 
 ![1](https://user-images.githubusercontent.com/304786/202777245-9b04c508-2762-446c-8afc-2b28fb7227f8.png)
 
