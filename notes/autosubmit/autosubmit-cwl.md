@@ -99,6 +99,7 @@ inputs: []
 outputs: []
 
 steps:
+  # LOCAL_SETUP
   a000_LOCAL_SETUP:
     in: []
     out: [status]
@@ -112,6 +113,7 @@ steps:
           type: autosubmit_statuses
           # outputBinding:
           #   outputEval: $("COMPLETE")
+  # REMOTE_SETUP
   a000_REMOTE_SETUP:
     in:
       previous_statuses:
@@ -129,6 +131,256 @@ steps:
       outputs:
         status:
           type: autosubmit_statuses
-
-
+  # INI
+  a000_20220401_fc0_INI:
+    in:
+      previous_statuses:
+        source: a000_REMOTE_SETUP/status
+        valueFrom: |
+          ${
+            return [inputs['a000_REMOTE_SETUP/status']]
+          }
+    out: [status]
+    run:
+      class: Operation
+      inputs:
+        previous_statuses:
+          type: autosubmit_statuses[]
+      outputs:
+        status:
+          type: autosubmit_statuses
+  a000_20220401_fc1_INI:
+    in:
+      previous_statuses:
+        source: a000_REMOTE_SETUP/status
+        valueFrom: |
+          ${
+            return [inputs['a000_REMOTE_SETUP/status']]
+          }
+    out: [status]
+    run:
+      class: Operation
+      inputs:
+        previous_statuses:
+          type: autosubmit_statuses[]
+      outputs:
+        status:
+          type: autosubmit_statuses
+  a000_20220402_fc0_INI:
+    in:
+      previous_statuses:
+        source: a000_REMOTE_SETUP/status
+        valueFrom: |
+          ${
+            return [inputs['a000_REMOTE_SETUP/status']]
+          }
+    out: [status]
+    run:
+      class: Operation
+      inputs:
+        previous_statuses:
+          type: autosubmit_statuses[]
+      outputs:
+        status:
+          type: autosubmit_statuses
+  a000_20220402_fc1_INI:
+    in:
+      previous_statuses:
+        source: a000_REMOTE_SETUP/status
+        valueFrom: |
+          ${
+            return [inputs['a000_REMOTE_SETUP/status']]
+          }
+    out: [status]
+    run:
+      class: Operation
+      inputs:
+        previous_statuses:
+          type: autosubmit_statuses[]
+      outputs:
+        status:
+          type: autosubmit_statuses
+  # SIM
+  a000_20220401_fc0_1_SIM:
+    in:
+      previous_statuses:
+        source: a000_20220401_fc0_INI/status
+        valueFrom: |
+          ${
+            return [inputs['a000_20220401_fc0_INI/status']]
+          }
+    out: [status]
+    run:
+      class: Operation
+      inputs:
+        previous_statuses:
+          type: autosubmit_statuses[]
+      outputs:
+        status:
+          type: autosubmit_statuses
+  a000_20220401_fc1_1_SIM:
+    in:
+      previous_statuses:
+        source: a000_20220401_fc1_INI/status
+        valueFrom: |
+          ${
+            return [inputs['a000_20220401_fc1_INI/status']]
+          }
+    out: [status]
+    run:
+      class: Operation
+      inputs:
+        previous_statuses:
+          type: autosubmit_statuses[]
+      outputs:
+        status:
+          type: autosubmit_statuses
+  a000_20220402_fc0_1_SIM:
+    in:
+      previous_statuses:
+        source: a000_20220402_fc0_INI/status
+        valueFrom: |
+          ${
+            return [inputs['a000_20220402_fc0_INI/status']]
+          }
+    out: [status]
+    run:
+      class: Operation
+      inputs:
+        previous_statuses:
+          type: autosubmit_statuses[]
+      outputs:
+        status:
+          type: autosubmit_statuses
+  a000_20220402_fc1_1_SIM:
+    in:
+      previous_statuses:
+        source: a000_20220402_fc1_INI/status
+        valueFrom: |
+          ${
+            return [inputs['a000_20220402_fc1_INI/status']]
+          }
+    out: [status]
+    run:
+      class: Operation
+      inputs:
+        previous_statuses:
+          type: autosubmit_statuses[]
+      outputs:
+        status:
+          type: autosubmit_statuses
+  # POST
+  a000_POST:
+    in:
+      previous_statuses:
+        source:
+          - a000_20220401_fc0_1_SIM/status
+          - a000_20220401_fc1_1_SIM/status
+          - a000_20220402_fc0_1_SIM/status
+          - a000_20220402_fc1_1_SIM/status
+        valueFrom: |
+          ${
+            return [inputs['a000_20220401_fc0_1_SIM/status', inputs['a000_20220401_fc1_1_SIM/status', inputs['a000_20220402_fc0_1_SIM/status', inputs['a000_20220402_fc1_1_SIM/status']]
+          }
+    out: [status]
+    run:
+      class: Operation
+      inputs:
+        previous_statuses:
+          type: autosubmit_statuses[]
+      outputs:
+        status:
+          type: autosubmit_statuses
+  # CLEAN
+  a000_CLEAN:
+    in:
+      previous_statuses:
+        source: a000_POST/status
+        valueFrom: |
+          ${
+            return [inputs['a000_POST/status']]
+          }
+    out: [status]
+    run:
+      class: Operation
+      inputs:
+        previous_statuses:
+          type: autosubmit_statuses[]
+      outputs:
+        status:
+          type: autosubmit_statuses
+  # TRANSFER
+  a000_20220401_fc0_TRANSFER:
+    in:
+      previous_statuses:
+        source: a000_CLEAN/status
+        valueFrom: |
+          ${
+            return [inputs['a000_CLEAN/status']]
+          }
+    out: [status]
+    run:
+      class: Operation
+      inputs:
+        previous_statuses:
+          type: autosubmit_statuses[]
+      outputs:
+        status:
+          type: autosubmit_statuses
+  a000_20220401_fc1_TRANSFER:
+    in:
+      previous_statuses:
+        source: a000_CLEAN/status
+        valueFrom: |
+          ${
+            return [inputs['a000_CLEAN/status']]
+          }
+    out: [status]
+    run:
+      class: Operation
+      inputs:
+        previous_statuses:
+          type: autosubmit_statuses[]
+      outputs:
+        status:
+          type: autosubmit_statuses
+  a000_20220402_fc0_TRANSFER:
+    in:
+      previous_statuses:
+        source: a000_CLEAN/status
+        valueFrom: |
+          ${
+            return [inputs['a000_CLEAN/status']]
+          }
+    out: [status]
+    run:
+      class: Operation
+      inputs:
+        previous_statuses:
+          type: autosubmit_statuses[]
+      outputs:
+        status:
+          type: autosubmit_statuses
+  a000_20220402_fc1_TRANSFER:
+    in:
+      previous_statuses:
+        source: a000_CLEAN/status
+        valueFrom: |
+          ${
+            return [inputs['a000_CLEAN/status']]
+          }
+    out: [status]
+    run:
+      class: Operation
+      inputs:
+        previous_statuses:
+          type: autosubmit_statuses[]
+      outputs:
+        status:
+          type: autosubmit_statuses
 ```
+
+Plotting it with `wltool --print-dot autosubmit.cwl | dot -Tpng | feh -`:
+
+![1](https://user-images.githubusercontent.com/304786/202777245-9b04c508-2762-446c-8afc-2b28fb7227f8.png)
+
