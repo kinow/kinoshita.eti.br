@@ -384,3 +384,87 @@ Plotting it with `cwltool --print-dot autosubmit.cwl | dot -Tpng | feh -`:
 
 ![1](https://user-images.githubusercontent.com/304786/202777245-9b04c508-2762-446c-8afc-2b28fb7227f8.png)
 
+Now adding the Autosubmit `expdef` as environment variables:
+
+```yaml
+DeFault:
+  EXPID: a000
+  HPCARCH: local
+experiment:
+  DATELIST: 20220401
+  MEMBERS: "fc0"
+  CHUNKSIZEUNIT: month
+  CHUNKSIZE: 4
+  NUMCHUNKS: 2
+  CHUNKINI: ''
+  CALENDAR: standard
+project:
+  PROJECT_TYPE: none
+  PROJECT_DESTINATION: ''
+git:
+  PROJECT_ORIGIN: ''
+  PROJECT_BRANCH: ''
+  PROJECT_COMMIT: ''
+  PROJECT_SUBMODULES: ''
+  FETCH_SINGLE_BRANCH: True
+svn:
+  PROJECT_URL: ''
+  PROJECT_REVISION: ''
+local:
+  PROJECT_PATH: ''
+project_files:
+  FILE_PROJECT_CONF: ''
+  FILE_JOBS_CONF: ''
+  JOB_SCRIPTS_TYPE: ''
+rerun:
+  RERUN: FALSE
+  RERUN_JOBLIST: ''
+```
+
+```cwl
+requirements:
+  InlineJavascriptRequirement: {}
+  SchemaDefRequirement:
+    types:
+      - type: enum
+        name: autosubmit_statuses
+        label: The possible statuses of an Autosubmit task
+        symbols:
+          - UNKNOWN
+          - COMPLETE
+          - QUEUED
+          - SUSPENDED
+          - ABORTED
+          - SUBMITTED
+          - ACTIVE
+  EnvVarRequirement:
+    envDef:
+      # N.B.: Either we flat it like this, or we have to use a convention like
+      #       default_EXPID, experiment_DATELIST, git_PROJECT_ORIGIN, etc.
+      EXPID: a000
+      HPCARCH: local
+      DATELIST: 20220401 20220402
+      MEMBERS: "fc0 fc1"
+      CHUNKSIZEUNIT: month
+      CHUNKSIZE: '4'
+      NUMCHUNKS: '2'
+      CHUNKINI: ''
+      CALENDAR: standard
+      PROJECT_TYPE: none
+      PROJECT_DESTINATION: ''
+      PROJECT_ORIGIN: ''
+      PROJECT_BRANCH: ''
+      PROJECT_COMMIT: ''
+      PROJECT_SUBMODULES: ''
+      FETCH_SINGLE_BRANCH: 'True'
+      PROJECT_URL: ''
+      PROJECT_REVISION: ''
+      PROJECT_PATH: ''
+      FILE_PROJECT_CONF: ''
+      FILE_JOBS_CONF: ''
+      JOB_SCRIPTS_TYPE: ''
+      RERUN: 'FALSE'
+      RERUN_JOBLIST: ''
+inputs: []
+outputs: []
+```
