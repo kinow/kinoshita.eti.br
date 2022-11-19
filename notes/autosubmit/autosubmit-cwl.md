@@ -68,7 +68,8 @@ doc: |
   reference. The `platform.yml` is ignored as it contains only information
   about platforms (e.g. it could be given to a tool like Troika as-is).
 
-  `expdef.yml` and `autosubmit.yml` basically provide CWL inputs.
+  `expdef.yml` and `autosubmit.yml` basically provide env vars (could be CWL
+  inputs).
 
   `jobs.yml` contains the steps of the CWL workflow, with their dependencies.
 
@@ -78,6 +79,12 @@ doc: |
 
   This is different than Autosubmit, and needs some care to guarantee the correct
   order in the workflow graph of start dates, members, chunks, etc.
+  
+  TODO: Connecting via the status enum; is that the best way?
+        Should we use a commandlinetool instead of Operation, and specify the
+        same script used in Autosubmit?
+        We need to handle other cases in the Autosubmit graph, e.g. SKIPPABLE.
+        Need to support Job Splits.
 
 requirements:
   InlineJavascriptRequirement: {}
