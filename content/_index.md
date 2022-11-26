@@ -40,9 +40,12 @@ ClipStudio Paint, and Inkscape.
 
 In computer programming, I write code in Java, Python, JavaScript, PHP,
 and a few other languages. I am interested in natural language processing,
-[functional programming](https://old.reddit.com/r/functionalprogramming/ "FP subreddit I created in 2012"),
-linked data, reasoners, fuzzy logic, and all things open source. I have worked
-on Windows, Unix, Linux, Mainframe, HPC, and cloud. My father,
+languages (like [Portuguese](https://speaklikeabrazilian.com/ "Speak Like A Brazilian website I created in 2013"),
+Spanish, French, English, Catalan, Irish, Māori, and Japanese),
+[functional programming](https://old.reddit.com/r/functionalprogramming/ "Functional Programming subreddit I created in 2012"),
+linked data, reasoners, [fuzzy logic](https://old.reddit.com/r/fuzzylogic/ "Fuzzy Logic subreddit I created in 2012"),
+and all things open source. I have worked on Windows, Unix, Linux,
+Mainframe, HPC, and cloud. My father,
 [Jorge Yoshio Kinoshita](https://ancestors.familysearch.org/en/G3BB-G3H/jorge-yoshio-kinoshita-1953-2019),
 had a career working with mainframes at IBM.
 
