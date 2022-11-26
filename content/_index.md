@@ -18,7 +18,7 @@ images:
   Casa Verde, São Paulo, Brazil. A typical <i title="São Paulo city demonym">Paulistano</i>.
   I moved to <i title="Māori name for Auckland">Tāmaki Makaurau</i> Auckland,
   <i title="Māori name for New Zealand (or its North Island)">Aotearoa</i> New Zealand,
-  and lived there for 8 years. I currently live with my wife, [Cibele](https://www.instagram.com/cibeleoliveira.pt/),
+    and lived there for 8 years. I currently live with my wife, <a href="https://www.instagram.com/cibeleoliveira.pt/" title="My wife's Instagram">Cibele</a>,
   in Barcelona, Spain.</p>
 
   <p>Head on to the blog for posts about languages, writing, music, arts, and computer
