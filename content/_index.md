@@ -41,7 +41,7 @@ ClipStudio Paint, and Inkscape.
 In computer programming, I write code in Java, Python, JavaScript, PHP,
 and a few other languages. I am interested in natural language processing,
 languages (like [Portuguese](https://speaklikeabrazilian.com/ "Speak Like A Brazilian website I created in 2013"),
-Spanish, French, English, Catalan, Irish, Māori, and Japanese),
+Spanish, French, English, Catalan, Irish, Te Reo Māori, and Japanese),
 [functional programming](https://old.reddit.com/r/functionalprogramming/ "Functional Programming subreddit I created in 2012"),
 linked data, reasoners, [fuzzy logic](https://old.reddit.com/r/fuzzylogic/ "Fuzzy Logic subreddit I created in 2012"),
 and all things open source. I have worked on Windows, Unix, Linux,
