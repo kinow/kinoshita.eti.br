@@ -107,3 +107,105 @@ Screenshots of the suite loaded in `ecflow_ui`:
 
 ![image](https://user-images.githubusercontent.com/304786/204084149-e2d04192-29bd-4b56-846f-95ba557bfd06.png)
 
+## ecFlow suite definition
+
+```
+suite a000
+  edit ECF_JOB_CMD 'bash -c 'export ECF_PORT=%ECF_PORT%; export ECF_HOST=%ECF_HOST%; export ECF_NAME=%ECF_NAME%; export ECF_PASS=%ECF_PASS%; export ECF_TRYNO=%ECF_TRYNO%; export PATH=/home/bdepaula/mambaforge/envs/pyflow/bin:$PATH; ecflow_client --init="$$" && %ECF_JOB% && ecflow_client --complete || ecflow_client --abort ' 1> %ECF_JOBOUT% 2>&1 &'
+  edit ECF_KILL_CMD 'pkill -15 -P %ECF_RID%'
+  edit ECF_STATUS_CMD 'true'
+  edit ECF_OUT '%ECF_HOME%'
+  label exec_host "default"
+  task LOCAL_SETUP
+  task SYNCHRONIZE
+    trigger LOCAL_SETUP eq complete
+  task REMOTE_SETUP
+    trigger SYNCHRONIZE eq complete
+  family 20220401
+    edit START_DATE '20220401'
+    family fc0
+      task INI
+        trigger ../../REMOTE_SETUP eq complete
+        edit START_DATE '20220401'
+        edit MEMBER 'fc0'
+      family 1
+        task SIM
+          trigger /a000/20220401/fc0/INI eq complete
+          edit START_DATE '20220401'
+          edit MEMBER 'fc0'
+          edit CHUNK '1'
+        task GSV
+          trigger /a000/20220401/fc0/1/SIM eq complete
+          edit START_DATE '20220401'
+          edit MEMBER 'fc0'
+          edit CHUNK '1'
+        task APPLICATION
+          trigger /a000/20220401/fc0/1/GSV eq complete
+          edit START_DATE '20220401'
+          edit MEMBER 'fc0'
+          edit CHUNK '1'
+      endfamily
+      family 2
+        task SIM
+          trigger /a000/20220401/fc0/1/SIM eq complete
+          edit START_DATE '20220401'
+          edit MEMBER 'fc0'
+          edit CHUNK '2'
+        task GSV
+          trigger /a000/20220401/fc0/2/SIM eq complete
+          edit START_DATE '20220401'
+          edit MEMBER 'fc0'
+          edit CHUNK '2'
+        task APPLICATION
+          trigger /a000/20220401/fc0/2/GSV eq complete
+          edit START_DATE '20220401'
+          edit MEMBER 'fc0'
+          edit CHUNK '2'
+      endfamily
+    endfamily
+  endfamily
+  family 20220402
+    edit START_DATE '20220402'
+    family fc0
+      task INI
+        trigger ../../REMOTE_SETUP eq complete
+        edit START_DATE '20220402'
+        edit MEMBER 'fc0'
+      family 1
+        task SIM
+          trigger /a000/20220402/fc0/INI eq complete
+          edit START_DATE '20220402'
+          edit MEMBER 'fc0'
+          edit CHUNK '1'
+        task GSV
+          trigger /a000/20220402/fc0/1/SIM eq complete
+          edit START_DATE '20220402'
+          edit MEMBER 'fc0'
+          edit CHUNK '1'
+        task APPLICATION
+          trigger /a000/20220402/fc0/1/GSV eq complete
+          edit START_DATE '20220402'
+          edit MEMBER 'fc0'
+          edit CHUNK '1'
+      endfamily
+      family 2
+        task SIM
+          trigger /a000/20220402/fc0/1/SIM eq complete
+          edit START_DATE '20220402'
+          edit MEMBER 'fc0'
+          edit CHUNK '2'
+        task GSV
+          trigger /a000/20220402/fc0/2/SIM eq complete
+          edit START_DATE '20220402'
+          edit MEMBER 'fc0'
+          edit CHUNK '2'
+        task APPLICATION
+          trigger /a000/20220402/fc0/2/GSV eq complete
+          edit START_DATE '20220402'
+          edit MEMBER 'fc0'
+          edit CHUNK '2'
+      endfamily
+    endfamily
+  endfamily
+endsuite
+```
