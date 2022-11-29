@@ -74,27 +74,28 @@ with Suite('a000') as s:
     chunks = [1, 2]
 
     for start_date in start_dates:
-        with Family(start_date, START_DATE=start_date) as fsd:
+        with Family(name=start_date, START_DATE=start_date) as fsd:
             for member in members:
-                with Family(member) as m:
-                    ini = Task('INI', START_DATE=start_date, MEMBER=member)
+                with Family(member, MEMBER=member) as m:
+                    ini = Task('INI')
                     ini.triggers = s.REMOTE_SETUP.complete
                     for chunk in chunks:
-                        with Family(str(chunk)) as c:
-                            sim = Task('SIM', START_DATE=start_date, MEMBER=member, CHUNK=str(chunk))
+                        with Family(str(chunk), CHUNK=str(chunk)) as c:
+                            sim = Task('SIM')
                             if chunk == 1:
                                 dependency = Trigger(f'{ini.fullname} eq complete')
                             else:
                                 dependency = Trigger(f'{m.fullname}/{str(chunk - 1)}/SIM eq complete')
                             sim.add_node(dependency)
 
-                            gsv = Task('GSV', START_DATE=start_date, MEMBER=member, CHUNK=str(chunk))
+                            gsv = Task('GSV')
                             gsv.triggers = Trigger(f'{sim.fullname} eq complete')
 
-                            app = Task('APPLICATION', START_DATE=start_date, MEMBER=member, CHUNK=str(chunk))
+                            app = Task('APPLICATION')
                             app.triggers = Trigger(f'{gsv.fullname} eq complete')
 
-s.replace_on_server(host='localhost', port=3141)
+# s.replace_on_server(host='localhost', port=3141)
+print(s)
 ```
 
 Screenshots of the suite loaded in `ecflow_ui`:
@@ -124,86 +125,52 @@ suite a000
   family 20220401
     edit START_DATE '20220401'
     family fc0
+      edit MEMBER 'fc0'
       task INI
         trigger ../../REMOTE_SETUP eq complete
-        edit START_DATE '20220401'
-        edit MEMBER 'fc0'
       family 1
+        edit CHUNK '1'
         task SIM
           trigger /a000/20220401/fc0/INI eq complete
-          edit START_DATE '20220401'
-          edit MEMBER 'fc0'
-          edit CHUNK '1'
         task GSV
           trigger /a000/20220401/fc0/1/SIM eq complete
-          edit START_DATE '20220401'
-          edit MEMBER 'fc0'
-          edit CHUNK '1'
         task APPLICATION
           trigger /a000/20220401/fc0/1/GSV eq complete
-          edit START_DATE '20220401'
-          edit MEMBER 'fc0'
-          edit CHUNK '1'
       endfamily
       family 2
+        edit CHUNK '2'
         task SIM
           trigger /a000/20220401/fc0/1/SIM eq complete
-          edit START_DATE '20220401'
-          edit MEMBER 'fc0'
-          edit CHUNK '2'
         task GSV
           trigger /a000/20220401/fc0/2/SIM eq complete
-          edit START_DATE '20220401'
-          edit MEMBER 'fc0'
-          edit CHUNK '2'
         task APPLICATION
           trigger /a000/20220401/fc0/2/GSV eq complete
-          edit START_DATE '20220401'
-          edit MEMBER 'fc0'
-          edit CHUNK '2'
       endfamily
     endfamily
   endfamily
   family 20220402
     edit START_DATE '20220402'
     family fc0
+      edit MEMBER 'fc0'
       task INI
         trigger ../../REMOTE_SETUP eq complete
-        edit START_DATE '20220402'
-        edit MEMBER 'fc0'
       family 1
+        edit CHUNK '1'
         task SIM
           trigger /a000/20220402/fc0/INI eq complete
-          edit START_DATE '20220402'
-          edit MEMBER 'fc0'
-          edit CHUNK '1'
         task GSV
           trigger /a000/20220402/fc0/1/SIM eq complete
-          edit START_DATE '20220402'
-          edit MEMBER 'fc0'
-          edit CHUNK '1'
         task APPLICATION
           trigger /a000/20220402/fc0/1/GSV eq complete
-          edit START_DATE '20220402'
-          edit MEMBER 'fc0'
-          edit CHUNK '1'
       endfamily
       family 2
+        edit CHUNK '2'
         task SIM
           trigger /a000/20220402/fc0/1/SIM eq complete
-          edit START_DATE '20220402'
-          edit MEMBER 'fc0'
-          edit CHUNK '2'
         task GSV
           trigger /a000/20220402/fc0/2/SIM eq complete
-          edit START_DATE '20220402'
-          edit MEMBER 'fc0'
-          edit CHUNK '2'
         task APPLICATION
           trigger /a000/20220402/fc0/2/GSV eq complete
-          edit START_DATE '20220402'
-          edit MEMBER 'fc0'
-          edit CHUNK '2'
       endfamily
     endfamily
   endfamily
