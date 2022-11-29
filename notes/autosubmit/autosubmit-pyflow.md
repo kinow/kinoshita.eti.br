@@ -60,13 +60,32 @@ Plot:
 ## PyFlow 3
 
 ```py
-from pyflow import *
+import os
+from pwd import getpwuid
 
-with Suite('a000') as s:
-    local_setup = Task('LOCAL_SETUP')
-    synchronize = Task('SYNCHRONIZE')
+from pyflow import *
+import pyflow as pf
+
+scratchdir = os.path.join(os.path.abspath(''), 'scratch')
+filesdir = os.path.join(scratchdir, 'files')
+outdir = os.path.join(scratchdir, 'out')
+
+if not os.path.exists(filesdir):
+    os.makedirs(filesdir, exist_ok=True)
+
+if not os.path.exists(outdir):
+    os.makedirs(outdir, exist_ok=True)
+
+passwd = getpwuid(os.getuid())
+
+server_host = 'localhost'
+server_port = 3141
+
+with Suite('a000', files=filesdir, home=outdir, defstatus=pf.state.suspended) as s:
+    local_setup = Task('LOCAL_SETUP', script='templates/local_setup.sh')
+    synchronize = Task('SYNCHRONIZE', script='templates/synchronize.sh')
     synchronize.triggers = s.LOCAL_SETUP.complete
-    remote_setup = Task('REMOTE_SETUP')
+    remote_setup = Task('REMOTE_SETUP', script='templates/remote_setup.sh')
     remote_setup.triggers = s.SYNCHRONIZE.complete
 
     start_dates = ['20220401', '20220402']
@@ -77,25 +96,26 @@ with Suite('a000') as s:
         with Family(name=start_date, START_DATE=start_date) as fsd:
             for member in members:
                 with Family(member, MEMBER=member) as m:
-                    ini = Task('INI')
+                    ini = Task('INI', script='templates/ini.sh')
                     ini.triggers = s.REMOTE_SETUP.complete
                     for chunk in chunks:
                         with Family(str(chunk), CHUNK=str(chunk)) as c:
-                            sim = Task('SIM')
+                            sim = Task('SIM', script='templates/sim.sh')
                             if chunk == 1:
                                 dependency = Trigger(f'{ini.fullname} eq complete')
                             else:
                                 dependency = Trigger(f'{m.fullname}/{str(chunk - 1)}/SIM eq complete')
                             sim.add_node(dependency)
 
-                            gsv = Task('GSV')
+                            gsv = Task('GSV', script='templates/gsv.sh')
                             gsv.triggers = Trigger(f'{sim.fullname} eq complete')
 
-                            app = Task('APPLICATION')
+                            app = Task('APPLICATION', script='templates/application.sh')
                             app.triggers = Trigger(f'{gsv.fullname} eq complete')
 
-# s.replace_on_server(host='localhost', port=3141)
 print(s)
+s.deploy_suite(overwrite=True)
+# s.replace_on_server(server_host, server_port)
 ```
 
 Screenshots of the suite loaded in `ecflow_ui`:
@@ -112,6 +132,9 @@ Screenshots of the suite loaded in `ecflow_ui`:
 
 ```
 suite a000
+  defstatus suspended
+  edit ECF_FILES '/home/bdepaula/Development/python/workspace/pyflow/scratch/files'
+  edit ECF_HOME '/home/bdepaula/Development/python/workspace/pyflow/scratch/out'
   edit ECF_JOB_CMD 'bash -c 'export ECF_PORT=%ECF_PORT%; export ECF_HOST=%ECF_HOST%; export ECF_NAME=%ECF_NAME%; export ECF_PASS=%ECF_PASS%; export ECF_TRYNO=%ECF_TRYNO%; export PATH=/home/bdepaula/mambaforge/envs/pyflow/bin:$PATH; ecflow_client --init="$$" && %ECF_JOB% && ecflow_client --complete || ecflow_client --abort ' 1> %ECF_JOBOUT% 2>&1 &'
   edit ECF_KILL_CMD 'pkill -15 -P %ECF_RID%'
   edit ECF_STATUS_CMD 'true'
