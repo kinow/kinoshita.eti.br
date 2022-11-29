@@ -128,6 +128,10 @@ Screenshots of the suite loaded in `ecflow_ui`:
 
 ![image](https://user-images.githubusercontent.com/304786/204084149-e2d04192-29bd-4b56-846f-95ba557bfd06.png)
 
+*After adding the scripts from a vanilla Autosubmit workflow:*
+
+![image](https://user-images.githubusercontent.com/304786/204587724-58e51b86-1724-4435-aa79-dc6851cb2e9c.png)
+
 ## ecFlow suite definition
 
 ```
