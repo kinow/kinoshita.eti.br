@@ -203,3 +203,138 @@ suite a000
   endfamily
 endsuite
 ```
+
+# WIP
+
+```py
+from collections import defaultdict
+
+import argparse
+import sys
+from autosubmitconfigparser.config.configcommon import AutosubmitConfig
+from itertools import groupby
+from typing import List, Dict, Any, TypedDict
+
+
+from pyflow import *
+
+
+def _create_task(task_obj: Dict[str, Any], suite: Suite) -> Task:
+    print('_create_task')
+    task = Task(task_obj['NAME'])
+    _add_dependency(task, task_obj, suite)
+    return task
+
+
+def _add_dependency(task: Task, task_obj: Dict[str, Any], suite: Suite) -> None:
+    if task_obj['DEPENDENCIES'] is not None:
+        deps = task_obj['DEPENDENCIES'].keys()
+        for dep in deps:
+            if suite[dep] is None:
+                _create_task()
+            task.triggers = suite[dep].complete
+
+
+class JobData(TypedDict):
+    NAME: str
+    FILE: str
+    DEPENDENCIES: Dict[str, Dict[str, Any]]
+    RUNNING: str
+    WALLCLOCK: str
+    ADDITIONAL_FILES: List[str]
+
+
+def create_ecflow_suite(*,
+                        experiment_id: str,
+                        start_dates: List[str],
+                        members: List[str],
+                        chunks: [int],
+                        jobs: Dict[str, Dict[str, JobData]],
+                        by_running: Dict[str, List[JobData]]) -> Suite:
+    """Replicate the vanilla workflow graph structure."""
+    with Suite(experiment_id) as s:
+        for task_obj in by_running['by_running']['once']:
+            _create_task(task_obj, s)
+
+        # start_dates = ['20220401', '20220402']
+        # members = ['fc0']
+        # chunks = [1, 2]
+        return s
+
+        for start_date in start_dates:
+            with Family(start_date, START_DATE=start_date):
+                for member in members:
+                    with Family(member) as m:
+                        for task_obj in jobs['member']:
+                            task = Task(task_obj['NAME'], START_DATE=start_date, MEMBER=member)
+                            ini.triggers = s.REMOTE_SETUP.complete
+                        for chunk in chunks:
+                            with Family(str(chunk)):
+                                sim = Task('SIM', START_DATE=start_date, MEMBER=member, CHUNK=str(chunk))
+                                if chunk == 1:
+                                    dependency = Trigger(f'{ini.fullname} eq complete')
+                                else:
+                                    dependency = Trigger(f'{m.fullname}/{str(chunk - 1)}/SIM eq complete')
+                                sim.add_node(dependency)
+
+                                gsv = Task('GSV', START_DATE=start_date, MEMBER=member, CHUNK=str(chunk))
+                                gsv.triggers = Trigger(f'{sim.fullname} eq complete')
+
+                                app = Task('APPLICATION', START_DATE=start_date, MEMBER=member, CHUNK=str(chunk))
+                                app.triggers = Trigger(f'{gsv.fullname} eq complete')
+    return s
+
+
+def main() -> None:
+    parser = argparse.ArgumentParser(
+        prog='autosubmit2pyflow',
+        description='Produces a valid PyFlow workflow configuration given an Autosubmit experiment ID',
+        epilog='This program needs access to an Autosubmit installation'
+    )
+    parser.add_argument('-e', '--experiment', required=True, help='Autosubmit experiment ID')
+    parser.add_argument('-s', '--server', default='localhost', help='ecFlow server hostname or IP')
+    parser.add_argument('-p', '--port', default=3141, help='ecFlow server port')
+    parser.add_argument('-d', '--deploy', default=False, help='Whether to deploy to ecFlow or not')
+    parser.add_argument('-q', '--quiet', default=False, action='store_true')
+
+    args = parser.parse_args()
+
+    # Init the configuration object where expid = experiment identifier that you want to load
+    as_conf = AutosubmitConfig(args.experiment)
+    # This will load the data from the experiment
+    as_conf.reload(True)
+
+    # place the NAME attribute in the job object
+    jobs_data: Dict[str, JobData] = {
+        job_data[0]: {'NAME': job_data[0], **job_data[1]}
+        for job_data in as_conf.jobs_data.items()}
+
+    jobs_list: List[Dict[str, JobData]] = list(jobs_data.values())
+    jobs_grouped_by_running_level: Dict[str, List[JobData]] = defaultdict(list)
+    jobs_grouped_by_running_level.update({job[0]: list(job[1]) for job in groupby(jobs_list, lambda item: item['RUNNING'])})
+
+    start_dates = as_conf.experiment_data['EXPERIMENT']['DATELIST'].split(' ')
+    members = as_conf.experiment_data['EXPERIMENT']['MEMBERS'].split(' ')
+    chunks = [i for i in range(1, as_conf.experiment_data['EXPERIMENT']['NUMCHUNKS'] + 1)]
+    suite = create_ecflow_suite(
+        experiment_id=args.experiment,
+        start_dates=start_dates,
+        members=members,
+        chunks=chunks,
+        jobs=jobs_data,
+        by_running=jobs_grouped_by_running_level
+    )
+
+    if not args.quiet:
+        print(suite)
+
+    if args.deploy:
+        suite.replace_on_server(host=args.hostname, port=args.port)
+
+    sys.exit(0)
+
+
+if __name__ == '__main__':
+    main()
+
+```
