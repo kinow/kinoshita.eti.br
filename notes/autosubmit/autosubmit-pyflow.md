@@ -207,16 +207,18 @@ endsuite
 # WIP
 
 ```py
-from collections import defaultdict
-
 import argparse
 import sys
+
+from pyflow import *
 from autosubmitconfigparser.config.configcommon import AutosubmitConfig
+
+from collections import defaultdict
+
 from itertools import groupby
 from typing import List, Dict, Any, TypedDict
 
-
-from pyflow import *
+import networkx as nx
 
 
 def _create_task(task_obj: Dict[str, Any], suite: Suite) -> Task:
@@ -259,7 +261,6 @@ def create_ecflow_suite(*,
         # start_dates = ['20220401', '20220402']
         # members = ['fc0']
         # chunks = [1, 2]
-        return s
 
         for start_date in start_dates:
             with Family(start_date, START_DATE=start_date):
@@ -282,7 +283,7 @@ def create_ecflow_suite(*,
 
                                 app = Task('APPLICATION', START_DATE=start_date, MEMBER=member, CHUNK=str(chunk))
                                 app.triggers = Trigger(f'{gsv.fullname} eq complete')
-    return s
+        return s
 
 
 def main() -> None:
@@ -309,21 +310,33 @@ def main() -> None:
         job_data[0]: {'NAME': job_data[0], **job_data[1]}
         for job_data in as_conf.jobs_data.items()}
 
+    # Create a list of jobs
     jobs_list: List[Dict[str, JobData]] = list(jobs_data.values())
-    jobs_grouped_by_running_level: Dict[str, List[JobData]] = defaultdict(list)
-    jobs_grouped_by_running_level.update({job[0]: list(job[1]) for job in groupby(jobs_list, lambda item: item['RUNNING'])})
+    # Create networkx graph
+    G = nx.DiGraph()
+    for job in jobs_list:
+        G.add_node(job['NAME'])
+        for dep in job['DEPENDENCIES'].keys():
+            G.add_edges_from([(job['NAME'], dep)])
+    # Create topological sort.
+    jobs_ordered = list(reversed(list(nx.topological_sort(G))))
+    # jobs_grouped_by_running_level: Dict[str, List[JobData]] = defaultdict(list)
+    # jobs_grouped_by_running_level.update(
+    #     {job[0]: list(job[1]) for job in groupby(jobs_list, lambda item: item['RUNNING'])})
+
+    print(jobs_ordered)
+    print()
+    print(jobs_list)
+    #print(as_conf.experiment_data)
+    if 'bla' not in args:
+        return
 
     start_dates = as_conf.experiment_data['EXPERIMENT']['DATELIST'].split(' ')
     members = as_conf.experiment_data['EXPERIMENT']['MEMBERS'].split(' ')
     chunks = [i for i in range(1, as_conf.experiment_data['EXPERIMENT']['NUMCHUNKS'] + 1)]
-    suite = create_ecflow_suite(
-        experiment_id=args.experiment,
-        start_dates=start_dates,
-        members=members,
-        chunks=chunks,
-        jobs=jobs_data,
-        by_running=jobs_grouped_by_running_level
-    )
+    # TODO: job splits
+    # TODO: raise an error for unsupported features, like SKIPPABLE?
+    suite = create_ecflow_suite(experiment_id=args.experiment, start_dates=start_dates, members=members, chunks=chunks)
 
     if not args.quiet:
         print(suite)
