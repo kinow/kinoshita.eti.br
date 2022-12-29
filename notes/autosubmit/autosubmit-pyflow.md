@@ -216,10 +216,11 @@ from autosubmitconfigparser.config.configcommon import AutosubmitConfig
 from collections import defaultdict
 
 from itertools import groupby
-from typing import List, Dict, Any, TypedDict
+from typing import List, Dict, Any, TypedDict, Union
 
 import networkx as nx
 
+from enum import Enum
 
 def _create_task(task_obj: Dict[str, Any], suite: Suite) -> Task:
     print('_create_task')
@@ -238,12 +239,20 @@ def _add_dependency(task: Task, task_obj: Dict[str, Any], suite: Suite) -> None:
 
 
 class JobData(TypedDict):
+    ID: str
     NAME: str
     FILE: str
     DEPENDENCIES: Dict[str, Dict[str, Any]]
     RUNNING: str
     WALLCLOCK: str
     ADDITIONAL_FILES: List[str]
+
+
+class Running(Enum):
+    once = 1
+    member = 2
+    chunk = 3
+    split = 4
 
 
 def create_ecflow_suite(*,
@@ -286,6 +295,29 @@ def create_ecflow_suite(*,
         return s
 
 
+DEFAULT_SEPARATOR = '_'
+
+
+def _create_job_id(
+        *,
+        expid: str,
+        name: str,
+        start_date: Union[str, None] = None,
+        member: Union[str, None] = None,
+        chunk: Union[str, None] = None,
+        split: Union[str, None] = None,
+        separator=DEFAULT_SEPARATOR) -> str:
+    if not expid or not name:
+        raise ValueError('You must provide valid expid and job name')
+    return separator.join([token for token in [expid, start_date, member, chunk, split, name] if token])
+
+
+def _create_job(job_id, job_data):
+    job = {'ID': job_id, **job_data.copy()}
+    job['DEPENDENCIES'] = []
+    return job
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(
         prog='autosubmit2pyflow',
@@ -305,6 +337,12 @@ def main() -> None:
     # This will load the data from the experiment
     as_conf.reload(True)
 
+    # experiment configuration
+    expid = args.experiment
+    start_dates = as_conf.experiment_data['EXPERIMENT']['DATELIST'].split(' ')
+    members = as_conf.experiment_data['EXPERIMENT']['MEMBERS'].split(' ')
+    chunks = [i for i in range(1, as_conf.experiment_data['EXPERIMENT']['NUMCHUNKS'] + 1)]
+
     # place the NAME attribute in the job object
     jobs_data: Dict[str, JobData] = {
         job_data[0]: {'NAME': job_data[0], **job_data[1]}
@@ -312,6 +350,68 @@ def main() -> None:
 
     # Create a list of jobs
     jobs_list: List[Dict[str, JobData]] = list(jobs_data.values())
+    jobs_grouped_by_running_level: Dict[str, List[JobData]] = defaultdict(list)
+    jobs_grouped_by_running_level.update(
+        {job[0]: list(job[1]) for job in groupby(jobs_list, lambda item: item['RUNNING'])})
+
+    # Expand jobs (by member, chunk, split, previous-dependency like SIM-1)
+    # That's because the graph declaration in Autosubmit configuration contains
+    # a meta graph, that is expanded by each hierarchy level generating
+    # more jobs (i.e. SIM may become a000_202204_fc0_1_SIM for running=chunk).
+    jobs: List[JobData] = []
+    for running in Running:
+        for job_running in jobs_grouped_by_running_level[running.name]:
+            if running == Running.once:
+                job_id = _create_job_id(expid=expid, name=job_running['NAME'])
+                job = _create_job(job_id, job_running)
+                for dependency in job_running['DEPENDENCIES']:
+                    # once jobs can only have dependencies on other once jobs
+                    dependency_id = _create_job_id(expid=expid, name=dependency)
+                    job['DEPENDENCIES'].append(dependency_id)
+                jobs.append(job)
+            else:
+                for start_date in start_dates:
+                    if running == Running.member:
+                        for member in members:
+                            job_id = _create_job_id(expid=expid, name=job_running['NAME'], member=member, start_date=start_date)
+                            job = _create_job(job_id, job_running)
+                            for dependency in job_running['DEPENDENCIES']:
+                                # member jobs can depend on once or member jobs
+                                dependency_job = jobs_data[dependency]
+                                dependency_member = None
+                                dependency_start_date = None
+                                if dependency_job['RUNNING'] == Running.member.name:
+                                    # if not a member dependency, then we do not add the start date and member (i.e. it is a once dependency)
+                                    dependency_member = member
+                                    dependency_start_date = start_date
+                                dependency_id = _create_job_id(expid=expid, name=dependency, member=dependency_member, start_date=dependency_start_date)
+                                job['DEPENDENCIES'].append(dependency_id)
+                            jobs.append(job)
+                    elif running == Running.chunk:
+                        for member in members:
+                            for chunk in chunks:
+                                job_id = _create_job_id(expid=expid, name=job_running['NAME'], member=member, chunk=str(chunk), start_date=start_date)
+                                job = _create_job(job_id, job_running)
+                                for dependency in job_running['DEPENDENCIES']:
+                                    # chunk jobs can depend on once or member or chunk jobs (also previous chunk)
+                                    # FIXME: continue from here...
+                                    # dependency_job = jobs_data[dependency]
+                                    # dependency_member = None
+                                    # dependency_start_date = None
+                                    # if dependency_job['RUNNING'] == Running.member.name:
+                                    #     # if not a member dependency, then we do not add the start date and member (i.e. it is a once dependency)
+                                    #     dependency_member = member
+                                    #     dependency_start_date = start_date
+                                    # dependency_id = _create_job_id(expid=expid, name=dependency,
+                                    #                                member=dependency_member,
+                                    #                                start_date=dependency_start_date)
+                                    job['DEPENDENCIES'].append(dependency_id)
+                                jobs.append(job)
+                    else:
+                        # TODO: implement splits and anything else?
+                        raise NotImplementedError(running)
+
+
     # Create networkx graph
     G = nx.DiGraph()
     for job in jobs_list:
@@ -320,23 +420,17 @@ def main() -> None:
             G.add_edges_from([(job['NAME'], dep)])
     # Create topological sort.
     jobs_ordered = list(reversed(list(nx.topological_sort(G))))
-    # jobs_grouped_by_running_level: Dict[str, List[JobData]] = defaultdict(list)
-    # jobs_grouped_by_running_level.update(
-    #     {job[0]: list(job[1]) for job in groupby(jobs_list, lambda item: item['RUNNING'])})
 
     print(jobs_ordered)
     print()
-    print(jobs_list)
+    print([f'{job["ID"]}, deps: {job["DEPENDENCIES"]}' for job in jobs])
     #print(as_conf.experiment_data)
     if 'bla' not in args:
         return
 
-    start_dates = as_conf.experiment_data['EXPERIMENT']['DATELIST'].split(' ')
-    members = as_conf.experiment_data['EXPERIMENT']['MEMBERS'].split(' ')
-    chunks = [i for i in range(1, as_conf.experiment_data['EXPERIMENT']['NUMCHUNKS'] + 1)]
     # TODO: job splits
     # TODO: raise an error for unsupported features, like SKIPPABLE?
-    suite = create_ecflow_suite(experiment_id=args.experiment, start_dates=start_dates, members=members, chunks=chunks)
+    suite = create_ecflow_suite(experiment_id=expid, start_dates=start_dates, members=members, chunks=chunks)
 
     if not args.quiet:
         print(suite)
