@@ -18,9 +18,14 @@ JOBS:
     DEPENDENCIES: SYNCHRONIZE
     WALLCLOCK: '01:00'
     RUNNING: once
-  INI:
+  PREINI:
     FILE: templates/ini.sh
     DEPENDENCIES: REMOTE_SETUP
+    RUNNING: member
+    WALLCLOCK: '00:05'
+  INI:
+    FILE: templates/ini.sh
+    DEPENDENCIES: PREINI
     RUNNING: member
     WALLCLOCK: '00:05'
   SIM:
@@ -55,9 +60,12 @@ experiment:
 
 Plot:
 
-![image](https://user-images.githubusercontent.com/304786/204065990-319fde71-56d2-4396-9363-b304014956d5.png)
+![image]![image](https://user-images.githubusercontent.com/304786/210076708-0313573b-f70c-4434-a5dd-b7a9bd08bd82.png)
 
-## PyFlow 3
+## PyFlow 3 (outdated)
+
+This was the initial prototype, manually creating a PyFlow suite from looking at the previous experiment configuration.
+Skip to the next section to the up to date solution.
 
 ```py
 import os
@@ -132,7 +140,9 @@ Screenshots of the suite loaded in `ecflow_ui`:
 
 ![image](https://user-images.githubusercontent.com/304786/204587724-58e51b86-1724-4435-aa79-dc6851cb2e9c.png)
 
-## ecFlow suite definition
+### ecFlow suite definition
+
+Exported from PyFlow configuration.
 
 ```
 suite a000
@@ -204,55 +214,71 @@ suite a000
 endsuite
 ```
 
-# WIP
+## `autosubmit2pyflow.py`
+
+**NOTE**: Work in progress.
+
+This script reads Autosubmit experiments configuration using the
+[`autosubmitconfigparser`](https://pypi.org/project/autosubmitconfigparser/)
+library, expands the workflow graph, plots and creates a PyFlow suite.
+
+The goal is to produce the PyFlow workflow using Autosubmit experiment configuration,
+creating a compatible workflow.
+
+To Do:
+
+- [x] Read configuration
+- [x] Expand workflow graph, including dependencies (i.e. instead of `INI -> SIM`, we need the actual tasks like `a000_INI -> a000_20200401_SIM`, etc.)
+- [x] Iterate the workflow in topological order (i.e. from bottom down, in-order - lexical?)
+- [ ] Produce equivalent graph in AS & PyFlow (very close, need to confirm something with Dani & Miguel about dependencies)
+- [x] Plot the workflow graph to compare with Autosubmit's plot (using `dot`)
+- [ ] Augment the PyFlow suite with all the available configuration (i.e. all the variables from experiment) (shouldn't be too hard, need Dani's help)
+- [ ] Produce equivalent execution in AS & PyFlow (a little harder to confirm, will need Miguel and Dani's help)
+- [ ] Polish the code (better documentation, store in a better repository or integrate into AS4, write tests, etc.)
 
 ```py
 import argparse
 import sys
-
-from pyflow import *
-from autosubmitconfigparser.config.configcommon import AutosubmitConfig
-
 from collections import defaultdict
-
+from enum import Enum
 from itertools import groupby
 from typing import List, Dict, Any, TypedDict, Union
+import re
 
 import networkx as nx
+from autosubmitconfigparser.config.configcommon import AutosubmitConfig
+from pyflow import *
 
-from enum import Enum
 
 def _create_task(task_obj: Dict[str, Any], suite: Suite) -> Task:
-    print('_create_task')
     task = Task(task_obj['NAME'])
-    _add_dependency(task, task_obj, suite)
     return task
 
 
-def _add_dependency(task: Task, task_obj: Dict[str, Any], suite: Suite) -> None:
-    if task_obj['DEPENDENCIES'] is not None:
-        deps = task_obj['DEPENDENCIES'].keys()
-        for dep in deps:
-            if suite[dep] is None:
-                _create_task()
-            task.triggers = suite[dep].complete
+class Running(Enum):
+    ONCE = 'once'
+    MEMBER = 'member'
+    CHUNK = 'chunk'
+    SPLIT = 'split'
+
+    def __str__(self):
+        return self.value
+
+
+class DependencyData(TypedDict):
+    ID: str
+    NAME: str
+    RUNNING: Running
 
 
 class JobData(TypedDict):
     ID: str
     NAME: str
     FILE: str
-    DEPENDENCIES: Dict[str, Dict[str, Any]]
+    DEPENDENCIES: Dict[str, DependencyData]
     RUNNING: str
     WALLCLOCK: str
     ADDITIONAL_FILES: List[str]
-
-
-class Running(Enum):
-    once = 1
-    member = 2
-    chunk = 3
-    split = 4
 
 
 def create_ecflow_suite(*,
@@ -272,25 +298,28 @@ def create_ecflow_suite(*,
         # chunks = [1, 2]
 
         for start_date in start_dates:
-            with Family(start_date, START_DATE=start_date):
+            with Family(start_date, START_DATE=start_date):  # type: ignore
                 for member in members:
                     with Family(member) as m:
                         for task_obj in jobs['member']:
-                            task = Task(task_obj['NAME'], START_DATE=start_date, MEMBER=member)
+                            task = Task(task_obj['NAME'], START_DATE=start_date, MEMBER=member)  # type: ignore
                             ini.triggers = s.REMOTE_SETUP.complete
                         for chunk in chunks:
                             with Family(str(chunk)):
-                                sim = Task('SIM', START_DATE=start_date, MEMBER=member, CHUNK=str(chunk))
+                                sim = Task('SIM', START_DATE=start_date, MEMBER=member,
+                                           CHUNK=str(chunk))  # type: ignore
                                 if chunk == 1:
                                     dependency = Trigger(f'{ini.fullname} eq complete')
                                 else:
                                     dependency = Trigger(f'{m.fullname}/{str(chunk - 1)}/SIM eq complete')
                                 sim.add_node(dependency)
 
-                                gsv = Task('GSV', START_DATE=start_date, MEMBER=member, CHUNK=str(chunk))
+                                gsv = Task('GSV', START_DATE=start_date, MEMBER=member,
+                                           CHUNK=str(chunk))  # type: ignore
                                 gsv.triggers = Trigger(f'{sim.fullname} eq complete')
 
-                                app = Task('APPLICATION', START_DATE=start_date, MEMBER=member, CHUNK=str(chunk))
+                                app = Task('APPLICATION', START_DATE=start_date, MEMBER=member,
+                                           CHUNK=str(chunk))  # type: ignore
                                 app.triggers = Trigger(f'{gsv.fullname} eq complete')
         return s
 
@@ -309,13 +338,93 @@ def _create_job_id(
         separator=DEFAULT_SEPARATOR) -> str:
     if not expid or not name:
         raise ValueError('You must provide valid expid and job name')
-    return separator.join([token for token in [expid, start_date, member, chunk, split, name] if token])
+    return separator.join([token for token in filter(None, [expid, start_date, member, chunk, split, name])])
 
 
-def _create_job(job_id, job_data):
+def _create_job(
+        *,
+        expid: str,
+        name: str,
+        start_date: Union[str, None] = None,
+        member: Union[str, None] = None,
+        chunk: Union[int, None] = None,
+        split: Union[str, None] = None,
+        separator=DEFAULT_SEPARATOR,
+        job_data: JobData,
+        jobs_data: Dict[str, JobData]) -> JobData:
+    chunk_str = None if chunk is None else str(chunk)
+    job_id = _create_job_id(
+        expid=expid,
+        name=name,
+        member=member,
+        chunk=chunk_str,
+        split=split,
+        separator=separator,
+        start_date=start_date)
     job = {'ID': job_id, **job_data.copy()}
-    job['DEPENDENCIES'] = []
+    job['DEPENDENCIES'] = {}
+    for dependency in job_data['DEPENDENCIES']:
+        # once jobs can only have dependencies on other once jobs
+        job_dependency = _create_dependency(
+            dependency_name=dependency,
+            jobs_data=jobs_data,
+            expid=expid,
+            start_date=start_date,
+            member=member,
+            chunk=chunk,
+            split=split)
+        # certain dependencies do not produce an object, e.g.
+        # - SIM-1 if SIM is not RUNNING=chunk, or
+        # - SIM-1 if current chunk is 1 (or 1 - 1 = 0)
+        if job_dependency:
+            job['DEPENDENCIES'][dependency] = job_dependency
     return job
+
+
+def _create_dependency(
+        dependency_name: str,
+        jobs_data: Dict[str, JobData],
+        expid: str,
+        start_date: Union[str, None] = None,
+        member: Union[str, None] = None,
+        chunk: Union[int, None] = None,
+        split: Union[str, None] = None) -> Union[DependencyData, None]:
+    """Create a ``DependencyData`` object.
+
+    The dependency created will have a field ``ID`` with the expanded dependency ID."""
+    dependency_member = None
+    dependency_start_date = None
+    dependency_chunk = None
+
+    m = re.search('([a-zA-Z0-9_\-\.]+)-([\d]+)', dependency_name)
+    if m:
+        if chunk is None:
+            # We ignore if this syntax is used outside a running=chunk (same behaviour as AS?).
+            return None
+        dependency_name = m.group(1)
+        previous_chunk = int(m.group(2))
+        if chunk - previous_chunk < 1:
+            # We ignore -1 when the chunk is 1 (i.e. no previous chunk).
+            return None
+        dependency_chunk = str(previous_chunk)
+    dependency_data = jobs_data[dependency_name]
+    if dependency_data['RUNNING'] == Running.MEMBER.value:
+        # if not a member dependency, then we do not add the start date and member (i.e. it is a once dependency)
+        dependency_member = member
+        dependency_start_date = start_date
+    elif dependency_data['RUNNING'] == Running.CHUNK.value:
+        dependency_member = member
+        dependency_start_date = start_date
+        if dependency_chunk is None:
+            dependency_chunk = str(chunk)
+    # TODO: split
+    dependency_id = _create_job_id(
+        expid=expid,
+        name=dependency_name,
+        member=dependency_member,
+        chunk=dependency_chunk,
+        start_date=dependency_start_date)
+    return {'ID': dependency_id, **dependency_data}
 
 
 def main() -> None:
@@ -349,7 +458,7 @@ def main() -> None:
         for job_data in as_conf.jobs_data.items()}
 
     # Create a list of jobs
-    jobs_list: List[Dict[str, JobData]] = list(jobs_data.values())
+    jobs_list: List[JobData] = list(jobs_data.values())
     jobs_grouped_by_running_level: Dict[str, List[JobData]] = defaultdict(list)
     jobs_grouped_by_running_level.update(
         {job[0]: list(job[1]) for job in groupby(jobs_list, lambda item: item['RUNNING'])})
@@ -360,71 +469,56 @@ def main() -> None:
     # more jobs (i.e. SIM may become a000_202204_fc0_1_SIM for running=chunk).
     jobs: List[JobData] = []
     for running in Running:
-        for job_running in jobs_grouped_by_running_level[running.name]:
-            if running == Running.once:
-                job_id = _create_job_id(expid=expid, name=job_running['NAME'])
-                job = _create_job(job_id, job_running)
-                for dependency in job_running['DEPENDENCIES']:
-                    # once jobs can only have dependencies on other once jobs
-                    dependency_id = _create_job_id(expid=expid, name=dependency)
-                    job['DEPENDENCIES'].append(dependency_id)
-                jobs.append(job)
+        for job_running in jobs_grouped_by_running_level[running.value]:
+            if running == Running.ONCE:
+                jobs.append(_create_job(
+                    expid=expid,
+                    name=job_running['NAME'],
+                    job_data=job_running,
+                    jobs_data=jobs_data))
             else:
                 for start_date in start_dates:
-                    if running == Running.member:
+                    if running == Running.MEMBER:
                         for member in members:
-                            job_id = _create_job_id(expid=expid, name=job_running['NAME'], member=member, start_date=start_date)
-                            job = _create_job(job_id, job_running)
-                            for dependency in job_running['DEPENDENCIES']:
-                                # member jobs can depend on once or member jobs
-                                dependency_job = jobs_data[dependency]
-                                dependency_member = None
-                                dependency_start_date = None
-                                if dependency_job['RUNNING'] == Running.member.name:
-                                    # if not a member dependency, then we do not add the start date and member (i.e. it is a once dependency)
-                                    dependency_member = member
-                                    dependency_start_date = start_date
-                                dependency_id = _create_job_id(expid=expid, name=dependency, member=dependency_member, start_date=dependency_start_date)
-                                job['DEPENDENCIES'].append(dependency_id)
-                            jobs.append(job)
-                    elif running == Running.chunk:
+                            jobs.append(_create_job(
+                                expid=expid,
+                                name=job_running['NAME'],
+                                member=member,
+                                start_date=start_date,
+                                job_data=job_running,
+                                jobs_data=jobs_data))
+                    elif running == Running.CHUNK:
                         for member in members:
                             for chunk in chunks:
-                                job_id = _create_job_id(expid=expid, name=job_running['NAME'], member=member, chunk=str(chunk), start_date=start_date)
-                                job = _create_job(job_id, job_running)
-                                for dependency in job_running['DEPENDENCIES']:
-                                    # chunk jobs can depend on once or member or chunk jobs (also previous chunk)
-                                    # FIXME: continue from here...
-                                    # dependency_job = jobs_data[dependency]
-                                    # dependency_member = None
-                                    # dependency_start_date = None
-                                    # if dependency_job['RUNNING'] == Running.member.name:
-                                    #     # if not a member dependency, then we do not add the start date and member (i.e. it is a once dependency)
-                                    #     dependency_member = member
-                                    #     dependency_start_date = start_date
-                                    # dependency_id = _create_job_id(expid=expid, name=dependency,
-                                    #                                member=dependency_member,
-                                    #                                start_date=dependency_start_date)
-                                    job['DEPENDENCIES'].append(dependency_id)
-                                jobs.append(job)
+                                jobs.append(_create_job(
+                                    expid=expid,
+                                    name=job_running['NAME'],
+                                    member=member,
+                                    chunk=chunk,
+                                    start_date=start_date,
+                                    job_data=job_running,
+                                    jobs_data=jobs_data))
+                    # TODO: split
                     else:
                         # TODO: implement splits and anything else?
                         raise NotImplementedError(running)
 
-
     # Create networkx graph
     G = nx.DiGraph()
-    for job in jobs_list:
-        G.add_node(job['NAME'])
-        for dep in job['DEPENDENCIES'].keys():
-            G.add_edges_from([(job['NAME'], dep)])
+    for job in jobs:
+        G.add_node(job['ID'])
+        for dep in job['DEPENDENCIES'].values():
+            G.add_edges_from([(dep['ID'], job['ID'])])
     # Create topological sort.
-    jobs_ordered = list(reversed(list(nx.topological_sort(G))))
+    jobs_ordered = list(list(nx.topological_sort(G)))
 
+    # print(jobs_ordered)
+    # print()
+    # print([f'{job["ID"]}, deps: {job["DEPENDENCIES"]}' for job in jobs])
+    # print(as_conf.experiment_data)
     print(jobs_ordered)
-    print()
-    print([f'{job["ID"]}, deps: {job["DEPENDENCIES"]}' for job in jobs])
-    #print(as_conf.experiment_data)
+    PG = nx.nx_pydot.to_pydot(G)
+    print(PG)
     if 'bla' not in args:
         return
 
@@ -445,3 +539,10 @@ if __name__ == '__main__':
     main()
 
 ```
+
+Current graph:
+
+[URL](https://dreampuf.github.io/GraphvizOnline/#strict%20digraph%20%20%7B%0Aa000_LOCAL_SETUP%3B%0Aa000_SYNCHRONIZE%3B%0Aa000_REMOTE_SETUP%3B%0Aa000_20220401_fc0_PREINI%3B%0Aa000_20220402_fc0_PREINI%3B%0Aa000_20220401_fc0_INI%3B%0Aa000_20220402_fc0_INI%3B%0Aa000_20220401_fc0_1_SIM%3B%0Aa000_20220401_fc0_2_SIM%3B%0Aa000_20220402_fc0_1_SIM%3B%0Aa000_20220402_fc0_2_SIM%3B%0Aa000_20220401_fc0_1_GSV%3B%0Aa000_20220401_fc0_2_GSV%3B%0Aa000_20220402_fc0_1_GSV%3B%0Aa000_20220402_fc0_2_GSV%3B%0Aa000_20220401_fc0_1_APPLICATION%3B%0Aa000_20220401_fc0_2_APPLICATION%3B%0Aa000_20220402_fc0_1_APPLICATION%3B%0Aa000_20220402_fc0_2_APPLICATION%3B%0Aa000_LOCAL_SETUP%20-%3E%20a000_SYNCHRONIZE%3B%0Aa000_SYNCHRONIZE%20-%3E%20a000_REMOTE_SETUP%3B%0Aa000_REMOTE_SETUP%20-%3E%20a000_20220401_fc0_PREINI%3B%0Aa000_REMOTE_SETUP%20-%3E%20a000_20220402_fc0_PREINI%3B%0Aa000_20220401_fc0_PREINI%20-%3E%20a000_20220401_fc0_INI%3B%0Aa000_20220402_fc0_PREINI%20-%3E%20a000_20220402_fc0_INI%3B%0Aa000_20220401_fc0_INI%20-%3E%20a000_20220401_fc0_1_SIM%3B%0Aa000_20220401_fc0_INI%20-%3E%20a000_20220401_fc0_2_SIM%3B%0Aa000_20220402_fc0_INI%20-%3E%20a000_20220402_fc0_1_SIM%3B%0Aa000_20220402_fc0_INI%20-%3E%20a000_20220402_fc0_2_SIM%3B%0Aa000_20220401_fc0_1_SIM%20-%3E%20a000_20220401_fc0_2_SIM%3B%0Aa000_20220401_fc0_1_SIM%20-%3E%20a000_20220401_fc0_1_GSV%3B%0Aa000_20220401_fc0_2_SIM%20-%3E%20a000_20220401_fc0_2_GSV%3B%0Aa000_20220402_fc0_1_SIM%20-%3E%20a000_20220402_fc0_2_SIM%3B%0Aa000_20220402_fc0_1_SIM%20-%3E%20a000_20220402_fc0_1_GSV%3B%0Aa000_20220402_fc0_2_SIM%20-%3E%20a000_20220402_fc0_2_GSV%3B%0Aa000_20220401_fc0_1_GSV%20-%3E%20a000_20220401_fc0_1_APPLICATION%3B%0Aa000_20220401_fc0_2_GSV%20-%3E%20a000_20220401_fc0_2_APPLICATION%3B%0Aa000_20220402_fc0_1_GSV%20-%3E%20a000_20220402_fc0_1_APPLICATION%3B%0Aa000_20220402_fc0_2_GSV%20-%3E%20a000_20220402_fc0_2_APPLICATION%3B%0A%7D%0A)
+
+![graphviz](https://user-images.githubusercontent.com/304786/210077573-39f5d2fe-958f-4d12-99a0-0d5c0b8866e3.svg)
+
