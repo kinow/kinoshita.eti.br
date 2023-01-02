@@ -230,12 +230,12 @@ To Do:
 - [x] Read configuration
 - [x] Expand workflow graph, including dependencies (i.e. instead of `INI -> SIM`, we need the actual tasks like `a000_INI -> a000_20200401_SIM`, etc.)
 - [x] Iterate the workflow in topological order (i.e. from bottom down, in-order - lexical?)
-- [ ] Produce equivalent graph in AS & PyFlow (very close, need to confirm something with Dani & Miguel about dependencies)
+- [x] Produce equivalent graph in AS & PyFlow (very close, need to confirm something with Dani & Miguel about dependencies)
 - [ ] Iterate the AS4 workflow graph nodes in topological order and create equivalent nodes in PyFlow (very close, did that manually, just need to stitch the old code with the new one - 2-3 days to complete?)
 - [x] Plot the workflow graph to compare with Autosubmit's plot (using `dot`)
 - [ ] Augment the PyFlow suite with all the available configuration (i.e. all the variables from experiment) (shouldn't be too hard, need Dani's help)
 - [ ] Produce equivalent execution in AS & PyFlow (a little harder to confirm, will need Miguel and Dani's help)
-- [ ] Polish the code (better documentation, store in a better repository or integrate into AS4, write tests, etc.)
+- [ ] Polish the code (better documentation [Done!], store in a better repository or integrate into AS4, write tests, etc.)
 
 ```py
 import argparse
@@ -251,12 +251,24 @@ from autosubmitconfigparser.config.configcommon import AutosubmitConfig
 from pyflow import *
 
 
+# Pattern used to verify if a TASK name includes the previous CHUNK number, with a separator.
+PREVIOUS_CHUNK_PATTERN = re.compile(r'''
+    ([a-zA-Z0-9_\-\.]+) # The Task name (e.g. TASK);
+    -                   # TASK and CHUNK separator, i.e. TASK-1 (the hyphen between TASK and 1);
+    ([\d]+)             # The Chunk name (e.g. 1).
+''', re.X)
+
+# Autosubmit Task name separator (not to be confused with task and chunk name separator).
+DEFAULT_SEPARATOR = '_'
+
+
 def _create_task(task_obj: Dict[str, Any], suite: Suite) -> Task:
     task = Task(task_obj['NAME'])
     return task
 
 
 class Running(Enum):
+    """The Running level of an Autosubmit task."""
     ONCE = 'once'
     MEMBER = 'member'
     CHUNK = 'chunk'
@@ -267,12 +279,14 @@ class Running(Enum):
 
 
 class DependencyData(TypedDict):
+    """Autosubmit dependency data."""
     ID: str
     NAME: str
     RUNNING: Running
 
 
 class JobData(TypedDict):
+    """Autosubmit job data."""
     ID: str
     NAME: str
     FILE: str
@@ -325,9 +339,6 @@ def create_ecflow_suite(*,
         return s
 
 
-DEFAULT_SEPARATOR = '_'
-
-
 def _create_job_id(
         *,
         expid: str,
@@ -337,6 +348,7 @@ def _create_job_id(
         chunk: Union[str, None] = None,
         split: Union[str, None] = None,
         separator=DEFAULT_SEPARATOR) -> str:
+    """Create an Autosubmit Job ID. Ignores optional values passed as None."""
     if not expid or not name:
         raise ValueError('You must provide valid expid and job name')
     return separator.join([token for token in filter(None, [expid, start_date, member, chunk, split, name])])
@@ -353,6 +365,7 @@ def _create_job(
         separator=DEFAULT_SEPARATOR,
         job_data: JobData,
         jobs_data: Dict[str, JobData]) -> JobData:
+    """Create an Autosubmit job."""
     chunk_str = None if chunk is None else str(chunk)
     job_id = _create_job_id(
         expid=expid,
@@ -364,8 +377,9 @@ def _create_job(
         start_date=start_date)
     job = {'ID': job_id, **job_data.copy()}
     job['DEPENDENCIES'] = {}
+    has_previous_chunk_dependency = any(map(lambda dep_name: PREVIOUS_CHUNK_PATTERN.match(dep_name), job_data['DEPENDENCIES'].keys()))
     for dependency in job_data['DEPENDENCIES']:
-        # once jobs can only have dependencies on other once jobs
+        # ONCE jobs can only have dependencies on other once jobs.
         job_dependency = _create_dependency(
             dependency_name=dependency,
             jobs_data=jobs_data,
@@ -374,10 +388,15 @@ def _create_job(
             member=member,
             chunk=chunk,
             split=split)
-        # certain dependencies do not produce an object, e.g.
+        # Certain dependencies do not produce an object, e.g.:
         # - SIM-1 if SIM is not RUNNING=chunk, or
         # - SIM-1 if current chunk is 1 (or 1 - 1 = 0)
         if job_dependency:
+            if has_previous_chunk_dependency and chunk > 1:
+                # If this is a CHUNK task, and has dependencies on tasks in previous CHUNK's, we ignore
+                # dependencies higher up in the hierarchy (i.e. ONCE and MEMBER).
+                if job_dependency['RUNNING'] in [Running.ONCE.value, Running.MEMBER.value]:
+                    continue
             job['DEPENDENCIES'][dependency] = job_dependency
     return job
 
@@ -390,14 +409,14 @@ def _create_dependency(
         member: Union[str, None] = None,
         chunk: Union[int, None] = None,
         split: Union[str, None] = None) -> Union[DependencyData, None]:
-    """Create a ``DependencyData`` object.
+    """Create an Autosubmit dependency object.
 
     The dependency created will have a field ``ID`` with the expanded dependency ID."""
     dependency_member = None
     dependency_start_date = None
     dependency_chunk = None
 
-    m = re.search('([a-zA-Z0-9_\-\.]+)-([\d]+)', dependency_name)
+    m = re.search(PREVIOUS_CHUNK_PATTERN, dependency_name)
     if m:
         if chunk is None:
             # We ignore if this syntax is used outside a running=chunk (same behaviour as AS?).
@@ -408,7 +427,9 @@ def _create_dependency(
             # We ignore -1 when the chunk is 1 (i.e. no previous chunk).
             return None
         dependency_chunk = str(previous_chunk)
+
     dependency_data = jobs_data[dependency_name]
+
     if dependency_data['RUNNING'] == Running.MEMBER.value:
         # if not a member dependency, then we do not add the start date and member (i.e. it is a once dependency)
         dependency_member = member
@@ -428,46 +449,20 @@ def _create_dependency(
     return {'ID': dependency_id, **dependency_data}
 
 
-def main() -> None:
-    parser = argparse.ArgumentParser(
-        prog='autosubmit2pyflow',
-        description='Produces a valid PyFlow workflow configuration given an Autosubmit experiment ID',
-        epilog='This program needs access to an Autosubmit installation'
-    )
-    parser.add_argument('-e', '--experiment', required=True, help='Autosubmit experiment ID')
-    parser.add_argument('-s', '--server', default='localhost', help='ecFlow server hostname or IP')
-    parser.add_argument('-p', '--port', default=3141, help='ecFlow server port')
-    parser.add_argument('-d', '--deploy', default=False, help='Whether to deploy to ecFlow or not')
-    parser.add_argument('-q', '--quiet', default=False, action='store_true')
+def _expand_autosubmit_graph(
+        jobs_grouped_by_running_level: Dict[str, List[JobData]],
+        expid: str,
+        start_dates: List[str],
+        members: List[str],
+        chunks: List[int],
+        jobs_data: Dict[str, JobData]
+) -> List[JobData]:
+    """Expand the Autosubmit graph.
 
-    args = parser.parse_args()
-
-    # Init the configuration object where expid = experiment identifier that you want to load
-    as_conf = AutosubmitConfig(args.experiment)
-    # This will load the data from the experiment
-    as_conf.reload(True)
-
-    # experiment configuration
-    expid = args.experiment
-    start_dates = as_conf.experiment_data['EXPERIMENT']['DATELIST'].split(' ')
-    members = as_conf.experiment_data['EXPERIMENT']['MEMBERS'].split(' ')
-    chunks = [i for i in range(1, as_conf.experiment_data['EXPERIMENT']['NUMCHUNKS'] + 1)]
-
-    # place the NAME attribute in the job object
-    jobs_data: Dict[str, JobData] = {
-        job_data[0]: {'NAME': job_data[0], **job_data[1]}
-        for job_data in as_conf.jobs_data.items()}
-
-    # Create a list of jobs
-    jobs_list: List[JobData] = list(jobs_data.values())
-    jobs_grouped_by_running_level: Dict[str, List[JobData]] = defaultdict(list)
-    jobs_grouped_by_running_level.update(
-        {job[0]: list(job[1]) for job in groupby(jobs_list, lambda item: item['RUNNING'])})
-
-    # Expand jobs (by member, chunk, split, previous-dependency like SIM-1)
-    # That's because the graph declaration in Autosubmit configuration contains
-    # a meta graph, that is expanded by each hierarchy level generating
-    # more jobs (i.e. SIM may become a000_202204_fc0_1_SIM for running=chunk).
+    Expand jobs (by member, chunk, split, previous-dependency like SIM-1). That's because the
+    # graph declaration in Autosubmit configuration contains a meta graph, that is expanded by
+    # each hierarchy level generating more jobs (i.e. SIM may become a000_202204_fc0_1_SIM for
+    # running=CHUNK)."""
     jobs: List[JobData] = []
     for running in Running:
         for job_running in jobs_grouped_by_running_level[running.value]:
@@ -503,8 +498,48 @@ def main() -> None:
                     else:
                         # TODO: implement splits and anything else?
                         raise NotImplementedError(running)
+    return jobs
 
-    # Create networkx graph
+def main() -> None:
+    parser = argparse.ArgumentParser(
+        prog='autosubmit2pyflow',
+        description='Produces a valid PyFlow workflow configuration given an Autosubmit experiment ID',
+        epilog='This program needs access to an Autosubmit installation'
+    )
+    parser.add_argument('-e', '--experiment', required=True, help='Autosubmit experiment ID')
+    parser.add_argument('-s', '--server', default='localhost', help='ecFlow server hostname or IP')
+    parser.add_argument('-p', '--port', default=3141, help='ecFlow server port')
+    parser.add_argument('-d', '--deploy', default=False, help='Whether to deploy to ecFlow or not')
+    parser.add_argument('-q', '--quiet', default=False, action='store_true')
+
+    args = parser.parse_args()
+
+    # Init the configuration object where expid = experiment identifier that you want to load.
+    as_conf = AutosubmitConfig(args.experiment)
+    # This will load the data from the experiment.
+    as_conf.reload(True)
+
+    # Autosubmit experiment configuration.
+    expid = args.experiment
+    start_dates = as_conf.experiment_data['EXPERIMENT']['DATELIST'].split(' ')
+    members = as_conf.experiment_data['EXPERIMENT']['MEMBERS'].split(' ')
+    chunks = [i for i in range(1, as_conf.experiment_data['EXPERIMENT']['NUMCHUNKS'] + 1)]
+
+    # Place the NAME attribute in the job object.
+    jobs_data: Dict[str, JobData] = {
+        job_data[0]: {'NAME': job_data[0], **job_data[1]}
+        for job_data in as_conf.jobs_data.items()}
+
+    # Create a list of jobs.
+    jobs_list: List[JobData] = list(jobs_data.values())
+    jobs_grouped_by_running_level: Dict[str, List[JobData]] = defaultdict(list)
+    jobs_grouped_by_running_level.update(
+        {job[0]: list(job[1]) for job in groupby(jobs_list, lambda item: item['RUNNING'])})
+
+    # Expand the Autosubmit workflow graph.
+    jobs: List[JobData] = _expand_autosubmit_graph(jobs_grouped_by_running_level, expid, start_dates, members, chunks, jobs_data)
+
+    # Create networkx graph.
     G = nx.DiGraph()
     for job in jobs:
         G.add_node(job['ID'])
@@ -513,7 +548,6 @@ def main() -> None:
     # Create topological sort.
     jobs_ordered = list(list(nx.topological_sort(G)))
 
-    # print(jobs_ordered)
     # print()
     # print([f'{job["ID"]}, deps: {job["DEPENDENCIES"]}' for job in jobs])
     # print(as_conf.experiment_data)
@@ -543,7 +577,7 @@ if __name__ == '__main__':
 
 Current graph:
 
-[URL](https://dreampuf.github.io/GraphvizOnline/#strict%20digraph%20%20%7B%0Aa000_LOCAL_SETUP%3B%0Aa000_SYNCHRONIZE%3B%0Aa000_REMOTE_SETUP%3B%0Aa000_20220401_fc0_PREINI%3B%0Aa000_20220402_fc0_PREINI%3B%0Aa000_20220401_fc0_INI%3B%0Aa000_20220402_fc0_INI%3B%0Aa000_20220401_fc0_1_SIM%3B%0Aa000_20220401_fc0_2_SIM%3B%0Aa000_20220402_fc0_1_SIM%3B%0Aa000_20220402_fc0_2_SIM%3B%0Aa000_20220401_fc0_1_GSV%3B%0Aa000_20220401_fc0_2_GSV%3B%0Aa000_20220402_fc0_1_GSV%3B%0Aa000_20220402_fc0_2_GSV%3B%0Aa000_20220401_fc0_1_APPLICATION%3B%0Aa000_20220401_fc0_2_APPLICATION%3B%0Aa000_20220402_fc0_1_APPLICATION%3B%0Aa000_20220402_fc0_2_APPLICATION%3B%0Aa000_LOCAL_SETUP%20-%3E%20a000_SYNCHRONIZE%3B%0Aa000_SYNCHRONIZE%20-%3E%20a000_REMOTE_SETUP%3B%0Aa000_REMOTE_SETUP%20-%3E%20a000_20220401_fc0_PREINI%3B%0Aa000_REMOTE_SETUP%20-%3E%20a000_20220402_fc0_PREINI%3B%0Aa000_20220401_fc0_PREINI%20-%3E%20a000_20220401_fc0_INI%3B%0Aa000_20220402_fc0_PREINI%20-%3E%20a000_20220402_fc0_INI%3B%0Aa000_20220401_fc0_INI%20-%3E%20a000_20220401_fc0_1_SIM%3B%0Aa000_20220401_fc0_INI%20-%3E%20a000_20220401_fc0_2_SIM%3B%0Aa000_20220402_fc0_INI%20-%3E%20a000_20220402_fc0_1_SIM%3B%0Aa000_20220402_fc0_INI%20-%3E%20a000_20220402_fc0_2_SIM%3B%0Aa000_20220401_fc0_1_SIM%20-%3E%20a000_20220401_fc0_2_SIM%3B%0Aa000_20220401_fc0_1_SIM%20-%3E%20a000_20220401_fc0_1_GSV%3B%0Aa000_20220401_fc0_2_SIM%20-%3E%20a000_20220401_fc0_2_GSV%3B%0Aa000_20220402_fc0_1_SIM%20-%3E%20a000_20220402_fc0_2_SIM%3B%0Aa000_20220402_fc0_1_SIM%20-%3E%20a000_20220402_fc0_1_GSV%3B%0Aa000_20220402_fc0_2_SIM%20-%3E%20a000_20220402_fc0_2_GSV%3B%0Aa000_20220401_fc0_1_GSV%20-%3E%20a000_20220401_fc0_1_APPLICATION%3B%0Aa000_20220401_fc0_2_GSV%20-%3E%20a000_20220401_fc0_2_APPLICATION%3B%0Aa000_20220402_fc0_1_GSV%20-%3E%20a000_20220402_fc0_1_APPLICATION%3B%0Aa000_20220402_fc0_2_GSV%20-%3E%20a000_20220402_fc0_2_APPLICATION%3B%0A%7D%0A)
+[URL]([https://dreampuf.github.io/GraphvizOnline/#strict%20digraph%20%20%7B%0Aa000_LOCAL_SETUP%3B%0Aa000_SYNCHRONIZE%3B%0Aa000_REMOTE_SETUP%3B%0Aa000_20220401_fc0_PREINI%3B%0Aa000_20220402_fc0_PREINI%3B%0Aa000_20220401_fc0_INI%3B%0Aa000_20220402_fc0_INI%3B%0Aa000_20220401_fc0_1_SIM%3B%0Aa000_20220401_fc0_2_SIM%3B%0Aa000_20220402_fc0_1_SIM%3B%0Aa000_20220402_fc0_2_SIM%3B%0Aa000_20220401_fc0_1_GSV%3B%0Aa000_20220401_fc0_2_GSV%3B%0Aa000_20220402_fc0_1_GSV%3B%0Aa000_20220402_fc0_2_GSV%3B%0Aa000_20220401_fc0_1_APPLICATION%3B%0Aa000_20220401_fc0_2_APPLICATION%3B%0Aa000_20220402_fc0_1_APPLICATION%3B%0Aa000_20220402_fc0_2_APPLICATION%3B%0Aa000_LOCAL_SETUP%20-%3E%20a000_SYNCHRONIZE%3B%0Aa000_SYNCHRONIZE%20-%3E%20a000_REMOTE_SETUP%3B%0Aa000_REMOTE_SETUP%20-%3E%20a000_20220401_fc0_PREINI%3B%0Aa000_REMOTE_SETUP%20-%3E%20a000_20220402_fc0_PREINI%3B%0Aa000_20220401_fc0_PREINI%20-%3E%20a000_20220401_fc0_INI%3B%0Aa000_20220402_fc0_PREINI%20-%3E%20a000_20220402_fc0_INI%3B%0Aa000_20220401_fc0_INI%20-%3E%20a000_20220401_fc0_1_SIM%3B%0Aa000_20220401_fc0_INI%20-%3E%20a000_20220401_fc0_2_SIM%3B%0Aa000_20220402_fc0_INI%20-%3E%20a000_20220402_fc0_1_SIM%3B%0Aa000_20220402_fc0_INI%20-%3E%20a000_20220402_fc0_2_SIM%3B%0Aa000_20220401_fc0_1_SIM%20-%3E%20a000_20220401_fc0_2_SIM%3B%0Aa000_20220401_fc0_1_SIM%20-%3E%20a000_20220401_fc0_1_GSV%3B%0Aa000_20220401_fc0_2_SIM%20-%3E%20a000_20220401_fc0_2_GSV%3B%0Aa000_20220402_fc0_1_SIM%20-%3E%20a000_20220402_fc0_2_SIM%3B%0Aa000_20220402_fc0_1_SIM%20-%3E%20a000_20220402_fc0_1_GSV%3B%0Aa000_20220402_fc0_2_SIM%20-%3E%20a000_20220402_fc0_2_GSV%3B%0Aa000_20220401_fc0_1_GSV%20-%3E%20a000_20220401_fc0_1_APPLICATION%3B%0Aa000_20220401_fc0_2_GSV%20-%3E%20a000_20220401_fc0_2_APPLICATION%3B%0Aa000_20220402_fc0_1_GSV%20-%3E%20a000_20220402_fc0_1_APPLICATION%3B%0Aa000_20220402_fc0_2_GSV%20-%3E%20a000_20220402_fc0_2_APPLICATION%3B%0A%7D%0A](https://dreampuf.github.io/GraphvizOnline/#strict%20digraph%20%20%7B%0Aa000_LOCAL_SETUP%3B%0Aa000_SYNCHRONIZE%3B%0Aa000_REMOTE_SETUP%3B%0Aa000_20220401_fc0_PREINI%3B%0Aa000_20220402_fc0_PREINI%3B%0Aa000_20220401_fc0_INI%3B%0Aa000_20220402_fc0_INI%3B%0Aa000_20220401_fc0_1_SIM%3B%0Aa000_20220401_fc0_2_SIM%3B%0Aa000_20220402_fc0_1_SIM%3B%0Aa000_20220402_fc0_2_SIM%3B%0Aa000_20220401_fc0_1_GSV%3B%0Aa000_20220401_fc0_2_GSV%3B%0Aa000_20220402_fc0_1_GSV%3B%0Aa000_20220402_fc0_2_GSV%3B%0Aa000_20220401_fc0_1_APPLICATION%3B%0Aa000_20220401_fc0_2_APPLICATION%3B%0Aa000_20220402_fc0_1_APPLICATION%3B%0Aa000_20220402_fc0_2_APPLICATION%3B%0Aa000_LOCAL_SETUP%20-%3E%20a000_SYNCHRONIZE%3B%0Aa000_SYNCHRONIZE%20-%3E%20a000_REMOTE_SETUP%3B%0Aa000_REMOTE_SETUP%20-%3E%20a000_20220401_fc0_PREINI%3B%0Aa000_REMOTE_SETUP%20-%3E%20a000_20220402_fc0_PREINI%3B%0Aa000_20220401_fc0_PREINI%20-%3E%20a000_20220401_fc0_INI%3B%0Aa000_20220402_fc0_PREINI%20-%3E%20a000_20220402_fc0_INI%3B%0Aa000_20220401_fc0_INI%20-%3E%20a000_20220401_fc0_1_SIM%3B%0Aa000_20220402_fc0_INI%20-%3E%20a000_20220402_fc0_1_SIM%3B%0Aa000_20220401_fc0_1_SIM%20-%3E%20a000_20220401_fc0_2_SIM%3B%0Aa000_20220401_fc0_1_SIM%20-%3E%20a000_20220401_fc0_1_GSV%3B%0Aa000_20220401_fc0_2_SIM%20-%3E%20a000_20220401_fc0_2_GSV%3B%0Aa000_20220402_fc0_1_SIM%20-%3E%20a000_20220402_fc0_2_SIM%3B%0Aa000_20220402_fc0_1_SIM%20-%3E%20a000_20220402_fc0_1_GSV%3B%0Aa000_20220402_fc0_2_SIM%20-%3E%20a000_20220402_fc0_2_GSV%3B%0Aa000_20220401_fc0_1_GSV%20-%3E%20a000_20220401_fc0_1_APPLICATION%3B%0Aa000_20220401_fc0_2_GSV%20-%3E%20a000_20220401_fc0_2_APPLICATION%3B%0Aa000_20220402_fc0_1_GSV%20-%3E%20a000_20220402_fc0_1_APPLICATION%3B%0Aa000_20220402_fc0_2_GSV%20-%3E%20a000_20220402_fc0_2_APPLICATION%3B%0A%7D%0A))
 
 ![graphviz](https://user-images.githubusercontent.com/304786/210077573-39f5d2fe-958f-4d12-99a0-0d5c0b8866e3.svg)
 
