@@ -235,7 +235,7 @@ To Do:
 - [x] Expand workflow graph, including dependencies (i.e. instead of `INI -> SIM`, we need the actual tasks like `a000_INI -> a000_20200401_SIM`, etc.)
 - [x] Iterate the workflow in topological order (i.e. from bottom down, in-order - lexical?)
 - [x] Produce equivalent graph in AS & PyFlow (very close, need to confirm something with Dani & Miguel about dependencies)
-- [ ] Iterate the AS4 workflow graph nodes in topological order and create equivalent nodes in PyFlow (very close, did that manually, just need to stitch the old code with the new one - 2-3 days to complete?)
+- [x] Iterate the AS4 workflow graph nodes in topological order and create equivalent nodes in PyFlow (very close, did that manually, just need to stitch the old code with the new one - 2-3 days to complete?)
 - [x] Plot the workflow graph to compare with Autosubmit's plot (using `dot`)
 - [ ] Augment the PyFlow suite with all the available configuration (i.e. all the variables from experiment) (shouldn't be too hard, need Dani's help)
 - [ ] Produce equivalent execution in AS & PyFlow (a little harder to confirm, will need Miguel and Dani's help)
