@@ -147,70 +147,74 @@ Exported from PyFlow configuration.
 ```
 suite a000
   defstatus suspended
-  edit ECF_FILES '/home/bdepaula/Development/python/workspace/pyflow/scratch/files'
-  edit ECF_HOME '/home/bdepaula/Development/python/workspace/pyflow/scratch/out'
-  edit ECF_JOB_CMD 'bash -c 'export ECF_PORT=%ECF_PORT%; export ECF_HOST=%ECF_HOST%; export ECF_NAME=%ECF_NAME%; export ECF_PASS=%ECF_PASS%; export ECF_TRYNO=%ECF_TRYNO%; export PATH=/home/bdepaula/mambaforge/envs/pyflow/bin:$PATH; ecflow_client --init="$$" && %ECF_JOB% && ecflow_client --complete || ecflow_client --abort ' 1> %ECF_JOBOUT% 2>&1 &'
+  edit ECF_FILES '/home/kinow/Development/python/workspace/autosubmit/scratch/files'
+  edit ECF_HOME '/home/kinow/Development/python/workspace/autosubmit/scratch/out'
+  edit ECF_JOB_CMD 'bash -c 'export ECF_PORT=%ECF_PORT%; export ECF_HOST=%ECF_HOST%; export ECF_NAME=%ECF_NAME%; export ECF_PASS=%ECF_PASS%; export ECF_TRYNO=%ECF_TRYNO%; export PATH=/home/kinow/mambaforge/envs/pyflow/bin:$PATH; ecflow_client --init="$$" && %ECF_JOB% && ecflow_client --complete || ecflow_client --abort ' 1> %ECF_JOBOUT% 2>&1 &'
   edit ECF_KILL_CMD 'pkill -15 -P %ECF_RID%'
   edit ECF_STATUS_CMD 'true'
   edit ECF_OUT '%ECF_HOME%'
-  label exec_host "default"
-  task LOCAL_SETUP
-  task SYNCHRONIZE
-    trigger LOCAL_SETUP eq complete
-  task REMOTE_SETUP
-    trigger SYNCHRONIZE eq complete
+  label exec_host "localhost"
   family 20220401
     edit START_DATE '20220401'
     family fc0
       edit MEMBER 'fc0'
-      task INI
-        trigger ../../REMOTE_SETUP eq complete
       family 1
         edit CHUNK '1'
         task SIM
-          trigger /a000/20220401/fc0/INI eq complete
+          trigger ../INI eq complete
         task GSV
-          trigger /a000/20220401/fc0/1/SIM eq complete
+          trigger SIM eq complete
         task APPLICATION
-          trigger /a000/20220401/fc0/1/GSV eq complete
+          trigger GSV eq complete
       endfamily
       family 2
         edit CHUNK '2'
         task SIM
-          trigger /a000/20220401/fc0/1/SIM eq complete
+          trigger ../1/SIM eq complete
         task GSV
-          trigger /a000/20220401/fc0/2/SIM eq complete
+          trigger SIM eq complete
         task APPLICATION
-          trigger /a000/20220401/fc0/2/GSV eq complete
+          trigger GSV eq complete
       endfamily
+      task PREINI
+        trigger ../../REMOTE_SETUP eq complete
+      task INI
+        trigger PREINI eq complete
     endfamily
   endfamily
   family 20220402
     edit START_DATE '20220402'
     family fc0
       edit MEMBER 'fc0'
-      task INI
-        trigger ../../REMOTE_SETUP eq complete
       family 1
         edit CHUNK '1'
         task SIM
-          trigger /a000/20220402/fc0/INI eq complete
+          trigger ../INI eq complete
         task GSV
-          trigger /a000/20220402/fc0/1/SIM eq complete
+          trigger SIM eq complete
         task APPLICATION
-          trigger /a000/20220402/fc0/1/GSV eq complete
+          trigger GSV eq complete
       endfamily
       family 2
         edit CHUNK '2'
         task SIM
-          trigger /a000/20220402/fc0/1/SIM eq complete
+          trigger ../1/SIM eq complete
         task GSV
-          trigger /a000/20220402/fc0/2/SIM eq complete
+          trigger SIM eq complete
         task APPLICATION
-          trigger /a000/20220402/fc0/2/GSV eq complete
+          trigger GSV eq complete
       endfamily
+      task PREINI
+        trigger ../../REMOTE_SETUP eq complete
+      task INI
+        trigger PREINI eq complete
     endfamily
   endfamily
+  task LOCAL_SETUP
+  task SYNCHRONIZE
+    trigger LOCAL_SETUP eq complete
+  task REMOTE_SETUP
+    trigger SYNCHRONIZE eq complete
 endsuite
 ```
 
@@ -249,6 +253,9 @@ import re
 import networkx as nx
 from autosubmitconfigparser.config.configcommon import AutosubmitConfig
 from pyflow import *
+import os
+
+import pyflow as pf
 
 
 # Pattern used to verify if a TASK name includes the previous CHUNK number, with a separator.
@@ -296,46 +303,104 @@ class JobData(TypedDict):
     ADDITIONAL_FILES: List[str]
 
 
-def create_ecflow_suite(*,
-                        experiment_id: str,
-                        start_dates: List[str],
-                        members: List[str],
-                        chunks: [int],
-                        jobs: Dict[str, Dict[str, JobData]],
-                        by_running: Dict[str, List[JobData]]) -> Suite:
+# TODO: split
+# Defines how many ``-``'s are replaced by a ``/`` for
+# each Autosubmit hierarchy level (to avoid using an if/elif/else).
+REPLACE_COUNT = {
+    Running.ONCE.value: 1,
+    Running.MEMBER.value: 3,
+    Running.CHUNK.value: 4
+}
+
+
+def _autosubmit_id_to_ecflow_id(job_id, running):
+    """Given an Autosubmit ID, create the node ID for ecFlow (minus heading ``/``)."""
+    replace_count = REPLACE_COUNT[running]
+    return job_id.replace(DEFAULT_SEPARATOR, '/', replace_count)
+
+
+def create_ecflow_suite(
+        *,
+        experiment_id: str,
+        start_dates: List[str],
+        members: List[str],
+        chunks: [int],
+        jobs: Dict[str, JobData],
+        server_host: str) -> Suite:
     """Replicate the vanilla workflow graph structure."""
-    with Suite(experiment_id) as s:
-        for task_obj in by_running['by_running']['once']:
-            _create_task(task_obj, s)
 
-        # start_dates = ['20220401', '20220402']
-        # members = ['fc0']
-        # chunks = [1, 2]
+    # From: https://pyflow-workflow-generator.readthedocs.io/en/latest/content/introductory-course/getting-started.html
+    scratchdir = os.path.join(os.path.abspath(''), 'scratch')
+    filesdir = os.path.join(scratchdir, 'files')
+    outdir = os.path.join(scratchdir, 'out')
 
+    if not os.path.exists(filesdir):
+        os.makedirs(filesdir, exist_ok=True)
+
+    if not os.path.exists(outdir):
+        os.makedirs(outdir, exist_ok=True)
+
+    # First we create a suite with the same ID as the Autosubmit experiment,
+    # and families for each Autosubmit hierarchy level.
+    with Suite(
+        experiment_id,
+        host=pf.LocalHost(server_host),
+        defstatus=pf.state.suspended,
+        home=outdir,
+        files=filesdir
+    ) as s:
         for start_date in start_dates:
             with Family(start_date, START_DATE=start_date):  # type: ignore
                 for member in members:
-                    with Family(member) as m:
-                        for task_obj in jobs['member']:
-                            task = Task(task_obj['NAME'], START_DATE=start_date, MEMBER=member)  # type: ignore
-                            ini.triggers = s.REMOTE_SETUP.complete
+                    with Family(member, MEMBER=member) as m:
                         for chunk in chunks:
-                            with Family(str(chunk)):
-                                sim = Task('SIM', START_DATE=start_date, MEMBER=member,
-                                           CHUNK=str(chunk))  # type: ignore
-                                if chunk == 1:
-                                    dependency = Trigger(f'{ini.fullname} eq complete')
-                                else:
-                                    dependency = Trigger(f'{m.fullname}/{str(chunk - 1)}/SIM eq complete')
-                                sim.add_node(dependency)
+                            Family(str(chunk), CHUNK=chunk)
+                            # TODO: splits
+        # PyFlow API makes it very easy to create tasks having the ecFlow ID.
+        # Due to how we expanded the Autosubmit graph to include the ID's, and how
+        # we structured this suite, an Autosubmit ID can be seamlessly translated
+        # to an ecFlow ID by simply replacing `_`'s by `/`, ignoring the `_`'s in
+        # tasks names.
+        #
+        # This means that `a000_REMOTE_SETUP` from Autosubmit is `a000/REMOTE_SETUP`
+        # in ecFlow, `a000_20220401_fc0_INI` is `a000/20220401/fc0/INI`, and so on.
+        for job in jobs.values():
+            ecflow_node = _autosubmit_id_to_ecflow_id(job['ID'], job['RUNNING'])
+            t = Task(job['NAME'])
 
-                                gsv = Task('GSV', START_DATE=start_date, MEMBER=member,
-                                           CHUNK=str(chunk))  # type: ignore
-                                gsv.triggers = Trigger(f'{sim.fullname} eq complete')
+            # Find the direct parent of the task, based on the Autosubmit task ID.
+            # Start from the Suite, and skip the first (suite), and the last (task)
+            # as we know we can discard these.
+            parent = s
+            for node in ecflow_node.split('/')[1:-1]:
+                parent = parent[node]
+            # We just need to prevent adding a node twice since creating a task automatically adds
+            # it to the suite in the context. And simply call ``add_node`` and we should have it.
+            if t.name not in list(parent.children.mapping.keys()):
+                parent.add_node(t)
 
-                                app = Task('APPLICATION', START_DATE=start_date, MEMBER=member,
-                                           CHUNK=str(chunk))  # type: ignore
-                                app.triggers = Trigger(f'{gsv.fullname} eq complete')
+        # Add dependencies. Would be better if we could do it in one-pass,
+        # but not sure if we can achieve that with PyFlow. Tried adding by
+        # names during the previous loop, but couldn't find the proper
+        # way to link dependencies. Ended with "externs" (tasks identified
+        # as belonging to external suites - due to the names tried).
+        for job in jobs.values():
+            ecflow_node = _autosubmit_id_to_ecflow_id(job['ID'], job['RUNNING'])
+            parent = s
+            for node in ecflow_node.split('/')[1:-1]:
+                parent = parent[node]
+            ecflow_node = parent[job['NAME']]
+
+            for dep in job['DEPENDENCIES'].values():
+                dependency_node = _autosubmit_id_to_ecflow_id(dep['ID'], dep['RUNNING'])
+                parent = s
+                for node in dependency_node.split('/')[1:-1]:
+                    parent = parent[node]
+                dependency_node = parent[dep['NAME']]
+
+                # Operator overloaded in PyFlow. This creates a dependency.
+                dependency_node >> ecflow_node
+
         return s
 
 
@@ -456,49 +521,53 @@ def _expand_autosubmit_graph(
         members: List[str],
         chunks: List[int],
         jobs_data: Dict[str, JobData]
-) -> List[JobData]:
+) -> Dict[str, JobData]:
     """Expand the Autosubmit graph.
 
     Expand jobs (by member, chunk, split, previous-dependency like SIM-1). That's because the
     # graph declaration in Autosubmit configuration contains a meta graph, that is expanded by
     # each hierarchy level generating more jobs (i.e. SIM may become a000_202204_fc0_1_SIM for
     # running=CHUNK)."""
-    jobs: List[JobData] = []
+    jobs: Dict[str, JobData] = {}
     for running in Running:
         for job_running in jobs_grouped_by_running_level[running.value]:
             if running == Running.ONCE:
-                jobs.append(_create_job(
+                job = _create_job(
                     expid=expid,
                     name=job_running['NAME'],
                     job_data=job_running,
-                    jobs_data=jobs_data))
+                    jobs_data=jobs_data)
+                jobs[job['ID']] = job
             else:
                 for start_date in start_dates:
                     if running == Running.MEMBER:
                         for member in members:
-                            jobs.append(_create_job(
+                            job = _create_job(
                                 expid=expid,
                                 name=job_running['NAME'],
                                 member=member,
                                 start_date=start_date,
                                 job_data=job_running,
-                                jobs_data=jobs_data))
+                                jobs_data=jobs_data)
+                            jobs[job['ID']] = job
                     elif running == Running.CHUNK:
                         for member in members:
                             for chunk in chunks:
-                                jobs.append(_create_job(
+                                job = _create_job(
                                     expid=expid,
                                     name=job_running['NAME'],
                                     member=member,
                                     chunk=chunk,
                                     start_date=start_date,
                                     job_data=job_running,
-                                    jobs_data=jobs_data))
+                                    jobs_data=jobs_data)
+                                jobs[job['ID']] = job
                     # TODO: split
                     else:
                         # TODO: implement splits and anything else?
                         raise NotImplementedError(running)
     return jobs
+
 
 def main() -> None:
     parser = argparse.ArgumentParser(
@@ -507,9 +576,10 @@ def main() -> None:
         epilog='This program needs access to an Autosubmit installation'
     )
     parser.add_argument('-e', '--experiment', required=True, help='Autosubmit experiment ID')
-    parser.add_argument('-s', '--server', default='localhost', help='ecFlow server hostname or IP')
-    parser.add_argument('-p', '--port', default=3141, help='ecFlow server port')
-    parser.add_argument('-d', '--deploy', default=False, help='Whether to deploy to ecFlow or not')
+    parser.add_argument('-d', '--deploy', default=False, action='store_true', help='Deploy to ecFlow or not')
+    parser.add_argument('-s', '--server', default='localhost', help='ecFlow server hostname or IP (only used if deploy=True)')
+    parser.add_argument('-p', '--port', default=3141, help='ecFlow server port (only used if deploy=True)')
+    parser.add_argument('-g', '--graph', default=False, action='store_true', help='Print the DOT plot')
     parser.add_argument('-q', '--quiet', default=False, action='store_true')
 
     args = parser.parse_args()
@@ -536,43 +606,47 @@ def main() -> None:
     jobs_grouped_by_running_level.update(
         {job[0]: list(job[1]) for job in groupby(jobs_list, lambda item: item['RUNNING'])})
 
+    # TODO: raise an error for unsupported features, like SKIPPABLE?
     # Expand the Autosubmit workflow graph.
-    jobs: List[JobData] = _expand_autosubmit_graph(jobs_grouped_by_running_level, expid, start_dates, members, chunks, jobs_data)
+    jobs: Dict[str, JobData] = _expand_autosubmit_graph(jobs_grouped_by_running_level, expid, start_dates, members, chunks, jobs_data)
 
     # Create networkx graph.
     G = nx.DiGraph()
-    for job in jobs:
+    for job in jobs.values():
         G.add_node(job['ID'])
         for dep in job['DEPENDENCIES'].values():
             G.add_edges_from([(dep['ID'], job['ID'])])
-    # Create topological sort.
-    jobs_ordered = list(list(nx.topological_sort(G)))
-
-    # print()
-    # print([f'{job["ID"]}, deps: {job["DEPENDENCIES"]}' for job in jobs])
-    # print(as_conf.experiment_data)
-    print(jobs_ordered)
     PG = nx.nx_pydot.to_pydot(G)
-    print(PG)
-    if 'bla' not in args:
-        return
 
-    # TODO: job splits
-    # TODO: raise an error for unsupported features, like SKIPPABLE?
-    suite = create_ecflow_suite(experiment_id=expid, start_dates=start_dates, members=members, chunks=chunks)
+    if args.graph:
+        print(PG)
 
+    # Sort the dictionary of jobs in topological order.
+    jobs_order = list(list(nx.topological_sort(G)))
+    jobs_ordered: Dict[str, JobData] = dict(sorted(jobs.items(), key=lambda item: jobs_order.index(item[1]['ID'])))  # type: ignore
+
+    suite = create_ecflow_suite(
+        experiment_id=expid,
+        start_dates=start_dates,
+        members=members,
+        chunks=chunks,
+        jobs=jobs_ordered,
+        server_host=args.server
+    )
+
+    suite.check_definition()
     if not args.quiet:
         print(suite)
 
     if args.deploy:
-        suite.replace_on_server(host=args.hostname, port=args.port)
+        suite.deploy_suite(overwrite=True)
+        suite.replace_on_server(host=args.server, port=args.port)
 
     sys.exit(0)
 
 
 if __name__ == '__main__':
     main()
-
 ```
 
 Current graph:
@@ -581,4 +655,13 @@ Current graph:
 
 ![graphviz](https://user-images.githubusercontent.com/304786/210222303-2c86435e-56cb-4321-bff7-1653b1934032.svg)
 
+Deploying to ecFlow, with
+
+```bash
+python autosubmit2pyflow.py -e a000 -d -s localhost -p 3141
+```
+
+Results in the following suite loaded in ecFlow server, as displayed in the UI:
+
+![image](https://user-images.githubusercontent.com/304786/210263187-bd1cef45-ed78-4494-9db3-9151201bfc95.png)
 
