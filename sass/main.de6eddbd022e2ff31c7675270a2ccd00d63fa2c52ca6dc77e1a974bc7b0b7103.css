@@ -54,17 +54,27 @@ p, h1, h2, h3, h4, h5, h6 {
 
 /* colors */
 /* typography */
-:root {
-  --color-text: #222222;
-  --color-black: #050708;
-  --color-white: white;
-  --color-light-black: #222222;
-  --color-light-gray: #666666; }
+html {
+  --header-background-color: #222222;
+  --menu-text-color: white;
+  --background-color: white;
+  --foreground-color: #222222;
+  --midtone-color: #666666;
+  --img-filter: none; }
+
+@media (prefers-color-scheme: dark) {
+  html {
+    --header-background-color: #050708;
+    --background-color: #222222;
+    --foreground-color: white;
+    --midtone-color: #666666;
+    --img-filter: invert(0.865); } }
 
 html {
   font-family: "Source Serif Pro", "Iowan Old Style", "Apple Garamond", "Palatino Linotype", "georgia", "Times New Roman", "Droid Serif", Times, serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
   font-size: 1.2rem;
-  color: var(--color-text); }
+  color: var(--foreground-color);
+  background-color: var(--background-color); }
   html body {
     overflow-x: hidden; }
   html p, html ul, html img {
@@ -100,11 +110,11 @@ nav#nav {
         display: inline-block;
         position: relative;
         padding: 0.5rem 0.5rem;
-        color: var(--color-white);
+        color: var(--menu-text-color);
         text-decoration: none; }
         nav#nav ul li a.active, nav#nav ul li a:visited.active, nav#nav ul li a:active.active {
-          background-color: var(--color-white);
-          color: var(--color-black); }
+          background-color: var(--background-color);
+          color: var(--foreground-color); }
         nav#nav ul li a:hover:after, nav#nav ul li a:visited:hover:after, nav#nav ul li a:active:hover:after {
           content: '';
           position: absolute;
@@ -114,12 +124,12 @@ nav#nav {
           margin: 0 auto;
           width: 0;
           height: 0;
-          border-bottom: 0.5rem solid var(--color-white);
+          border-bottom: 0.5rem solid var(--background-color);
           border-left: 0.5rem solid transparent;
           border-right: 0.5rem solid transparent; }
 
 header {
-  background-color: var(--color-black);
+  background-color: var(--header-background-color);
   font-family: Verdana, Consolas, monospace, serif;
   padding: unset !important;
   overflow-x: auto; }
@@ -174,9 +184,11 @@ article.content, main.content {
     flex-direction: column; }
     article.content figure img, main.content figure img {
       margin: 0 auto 1rem auto; }
+    article.content figure img.dark-enabled, main.content figure img.dark-enabled {
+      filter: var(--img-filter); }
     article.content figure figcaption, main.content figure figcaption {
       text-align: center;
-      color: var(--color-light-gray);
+      color: var(--midtone-color);
       font-size: 0.8rem; }
   article.content div.landing-page img#kinow-photo, main.content div.landing-page img#kinow-photo {
     filter: grayscale(100%); }
