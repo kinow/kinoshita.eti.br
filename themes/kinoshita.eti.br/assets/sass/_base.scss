@@ -1,17 +1,32 @@
 @import "variables";
 
-:root {
-  --color-text: #{$light-black};
-  --color-black: #{$black};
-  --color-white: #{$white};
-  --color-light-black: #{$light-black};
-  --color-light-gray: #{$light-gray};
+html {
+  --header-background-color: #{$light-black};
+  --menu-text-color: #{$white};
+  --background-color: #{$white};
+  --foreground-color: #{$light-black};
+  --midtone-color: #{$light-gray};
+  --img-filter: none;
+}
+
+@media (prefers-color-scheme: dark) {
+  html {
+    --header-background-color: #{$black};
+    --background-color: #{$light-black};
+    --foreground-color: #{$white};
+    --midtone-color: #{$light-gray};
+    // This value was the closest I found to mimic the light-gray. It would
+    // be interesting to know how to calculate the value of the filter to
+    // match any color.
+    --img-filter: invert(0.865);
+  }
 }
 
 html {
   font-family: $serif;
   font-size: $font-size;
-  color: var(--color-text);
+  color: var(--foreground-color);
+  background-color: var(--background-color);
 
   body {
     overflow-x: hidden;
