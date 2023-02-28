@@ -1,4 +1,4 @@
-## Converting a Cylc 8 cyclic workflow to CWL v1.3-dev
+## Converting a Cylc 8 cyclic workflow to CWL + Loops (cwltool `master` branch, commit `5947fd2f07e02bf90dd9799ceeaef6fde76e90a5`, proposed in CWL v1.3-dev)
 
 **NOTE**: This compares cycles and loops in workflows, not the workflow configuration model. For instance, in Cylc you write `a => b` and that means once `a` is done `b` should start. Differently, with CWL you always need to connect steps (tasks) using inputs & outputs, which can become complicated & inconvenient with large Cylc workflows.
 
