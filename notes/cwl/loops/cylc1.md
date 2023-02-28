@@ -11,17 +11,16 @@ allow implicit tasks = True
 [scheduling]
 cycling mode = integer
 initial cycle point = 1
-
-[[graph]]
-P1 = """
-  run[-P1] => run
-"""
+  [[graph]]
+  P1 = """
+    run[-P1] => run
+  """
 
 [runtime]
-[[run]]
-script = """
-echo "This is the cycle point ${CYLC_TASK_CYCLE_POINT}" && sleep 3
-"""
+  [[run]]
+    script = """
+      echo "This is the cycle point ${CYLC_TASK_CYCLE_POINT}" && sleep 3
+    """
 ```
 
 `P1` means every period/cycle. And `run[-P1]` means the previous `run` will trigger the `run` in the next cycle / period.
