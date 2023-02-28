@@ -18,7 +18,7 @@ P1 = """
 """
 ```
 
-`P1` means every period/cycle. And `run[-P1]` means the previous clean will trigger the `run` in the next cycle / period.
+`P1` means every period/cycle. And `run[-P1]` means the previous `run` will trigger the `run` in the next cycle / period.
 
 ![image](https://user-images.githubusercontent.com/304786/221975236-eaa8a15a-3811-4ea0-8b6a-2aa3d2ce3727.png)
 
