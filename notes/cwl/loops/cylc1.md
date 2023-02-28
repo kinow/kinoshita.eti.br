@@ -72,3 +72,8 @@ steps:
             valueFrom: $(inputs.cycle_point + 1)
         outputMethod: last
 ```
+
+The `dot` GraphViz output does not look very useful at the moment for CWL
+and loops, but that should change over next months:
+
+![graphviz](https://user-images.githubusercontent.com/304786/221980982-af5975e1-6efe-4074-8d19-aee76aecb1a6.svg)
