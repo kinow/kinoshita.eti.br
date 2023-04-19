@@ -22,7 +22,7 @@ StreamRDFWriter holds several implementations (as static members) of StreamRDFWr
 <meta property="og:url" content="https://kinoshita.eti.br/2020/04/11/notes-on-apache-jena-streamrdfwriter.html"><meta property="article:section" content="posts">
 <meta property="article:published_time" content="2020-04-11T00:00:00+00:00">
 <meta property="article:modified_time" content="2020-04-11T00:00:00+00:00">
-<link rel=stylesheet type=text/css href=https://kinoshita.eti.br/sass/main.d0c0e1ab7ed40e27e85fb9acbf415173c83aa709e80fa6e8cbe84888ed8502e0.css integrity="sha256-0MDhq37UDifoX7msv0FRc8g6pwnoD6boy+hIiO2FAuA=">
+<link rel=stylesheet type=text/css href=https://kinoshita.eti.br/sass/main.66aa172f782442adc0241c99968a79a72e4260187c78830f9bdd6b03abff6103.css integrity="sha256-ZqoXL3gkQq3AJByZlop5py5CYBh8eIMPm91rA6v/YQM=">
 <title>kinow | Notes on Apache Jena StreamRDFWriter</title>
 </head>
 <body>
@@ -44,6 +44,15 @@ StreamRDFWriter holds several implementations (as static members) of StreamRDFWr
 <i data-feather=calendar></i>
 <time datetime=2020-04-11>Apr 11, 2020</time>
 </div>
+<aside>
+<nav id=TableOfContents>
+<ul>
+<li><a href=#stream-factories>Stream factories</a></li>
+<li><a href=#streams-writer-registry>Streams writer registry</a></li>
+<li><a href=#writing-data-to-streams>Writing data to streams</a></li>
+</ul>
+</nav>
+</aside>
 <p><a href=https://jena.apache.org/>Apache Jena</a> project is like a box full of interesting things—at least if you love programming. One of its many features, is <strong>stream processing</strong>.</p>
 <p>The graphs in Jena may contain very large datasets, with giga- or terabytes. Some queries may be very large, and then sending the whole result would be simply impracticable.</p>
 <p>Instead, the data will go through ARQ. ARQ is a query engine for Jena that supports SPARQL. There is one piece of code there that I found interesting while reviewing a small pull request: <a href=https://github.com/apache/jena/blob/cbdba5edb47041a4181a00bd7660e5d4c212530a/jena-arq/src/main/java/org/apache/jena/riot/system/StreamRDFWriter.java><code>org.apache.jena.riot.system.StreamRDFWriter</code></a>.</p>
