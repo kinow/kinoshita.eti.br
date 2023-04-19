@@ -235,5 +235,5 @@ would not make more sense to buy an egpu or a dedicated workstation for Blender.
 For now, I am keeping my Thinkpad and will keep thinking how to improve my rendering
 time.
 
->Special thanks to Luke Reid for donating his NVIDIA Jetson Nano, so I could test it
->with Blender
+Special thanks to **Luke Reid** for donating his NVIDIA Jetson Nano, so I could test it
+with Blender
