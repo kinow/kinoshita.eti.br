@@ -101,7 +101,7 @@ Cylc and StackStorm): `python workflow.py`
 I had seen the RNN graph unrolling algorithm mentioned in their documentation
 while working on [decyclify](https://github.com/kinow/decyclify). I believe more
 workflow managers will start supporting cyclic workflows soon. It adds some
-complexity to the code, but so it does add dependency management, good logging,
+complexity to the code, but so does add dependency management, good logging,
 configuration, distributed execution, and so on.
 
 {{< showimage image="graph-unroll.png" alt="Decyclify algorithm (image from https://github.com/kinow/decyclify)" >}}
