@@ -14,6 +14,10 @@ The Python t-digest implementation used here is this one:
 
 ## Python implementation
 
+<img src="./py-tdigest.png" alt="Python t-digest UML class diagram" style="width: 600px;" />
+
+<img src="./py-tdigest2.png" alt="Python t-digest UML class diagram with fields" style="width: 600px;" />
+
 ## Main differences
 
 The Java t-digest uses a Fenwick Tree to store the data, whilst
