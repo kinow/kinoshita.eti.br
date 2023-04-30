@@ -20,6 +20,9 @@ The Python t-digest implementation used here is this one:
 
 ## Main differences
 
+The Java implementation has two t-digest types: `AVLTreeDigest`, and
+`MergingDigest`, while the Python implementation has just one.
+
 The Java t-digest uses a Fenwick Tree to store the data, whilst
 the Python t-digest uses a red/black tree modified to store the
 sum of 
