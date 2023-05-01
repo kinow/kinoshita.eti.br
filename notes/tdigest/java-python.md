@@ -44,8 +44,10 @@ that uses a [Red Black Tree](https://en.wikipedia.org/wiki/Red%E2%80%93black_tre
 modified to have partial aggregations as values (to speed up calculating
 the sums of bins/segments). Red Black Trees are not strictly balanced,
 with faster insertion, but slower search times than the AVL Tree,
-so the Python library has probably some disadvantage in using
-a Red Black Tree.
+so the Python library has probably some disadvantage for using
+a Red Black Tree (it's also not clear if the complexity is the same
+since it is a Red Black Tree modified to have aggregated values instead
+of simple values as the textbook implementations).
 
 ### Application Programming Interface (API)
 
