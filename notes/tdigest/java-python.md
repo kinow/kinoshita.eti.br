@@ -67,17 +67,19 @@ the [cumulative distribution function (cdf)](https://en.wikipedia.org/wiki/Cumul
 This t-digest Java code,
 
 ```java
-public static void main(String[] args) {
-    AVLTreeDigest tdigest = new AVLTreeDigest(3);
-    tdigest.recordAllData();
-    Random r = new Random(42);
-    for (int i = 0; i < 100; i += 1) {
-        tdigest.add(r.nextDouble() * 100);
-    }
-    System.out.printf("Min is %f, max is %f%n", tdigest.min, tdigest.max);
-    System.out.printf("Count is %d, there are %d centroids%n", tdigest.count, tdigest.summary.size());
-    for (Centroid c : tdigest.summary) {
-        System.out.printf("Centroid %d, mean %f, data is %s%n", c.id(), c.mean(), c.data());
+class Test {
+    public static void main(String[] args) {
+        AVLTreeDigest tdigest = new AVLTreeDigest(3);
+        tdigest.recordAllData();
+        Random r = new Random(42);
+        for (int i = 0; i < 100; i += 1) {
+            tdigest.add(r.nextDouble() * 100);
+        }
+        System.out.printf("Min is %f, max is %f%n", tdigest.min, tdigest.max);
+        System.out.printf("Count is %d, there are %d centroids%n", tdigest.count, tdigest.summary.size());
+        for (Centroid c : tdigest.summary) {
+            System.out.printf("Centroid %d, mean %f, data is %s%n", c.id(), c.mean(), c.data());
+        }
     }
 }
 ```
