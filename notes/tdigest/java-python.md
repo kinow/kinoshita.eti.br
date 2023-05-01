@@ -54,7 +54,7 @@ of simple values as the textbook implementations).
 The interface and operations are not identical. With Java you would
 call `add` to add another instance of t-digest, or to add a new `double`
 value. With Python, it uses `__add__` to add another instance, and `update()`
-to add a new value.
+to add a new `double` value.
 
 The Java implementation also has more validation (like checking `min`, `max` values),
 while the Python version skips it.
