@@ -3,7 +3,7 @@
 ## Java implementation
 
 The original t-digest implementation is written in Java by
-Ted Dunning: <https://github.com/tdunning/t-digest>
+Ted Dunning: <https://github.com/tdunning/t-digest> (Apache License).
 
 <img src="./tdigest.png" alt="t-digest UML class diagram" style="width: 600px;" />
 
@@ -12,7 +12,7 @@ Ted Dunning: <https://github.com/tdunning/t-digest>
 ## Python implementation
 
 The Python t-digest implementation used here is this one:
-<https://github.com/CamDavidsonPilon/tdigest>
+<https://github.com/CamDavidsonPilon/tdigest> (MIT License).
 
 <img src="./py-tdigest.png" alt="Python t-digest UML class diagram" style="width: 600px;" />
 
