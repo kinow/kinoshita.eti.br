@@ -107,6 +107,23 @@ Centroid 30, mean 97.403568, data is [97.40356814958814]
 Centroid 32, mean 97.603447, data is [97.60344716184083]
 ```
 
+And in Python,
+
+```python
+if __name__ == '__main__':
+    from numpy import random
+
+    T1 = TDigest()
+    x = random.random(size=100)
+    T1.batch_update(x)
+
+    print(f"Min is {min(T1.C)}, max is {max(T1.C)}")
+    print(f"Count is {len(T1.C)}, there are {len([c for c in T1.C.keys()])} centroids")
+    ...
+```
+
+...
+
 ### Maths.... other... precision... etc...
 
 WIP
