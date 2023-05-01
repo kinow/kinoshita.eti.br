@@ -62,12 +62,6 @@ while the Python version skips it.
 Both the Java and Python implementations support compression and calculating
 the [cumulative distribution function (cdf)](https://en.wikipedia.org/wiki/Cumulative_distribution_function).
 
-The Python implementation provides a `percentile` function, to compute the
-100 quantiles. But the Java implementation provides a `quantile(d)` method,
-where `d` is a double between `0` and `1`, used to create different quantiles.
-
-> WIP: confirm the above.
-
 #### Sample code
 
 This t-digest Java code,
