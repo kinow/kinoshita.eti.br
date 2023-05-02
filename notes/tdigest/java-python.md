@@ -32,7 +32,8 @@ from October 12th 2022.
 ### Types of T-Digest's
 
 The Java implementation has two t-digest types: `AVLTreeDigest`, and
-`MergingDigest`, while the Python implementation has just one.
+`MergingDigest`, while the Python implementation has just one, a `TDigest`
+class.
 
 ### Backing data structures
 
