@@ -4,6 +4,9 @@
 
 The original t-digest implementation is written in Java by
 Ted Dunning: <https://github.com/tdunning/t-digest> (Apache License).
+The version used here is the `main` branch, latest commit
+https://github.com/tdunning/t-digest/commit/72acae1e14962795888efc941516c2b4503a86af
+from March 22nd 2023.
 
 <img src="./tdigest.png" alt="t-digest UML class diagram" style="width: 600px;" />
 
@@ -13,6 +16,9 @@ Ted Dunning: <https://github.com/tdunning/t-digest> (Apache License).
 
 The Python t-digest implementation used here is this one:
 <https://github.com/CamDavidsonPilon/tdigest> (MIT License).
+The version used here is the `master` branch, latest commit
+https://github.com/CamDavidsonPilon/tdigest/commit/e35cfd708962ae5e9d1c5d2b15a99af7b2e2f323
+from October 12th 2022.
 
 <img src="./py-tdigest.png" alt="Python t-digest UML class diagram" style="width: 600px;" />
 
