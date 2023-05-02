@@ -29,21 +29,23 @@ from October 12th 2022.
 > WIP: first pass over the code, still pending practical comparison
 >      to confirm the findings here.
 
-### Backing data structures
+### Types of T-Digest's
 
 The Java implementation has two t-digest types: `AVLTreeDigest`, and
 `MergingDigest`, while the Python implementation has just one.
 
-`AVLTreeDigest` uses an [AVL Tree](https://en.wikipedia.org/wiki/AVL_tree)
+### Backing data structures
+
+The Java `AVLTreeDigest` uses an [AVL Tree](https://en.wikipedia.org/wiki/AVL_tree)
 that has centroids as node values. Centroids are
 [weighted averages](https://en.wikipedia.org/wiki/Weighted_arithmetic_mean).
 
-`MergingDigest` has a comment on its Javadoc saying it's “generally
+The Java `MergingDigest` has a comment on its Javadoc saying it's “generally
 the best known implementation right now”. It accumulates points into
 a buffer and occasionally sorts and merges these points into a sorted
 array. It amortizes the sort-merge operation.
 
-The Python implementation is more similar to the `AVLTreeDigest`. It
+The Python implementation `TDigest` is more similar to the `AVLTreeDigest`. It
 uses an `AccumulationTree` object as base data structure, from a
 [Python library created especifically for this t-digest](https://github.com/tkluck/accumulation_tree),
 that uses a [Red Black Tree](https://en.wikipedia.org/wiki/Red%E2%80%93black_tree)
