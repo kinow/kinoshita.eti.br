@@ -119,6 +119,8 @@ Centroid 32, mean 97.603447, data is [97.60344716184083]
 And in Python,
 
 ```python
+# Merely picked values that are similar to the Java code, doesn't
+# mean it is in any way reproducing the same!
 if __name__ == '__main__':
     import random
     random.seed(42)
