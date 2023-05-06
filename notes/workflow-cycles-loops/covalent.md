@@ -1,8 +1,19 @@
+
+
+The Covalent UI
+
 Before starting Covalent.
 
 WIP
 
-## Networking note
+## Notes
+
+### Starting the UI
+
+The UI seems to start only when using the PyPI release, and not with the editable version
+from Git: https://github.com/AgnostiqHQ/covalent/issues/1629
+
+### Networking note
 
 ```bash
 (venv) (base) kinow@ranma:~/Development/python/workspace/covalent$ netstat -tlnp
