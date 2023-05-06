@@ -1,10 +1,32 @@
+## Recursion in tasks
 
+```
+a -> a
+```
 
-The Covalent UI
+That's possible in Covalent.
 
-Before starting Covalent.
+```py
+import covalent as ct
 
-WIP
+@ct.electron
+def a(n=-1):
+    return n + 1
+
+@ct.lattice
+def run_experiment():
+    r1 = a()
+    r2 = a(r1)
+    return r2
+
+dispatch_id = ct.dispatch(run_experiment)()
+result = ct.get_result(dispatch_id, wait=True)
+print(result)
+```
+
+Produces:
+
+![](./Screenshot&#32;from&#32;2023-05-06&#32;22-55-24.png)
 
 ## Notes
 
