@@ -79,7 +79,7 @@ Running this code results in no output in the console, and nothing in the Covale
 Covalent UI seems to require the `get_result` call to complete in order to display
 the workflow (maybe the postprocess task tells the UI about the run finished?).
 
-Too many assumptions, so now logging an issue in their repository.
+Too many assumptions, so now logging an issue in their repository: https://github.com/AgnostiqHQ/covalent/discussions/1630
 
 ## Notes
 
