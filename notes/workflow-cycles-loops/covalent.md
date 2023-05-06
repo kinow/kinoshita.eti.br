@@ -1,4 +1,12 @@
-## Recursion in tasks
+Notes about testing Covalent after some discussion in the Workflows Community
+Slack channel. These notes are about loops / cycles in Covalent. Unfortunately
+looping and cycling sometimes have different meanings (e.g. in Cylc, in ecFlow,
+in Autosubmit, in Prefect, in StackStorm, and in many other WfMS' contexts).
+So some empirical testing is required in order to understand how well it works
+in Covalent, in comparison with other solutions (especially Cylc, where cycling
+is one of its main features).
+
+## A task calling itself
 
 ```
 a -> a
@@ -27,6 +35,51 @@ print(result)
 Produces:
 
 ![](./Screenshot&#32;from&#32;2023-05-06&#32;22-55-24.png)
+
+## Cycles
+
+Similar to the previous case, but now the first time `a` runs, that is `a` in cycle `0` (or `1`).
+Once `a` is done, a new instance of `a` starts in the next integer cycle. Essentially:
+
+```
+a.1 -> a.2 -> a.3 -> ... -> a.N # (or a.INF)
+```
+
+That doesn't seem to be possible with Covalent. Here's the example I intuitively
+wrote after reading the Covalent documentation:
+
+```py
+import covalent as ct
+from time import sleep
+
+@ct.electron
+def a(cycle=0):
+    # TODO: how to get current task name in covalent?
+    print(f'This is task "a" cycle "{cycle}"')
+    return cycle + 1
+
+@ct.lattice
+def run_experiment():
+    cycle_result = a()
+    while True:
+        # The idea is for a to call itself, and then update
+        # its cycle point. Looks like the returned object is
+        # important, and mutating cycle_result is probably not
+        # a good idea/practice (more likely a bug/error).
+        cycle_result = a(cycle_result)
+        sleep(2)
+    return cycle_result
+
+dispatch_id = ct.dispatch(run_experiment)()
+result = ct.get_result(dispatch_id, wait=False)
+print(result)
+```
+
+Running this code results in no output in the console, and nothing in the Covalent UI.
+Covalent UI seems to require the `get_result` call to complete in order to display
+the workflow (maybe the postprocess task tells the UI about the run finished?).
+
+Too many assumptions, so now logging an issue in their repository.
 
 ## Notes
 
