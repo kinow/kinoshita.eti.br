@@ -10,4 +10,10 @@ Steps in coarse-grained workflows are often wrapped applications with buried sub
 always report basic metadata such as their version or license in a standardised,
 machine interpretable way.”
 
+“**Executability**. Workflows are executable objects. To be interoperable and
+reusable they need to be portable, encapsulating all their runtime dependencies.
+Lightweight container-based virtualisation solutions to distribute software (e.g.
+Docker, Singularity) and platform independent software packaging and distribution
+(e.g. Conda) revolutionise workflow reusability.”
+
 _From [FAIR Computational Workflows](https://doi.org/10.1162/dint_a_00033), Carole Goble, Sarah Cohen-Boulakia, Stian Soiland-Reyes, Daniel Garijo, Yolanda Gil, Michael R. Crusoe, Kristian Peters, Daniel Schober_
