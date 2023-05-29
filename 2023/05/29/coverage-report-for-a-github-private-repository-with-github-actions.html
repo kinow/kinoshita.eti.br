@@ -1,0 +1,200 @@
+<!doctype html><html lang=en>
+<head>
+<meta charset=utf-8>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<meta property="og:title" content="Coverage report for a GitHub private repository with GitHub Actions">
+<meta property="og:description" content="Normally when you add test coverage to a GitHub repository, the reporting part boils down to a simple call to some API that will post to a third-party external service like Coveralls or Codecov. Many are already on the GitHub Actions Market Place and a few lines of YAML are enough.
+A Codecov coverage report  We had to report the test coverage of a private GitHub repository of a project I am working on at the moment, that could not have integration with other services besides GitHub.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kinoshita.eti.br/2023/05/29/coverage-report-for-a-github-private-repository-with-github-actions.html"><meta property="article:section" content="posts">
+<meta property="article:published_time" content="2023-05-29T20:36:52+03:00">
+<meta property="article:modified_time" content="2023-05-29T20:36:52+03:00">
+<link rel=stylesheet type=text/css href=https://kinoshita.eti.br/sass/main.66aa172f782442adc0241c99968a79a72e4260187c78830f9bdd6b03abff6103.css integrity="sha256-ZqoXL3gkQq3AJByZlop5py5CYBh8eIMPm91rA6v/YQM=">
+<title>kinow | Coverage report for a GitHub private repository with GitHub Actions</title>
+</head>
+<body>
+<header role=banner class=content>
+<nav id=nav aria-label=Main role=navigation class=content>
+<ul><li>
+<a href=/><i data-feather=about></i> About</a>
+</li><li>
+<a href=/blog/><i data-feather=blog></i> Blog</a>
+</li><li>
+<a href=/portfolio/><i data-feather=portfolio></i> Portfolio</a>
+</li>
+</ul>
+</nav>
+</header>
+<main>
+<article class=content>
+<h1>Coverage report for a GitHub private repository with GitHub Actions</h1><div class=metadata>
+<i data-feather=calendar></i>
+<time datetime=2023-05-29>May 29, 2023</time>
+</div>
+<aside>
+<nav id=TableOfContents></nav>
+</aside>
+<p>Normally when you add test coverage to a GitHub repository, the reporting part
+boils down to a simple call to some API that will post to a third-party external
+service like Coveralls or Codecov. Many are already on the GitHub Actions
+Market Place and a few lines of YAML are enough.</p>
+<figure class=full>
+<img src=/assets/posts/2023-05-29-coverage-report-for-a-github-private-repository-with-github-actions/coverage.png alt title width height>
+<figcaption>A Codecov coverage report</figcaption>
+</figure>
+<p>We had to report the test coverage of a private GitHub repository of a project
+I am working on at the moment, that could not have integration with other services
+besides GitHub. So no Coveralls and no Codecov.</p>
+<p>Our initial solution was to run the unit tests with coverage (using <code>pytest</code> and <code>pytest-cov</code>)
+using GitHub Actions, like we were already doing, create an XML coverage with
+<code>pytest-cov</code>, which is compatible with Cobertura&rsquo;s XML. This XML file was used
+by <a href=https://github.com/aconrad/pycobertura>pycobertura</a>, a Python utility that
+reads Cobertura XML and produces HTML or Markdown report.</p>
+<p>Then, using GitHub REST API and the GitHub Actions client, a job in our GitHub actions
+pipeline posts the coverage report as a Markdown comment to the current pull request.</p>
+<p>But later we realized that <code>pycobertura</code> is not able to parse <a href=https://github.com/aconrad/pycobertura/issues/167>branch coverage</a>. It only works with line
+coverage.</p>
+<p>The final solution was then to use <code>pytest-cov</code> and produce its HTML output,
+use <a href=https://github.com/mgdm/htmlq><code>htmlq</code></a> to extract the HTML coverage table,
+convert it to Markdown with <a href=https://github.com/jgm/pandoc/>Pandoc</a>, and
+then post the result as the new Markdown comment to the pull requests.</p>
+<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=color:#080;font-style:italic># File: .github/workflows/ci.yml</span><span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:navy;font-weight:700>name</span>:<span style=color:#bbb> </span>project demo<span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:navy;font-weight:700>on</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:navy;font-weight:700>push</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:navy;font-weight:700>pull_request</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:navy;font-weight:700>workflow_dispatch</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>    
+</span><span style=color:#bbb></span><span style=color:navy;font-weight:700>permissions</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:navy;font-weight:700>content</span>:<span style=color:#bbb> </span>read<span style=color:#bbb>
+</span><span style=color:#bbb>
+</span><span style=color:#bbb></span><span style=color:navy;font-weight:700>jobs</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>  </span><span style=color:navy;font-weight:700>demo_test</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:navy;font-weight:700>env</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>      </span><span style=color:navy;font-weight:700>COVERAGE_ENABLED</span>:<span style=color:#bbb> </span><span style=color:navy;font-weight:700>true</span><span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:navy;font-weight:700>runs-on</span>:<span style=color:#bbb> </span>ubuntu-latest<span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:navy;font-weight:700>permissions</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>      </span><span style=color:navy;font-weight:700>contents</span>:<span style=color:#bbb> </span>read<span style=color:#bbb>
+</span><span style=color:#bbb>      </span><span style=color:navy;font-weight:700>issues</span>:<span style=color:#bbb> </span>write<span style=color:#bbb>
+</span><span style=color:#bbb>      </span><span style=color:navy;font-weight:700>pull-requests</span>:<span style=color:#bbb> </span>write<span style=color:#bbb>
+</span><span style=color:#bbb>    </span><span style=color:navy;font-weight:700>steps</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>      </span>- <span style=color:navy;font-weight:700>uses</span>:<span style=color:#bbb> </span>actions/checkout@v3<span style=color:#bbb>
+</span><span style=color:#bbb>      </span>- <span style=color:navy;font-weight:700>uses</span>:<span style=color:#bbb> </span>mamba-org/provision-with-micromamba@v15<span style=color:#bbb>
+</span><span style=color:#bbb>        </span><span style=color:navy;font-weight:700>with</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>          </span><span style=color:navy;font-weight:700>environment-file</span>:<span style=color:#bbb> </span>environment.yml <span style=color:#bbb> </span><span style=color:#080;font-style:italic># includes pandoc</span><span style=color:#bbb>
+</span><span style=color:#bbb>          </span><span style=color:navy;font-weight:700>cache-download</span>:<span style=color:#bbb> </span><span style=color:navy;font-weight:700>true</span><span style=color:#bbb>
+</span><span style=color:#bbb>          </span><span style=color:navy;font-weight:700>channels</span>:<span style=color:#bbb> </span>conda-forge<span style=color:#bbb>
+</span><span style=color:#bbb>      </span>- <span style=color:navy;font-weight:700>name</span>:<span style=color:#bbb> </span>Install htmlq<span style=color:#bbb>
+</span><span style=color:#bbb>        </span><span style=color:navy;font-weight:700>if</span>:<span style=color:#bbb> </span>${{ env.COVERAGE_ENABLED }}<span style=color:#bbb>
+</span><span style=color:#bbb>        </span><span style=color:navy;font-weight:700>uses</span>:<span style=color:#bbb> </span>baptiste0928/cargo-install@v2<span style=color:#bbb>
+</span><span style=color:#bbb>        </span><span style=color:navy;font-weight:700>with</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>          </span><span style=color:navy;font-weight:700>crate</span>:<span style=color:#bbb> </span>htmlq<span style=color:#bbb>
+</span><span style=color:#bbb>          </span><span style=color:navy;font-weight:700>cache-key</span>:<span style=color:#bbb> </span>cargo-coverage<span style=color:#bbb>
+</span><span style=color:#bbb>      </span>- <span style=color:navy;font-weight:700>run</span>:<span style=color:#bbb> </span>cargo install htmlq<span style=color:#bbb>
+</span><span style=color:#bbb>        </span><span style=color:navy;font-weight:700>if</span>:<span style=color:#bbb> </span>${{ env.COVERAGE_ENABLED }}<span style=color:#bbb>
+</span><span style=color:#bbb>      </span>- <span style=color:navy;font-weight:700>run</span>:<span style=color:#bbb> </span>|<span style=color:#00f>
+</span><span style=color:#00f>          # Produce the HTML report.
+</span><span style=color:#00f>          pytest --cov=demo --cov-report=html --cov-report=xml --cov-branch -m &#34;demo&#34;
+</span><span style=color:#00f>
+</span><span style=color:#00f>          if [[ ${COVERAGE_ENABLED} ]]; then
+</span><span style=color:#00f>            # Extract the top header of the pytest HTML report.
+</span><span style=color:#00f>            # Passes the HTML through htmlq, extracting the first H1 displayed.
+</span><span style=color:#00f>            # Uses tr to delete breaklines and squeeze-repeats blank spaces,
+</span><span style=color:#00f>            # saving space - this is used for an HTTP REST request to GitHub API.
+</span><span style=color:#00f>            COV_HEADER=$(cat htmlcov/index.html | htmlq --pretty &#39;header &gt; div &gt; h1:first-of-type&#39; | tr -d &#39;\n&#39; | tr -s &#39; &#39;)</span><span style=color:#bbb>          
+</span><span style=color:#bbb>  
+</span><span style=color:#bbb>            </span><span style=color:#080;font-style:italic># Extract the table of the pytest HTML report.</span><span style=color:#bbb>
+</span><span style=color:#bbb>            </span><span style=color:#080;font-style:italic># Passes the HTML through htmlq, extracting the table element.</span><span style=color:#bbb>
+</span><span style=color:#bbb>            </span><span style=color:#080;font-style:italic># Uses tr to delete breaklines and squeeze-repeats blank spaces.</span><span style=color:#bbb>
+</span><span style=color:#bbb>            </span><span style=color:#080;font-style:italic># Then calls sed with an expression that replaces the HTML a</span><span style=color:#bbb>
+</span><span style=color:#bbb>            </span><span style=color:#080;font-style:italic># elements by only its text.</span><span style=color:#bbb>
+</span><span style=color:#bbb>            </span>COV_TABLE=$(cat htmlcov/index.html | htmlq --pretty &#39;table&#39; | tr -d &#39;\n&#39; | tr -s &#39; &#39; | sed &#39;s|&lt;a[^&gt;]*&gt;\([^&lt;]*\)&lt;/a&gt;|\1|g&#39;)<span style=color:#bbb>
+</span><span style=color:#bbb>  
+</span><span style=color:#bbb>            </span><span style=color:#080;font-style:italic># Produce a simplified HTML report.</span><span style=color:#bbb>
+</span><span style=color:#bbb>            </span>echo &#34;${COV_HEADER}${COV_TABLE}&#34; &gt; coverage.html<span style=color:#bbb>
+</span><span style=color:#bbb>  
+</span><span style=color:#bbb>            </span><span style=color:#080;font-style:italic># Now simply use pandoc to convert HTML to Markdown.</span><span style=color:#bbb>
+</span><span style=color:#bbb>            </span>pandoc --from html --to &#39;markdown_strict+pipe_tables&#39; coverage.html -o coverage.md<span style=color:#bbb>
+</span><span style=color:#bbb>          </span>fi<span style=color:#bbb>
+</span><span style=color:#bbb>      </span>- <span style=color:navy;font-weight:700>name</span>:<span style=color:#bbb> </span>Public coverage (stdout)<span style=color:#bbb>
+</span><span style=color:#bbb>        </span><span style=color:#080;font-style:italic># Publish the coverage reports in only one matrix job run.</span><span style=color:#bbb>
+</span><span style=color:#bbb>        </span><span style=color:#080;font-style:italic># Only run if **NOT** running in a pull request (see step below).</span><span style=color:#bbb>
+</span><span style=color:#bbb>        </span><span style=color:navy;font-weight:700>if</span>:<span style=color:#bbb> </span>${{ github.event_name != &#39;pull_request&#39; &amp;&amp; env.COVERAGE_ENABLED }}<span style=color:#bbb>
+</span><span style=color:#bbb>        </span><span style=color:navy;font-weight:700>run</span>:<span style=color:#bbb> </span>|<span style=color:#00f>
+</span><span style=color:#00f>          </span><span style=color:#bbb>          </span>cat coverage.md<span style=color:#bbb>
+</span><span style=color:#bbb>      </span>- <span style=color:navy;font-weight:700>name</span>:<span style=color:#bbb> </span>Publish coverage reports (bot)<span style=color:#bbb>
+</span><span style=color:#bbb>        </span><span style=color:#080;font-style:italic># Only run if running in a pull request.</span><span style=color:#bbb>
+</span><span style=color:#bbb>        </span><span style=color:#080;font-style:italic># See for more: https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#example-using-contexts</span><span style=color:#bbb>
+</span><span style=color:#bbb>        </span><span style=color:navy;font-weight:700>if</span>:<span style=color:#bbb> </span>${{ github.event_name == &#39;pull_request&#39; &amp;&amp; env.COVERAGE_ENABLED }}<span style=color:#bbb>
+</span><span style=color:#bbb>        </span><span style=color:#080;font-style:italic># Comment on an issue or pull request using GH Actions tooling:</span><span style=color:#bbb>
+</span><span style=color:#bbb>        </span><span style=color:#080;font-style:italic># https://github.com/actions/github-script#comment-on-an-issue</span><span style=color:#bbb>
+</span><span style=color:#bbb>        </span><span style=color:navy;font-weight:700>uses</span>:<span style=color:#bbb> </span>actions/github-script@v6<span style=color:#bbb>
+</span><span style=color:#bbb>        </span><span style=color:navy;font-weight:700>id</span>:<span style=color:#bbb> </span>coverage-report<span style=color:#bbb>
+</span><span style=color:#bbb>        </span><span style=color:navy;font-weight:700>with</span>:<span style=color:#bbb>
+</span><span style=color:#bbb>          </span><span style=color:navy;font-weight:700>github-token</span>:<span style=color:#bbb> </span>${{secrets.GITHUB_TOKEN}}<span style=color:#bbb>
+</span><span style=color:#bbb>          </span><span style=color:#080;font-style:italic># Based on: https://github.com/actions/github-script/blob/060d68304cc19ea84d828af10e34b9c6ca7bdb31/.github/workflows/pull-request-test.yml</span><span style=color:#bbb>
+</span><span style=color:#bbb>          </span><span style=color:navy;font-weight:700>script</span>:<span style=color:#bbb> </span>|<span style=color:#00f>
+</span><span style=color:#00f>            // Get the existing comments.
+</span><span style=color:#00f>            const {data: comments} = await github.rest.issues.listComments({
+</span><span style=color:#00f>              owner: context.repo.owner,
+</span><span style=color:#00f>              repo: context.repo.repo,
+</span><span style=color:#00f>              issue_number: context.payload.number,
+</span><span style=color:#00f>            })</span><span style=color:#bbb>            
+</span><span style=color:#bbb>        
+</span><span style=color:#bbb>            </span>// Find any comment already made by the bot.<span style=color:#bbb>
+</span><span style=color:#bbb>            </span>const botComment = comments.find(comment =&gt; comment.user.id === 41898282)<span style=color:#bbb>
+</span><span style=color:#bbb>            </span>const fs = require(&#34;fs&#34;).promises<span style=color:#bbb>
+</span><span style=color:#bbb>            </span>const commentBody = await fs.readFile(&#34;coverage.md&#34;, &#34;utf8&#34;)<span style=color:#bbb>
+</span><span style=color:#bbb>        
+</span><span style=color:#bbb>            </span>if (botComment) {<span style=color:#bbb>
+</span><span style=color:#bbb>              </span>console.log(`Updating comment in ${context.repo.owner}/${context.repo.repo}, comment ID: ${botComment.id}`)<span style=color:#bbb>
+</span><span style=color:#bbb>              </span>await github.rest.issues.updateComment({<span style=color:#bbb>
+</span><span style=color:#bbb>                </span><span style=color:navy;font-weight:700>owner</span>:<span style=color:#bbb> </span>context.repo.owner,<span style=color:#bbb>
+</span><span style=color:#bbb>                </span><span style=color:navy;font-weight:700>repo</span>:<span style=color:#bbb> </span>context.repo.repo,<span style=color:#bbb>
+</span><span style=color:#bbb>                </span><span style=color:navy;font-weight:700>comment_id</span>:<span style=color:#bbb> </span>botComment.id,<span style=color:#bbb>
+</span><span style=color:#bbb>                </span><span style=color:navy;font-weight:700>body</span>:<span style=color:#bbb> </span>commentBody<span style=color:#bbb>
+</span><span style=color:#bbb>              </span>})<span style=color:#bbb>
+</span><span style=color:#bbb>            </span>}<span style=color:#bbb> </span>else {<span style=color:#bbb>
+</span><span style=color:#bbb>              </span>console.log(`Creating comment in ${context.repo.owner}/${context.repo.repo}`)<span style=color:#bbb>
+</span><span style=color:#bbb>              </span>await github.rest.issues.createComment({<span style=color:#bbb>
+</span><span style=color:#bbb>                </span><span style=color:navy;font-weight:700>owner</span>:<span style=color:#bbb> </span>context.repo.owner,<span style=color:#bbb>
+</span><span style=color:#bbb>                </span><span style=color:navy;font-weight:700>repo</span>:<span style=color:#bbb> </span>context.repo.repo,<span style=color:#bbb>
+</span><span style=color:#bbb>                </span><span style=color:navy;font-weight:700>issue_number</span>:<span style=color:#bbb> </span>context.issue.number,<span style=color:#bbb>
+</span><span style=color:#bbb>                </span><span style=color:navy;font-weight:700>body</span>:<span style=color:#bbb> </span>commentBody<span style=color:#bbb>
+</span><span style=color:#bbb>              </span>})<span style=color:#bbb>
+</span><span style=color:#bbb>            </span>}<span style=color:#bbb>
+</span></code></pre></div><p>Now the GitHub bot will write a comment to your current pull request with the
+Markdown you produced with <code>htmlq</code> and some Shell script. If you update the
+pull request, the bot will re-use the existing comment, updating it, which is
+convenient as GitHub UI gives you a nice diff for your coverage reports.</p>
+<aside class=links>
+<a class=previous href=https://kinoshita.eti.br/2022/10/26/r/functionalprogramming-turned-10.html>&#171; Previous</a>
+</aside>
+</article>
+</main>
+<footer role=contentinfo>
+<ul id=social-media-icons>
+<li>
+<a href=https://www.instagram.com/brunokinoshita/>
+<img src=/assets/icons/instagram.png alt="Instagram link">
+</a>
+</li>
+<li>
+<a href=https://twitter.com/kinow/>
+<img src=/assets/icons/twitter.png alt="Twitter link">
+</a>
+</li>
+<li>
+<a href=https://github.com/kinow/>
+<img src=/assets/icons/github.png alt="GitHub link">
+</a>
+</li>
+<li>
+<a href=/feed.xml>
+<img src=/assets/icons/news.png alt="RSS feed link">
+</a>
+</li>
+</ul>
+</footer>
+</body>
+</html>
