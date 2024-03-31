@@ -3,10 +3,12 @@ categories:
 - blog
 date: "2018-12-22T00:00:00Z"
 tags:
-- cylc
-- python
-- hpc
-- docker
+  - cylc
+  - python
+  - hpc
+  - docker
+  - workflows
+  - programming
 title: Running Cylc tasks on PBS Torque with Docker
 ---
 

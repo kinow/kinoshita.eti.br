@@ -3,8 +3,12 @@ categories:
 - blog
 date: "2020-03-28T00:00:00Z"
 tags:
-- javascript
-- vuejs
+  - javascript
+  - vuejs
+  - cylc
+  - opensource
+  - workflows
+  - programming
 title: Using Lumino with Vue
 ---
 

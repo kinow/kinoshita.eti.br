@@ -6,9 +6,11 @@ note: 'NB: this is a post to remember things, not really expecting to give someo
   enough information to be able to hack the Cylc Scheduler (though you can and would
   have fun!).'
 tags:
-- cylc
-- python
-- opensource
+  - cylc
+  - python
+  - opensource
+  - workflows
+  - programming
 title: Cylc Scheduler Internals - Part 3
 ---
 

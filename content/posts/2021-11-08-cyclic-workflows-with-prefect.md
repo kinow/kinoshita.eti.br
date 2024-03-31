@@ -1,7 +1,9 @@
 ---
 date: "2021-11-08T00:00:00Z"
 note: This post is a sequel to last month's [Cyclic Workflows with Cylc and StackStorm](/2021/10/01/cyclic-workflows-with-cylc-and-stackstorm.html)
-tags: ["opensource"]
+tags:
+  - opensource
+  - workflows
 title: Cyclic Workflows with Prefect
 ---
 

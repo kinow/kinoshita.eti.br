@@ -3,9 +3,11 @@ categories:
 - blog
 date: "2018-10-06T00:00:00Z"
 tags:
-- python
-- cylc
-- opensource
+  - python
+  - cylc
+  - opensource
+  - workflows
+  - programming
 title: A couple of class diagrams of JupyterHub
 ---
 

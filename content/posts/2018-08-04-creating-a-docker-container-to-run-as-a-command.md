@@ -3,9 +3,11 @@ categories:
 - blog
 date: "2018-08-04T00:00:00Z"
 tags:
-- cylc
-- docker
-- opensource
+  - cylc
+  - docker
+  - opensource
+  - workflows
+  - python
 title: Creating a Docker container to run as a command
 ---
 

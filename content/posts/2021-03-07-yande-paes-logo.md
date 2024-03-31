@@ -5,6 +5,8 @@ date: "2021-03-07T00:00:00Z"
 note: |
   Logo for a new bakery in São Paulo, Brazil.
 title: Yandê pães logo
+tags:
+  - arts
 ---
 
 Logo created on Inkscape, based on ideas and sketches given by customer.

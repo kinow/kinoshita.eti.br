@@ -6,9 +6,10 @@ date: "2021-03-11T00:00:00Z"
 note: |
   Inkscape, 3 hours.
 tags:
-- inkscape
-- vector art
-- low poly
+  - inkscape
+  - vector art
+  - low poly
+  - arts
 title: Low poly in Inkscape
 ---
 

@@ -5,9 +5,10 @@ date: "2021-04-06T00:00:00Z"
 note: |
   Pebeo gouaches, Faber Castell SB pitt pen, and GIMP for post-processing.
 tags:
-- painting
-- gouache
-- ink pen
+  - painting
+  - gouache
+  - ink pen
+  - arts
 title: Random traffic light
 ---
 

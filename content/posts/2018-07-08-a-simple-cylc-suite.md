@@ -3,10 +3,11 @@ categories:
 - blog
 date: "2018-07-08T00:00:00Z"
 tags:
-- cylc
-- python
-- opensource
-title: A simple cylc suite
+  - opensource
+  - workflows
+  - cylc
+  - python
+title: A simple Cylc suite
 ---
 
 I have been writing more suites for [cylc](https://cylc.github.io/cylc/) lately, and found

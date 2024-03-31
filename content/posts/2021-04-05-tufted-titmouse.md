@@ -5,9 +5,10 @@ date: "2021-04-05T00:00:00Z"
 note: |
   Pebeo gouaches, Staedtler colored pencils, and GIMP for post-processing.
 tags:
-- painting
-- gouache
-- colored pencils
+  - painting
+  - gouache
+  - colored pencils
+  - arts
 title: Tufted Titmouse
 ---
 

@@ -7,10 +7,10 @@ note: The comparison does not focus so much on how fuzzers work, which one is be
   by a group or individual ([bus factor](https://en.wikipedia.org/wiki/Bus_factor)
   is always important), and the license.
 tags:
-- opensource
-- security
-- programming
-- fuzzing
+  - opensource
+  - security
+  - programming
+  - fuzzing
 title: Running fuzzers to find bugs
 ---
 

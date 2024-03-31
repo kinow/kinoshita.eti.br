@@ -3,9 +3,12 @@ categories:
 - blog
 date: "2019-07-28T00:00:00Z"
 tags:
-- python
-- cylc
-- database
+  - python
+  - cylc
+  - database
+  - sqlite
+  - workflows
+  - programming
 title: Generating diagrams from a SQlite database with Python
 ---
 

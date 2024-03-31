@@ -5,9 +5,10 @@ date: "2021-02-01T00:00:00Z"
 note: |
   Cretacolor Graphite stick 6B on 110 gsm sketchbook
 tags:
-- sketchbook
-- life drawing
-- figurative drawing
+  - sketchbook
+  - life drawing
+  - figurative drawing
+  - arts
 title: Auckland CBD Life Drawing 2021-02-01
 ---
 

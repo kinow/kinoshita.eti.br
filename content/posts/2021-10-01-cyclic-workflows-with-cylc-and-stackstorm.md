@@ -5,8 +5,11 @@ date: "2021-10-01T00:00:00Z"
 note: |
   Most workflow managers focus on the DAG. Very few support cyclic workflows.
 tags:
-- opensource
-- cylc
+  - opensource
+  - cylc
+  - workflows
+  - python
+  - programming
 title: Cyclic Workflows with Cylc and StackStorm
 ---
 

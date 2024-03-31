@@ -3,11 +3,14 @@ categories:
 - blog
 date: "2019-11-19T00:00:00Z"
 tags:
-- javascript
-- vuejs
-- cylc
-- cytoscape
-- graph
+  - javascript
+  - vuejs
+  - cylc
+  - cytoscape
+  - graph
+  - workflows
+  - programming
+  - opensource
 title: Experimenting with Vuejs and Cytoscape
 ---
 
@@ -16,7 +19,7 @@ ported to the web. We have adopted Vuejs as the JS framework, and have been buil
 components required for our UI over the past months. The project is hosted
 [on GitHub](https://github.com/cylc/cylc-ui) licensed under GPLv3.
 
-In Cylc 7, an important visualization was the workflow graph. The screen shot below is from
+In Cylc 7, an important visualization was the workflow graph. The screenshot below is from
 the design sketches done by another contributor from the UK, showing how it should look in
 Cylc 8.
 

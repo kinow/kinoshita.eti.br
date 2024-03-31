@@ -6,9 +6,12 @@ note: This is based on a WIP pull request, and what is being described here may 
   outdated by the time the pull request has been reviewed and merged. But it should
   still give you an idea of what we are working on.
 tags:
-- python
-- cylc
-- graphql
+  - python
+  - cylc
+  - graphql
+  - workflows
+  - programming
+  - opensource
 title: A look at the first implementation of GraphQL in Cylc
 ---
 

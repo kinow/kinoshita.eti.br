@@ -5,6 +5,9 @@ date: "2021-03-27T00:00:00Z"
 note: |
   Staedtler colored pencils and GIMP for post-processing.
 title: Bezerra da Silva
+tags:
+  - arts
+  - editorial illustration
 ---
 
 Created with Staedtler colored pencils, then digitalized and post-processed
