@@ -1,6 +1,17 @@
 ---
 title: "Coverage report for a GitHub private repository with GitHub Actions"
 date: 2023-05-29T20:36:52+03:00
+categories:
+  - opensource
+  - programming
+tags:
+  - opensource
+  - programming
+  - coverage
+  - software quality
+  - github
+  - github actions
+  - python
 ---
 
 Normally when you add test coverage to a GitHub repository, the reporting part

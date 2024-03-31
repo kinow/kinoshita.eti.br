@@ -10,10 +10,6 @@ buildFuture = true
 rssLimit = 20
 copyright = "Bruno P. Kinoshita All rights reserved"
 
-[author]
-  name = "Bruno P. Kinoshita"
-#  email = "[email protected]"
-
 paginate = 5
 
 contentDir = "content"
@@ -22,13 +18,12 @@ enableRobotsTXT = true
 disableBrowserError = true
 timeout = 3000
 
-disableKinds = ["taxonomy", "taxonomyTerm"]
 ignoreFiles = [
-  ".github",
-  "_data",
-  "data",
-  "scripts"
-] # No files to ignore
+  "./.github",
+  "./_data",
+  "./data",
+  "./scripts"
+]
 
 # Highlighting config. See https://help.farbox.com/pygments.html
 pygmentsCodeFences = true
@@ -37,6 +32,10 @@ pygmentsStyle = "emacs"
 
 # Enable Git variables like commit, lastmod
 enableGitInfo = true
+
+[author]
+  name = "Bruno P. Kinoshita"
+  # email = "[email protected]"
 
 [menu]
   [[menu.main]]
@@ -58,26 +57,34 @@ enableGitInfo = true
 [permalinks]
   posts = '/:year/:month/:day/:title'
 
+[markup]
+  [markup.highlight]
+  style = 'xcode'
 [markup.goldmark.renderer]
-unsafe= true
+  unsafe= true
 
 [blackfriday]
 # hrefTargetBlank = true # We don't want everything opened in a new window
-fractions = false
+  fractions = false
 
 [frontmatter]
-date = ["date", ":filename", "publishDate", "lastmod"]
-
-[markup]
-  [markup.highlight]
-    style = 'xcode'
+  date = ["date", ":filename", "publishDate", "lastmod"]
 
 [sitemap]
-changefreq = 'monthly'
-filename = 'sitemap.xml'
-priority = 0.5
+  changefreq = 'monthly'
+  filename = 'sitemap.xml'
+  priority = 0.5
+
+[outputs]
+  home = ["HTML", "RSS"]
+  page = ["HTML", "RSS"]
 
 [outputFormats]
-[outputFormats.RSS]
-mediatype = "application/rss"
-baseName = "feed"
+  [outputFormats.RSS]
+    mediatype = "application/rss+xml"
+    baseName = "feed"
+
+[taxonomies]
+  tag = "tags"
+  category = "categories"
+  series = "series"
