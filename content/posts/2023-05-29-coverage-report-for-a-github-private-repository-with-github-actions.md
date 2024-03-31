@@ -8,7 +8,7 @@ boils down to a simple call to some API that will post to a third-party external
 service like Coveralls or Codecov. Many are already on the GitHub Actions
 Market Place and a few lines of YAML are enough.
 
-{{< showimage image="coverage.png" caption="A Codecov coverage report" class="full" >}}
+{{< showimage image="coverage.png" caption="A Codecov coverage report" class="feature" >}}
 
 We had to report the test coverage of a private GitHub repository of a project
 I am working on at the moment, that could not have integration with other services
