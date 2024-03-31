@@ -210,21 +210,21 @@ then post the result as the new Markdown comment to the pull requests.</p>
 </span><span style=color:#c41a16>            # Passes the HTML through htmlq, extracting the first H1 displayed.
 </span><span style=color:#c41a16>            # Uses tr to delete breaklines and squeeze-repeats blank spaces,
 </span><span style=color:#c41a16>            # saving space - this is used for an HTTP REST request to GitHub API.
-</span><span style=color:#c41a16>            COV_HEADER=$(cat htmlcov/index.html | htmlq --pretty &#39;header &gt; div &gt; h1:first-of-type&#39; | tr -d &#39;\n&#39; | tr -s &#39; &#39;)</span>          
-  
-            <span style=color:#177500># Extract the table of the pytest HTML report.</span>
-            <span style=color:#177500># Passes the HTML through htmlq, extracting the table element.</span>
-            <span style=color:#177500># Uses tr to delete breaklines and squeeze-repeats blank spaces.</span>
-            <span style=color:#177500># Then calls sed with an expression that replaces the HTML a</span>
-            <span style=color:#177500># elements by only its text.</span>
-            <span style=color:#1c01ce>COV_TABLE=$(cat htmlcov/index.html | htmlq --pretty &#39;table&#39; | tr -d &#39;\n&#39; | tr -s &#39; &#39; | sed &#39;s|&lt;a[^&gt;]*&gt;\([^&lt;]*\)&lt;/a&gt;|\1|g&#39;)</span>
-  
-            <span style=color:#177500># Produce a simplified HTML report.</span>
-            <span style=color:#1c01ce>echo &#34;${COV_HEADER}${COV_TABLE}&#34; &gt; coverage.html</span>
-  
-            <span style=color:#177500># Now simply use pandoc to convert HTML to Markdown.</span>
-            <span style=color:#1c01ce>pandoc --from html --to &#39;markdown_strict+pipe_tables&#39; coverage.html -o coverage.md</span>
-          <span style=color:#1c01ce>fi</span>
+</span><span style=color:#c41a16>            COV_HEADER=$(cat htmlcov/index.html | htmlq --pretty &#39;header &gt; div &gt; h1:first-of-type&#39; | tr -d &#39;\n&#39; | tr -s &#39; &#39;)
+</span><span style=color:#c41a16>          
+</span><span style=color:#c41a16>            # Extract the table of the pytest HTML report.
+</span><span style=color:#c41a16>            # Passes the HTML through htmlq, extracting the table element.
+</span><span style=color:#c41a16>            # Uses tr to delete breaklines and squeeze-repeats blank spaces.
+</span><span style=color:#c41a16>            # Then calls sed with an expression that replaces the HTML a
+</span><span style=color:#c41a16>            # elements by only its text.
+</span><span style=color:#c41a16>            COV_TABLE=$(cat htmlcov/index.html | htmlq --pretty &#39;table&#39; | tr -d &#39;\n&#39; | tr -s &#39; &#39; | sed &#39;s|&lt;a[^&gt;]*&gt;\([^&lt;]*\)&lt;/a&gt;|\1|g&#39;)
+</span><span style=color:#c41a16>          
+</span><span style=color:#c41a16>            # Produce a simplified HTML report.
+</span><span style=color:#c41a16>            echo &#34;${COV_HEADER}${COV_TABLE}&#34; &gt; coverage.html
+</span><span style=color:#c41a16>          
+</span><span style=color:#c41a16>            # Now simply use pandoc to convert HTML to Markdown.
+</span><span style=color:#c41a16>            pandoc --from html --to &#39;markdown_strict+pipe_tables&#39; coverage.html -o coverage.md
+</span><span style=color:#c41a16>          fi</span>          
       - <span style=color:#000>name</span>: <span style=color:#1c01ce>Public coverage (stdout)</span>
         <span style=color:#177500># Publish the coverage reports in only one matrix job run.</span>
         <span style=color:#177500># Only run if **NOT** running in a pull request (see step below).</span>
@@ -248,30 +248,30 @@ then post the result as the new Markdown comment to the pull requests.</p>
 </span><span style=color:#c41a16>              owner: context.repo.owner,
 </span><span style=color:#c41a16>              repo: context.repo.repo,
 </span><span style=color:#c41a16>              issue_number: context.payload.number,
-</span><span style=color:#c41a16>            })</span>            
-        
-            <span style=color:#1c01ce>// Find any comment already made by the bot.</span>
-            <span style=color:#1c01ce>const botComment = comments.find(comment =&gt; comment.user.id === 41898282)</span>
-            <span style=color:#1c01ce>const fs = require(&#34;fs&#34;).promises</span>
-            <span style=color:#1c01ce>const commentBody = await fs.readFile(&#34;coverage.md&#34;, &#34;utf8&#34;)</span>
-        
-            <span style=color:#1c01ce>if (botComment) {</span>
-              <span style=color:#1c01ce>console.log(`Updating comment in ${context.repo.owner}/${context.repo.repo}, comment ID: ${botComment.id}`)</span>
-              <span style=color:#1c01ce>await github.rest.issues.updateComment({</span>
-                <span style=color:#000>owner</span>: <span style=color:#1c01ce>context.repo.owner,</span>
-                <span style=color:#000>repo</span>: <span style=color:#1c01ce>context.repo.repo,</span>
-                <span style=color:#000>comment_id</span>: <span style=color:#1c01ce>botComment.id,</span>
-                <span style=color:#000>body</span>: <span style=color:#1c01ce>commentBody</span>
-              }<span style=color:#1c01ce>)</span>
-            } <span style=color:#1c01ce>else {</span>
-              <span style=color:#1c01ce>console.log(`Creating comment in ${context.repo.owner}/${context.repo.repo}`)</span>
-              <span style=color:#1c01ce>await github.rest.issues.createComment({</span>
-                <span style=color:#000>owner</span>: <span style=color:#1c01ce>context.repo.owner,</span>
-                <span style=color:#000>repo</span>: <span style=color:#1c01ce>context.repo.repo,</span>
-                <span style=color:#000>issue_number</span>: <span style=color:#1c01ce>context.issue.number,</span>
-                <span style=color:#000>body</span>: <span style=color:#1c01ce>commentBody</span>
-              }<span style=color:#1c01ce>)</span>
-            }</code></pre></td></tr></table>
+</span><span style=color:#c41a16>            })
+</span><span style=color:#c41a16>            
+</span><span style=color:#c41a16>            // Find any comment already made by the bot.
+</span><span style=color:#c41a16>            const botComment = comments.find(comment =&gt; comment.user.id === 41898282)
+</span><span style=color:#c41a16>            const fs = require(&#34;fs&#34;).promises
+</span><span style=color:#c41a16>            const commentBody = await fs.readFile(&#34;coverage.md&#34;, &#34;utf8&#34;)
+</span><span style=color:#c41a16>            
+</span><span style=color:#c41a16>            if (botComment) {
+</span><span style=color:#c41a16>              console.log(`Updating comment in ${context.repo.owner}/${context.repo.repo}, comment ID: ${botComment.id}`)
+</span><span style=color:#c41a16>              await github.rest.issues.updateComment({
+</span><span style=color:#c41a16>                owner: context.repo.owner,
+</span><span style=color:#c41a16>                repo: context.repo.repo,
+</span><span style=color:#c41a16>                comment_id: botComment.id,
+</span><span style=color:#c41a16>                body: commentBody
+</span><span style=color:#c41a16>              })
+</span><span style=color:#c41a16>            } else {
+</span><span style=color:#c41a16>              console.log(`Creating comment in ${context.repo.owner}/${context.repo.repo}`)
+</span><span style=color:#c41a16>              await github.rest.issues.createComment({
+</span><span style=color:#c41a16>                owner: context.repo.owner,
+</span><span style=color:#c41a16>                repo: context.repo.repo,
+</span><span style=color:#c41a16>                issue_number: context.issue.number,
+</span><span style=color:#c41a16>                body: commentBody
+</span><span style=color:#c41a16>              })
+</span><span style=color:#c41a16>            }</span>            </code></pre></td></tr></table>
 </div>
 </div>
 <p>Now the GitHub bot will write a comment to your current pull request with the
