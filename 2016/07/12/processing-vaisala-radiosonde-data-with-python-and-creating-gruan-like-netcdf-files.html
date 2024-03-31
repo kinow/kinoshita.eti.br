@@ -35,7 +35,7 @@ normally in a short and constant interval.">
 <meta property="og:url" content="https://kinoshita.eti.br/2016/07/12/processing-vaisala-radiosonde-data-with-python-and-creating-gruan-like-netcdf-files.html"><meta property="article:section" content="posts">
 <meta property="article:published_time" content="2016-07-12T00:00:00+00:00">
 <meta property="article:modified_time" content="2016-07-12T00:00:00+00:00">
-<link rel=stylesheet type=text/css href=https://kinoshita.eti.br/sass/main.66aa172f782442adc0241c99968a79a72e4260187c78830f9bdd6b03abff6103.css integrity="sha256-ZqoXL3gkQq3AJByZlop5py5CYBh8eIMPm91rA6v/YQM=">
+<link rel=stylesheet type=text/css href=https://kinoshita.eti.br/sass/main.09b56b6037e962b67cf7a7701bf2a9ee5da840a4f74b74139c4731f2156a5917.css integrity="sha256-CbVrYDfpYrZ896dwG/Kp7l2oQKT3S3QTnEcx8hVqWRc=">
 <title>kinow | Processing Vaisala Radiosonde data with Python, and creating GRUAN-like NetCDF files</title>
 </head>
 <body>
@@ -101,23 +101,23 @@ with different data types.</p>
 <h3 id=parsing-binary-data-with-python-and-construct>Parsing binary data with Python and construct</h3>
 <p><a href=https://construct.readthedocs.io/>Construct</a> is a declarative parser for binary data.
 You can build a parser by simply saying what you expect to be in each field. For example.</p>
-<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python>pccora_header = Struct(<span style=color:#00f>&#34;pccora_header&#34;</span>,
-    ExprAdapter(String(<span style=color:#00f>&#34;copyright&#34;</span>, <span style=color:#00f>20</span>),
-        encoder = <span style=color:navy;font-weight:700>lambda</span> obj, ctx: obj.encode(),
-        decoder = <span style=color:navy;font-weight:700>lambda</span> obj, ctx: obj.decode(<span style=color:#00f>&#39;utf-8&#39;</span>, <span style=color:#00f>&#39;ignore&#39;</span>)
+<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=color:#000>pccora_header</span> <span style=color:#000>=</span> <span style=color:#000>Struct</span>(<span style=color:#c41a16>&#34;pccora_header&#34;</span>,
+    <span style=color:#000>ExprAdapter</span>(<span style=color:#000>String</span>(<span style=color:#c41a16>&#34;copyright&#34;</span>, <span style=color:#1c01ce>20</span>),
+        <span style=color:#000>encoder</span> <span style=color:#000>=</span> <span style=color:#a90d91>lambda</span> <span style=color:#000>obj</span>, <span style=color:#000>ctx</span>: <span style=color:#000>obj</span><span style=color:#000>.</span><span style=color:#000>encode</span>(),
+        <span style=color:#000>decoder</span> <span style=color:#000>=</span> <span style=color:#a90d91>lambda</span> <span style=color:#000>obj</span>, <span style=color:#000>ctx</span>: <span style=color:#000>obj</span><span style=color:#000>.</span><span style=color:#000>decode</span>(<span style=color:#c41a16>&#39;utf-8&#39;</span>, <span style=color:#c41a16>&#39;ignore&#39;</span>)
     ),
-    SLInt16(<span style=color:#00f>&#34;identification_length&#34;</span>),
-    SLInt16(<span style=color:#00f>&#34;syspar_length&#34;</span>),
-    SLInt16(<span style=color:#00f>&#34;data_records&#34;</span>),
-    SLInt16(<span style=color:#00f>&#34;standard_levels&#34;</span>),
-    SLInt16(<span style=color:#00f>&#34;data_type&#34;</span>),
-    SLInt16(<span style=color:#00f>&#34;data_length&#34;</span>),
-    Enum(Byte(<span style=color:#00f>&#34;file_ready&#34;</span>),
-        READY = <span style=color:#00f>1</span>,
-        NOT_READY = <span style=color:#00f>0</span>,
-        _default_ = <span style=color:#00f>&#34;UNKNOWN&#34;</span>,
+    <span style=color:#000>SLInt16</span>(<span style=color:#c41a16>&#34;identification_length&#34;</span>),
+    <span style=color:#000>SLInt16</span>(<span style=color:#c41a16>&#34;syspar_length&#34;</span>),
+    <span style=color:#000>SLInt16</span>(<span style=color:#c41a16>&#34;data_records&#34;</span>),
+    <span style=color:#000>SLInt16</span>(<span style=color:#c41a16>&#34;standard_levels&#34;</span>),
+    <span style=color:#000>SLInt16</span>(<span style=color:#c41a16>&#34;data_type&#34;</span>),
+    <span style=color:#000>SLInt16</span>(<span style=color:#c41a16>&#34;data_length&#34;</span>),
+    <span style=color:#000>Enum</span>(<span style=color:#000>Byte</span>(<span style=color:#c41a16>&#34;file_ready&#34;</span>),
+        <span style=color:#000>READY</span> <span style=color:#000>=</span> <span style=color:#1c01ce>1</span>,
+        <span style=color:#000>NOT_READY</span> <span style=color:#000>=</span> <span style=color:#1c01ce>0</span>,
+        <span style=color:#000>_default_</span> <span style=color:#000>=</span> <span style=color:#c41a16>&#34;UNKNOWN&#34;</span>,
     ),
-    Bytes(<span style=color:#00f>&#34;reserved&#34;</span>, <span style=color:#00f>17</span>)
+    <span style=color:#000>Bytes</span>(<span style=color:#c41a16>&#34;reserved&#34;</span>, <span style=color:#1c01ce>17</span>)
 )
 </code></pre></div><p>This sample code parses the <strong>Header</strong> section of the Vaisala binary file. You define each field,
 with a short name, a data type and a length. You can also have expressions to encode
@@ -157,84 +157,84 @@ can grab any example GRUAN NetCDF (.nc) file and inspect with <em>ncdump</em>,
 <em>Panoply</em>, <em>ncBrowse</em> or your favourite editor.</p>
 <p>For the file <a href=ftp://ftp.ncdc.noaa.gov/pub/data/gruan/processing/level2/RS92-GDP/version-002/TAT/2016/TAT-RS-01_2_RS92-GDP_002_20160104T000000_1-000-001.nc></a>
 for example, the <strong>time</strong> and <strong>pressure</strong> variables are described below.</p>
-<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python>dimensions:
-  time = UNLIMITED ; // (<span style=color:#00f>5735</span> currently)
-variables:
-  float time(time) ;
-    time:standard_name = <span style=color:#00f>&#34;time&#34;</span> ;
-    time:units = <span style=color:#00f>&#34;seconds since 2016-01-03T23:30:16&#34;</span> ;
-    time:long_name = <span style=color:#00f>&#34;Time&#34;</span> ;
-    time:g_format_type = <span style=color:#00f>&#34;FLT&#34;</span> ;
-    time:g_format_format = <span style=color:#00f>&#34;F8.1&#34;</span> ;
-    time:g_format_width = <span style=color:#00f>&#34;8&#34;</span> ;
-    time:g_format_nan = <span style=color:#00f>&#34;NaN&#34;</span> ;
-    time:g_source_desc = <span style=color:#00f>&#34;FRAWPTU&#34;</span> ;
-    time:g_column_type = <span style=color:#00f>&#34;original data&#34;</span> ;
-    time:g_resolution = <span style=color:#00f>&#34;1.0 s (time)&#34;</span> ;
-    time:axis = <span style=color:#00f>&#34;T&#34;</span> ;
-    time:calendar = <span style=color:#00f>&#34;gregorian&#34;</span> ;
-  float press(time) ;
-    press:standard_name = <span style=color:#00f>&#34;air_pressure&#34;</span> ;
-    press:units = <span style=color:#00f>&#34;hPa&#34;</span> ;
-    press:long_name = <span style=color:#00f>&#34;Pressure&#34;</span> ;
-    press:g_format_type = <span style=color:#00f>&#34;FLT&#34;</span> ;
-    press:g_format_format = <span style=color:#00f>&#34;F8.3&#34;</span> ;
-    press:g_format_width = <span style=color:#00f>&#34;8&#34;</span> ;
-    press:g_format_nan = <span style=color:#00f>&#34;NaN&#34;</span> ;
-    press:g_processing_flag = <span style=color:#00f>&#34;raw, smoothed, internal QC passed, additional QC passed&#34;</span> ;
-    press:g_source_desc = <span style=color:#00f>&#34;FRAWPTU&#34;</span> ;
-    press:g_column_type = <span style=color:#00f>&#34;original data&#34;</span> ;
-    press:g_resolution = <span style=color:#00f>&#34;15.0 s (time)&#34;</span> ;
-    press:comment = <span style=color:#00f>&#34;Barometric air pressure using silicon sensor up to 13.1 km, derived from GPS-altitude above&#34;</span> ;
-    press:related_columns = <span style=color:#00f>&#34;u_press &#34;</span> ;
-    press:coordinates = <span style=color:#00f>&#34;lon lat alt&#34;</span> ;
+<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=color:#000>dimensions</span>:
+  <span style=color:#000>time</span> <span style=color:#000>=</span> <span style=color:#000>UNLIMITED</span> ; <span style=color:#000>//</span> (<span style=color:#1c01ce>5735</span> <span style=color:#000>currently</span>)
+<span style=color:#000>variables</span>:
+  <span style=color:#a90d91>float</span> <span style=color:#000>time</span>(<span style=color:#000>time</span>) ;
+    <span style=color:#000>time</span>:<span style=color:#000>standard_name</span> <span style=color:#000>=</span> <span style=color:#c41a16>&#34;time&#34;</span> ;
+    <span style=color:#000>time</span>:<span style=color:#000>units</span> <span style=color:#000>=</span> <span style=color:#c41a16>&#34;seconds since 2016-01-03T23:30:16&#34;</span> ;
+    <span style=color:#000>time</span>:<span style=color:#000>long_name</span> <span style=color:#000>=</span> <span style=color:#c41a16>&#34;Time&#34;</span> ;
+    <span style=color:#000>time</span>:<span style=color:#000>g_format_type</span> <span style=color:#000>=</span> <span style=color:#c41a16>&#34;FLT&#34;</span> ;
+    <span style=color:#000>time</span>:<span style=color:#000>g_format_format</span> <span style=color:#000>=</span> <span style=color:#c41a16>&#34;F8.1&#34;</span> ;
+    <span style=color:#000>time</span>:<span style=color:#000>g_format_width</span> <span style=color:#000>=</span> <span style=color:#c41a16>&#34;8&#34;</span> ;
+    <span style=color:#000>time</span>:<span style=color:#000>g_format_nan</span> <span style=color:#000>=</span> <span style=color:#c41a16>&#34;NaN&#34;</span> ;
+    <span style=color:#000>time</span>:<span style=color:#000>g_source_desc</span> <span style=color:#000>=</span> <span style=color:#c41a16>&#34;FRAWPTU&#34;</span> ;
+    <span style=color:#000>time</span>:<span style=color:#000>g_column_type</span> <span style=color:#000>=</span> <span style=color:#c41a16>&#34;original data&#34;</span> ;
+    <span style=color:#000>time</span>:<span style=color:#000>g_resolution</span> <span style=color:#000>=</span> <span style=color:#c41a16>&#34;1.0 s (time)&#34;</span> ;
+    <span style=color:#000>time</span>:<span style=color:#000>axis</span> <span style=color:#000>=</span> <span style=color:#c41a16>&#34;T&#34;</span> ;
+    <span style=color:#000>time</span>:<span style=color:#000>calendar</span> <span style=color:#000>=</span> <span style=color:#c41a16>&#34;gregorian&#34;</span> ;
+  <span style=color:#a90d91>float</span> <span style=color:#000>press</span>(<span style=color:#000>time</span>) ;
+    <span style=color:#000>press</span>:<span style=color:#000>standard_name</span> <span style=color:#000>=</span> <span style=color:#c41a16>&#34;air_pressure&#34;</span> ;
+    <span style=color:#000>press</span>:<span style=color:#000>units</span> <span style=color:#000>=</span> <span style=color:#c41a16>&#34;hPa&#34;</span> ;
+    <span style=color:#000>press</span>:<span style=color:#000>long_name</span> <span style=color:#000>=</span> <span style=color:#c41a16>&#34;Pressure&#34;</span> ;
+    <span style=color:#000>press</span>:<span style=color:#000>g_format_type</span> <span style=color:#000>=</span> <span style=color:#c41a16>&#34;FLT&#34;</span> ;
+    <span style=color:#000>press</span>:<span style=color:#000>g_format_format</span> <span style=color:#000>=</span> <span style=color:#c41a16>&#34;F8.3&#34;</span> ;
+    <span style=color:#000>press</span>:<span style=color:#000>g_format_width</span> <span style=color:#000>=</span> <span style=color:#c41a16>&#34;8&#34;</span> ;
+    <span style=color:#000>press</span>:<span style=color:#000>g_format_nan</span> <span style=color:#000>=</span> <span style=color:#c41a16>&#34;NaN&#34;</span> ;
+    <span style=color:#000>press</span>:<span style=color:#000>g_processing_flag</span> <span style=color:#000>=</span> <span style=color:#c41a16>&#34;raw, smoothed, internal QC passed, additional QC passed&#34;</span> ;
+    <span style=color:#000>press</span>:<span style=color:#000>g_source_desc</span> <span style=color:#000>=</span> <span style=color:#c41a16>&#34;FRAWPTU&#34;</span> ;
+    <span style=color:#000>press</span>:<span style=color:#000>g_column_type</span> <span style=color:#000>=</span> <span style=color:#c41a16>&#34;original data&#34;</span> ;
+    <span style=color:#000>press</span>:<span style=color:#000>g_resolution</span> <span style=color:#000>=</span> <span style=color:#c41a16>&#34;15.0 s (time)&#34;</span> ;
+    <span style=color:#000>press</span>:<span style=color:#000>comment</span> <span style=color:#000>=</span> <span style=color:#c41a16>&#34;Barometric air pressure using silicon sensor up to 13.1 km, derived from GPS-altitude above&#34;</span> ;
+    <span style=color:#000>press</span>:<span style=color:#000>related_columns</span> <span style=color:#000>=</span> <span style=color:#c41a16>&#34;u_press &#34;</span> ;
+    <span style=color:#000>press</span>:<span style=color:#000>coordinates</span> <span style=color:#000>=</span> <span style=color:#c41a16>&#34;lon lat alt&#34;</span> ;
 </code></pre></div><p>You can see the unit used for time (in seconds) and that the time variable is related
 to the launch time. And pressure is using hPa. Both variables are mapped against
 the time dimension - you can see that by looking at the parenthesis that follow the variable name.</p>
 <p>The following snippet contains an example of the metadata that is added to data
 uploaded to GRUAN.</p>
-<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python>// <span style=color:navy;font-weight:700>global</span> attributes:
-    :Conventions = <span style=color:#00f>&#34;CF-1.4&#34;</span> ;
-    :title = <span style=color:#00f>&#34;RS92 GRUAN Data Product (Version 2)&#34;</span> ;
-    :institution = <span style=color:#00f>&#34;JMA - Japan Meteorological Agency&#34;</span> ;
-    :source = <span style=color:#00f>&#34;RS92-SGP&#34;</span> ;
-    :history = <span style=color:#00f>&#34;2016-01-04 13:10:41.000Z RS92-GDP: RS92 GRUAN Data Product with gruan_DP_calcRsDataProduct.pro (GRUAN IDL Library, 2012-08)&#34;</span> ;
-    :references = <span style=color:#00f>&#34;Currently no references&#34;</span> ;
-    :comment = <span style=color:#00f>&#34;RS92 GRUAN Data Product&#34;</span> ;
-    :g.Product.ID = <span style=color:#00f>&#34;180821&#34;</span> ;
-    :g.Product.Code = <span style=color:#00f>&#34;RS92-GDP&#34;</span> ;
-    :g.Product.Name = <span style=color:#00f>&#34;RS92 GRUAN Data Product&#34;</span> ;
-    :g.Product.Version = <span style=color:#00f>&#34;2&#34;</span> ;
-    :g.Product.Level = <span style=color:#00f>&#34;2&#34;</span> ;
-    :g.Product.LevelDescription = <span style=color:#00f>&#34;Data read from original data file&#34;</span> ;
-    :g.Product.History = <span style=color:#00f>&#34;2016-01-04 13:10:41.000Z RS92-GDP: RS92 GRUAN Data Product with gruan_DP_calcRsDataProduct.pro (GRUAN IDL Library, 2012-08)&#34;</span> ;
-    :g.Product.References = <span style=color:#00f>&#34;Currently no references&#34;</span> ;
-    :g.Product.Producer = <span style=color:#00f>&#34;GRUAN Lead Centre (Lindenberg, DWD, Germany)&#34;</span> ;
+<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=color:#000>//</span> <span style=color:#a90d91>global</span> <span style=color:#000>attributes</span>:
+    :<span style=color:#000>Conventions</span> <span style=color:#000>=</span> <span style=color:#c41a16>&#34;CF-1.4&#34;</span> ;
+    :<span style=color:#000>title</span> <span style=color:#000>=</span> <span style=color:#c41a16>&#34;RS92 GRUAN Data Product (Version 2)&#34;</span> ;
+    :<span style=color:#000>institution</span> <span style=color:#000>=</span> <span style=color:#c41a16>&#34;JMA - Japan Meteorological Agency&#34;</span> ;
+    :<span style=color:#000>source</span> <span style=color:#000>=</span> <span style=color:#c41a16>&#34;RS92-SGP&#34;</span> ;
+    :<span style=color:#000>history</span> <span style=color:#000>=</span> <span style=color:#c41a16>&#34;2016-01-04 13:10:41.000Z RS92-GDP: RS92 GRUAN Data Product with gruan_DP_calcRsDataProduct.pro (GRUAN IDL Library, 2012-08)&#34;</span> ;
+    :<span style=color:#000>references</span> <span style=color:#000>=</span> <span style=color:#c41a16>&#34;Currently no references&#34;</span> ;
+    :<span style=color:#000>comment</span> <span style=color:#000>=</span> <span style=color:#c41a16>&#34;RS92 GRUAN Data Product&#34;</span> ;
+    :<span style=color:#000>g</span><span style=color:#000>.</span><span style=color:#000>Product</span><span style=color:#000>.</span><span style=color:#000>ID</span> <span style=color:#000>=</span> <span style=color:#c41a16>&#34;180821&#34;</span> ;
+    :<span style=color:#000>g</span><span style=color:#000>.</span><span style=color:#000>Product</span><span style=color:#000>.</span><span style=color:#000>Code</span> <span style=color:#000>=</span> <span style=color:#c41a16>&#34;RS92-GDP&#34;</span> ;
+    :<span style=color:#000>g</span><span style=color:#000>.</span><span style=color:#000>Product</span><span style=color:#000>.</span><span style=color:#000>Name</span> <span style=color:#000>=</span> <span style=color:#c41a16>&#34;RS92 GRUAN Data Product&#34;</span> ;
+    :<span style=color:#000>g</span><span style=color:#000>.</span><span style=color:#000>Product</span><span style=color:#000>.</span><span style=color:#000>Version</span> <span style=color:#000>=</span> <span style=color:#c41a16>&#34;2&#34;</span> ;
+    :<span style=color:#000>g</span><span style=color:#000>.</span><span style=color:#000>Product</span><span style=color:#000>.</span><span style=color:#000>Level</span> <span style=color:#000>=</span> <span style=color:#c41a16>&#34;2&#34;</span> ;
+    :<span style=color:#000>g</span><span style=color:#000>.</span><span style=color:#000>Product</span><span style=color:#000>.</span><span style=color:#000>LevelDescription</span> <span style=color:#000>=</span> <span style=color:#c41a16>&#34;Data read from original data file&#34;</span> ;
+    :<span style=color:#000>g</span><span style=color:#000>.</span><span style=color:#000>Product</span><span style=color:#000>.</span><span style=color:#000>History</span> <span style=color:#000>=</span> <span style=color:#c41a16>&#34;2016-01-04 13:10:41.000Z RS92-GDP: RS92 GRUAN Data Product with gruan_DP_calcRsDataProduct.pro (GRUAN IDL Library, 2012-08)&#34;</span> ;
+    :<span style=color:#000>g</span><span style=color:#000>.</span><span style=color:#000>Product</span><span style=color:#000>.</span><span style=color:#000>References</span> <span style=color:#000>=</span> <span style=color:#c41a16>&#34;Currently no references&#34;</span> ;
+    :<span style=color:#000>g</span><span style=color:#000>.</span><span style=color:#000>Product</span><span style=color:#000>.</span><span style=color:#000>Producer</span> <span style=color:#000>=</span> <span style=color:#c41a16>&#34;GRUAN Lead Centre (Lindenberg, DWD, Germany)&#34;</span> ;
 </code></pre></div><p>For my work, the pccora Python library handled the binary data. I created a local variable,
 <strong>hires_data</strong> that holds the high resolution data from the radiosonde. Then created a new
 dataset, which is the NetCDF file.</p>
 <p>It might be easier to explain the rest after looking at some code.</p>
-<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python>hires_data = data[<span style=color:#00f>&#39;hires_data&#39;</span>]
+<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=color:#000>hires_data</span> <span style=color:#000>=</span> <span style=color:#000>data</span>[<span style=color:#c41a16>&#39;hires_data&#39;</span>]
 
-dataset = Dataset(file, <span style=color:#00f>&#34;w&#34;</span>, format=<span style=color:#00f>&#34;NETCDF4_CLASSIC&#34;</span>)
+<span style=color:#000>dataset</span> <span style=color:#000>=</span> <span style=color:#000>Dataset</span>(<span style=color:#000>file</span>, <span style=color:#c41a16>&#34;w&#34;</span>, <span style=color:#a90d91>format</span><span style=color:#000>=</span><span style=color:#c41a16>&#34;NETCDF4_CLASSIC&#34;</span>)
 
-<span style=color:#080;font-style:italic># Dimensions</span>
-dataset.createDimension(<span style=color:#00f>&#34;time&#34;</span>)
+<span style=color:#177500># Dimensions</span>
+<span style=color:#000>dataset</span><span style=color:#000>.</span><span style=color:#000>createDimension</span>(<span style=color:#c41a16>&#34;time&#34;</span>)
 
-dataset.setncattr(<span style=color:#00f>&#39;g.General.SiteWmoId&#39;</span>, ident[<span style=color:#00f>&#39;wmo_block_number&#39;</span>] + ident[<span style=color:#00f>&#39;wmo_station_number&#39;</span>])
-dataset.setncattr(<span style=color:#00f>&#39;g.MeasuringSystem.Longitude&#39;</span>, str(<span style=color:#00f>&#39;N/A&#39;</span> <span style=color:navy;font-weight:700>if</span> <span style=color:navy;font-weight:700>None</span> == ident[<span style=color:#00f>&#39;station_longitude&#39;</span>] <span style=color:navy;font-weight:700>else</span> ident[<span style=color:#00f>&#39;station_longitude&#39;</span>]) + <span style=color:#00f>&#39; degree east&#39;</span>)
-dataset.setncattr(<span style=color:#00f>&#39;g.MeasuringSystem.Latitude&#39;</span>, str(ident[<span style=color:#00f>&#39;station_latitude&#39;</span>]) + <span style=color:#00f>&#39; degree north&#39;</span>)
+<span style=color:#000>dataset</span><span style=color:#000>.</span><span style=color:#000>setncattr</span>(<span style=color:#c41a16>&#39;g.General.SiteWmoId&#39;</span>, <span style=color:#000>ident</span>[<span style=color:#c41a16>&#39;wmo_block_number&#39;</span>] <span style=color:#000>+</span> <span style=color:#000>ident</span>[<span style=color:#c41a16>&#39;wmo_station_number&#39;</span>])
+<span style=color:#000>dataset</span><span style=color:#000>.</span><span style=color:#000>setncattr</span>(<span style=color:#c41a16>&#39;g.MeasuringSystem.Longitude&#39;</span>, <span style=color:#a90d91>str</span>(<span style=color:#c41a16>&#39;N/A&#39;</span> <span style=color:#a90d91>if</span> <span style=color:#a90d91>None</span> <span style=color:#000>==</span> <span style=color:#000>ident</span>[<span style=color:#c41a16>&#39;station_longitude&#39;</span>] <span style=color:#a90d91>else</span> <span style=color:#000>ident</span>[<span style=color:#c41a16>&#39;station_longitude&#39;</span>]) <span style=color:#000>+</span> <span style=color:#c41a16>&#39; degree east&#39;</span>)
+<span style=color:#000>dataset</span><span style=color:#000>.</span><span style=color:#000>setncattr</span>(<span style=color:#c41a16>&#39;g.MeasuringSystem.Latitude&#39;</span>, <span style=color:#a90d91>str</span>(<span style=color:#000>ident</span>[<span style=color:#c41a16>&#39;station_latitude&#39;</span>]) <span style=color:#000>+</span> <span style=color:#c41a16>&#39; degree north&#39;</span>)
 </code></pre></div><p>In this example, a <strong>time</strong> dimension is added to our dataset, as well as some global attributes (metadata).</p>
 <p>In another part of the code, we have to populate arrays with the values for the data
 logged during the time, and then create variables to persist this data in the NetCDF
 file.</p>
-<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=color:#080;font-style:italic># elapsed_time</span>
-elapsed_time_variable = dataset.createVariable(<span style=color:#00f>&#39;elapsed_time&#39;</span>, <span style=color:#00f>&#39;f4&#39;</span>, (<span style=color:#00f>&#34;time&#34;</span>, ), zlib=<span style=color:navy;font-weight:700>True</span>, fill_value=-<span style=color:#00f>32768</span>)
-elapsed_time_variable.standard_name = <span style=color:#00f>&#39;elapsed_time&#39;</span>
-elapsed_time_variable.units = <span style=color:#00f>&#39;s&#39;</span>
-elapsed_time_variable.long_name = <span style=color:#00f>&#39;Elapsed time since sonde release&#39;</span>
-elapsed_time_variable.g_format_type = <span style=color:#00f>&#39;FLT&#39;</span>
-elapsed_time_variable[:] = elapsed_time
+<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=color:#177500># elapsed_time</span>
+<span style=color:#000>elapsed_time_variable</span> <span style=color:#000>=</span> <span style=color:#000>dataset</span><span style=color:#000>.</span><span style=color:#000>createVariable</span>(<span style=color:#c41a16>&#39;elapsed_time&#39;</span>, <span style=color:#c41a16>&#39;f4&#39;</span>, (<span style=color:#c41a16>&#34;time&#34;</span>, ), <span style=color:#000>zlib</span><span style=color:#000>=</span><span style=color:#a90d91>True</span>, <span style=color:#000>fill_value</span><span style=color:#000>=-</span><span style=color:#1c01ce>32768</span>)
+<span style=color:#000>elapsed_time_variable</span><span style=color:#000>.</span><span style=color:#000>standard_name</span> <span style=color:#000>=</span> <span style=color:#c41a16>&#39;elapsed_time&#39;</span>
+<span style=color:#000>elapsed_time_variable</span><span style=color:#000>.</span><span style=color:#000>units</span> <span style=color:#000>=</span> <span style=color:#c41a16>&#39;s&#39;</span>
+<span style=color:#000>elapsed_time_variable</span><span style=color:#000>.</span><span style=color:#000>long_name</span> <span style=color:#000>=</span> <span style=color:#c41a16>&#39;Elapsed time since sonde release&#39;</span>
+<span style=color:#000>elapsed_time_variable</span><span style=color:#000>.</span><span style=color:#000>g_format_type</span> <span style=color:#000>=</span> <span style=color:#c41a16>&#39;FLT&#39;</span>
+<span style=color:#000>elapsed_time_variable</span>[:] <span style=color:#000>=</span> <span style=color:#000>elapsed_time</span>
 </code></pre></div><p>In this example, <strong>elapsed_time</strong> is a simple Python array, with float values.</p>
 <p>The complete code is available <a href=https://github.com/kinow/pccora/blob/5a47fa47c2d9009feb4c56e8daf1b8b5ca7ce7cf/scripts/convert2netcdf4.py>on GitHub</a>.</p>
 <p>And once we have parsed the binary data, created the right structures in Python,

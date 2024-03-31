@@ -26,7 +26,7 @@ communication, agility, and can be useful for posterity.">
 <meta property="og:url" content="https://kinoshita.eti.br/2018/12/22/running-cylc-tasks-on-pbs-torque-with-docker.html"><meta property="article:section" content="posts">
 <meta property="article:published_time" content="2018-12-22T00:00:00+00:00">
 <meta property="article:modified_time" content="2018-12-22T00:00:00+00:00">
-<link rel=stylesheet type=text/css href=https://kinoshita.eti.br/sass/main.66aa172f782442adc0241c99968a79a72e4260187c78830f9bdd6b03abff6103.css integrity="sha256-ZqoXL3gkQq3AJByZlop5py5CYBh8eIMPm91rA6v/YQM=">
+<link rel=stylesheet type=text/css href=https://kinoshita.eti.br/sass/main.09b56b6037e962b67cf7a7701bf2a9ee5da840a4f74b74139c4731f2156a5917.css integrity="sha256-CbVrYDfpYrZ896dwG/Kp7l2oQKT3S3QTnEcx8hVqWRc=">
 <title>kinow | Running Cylc tasks on PBS Torque with Docker</title>
 </head>
 <body>
@@ -95,9 +95,9 @@ manages common dependencies <a href=https://dev.to/leoat12/the-nodemodules-probl
 <div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>$ docker run -d -h docker.example.com -p 10022:22 --privileged --name torque agaveapi/torque
 f18f2cc2a2f90f56d1b74370060a272d5faf5b39dfc295a2025c78e469950194
 </code></pre></div><p>And from here you can submit a job after having access to the <code>testuser</code> user in the container.</p>
-<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>$ docker exec -t -i torque /bin/bash
+<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>$ docker <span style=color:#a90d91>exec</span> -t -i torque /bin/bash
 bash-4.1# su - testuser
-[testuser@docker ~]$ qsub /home/testuser/torque.submit
+<span style=color:#000>[</span>testuser@docker ~<span style=color:#000>]</span>$ qsub /home/testuser/torque.submit
 0.docker.example.com
 </code></pre></div><h3 id=running-cylc-with-docker>Running Cylc with Docker</h3>
 <p>You can also start an Ubuntu container with Cylc in one line.</p>
@@ -106,35 +106,35 @@ root@58118e44f171:/opt/cylc# cylc check-software
 Checking your software...
 
 Individual results:
-==========================================================================================
-Package (version requirements)                                     Outcome (version found)
-==========================================================================================
+<span style=color:#000>==========================================================================================</span>
+Package <span style=color:#000>(</span>version requirements<span style=color:#000>)</span>                                     Outcome <span style=color:#000>(</span>version found<span style=color:#000>)</span>
+<span style=color:#000>==========================================================================================</span>
                                    *REQUIRED SOFTWARE*                                   
-Python (2.6+, &lt;3)................................FOUND &amp; min. version MET (2.7.12.final.0)
+Python <span style=color:#000>(</span>2.6+, &lt;3<span style=color:#000>)</span>................................FOUND &amp; min. version MET <span style=color:#000>(</span>2.7.12.final.0<span style=color:#000>)</span>
 
-             *OPTIONAL SOFTWARE <span style=color:navy;font-weight:700>for</span> the GUI &amp; dependency graph visualisation*             
+             *OPTIONAL SOFTWARE <span style=color:#a90d91>for</span> the GUI &amp; dependency graph visualisation*             
 /usr/lib/python2.7/dist-packages/gtk-2.0/gtk/__init__.py:57: GtkWarning: could not open display
-  warnings.warn(str(e), _gtk.Warning)
-Python:pygtk (2.0+)......................................FOUND &amp; min. version MET (2.24.0)
-graphviz (any)..............................................................FOUND (2.38.0)
-Python:pygraphviz (any)......................................................FOUND (1.3.1)
+  warnings.warn<span style=color:#000>(</span>str<span style=color:#000>(</span>e<span style=color:#000>)</span>, _gtk.Warning<span style=color:#000>)</span>
+Python:pygtk <span style=color:#000>(</span>2.0+<span style=color:#000>)</span>......................................FOUND &amp; min. version MET <span style=color:#000>(</span>2.24.0<span style=color:#000>)</span>
+graphviz <span style=color:#000>(</span>any<span style=color:#000>)</span>..............................................................FOUND <span style=color:#000>(</span>2.38.0<span style=color:#000>)</span>
+Python:pygraphviz <span style=color:#000>(</span>any<span style=color:#000>)</span>......................................................FOUND <span style=color:#000>(</span>1.3.1<span style=color:#000>)</span>
 
-                       *OPTIONAL SOFTWARE <span style=color:navy;font-weight:700>for</span> the HTML User Guide*                       
-ImageMagick (any)............................................................NOT FOUND (-)
+                       *OPTIONAL SOFTWARE <span style=color:#a90d91>for</span> the HTML User Guide*                       
+ImageMagick <span style=color:#000>(</span>any<span style=color:#000>)</span>............................................................NOT FOUND <span style=color:#000>(</span>-<span style=color:#000>)</span>
 
-                  *OPTIONAL SOFTWARE <span style=color:navy;font-weight:700>for</span> the HTTPS communications layer*                  
-Python:urllib3 (any).........................................................NOT FOUND (-)
-Python:OpenSSL (any)........................................................FOUND (18.0.0)
-Python:requests (2.4.2+).....................................................NOT FOUND (-)
+                  *OPTIONAL SOFTWARE <span style=color:#a90d91>for</span> the HTTPS communications layer*                  
+Python:urllib3 <span style=color:#000>(</span>any<span style=color:#000>)</span>.........................................................NOT FOUND <span style=color:#000>(</span>-<span style=color:#000>)</span>
+Python:OpenSSL <span style=color:#000>(</span>any<span style=color:#000>)</span>........................................................FOUND <span style=color:#000>(</span>18.0.0<span style=color:#000>)</span>
+Python:requests <span style=color:#000>(</span>2.4.2+<span style=color:#000>)</span>.....................................................NOT FOUND <span style=color:#000>(</span>-<span style=color:#000>)</span>
 
-                       *OPTIONAL SOFTWARE <span style=color:navy;font-weight:700>for</span> the LaTeX User Guide*                       
-TeX:framed (any).............................................................NOT FOUND (-)
-TeX (3.0+)...........................................FOUND &amp; min. version MET (3.14159265)
-TeX:preprint (any)...........................................................NOT FOUND (-)
-TeX:tex4ht (any).............................................................NOT FOUND (-)
-TeX:tocloft (any)............................................................NOT FOUND (-)
-TeX:texlive (any)............................................................NOT FOUND (-)
-==========================================================================================
+                       *OPTIONAL SOFTWARE <span style=color:#a90d91>for</span> the LaTeX User Guide*                       
+TeX:framed <span style=color:#000>(</span>any<span style=color:#000>)</span>.............................................................NOT FOUND <span style=color:#000>(</span>-<span style=color:#000>)</span>
+TeX <span style=color:#000>(</span>3.0+<span style=color:#000>)</span>...........................................FOUND &amp; min. version MET <span style=color:#000>(</span>3.14159265<span style=color:#000>)</span>
+TeX:preprint <span style=color:#000>(</span>any<span style=color:#000>)</span>...........................................................NOT FOUND <span style=color:#000>(</span>-<span style=color:#000>)</span>
+TeX:tex4ht <span style=color:#000>(</span>any<span style=color:#000>)</span>.............................................................NOT FOUND <span style=color:#000>(</span>-<span style=color:#000>)</span>
+TeX:tocloft <span style=color:#000>(</span>any<span style=color:#000>)</span>............................................................NOT FOUND <span style=color:#000>(</span>-<span style=color:#000>)</span>
+TeX:texlive <span style=color:#000>(</span>any<span style=color:#000>)</span>............................................................NOT FOUND <span style=color:#000>(</span>-<span style=color:#000>)</span>
+<span style=color:#000>==========================================================================================</span>
 
 Summary:
                                ****************************                               
@@ -147,39 +147,39 @@ contains some Dockerfile&rsquo;s for running Cylc, including a new one where I c
 the PBS Torque image, with the Cylc standalone image, with SSH between both. There is a
 <code>docker-compose.yml</code> configuration to initialize a mini cluster of two computers, with
 SSH and trusted configured, and shared volume/file system.</p>
-<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>$ cd cylc-docker/pbs
-$ ssh-keygen -t rsa -f ./id_rsa -N <span style=color:#00f>&#34;&#34;</span> -q
-$ export CYLC_SSH_PUBKEY=<span style=color:navy;font-weight:700>$(</span>cat id_rsa.pub<span style=color:navy;font-weight:700>)</span>
-$ echo <span style=color:#00f>&#34;CYLC_SSH_PUBKEY=</span><span style=color:#00f>${</span>CYLC_SSH_PUBKEY<span style=color:#00f>}</span><span style=color:#00f>&#34;</span> &gt;&gt; .env
+<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>$ <span style=color:#a90d91>cd</span> cylc-docker/pbs
+$ ssh-keygen -t rsa -f ./id_rsa -N <span style=color:#c41a16>&#34;&#34;</span> -q
+$ <span style=color:#a90d91>export</span> <span style=color:#000>CYLC_SSH_PUBKEY</span><span style=color:#000>=</span><span style=color:#a90d91>$(</span>cat id_rsa.pub<span style=color:#a90d91>)</span>
+$ <span style=color:#a90d91>echo</span> <span style=color:#c41a16>&#34;CYLC_SSH_PUBKEY=</span><span style=color:#c41a16>${</span><span style=color:#000>CYLC_SSH_PUBKEY</span><span style=color:#c41a16>}</span><span style=color:#c41a16>&#34;</span> &gt;&gt; .env
 $ docker-compose up
-Creating pbs  ... <span style=color:navy;font-weight:700>done</span>
-Creating cylc ... <span style=color:navy;font-weight:700>done</span>
+Creating pbs  ... <span style=color:#a90d91>done</span>
+Creating cylc ... <span style=color:#a90d91>done</span>
 Attaching to cylc, pbs
-cylc    | /usr/lib/python2.7/dist-packages/supervisor/options.py:297: UserWarning: Supervisord is running as root and it is searching <span style=color:navy;font-weight:700>for</span> its configuration file in default locations (including its current working directory); you probably want to specify a <span style=color:#00f>&#34;-c&#34;</span> argument specifying an absolute path to a configuration file <span style=color:navy;font-weight:700>for</span> improved security.
-cylc    |   <span style=color:#00f>&#39;Supervisord is running as root and it is searching &#39;</span>
-cylc    | 2018-12-22 02:29:06,526 CRIT Supervisor running as root (no user in config file)
-cylc    | 2018-12-22 02:29:06,526 WARN No file matches via include <span style=color:#00f>&#34;/etc/supervisor/conf.d/*.conf&#34;</span>
-pbs     | /usr/lib/python2.6/site-packages/supervisor/options.py:295: UserWarning: Supervisord is running as root and it is searching <span style=color:navy;font-weight:700>for</span> its configuration file in default locations (including its current working directory); you probably want to specify a <span style=color:#00f>&#34;-c&#34;</span> argument specifying an absolute path to a configuration file <span style=color:navy;font-weight:700>for</span> improved security.
-pbs     |   <span style=color:#00f>&#39;Supervisord is running as root and it is searching &#39;</span>
-cylc    | 2018-12-22 02:29:06,535 INFO RPC interface <span style=color:#00f>&#39;supervisor&#39;</span> initialized
-cylc    | 2018-12-22 02:29:06,535 CRIT Server <span style=color:#00f>&#39;unix_http_server&#39;</span> running without any HTTP authentication checking
-cylc    | 2018-12-22 02:29:06,535 INFO supervisord started with pid <span style=color:#00f>1</span>
-pbs     | 2018-12-22 02:29:07,480 CRIT Supervisor running as root (no user in config file)
-pbs     | 2018-12-22 02:29:07,483 INFO supervisord started with pid <span style=color:#00f>1</span>
-pbs     | 2018-12-22 02:29:08,487 INFO spawned: <span style=color:#00f>&#39;pbsmom&#39;</span> with pid <span style=color:#00f>10</span>
-pbs     | 2018-12-22 02:29:08,490 INFO spawned: <span style=color:#00f>&#39;sshd&#39;</span> with pid <span style=color:#00f>11</span>
-pbs     | 2018-12-22 02:29:08,493 INFO spawned: <span style=color:#00f>&#39;pbssched&#39;</span> with pid <span style=color:#00f>12</span>
-pbs     | 2018-12-22 02:29:08,497 INFO spawned: <span style=color:#00f>&#39;pbsserver&#39;</span> with pid <span style=color:#00f>13</span>
-pbs     | 2018-12-22 02:29:08,499 INFO spawned: <span style=color:#00f>&#39;trqauthd&#39;</span> with pid <span style=color:#00f>14</span>
-pbs     | 2018-12-22 02:29:08,761 INFO exited: pbssched (exit status 0; not expected)
+cylc    | /usr/lib/python2.7/dist-packages/supervisor/options.py:297: UserWarning: Supervisord is running as root and it is searching <span style=color:#a90d91>for</span> its configuration file in default locations <span style=color:#000>(</span>including its current working directory<span style=color:#000>)</span>; you probably want to specify a <span style=color:#c41a16>&#34;-c&#34;</span> argument specifying an absolute path to a configuration file <span style=color:#a90d91>for</span> improved security.
+cylc    |   <span style=color:#c41a16>&#39;Supervisord is running as root and it is searching &#39;</span>
+cylc    | 2018-12-22 02:29:06,526 CRIT Supervisor running as root <span style=color:#000>(</span>no user in config file<span style=color:#000>)</span>
+cylc    | 2018-12-22 02:29:06,526 WARN No file matches via include <span style=color:#c41a16>&#34;/etc/supervisor/conf.d/*.conf&#34;</span>
+pbs     | /usr/lib/python2.6/site-packages/supervisor/options.py:295: UserWarning: Supervisord is running as root and it is searching <span style=color:#a90d91>for</span> its configuration file in default locations <span style=color:#000>(</span>including its current working directory<span style=color:#000>)</span>; you probably want to specify a <span style=color:#c41a16>&#34;-c&#34;</span> argument specifying an absolute path to a configuration file <span style=color:#a90d91>for</span> improved security.
+pbs     |   <span style=color:#c41a16>&#39;Supervisord is running as root and it is searching &#39;</span>
+cylc    | 2018-12-22 02:29:06,535 INFO RPC interface <span style=color:#c41a16>&#39;supervisor&#39;</span> initialized
+cylc    | 2018-12-22 02:29:06,535 CRIT Server <span style=color:#c41a16>&#39;unix_http_server&#39;</span> running without any HTTP authentication checking
+cylc    | 2018-12-22 02:29:06,535 INFO supervisord started with pid <span style=color:#1c01ce>1</span>
+pbs     | 2018-12-22 02:29:07,480 CRIT Supervisor running as root <span style=color:#000>(</span>no user in config file<span style=color:#000>)</span>
+pbs     | 2018-12-22 02:29:07,483 INFO supervisord started with pid <span style=color:#1c01ce>1</span>
+pbs     | 2018-12-22 02:29:08,487 INFO spawned: <span style=color:#c41a16>&#39;pbsmom&#39;</span> with pid <span style=color:#1c01ce>10</span>
+pbs     | 2018-12-22 02:29:08,490 INFO spawned: <span style=color:#c41a16>&#39;sshd&#39;</span> with pid <span style=color:#1c01ce>11</span>
+pbs     | 2018-12-22 02:29:08,493 INFO spawned: <span style=color:#c41a16>&#39;pbssched&#39;</span> with pid <span style=color:#1c01ce>12</span>
+pbs     | 2018-12-22 02:29:08,497 INFO spawned: <span style=color:#c41a16>&#39;pbsserver&#39;</span> with pid <span style=color:#1c01ce>13</span>
+pbs     | 2018-12-22 02:29:08,499 INFO spawned: <span style=color:#c41a16>&#39;trqauthd&#39;</span> with pid <span style=color:#1c01ce>14</span>
+pbs     | 2018-12-22 02:29:08,761 INFO exited: pbssched <span style=color:#000>(</span><span style=color:#a90d91>exit</span> status 0; not expected<span style=color:#000>)</span>
 pbs     | 2018-12-22 02:29:08,794 INFO gave up: pbssched entered FATAL state, too many start retries too quickly
-pbs     | 2018-12-22 02:29:10,078 INFO success: pbsmom entered RUNNING state, process has stayed up <span style=color:navy;font-weight:700>for</span> &gt; than <span style=color:#00f>1</span> seconds (startsecs)
-pbs     | 2018-12-22 02:29:10,079 INFO success: sshd entered RUNNING state, process has stayed up <span style=color:navy;font-weight:700>for</span> &gt; than <span style=color:#00f>1</span> seconds (startsecs)
-pbs     | 2018-12-22 02:29:10,079 INFO success: pbsserver entered RUNNING state, process has stayed up <span style=color:navy;font-weight:700>for</span> &gt; than <span style=color:#00f>1</span> seconds (startsecs)
-pbs     | 2018-12-22 02:29:10,079 INFO success: trqauthd entered RUNNING state, process has stayed up <span style=color:navy;font-weight:700>for</span> &gt; than <span style=color:#00f>1</span> seconds (startsecs)
+pbs     | 2018-12-22 02:29:10,078 INFO success: pbsmom entered RUNNING state, process has stayed up <span style=color:#a90d91>for</span> &gt; than <span style=color:#1c01ce>1</span> seconds <span style=color:#000>(</span>startsecs<span style=color:#000>)</span>
+pbs     | 2018-12-22 02:29:10,079 INFO success: sshd entered RUNNING state, process has stayed up <span style=color:#a90d91>for</span> &gt; than <span style=color:#1c01ce>1</span> seconds <span style=color:#000>(</span>startsecs<span style=color:#000>)</span>
+pbs     | 2018-12-22 02:29:10,079 INFO success: pbsserver entered RUNNING state, process has stayed up <span style=color:#a90d91>for</span> &gt; than <span style=color:#1c01ce>1</span> seconds <span style=color:#000>(</span>startsecs<span style=color:#000>)</span>
+pbs     | 2018-12-22 02:29:10,079 INFO success: trqauthd entered RUNNING state, process has stayed up <span style=color:#a90d91>for</span> &gt; than <span style=color:#1c01ce>1</span> seconds <span style=color:#000>(</span>startsecs<span style=color:#000>)</span>
 
 </code></pre></div><p>This should start two containers, <code>cylc</code>, and <code>pbs</code>, and with an example <code>suite.rc</code>.</p>
-<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>$ docker-compose exec cylc /bin/bash
+<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>$ docker-compose <span style=color:#a90d91>exec</span> cylc /bin/bash
 bash-4.1# su - testuser
 testuser@f85bd666bced:~$ cylc register pbs1 ./suites/pbs1/
 REGISTER pbs1: ./suites/pbs1/
@@ -190,36 +190,36 @@ Cylc and PBS.</p>
 <code>[b.1] -submit-num=1, owner@host=7ce742eb050c</code>.</p>
 <div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>testuser@7ce742eb050c:~$ cylc run --no-detach pbs1
             ._.                                                       
-            | |              The Cylc Suite Engine [7.8.0-dirty]      
-._____._. ._| |_____.           Copyright (C) 2008-2018 NIWA          
-| .___| | | | | .___|   &amp; British Crown (Met Office) &amp; Contributors.  
+            | |              The Cylc Suite Engine <span style=color:#000>[</span>7.8.0-dirty<span style=color:#000>]</span>      
+._____._. ._| |_____.           Copyright <span style=color:#000>(</span>C<span style=color:#000>)</span> 2008-2018 NIWA          
+| .___| | | | | .___|   &amp; British Crown <span style=color:#000>(</span>Met Office<span style=color:#000>)</span> &amp; Contributors.  
 | !___| !_! | | !___.  _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
 !_____!___. |_!_____!  This program comes with ABSOLUTELY NO WARRANTY;
-      .___! |          see <span style=color:#00f>`</span>cylc warranty<span style=color:#00f>`</span>.  It is free software, you 
+      .___! |          see <span style=color:#c41a16>`</span>cylc warranty<span style=color:#c41a16>`</span>.  It is free software, you 
       !_____!           are welcome to redistribute it under certain  
-2018-12-22T02:36:36Z INFO - Suite server: url=https://7ce742eb050c:43037/ pid=<span style=color:#00f>90</span>
-2018-12-22T02:36:36Z INFO - Run: (re)start=<span style=color:#00f>0</span> log=<span style=color:#00f>1</span>
+2018-12-22T02:36:36Z INFO - Suite server: <span style=color:#000>url</span><span style=color:#000>=</span>https://7ce742eb050c:43037/ <span style=color:#000>pid</span><span style=color:#000>=</span><span style=color:#1c01ce>90</span>
+2018-12-22T02:36:36Z INFO - Run: <span style=color:#000>(</span>re<span style=color:#000>)</span><span style=color:#000>start</span><span style=color:#000>=</span><span style=color:#1c01ce>0</span> <span style=color:#000>log</span><span style=color:#000>=</span><span style=color:#1c01ce>1</span>
 2018-12-22T02:36:36Z INFO - Cylc version: 7.8.0-dirty
 2018-12-22T02:36:36Z INFO - Run mode: live
-2018-12-22T02:36:36Z INFO - Initial point: <span style=color:#00f>1</span>
-2018-12-22T02:36:36Z INFO - Final point: <span style=color:#00f>1</span>
-2018-12-22T02:36:36Z INFO - Cold Start <span style=color:#00f>1</span>
-2018-12-22T02:36:38Z INFO - [a.1] -submit-num=1, owner@host=pbs
-2018-12-22T02:36:39Z INFO - [a.1] -(current:ready) submitted at 2018-12-22T02:36:39Z
-2018-12-22T02:36:39Z INFO - [a.1] -health check settings: submission timeout=None
-2018-12-22T02:36:40Z INFO - [a.1] -(current:submitted)&gt; started at 2018-12-22T02:36:39Z
-2018-12-22T02:36:40Z INFO - [a.1] -health check settings: execution timeout=None
-2018-12-22T02:36:40Z INFO - [a.1] -(current:running)&gt; succeeded at 2018-12-22T02:36:40Z
-2018-12-22T02:36:41Z INFO - [b.1] -submit-num=1, owner@host=7ce742eb050c
-2018-12-22T02:36:42Z INFO - [client-command] poll_tasks testuser@7ce742eb050c:cylc-poll d03e9798-14bb-4ef3-86a6-c01ea3a380ee
-2018-12-22T02:36:42Z INFO - Command succeeded: poll_tasks([u<span style=color:#00f>&#39;a&#39;</span>], poll_succ=False)
-2018-12-22T02:36:42Z INFO - Processing <span style=color:#00f>1</span> queued command(s)
-	+	poll_tasks([u<span style=color:#00f>&#39;a&#39;</span>], poll_succ=False)
-2018-12-22T02:36:42Z INFO - [b.1] -(current:ready) submitted at 2018-12-22T02:36:42Z
-2018-12-22T02:36:42Z INFO - [b.1] -health check settings: submission timeout=None
-2018-12-22T02:36:42Z INFO - [b.1] -(current:submitted)&gt; started at 2018-12-22T02:36:42Z
-2018-12-22T02:36:42Z INFO - [b.1] -health check settings: execution timeout=None
-2018-12-22T02:36:43Z INFO - [b.1] -(current:running)&gt; succeeded at 2018-12-22T02:36:43Z
+2018-12-22T02:36:36Z INFO - Initial point: <span style=color:#1c01ce>1</span>
+2018-12-22T02:36:36Z INFO - Final point: <span style=color:#1c01ce>1</span>
+2018-12-22T02:36:36Z INFO - Cold Start <span style=color:#1c01ce>1</span>
+2018-12-22T02:36:38Z INFO - <span style=color:#000>[</span>a.1<span style=color:#000>]</span> -submit-num<span style=color:#000>=</span>1, owner@host<span style=color:#000>=</span>pbs
+2018-12-22T02:36:39Z INFO - <span style=color:#000>[</span>a.1<span style=color:#000>]</span> -<span style=color:#000>(</span>current:ready<span style=color:#000>)</span> submitted at 2018-12-22T02:36:39Z
+2018-12-22T02:36:39Z INFO - <span style=color:#000>[</span>a.1<span style=color:#000>]</span> -health check settings: submission <span style=color:#000>timeout</span><span style=color:#000>=</span>None
+2018-12-22T02:36:40Z INFO - <span style=color:#000>[</span>a.1<span style=color:#000>]</span> -<span style=color:#000>(</span>current:submitted<span style=color:#000>)</span>&gt; started at 2018-12-22T02:36:39Z
+2018-12-22T02:36:40Z INFO - <span style=color:#000>[</span>a.1<span style=color:#000>]</span> -health check settings: execution <span style=color:#000>timeout</span><span style=color:#000>=</span>None
+2018-12-22T02:36:40Z INFO - <span style=color:#000>[</span>a.1<span style=color:#000>]</span> -<span style=color:#000>(</span>current:running<span style=color:#000>)</span>&gt; succeeded at 2018-12-22T02:36:40Z
+2018-12-22T02:36:41Z INFO - <span style=color:#000>[</span>b.1<span style=color:#000>]</span> -submit-num<span style=color:#000>=</span>1, owner@host<span style=color:#000>=</span>7ce742eb050c
+2018-12-22T02:36:42Z INFO - <span style=color:#000>[</span>client-command<span style=color:#000>]</span> poll_tasks testuser@7ce742eb050c:cylc-poll d03e9798-14bb-4ef3-86a6-c01ea3a380ee
+2018-12-22T02:36:42Z INFO - Command succeeded: poll_tasks<span style=color:#000>([</span>u<span style=color:#c41a16>&#39;a&#39;</span><span style=color:#000>]</span>, <span style=color:#000>poll_succ</span><span style=color:#000>=</span>False<span style=color:#000>)</span>
+2018-12-22T02:36:42Z INFO - Processing <span style=color:#1c01ce>1</span> queued command<span style=color:#000>(</span>s<span style=color:#000>)</span>
+	+	poll_tasks<span style=color:#000>([</span>u<span style=color:#c41a16>&#39;a&#39;</span><span style=color:#000>]</span>, <span style=color:#000>poll_succ</span><span style=color:#000>=</span>False<span style=color:#000>)</span>
+2018-12-22T02:36:42Z INFO - <span style=color:#000>[</span>b.1<span style=color:#000>]</span> -<span style=color:#000>(</span>current:ready<span style=color:#000>)</span> submitted at 2018-12-22T02:36:42Z
+2018-12-22T02:36:42Z INFO - <span style=color:#000>[</span>b.1<span style=color:#000>]</span> -health check settings: submission <span style=color:#000>timeout</span><span style=color:#000>=</span>None
+2018-12-22T02:36:42Z INFO - <span style=color:#000>[</span>b.1<span style=color:#000>]</span> -<span style=color:#000>(</span>current:submitted<span style=color:#000>)</span>&gt; started at 2018-12-22T02:36:42Z
+2018-12-22T02:36:42Z INFO - <span style=color:#000>[</span>b.1<span style=color:#000>]</span> -health check settings: execution <span style=color:#000>timeout</span><span style=color:#000>=</span>None
+2018-12-22T02:36:43Z INFO - <span style=color:#000>[</span>b.1<span style=color:#000>]</span> -<span style=color:#000>(</span>current:running<span style=color:#000>)</span>&gt; succeeded at 2018-12-22T02:36:43Z
 2018-12-22T02:36:43Z INFO - Suite shutting down - AUTOMATIC
 2018-12-22T02:36:44Z INFO - DONE
 </code></pre></div>
@@ -232,15 +232,15 @@ Cylc and PBS.</p>
 Docker volumes (in the real world this is normally done via NFS).</p>
 <p>The issue was related to the retrieval of remote logs. So we need to change <code>~/.cylc/global.rc</code>
 in order to get it working.</p>
-<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=color:#080;font-style:italic># File: global.rc</span>
+<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=color:#177500># File: global.rc</span>
 
-[hosts]
-[[pbs]]
-retrieve job logs command = rsync -v -rltgoD --chmod=Du=rwx,Dgo=rx,Fu=rw,Fgo=r
+<span style=color:#000>[</span>hosts<span style=color:#000>]</span>
+<span style=color:#000>[[</span>pbs<span style=color:#000>]]</span>
+retrieve job logs <span style=color:#a90d91>command</span> <span style=color:#000>=</span> rsync -v -rltgoD --chmod<span style=color:#000>=</span><span style=color:#000>Du</span><span style=color:#000>=</span>rwx,Dgo<span style=color:#000>=</span>rx,Fu<span style=color:#000>=</span>rw,Fgo<span style=color:#000>=</span>r
 </code></pre></div><p>The first thing I noticed debugging it, was that when I copied the command it had an
 extra space, and it failed to execute. However, nothing appeared in the logs (!).</p>
 <p>Then I managed to print the <code>rsync</code> command executed.</p>
-<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>sync -v -rltgoD --chmod=Du=rwx,Dgo=rx,Fu=rw,Fgo=r <span style=color:#00f>&#39;--rsh=ssh -oBatchMode=yes -oConnectTimeout=10&#39;</span> -v --include=/1 --include=/1/a --include=/1/a/01 <span style=color:#00f>&#39;--include=/1/a/01/**&#39;</span> <span style=color:#00f>&#39;--exclude=/**&#39;</span> <span style=color:#00f>&#39;pbs:$HOME/cylc-run/pbs1/log/job/&#39;</span> /home/testuser/cylc-run/pbs1/log/job/
+<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>sync -v -rltgoD --chmod<span style=color:#000>=</span><span style=color:#000>Du</span><span style=color:#000>=</span>rwx,Dgo<span style=color:#000>=</span>rx,Fu<span style=color:#000>=</span>rw,Fgo<span style=color:#000>=</span>r <span style=color:#c41a16>&#39;--rsh=ssh -oBatchMode=yes -oConnectTimeout=10&#39;</span> -v --include<span style=color:#000>=</span>/1 --include<span style=color:#000>=</span>/1/a --include<span style=color:#000>=</span>/1/a/01 <span style=color:#c41a16>&#39;--include=/1/a/01/**&#39;</span> <span style=color:#c41a16>&#39;--exclude=/**&#39;</span> <span style=color:#c41a16>&#39;pbs:$HOME/cylc-run/pbs1/log/job/&#39;</span> /home/testuser/cylc-run/pbs1/log/job/
 </code></pre></div><p>The thing that got me here as that it wasn&rsquo;t <code>rsync</code>&lsquo;ing the logs from PBS Torque spool, but rather
 the logs that were already synced via Docker shared volume (or NFS in other environments).</p>
 <p>The Cylc suite contains a PBS directive <code>-W umask=0077</code>, which forces the logs
@@ -248,57 +248,57 @@ to be readable only by the owner. It is possible to confirm it in the output
 logs. But only because it is using an empty directory.</p>
 <div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>testuser@7ce742eb050c:~$ ls -lah /home/testuser/cylc-run/pbs1/log/job/1/a/01/
 total 24K
-drwxrwxr-x <span style=color:#00f>2</span> testuser testuser 4.0K Dec <span style=color:#00f>22</span> 02:36 .
-drwxrwxr-x <span style=color:#00f>3</span> testuser testuser 4.0K Dec <span style=color:#00f>22</span> 02:34 ..
--rwxrwxr-x <span style=color:#00f>1</span> testuser testuser 1.3K Dec <span style=color:#00f>22</span> 02:36 job
--rw-rw-r-- <span style=color:#00f>1</span> testuser testuser  <span style=color:#00f>266</span> Dec <span style=color:#00f>22</span> 02:36 job-activity.log
--rw------- <span style=color:#00f>1</span> testuser testuser    <span style=color:#00f>0</span> Dec <span style=color:#00f>22</span> 02:36 job.err
--rw------- <span style=color:#00f>1</span> testuser testuser  <span style=color:#00f>147</span> Dec <span style=color:#00f>22</span> 02:36 job.out
--rw-rw-r-- <span style=color:#00f>1</span> testuser testuser  <span style=color:#00f>231</span> Dec <span style=color:#00f>22</span> 02:36 job.status
+drwxrwxr-x <span style=color:#1c01ce>2</span> testuser testuser 4.0K Dec <span style=color:#1c01ce>22</span> 02:36 .
+drwxrwxr-x <span style=color:#1c01ce>3</span> testuser testuser 4.0K Dec <span style=color:#1c01ce>22</span> 02:34 ..
+-rwxrwxr-x <span style=color:#1c01ce>1</span> testuser testuser 1.3K Dec <span style=color:#1c01ce>22</span> 02:36 job
+-rw-rw-r-- <span style=color:#1c01ce>1</span> testuser testuser  <span style=color:#1c01ce>266</span> Dec <span style=color:#1c01ce>22</span> 02:36 job-activity.log
+-rw------- <span style=color:#1c01ce>1</span> testuser testuser    <span style=color:#1c01ce>0</span> Dec <span style=color:#1c01ce>22</span> 02:36 job.err
+-rw------- <span style=color:#1c01ce>1</span> testuser testuser  <span style=color:#1c01ce>147</span> Dec <span style=color:#1c01ce>22</span> 02:36 job.out
+-rw-rw-r-- <span style=color:#1c01ce>1</span> testuser testuser  <span style=color:#1c01ce>231</span> Dec <span style=color:#1c01ce>22</span> 02:36 job.status
 </code></pre></div><p>Even though the <code>rsync</code> command was executed, it had no effect. We can confirm it by running it
 in the <code>cylc</code> node.</p>
-<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>testuser@7ce742eb050c:~$ rsync -v -rltgoD --chmod=Du=rwx,Dgo=rx,Fu=rw,Fgo=r <span style=color:#00f>&#39;--rsh=ssh -oBatchMode=yes -oConnectTimeout=10&#39;</span> -v --include=/1 --include=/1/a --include=/1/a/01 <span style=color:#00f>&#39;--include=/1/a/01/**&#39;</span> <span style=color:#00f>&#39;--exclude=/**&#39;</span> <span style=color:#00f>&#39;pbs:$HOME/cylc-run/pbs1/log/job/&#39;</span> /home/testuser/cylc-run/pbs1/log/job/
-opening connection using: ssh -oBatchMode=yes -oConnectTimeout=<span style=color:#00f>10</span> pbs rsync --server --sender -vvlogDtre.iLsfx . <span style=color:#00f>&#34;</span>$HOME<span style=color:#00f>/cylc-run/pbs1/log/job/&#34;</span>  (<span style=color:#00f>10</span> args)
+<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>testuser@7ce742eb050c:~$ rsync -v -rltgoD --chmod<span style=color:#000>=</span><span style=color:#000>Du</span><span style=color:#000>=</span>rwx,Dgo<span style=color:#000>=</span>rx,Fu<span style=color:#000>=</span>rw,Fgo<span style=color:#000>=</span>r <span style=color:#c41a16>&#39;--rsh=ssh -oBatchMode=yes -oConnectTimeout=10&#39;</span> -v --include<span style=color:#000>=</span>/1 --include<span style=color:#000>=</span>/1/a --include<span style=color:#000>=</span>/1/a/01 <span style=color:#c41a16>&#39;--include=/1/a/01/**&#39;</span> <span style=color:#c41a16>&#39;--exclude=/**&#39;</span> <span style=color:#c41a16>&#39;pbs:$HOME/cylc-run/pbs1/log/job/&#39;</span> /home/testuser/cylc-run/pbs1/log/job/
+opening connection using: ssh -oBatchMode<span style=color:#000>=</span>yes -oConnectTimeout<span style=color:#000>=</span><span style=color:#1c01ce>10</span> pbs rsync --server --sender -vvlogDtre.iLsfx . <span style=color:#c41a16>&#34;</span><span style=color:#000>$HOME</span><span style=color:#c41a16>/cylc-run/pbs1/log/job/&#34;</span>  <span style=color:#000>(</span><span style=color:#1c01ce>10</span> args<span style=color:#000>)</span>
 receiving incremental file list
-[sender] showing directory <span style=color:#00f>1</span> because of pattern /1
+<span style=color:#000>[</span>sender<span style=color:#000>]</span> showing directory <span style=color:#1c01ce>1</span> because of pattern /1
 delta-transmission enabled
-[sender] showing directory 1/a because of pattern /1/a
-[sender] hiding directory 1/b because of pattern /**
-[sender] showing directory 1/a/01 because of pattern /1/a/01
-[sender] hiding file 1/a/NN because of pattern /**
-[sender] showing file 1/a/01/job.out because of pattern /1/a/01/**
-[sender] showing file 1/a/01/job-activity.log because of pattern /1/a/01/**
-[sender] showing file 1/a/01/job.status because of pattern /1/a/01/**
-[sender] showing file 1/a/01/job because of pattern /1/a/01/**
-[sender] showing file 1/a/01/job.err because of pattern /1/a/01/**
+<span style=color:#000>[</span>sender<span style=color:#000>]</span> showing directory 1/a because of pattern /1/a
+<span style=color:#000>[</span>sender<span style=color:#000>]</span> hiding directory 1/b because of pattern /**
+<span style=color:#000>[</span>sender<span style=color:#000>]</span> showing directory 1/a/01 because of pattern /1/a/01
+<span style=color:#000>[</span>sender<span style=color:#000>]</span> hiding file 1/a/NN because of pattern /**
+<span style=color:#000>[</span>sender<span style=color:#000>]</span> showing file 1/a/01/job.out because of pattern /1/a/01/**
+<span style=color:#000>[</span>sender<span style=color:#000>]</span> showing file 1/a/01/job-activity.log because of pattern /1/a/01/**
+<span style=color:#000>[</span>sender<span style=color:#000>]</span> showing file 1/a/01/job.status because of pattern /1/a/01/**
+<span style=color:#000>[</span>sender<span style=color:#000>]</span> showing file 1/a/01/job because of pattern /1/a/01/**
+<span style=color:#000>[</span>sender<span style=color:#000>]</span> showing file 1/a/01/job.err because of pattern /1/a/01/**
 1/a/01/job is uptodate
 1/a/01/job-activity.log is uptodate
 1/a/01/job.err is uptodate
 1/a/01/job.out is uptodate
 1/a/01/job.status is uptodate
-total: matches=<span style=color:#00f>0</span>  hash_hits=<span style=color:#00f>0</span>  false_alarms=<span style=color:#00f>0</span> data=<span style=color:#00f>0</span>
+total: <span style=color:#000>matches</span><span style=color:#000>=</span><span style=color:#1c01ce>0</span>  <span style=color:#000>hash_hits</span><span style=color:#000>=</span><span style=color:#1c01ce>0</span>  <span style=color:#000>false_alarms</span><span style=color:#000>=</span><span style=color:#1c01ce>0</span> <span style=color:#000>data</span><span style=color:#000>=</span><span style=color:#1c01ce>0</span>
 
-sent <span style=color:#00f>97</span> bytes  received <span style=color:#00f>935</span> bytes  688.00 bytes/sec
+sent <span style=color:#1c01ce>97</span> bytes  received <span style=color:#1c01ce>935</span> bytes  688.00 bytes/sec
 total size is 1,888  speedup is 1.83
 </code></pre></div><p><code>rsync</code> realizes that the files are already up to date, and does not change the permission
 of the files. If we run this against a different empty folder, <code>rsync</code> will adjust the
 permissions. In the next example first a directory <code>test</code> is created, and <code>rsync</code> command
 is changed to use this new local folder.</p>
 <div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>testuser@7ce742eb050c:~$ mkdir ~/test
-testuser@7ce742eb050c:~$ rsync -v -rltgoD --chmod=Du=rwx,Dgo=rx,Fu=rw,Fgo=r <span style=color:#00f>&#39;--rsh=ssh -oBatchMode=yes -oConnectTimeout=10&#39;</span> -v --include=/1 --include=/1/a --include=/1/a/01 <span style=color:#00f>&#39;--include=/1/a/01/**&#39;</span> <span style=color:#00f>&#39;--exclude=/**&#39;</span> <span style=color:#00f>&#39;pbs:$HOME/cylc-run/pbs1/log/job/&#39;</span> /home/testuser/test                  
-opening connection using: ssh -oBatchMode=yes -oConnectTimeout=<span style=color:#00f>10</span> pbs rsync --server --sender -vvlogDtre.iLsfx . <span style=color:#00f>&#34;</span>$HOME<span style=color:#00f>/cylc-run/pbs1/log/job/&#34;</span>  (<span style=color:#00f>10</span> args)
+testuser@7ce742eb050c:~$ rsync -v -rltgoD --chmod<span style=color:#000>=</span><span style=color:#000>Du</span><span style=color:#000>=</span>rwx,Dgo<span style=color:#000>=</span>rx,Fu<span style=color:#000>=</span>rw,Fgo<span style=color:#000>=</span>r <span style=color:#c41a16>&#39;--rsh=ssh -oBatchMode=yes -oConnectTimeout=10&#39;</span> -v --include<span style=color:#000>=</span>/1 --include<span style=color:#000>=</span>/1/a --include<span style=color:#000>=</span>/1/a/01 <span style=color:#c41a16>&#39;--include=/1/a/01/**&#39;</span> <span style=color:#c41a16>&#39;--exclude=/**&#39;</span> <span style=color:#c41a16>&#39;pbs:$HOME/cylc-run/pbs1/log/job/&#39;</span> /home/testuser/test                  
+opening connection using: ssh -oBatchMode<span style=color:#000>=</span>yes -oConnectTimeout<span style=color:#000>=</span><span style=color:#1c01ce>10</span> pbs rsync --server --sender -vvlogDtre.iLsfx . <span style=color:#c41a16>&#34;</span><span style=color:#000>$HOME</span><span style=color:#c41a16>/cylc-run/pbs1/log/job/&#34;</span>  <span style=color:#000>(</span><span style=color:#1c01ce>10</span> args<span style=color:#000>)</span>
 receiving incremental file list
-[sender] showing directory <span style=color:#00f>1</span> because of pattern /1
+<span style=color:#000>[</span>sender<span style=color:#000>]</span> showing directory <span style=color:#1c01ce>1</span> because of pattern /1
 delta-transmission enabled
-[sender] showing directory 1/a because of pattern /1/a
-[sender] hiding directory 1/b because of pattern /**
-[sender] showing directory 1/a/01 because of pattern /1/a/01
-[sender] hiding file 1/a/NN because of pattern /**
-[sender] showing file 1/a/01/job.out because of pattern /1/a/01/**
-[sender] showing file 1/a/01/job-activity.log because of pattern /1/a/01/**
-[sender] showing file 1/a/01/job.status because of pattern /1/a/01/**
-[sender] showing file 1/a/01/job because of pattern /1/a/01/**
-[sender] showing file 1/a/01/job.err because of pattern /1/a/01/**
+<span style=color:#000>[</span>sender<span style=color:#000>]</span> showing directory 1/a because of pattern /1/a
+<span style=color:#000>[</span>sender<span style=color:#000>]</span> hiding directory 1/b because of pattern /**
+<span style=color:#000>[</span>sender<span style=color:#000>]</span> showing directory 1/a/01 because of pattern /1/a/01
+<span style=color:#000>[</span>sender<span style=color:#000>]</span> hiding file 1/a/NN because of pattern /**
+<span style=color:#000>[</span>sender<span style=color:#000>]</span> showing file 1/a/01/job.out because of pattern /1/a/01/**
+<span style=color:#000>[</span>sender<span style=color:#000>]</span> showing file 1/a/01/job-activity.log because of pattern /1/a/01/**
+<span style=color:#000>[</span>sender<span style=color:#000>]</span> showing file 1/a/01/job.status because of pattern /1/a/01/**
+<span style=color:#000>[</span>sender<span style=color:#000>]</span> showing file 1/a/01/job because of pattern /1/a/01/**
+<span style=color:#000>[</span>sender<span style=color:#000>]</span> showing file 1/a/01/job.err because of pattern /1/a/01/**
 ./
 1/
 1/a/
@@ -308,19 +308,19 @@ delta-transmission enabled
 1/a/01/job.err
 1/a/01/job.out
 1/a/01/job.status
-total: matches=<span style=color:#00f>0</span>  hash_hits=<span style=color:#00f>0</span>  false_alarms=<span style=color:#00f>0</span> data=<span style=color:#00f>1888</span>
+total: <span style=color:#000>matches</span><span style=color:#000>=</span><span style=color:#1c01ce>0</span>  <span style=color:#000>hash_hits</span><span style=color:#000>=</span><span style=color:#1c01ce>0</span>  <span style=color:#000>false_alarms</span><span style=color:#000>=</span><span style=color:#1c01ce>0</span> <span style=color:#000>data</span><span style=color:#000>=</span><span style=color:#1c01ce>1888</span>
 
-sent <span style=color:#00f>177</span> bytes  received 3,022 bytes  6,398.00 bytes/sec
+sent <span style=color:#1c01ce>177</span> bytes  received 3,022 bytes  6,398.00 bytes/sec
 total size is 1,888  speedup is 0.59
 testuser@7ce742eb050c:~$ ls -lah test/1/a/01/
 total 24K
-drwxr-xr-x <span style=color:#00f>2</span> testuser testuser 4.0K Dec <span style=color:#00f>22</span> 02:36 .
-drwxr-xr-x <span style=color:#00f>3</span> testuser testuser 4.0K Dec <span style=color:#00f>22</span> 02:34 ..
--rw-r--r-- <span style=color:#00f>1</span> testuser testuser 1.3K Dec <span style=color:#00f>22</span> 02:36 job
--rw-r--r-- <span style=color:#00f>1</span> testuser testuser  <span style=color:#00f>266</span> Dec <span style=color:#00f>22</span> 02:36 job-activity.log
--rw-r--r-- <span style=color:#00f>1</span> testuser testuser    <span style=color:#00f>0</span> Dec <span style=color:#00f>22</span> 02:36 job.err
--rw-r--r-- <span style=color:#00f>1</span> testuser testuser  <span style=color:#00f>147</span> Dec <span style=color:#00f>22</span> 02:36 job.out
--rw-r--r-- <span style=color:#00f>1</span> testuser testuser  <span style=color:#00f>231</span> Dec <span style=color:#00f>22</span> 02:36 job.status
+drwxr-xr-x <span style=color:#1c01ce>2</span> testuser testuser 4.0K Dec <span style=color:#1c01ce>22</span> 02:36 .
+drwxr-xr-x <span style=color:#1c01ce>3</span> testuser testuser 4.0K Dec <span style=color:#1c01ce>22</span> 02:34 ..
+-rw-r--r-- <span style=color:#1c01ce>1</span> testuser testuser 1.3K Dec <span style=color:#1c01ce>22</span> 02:36 job
+-rw-r--r-- <span style=color:#1c01ce>1</span> testuser testuser  <span style=color:#1c01ce>266</span> Dec <span style=color:#1c01ce>22</span> 02:36 job-activity.log
+-rw-r--r-- <span style=color:#1c01ce>1</span> testuser testuser    <span style=color:#1c01ce>0</span> Dec <span style=color:#1c01ce>22</span> 02:36 job.err
+-rw-r--r-- <span style=color:#1c01ce>1</span> testuser testuser  <span style=color:#1c01ce>147</span> Dec <span style=color:#1c01ce>22</span> 02:36 job.out
+-rw-r--r-- <span style=color:#1c01ce>1</span> testuser testuser  <span style=color:#1c01ce>231</span> Dec <span style=color:#1c01ce>22</span> 02:36 job.status
 </code></pre></div><p>It is possible now to confirm that <code>rsync</code> has synced the folders, and instead of the
 previous <code>-rw-------</code> permissions, both <code>job.out</code> and <code>job.err</code> have <code>-rw-r--r--</code> now.</p>
 <h3 id=conclusion>Conclusion</h3>

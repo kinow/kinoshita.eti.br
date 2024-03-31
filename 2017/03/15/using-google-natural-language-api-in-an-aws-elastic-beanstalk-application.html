@@ -10,7 +10,7 @@ Google Language API requires that clients authenticate before sending requests. 
 <meta property="og:url" content="https://kinoshita.eti.br/2017/03/15/using-google-natural-language-api-in-an-aws-elastic-beanstalk-application.html"><meta property="article:section" content="posts">
 <meta property="article:published_time" content="2017-03-15T00:00:00+00:00">
 <meta property="article:modified_time" content="2017-03-15T00:00:00+00:00">
-<link rel=stylesheet type=text/css href=https://kinoshita.eti.br/sass/main.66aa172f782442adc0241c99968a79a72e4260187c78830f9bdd6b03abff6103.css integrity="sha256-ZqoXL3gkQq3AJByZlop5py5CYBh8eIMPm91rA6v/YQM=">
+<link rel=stylesheet type=text/css href=https://kinoshita.eti.br/sass/main.09b56b6037e962b67cf7a7701bf2a9ee5da840a4f74b74139c4731f2156a5917.css integrity="sha256-CbVrYDfpYrZ896dwG/Kp7l2oQKT3S3QTnEcx8hVqWRc=">
 <title>kinow | Using Google Natural Language API in an AWS Elastic Beanstalk application</title>
 </head>
 <body>
@@ -53,68 +53,68 @@ This settings object, when created, must be given a
 <a href=http://googleapis.github.io/gax-java/0.2.0/apidocs/com/google/api/gax/grpc/ChannelProvider.html>channel provider</a>
 with a <a href=http://googleapis.github.io/gax-java/0.2.0/apidocs/com/google/api/gax/core/FixedCredentialsProvider.html>FixedCredentialsProvider</a>.</p>
 <p>Of course reading code is way easier than reading this workaround description.</p>
-<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=color:#080;font-style:italic>// File: GoogleNaturalLanguageService.java
-</span><span style=color:#080;font-style:italic>// ...
-</span><span style=color:#080;font-style:italic></span>    <span style=color:#080;font-style:italic>// envvar or property used to specify the Google Application Credentials
-</span><span style=color:#080;font-style:italic></span>    <span style=color:navy;font-weight:700>private</span> <span style=color:navy;font-weight:700>final</span> <span style=color:navy;font-weight:700>static</span> String GOOGLE_APPLICATION_CREDENTIALS = <span style=color:#00f>&#34;GOOGLE_APPLICATION_CREDENTIALS&#34;</span>;
+<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=color:#177500>// File: GoogleNaturalLanguageService.java
+</span><span style=color:#177500>// ...
+</span><span style=color:#177500></span>    <span style=color:#177500>// envvar or property used to specify the Google Application Credentials
+</span><span style=color:#177500></span>    <span style=color:#a90d91>private</span> <span style=color:#a90d91>final</span> <span style=color:#a90d91>static</span> <span style=color:#000>String</span> <span style=color:#000>GOOGLE_APPLICATION_CREDENTIALS</span> <span style=color:#000>=</span> <span style=color:#c41a16>&#34;GOOGLE_APPLICATION_CREDENTIALS&#34;</span><span style=color:#000>;</span>
 
-    <span style=color:#080;font-style:italic>/**
-</span><span style=color:#080;font-style:italic>     * Google Natural Language API.
-</span><span style=color:#080;font-style:italic>     */</span>
-    <span style=color:navy;font-weight:700>private</span> LanguageServiceClient languageServiceClient;
+    <span style=color:#177500>/**
+</span><span style=color:#177500>     * Google Natural Language API.
+</span><span style=color:#177500>     */</span>
+    <span style=color:#a90d91>private</span> <span style=color:#000>LanguageServiceClient</span> <span style=color:#000>languageServiceClient</span><span style=color:#000>;</span>
 
-    @PostConstruct
-    <span style=color:navy;font-weight:700>public</span> <span style=color:navy;font-weight:700>void</span> init() <span style=color:navy;font-weight:700>throws</span> Exception {
-        <span style=color:#080;font-style:italic>// Elastic Beanstalk supports Properties, not Environment Variables.
-</span><span style=color:#080;font-style:italic></span>        <span style=color:#080;font-style:italic>// Google credentials library will load
-</span><span style=color:#080;font-style:italic></span>        <span style=color:#080;font-style:italic>// the JSON location for the service to authenticate from an envVar. So
-</span><span style=color:#080;font-style:italic></span>        <span style=color:#080;font-style:italic>// we need to fix that here.
-</span><span style=color:#080;font-style:italic></span>        String googleApplicationCredentials = System.<span style=color:red>getenv</span>(GOOGLE_APPLICATION_CREDENTIALS);
-        LOGGER.<span style=color:red>info</span>(String.<span style=color:red>format</span>(<span style=color:#00f>&#34;GOOGLE_APPLICATION_CREDENTIALS in environment variable: %s&#34;</span>, googleApplicationCredentials));
-        <span style=color:navy;font-weight:700>if</span> (StringUtils.<span style=color:red>isBlank</span>(googleApplicationCredentials)) {
-            googleApplicationCredentials = System.<span style=color:red>getProperty</span>(GOOGLE_APPLICATION_CREDENTIALS);
-            LOGGER.<span style=color:red>info</span>(String.<span style=color:red>format</span>(<span style=color:#00f>&#34;GOOGLE_APPLICATION_CREDENTIALS in JVM property: %s&#34;</span>, googleApplicationCredentials));
-        }
+    <span style=color:#000>@PostConstruct</span>
+    <span style=color:#a90d91>public</span> <span style=color:#a90d91>void</span> <span style=color:#000>init</span><span style=color:#000>()</span> <span style=color:#a90d91>throws</span> <span style=color:#000>Exception</span> <span style=color:#000>{</span>
+        <span style=color:#177500>// Elastic Beanstalk supports Properties, not Environment Variables.
+</span><span style=color:#177500></span>        <span style=color:#177500>// Google credentials library will load
+</span><span style=color:#177500></span>        <span style=color:#177500>// the JSON location for the service to authenticate from an envVar. So
+</span><span style=color:#177500></span>        <span style=color:#177500>// we need to fix that here.
+</span><span style=color:#177500></span>        <span style=color:#000>String</span> <span style=color:#000>googleApplicationCredentials</span> <span style=color:#000>=</span> <span style=color:#000>System</span><span style=color:#000>.</span><span style=color:#836c28>getenv</span><span style=color:#000>(</span><span style=color:#000>GOOGLE_APPLICATION_CREDENTIALS</span><span style=color:#000>);</span>
+        <span style=color:#000>LOGGER</span><span style=color:#000>.</span><span style=color:#836c28>info</span><span style=color:#000>(</span><span style=color:#000>String</span><span style=color:#000>.</span><span style=color:#836c28>format</span><span style=color:#000>(</span><span style=color:#c41a16>&#34;GOOGLE_APPLICATION_CREDENTIALS in environment variable: %s&#34;</span><span style=color:#000>,</span> <span style=color:#000>googleApplicationCredentials</span><span style=color:#000>));</span>
+        <span style=color:#a90d91>if</span> <span style=color:#000>(</span><span style=color:#000>StringUtils</span><span style=color:#000>.</span><span style=color:#836c28>isBlank</span><span style=color:#000>(</span><span style=color:#000>googleApplicationCredentials</span><span style=color:#000>))</span> <span style=color:#000>{</span>
+            <span style=color:#000>googleApplicationCredentials</span> <span style=color:#000>=</span> <span style=color:#000>System</span><span style=color:#000>.</span><span style=color:#836c28>getProperty</span><span style=color:#000>(</span><span style=color:#000>GOOGLE_APPLICATION_CREDENTIALS</span><span style=color:#000>);</span>
+            <span style=color:#000>LOGGER</span><span style=color:#000>.</span><span style=color:#836c28>info</span><span style=color:#000>(</span><span style=color:#000>String</span><span style=color:#000>.</span><span style=color:#836c28>format</span><span style=color:#000>(</span><span style=color:#c41a16>&#34;GOOGLE_APPLICATION_CREDENTIALS in JVM property: %s&#34;</span><span style=color:#000>,</span> <span style=color:#000>googleApplicationCredentials</span><span style=color:#000>));</span>
+        <span style=color:#000>}</span>
 
-        <span style=color:navy;font-weight:700>if</span> (googleApplicationCredentials == <span style=color:navy;font-weight:700>null</span>) {
-            <span style=color:navy;font-weight:700>throw</span> <span style=color:navy;font-weight:700>new</span> RuntimeException(<span style=color:#00f>&#34;Could not locate GOOGLE_APPLICATION_CREDENTIALS variable!&#34;</span>);
-        }
+        <span style=color:#a90d91>if</span> <span style=color:#000>(</span><span style=color:#000>googleApplicationCredentials</span> <span style=color:#000>==</span> <span style=color:#a90d91>null</span><span style=color:#000>)</span> <span style=color:#000>{</span>
+            <span style=color:#a90d91>throw</span> <span style=color:#a90d91>new</span> <span style=color:#000>RuntimeException</span><span style=color:#000>(</span><span style=color:#c41a16>&#34;Could not locate GOOGLE_APPLICATION_CREDENTIALS variable!&#34;</span><span style=color:#000>);</span>
+        <span style=color:#000>}</span>
 
-        <span style=color:navy;font-weight:700>final</span> LanguageServiceSettings languageServiceSettings;
-        <span style=color:navy;font-weight:700>try</span> (InputStream is = <span style=color:navy;font-weight:700>new</span> FileInputStream(<span style=color:navy;font-weight:700>new</span> File(googleApplicationCredentials))) {
-            <span style=color:navy;font-weight:700>final</span> GoogleCredentials myCredentials = GoogleCredentials
-                    .<span style=color:red>fromStream</span>(is)
-                    .<span style=color:red>createScoped</span>(
-                            Collections.<span style=color:red>singleton</span>(<span style=color:#00f>&#34;https://www.googleapis.com/auth/cloud-platform&#34;</span>)
-                    );
-            <span style=color:navy;font-weight:700>final</span> CredentialsProvider credentialsProvider = FixedCredentialsProvider.<span style=color:red>create</span>(myCredentials);
+        <span style=color:#a90d91>final</span> <span style=color:#000>LanguageServiceSettings</span> <span style=color:#000>languageServiceSettings</span><span style=color:#000>;</span>
+        <span style=color:#a90d91>try</span> <span style=color:#000>(</span><span style=color:#000>InputStream</span> <span style=color:#000>is</span> <span style=color:#000>=</span> <span style=color:#a90d91>new</span> <span style=color:#000>FileInputStream</span><span style=color:#000>(</span><span style=color:#a90d91>new</span> <span style=color:#000>File</span><span style=color:#000>(</span><span style=color:#000>googleApplicationCredentials</span><span style=color:#000>)))</span> <span style=color:#000>{</span>
+            <span style=color:#a90d91>final</span> <span style=color:#000>GoogleCredentials</span> <span style=color:#000>myCredentials</span> <span style=color:#000>=</span> <span style=color:#000>GoogleCredentials</span>
+                    <span style=color:#000>.</span><span style=color:#836c28>fromStream</span><span style=color:#000>(</span><span style=color:#000>is</span><span style=color:#000>)</span>
+                    <span style=color:#000>.</span><span style=color:#836c28>createScoped</span><span style=color:#000>(</span>
+                            <span style=color:#000>Collections</span><span style=color:#000>.</span><span style=color:#836c28>singleton</span><span style=color:#000>(</span><span style=color:#c41a16>&#34;https://www.googleapis.com/auth/cloud-platform&#34;</span><span style=color:#000>)</span>
+                    <span style=color:#000>);</span>
+            <span style=color:#a90d91>final</span> <span style=color:#000>CredentialsProvider</span> <span style=color:#000>credentialsProvider</span> <span style=color:#000>=</span> <span style=color:#000>FixedCredentialsProvider</span><span style=color:#000>.</span><span style=color:#836c28>create</span><span style=color:#000>(</span><span style=color:#000>myCredentials</span><span style=color:#000>);</span>
 
-            <span style=color:navy;font-weight:700>final</span> InstantiatingChannelProvider channelProvider = LanguageServiceSettings
-                    .<span style=color:red>defaultChannelProviderBuilder</span>()
-                    .<span style=color:red>setCredentialsProvider</span>(credentialsProvider)
-                    .<span style=color:red>build</span>();
-            languageServiceSettings = LanguageServiceSettings
-                    .<span style=color:red>defaultBuilder</span>()
-                    .<span style=color:red>setChannelProvider</span>(channelProvider)
-                    .<span style=color:red>build</span>();
-        } <span style=color:navy;font-weight:700>catch</span> (IOException ioe) {
-            LOGGER.<span style=color:red>error</span>(String.<span style=color:red>format</span>(<span style=color:#00f>&#34;IO error creating Google NLP settings: %s&#34;</span>, ioe.<span style=color:red>getMessage</span>()), ioe);
-            <span style=color:navy;font-weight:700>throw</span> ioe;
-        }
+            <span style=color:#a90d91>final</span> <span style=color:#000>InstantiatingChannelProvider</span> <span style=color:#000>channelProvider</span> <span style=color:#000>=</span> <span style=color:#000>LanguageServiceSettings</span>
+                    <span style=color:#000>.</span><span style=color:#836c28>defaultChannelProviderBuilder</span><span style=color:#000>()</span>
+                    <span style=color:#000>.</span><span style=color:#836c28>setCredentialsProvider</span><span style=color:#000>(</span><span style=color:#000>credentialsProvider</span><span style=color:#000>)</span>
+                    <span style=color:#000>.</span><span style=color:#836c28>build</span><span style=color:#000>();</span>
+            <span style=color:#000>languageServiceSettings</span> <span style=color:#000>=</span> <span style=color:#000>LanguageServiceSettings</span>
+                    <span style=color:#000>.</span><span style=color:#836c28>defaultBuilder</span><span style=color:#000>()</span>
+                    <span style=color:#000>.</span><span style=color:#836c28>setChannelProvider</span><span style=color:#000>(</span><span style=color:#000>channelProvider</span><span style=color:#000>)</span>
+                    <span style=color:#000>.</span><span style=color:#836c28>build</span><span style=color:#000>();</span>
+        <span style=color:#000>}</span> <span style=color:#a90d91>catch</span> <span style=color:#000>(</span><span style=color:#000>IOException</span> <span style=color:#000>ioe</span><span style=color:#000>)</span> <span style=color:#000>{</span>
+            <span style=color:#000>LOGGER</span><span style=color:#000>.</span><span style=color:#836c28>error</span><span style=color:#000>(</span><span style=color:#000>String</span><span style=color:#000>.</span><span style=color:#836c28>format</span><span style=color:#000>(</span><span style=color:#c41a16>&#34;IO error creating Google NLP settings: %s&#34;</span><span style=color:#000>,</span> <span style=color:#000>ioe</span><span style=color:#000>.</span><span style=color:#836c28>getMessage</span><span style=color:#000>()),</span> <span style=color:#000>ioe</span><span style=color:#000>);</span>
+            <span style=color:#a90d91>throw</span> <span style=color:#000>ioe</span><span style=color:#000>;</span>
+        <span style=color:#000>}</span>
 
-        <span style=color:#080;font-style:italic>// Create Google API client
-</span><span style=color:#080;font-style:italic></span>        <span style=color:navy;font-weight:700>this</span>.<span style=color:red>languageServiceClient</span> = LanguageServiceClient.<span style=color:red>create</span>(languageServiceSettings);
-    }
+        <span style=color:#177500>// Create Google API client
+</span><span style=color:#177500></span>        <span style=color:#a90d91>this</span><span style=color:#000>.</span><span style=color:#836c28>languageServiceClient</span> <span style=color:#000>=</span> <span style=color:#000>LanguageServiceClient</span><span style=color:#000>.</span><span style=color:#836c28>create</span><span style=color:#000>(</span><span style=color:#000>languageServiceSettings</span><span style=color:#000>);</span>
+    <span style=color:#000>}</span>
 
-    @PreDestroy
-    <span style=color:navy;font-weight:700>public</span> <span style=color:navy;font-weight:700>void</span> destroy() <span style=color:navy;font-weight:700>throws</span> Exception {
-        <span style=color:navy;font-weight:700>if</span> (LOGGER.<span style=color:red>isDebugEnabled</span>()) {
-            LOGGER.<span style=color:red>debug</span>(<span style=color:#00f>&#34;Destroying Google NLP API client&#34;</span>);
-        }
-        <span style=color:#080;font-style:italic>// Close Google API executors and channels
-</span><span style=color:#080;font-style:italic></span>        <span style=color:navy;font-weight:700>this</span>.<span style=color:red>languageServiceClient</span>.<span style=color:red>close</span>();
-    }
-<span style=color:#080;font-style:italic>// ...
+    <span style=color:#000>@PreDestroy</span>
+    <span style=color:#a90d91>public</span> <span style=color:#a90d91>void</span> <span style=color:#000>destroy</span><span style=color:#000>()</span> <span style=color:#a90d91>throws</span> <span style=color:#000>Exception</span> <span style=color:#000>{</span>
+        <span style=color:#a90d91>if</span> <span style=color:#000>(</span><span style=color:#000>LOGGER</span><span style=color:#000>.</span><span style=color:#836c28>isDebugEnabled</span><span style=color:#000>())</span> <span style=color:#000>{</span>
+            <span style=color:#000>LOGGER</span><span style=color:#000>.</span><span style=color:#836c28>debug</span><span style=color:#000>(</span><span style=color:#c41a16>&#34;Destroying Google NLP API client&#34;</span><span style=color:#000>);</span>
+        <span style=color:#000>}</span>
+        <span style=color:#177500>// Close Google API executors and channels
+</span><span style=color:#177500></span>        <span style=color:#a90d91>this</span><span style=color:#000>.</span><span style=color:#836c28>languageServiceClient</span><span style=color:#000>.</span><span style=color:#836c28>close</span><span style=color:#000>();</span>
+    <span style=color:#000>}</span>
+<span style=color:#177500>// ...
 </span></code></pre></div><p>That way you should be able to use the API with AWS Elastic Beanstalk
 without having to hack your environment to provide the GOOGLE_APPLICATION_CREDENTIALS
 environment variable.</p>

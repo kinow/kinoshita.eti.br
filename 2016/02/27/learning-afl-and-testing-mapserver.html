@@ -16,7 +16,7 @@ as in case it finds any interesting bug I can submit it to the MapServer project
 <meta property="og:url" content="https://kinoshita.eti.br/2016/02/27/learning-afl-and-testing-mapserver.html"><meta property="article:section" content="posts">
 <meta property="article:published_time" content="2016-02-27T00:00:00+00:00">
 <meta property="article:modified_time" content="2016-02-27T00:00:00+00:00">
-<link rel=stylesheet type=text/css href=https://kinoshita.eti.br/sass/main.66aa172f782442adc0241c99968a79a72e4260187c78830f9bdd6b03abff6103.css integrity="sha256-ZqoXL3gkQq3AJByZlop5py5CYBh8eIMPm91rA6v/YQM=">
+<link rel=stylesheet type=text/css href=https://kinoshita.eti.br/sass/main.09b56b6037e962b67cf7a7701bf2a9ee5da840a4f74b74139c4731f2156a5917.css integrity="sha256-CbVrYDfpYrZ896dwG/Kp7l2oQKT3S3QTnEcx8hVqWRc=">
 <title>kinow | Learning afl and testing MapServer</title>
 </head>
 <body>
@@ -64,12 +64,12 @@ installed on your operating system in order to build it. I will omit the steps t
 CMake again but now using afl&rsquo;s compiler. This way the application will be instrumented and afl can
 analyse its execution flow.</p>
 <p>You can do that by exporting these two variables before running CMake.</p>
-<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>export CXX=/opt/afl-2.05b/afl-g++
-export CC=/opt/afl-2.05b/afl-gcc
+<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=color:#a90d91>export</span> <span style=color:#000>CXX</span><span style=color:#000>=</span>/opt/afl-2.05b/afl-g++
+<span style=color:#a90d91>export</span> <span style=color:#000>CC</span><span style=color:#000>=</span>/opt/afl-2.05b/afl-gcc
 </code></pre></div><p>After this you can run CMake and GNU make again. That should create a binary instrumented mapserv,
 that can be tested with afl.</p>
-<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>cd /home/kinow/Development/cpp/workspace/mapserver/
-mkdir build &amp;&amp; cd build
+<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=color:#a90d91>cd</span> /home/kinow/Development/cpp/workspace/mapserver/
+mkdir build <span style=color:#000>&amp;&amp;</span> <span style=color:#a90d91>cd</span> build
 cmake ..
 make
 ./mapserv -v
@@ -87,52 +87,52 @@ and get the bounding area and projection. Here&rsquo;s the final mapfile.</p>
 <div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>MAP
   IMAGETYPE      JPEG
   EXTENT         -97.238976 41.619778 -82.122902 49.385620
-  SIZE           <span style=color:#00f>400</span> <span style=color:#00f>300</span>
-  SHAPEPATH      <span style=color:#00f>&#34;/home/kinow/Downloads/linz-shp&#34;</span>
-  IMAGECOLOR     <span style=color:#00f>255</span> <span style=color:#00f>255</span> <span style=color:#00f>255</span>
+  SIZE           <span style=color:#1c01ce>400</span> <span style=color:#1c01ce>300</span>
+  SHAPEPATH      <span style=color:#c41a16>&#34;/home/kinow/Downloads/linz-shp&#34;</span>
+  IMAGECOLOR     <span style=color:#1c01ce>255</span> <span style=color:#1c01ce>255</span> <span style=color:#1c01ce>255</span>
 
   WEB
     METADATA
-      <span style=color:#00f>&#34;wms_title&#34;</span>           <span style=color:#00f>&#34;WMS Fake Server&#34;</span>
-      <span style=color:#00f>&#34;wms_onlineresource&#34;</span>  <span style=color:#00f>&#34;http://127.0.0.1/cgi-bin/mapserv?map=wms.map&amp;&#34;</span>
-      <span style=color:#00f>&#34;wms_srs&#34;</span>             <span style=color:#00f>&#34;EPSG:4167&#34;</span>
-      <span style=color:#00f>&#34;wms_enable_request&#34;</span>  <span style=color:#00f>&#34;*&#34;</span>
+      <span style=color:#c41a16>&#34;wms_title&#34;</span>           <span style=color:#c41a16>&#34;WMS Fake Server&#34;</span>
+      <span style=color:#c41a16>&#34;wms_onlineresource&#34;</span>  <span style=color:#c41a16>&#34;http://127.0.0.1/cgi-bin/mapserv?map=wms.map&amp;&#34;</span>
+      <span style=color:#c41a16>&#34;wms_srs&#34;</span>             <span style=color:#c41a16>&#34;EPSG:4167&#34;</span>
+      <span style=color:#c41a16>&#34;wms_enable_request&#34;</span>  <span style=color:#c41a16>&#34;*&#34;</span>
     END
   END
 
   PROJECTION
-    <span style=color:#00f>&#34;init=epsg:4167&#34;</span>
+    <span style=color:#c41a16>&#34;init=epsg:4167&#34;</span>
   END
 
-  LAYER <span style=color:#080;font-style:italic># States polygon layer begins here</span>
+  LAYER <span style=color:#177500># States polygon layer begins here</span>
     NAME         nz-coastlines-and-islands-polygons-topo-150k
     DATA         nz-coastlines-and-islands-polygons-topo-150k
     STATUS       OFF
     TYPE         POLYGON
 
     CLASS
-      NAME       <span style=color:#00f>&#34;NZ Topo LINZ map&#34;</span>
+      NAME       <span style=color:#c41a16>&#34;NZ Topo LINZ map&#34;</span>
 
       STYLE
-        COLOR        <span style=color:#00f>232</span> <span style=color:#00f>232</span> <span style=color:#00f>232</span>
-        OUTLINECOLOR <span style=color:#00f>32</span> <span style=color:#00f>32</span> <span style=color:#00f>32</span>
+        COLOR        <span style=color:#1c01ce>232</span> <span style=color:#1c01ce>232</span> <span style=color:#1c01ce>232</span>
+        OUTLINECOLOR <span style=color:#1c01ce>32</span> <span style=color:#1c01ce>32</span> <span style=color:#1c01ce>32</span>
       END
     END
   END
 END
 </code></pre></div><p>Then you can finally execute MapServer binary program and output to a local image file.</p>
-<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>export MS_ERRORFILE=<span style=color:#00f>&#34;stderr&#34;</span>
-export MS_MAPFILE=/home/kinow/Development/cpp/workspace/mapserver/nztopo1.map
+<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=color:#a90d91>export</span> <span style=color:#000>MS_ERRORFILE</span><span style=color:#000>=</span><span style=color:#c41a16>&#34;stderr&#34;</span>
+<span style=color:#a90d91>export</span> <span style=color:#000>MS_MAPFILE</span><span style=color:#000>=</span>/home/kinow/Development/cpp/workspace/mapserver/nztopo1.map
 
-./mapserv -nh QUERY_STRING=<span style=color:#00f>&#34;VERSION=1.1.0&amp;REQUEST=GetMap&amp;LAYERS=nz-coastlines-and-islands-polygons-topo-150k&amp;SRS=EPSG:4167&amp;SERVICE=WMS&amp;TEMPLATE=OpenLayers&amp;BBOX=165.869,-52.6209,183.846,-29.2313&amp;FORMAT=image/jpeg&amp;HEIGHT=800&amp;WIDTH=800&#34;</span> 2&gt;/dev/null &gt; /tmp/nzmap.jpg
+./mapserv -nh <span style=color:#000>QUERY_STRING</span><span style=color:#000>=</span><span style=color:#c41a16>&#34;VERSION=1.1.0&amp;REQUEST=GetMap&amp;LAYERS=nz-coastlines-and-islands-polygons-topo-150k&amp;SRS=EPSG:4167&amp;SERVICE=WMS&amp;TEMPLATE=OpenLayers&amp;BBOX=165.869,-52.6209,183.846,-29.2313&amp;FORMAT=image/jpeg&amp;HEIGHT=800&amp;WIDTH=800&#34;</span> 2&gt;/dev/null &gt; /tmp/nzmap.jpg
 </code></pre></div><h2 id=running-afl>Running afl</h2>
 <p>I decided to use a RAM disk while running afl as suggested
 <a href=http://www.cipherdyne.org/blog/2014/12/ram-disks-and-saving-your-ssd-from-afl-fuzzing.html>in this blog post</a>
 to avoid a lot of writes in my SSD disk. Then moved MapServer there and fired afl.</p>
-<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>cd /tmp/afl-ramdisk/mapserver
+<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=color:#a90d91>cd</span> /tmp/afl-ramdisk/mapserver
 mkdir fuzz-input fuzz-output
 
-/opt/afl-2.05b/afl-fuzz -m <span style=color:#00f>500</span> -i fuzz-input/ -o fuzz-output/ -t <span style=color:#00f>2000</span> ./mapserv QUERY_STRING=<span style=color:#00f>&#34;VERSION=1.1.0&amp;REQUEST=GetMap&amp;LAYERS=nz-coastlines-and-islands-polygons-topo-150k&amp;SRS=EPSG:4167&amp;SERVICE=WMS&amp;TEMPLATE=OpenLayers&amp;BBOX=165.869,-52.6209,183.846,-29.2313&amp;FORMAT=image/jpeg&amp;HEIGHT=800&amp;WIDTH=800&#34;</span>
+/opt/afl-2.05b/afl-fuzz -m <span style=color:#1c01ce>500</span> -i fuzz-input/ -o fuzz-output/ -t <span style=color:#1c01ce>2000</span> ./mapserv <span style=color:#000>QUERY_STRING</span><span style=color:#000>=</span><span style=color:#c41a16>&#34;VERSION=1.1.0&amp;REQUEST=GetMap&amp;LAYERS=nz-coastlines-and-islands-polygons-topo-150k&amp;SRS=EPSG:4167&amp;SERVICE=WMS&amp;TEMPLATE=OpenLayers&amp;BBOX=165.869,-52.6209,183.846,-29.2313&amp;FORMAT=image/jpeg&amp;HEIGHT=800&amp;WIDTH=800&#34;</span>
 </code></pre></div>
 <figure class=feature>
 <img src=/assets/posts/2016-02-27-learning-afl-and-testing-mapserver/afl_testing_mapserver.png alt title width height>
@@ -143,9 +143,9 @@ it by the location of a file that it generated. Or by using &ldquo;-x&rdquo; you
 variations of parameters.</p>
 <p>During the next days I will give it another go at work, and will investigate how to test MapServer without having to write
 a wrapper in Shell or C/C++. You can still test other programs that are shipped with MapServer though.</p>
-<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>cd /tmp/afl-ramdisk/mapserver
+<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=color:#a90d91>cd</span> /tmp/afl-ramdisk/mapserver
 
-/opt/afl-2.05b/afl-fuzz -m <span style=color:#00f>512</span> -i fuzz-input -o fuzz-output -f /tmp/afl-ramdisk/input ./shp2img -m @@ -l nz-coastlines-and-islands-polygons-topo-150k -i image/jpeg -o /tmp/afl-ramdisk/nzmap.jpg -e 165.869 -52.6209 183.846 -29.2313
+/opt/afl-2.05b/afl-fuzz -m <span style=color:#1c01ce>512</span> -i fuzz-input -o fuzz-output -f /tmp/afl-ramdisk/input ./shp2img -m @@ -l nz-coastlines-and-islands-polygons-topo-150k -i image/jpeg -o /tmp/afl-ramdisk/nzmap.jpg -e 165.869 -52.6209 183.846 -29.2313
 </code></pre></div><p>I hope it helps you get started with afl in case you are learning about it too :-) Happy hacking!</p>
 <br>
 <br>

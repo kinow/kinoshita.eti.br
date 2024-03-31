@@ -10,7 +10,7 @@ git clone https://github.com/bioperl/bioperl-live.git cd bioperl-live sudo cpanm
 <meta property="og:url" content="https://kinoshita.eti.br/2016/09/03/performance-problems-in-jenkins-tap-plug-in-mdash-part-1.html"><meta property="article:section" content="posts">
 <meta property="article:published_time" content="2016-09-03T00:00:00+00:00">
 <meta property="article:modified_time" content="2016-09-03T00:00:00+00:00">
-<link rel=stylesheet type=text/css href=https://kinoshita.eti.br/sass/main.66aa172f782442adc0241c99968a79a72e4260187c78830f9bdd6b03abff6103.css integrity="sha256-ZqoXL3gkQq3AJByZlop5py5CYBh8eIMPm91rA6v/YQM=">
+<link rel=stylesheet type=text/css href=https://kinoshita.eti.br/sass/main.09b56b6037e962b67cf7a7701bf2a9ee5da840a4f74b74139c4731f2156a5917.css integrity="sha256-CbVrYDfpYrZ896dwG/Kp7l2oQKT3S3QTnEcx8hVqWRc=">
 <title>kinow | Performance problems in Jenkins TAP Plug-in &amp;mdash; part 1</title>
 </head>
 <body>
@@ -38,16 +38,16 @@ git clone https://github.com/bioperl/bioperl-live.git cd bioperl-live sudo cpanm
 <p><a href=https://issues.jenkins-ci.org/browse/JENKINS-17887>JENKINS-17887</a> reports performance problems in the <a href=https://wiki.jenkins-ci.org/display/JENKINS/TAP+Plugin>Jenkins TAP Plug-in</a>. It also lists a series of suggestions on how to improve the Jenkins TAP Plug-in performance. On this initial post, we will get a general idea of how the plug-in performs for large projects.</p>
 <p><a href=http://bioperl.org/>BioPerl</a> has over 21K tests. That should be enough for giving an initial idea of CPU, memory and disk usage for the plug-in.</p>
 <div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>git clone https://github.com/bioperl/bioperl-live.git
-cd bioperl-live
+<span style=color:#a90d91>cd</span> bioperl-live
 sudo cpanm  -vv --installdeps --notest .
-sudo cpanm Set::Scalar Graph::Directed XML::LibXML XML::SAX <span style=color:#00f>\
-</span><span style=color:#00f></span>    SVG XML::Parser::PerlSAX Convert::Binary::C XML::SAX::Writer <span style=color:#00f>\
-</span><span style=color:#00f></span>    XML::DOM::XPath Spreadsheet::ParseExcel XML::SAX::Writer <span style=color:#00f>\
-</span><span style=color:#00f></span>    XML::DOM HTML::TableExtract XML::Simple Test::Pod DBI
+sudo cpanm Set::Scalar Graph::Directed XML::LibXML XML::SAX <span style=color:#c41a16>\
+</span><span style=color:#c41a16></span>    SVG XML::Parser::PerlSAX Convert::Binary::C XML::SAX::Writer <span style=color:#c41a16>\
+</span><span style=color:#c41a16></span>    XML::DOM::XPath Spreadsheet::ParseExcel XML::SAX::Writer <span style=color:#c41a16>\
+</span><span style=color:#c41a16></span>    XML::DOM HTML::TableExtract XML::Simple Test::Pod DBI
 prove -r t/ -a tests.tar.gz
 
 All tests successful.
-Files=325, Tests=21095, <span style=color:#00f>94</span> wallclock secs ( 2.47 usr  0.55 sys + 88.29 cusr  3.85 csys = 95.16 CPU)
+<span style=color:#000>Files</span><span style=color:#000>=</span>325, <span style=color:#000>Tests</span><span style=color:#000>=</span>21095, <span style=color:#1c01ce>94</span> wallclock secs <span style=color:#000>(</span> 2.47 usr  0.55 sys + 88.29 cusr  3.85 <span style=color:#000>csys</span> <span style=color:#000>=</span> 95.16 CPU<span style=color:#000>)</span>
 Result: PASS
 </code></pre></div><p>When the test results are parsed, the plug-in also copies TAP files over to the master, in a folder called <em>tap-master-files</em>.</p>
 <p>The BioPerl tests are not really big, just <strong>1.7M</strong>. It gets doubled as there will be the workspace copy, and the tap-master-files directory copy, so <strong>3.4M</strong>.</p>
@@ -59,8 +59,8 @@ Result: PASS
 </figure>
 <p>The image shows one of the screens in YourKit profiler, where it is possible to see that <strong>org.tap4j.plugin.model.TapTestResultResult</strong> has over 6 million objects.</p>
 <p>One build.xml for the BioPerl project gets over 80K entries for the TestResult object.</p>
-<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>grep <span style=color:#00f>&#34;org.tap4j.model.TestResult&#34;</span> builds/1/build.xml -o | wc -l
-<span style=color:#00f>84522</span>
+<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>grep <span style=color:#c41a16>&#34;org.tap4j.model.TestResult&#34;</span> builds/1/build.xml -o | wc -l
+<span style=color:#1c01ce>84522</span>
 </code></pre></div><p>This happens because each TAP file may contain multiple test results (lines with test results). Each of these test results gets turned into a Java object and loaded by the plug-in. So when loading the test result pages, Jenkins needs to wait until all these objects have been parsed, deserialized and read into the memory.</p>
 <p>The next post will continue on code improvements, and another benchmark.</p>
 <p>Happy profiling!</p>

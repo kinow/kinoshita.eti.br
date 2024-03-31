@@ -9,7 +9,7 @@ mbknor/deptools The mbknor/deptools is another rule for the Maven Enforcer Plug-
 <meta property="og:url" content="https://kinoshita.eti.br/2017/08/12/two-other-maven-plug-ins-impsort-and-deptools.html"><meta property="article:section" content="posts">
 <meta property="article:published_time" content="2017-08-12T00:00:00+00:00">
 <meta property="article:modified_time" content="2017-08-12T00:00:00+00:00">
-<link rel=stylesheet type=text/css href=https://kinoshita.eti.br/sass/main.66aa172f782442adc0241c99968a79a72e4260187c78830f9bdd6b03abff6103.css integrity="sha256-ZqoXL3gkQq3AJByZlop5py5CYBh8eIMPm91rA6v/YQM=">
+<link rel=stylesheet type=text/css href=https://kinoshita.eti.br/sass/main.09b56b6037e962b67cf7a7701bf2a9ee5da840a4f74b74139c4731f2156a5917.css integrity="sha256-CbVrYDfpYrZ896dwG/Kp7l2oQKT3S3QTnEcx8hVqWRc=">
 <title>kinow | Two other Maven Plug-ins: impsort and deptools</title>
 </head>
 <body>
@@ -51,67 +51,67 @@ rule for Maven Enforcer Plug-in. There are two other Maven Plug-ins that can be 
 <p>The <a href=https://github.com/mbknor/deptools>mbknor/deptools</a> is another rule for the Maven Enforcer Plug-in. It will scan your project dependency tree, looking for transitive dependencies. Whenever it finds a transitive dependency, it will keep track of the versions. And if, because of the way your dependencies and transitive dependencies are organised, you end up with a version that is not the newest, the build will fail.</p>
 <p>So, for example, if you have <code>commons-lang3</code> as transitive dependency of two other dependencies, but one is using 3.4 and the other 3.5. If for any reason you are using 3.4 instead of 3.5, you will have a build error.</p>
 <p>Here&rsquo;s an example of the plug-in configuration.</p>
-<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-xml data-lang=xml><span style=color:navy;font-weight:700>&lt;project&gt;</span>
+<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-xml data-lang=xml><span style=color:#000>&lt;project&gt;</span>
   ...
-  <span style=color:navy;font-weight:700>&lt;build&gt;</span>
-    <span style=color:navy;font-weight:700>&lt;plugins&gt;</span>
-      <span style=color:navy;font-weight:700>&lt;plugin&gt;</span>
-        <span style=color:navy;font-weight:700>&lt;groupId&gt;</span>deptools.plugin<span style=color:navy;font-weight:700>&lt;/groupId&gt;</span>
-        <span style=color:navy;font-weight:700>&lt;artifactId&gt;</span>maven-deptools-plugin<span style=color:navy;font-weight:700>&lt;/artifactId&gt;</span>
-        <span style=color:navy;font-weight:700>&lt;version&gt;</span>1.3<span style=color:navy;font-weight:700>&lt;/version&gt;</span>
-          <span style=color:navy;font-weight:700>&lt;executions&gt;</span>
-              <span style=color:navy;font-weight:700>&lt;execution&gt;</span>
-                  <span style=color:navy;font-weight:700>&lt;phase&gt;</span>compile<span style=color:navy;font-weight:700>&lt;/phase&gt;</span>
-                  <span style=color:navy;font-weight:700>&lt;goals&gt;</span>
-                      <span style=color:navy;font-weight:700>&lt;goal&gt;</span>version-checker<span style=color:navy;font-weight:700>&lt;/goal&gt;</span>
-                  <span style=color:navy;font-weight:700>&lt;/goals&gt;</span>
-              <span style=color:navy;font-weight:700>&lt;/execution&gt;</span>
-          <span style=color:navy;font-weight:700>&lt;/executions&gt;</span>
-        <span style=color:navy;font-weight:700>&lt;/plugin&gt;</span>
-    <span style=color:navy;font-weight:700>&lt;/plugins&gt;</span>
-  <span style=color:navy;font-weight:700>&lt;/build&gt;</span>
+  <span style=color:#000>&lt;build&gt;</span>
+    <span style=color:#000>&lt;plugins&gt;</span>
+      <span style=color:#000>&lt;plugin&gt;</span>
+        <span style=color:#000>&lt;groupId&gt;</span>deptools.plugin<span style=color:#000>&lt;/groupId&gt;</span>
+        <span style=color:#000>&lt;artifactId&gt;</span>maven-deptools-plugin<span style=color:#000>&lt;/artifactId&gt;</span>
+        <span style=color:#000>&lt;version&gt;</span>1.3<span style=color:#000>&lt;/version&gt;</span>
+          <span style=color:#000>&lt;executions&gt;</span>
+              <span style=color:#000>&lt;execution&gt;</span>
+                  <span style=color:#000>&lt;phase&gt;</span>compile<span style=color:#000>&lt;/phase&gt;</span>
+                  <span style=color:#000>&lt;goals&gt;</span>
+                      <span style=color:#000>&lt;goal&gt;</span>version-checker<span style=color:#000>&lt;/goal&gt;</span>
+                  <span style=color:#000>&lt;/goals&gt;</span>
+              <span style=color:#000>&lt;/execution&gt;</span>
+          <span style=color:#000>&lt;/executions&gt;</span>
+        <span style=color:#000>&lt;/plugin&gt;</span>
+    <span style=color:#000>&lt;/plugins&gt;</span>
+  <span style=color:#000>&lt;/build&gt;</span>
 
-  <span style=color:navy;font-weight:700>&lt;pluginRepositories&gt;</span>
-    <span style=color:navy;font-weight:700>&lt;pluginRepository&gt;</span>
-      <span style=color:navy;font-weight:700>&lt;id&gt;</span>mbk_mvn_repo<span style=color:navy;font-weight:700>&lt;/id&gt;</span>
-      <span style=color:navy;font-weight:700>&lt;name&gt;</span>mbk_mvn_repo<span style=color:navy;font-weight:700>&lt;/name&gt;</span>
-      <span style=color:navy;font-weight:700>&lt;url&gt;</span>https://raw.githubusercontent.com/mbknor/mbknor.github.com/master/m2repo/releases<span style=color:navy;font-weight:700>&lt;/url&gt;</span>
-    <span style=color:navy;font-weight:700>&lt;/pluginRepository&gt;</span>
-  <span style=color:navy;font-weight:700>&lt;/pluginRepositories&gt;</span>
+  <span style=color:#000>&lt;pluginRepositories&gt;</span>
+    <span style=color:#000>&lt;pluginRepository&gt;</span>
+      <span style=color:#000>&lt;id&gt;</span>mbk_mvn_repo<span style=color:#000>&lt;/id&gt;</span>
+      <span style=color:#000>&lt;name&gt;</span>mbk_mvn_repo<span style=color:#000>&lt;/name&gt;</span>
+      <span style=color:#000>&lt;url&gt;</span>https://raw.githubusercontent.com/mbknor/mbknor.github.com/master/m2repo/releases<span style=color:#000>&lt;/url&gt;</span>
+    <span style=color:#000>&lt;/pluginRepository&gt;</span>
+  <span style=color:#000>&lt;/pluginRepositories&gt;</span>
   ...
-<span style=color:navy;font-weight:700>&lt;/project&gt;</span>
+<span style=color:#000>&lt;/project&gt;</span>
 </code></pre></div><p>Running <code>mvn clean verify</code> will execute the Maven Enforcer Plug-in <code>enforce</code> goal, which will call the deptools check. As you may have noticed, you also need to download the plug-in from GitHub, as it is not released to Maven Central.</p>
 <p>I do not use it for this reason, and also because I normally spend some time looking at the dependency tree anyway, but every now and then when I work on a new project I like quickly running it just to see what are the dependencies that are being shadowed by older versions.</p>
 <h3 id=revelcimpsort-maven-plugin>revelc/impsort-maven-plugin</h3>
 <p>I only found about this plug-in in the last <a href=https://blogs.apache.org/foundation/entry/the-apache-news-round-up31>Apache News Round-up</a>. Where it was mentioned that <a href=https://github.com/apache/accumulo/blob/401411619239e301ad14216b3b9c88ee947ab072/pom.xml#L999>Apache Accumulo uses</a> this plug-in to standarize the order of imports in code.</p>
-<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-xml data-lang=xml><span style=color:navy;font-weight:700>&lt;project&gt;</span>
+<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-xml data-lang=xml><span style=color:#000>&lt;project&gt;</span>
   ...
-  <span style=color:navy;font-weight:700>&lt;build&gt;</span>
-    <span style=color:navy;font-weight:700>&lt;plugins&gt;</span>
-      <span style=color:navy;font-weight:700>&lt;plugin&gt;</span>
-        <span style=color:navy;font-weight:700>&lt;groupId&gt;</span>net.revelc.code<span style=color:navy;font-weight:700>&lt;/groupId&gt;</span>
-        <span style=color:navy;font-weight:700>&lt;artifactId&gt;</span>impsort-maven-plugin<span style=color:navy;font-weight:700>&lt;/artifactId&gt;</span>
-        <span style=color:navy;font-weight:700>&lt;version&gt;</span>1.0.0<span style=color:navy;font-weight:700>&lt;/version&gt;</span>
-        <span style=color:navy;font-weight:700>&lt;configuration&gt;</span>
-          <span style=color:navy;font-weight:700>&lt;groups&gt;</span>java.,javax.,org.,com.<span style=color:navy;font-weight:700>&lt;/groups&gt;</span>
-          <span style=color:navy;font-weight:700>&lt;staticGroups&gt;</span>java,*<span style=color:navy;font-weight:700>&lt;/staticGroups&gt;</span>
-          <span style=color:navy;font-weight:700>&lt;excludes&gt;</span>
-            <span style=color:navy;font-weight:700>&lt;exclude&gt;</span>**/thrift/*.java<span style=color:navy;font-weight:700>&lt;/exclude&gt;</span>
-          <span style=color:navy;font-weight:700>&lt;/excludes&gt;</span>
-        <span style=color:navy;font-weight:700>&lt;/configuration&gt;</span>
-        <span style=color:navy;font-weight:700>&lt;executions&gt;</span>
-          <span style=color:navy;font-weight:700>&lt;execution&gt;</span>
-            <span style=color:navy;font-weight:700>&lt;id&gt;</span>sort-imports<span style=color:navy;font-weight:700>&lt;/id&gt;</span>
-            <span style=color:navy;font-weight:700>&lt;goals&gt;</span>
-              <span style=color:navy;font-weight:700>&lt;goal&gt;</span>sort<span style=color:navy;font-weight:700>&lt;/goal&gt;</span><span style=color:#080;font-style:italic>&lt;!-- runs at process-sources phase by default --&gt;</span>
-            <span style=color:navy;font-weight:700>&lt;/goals&gt;</span>
-          <span style=color:navy;font-weight:700>&lt;/execution&gt;</span>
-        <span style=color:navy;font-weight:700>&lt;/executions&gt;</span>
-      <span style=color:navy;font-weight:700>&lt;/plugin&gt;</span>
-    <span style=color:navy;font-weight:700>&lt;/plugins&gt;</span>
-  <span style=color:navy;font-weight:700>&lt;/build&gt;</span>
+  <span style=color:#000>&lt;build&gt;</span>
+    <span style=color:#000>&lt;plugins&gt;</span>
+      <span style=color:#000>&lt;plugin&gt;</span>
+        <span style=color:#000>&lt;groupId&gt;</span>net.revelc.code<span style=color:#000>&lt;/groupId&gt;</span>
+        <span style=color:#000>&lt;artifactId&gt;</span>impsort-maven-plugin<span style=color:#000>&lt;/artifactId&gt;</span>
+        <span style=color:#000>&lt;version&gt;</span>1.0.0<span style=color:#000>&lt;/version&gt;</span>
+        <span style=color:#000>&lt;configuration&gt;</span>
+          <span style=color:#000>&lt;groups&gt;</span>java.,javax.,org.,com.<span style=color:#000>&lt;/groups&gt;</span>
+          <span style=color:#000>&lt;staticGroups&gt;</span>java,*<span style=color:#000>&lt;/staticGroups&gt;</span>
+          <span style=color:#000>&lt;excludes&gt;</span>
+            <span style=color:#000>&lt;exclude&gt;</span>**/thrift/*.java<span style=color:#000>&lt;/exclude&gt;</span>
+          <span style=color:#000>&lt;/excludes&gt;</span>
+        <span style=color:#000>&lt;/configuration&gt;</span>
+        <span style=color:#000>&lt;executions&gt;</span>
+          <span style=color:#000>&lt;execution&gt;</span>
+            <span style=color:#000>&lt;id&gt;</span>sort-imports<span style=color:#000>&lt;/id&gt;</span>
+            <span style=color:#000>&lt;goals&gt;</span>
+              <span style=color:#000>&lt;goal&gt;</span>sort<span style=color:#000>&lt;/goal&gt;</span><span style=color:#177500>&lt;!-- runs at process-sources phase by default --&gt;</span>
+            <span style=color:#000>&lt;/goals&gt;</span>
+          <span style=color:#000>&lt;/execution&gt;</span>
+        <span style=color:#000>&lt;/executions&gt;</span>
+      <span style=color:#000>&lt;/plugin&gt;</span>
+    <span style=color:#000>&lt;/plugins&gt;</span>
+  <span style=color:#000>&lt;/build&gt;</span>
   ...
-<span style=color:navy;font-weight:700>&lt;/project&gt;</span>
+<span style=color:#000>&lt;/project&gt;</span>
 </code></pre></div><p>I am neutral on imports order, though in cases where you have several contributors submitting pull requests, it can probably be useful to reduce the number of interactions. In other words, if a user submits a pull request and you have an automated check, then the user would be automatically notified about changes that s/he needs to do in order for his pull request to be accepted.</p>
 <h3 id=conclusion>Conclusion</h3>
 <p>I am not using any of these two plug-ins, but wanted to save it somewhere in case I needed to use them in the future, and also to share with others. Besides most common plug-ins (PMD, CheckStyle, FindBugs), I normally use at least some Maven Enforcer Plug-in rules, and the <a href=https://www.owasp.org/index.php/OWASP_Dependency_Check>OWASP plug-in</a>.</p>

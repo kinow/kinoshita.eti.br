@@ -30,7 +30,7 @@ not impossible.">
 <meta property="og:url" content="https://kinoshita.eti.br/2019/11/19/experimenting-with-vuejs-and-cytoscape.html"><meta property="article:section" content="posts">
 <meta property="article:published_time" content="2019-11-19T00:00:00+00:00">
 <meta property="article:modified_time" content="2019-11-19T00:00:00+00:00">
-<link rel=stylesheet type=text/css href=https://kinoshita.eti.br/sass/main.66aa172f782442adc0241c99968a79a72e4260187c78830f9bdd6b03abff6103.css integrity="sha256-ZqoXL3gkQq3AJByZlop5py5CYBh8eIMPm91rA6v/YQM=">
+<link rel=stylesheet type=text/css href=https://kinoshita.eti.br/sass/main.09b56b6037e962b67cf7a7701bf2a9ee5da840a4f74b74139c4731f2156a5917.css integrity="sha256-CbVrYDfpYrZ896dwG/Kp7l2oQKT3S3QTnEcx8hVqWRc=">
 <title>kinow | Experimenting with Vuejs and Cytoscape</title>
 </head>
 <body>
@@ -113,17 +113,17 @@ use case, so we are not using it.</p>
 <p>One trick part was how to put the contents of the Job component inside the node HTML label
 in the graph. Basically, it is necessary to mount the component, and then access its <code>$el</code>
 which is an <code>HTMLElement</code>.</p>
-<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-js data-lang=js>cy1.nodeHtmlLabel([
+<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-js data-lang=js><span style=color:#000>cy1</span>.<span style=color:#000>nodeHtmlLabel</span>([
   {
-    query: <span style=color:#00f>&#39;node&#39;</span>,
-    tpl: <span style=color:navy;font-weight:700>function</span> (data) {
-      <span style=color:navy;font-weight:700>const</span> JobClass = Vue.extend(Job)
-      <span style=color:navy;font-weight:700>const</span> theJob = <span style=color:navy;font-weight:700>new</span> JobClass({
-        propsData: {
-          status: data.status
+    <span style=color:#000>query</span><span style=color:#000>:</span> <span style=color:#c41a16>&#39;node&#39;</span>,
+    <span style=color:#000>tpl</span><span style=color:#000>:</span> <span style=color:#a90d91>function</span> (<span style=color:#000>data</span>) {
+      <span style=color:#a90d91>const</span> <span style=color:#000>JobClass</span> <span style=color:#000>=</span> <span style=color:#000>Vue</span>.<span style=color:#000>extend</span>(<span style=color:#000>Job</span>)
+      <span style=color:#a90d91>const</span> <span style=color:#000>theJob</span> <span style=color:#000>=</span> <span style=color:#a90d91>new</span> <span style=color:#000>JobClass</span>({
+        <span style=color:#000>propsData</span><span style=color:#000>:</span> {
+          <span style=color:#000>status</span><span style=color:#000>:</span> <span style=color:#000>data</span>.<span style=color:#000>status</span>
         }
-      }).$mount()
-      <span style=color:navy;font-weight:700>return</span> theJob.$el.outerHTML
+      }).<span style=color:#000>$mount</span>()
+      <span style=color:#a90d91>return</span> <span style=color:#000>theJob</span>.<span style=color:#000>$el</span>.<span style=color:#000>outerHTML</span>
     }
   }
 ])
@@ -139,15 +139,15 @@ That&rsquo;s in the <a href="https://codepen.io/kinow/pen/eYYbwXB?editors=1010">
 <p>Instead of creating the instance in the node HTML label <code>tpl</code> function, we are now creating Job
 components with Vuejs, assigning them &ldquo;refs&rdquo;, and then just grabbing the HTML to render in the
 node.</p>
-<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-js data-lang=js>cy1.nodeHtmlLabel([
+<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-js data-lang=js><span style=color:#000>cy1</span>.<span style=color:#000>nodeHtmlLabel</span>([
   {
-    query: <span style=color:#00f>&#39;node&#39;</span>,
-    tpl: <span style=color:navy;font-weight:700>function</span> (data) {
-      <span style=color:navy;font-weight:700>const</span> jobForThisNode = window.vm.$refs[data.id][<span style=color:#00f>0</span>]
-      <span style=color:navy;font-weight:700>if</span> (Object.hasOwnProperty.call(jobForThisNode, <span style=color:#00f>&#39;$el&#39;</span>)) {
-        <span style=color:navy;font-weight:700>return</span> jobForThisNode.$el.outerHTML
+    <span style=color:#000>query</span><span style=color:#000>:</span> <span style=color:#c41a16>&#39;node&#39;</span>,
+    <span style=color:#000>tpl</span><span style=color:#000>:</span> <span style=color:#a90d91>function</span> (<span style=color:#000>data</span>) {
+      <span style=color:#a90d91>const</span> <span style=color:#000>jobForThisNode</span> <span style=color:#000>=</span> <span style=color:#a90d91>window</span>.<span style=color:#000>vm</span>.<span style=color:#000>$refs</span>[<span style=color:#000>data</span>.<span style=color:#000>id</span>][<span style=color:#1c01ce>0</span>]
+      <span style=color:#a90d91>if</span> (<span style=color:#a90d91>Object</span>.<span style=color:#000>hasOwnProperty</span>.<span style=color:#000>call</span>(<span style=color:#000>jobForThisNode</span>, <span style=color:#c41a16>&#39;$el&#39;</span>)) {
+        <span style=color:#a90d91>return</span> <span style=color:#000>jobForThisNode</span>.<span style=color:#000>$el</span>.<span style=color:#000>outerHTML</span>
       }
-      <span style=color:navy;font-weight:700>return</span> <span style=color:#00f>&#39;&#39;</span>
+      <span style=color:#a90d91>return</span> <span style=color:#c41a16>&#39;&#39;</span>
     }
   }
 ])
@@ -170,35 +170,35 @@ node ID (unique in a workflow, returned by the GraphQL query).</p>
 </figure>
 <p>There is a new component in this pen too, a <code>GraphNode</code>, which wraps a <code>Job</code> component, but adds
 some extra functionality, like observing when the prop changes.</p>
-<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-js data-lang=js><span style=color:navy;font-weight:700>const</span> GraphNode = Vue.component(<span style=color:#00f>&#39;graph-node&#39;</span>, {
-  name: <span style=color:#00f>&#39;GraphNode&#39;</span>,
-  components: {
-    job: Job
+<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-js data-lang=js><span style=color:#a90d91>const</span> <span style=color:#000>GraphNode</span> <span style=color:#000>=</span> <span style=color:#000>Vue</span>.<span style=color:#000>component</span>(<span style=color:#c41a16>&#39;graph-node&#39;</span>, {
+  <span style=color:#000>name</span><span style=color:#000>:</span> <span style=color:#c41a16>&#39;GraphNode&#39;</span>,
+  <span style=color:#000>components</span><span style=color:#000>:</span> {
+    <span style=color:#000>job</span><span style=color:#000>:</span> <span style=color:#000>Job</span>
   },
-  props: {
-    node: {
-      type: Object,
-      required: <span style=color:navy;font-weight:700>true</span>
+  <span style=color:#000>props</span><span style=color:#000>:</span> {
+    <span style=color:#000>node</span><span style=color:#000>:</span> {
+      <span style=color:#000>type</span><span style=color:#000>:</span> <span style=color:#a90d91>Object</span>,
+      <span style=color:#000>required</span><span style=color:#000>:</span> <span style=color:#a90d91>true</span>
     }
   },
-  watch: {
-    node: {
-      immediate: <span style=color:navy;font-weight:700>true</span>,
-      deep: <span style=color:navy;font-weight:700>true</span>,
-      handler (newValue, oldValue) {
-        <span style=color:navy;font-weight:700>const</span> nodeElem = document.getElementById(newValue.id)
-        <span style=color:navy;font-weight:700>const</span> vm = <span style=color:navy;font-weight:700>this</span>
-        <span style=color:navy;font-weight:700>if</span> (nodeElem) {
-          Vue.nextTick(<span style=color:navy;font-weight:700>function</span> () {
-            nodeElem.innerHTML = vm.$mount().$el.outerHTML
+  <span style=color:#000>watch</span><span style=color:#000>:</span> {
+    <span style=color:#000>node</span><span style=color:#000>:</span> {
+      <span style=color:#000>immediate</span><span style=color:#000>:</span> <span style=color:#a90d91>true</span>,
+      <span style=color:#000>deep</span><span style=color:#000>:</span> <span style=color:#a90d91>true</span>,
+      <span style=color:#000>handler</span> (<span style=color:#000>newValue</span>, <span style=color:#000>oldValue</span>) {
+        <span style=color:#a90d91>const</span> <span style=color:#000>nodeElem</span> <span style=color:#000>=</span> <span style=color:#a90d91>document</span>.<span style=color:#000>getElementById</span>(<span style=color:#000>newValue</span>.<span style=color:#000>id</span>)
+        <span style=color:#a90d91>const</span> <span style=color:#000>vm</span> <span style=color:#000>=</span> <span style=color:#a90d91>this</span>
+        <span style=color:#a90d91>if</span> (<span style=color:#000>nodeElem</span>) {
+          <span style=color:#000>Vue</span>.<span style=color:#000>nextTick</span>(<span style=color:#a90d91>function</span> () {
+            <span style=color:#000>nodeElem</span>.<span style=color:#000>innerHTML</span> <span style=color:#000>=</span> <span style=color:#000>vm</span>.<span style=color:#000>$mount</span>().<span style=color:#000>$el</span>.<span style=color:#000>outerHTML</span>
           })
         }
       }
     }
   },
-  template: <span style=color:#00f>`&lt;span&gt;
-</span><span style=color:#00f>  &lt;job :status=&#34;node.state&#34; /&gt;
-</span><span style=color:#00f>&lt;/span&gt;`</span>
+  <span style=color:#000>template</span><span style=color:#000>:</span> <span style=color:#c41a16>`&lt;span&gt;
+</span><span style=color:#c41a16>  &lt;job :status=&#34;node.state&#34; /&gt;
+</span><span style=color:#c41a16>&lt;/span&gt;`</span>
 })
 </code></pre></div><p>The <code>node</code> passed is a node of the GraphQL response. With a <code>watch</code> that runs immediately upon
 the component initialization (<code>immediate: true</code>) and that reacts to changes in the object

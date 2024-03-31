@@ -64,54 +64,54 @@ the graph nodes is limited.&lt;/p>
 not impossible.&lt;/p></description></item><item><title>Dynamic breadcrumbs with Vue Router nested routes and Vuetify Breadcrumb component</title><link>https://kinoshita.eti.br/2019/11/09/dynamic-breadcrumbs-with-vue-router-nested-routes-and-vuetify-breadcrumb-component.html</link><pubDate>Sat, 09 Nov 2019 00:00:00 +0000</pubDate><guid>https://kinoshita.eti.br/2019/11/09/dynamic-breadcrumbs-with-vue-router-nested-routes-and-vuetify-breadcrumb-component.html</guid><description>&lt;p>Vue Router supports nested routes, which allow developers to create a hierarchical navigation structure.
 This is handy if you want to create breadcrumbs based on this hierarchy dynamically.&lt;/p>
 &lt;p>Here&amp;rsquo;s how you should create your nested routes:&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-js" data-lang="js">&lt;span style="color:#000080;font-weight:bold">const&lt;/span> routes = [
-{ path: &lt;span style="color:#00f">&amp;#39;/&amp;#39;&lt;/span>, component: { template: &lt;span style="color:#00f">`&amp;lt;h1&amp;gt;Home View&amp;lt;/h1&amp;gt;`&lt;/span> } },
+&lt;div class="highlight">&lt;pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-js" data-lang="js">&lt;span style="color:#a90d91">const&lt;/span> &lt;span style="color:#000">routes&lt;/span> &lt;span style="color:#000">=&lt;/span> [
+{ &lt;span style="color:#000">path&lt;/span>&lt;span style="color:#000">:&lt;/span> &lt;span style="color:#c41a16">&amp;#39;/&amp;#39;&lt;/span>, &lt;span style="color:#000">component&lt;/span>&lt;span style="color:#000">:&lt;/span> { &lt;span style="color:#000">template&lt;/span>&lt;span style="color:#000">:&lt;/span> &lt;span style="color:#c41a16">`&amp;lt;h1&amp;gt;Home View&amp;lt;/h1&amp;gt;`&lt;/span> } },
 {
-path: &lt;span style="color:#00f">&amp;#39;/users&amp;#39;&lt;/span>,
-component: {
-render (c) {
-&lt;span style="color:#000080;font-weight:bold">return&lt;/span> c(&lt;span style="color:#00f">&amp;#39;router-view&amp;#39;&lt;/span>)
+&lt;span style="color:#000">path&lt;/span>&lt;span style="color:#000">:&lt;/span> &lt;span style="color:#c41a16">&amp;#39;/users&amp;#39;&lt;/span>,
+&lt;span style="color:#000">component&lt;/span>&lt;span style="color:#000">:&lt;/span> {
+&lt;span style="color:#000">render&lt;/span> (&lt;span style="color:#000">c&lt;/span>) {
+&lt;span style="color:#a90d91">return&lt;/span> &lt;span style="color:#000">c&lt;/span>(&lt;span style="color:#c41a16">&amp;#39;router-view&amp;#39;&lt;/span>)
 }
 },
-meta: { breadCrumb: &lt;span style="color:#00f">&amp;#39;Users&amp;#39;&lt;/span> },
-children: [
+&lt;span style="color:#000">meta&lt;/span>&lt;span style="color:#000">:&lt;/span> { &lt;span style="color:#000">breadCrumb&lt;/span>&lt;span style="color:#000">:&lt;/span> &lt;span style="color:#c41a16">&amp;#39;Users&amp;#39;&lt;/span> },
+&lt;span style="color:#000">children&lt;/span>&lt;span style="color:#000">:&lt;/span> [
 {
-path: &lt;span style="color:#00f">&amp;#39;&amp;#39;&lt;/span>,
-component: {
-template: &lt;span style="color:#00f">`
-&lt;/span>&lt;span style="color:#00f"> &amp;lt;div&amp;gt;
-&lt;/span>&lt;span style="color:#00f"> &amp;lt;h1&amp;gt;Users View&amp;lt;/h1&amp;gt;
-&lt;/span>&lt;span style="color:#00f"> &amp;lt;router-link to=&amp;#34;/users/1&amp;#34;&amp;gt;View User 1&amp;lt;/router-link&amp;gt;
-&lt;/span>&lt;span style="color:#00f"> &amp;lt;/div&amp;gt;
-&lt;/span>&lt;span style="color:#00f"> `&lt;/span>
-}
-},
-{
-path: &lt;span style="color:#00f">&amp;#39;:id&amp;#39;&lt;/span>,
-component: {
-render (c) {
-&lt;span style="color:#000080;font-weight:bold">return&lt;/span> c(&lt;span style="color:#00f">&amp;#39;router-view&amp;#39;&lt;/span>)
-}
-},
-meta: { breadCrumb: &lt;span style="color:#00f">&amp;#39;View User&amp;#39;&lt;/span> },
-children: [
-{
-path: &lt;span style="color:#00f">&amp;#39;&amp;#39;&lt;/span>,
-component: {
-template: &lt;span style="color:#00f">`
-&lt;/span>&lt;span style="color:#00f"> &amp;lt;div&amp;gt;
-&lt;/span>&lt;span style="color:#00f"> &amp;lt;h1&amp;gt;User View&amp;lt;/h1&amp;gt;
-&lt;/span>&lt;span style="color:#00f"> &amp;lt;router-link to=&amp;#34;/users/1/edit&amp;#34;&amp;gt;Edit User&amp;lt;/router-link&amp;gt;
-&lt;/span>&lt;span style="color:#00f"> &amp;lt;/div&amp;gt;
-&lt;/span>&lt;span style="color:#00f"> `&lt;/span>
+&lt;span style="color:#000">path&lt;/span>&lt;span style="color:#000">:&lt;/span> &lt;span style="color:#c41a16">&amp;#39;&amp;#39;&lt;/span>,
+&lt;span style="color:#000">component&lt;/span>&lt;span style="color:#000">:&lt;/span> {
+&lt;span style="color:#000">template&lt;/span>&lt;span style="color:#000">:&lt;/span> &lt;span style="color:#c41a16">`
+&lt;/span>&lt;span style="color:#c41a16"> &amp;lt;div&amp;gt;
+&lt;/span>&lt;span style="color:#c41a16"> &amp;lt;h1&amp;gt;Users View&amp;lt;/h1&amp;gt;
+&lt;/span>&lt;span style="color:#c41a16"> &amp;lt;router-link to=&amp;#34;/users/1&amp;#34;&amp;gt;View User 1&amp;lt;/router-link&amp;gt;
+&lt;/span>&lt;span style="color:#c41a16"> &amp;lt;/div&amp;gt;
+&lt;/span>&lt;span style="color:#c41a16"> `&lt;/span>
 }
 },
 {
-path: &lt;span style="color:#00f">&amp;#39;edit&amp;#39;&lt;/span>,
-component: {
-template: &lt;span style="color:#00f">`&amp;lt;h1&amp;gt;Edit User&amp;lt;/h1&amp;gt;`&lt;/span>
+&lt;span style="color:#000">path&lt;/span>&lt;span style="color:#000">:&lt;/span> &lt;span style="color:#c41a16">&amp;#39;:id&amp;#39;&lt;/span>,
+&lt;span style="color:#000">component&lt;/span>&lt;span style="color:#000">:&lt;/span> {
+&lt;span style="color:#000">render&lt;/span> (&lt;span style="color:#000">c&lt;/span>) {
+&lt;span style="color:#a90d91">return&lt;/span> &lt;span style="color:#000">c&lt;/span>(&lt;span style="color:#c41a16">&amp;#39;router-view&amp;#39;&lt;/span>)
+}
 },
-meta: { breadCrumb: &lt;span style="color:#00f">&amp;#39;Edit User&amp;#39;&lt;/span> }
+&lt;span style="color:#000">meta&lt;/span>&lt;span style="color:#000">:&lt;/span> { &lt;span style="color:#000">breadCrumb&lt;/span>&lt;span style="color:#000">:&lt;/span> &lt;span style="color:#c41a16">&amp;#39;View User&amp;#39;&lt;/span> },
+&lt;span style="color:#000">children&lt;/span>&lt;span style="color:#000">:&lt;/span> [
+{
+&lt;span style="color:#000">path&lt;/span>&lt;span style="color:#000">:&lt;/span> &lt;span style="color:#c41a16">&amp;#39;&amp;#39;&lt;/span>,
+&lt;span style="color:#000">component&lt;/span>&lt;span style="color:#000">:&lt;/span> {
+&lt;span style="color:#000">template&lt;/span>&lt;span style="color:#000">:&lt;/span> &lt;span style="color:#c41a16">`
+&lt;/span>&lt;span style="color:#c41a16"> &amp;lt;div&amp;gt;
+&lt;/span>&lt;span style="color:#c41a16"> &amp;lt;h1&amp;gt;User View&amp;lt;/h1&amp;gt;
+&lt;/span>&lt;span style="color:#c41a16"> &amp;lt;router-link to=&amp;#34;/users/1/edit&amp;#34;&amp;gt;Edit User&amp;lt;/router-link&amp;gt;
+&lt;/span>&lt;span style="color:#c41a16"> &amp;lt;/div&amp;gt;
+&lt;/span>&lt;span style="color:#c41a16"> `&lt;/span>
+}
+},
+{
+&lt;span style="color:#000">path&lt;/span>&lt;span style="color:#000">:&lt;/span> &lt;span style="color:#c41a16">&amp;#39;edit&amp;#39;&lt;/span>,
+&lt;span style="color:#000">component&lt;/span>&lt;span style="color:#000">:&lt;/span> {
+&lt;span style="color:#000">template&lt;/span>&lt;span style="color:#000">:&lt;/span> &lt;span style="color:#c41a16">`&amp;lt;h1&amp;gt;Edit User&amp;lt;/h1&amp;gt;`&lt;/span>
+},
+&lt;span style="color:#000">meta&lt;/span>&lt;span style="color:#000">:&lt;/span> { &lt;span style="color:#000">breadCrumb&lt;/span>&lt;span style="color:#000">:&lt;/span> &lt;span style="color:#c41a16">&amp;#39;Edit User&amp;#39;&lt;/span> }
 }
 ]
 }

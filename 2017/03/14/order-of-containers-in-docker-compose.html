@@ -10,7 +10,7 @@ You can fix it by combining depends_on with a healthcheck.">
 <meta property="og:url" content="https://kinoshita.eti.br/2017/03/14/order-of-containers-in-docker-compose.html"><meta property="article:section" content="posts">
 <meta property="article:published_time" content="2017-03-14T00:00:00+00:00">
 <meta property="article:modified_time" content="2017-03-14T00:00:00+00:00">
-<link rel=stylesheet type=text/css href=https://kinoshita.eti.br/sass/main.66aa172f782442adc0241c99968a79a72e4260187c78830f9bdd6b03abff6103.css integrity="sha256-ZqoXL3gkQq3AJByZlop5py5CYBh8eIMPm91rA6v/YQM=">
+<link rel=stylesheet type=text/css href=https://kinoshita.eti.br/sass/main.09b56b6037e962b67cf7a7701bf2a9ee5da840a4f74b74139c4731f2156a5917.css integrity="sha256-CbVrYDfpYrZ896dwG/Kp7l2oQKT3S3QTnEcx8hVqWRc=">
 <title>kinow | Order of containers in Docker Compose</title>
 </head>
 <body>
@@ -41,8 +41,8 @@ the <em>depends_on</em> statement. This is documented in <a href=https://docs.do
 will initialize Tomcat before Postgres has fully booted. When that happens, you may receive 401, 404, or other
 application errors.</p>
 <p>You can fix it by combining <em>depends_on</em> with a <em>healthcheck</em>. For example:</p>
-<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=color:#080;font-style:italic># File: docker-compose.yml</span>
-version: <span style=color:#00f>&#39;2.1&#39;</span>
+<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=color:#177500># File: docker-compose.yml</span>
+version: <span style=color:#c41a16>&#39;2.1&#39;</span>
 services:
   db:
     container_name: twpg
@@ -51,12 +51,12 @@ services:
       dockerfile: Dockerfile.postgres
     restart: always
     ports:
-      - <span style=color:#00f>&#34;5432:5432&#34;</span>
+      - <span style=color:#c41a16>&#34;5432:5432&#34;</span>
     healthcheck:
-      test: <span style=color:#00f>&#34;pg_isready -h localhost -p 5432 -q -U postgres&#34;</span>
+      test: <span style=color:#c41a16>&#34;pg_isready -h localhost -p 5432 -q -U postgres&#34;</span>
       interval: 10s
       timeout: 5s
-      retries: <span style=color:#00f>5</span>
+      retries: <span style=color:#1c01ce>5</span>
 
   web:
     container_name: twtc
@@ -70,7 +70,7 @@ services:
     links:
       - db
     ports:
-      - <span style=color:#00f>&#34;80:8080&#34;</span>
+      - <span style=color:#c41a16>&#34;80:8080&#34;</span>
 </code></pre></div><p>In the example docker-compose.yml, there are two containers, <em>db</em> and <em>web</em>. web is running
 a Tomcat, and db is running Postgres. Web depends on db (see depends_on), and uses a condition
 <em>service_healthy</em>. Which indicates it depends that that container is healthy.</p>

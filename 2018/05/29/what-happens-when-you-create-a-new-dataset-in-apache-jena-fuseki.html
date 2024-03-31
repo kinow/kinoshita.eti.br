@@ -23,7 +23,7 @@ these articles are more brain-dumps, used by myself for later reference.
 <meta property="og:url" content="https://kinoshita.eti.br/2018/05/29/what-happens-when-you-create-a-new-dataset-in-apache-jena-fuseki.html"><meta property="article:section" content="posts">
 <meta property="article:published_time" content="2018-05-29T00:00:00+00:00">
 <meta property="article:modified_time" content="2018-05-29T00:00:00+00:00">
-<link rel=stylesheet type=text/css href=https://kinoshita.eti.br/sass/main.66aa172f782442adc0241c99968a79a72e4260187c78830f9bdd6b03abff6103.css integrity="sha256-ZqoXL3gkQq3AJByZlop5py5CYBh8eIMPm91rA6v/YQM=">
+<link rel=stylesheet type=text/css href=https://kinoshita.eti.br/sass/main.09b56b6037e962b67cf7a7701bf2a9ee5da840a4f74b74139c4731f2156a5917.css integrity="sha256-CbVrYDfpYrZ896dwG/Kp7l2oQKT3S3QTnEcx8hVqWRc=">
 <title>kinow | What happens when you create a new dataset in Apache Jena Fuseki</title>
 </head>
 <body>
@@ -98,33 +98,33 @@ later by the <code>RDFParser</code>.</p>
 <h3 id=actiondatasetsassemblerfromform-fuseki>ActionDatasets#assemblerFromForm() (Fuseki)</h3>
 <p>In <code>#assemblerFromForm()</code>, it will create a template, and then use
 <code>RDFParser</code> to parse the template and load into <code>SteamRFF</code>. The template looks like this:</p>
-<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sparql data-lang=sparql><span style=color:#080;font-style:italic># Licensed under the terms of http://www.apache.org/licenses/LICENSE-2.0</span>
+<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sparql data-lang=sparql><span style=color:#177500># Licensed under the terms of http://www.apache.org/licenses/LICENSE-2.0</span>
 
-<span style=color:#a61717;background-color:#e3d2d2>@</span><span style=color:navy;font-weight:700>prefix</span> :        &lt;#&gt; .
-<span style=color:#a61717;background-color:#e3d2d2>@</span><span style=color:navy;font-weight:700>prefix</span> fuseki:  &lt;http://jena.apache.org/fuseki#&gt; .
-<span style=color:#a61717;background-color:#e3d2d2>@</span><span style=color:navy;font-weight:700>prefix</span> rdf:     &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt; .
+<span style=color:#000>@</span><span style=color:#a90d91>prefix</span> :        <span style=color:#000>&lt;#&gt;</span> .
+<span style=color:#000>@</span><span style=color:#a90d91>prefix</span> <span style=color:#000>fuseki</span>:  <span style=color:#000>&lt;http://jena.apache.org/fuseki#&gt;</span> .
+<span style=color:#000>@</span><span style=color:#a90d91>prefix</span> <span style=color:#000>rdf</span>:     <span style=color:#000>&lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt;</span> .
 
-<span style=color:#a61717;background-color:#e3d2d2>@</span><span style=color:navy;font-weight:700>prefix</span> rdfs:    &lt;http://www.w3.org/2000/01/rdf-schema#&gt; .
-<span style=color:#a61717;background-color:#e3d2d2>@</span><span style=color:navy;font-weight:700>prefix</span> tdb:     &lt;http://jena.hpl.hp.com/2008/tdb#&gt; .
-<span style=color:#a61717;background-color:#e3d2d2>@</span><span style=color:navy;font-weight:700>prefix</span> ja:      &lt;http://jena.hpl.hp.com/2005/11/Assembler#&gt; .
+<span style=color:#000>@</span><span style=color:#a90d91>prefix</span> <span style=color:#000>rdfs</span>:    <span style=color:#000>&lt;http://www.w3.org/2000/01/rdf-schema#&gt;</span> .
+<span style=color:#000>@</span><span style=color:#a90d91>prefix</span> <span style=color:#000>tdb</span>:     <span style=color:#000>&lt;http://jena.hpl.hp.com/2008/tdb#&gt;</span> .
+<span style=color:#000>@</span><span style=color:#a90d91>prefix</span> <span style=color:#000>ja</span>:      <span style=color:#000>&lt;http://jena.hpl.hp.com/2005/11/Assembler#&gt;</span> .
 
-<span style=color:#080;font-style:italic>## ---------------------------------------------------------------</span>
-<span style=color:#080;font-style:italic>## Updatable in-memory dataset.</span>
+<span style=color:#177500>## ---------------------------------------------------------------</span>
+<span style=color:#177500>## Updatable in-memory dataset.</span>
 
-&lt;#service1&gt; rdf:<span style=color:navy;font-weight:700>type</span> fuseki:<span style=color:navy;font-weight:700>Service</span> ;
-    <span style=color:#080;font-style:italic># URI of the dataset -- http://host:port/aaa</span>
-    fuseki:<span style=color:navy;font-weight:700>name</span>                        <span style=color:#00f>&#34;aaa&#34;</span> ;
-    fuseki:<span style=color:navy;font-weight:700>serviceQuery</span>                <span style=color:#00f>&#34;sparql&#34;</span> ;
-    fuseki:<span style=color:navy;font-weight:700>serviceQuery</span>                <span style=color:#00f>&#34;query&#34;</span> ;
-    fuseki:<span style=color:navy;font-weight:700>serviceUpdate</span>               <span style=color:#00f>&#34;update&#34;</span> ;
-    fuseki:<span style=color:navy;font-weight:700>serviceUpload</span>               <span style=color:#00f>&#34;upload&#34;</span> ;
-    fuseki:<span style=color:navy;font-weight:700>serviceReadWriteGraphStore</span>  <span style=color:#00f>&#34;data&#34;</span> ;     
-    fuseki:<span style=color:navy;font-weight:700>serviceReadGraphStore</span>       <span style=color:#00f>&#34;get&#34;</span> ;
-    fuseki:<span style=color:navy;font-weight:700>dataset</span>                     &lt;#dataset&gt; ;
+<span style=color:#000>&lt;#service1&gt;</span> <span style=color:#000>rdf</span>:<span style=color:#000>type</span> <span style=color:#000>fuseki</span>:<span style=color:#000>Service</span> ;
+    <span style=color:#177500># URI of the dataset -- http://host:port/aaa</span>
+    <span style=color:#000>fuseki</span>:<span style=color:#000>name</span>                        <span style=color:#c41a16>&#34;aaa&#34;</span> ;
+    <span style=color:#000>fuseki</span>:<span style=color:#000>serviceQuery</span>                <span style=color:#c41a16>&#34;sparql&#34;</span> ;
+    <span style=color:#000>fuseki</span>:<span style=color:#000>serviceQuery</span>                <span style=color:#c41a16>&#34;query&#34;</span> ;
+    <span style=color:#000>fuseki</span>:<span style=color:#000>serviceUpdate</span>               <span style=color:#c41a16>&#34;update&#34;</span> ;
+    <span style=color:#000>fuseki</span>:<span style=color:#000>serviceUpload</span>               <span style=color:#c41a16>&#34;upload&#34;</span> ;
+    <span style=color:#000>fuseki</span>:<span style=color:#000>serviceReadWriteGraphStore</span>  <span style=color:#c41a16>&#34;data&#34;</span> ;     
+    <span style=color:#000>fuseki</span>:<span style=color:#000>serviceReadGraphStore</span>       <span style=color:#c41a16>&#34;get&#34;</span> ;
+    <span style=color:#000>fuseki</span>:<span style=color:#000>dataset</span>                     <span style=color:#000>&lt;#dataset&gt;</span> ;
     .
 
-<span style=color:#080;font-style:italic># Transactional, in-memory dataset. Initially empty.</span>
-&lt;#dataset&gt; rdf:<span style=color:navy;font-weight:700>type</span> ja:<span style=color:navy;font-weight:700>DatasetTxnMem</span> .
+<span style=color:#177500># Transactional, in-memory dataset. Initially empty.</span>
+<span style=color:#000>&lt;#dataset&gt;</span> <span style=color:#000>rdf</span>:<span style=color:#000>type</span> <span style=color:#000>ja</span>:<span style=color:#000>DatasetTxnMem</span> .
 </code></pre></div><h3 id=persisting-the-dataset>Persisting the dataset</h3>
 <p>Jena Fuseki will create a local copy of the template, using RIOT&rsquo;s <code>RDFDataMgr</code>. For my environment, running from
 Eclipse, the file location was <em>/home/kinow/Development/java/jena/jena/jena-fuseki2/jena-fuseki-core/run/system_files/902154aa-2bb6-11b2-8053-024232e7b374</em>.</p>
@@ -151,20 +151,20 @@ Javadocs say: “A name in the URL space of the server”.</p>
 <p>And then, finally, the transaction is committed, the response is prepared (a 200 OK in <code>text/plain</code>).
 And a <code>null</code> is returned, which means empty response.</p>
 <p>And here&rsquo;s some of the logs produced during this experiment.</p>
-<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>[2018-05-28 21:11:43] Config     INFO  Load configuration: file:///home/kinow/Development/java/jena/jena/jena-fuseki2/jena-fuseki-core/run/configuration/ds2.ttl
-[2018-05-28 21:11:43] Config     INFO  Load configuration: file:///home/kinow/Development/java/jena/jena/jena-fuseki2/jena-fuseki-core/run/configuration/p1.ttl
-[2018-05-28 21:11:43] Config     INFO  Register: /ds2
-[2018-05-28 21:11:43] Config     INFO  Register: /p1
-[2018-05-28 21:11:43] Server     INFO  Started 2018/05/28 21:11:43 NZST on port <span style=color:#00f>3030</span>
-[2018-05-28 21:11:52] Admin      INFO  [1] GET http://localhost:3030/$/server
-[2018-05-28 21:11:52] Admin      INFO  [1] <span style=color:#00f>200</span> OK (<span style=color:#00f>11</span> ms)
-[2018-05-28 21:12:41] Admin      INFO  [2] GET http://localhost:3030/$/server
-[2018-05-28 21:12:41] Admin      INFO  [2] <span style=color:#00f>200</span> OK (<span style=color:#00f>3</span> ms)
-[2018-05-28 21:22:33] Admin      INFO  [3] POST http://localhost:3030/$/datasets
-[2018-05-28 21:46:25] Admin      INFO  [3] Create database : name = /aaa
-[2018-05-28 22:16:17] Admin      INFO  [3] <span style=color:#00f>200</span> OK (3,224.390 s)
-[2018-05-28 22:16:18] Admin      INFO  [4] GET http://localhost:3030/$/server
-[2018-05-28 22:16:18] Admin      INFO  [4] <span style=color:#00f>200</span> OK (<span style=color:#00f>8</span> ms)
+<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=color:#000>[</span>2018-05-28 21:11:43<span style=color:#000>]</span> Config     INFO  Load configuration: file:///home/kinow/Development/java/jena/jena/jena-fuseki2/jena-fuseki-core/run/configuration/ds2.ttl
+<span style=color:#000>[</span>2018-05-28 21:11:43<span style=color:#000>]</span> Config     INFO  Load configuration: file:///home/kinow/Development/java/jena/jena/jena-fuseki2/jena-fuseki-core/run/configuration/p1.ttl
+<span style=color:#000>[</span>2018-05-28 21:11:43<span style=color:#000>]</span> Config     INFO  Register: /ds2
+<span style=color:#000>[</span>2018-05-28 21:11:43<span style=color:#000>]</span> Config     INFO  Register: /p1
+<span style=color:#000>[</span>2018-05-28 21:11:43<span style=color:#000>]</span> Server     INFO  Started 2018/05/28 21:11:43 NZST on port <span style=color:#1c01ce>3030</span>
+<span style=color:#000>[</span>2018-05-28 21:11:52<span style=color:#000>]</span> Admin      INFO  <span style=color:#000>[</span>1<span style=color:#000>]</span> GET http://localhost:3030/$/server
+<span style=color:#000>[</span>2018-05-28 21:11:52<span style=color:#000>]</span> Admin      INFO  <span style=color:#000>[</span>1<span style=color:#000>]</span> <span style=color:#1c01ce>200</span> OK <span style=color:#000>(</span><span style=color:#1c01ce>11</span> ms<span style=color:#000>)</span>
+<span style=color:#000>[</span>2018-05-28 21:12:41<span style=color:#000>]</span> Admin      INFO  <span style=color:#000>[</span>2<span style=color:#000>]</span> GET http://localhost:3030/$/server
+<span style=color:#000>[</span>2018-05-28 21:12:41<span style=color:#000>]</span> Admin      INFO  <span style=color:#000>[</span>2<span style=color:#000>]</span> <span style=color:#1c01ce>200</span> OK <span style=color:#000>(</span><span style=color:#1c01ce>3</span> ms<span style=color:#000>)</span>
+<span style=color:#000>[</span>2018-05-28 21:22:33<span style=color:#000>]</span> Admin      INFO  <span style=color:#000>[</span>3<span style=color:#000>]</span> POST http://localhost:3030/$/datasets
+<span style=color:#000>[</span>2018-05-28 21:46:25<span style=color:#000>]</span> Admin      INFO  <span style=color:#000>[</span>3<span style=color:#000>]</span> Create database : <span style=color:#000>name</span> <span style=color:#000>=</span> /aaa
+<span style=color:#000>[</span>2018-05-28 22:16:17<span style=color:#000>]</span> Admin      INFO  <span style=color:#000>[</span>3<span style=color:#000>]</span> <span style=color:#1c01ce>200</span> OK <span style=color:#000>(</span>3,224.390 s<span style=color:#000>)</span>
+<span style=color:#000>[</span>2018-05-28 22:16:18<span style=color:#000>]</span> Admin      INFO  <span style=color:#000>[</span>4<span style=color:#000>]</span> GET http://localhost:3030/$/server
+<span style=color:#000>[</span>2018-05-28 22:16:18<span style=color:#000>]</span> Admin      INFO  <span style=color:#000>[</span>4<span style=color:#000>]</span> <span style=color:#1c01ce>200</span> OK <span style=color:#000>(</span><span style=color:#1c01ce>8</span> ms<span style=color:#000>)</span>
 </code></pre></div><p>So that&rsquo;s that.</p>
 <p>Happy hacking !</p>
 <aside class=links>

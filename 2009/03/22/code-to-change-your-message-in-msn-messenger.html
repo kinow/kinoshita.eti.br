@@ -9,7 +9,7 @@ Basically, you just send a message to the MSN UI API with a defined data structu
 <meta property="og:url" content="https://kinoshita.eti.br/2009/03/22/code-to-change-your-message-in-msn-messenger.html"><meta property="article:section" content="posts">
 <meta property="article:published_time" content="2009-03-22T00:00:00+00:00">
 <meta property="article:modified_time" content="2009-03-22T00:00:00+00:00">
-<link rel=stylesheet type=text/css href=https://kinoshita.eti.br/sass/main.66aa172f782442adc0241c99968a79a72e4260187c78830f9bdd6b03abff6103.css integrity="sha256-ZqoXL3gkQq3AJByZlop5py5CYBh8eIMPm91rA6v/YQM=">
+<link rel=stylesheet type=text/css href=https://kinoshita.eti.br/sass/main.09b56b6037e962b67cf7a7701bf2a9ee5da840a4f74b74139c4731f2156a5917.css integrity="sha256-CbVrYDfpYrZ896dwG/Kp7l2oQKT3S3QTnEcx8hVqWRc=">
 <title>kinow | Code to change your message in MSN messenger</title>
 </head>
 <body>
@@ -36,61 +36,61 @@ Basically, you just send a message to the MSN UI API with a defined data structu
 </aside>
 <p>I&rsquo;ve always wanted to know how does the code to show what was I listening to looked like. I found it after installing XMPlay and XMPlay MSN Plug-in. The plug-in zip had the plug-in itself and its source code. And what a neat source code (-:.</p>
 <p>Basically, you just send a message to the MSN UI API with a defined data structure. And to remove the message, just send again with an empty string.</p>
-<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c><span style=color:#080;font-style:italic>/*
-</span><span style=color:#080;font-style:italic>Bruno de Paula Kinoshita
-</span><span style=color:#080;font-style:italic>original src code:
-</span><span style=color:#080;font-style:italic>XMPlay MSN Plugin (c) 2005-2006 Elliott Sales de Andrade
-</span><span style=color:#080;font-style:italic>*/</span>
+<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c><span style=color:#177500>/*
+</span><span style=color:#177500>Bruno de Paula Kinoshita
+</span><span style=color:#177500>original src code:
+</span><span style=color:#177500>XMPlay MSN Plugin (c) 2005-2006 Elliott Sales de Andrade
+</span><span style=color:#177500>*/</span>
 
-<span style=color:teal>#include</span> <span style=color:teal>&lt;cstdlib&gt;</span><span style=color:teal>
-</span><span style=color:teal>#include</span> <span style=color:teal>&lt;iostream&gt;</span><span style=color:teal>
-</span><span style=color:teal>#include</span> <span style=color:teal>&lt;windows.h&gt;</span><span style=color:teal>
-</span><span style=color:teal></span>
-using namespace std;
+<span style=color:#633820>#include</span> <span style=color:#633820>&lt;cstdlib&gt;</span><span style=color:#633820>
+</span><span style=color:#633820>#include</span> <span style=color:#633820>&lt;iostream&gt;</span><span style=color:#633820>
+</span><span style=color:#633820>#include</span> <span style=color:#633820>&lt;windows.h&gt;</span><span style=color:#633820>
+</span><span style=color:#633820></span>
+<span style=color:#000>using</span> <span style=color:#000>namespace</span> <span style=color:#000>std</span>;
 
-<span style=color:navy;font-weight:700>typedef</span> <span style=color:navy;font-weight:700>struct</span> {
-BOOL showCues;
-BOOL keepOnClose;
-} MSNStuff;
-<span style=color:navy;font-weight:700>static</span> MSNStuff msnConf;
+<span style=color:#a90d91>typedef</span> <span style=color:#a90d91>struct</span> {
+<span style=color:#000>BOOL</span> <span style=color:#000>showCues</span>;
+<span style=color:#000>BOOL</span> <span style=color:#000>keepOnClose</span>;
+} <span style=color:#000>MSNStuff</span>;
+<span style=color:#a90d91>static</span> <span style=color:#000>MSNStuff</span> <span style=color:#000>msnConf</span>;
 
-<span style=color:navy;font-weight:700>void</span> setNowPlaying( <span style=color:navy;font-weight:700>char</span> *title)
+<span style=color:#a90d91>void</span> <span style=color:#000>setNowPlaying</span>( <span style=color:#a90d91>char</span> <span style=color:#000>*</span><span style=color:#000>title</span>)
 {
-    wchar_t *lpMsn;
-    <span style=color:navy;font-weight:700>int</span> strLen = <span style=color:#00f>20</span>;
-    HWND xmpwin;
-    HWND msnui=<span style=color:#00f>0</span>;
+    <span style=color:#000>wchar_t</span> <span style=color:#000>*</span><span style=color:#000>lpMsn</span>;
+    <span style=color:#a90d91>int</span> <span style=color:#000>strLen</span> <span style=color:#000>=</span> <span style=color:#1c01ce>20</span>;
+    <span style=color:#000>HWND</span> <span style=color:#000>xmpwin</span>;
+    <span style=color:#000>HWND</span> <span style=color:#000>msnui</span><span style=color:#000>=</span><span style=color:#1c01ce>0</span>;
     
-    lpMsn = (wchar_t*)calloc(<span style=color:#00f>1024</span>,<span style=color:#00f>1024</span>);
-    <span style=color:#080;font-style:italic>// stuff for MSN before...
-</span><span style=color:#080;font-style:italic></span>    memcpy(lpMsn, L&amp;quot;<span style=color:#a61717;background-color:#e3d2d2>\</span>&amp;<span style=color:#a61717;background-color:#e3d2d2>#</span><span style=color:#00f>92</span>;&amp;<span style=color:#a61717;background-color:#e3d2d2>#</span><span style=color:#00f>48</span>;Music<span style=color:#a61717;background-color:#e3d2d2>\</span>&amp;<span style=color:#a61717;background-color:#e3d2d2>#</span><span style=color:#00f>92</span>;&amp;<span style=color:#a61717;background-color:#e3d2d2>#</span><span style=color:#00f>48</span>;<span style=color:#00f>1</span><span style=color:#a61717;background-color:#e3d2d2>\</span>&amp;<span style=color:#a61717;background-color:#e3d2d2>#</span><span style=color:#00f>92</span>;&amp;<span style=color:#a61717;background-color:#e3d2d2>#</span><span style=color:#00f>48</span>;{<span style=color:#00f>0</span>}<span style=color:#a61717;background-color:#e3d2d2>\</span>&amp;<span style=color:#a61717;background-color:#e3d2d2>#</span><span style=color:#00f>92</span>;&amp;<span style=color:#a61717;background-color:#e3d2d2>#</span><span style=color:#00f>48</span>;&amp;quot;, <span style=color:#00f>17</span>*<span style=color:#00f>2</span>);
-    <span style=color:#080;font-style:italic>// actual title...
-</span><span style=color:#080;font-style:italic></span>    strLen=MultiByteToWideChar(false?CP_UTF8:CP_ACP,<span style=color:#00f>0</span>,title,-<span style=color:#00f>1</span>,lpMsn+<span style=color:#00f>17</span>,<span style=color:#00f>492</span>)-<span style=color:#00f>1</span>;<span style=color:#a61717;background-color:#e3d2d2>Â</span>  <span style=color:#080;font-style:italic>/* 1024/2 - 20 */</span>
-    <span style=color:#080;font-style:italic>// stuff for MSN after...
-</span><span style=color:#080;font-style:italic></span>    memcpy(lpMsn + <span style=color:#00f>17</span> + strLen, L&amp;quot;<span style=color:#a61717;background-color:#e3d2d2>\</span>&amp;<span style=color:#a61717;background-color:#e3d2d2>#</span><span style=color:#00f>92</span>;&amp;<span style=color:#a61717;background-color:#e3d2d2>#</span><span style=color:#00f>48</span>;&amp;quot;, <span style=color:#00f>3</span>*<span style=color:#00f>2</span>);
-    strLen += <span style=color:#00f>20</span>;
+    <span style=color:#000>lpMsn</span> <span style=color:#000>=</span> (<span style=color:#000>wchar_t</span><span style=color:#000>*</span>)<span style=color:#000>calloc</span>(<span style=color:#1c01ce>1024</span>,<span style=color:#1c01ce>1024</span>);
+    <span style=color:#177500>// stuff for MSN before...
+</span><span style=color:#177500></span>    <span style=color:#000>memcpy</span>(<span style=color:#000>lpMsn</span>, <span style=color:#000>L</span><span style=color:#000>&amp;</span><span style=color:#000>quot</span>;<span style=color:#000>\</span><span style=color:#000>&amp;</span><span style=color:#000>#</span><span style=color:#1c01ce>92</span>;<span style=color:#000>&amp;</span><span style=color:#000>#</span><span style=color:#1c01ce>48</span>;<span style=color:#000>Music</span><span style=color:#000>\</span><span style=color:#000>&amp;</span><span style=color:#000>#</span><span style=color:#1c01ce>92</span>;<span style=color:#000>&amp;</span><span style=color:#000>#</span><span style=color:#1c01ce>48</span>;<span style=color:#1c01ce>1</span><span style=color:#000>\</span><span style=color:#000>&amp;</span><span style=color:#000>#</span><span style=color:#1c01ce>92</span>;<span style=color:#000>&amp;</span><span style=color:#000>#</span><span style=color:#1c01ce>48</span>;{<span style=color:#1c01ce>0</span>}<span style=color:#000>\</span><span style=color:#000>&amp;</span><span style=color:#000>#</span><span style=color:#1c01ce>92</span>;<span style=color:#000>&amp;</span><span style=color:#000>#</span><span style=color:#1c01ce>48</span>;<span style=color:#000>&amp;</span><span style=color:#000>quot</span>;, <span style=color:#1c01ce>17</span><span style=color:#000>*</span><span style=color:#1c01ce>2</span>);
+    <span style=color:#177500>// actual title...
+</span><span style=color:#177500></span>    <span style=color:#000>strLen</span><span style=color:#000>=</span><span style=color:#000>MultiByteToWideChar</span>(<span style=color:#a90d91>false</span><span style=color:#000>?</span><span style=color:#000>CP_UTF8</span>:<span style=color:#000>CP_ACP</span>,<span style=color:#1c01ce>0</span>,<span style=color:#000>title</span>,<span style=color:#000>-</span><span style=color:#1c01ce>1</span>,<span style=color:#000>lpMsn</span><span style=color:#000>+</span><span style=color:#1c01ce>17</span>,<span style=color:#1c01ce>492</span>)<span style=color:#000>-</span><span style=color:#1c01ce>1</span>;<span style=color:#000>Â</span>  <span style=color:#177500>/* 1024/2 - 20 */</span>
+    <span style=color:#177500>// stuff for MSN after...
+</span><span style=color:#177500></span>    <span style=color:#000>memcpy</span>(<span style=color:#000>lpMsn</span> <span style=color:#000>+</span> <span style=color:#1c01ce>17</span> <span style=color:#000>+</span> <span style=color:#000>strLen</span>, <span style=color:#000>L</span><span style=color:#000>&amp;</span><span style=color:#000>quot</span>;<span style=color:#000>\</span><span style=color:#000>&amp;</span><span style=color:#000>#</span><span style=color:#1c01ce>92</span>;<span style=color:#000>&amp;</span><span style=color:#000>#</span><span style=color:#1c01ce>48</span>;<span style=color:#000>&amp;</span><span style=color:#000>quot</span>;, <span style=color:#1c01ce>3</span><span style=color:#000>*</span><span style=color:#1c01ce>2</span>);
+    <span style=color:#000>strLen</span> <span style=color:#000>+=</span> <span style=color:#1c01ce>20</span>;
     
-    COPYDATASTRUCT msndata;
-    msndata.dwData = <span style=color:#00f>0x547</span>;
-    msndata.lpData = (<span style=color:navy;font-weight:700>void</span>*)lpMsn;
-    msndata.cbData = strLen * <span style=color:#00f>2</span>;
+    <span style=color:#000>COPYDATASTRUCT</span> <span style=color:#000>msndata</span>;
+    <span style=color:#000>msndata</span>.<span style=color:#000>dwData</span> <span style=color:#000>=</span> <span style=color:#1c01ce>0x547</span>;
+    <span style=color:#000>msndata</span>.<span style=color:#000>lpData</span> <span style=color:#000>=</span> (<span style=color:#a90d91>void</span><span style=color:#000>*</span>)<span style=color:#000>lpMsn</span>;
+    <span style=color:#000>msndata</span>.<span style=color:#000>cbData</span> <span style=color:#000>=</span> <span style=color:#000>strLen</span> <span style=color:#000>*</span> <span style=color:#1c01ce>2</span>;
     
-    <span style=color:navy;font-weight:700>while</span> ( msnui = FindWindowEx(NULL, msnui, &amp;quot;MsnMsgrUIManager&amp;quot;, NULL) )
-        SendMessage(msnui, WM_COPYDATA, (WPARAM)xmpwin, (LPARAM)&amp;amp;msndata);
+    <span style=color:#a90d91>while</span> ( <span style=color:#000>msnui</span> <span style=color:#000>=</span> <span style=color:#000>FindWindowEx</span>(<span style=color:#a90d91>NULL</span>, <span style=color:#000>msnui</span>, <span style=color:#000>&amp;</span><span style=color:#000>quot</span>;<span style=color:#000>MsnMsgrUIManager</span><span style=color:#000>&amp;</span><span style=color:#000>quot</span>;, <span style=color:#a90d91>NULL</span>) )
+        <span style=color:#000>SendMessage</span>(<span style=color:#000>msnui</span>, <span style=color:#000>WM_COPYDATA</span>, (<span style=color:#000>WPARAM</span>)<span style=color:#000>xmpwin</span>, (<span style=color:#000>LPARAM</span>)<span style=color:#000>&amp;</span><span style=color:#000>amp</span>;<span style=color:#000>msndata</span>);
 }
 
-<span style=color:navy;font-weight:700>int</span> main(<span style=color:navy;font-weight:700>int</span> argc, <span style=color:navy;font-weight:700>char</span> *argv[])
+<span style=color:#a90d91>int</span> <span style=color:#000>main</span>(<span style=color:#a90d91>int</span> <span style=color:#000>argc</span>, <span style=color:#a90d91>char</span> <span style=color:#000>*</span><span style=color:#000>argv</span>[])
 {
-    <span style=color:navy;font-weight:700>char</span> *title;
+    <span style=color:#a90d91>char</span> <span style=color:#000>*</span><span style=color:#000>title</span>;
     
-    <span style=color:navy;font-weight:700>if</span> ( argc == <span style=color:#00f>1</span> )
-        title = &amp;quot;&amp;quot;;
-    <span style=color:navy;font-weight:700>else</span>
-        title = argv[<span style=color:#00f>1</span>];
+    <span style=color:#a90d91>if</span> ( <span style=color:#000>argc</span> <span style=color:#000>==</span> <span style=color:#1c01ce>1</span> )
+        <span style=color:#000>title</span> <span style=color:#000>=</span> <span style=color:#000>&amp;</span><span style=color:#000>quot</span>;<span style=color:#000>&amp;</span><span style=color:#000>quot</span>;;
+    <span style=color:#a90d91>else</span>
+        <span style=color:#000>title</span> <span style=color:#000>=</span> <span style=color:#000>argv</span>[<span style=color:#1c01ce>1</span>];
     
-    setNowPlaying ( title );
+    <span style=color:#000>setNowPlaying</span> ( <span style=color:#000>title</span> );
     
-    <span style=color:navy;font-weight:700>return</span> EXIT_SUCCESS;
+    <span style=color:#a90d91>return</span> <span style=color:#000>EXIT_SUCCESS</span>;
 }
 </code></pre></div>
 <aside class=links>

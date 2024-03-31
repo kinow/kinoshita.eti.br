@@ -8,7 +8,7 @@
 <meta property="og:url" content="https://kinoshita.eti.br/2021/10/17/blender-rendering-on-nvidia-jetson-nano.html"><meta property="article:section" content="posts">
 <meta property="article:published_time" content="2021-10-17T00:00:00+00:00">
 <meta property="article:modified_time" content="2021-10-17T00:00:00+00:00">
-<link rel=stylesheet type=text/css href=https://kinoshita.eti.br/sass/main.66aa172f782442adc0241c99968a79a72e4260187c78830f9bdd6b03abff6103.css integrity="sha256-ZqoXL3gkQq3AJByZlop5py5CYBh8eIMPm91rA6v/YQM=">
+<link rel=stylesheet type=text/css href=https://kinoshita.eti.br/sass/main.09b56b6037e962b67cf7a7701bf2a9ee5da840a4f74b74139c4731f2156a5917.css integrity="sha256-CbVrYDfpYrZ896dwG/Kp7l2oQKT3S3QTnEcx8hVqWRc=">
 <title>kinow | Blender rendering on NVIDIA Jetson Nano</title>
 </head>
 <body>
@@ -84,79 +84,79 @@ Jetson Nano Ubuntu, and set the render engine back to CPU on my Ubuntu.</p>
 </figure>
 <p>First I rendered Suzanne on my Thinkpad using the CPU. It took <strong>11 seconds to render</strong>
 the scene.</p>
-<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>kinow@ranma:~/Downloads/blender$ /opt/blender-2.79-linux-glibc219-x86_64/blender -b b-jetson.blend -o ./ -f <span style=color:#00f>1</span>
+<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>kinow@ranma:~/Downloads/blender$ /opt/blender-2.79-linux-glibc219-x86_64/blender -b b-jetson.blend -o ./ -f <span style=color:#1c01ce>1</span>
 found bundled python: /opt/blender-2.79-linux-glibc219-x86_64/2.79/python
 Read blend: /home/kinow/Downloads/blender/b-jetson.blend
-Fra:1 Mem:260.65M (0.00M, Peak 525.85M) | Time:00:01.68 | Preparing Scene data
-Fra:1 Mem:260.67M (0.00M, Peak 525.85M) | Time:00:01.68 | Preparing Scene data
-Fra:1 Mem:260.67M (0.00M, Peak 525.85M) | Time:00:01.68 | Creating Shadowbuffers
-Fra:1 Mem:260.67M (0.00M, Peak 525.85M) | Time:00:01.68 | Raytree.. preparing
-Fra:1 Mem:560.45M (0.00M, Peak 560.45M) | Time:00:01.87 | Raytree.. building
-(...)
-Fra:1 Mem:545.16M (0.00M, Peak 1012.27M) | Time:00:11.36 | Scene, Part 82-135
-Fra:1 Mem:544.70M (0.00M, Peak 1012.27M) | Time:00:11.39 | Scene, Part 86-135
-Fra:1 Mem:16.93M (0.00M, Peak 1012.27M) | Time:00:11.43 | Sce: Scene Ve:2016578 Fa:2182948 La:1
-Saved: <span style=color:#00f>&#39;./0001.png&#39;</span>
- Time: 00:11.49 (Saving: 00:00.06)
+Fra:1 Mem:260.65M <span style=color:#000>(</span>0.00M, Peak 525.85M<span style=color:#000>)</span> | Time:00:01.68 | Preparing Scene data
+Fra:1 Mem:260.67M <span style=color:#000>(</span>0.00M, Peak 525.85M<span style=color:#000>)</span> | Time:00:01.68 | Preparing Scene data
+Fra:1 Mem:260.67M <span style=color:#000>(</span>0.00M, Peak 525.85M<span style=color:#000>)</span> | Time:00:01.68 | Creating Shadowbuffers
+Fra:1 Mem:260.67M <span style=color:#000>(</span>0.00M, Peak 525.85M<span style=color:#000>)</span> | Time:00:01.68 | Raytree.. preparing
+Fra:1 Mem:560.45M <span style=color:#000>(</span>0.00M, Peak 560.45M<span style=color:#000>)</span> | Time:00:01.87 | Raytree.. building
+<span style=color:#000>(</span>...<span style=color:#000>)</span>
+Fra:1 Mem:545.16M <span style=color:#000>(</span>0.00M, Peak 1012.27M<span style=color:#000>)</span> | Time:00:11.36 | Scene, Part 82-135
+Fra:1 Mem:544.70M <span style=color:#000>(</span>0.00M, Peak 1012.27M<span style=color:#000>)</span> | Time:00:11.39 | Scene, Part 86-135
+Fra:1 Mem:16.93M <span style=color:#000>(</span>0.00M, Peak 1012.27M<span style=color:#000>)</span> | Time:00:11.43 | Sce: Scene Ve:2016578 Fa:2182948 La:1
+Saved: <span style=color:#c41a16>&#39;./0001.png&#39;</span>
+ Time: 00:11.49 <span style=color:#000>(</span>Saving: 00:00.06<span style=color:#000>)</span>
 </code></pre></div><p>Tried the same command on my NVIDIA Jetson Nano now. It took <strong>48 seconds</strong>. Nearly 4 times
 longer than my old Thinkpad.</p>
-<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>root@kinow-jetson:/home/kinow# blender -b b-jetson.blend -o ./ -f <span style=color:#00f>1</span>
-AL lib: (EE) UpdateDeviceParams: Failed to set 44100hz, got 48000hz instead
+<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>root@kinow-jetson:/home/kinow# blender -b b-jetson.blend -o ./ -f <span style=color:#1c01ce>1</span>
+AL lib: <span style=color:#000>(</span>EE<span style=color:#000>)</span> UpdateDeviceParams: Failed to <span style=color:#a90d91>set</span> 44100hz, got 48000hz instead
 Read blend: /home/kinow/b-jetson.blend
-Fra:1 Mem:260.50M (0.00M, Peak 525.70M) | Time:00:05.27 | Preparing Scene data
-Fra:1 Mem:260.51M (0.00M, Peak 525.70M) | Time:00:05.27 | Preparing Scene data
-(...)
-Fra:1 Mem:594.15M (0.00M, Peak 727.22M) | Time:00:48.26 | Scene, Part 86-135
-Fra:1 Mem:16.78M (0.00M, Peak 727.22M) | Time:00:48.36 | Sce: Scene Ve:2016578 Fa:2183144 La:1
-Saved: <span style=color:#00f>&#39;./0001.png&#39;</span>
- Time: 00:48.53 (Saving: 00:00.17)
+Fra:1 Mem:260.50M <span style=color:#000>(</span>0.00M, Peak 525.70M<span style=color:#000>)</span> | Time:00:05.27 | Preparing Scene data
+Fra:1 Mem:260.51M <span style=color:#000>(</span>0.00M, Peak 525.70M<span style=color:#000>)</span> | Time:00:05.27 | Preparing Scene data
+<span style=color:#000>(</span>...<span style=color:#000>)</span>
+Fra:1 Mem:594.15M <span style=color:#000>(</span>0.00M, Peak 727.22M<span style=color:#000>)</span> | Time:00:48.26 | Scene, Part 86-135
+Fra:1 Mem:16.78M <span style=color:#000>(</span>0.00M, Peak 727.22M<span style=color:#000>)</span> | Time:00:48.36 | Sce: Scene Ve:2016578 Fa:2183144 La:1
+Saved: <span style=color:#c41a16>&#39;./0001.png&#39;</span>
+ Time: 00:48.53 <span style=color:#000>(</span>Saving: 00:00.17<span style=color:#000>)</span>
 </code></pre></div><p>I thought it could be because my scene was too simple for the CPU to render,
 so the GPU was being slower maybe due to the tile sizes or CPU&lt;->memory context
 switching.</p>
 <p>So I tried the Splash screen now. <strong>01 hour and 53 minutes</strong> on my Thinkpad.</p>
-<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>Fra:1 Mem:2088.19M (0.00M, Peak 4612.16M) | Time:01:53:53.18 | Sce: Scene Ve:0 Fa:0 La:0
-Saved: <span style=color:#00f>&#39;./0001.png&#39;</span>
- Time: 01:53:54.08 (Saving: 00:00.90)
+<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>Fra:1 Mem:2088.19M <span style=color:#000>(</span>0.00M, Peak 4612.16M<span style=color:#000>)</span> | Time:01:53:53.18 | Sce: Scene Ve:0 Fa:0 La:0
+Saved: <span style=color:#c41a16>&#39;./0001.png&#39;</span>
+ Time: 01:53:54.08 <span style=color:#000>(</span>Saving: 00:00.90<span style=color:#000>)</span>
 </code></pre></div><p>And on the NVIDIA Jetson Nano, <strong>22 hours and 38 minutes</strong>.</p>
-<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>Fra:1 Mem:2088.40M (0.00M, Peak 4612.39M) | Time:22:38.00 | Sce: Scene Ve:0 Fa:0 La:0
-Saved: <span style=color:#00f>&#39;./0001.png&#39;</span>
- Time: 22:38.22 (Saving: 00:00.21)
+<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>Fra:1 Mem:2088.40M <span style=color:#000>(</span>0.00M, Peak 4612.39M<span style=color:#000>)</span> | Time:22:38.00 | Sce: Scene Ve:0 Fa:0 La:0
+Saved: <span style=color:#c41a16>&#39;./0001.png&#39;</span>
+ Time: 22:38.22 <span style=color:#000>(</span>Saving: 00:00.21<span style=color:#000>)</span>
 </code></pre></div><p>I did a few more experiments using the Suzanne file. Tried different command line
 arguments, specifying the engine, number of threads, debug GPU to see if I could
 see any warnings. But alas I could not find a setup that could speed up the process.</p>
 <p>Even tried a Python script I found in a forum to see this way the NVIDIA Jetson
 Nano board would perform better.</p>
-<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=color:navy;font-weight:700>import</span> bpy
+<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=color:#a90d91>import</span> <span style=color:#000>bpy</span>
 
 
-<span style=color:navy;font-weight:700>def</span> enable_gpus(device_type, use_cpus=<span style=color:navy;font-weight:700>False</span>):
-    preferences = bpy.context.preferences
-    cycles_preferences = preferences.addons[<span style=color:#00f>&#34;cycles&#34;</span>].preferences
-    cuda_devices, opencl_devices = cycles_preferences.get_devices()
+<span style=color:#a90d91>def</span> <span style=color:#000>enable_gpus</span>(<span style=color:#000>device_type</span>, <span style=color:#000>use_cpus</span><span style=color:#000>=</span><span style=color:#a90d91>False</span>):
+    <span style=color:#000>preferences</span> <span style=color:#000>=</span> <span style=color:#000>bpy</span><span style=color:#000>.</span><span style=color:#000>context</span><span style=color:#000>.</span><span style=color:#000>preferences</span>
+    <span style=color:#000>cycles_preferences</span> <span style=color:#000>=</span> <span style=color:#000>preferences</span><span style=color:#000>.</span><span style=color:#000>addons</span>[<span style=color:#c41a16>&#34;cycles&#34;</span>]<span style=color:#000>.</span><span style=color:#000>preferences</span>
+    <span style=color:#000>cuda_devices</span>, <span style=color:#000>opencl_devices</span> <span style=color:#000>=</span> <span style=color:#000>cycles_preferences</span><span style=color:#000>.</span><span style=color:#000>get_devices</span>()
 
-    <span style=color:navy;font-weight:700>if</span> device_type == <span style=color:#00f>&#34;CUDA&#34;</span>:
-        devices = cuda_devices
-    <span style=color:navy;font-weight:700>elif</span> device_type == <span style=color:#00f>&#34;OPENCL&#34;</span>:
-        devices = opencl_devices
-    <span style=color:navy;font-weight:700>else</span>:
-        <span style=color:navy;font-weight:700>raise</span> RuntimeError(<span style=color:#00f>&#34;Unsupported device type&#34;</span>)
+    <span style=color:#a90d91>if</span> <span style=color:#000>device_type</span> <span style=color:#000>==</span> <span style=color:#c41a16>&#34;CUDA&#34;</span>:
+        <span style=color:#000>devices</span> <span style=color:#000>=</span> <span style=color:#000>cuda_devices</span>
+    <span style=color:#a90d91>elif</span> <span style=color:#000>device_type</span> <span style=color:#000>==</span> <span style=color:#c41a16>&#34;OPENCL&#34;</span>:
+        <span style=color:#000>devices</span> <span style=color:#000>=</span> <span style=color:#000>opencl_devices</span>
+    <span style=color:#a90d91>else</span>:
+        <span style=color:#a90d91>raise</span> <span style=color:#000>RuntimeError</span>(<span style=color:#c41a16>&#34;Unsupported device type&#34;</span>)
 
-    activated_gpus = []
+    <span style=color:#000>activated_gpus</span> <span style=color:#000>=</span> []
 
-    <span style=color:navy;font-weight:700>for</span> device <span style=font-weight:700>in</span> devices:
-        <span style=color:navy;font-weight:700>if</span> device.type == <span style=color:#00f>&#34;CPU&#34;</span>:
-            device.use = use_cpus
-        <span style=color:navy;font-weight:700>else</span>:
-            device.use = <span style=color:navy;font-weight:700>True</span>
-            activated_gpus.append(device.name)
+    <span style=color:#a90d91>for</span> <span style=color:#000>device</span> <span style=color:#000>in</span> <span style=color:#000>devices</span>:
+        <span style=color:#a90d91>if</span> <span style=color:#000>device</span><span style=color:#000>.</span><span style=color:#000>type</span> <span style=color:#000>==</span> <span style=color:#c41a16>&#34;CPU&#34;</span>:
+            <span style=color:#000>device</span><span style=color:#000>.</span><span style=color:#000>use</span> <span style=color:#000>=</span> <span style=color:#000>use_cpus</span>
+        <span style=color:#a90d91>else</span>:
+            <span style=color:#000>device</span><span style=color:#000>.</span><span style=color:#000>use</span> <span style=color:#000>=</span> <span style=color:#a90d91>True</span>
+            <span style=color:#000>activated_gpus</span><span style=color:#000>.</span><span style=color:#000>append</span>(<span style=color:#000>device</span><span style=color:#000>.</span><span style=color:#000>name</span>)
 
-    cycles_preferences.compute_device_type = device_type
-    bpy.context.scene.cycles.device = <span style=color:#00f>&#34;GPU&#34;</span>
+    <span style=color:#000>cycles_preferences</span><span style=color:#000>.</span><span style=color:#000>compute_device_type</span> <span style=color:#000>=</span> <span style=color:#000>device_type</span>
+    <span style=color:#000>bpy</span><span style=color:#000>.</span><span style=color:#000>context</span><span style=color:#000>.</span><span style=color:#000>scene</span><span style=color:#000>.</span><span style=color:#000>cycles</span><span style=color:#000>.</span><span style=color:#000>device</span> <span style=color:#000>=</span> <span style=color:#c41a16>&#34;GPU&#34;</span>
 
-    <span style=color:navy;font-weight:700>return</span> activated_gpus
+    <span style=color:#a90d91>return</span> <span style=color:#000>activated_gpus</span>
 
 
-enable_gpus(<span style=color:#00f>&#34;CUDA&#34;</span>)
+<span style=color:#000>enable_gpus</span>(<span style=color:#c41a16>&#34;CUDA&#34;</span>)
 </code></pre></div><p>The render was about the same time, a little slower, probably because Blender
 needs to load and execute the Python script. After reading about users with
 slow render times (not necessarily because of egpu or board computer GPU&rsquo;s),
@@ -166,22 +166,22 @@ to use while rendering. And even my old GPU, with its 2 GB dedicated memory woul
 probably perform about the same I guess with Blender, if it supported newer CUDA
 versions (which means, if it also had a newer processor.)</p>
 <div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>kinow@ranma:~$ nvidia-smi 
-Tue Sep <span style=color:#00f>28</span> 23:44:54 <span style=color:#00f>2021</span>       
+Tue Sep <span style=color:#1c01ce>28</span> 23:44:54 <span style=color:#1c01ce>2021</span>       
 +-----------------------------------------------------------------------------+
 | NVIDIA-SMI 390.144                Driver Version: 390.144                   |
 |-------------------------------+----------------------+----------------------+
 | GPU  Name        Persistence-M| Bus-Id        Disp.A | Volatile Uncorr. ECC |
 | Fan  Temp  Perf  Pwr:Usage/Cap|         Memory-Usage | GPU-Util  Compute M. |
-|===============================+======================+======================|
-|   <span style=color:#00f>0</span>  NVS 5400M           Off  | 00000000:01:00.0 N/A |                  N/A |
+|<span style=color:#000>===============================</span>+<span style=color:#000>======================</span>+<span style=color:#000>======================</span>|
+|   <span style=color:#1c01ce>0</span>  NVS 5400M           Off  | 00000000:01:00.0 N/A |                  N/A |
 | N/A   56C    P0    N/A /  N/A |    294MiB /   964MiB |     N/A      Default |
 +-------------------------------+----------------------+----------------------+
                                                                                
 +-----------------------------------------------------------------------------+
 | Processes:                                                       GPU Memory |
 |  GPU       PID   Type   Process name                             Usage      |
-|=============================================================================|
-|    <span style=color:#00f>0</span>                    Not Supported                                       |
+|<span style=color:#000>=============================================================================</span>|
+|    <span style=color:#1c01ce>0</span>                    Not Supported                                       |
 +-----------------------------------------------------------------------------+
 </code></pre></div><p>The NVIDIA Jetson Nano, with no GUI (I uninstalled <code>ubuntu-desktop</code>, <code>mousepad</code>,
 and disabled firewall and any other service that I considered unnecessary for Blender)

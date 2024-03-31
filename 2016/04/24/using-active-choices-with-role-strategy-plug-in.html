@@ -15,7 +15,7 @@ This plug-in lets you define roles, define which permissions a role has, and the
 <meta property="og:url" content="https://kinoshita.eti.br/2016/04/24/using-active-choices-with-role-strategy-plug-in.html"><meta property="article:section" content="posts">
 <meta property="article:published_time" content="2016-04-24T00:00:00+00:00">
 <meta property="article:modified_time" content="2016-04-24T00:00:00+00:00">
-<link rel=stylesheet type=text/css href=https://kinoshita.eti.br/sass/main.66aa172f782442adc0241c99968a79a72e4260187c78830f9bdd6b03abff6103.css integrity="sha256-ZqoXL3gkQq3AJByZlop5py5CYBh8eIMPm91rA6v/YQM=">
+<link rel=stylesheet type=text/css href=https://kinoshita.eti.br/sass/main.09b56b6037e962b67cf7a7701bf2a9ee5da840a4f74b74139c4731f2156a5917.css integrity="sha256-CbVrYDfpYrZ896dwG/Kp7l2oQKT3S3QTnEcx8hVqWRc=">
 <title>kinow | Using Active Choices with Role Strategy Plug-in</title>
 </head>
 <body>
@@ -58,82 +58,82 @@ This plug-in lets you define roles, define which permissions a role has, and the
 is a tester. Then s/he would see certain parameters. But if s/he was a manager, other parameters would be
 displayed.</p>
 <h2 id=to-the-code>To the code</h2>
-<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=color:navy;font-weight:700>import</span> hudson.model.User
-<span style=color:navy;font-weight:700>import</span> hudson.model.Hudson
-<span style=color:navy;font-weight:700>import</span> hudson.security.AuthorizationStrategy
-<span style=color:navy;font-weight:700>import</span> hudson.security.Permission
-<span style=color:navy;font-weight:700>import</span> com.michelin.cio.hudson.plugins.rolestrategy.RoleBasedAuthorizationStrategy
-<span style=color:navy;font-weight:700>import</span> com.michelin.cio.hudson.plugins.rolestrategy.RoleMap
+<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=color:#a90d91>import</span> <span style=color:#000>hudson.model.User</span>
+<span style=color:#a90d91>import</span> <span style=color:#000>hudson.model.Hudson</span>
+<span style=color:#a90d91>import</span> <span style=color:#000>hudson.security.AuthorizationStrategy</span>
+<span style=color:#a90d91>import</span> <span style=color:#000>hudson.security.Permission</span>
+<span style=color:#a90d91>import</span> <span style=color:#000>com.michelin.cio.hudson.plugins.rolestrategy.RoleBasedAuthorizationStrategy</span>
+<span style=color:#a90d91>import</span> <span style=color:#000>com.michelin.cio.hudson.plugins.rolestrategy.RoleMap</span>
 
-AuthorizationStrategy strategy = Hudson.<span style=color:red>getInstance</span>().<span style=color:red>getAuthorizationStrategy</span>();
+<span style=color:#000>AuthorizationStrategy</span> <span style=color:#000>strategy</span> <span style=color:#000>=</span> <span style=color:#000>Hudson</span><span style=color:#000>.</span><span style=color:#836c28>getInstance</span><span style=color:#000>().</span><span style=color:#836c28>getAuthorizationStrategy</span><span style=color:#000>();</span>
 
-jobs = []
-user = User.<span style=color:red>current</span>()
-userId = user.<span style=color:red>getId</span>()
+<span style=color:#000>jobs</span> <span style=color:#000>=</span> <span style=color:#000>[]</span>
+<span style=color:#000>user</span> <span style=color:#000>=</span> <span style=color:#000>User</span><span style=color:#000>.</span><span style=color:#836c28>current</span><span style=color:#000>()</span>
+<span style=color:#000>userId</span> <span style=color:#000>=</span> <span style=color:#000>user</span><span style=color:#000>.</span><span style=color:#836c28>getId</span><span style=color:#000>()</span>
 
-<span style=color:navy;font-weight:700>if</span> (strategy != <span style=color:navy;font-weight:700>null</span> &amp;&amp; strategy <span style=color:navy;font-weight:700>instanceof</span> com.<span style=color:red>michelin</span>.<span style=color:red>cio</span>.<span style=color:red>hudson</span>.<span style=color:red>plugins</span>.<span style=color:red>rolestrategy</span>.<span style=color:red>RoleBasedAuthorizationStrategy</span>) {
-    roleStrategy = (RoleBasedAuthorizationStrategy) strategy;
-    <span style=color:#080;font-style:italic>// not very straightforward to get the groups for a given user
-</span><span style=color:#080;font-style:italic></span>    roles = roleStrategy.<span style=color:red>getGrantedRoles</span>(<span style=color:#00f>&#34;globalRoles&#34;</span>)
-    <span style=color:navy;font-weight:700>for</span> (entry in roles) {
-        role = entry.<span style=color:red>key</span>
-        users = entry.<span style=color:red>value</span>
-        if (role.<span style=color:red>getName</span>().<span style=color:red>equals</span>(<span style=color:#00f>&#34;tester&#34;</span>)) {
-            <span style=color:navy;font-weight:700>if</span> (userId in users) {
-                jobs = [<span style=color:#00f>&#34;PROJECT_FOR_TESTERS1&#34;</span>, <span style=color:#00f>&#34;PROJECT_FOR_TESTERS2&#34;</span>]
-                <span style=color:navy;font-weight:700>break</span>
-            }
-        } <span style=color:navy;font-weight:700>else</span> <span style=color:navy;font-weight:700>if</span> (role.<span style=color:red>getName</span>().<span style=color:red>equals</span>(<span style=color:#00f>&#34;admin&#34;</span>)) {
-            <span style=color:navy;font-weight:700>if</span> (userId in users) {
-                jobs = [<span style=color:#00f>&#34;PROJECT_FOR_ADMINS1&#34;</span>, <span style=color:#00f>&#34;PROJECT_FOR_ADMINS2&#34;</span>]
-                <span style=color:navy;font-weight:700>break</span>
-            }
-        }
-    }
-}
+<span style=color:#a90d91>if</span> <span style=color:#000>(</span><span style=color:#000>strategy</span> <span style=color:#000>!=</span> <span style=color:#a90d91>null</span> <span style=color:#000>&amp;&amp;</span> <span style=color:#000>strategy</span> <span style=color:#a90d91>instanceof</span> <span style=color:#000>com</span><span style=color:#000>.</span><span style=color:#836c28>michelin</span><span style=color:#000>.</span><span style=color:#836c28>cio</span><span style=color:#000>.</span><span style=color:#836c28>hudson</span><span style=color:#000>.</span><span style=color:#836c28>plugins</span><span style=color:#000>.</span><span style=color:#836c28>rolestrategy</span><span style=color:#000>.</span><span style=color:#836c28>RoleBasedAuthorizationStrategy</span><span style=color:#000>)</span> <span style=color:#000>{</span>
+    <span style=color:#000>roleStrategy</span> <span style=color:#000>=</span> <span style=color:#000>(</span><span style=color:#000>RoleBasedAuthorizationStrategy</span><span style=color:#000>)</span> <span style=color:#000>strategy</span><span style=color:#000>;</span>
+    <span style=color:#177500>// not very straightforward to get the groups for a given user
+</span><span style=color:#177500></span>    <span style=color:#000>roles</span> <span style=color:#000>=</span> <span style=color:#000>roleStrategy</span><span style=color:#000>.</span><span style=color:#836c28>getGrantedRoles</span><span style=color:#000>(</span><span style=color:#c41a16>&#34;globalRoles&#34;</span><span style=color:#000>)</span>
+    <span style=color:#a90d91>for</span> <span style=color:#000>(</span><span style=color:#000>entry</span> <span style=color:#000>in</span> <span style=color:#000>roles</span><span style=color:#000>)</span> <span style=color:#000>{</span>
+        <span style=color:#000>role</span> <span style=color:#000>=</span> <span style=color:#000>entry</span><span style=color:#000>.</span><span style=color:#836c28>key</span>
+        <span style=color:#000>users</span> <span style=color:#000>=</span> <span style=color:#000>entry</span><span style=color:#000>.</span><span style=color:#836c28>value</span>
+        <span style=color:#000>if</span> <span style=color:#000>(</span><span style=color:#000>role</span><span style=color:#000>.</span><span style=color:#836c28>getName</span><span style=color:#000>().</span><span style=color:#836c28>equals</span><span style=color:#000>(</span><span style=color:#c41a16>&#34;tester&#34;</span><span style=color:#000>))</span> <span style=color:#000>{</span>
+            <span style=color:#a90d91>if</span> <span style=color:#000>(</span><span style=color:#000>userId</span> <span style=color:#000>in</span> <span style=color:#000>users</span><span style=color:#000>)</span> <span style=color:#000>{</span>
+                <span style=color:#000>jobs</span> <span style=color:#000>=</span> <span style=color:#000>[</span><span style=color:#c41a16>&#34;PROJECT_FOR_TESTERS1&#34;</span><span style=color:#000>,</span> <span style=color:#c41a16>&#34;PROJECT_FOR_TESTERS2&#34;</span><span style=color:#000>]</span>
+                <span style=color:#a90d91>break</span>
+            <span style=color:#000>}</span>
+        <span style=color:#000>}</span> <span style=color:#a90d91>else</span> <span style=color:#a90d91>if</span> <span style=color:#000>(</span><span style=color:#000>role</span><span style=color:#000>.</span><span style=color:#836c28>getName</span><span style=color:#000>().</span><span style=color:#836c28>equals</span><span style=color:#000>(</span><span style=color:#c41a16>&#34;admin&#34;</span><span style=color:#000>))</span> <span style=color:#000>{</span>
+            <span style=color:#a90d91>if</span> <span style=color:#000>(</span><span style=color:#000>userId</span> <span style=color:#000>in</span> <span style=color:#000>users</span><span style=color:#000>)</span> <span style=color:#000>{</span>
+                <span style=color:#000>jobs</span> <span style=color:#000>=</span> <span style=color:#000>[</span><span style=color:#c41a16>&#34;PROJECT_FOR_ADMINS1&#34;</span><span style=color:#000>,</span> <span style=color:#c41a16>&#34;PROJECT_FOR_ADMINS2&#34;</span><span style=color:#000>]</span>
+                <span style=color:#a90d91>break</span>
+            <span style=color:#000>}</span>
+        <span style=color:#000>}</span>
+    <span style=color:#000>}</span>
+<span style=color:#000>}</span>
 
-<span style=color:navy;font-weight:700>return</span> jobs
-<span style=color:#080;font-style:italic>// TODO: handle anonymous user ;-)
+<span style=color:#a90d91>return</span> <span style=color:#000>jobs</span>
+<span style=color:#177500>// TODO: handle anonymous user ;-)
 </span></code></pre></div><p>And now let&rsquo;s dissect the code.</p>
-<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=color:navy;font-weight:700>import</span> hudson.model.User
-<span style=color:navy;font-weight:700>import</span> hudson.model.Hudson
-<span style=color:navy;font-weight:700>import</span> hudson.security.AuthorizationStrategy
-<span style=color:navy;font-weight:700>import</span> hudson.security.Permission
-<span style=color:navy;font-weight:700>import</span> com.michelin.cio.hudson.plugins.rolestrategy.RoleBasedAuthorizationStrategy
-<span style=color:navy;font-weight:700>import</span> com.michelin.cio.hudson.plugins.rolestrategy.RoleMap
+<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=color:#a90d91>import</span> <span style=color:#000>hudson.model.User</span>
+<span style=color:#a90d91>import</span> <span style=color:#000>hudson.model.Hudson</span>
+<span style=color:#a90d91>import</span> <span style=color:#000>hudson.security.AuthorizationStrategy</span>
+<span style=color:#a90d91>import</span> <span style=color:#000>hudson.security.Permission</span>
+<span style=color:#a90d91>import</span> <span style=color:#000>com.michelin.cio.hudson.plugins.rolestrategy.RoleBasedAuthorizationStrategy</span>
+<span style=color:#a90d91>import</span> <span style=color:#000>com.michelin.cio.hudson.plugins.rolestrategy.RoleMap</span>
 </code></pre></div><p>You start by importing the classes that you need.</p>
-<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java>AuthorizationStrategy strategy = Hudson.<span style=color:red>getInstance</span>().<span style=color:red>getAuthorizationStrategy</span>();
+<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=color:#000>AuthorizationStrategy</span> <span style=color:#000>strategy</span> <span style=color:#000>=</span> <span style=color:#000>Hudson</span><span style=color:#000>.</span><span style=color:#836c28>getInstance</span><span style=color:#000>().</span><span style=color:#836c28>getAuthorizationStrategy</span><span style=color:#000>();</span>
 
-jobs = []
-user = User.<span style=color:red>current</span>()
-userId = user.<span style=color:red>getId</span>()
+<span style=color:#000>jobs</span> <span style=color:#000>=</span> <span style=color:#000>[]</span>
+<span style=color:#000>user</span> <span style=color:#000>=</span> <span style=color:#000>User</span><span style=color:#000>.</span><span style=color:#836c28>current</span><span style=color:#000>()</span>
+<span style=color:#000>userId</span> <span style=color:#000>=</span> <span style=color:#000>user</span><span style=color:#000>.</span><span style=color:#836c28>getId</span><span style=color:#000>()</span>
 </code></pre></div><p>The first line gets the current <a href=https://github.com/jenkinsci/jenkins/blob/f6e431b80c4d162560419fa51633224a9724bb0d/core/src/main/java/hudson/security/AuthorizationStrategy.java>AuthorizationStrategy</a>
 used in Jenkins.</p>
 <p>Then we create an empty array of jobs, which is the value returned by default. And get the current
 logged in user ID.</p>
-<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=color:navy;font-weight:700>if</span> (strategy != <span style=color:navy;font-weight:700>null</span> &amp;&amp; strategy <span style=color:navy;font-weight:700>instanceof</span> com.<span style=color:red>michelin</span>.<span style=color:red>cio</span>.<span style=color:red>hudson</span>.<span style=color:red>plugins</span>.<span style=color:red>rolestrategy</span>.<span style=color:red>RoleBasedAuthorizationStrategy</span>) {
-    roleStrategy = (RoleBasedAuthorizationStrategy) strategy;
-    <span style=color:#080;font-style:italic>// not very straightforward to get the groups for a given user
-</span><span style=color:#080;font-style:italic></span>    roles = roleStrategy.<span style=color:red>getGrantedRoles</span>(<span style=color:#00f>&#34;globalRoles&#34;</span>)
-    <span style=color:navy;font-weight:700>for</span> (entry in roles) {
-        role = entry.<span style=color:red>key</span>
-        users = entry.<span style=color:red>value</span>
-        if (role.<span style=color:red>getName</span>().<span style=color:red>equals</span>(<span style=color:#00f>&#34;tester&#34;</span>)) {
-            <span style=color:navy;font-weight:700>if</span> (userId in users) {
-                jobs = [<span style=color:#00f>&#34;PROJECT_FOR_TESTERS1&#34;</span>, <span style=color:#00f>&#34;PROJECT_FOR_TESTERS2&#34;</span>]
-                <span style=color:navy;font-weight:700>break</span>
-            }
-        } <span style=color:navy;font-weight:700>else</span> <span style=color:navy;font-weight:700>if</span> (role.<span style=color:red>getName</span>().<span style=color:red>equals</span>(<span style=color:#00f>&#34;admin&#34;</span>)) {
-            <span style=color:navy;font-weight:700>if</span> (userId in users) {
-                jobs = [<span style=color:#00f>&#34;PROJECT_FOR_ADMINS1&#34;</span>, <span style=color:#00f>&#34;PROJECT_FOR_ADMINS2&#34;</span>]
-                <span style=color:navy;font-weight:700>break</span>
-            }
-        }
-    }
-}
+<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=color:#a90d91>if</span> <span style=color:#000>(</span><span style=color:#000>strategy</span> <span style=color:#000>!=</span> <span style=color:#a90d91>null</span> <span style=color:#000>&amp;&amp;</span> <span style=color:#000>strategy</span> <span style=color:#a90d91>instanceof</span> <span style=color:#000>com</span><span style=color:#000>.</span><span style=color:#836c28>michelin</span><span style=color:#000>.</span><span style=color:#836c28>cio</span><span style=color:#000>.</span><span style=color:#836c28>hudson</span><span style=color:#000>.</span><span style=color:#836c28>plugins</span><span style=color:#000>.</span><span style=color:#836c28>rolestrategy</span><span style=color:#000>.</span><span style=color:#836c28>RoleBasedAuthorizationStrategy</span><span style=color:#000>)</span> <span style=color:#000>{</span>
+    <span style=color:#000>roleStrategy</span> <span style=color:#000>=</span> <span style=color:#000>(</span><span style=color:#000>RoleBasedAuthorizationStrategy</span><span style=color:#000>)</span> <span style=color:#000>strategy</span><span style=color:#000>;</span>
+    <span style=color:#177500>// not very straightforward to get the groups for a given user
+</span><span style=color:#177500></span>    <span style=color:#000>roles</span> <span style=color:#000>=</span> <span style=color:#000>roleStrategy</span><span style=color:#000>.</span><span style=color:#836c28>getGrantedRoles</span><span style=color:#000>(</span><span style=color:#c41a16>&#34;globalRoles&#34;</span><span style=color:#000>)</span>
+    <span style=color:#a90d91>for</span> <span style=color:#000>(</span><span style=color:#000>entry</span> <span style=color:#000>in</span> <span style=color:#000>roles</span><span style=color:#000>)</span> <span style=color:#000>{</span>
+        <span style=color:#000>role</span> <span style=color:#000>=</span> <span style=color:#000>entry</span><span style=color:#000>.</span><span style=color:#836c28>key</span>
+        <span style=color:#000>users</span> <span style=color:#000>=</span> <span style=color:#000>entry</span><span style=color:#000>.</span><span style=color:#836c28>value</span>
+        <span style=color:#000>if</span> <span style=color:#000>(</span><span style=color:#000>role</span><span style=color:#000>.</span><span style=color:#836c28>getName</span><span style=color:#000>().</span><span style=color:#836c28>equals</span><span style=color:#000>(</span><span style=color:#c41a16>&#34;tester&#34;</span><span style=color:#000>))</span> <span style=color:#000>{</span>
+            <span style=color:#a90d91>if</span> <span style=color:#000>(</span><span style=color:#000>userId</span> <span style=color:#000>in</span> <span style=color:#000>users</span><span style=color:#000>)</span> <span style=color:#000>{</span>
+                <span style=color:#000>jobs</span> <span style=color:#000>=</span> <span style=color:#000>[</span><span style=color:#c41a16>&#34;PROJECT_FOR_TESTERS1&#34;</span><span style=color:#000>,</span> <span style=color:#c41a16>&#34;PROJECT_FOR_TESTERS2&#34;</span><span style=color:#000>]</span>
+                <span style=color:#a90d91>break</span>
+            <span style=color:#000>}</span>
+        <span style=color:#000>}</span> <span style=color:#a90d91>else</span> <span style=color:#a90d91>if</span> <span style=color:#000>(</span><span style=color:#000>role</span><span style=color:#000>.</span><span style=color:#836c28>getName</span><span style=color:#000>().</span><span style=color:#836c28>equals</span><span style=color:#000>(</span><span style=color:#c41a16>&#34;admin&#34;</span><span style=color:#000>))</span> <span style=color:#000>{</span>
+            <span style=color:#a90d91>if</span> <span style=color:#000>(</span><span style=color:#000>userId</span> <span style=color:#000>in</span> <span style=color:#000>users</span><span style=color:#000>)</span> <span style=color:#000>{</span>
+                <span style=color:#000>jobs</span> <span style=color:#000>=</span> <span style=color:#000>[</span><span style=color:#c41a16>&#34;PROJECT_FOR_ADMINS1&#34;</span><span style=color:#000>,</span> <span style=color:#c41a16>&#34;PROJECT_FOR_ADMINS2&#34;</span><span style=color:#000>]</span>
+                <span style=color:#a90d91>break</span>
+            <span style=color:#000>}</span>
+        <span style=color:#000>}</span>
+    <span style=color:#000>}</span>
+<span style=color:#000>}</span>
 
-<span style=color:navy;font-weight:700>return</span> jobs
-<span style=color:#080;font-style:italic>// TODO: handle anonymous user ;-)
+<span style=color:#a90d91>return</span> <span style=color:#000>jobs</span>
+<span style=color:#177500>// TODO: handle anonymous user ;-)
 </span></code></pre></div><p>The final part simply iterates through each existing role, and then through the
 users in that role. I could not find a more elegant way of doing that, but in case
 you would like to maybe optimize the code, here are the main classes that I

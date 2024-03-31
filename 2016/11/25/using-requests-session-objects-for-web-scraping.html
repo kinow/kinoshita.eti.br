@@ -9,7 +9,7 @@ Since it was such a small task, I used the Requests module instead of a complete
 <meta property="og:url" content="https://kinoshita.eti.br/2016/11/25/using-requests-session-objects-for-web-scraping.html"><meta property="article:section" content="posts">
 <meta property="article:published_time" content="2016-11-25T00:00:00+00:00">
 <meta property="article:modified_time" content="2016-11-25T00:00:00+00:00">
-<link rel=stylesheet type=text/css href=https://kinoshita.eti.br/sass/main.66aa172f782442adc0241c99968a79a72e4260187c78830f9bdd6b03abff6103.css integrity="sha256-ZqoXL3gkQq3AJByZlop5py5CYBh8eIMPm91rA6v/YQM=">
+<link rel=stylesheet type=text/css href=https://kinoshita.eti.br/sass/main.09b56b6037e962b67cf7a7701bf2a9ee5da840a4f74b74139c4731f2156a5917.css integrity="sha256-CbVrYDfpYrZ896dwG/Kp7l2oQKT3S3QTnEcx8hVqWRc=">
 <title>kinow | Using Requests Session Objects for web scraping</title>
 </head>
 <body>
@@ -43,28 +43,28 @@ time out, and also pass certain headers. I started customizing each call, until
 I learned about the Requests <a href=http://docs.python-requests.org/en/master/user/advanced/>Session Objects</a>.</p>
 <p>You create a session, as in ORM/JPA, where you can define a context, with certain properties
 and control an orthogonal behavior.</p>
-<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=color:navy;font-weight:700>import</span> requests
+<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=color:#a90d91>import</span> <span style=color:#000>requests</span>
 
-<span style=color:navy;font-weight:700>def</span> get(session, url):
-    <span style=color:#00f>&#34;&#34;&#34;Utility method to HTTP GET a URL&#34;&#34;&#34;</span>
-    response = session.get(url, timeout=<span style=color:navy;font-weight:700>None</span>)
-    <span style=color:navy;font-weight:700>return</span> response
+<span style=color:#a90d91>def</span> <span style=color:#000>get</span>(<span style=color:#000>session</span>, <span style=color:#000>url</span>):
+    <span style=color:#c41a16>&#34;&#34;&#34;Utility method to HTTP GET a URL&#34;&#34;&#34;</span>
+    <span style=color:#000>response</span> <span style=color:#000>=</span> <span style=color:#000>session</span><span style=color:#000>.</span><span style=color:#000>get</span>(<span style=color:#000>url</span>, <span style=color:#000>timeout</span><span style=color:#000>=</span><span style=color:#a90d91>None</span>)
+    <span style=color:#a90d91>return</span> <span style=color:#000>response</span>
 
-<span style=color:navy;font-weight:700>def</span> post(session, url, data):
-    <span style=color:#00f>&#34;&#34;&#34;Utility method to HTTP POST a URL with data parameters&#34;&#34;&#34;</span>
-    response = session.post(url, data=data, timeout=<span style=color:navy;font-weight:700>None</span>)
-    <span style=color:navy;font-weight:700>if</span> response.status_code != requests.codes.ok:
-        response.raise_for_status()
-    <span style=color:navy;font-weight:700>return</span> response
+<span style=color:#a90d91>def</span> <span style=color:#000>post</span>(<span style=color:#000>session</span>, <span style=color:#000>url</span>, <span style=color:#000>data</span>):
+    <span style=color:#c41a16>&#34;&#34;&#34;Utility method to HTTP POST a URL with data parameters&#34;&#34;&#34;</span>
+    <span style=color:#000>response</span> <span style=color:#000>=</span> <span style=color:#000>session</span><span style=color:#000>.</span><span style=color:#000>post</span>(<span style=color:#000>url</span>, <span style=color:#000>data</span><span style=color:#000>=</span><span style=color:#000>data</span>, <span style=color:#000>timeout</span><span style=color:#000>=</span><span style=color:#a90d91>None</span>)
+    <span style=color:#a90d91>if</span> <span style=color:#000>response</span><span style=color:#000>.</span><span style=color:#000>status_code</span> <span style=color:#000>!=</span> <span style=color:#000>requests</span><span style=color:#000>.</span><span style=color:#000>codes</span><span style=color:#000>.</span><span style=color:#000>ok</span>:
+        <span style=color:#000>response</span><span style=color:#000>.</span><span style=color:#000>raise_for_status</span>()
+    <span style=color:#a90d91>return</span> <span style=color:#000>response</span>
 
-<span style=color:navy;font-weight:700>with</span> requests.Session() <span style=color:navy;font-weight:700>as</span> s:
-    <span style=color:#080;font-style:italic># x-test header will be sent with every request</span>
-    s.headers.update({<span style=color:#00f>&#39;x-test&#39;</span>: <span style=color:#00f>&#39;true&#39;</span>})
+<span style=color:#a90d91>with</span> <span style=color:#000>requests</span><span style=color:#000>.</span><span style=color:#000>Session</span>() <span style=color:#a90d91>as</span> <span style=color:#000>s</span>:
+    <span style=color:#177500># x-test header will be sent with every request</span>
+    <span style=color:#000>s</span><span style=color:#000>.</span><span style=color:#000>headers</span><span style=color:#000>.</span><span style=color:#000>update</span>({<span style=color:#c41a16>&#39;x-test&#39;</span>: <span style=color:#c41a16>&#39;true&#39;</span>})
 
-    data = {<span style=color:#00f>&#39;user&#39;</span>: user, <span style=color:#00f>&#39;password&#39;</span>: password, <span style=color:#00f>&#39;rememberne&#39;</span>: <span style=color:#00f>&#39;false&#39;</span>}
-    r = post(s, <span style=color:#00f>&#39;https://portal.login.url&#39;</span>, data)
+    <span style=color:#000>data</span> <span style=color:#000>=</span> {<span style=color:#c41a16>&#39;user&#39;</span>: <span style=color:#000>user</span>, <span style=color:#c41a16>&#39;password&#39;</span>: <span style=color:#000>password</span>, <span style=color:#c41a16>&#39;rememberne&#39;</span>: <span style=color:#c41a16>&#39;false&#39;</span>}
+    <span style=color:#000>r</span> <span style=color:#000>=</span> <span style=color:#000>post</span>(<span style=color:#000>s</span>, <span style=color:#c41a16>&#39;https://portal.login.url&#39;</span>, <span style=color:#000>data</span>)
 
-    r = get(s, <span style=color:#00f>&#39;https://portal.home.url&#39;</span>)
+    <span style=color:#000>r</span> <span style=color:#000>=</span> <span style=color:#000>get</span>(<span style=color:#000>s</span>, <span style=color:#c41a16>&#39;https://portal.home.url&#39;</span>)
 </code></pre></div><p>Besides the session object, that gives you ability to add headers to all requests,
 you won&rsquo;t have to worry about redirects. The library by default takes care
 <a href=https://github.com/kennethreitz/requests/blob/dfad00a6e84bc75b12468ca29ccf4f971c813fc8/requests/sessions.py#L110>of that</a>

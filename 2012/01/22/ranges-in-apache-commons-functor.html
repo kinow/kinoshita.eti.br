@@ -17,7 +17,7 @@ Now, if you have some spare time or curiosity, keep reading :-)">
 <meta property="og:url" content="https://kinoshita.eti.br/2012/01/22/ranges-in-apache-commons-functor.html"><meta property="article:section" content="posts">
 <meta property="article:published_time" content="2012-01-22T00:00:00+00:00">
 <meta property="article:modified_time" content="2012-01-22T00:00:00+00:00">
-<link rel=stylesheet type=text/css href=https://kinoshita.eti.br/sass/main.66aa172f782442adc0241c99968a79a72e4260187c78830f9bdd6b03abff6103.css integrity="sha256-ZqoXL3gkQq3AJByZlop5py5CYBh8eIMPm91rA6v/YQM=">
+<link rel=stylesheet type=text/css href=https://kinoshita.eti.br/sass/main.09b56b6037e962b67cf7a7701bf2a9ee5da840a4f74b74139c4731f2156a5917.css integrity="sha256-CbVrYDfpYrZ896dwG/Kp7l2oQKT3S3QTnEcx8hVqWRc=">
 <title>kinow | Ranges in Apache Commons Functor</title>
 </head>
 <body>
@@ -59,23 +59,23 @@ Now, if you have some spare time or curiosity, keep reading :-)
 <figcaption></figcaption>
 </figure>
 <p>The x axis contains values from 0 to 10, increasing by 0.1. In Matlab, I would execute the following command to produce the x vector.</p>
-<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python>x = <span style=color:#00f>0</span>:<span style=color:#00f>0.1</span>:<span style=color:#00f>10</span>;
+<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=color:#000>x</span> <span style=color:#000>=</span> <span style=color:#1c01ce>0</span>:<span style=color:#1c01ce>0.1</span>:<span style=color:#1c01ce>10</span>;
 </code></pre></div><p>The : is the range operator in Matlab. It would create a vector with 101 elements. Yup, 101. That&rsquo;s because in Matlab the low and high value used creating the range are inclusive. Now let&rsquo;s look at how I create similar vector in Apache Commons Functor.</p>
-<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java>IntegerRange range = <span style=color:navy;font-weight:700>new</span> IntegerRange(0, 11, 1 <span style=color:#080;font-style:italic>/* step */</span>);
+<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=color:#000>IntegerRange</span> <span style=color:#000>range</span> <span style=color:#000>=</span> <span style=color:#a90d91>new</span> <span style=color:#000>IntegerRange</span><span style=color:#000>(</span><span style=color:#000>0</span><span style=color:#000>,</span> <span style=color:#000>11</span><span style=color:#000>,</span> <span style=color:#000>1</span> <span style=color:#177500>/* step */</span><span style=color:#000>);</span>
 </code></pre></div><p>So now one can realize two things: there is no Double or Float Range, and the high value in the range is exclusive. It means that in order to create an array (I will use vector and array interchangeably here for simplicity) with Functor from 0 to 10, including both values, you have to create a range using 0 and 11.</p>
 <h2>Comparing with other Java functional programming API's</h2>
 There are other API's to include functional programming features to Java code. In this comparison I will include <a title="Google Guava" href=http://code.google.com/p/guava-libraries/>Google Guava</a>, <a title=fun4J href=http://www.fun4j.org/>fun4j</a>, <a title="Functional Java" href=http://functionaljava.org/>functionaljava</a>, <a title=lambdaj href=http://code.google.com/p/lambdaj/>lambdaj</a> and <a title=op4j href=http://www.op4j.org/>op4j</a> (got the list from the fun4f project page).
 <h3>Google Guava</h3>
 Google Guava provides the Range and Ranges classes. The Ranges contains several static methods for creating Range's, that can be used as collections. The Ranges class contains methods for creating Range's with open, closed, openClosed and closedOpen intervals.
-<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=color:navy;font-weight:700>public</span> <span style=color:navy;font-weight:700>static</span> <span style=color:navy;font-weight:700>void</span> main(String[] args) {
-    Range&lt;Integer&gt; values = Ranges.<span style=color:red>closed</span>(0, 10);
-    System.<span style=color:red>out</span>.<span style=color:red>print</span>(<span style=color:#00f>&#34;[ &#34;</span>);
-    <span style=color:navy;font-weight:700>for</span>(Integer value : values.<span style=color:red>asSet</span>(DiscreteDomains.<span style=color:red>integers</span>())) {
-        System.<span style=color:red>out</span>.<span style=color:red>print</span>(value + <span style=color:#00f>&#34; &#34;</span>);
-    }
-    System.<span style=color:red>out</span>.<span style=color:red>print</span>(<span style=color:#00f>&#34;]&#34;</span>);
-}
-</code></pre></div><div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python>[ <span style=color:#00f>0</span> <span style=color:#00f>1</span> <span style=color:#00f>2</span> <span style=color:#00f>3</span> <span style=color:#00f>4</span> <span style=color:#00f>5</span> <span style=color:#00f>6</span> <span style=color:#00f>7</span> <span style=color:#00f>8</span> <span style=color:#00f>9</span> <span style=color:#00f>10</span> ]
+<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=color:#a90d91>public</span> <span style=color:#a90d91>static</span> <span style=color:#a90d91>void</span> <span style=color:#000>main</span><span style=color:#000>(</span><span style=color:#000>String</span><span style=color:#000>[]</span> <span style=color:#000>args</span><span style=color:#000>)</span> <span style=color:#000>{</span>
+    <span style=color:#000>Range</span><span style=color:#000>&lt;</span><span style=color:#000>Integer</span><span style=color:#000>&gt;</span> <span style=color:#000>values</span> <span style=color:#000>=</span> <span style=color:#000>Ranges</span><span style=color:#000>.</span><span style=color:#836c28>closed</span><span style=color:#000>(</span><span style=color:#000>0</span><span style=color:#000>,</span> <span style=color:#000>10</span><span style=color:#000>);</span>
+    <span style=color:#000>System</span><span style=color:#000>.</span><span style=color:#836c28>out</span><span style=color:#000>.</span><span style=color:#836c28>print</span><span style=color:#000>(</span><span style=color:#c41a16>&#34;[ &#34;</span><span style=color:#000>);</span>
+    <span style=color:#a90d91>for</span><span style=color:#000>(</span><span style=color:#000>Integer</span> <span style=color:#000>value</span> <span style=color:#000>:</span> <span style=color:#000>values</span><span style=color:#000>.</span><span style=color:#836c28>asSet</span><span style=color:#000>(</span><span style=color:#000>DiscreteDomains</span><span style=color:#000>.</span><span style=color:#836c28>integers</span><span style=color:#000>()))</span> <span style=color:#000>{</span>
+        <span style=color:#000>System</span><span style=color:#000>.</span><span style=color:#836c28>out</span><span style=color:#000>.</span><span style=color:#836c28>print</span><span style=color:#000>(</span><span style=color:#000>value</span> <span style=color:#000>+</span> <span style=color:#c41a16>&#34; &#34;</span><span style=color:#000>);</span>
+    <span style=color:#000>}</span>
+    <span style=color:#000>System</span><span style=color:#000>.</span><span style=color:#836c28>out</span><span style=color:#000>.</span><span style=color:#836c28>print</span><span style=color:#000>(</span><span style=color:#c41a16>&#34;]&#34;</span><span style=color:#000>);</span>
+<span style=color:#000>}</span>
+</code></pre></div><div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python>[ <span style=color:#1c01ce>0</span> <span style=color:#1c01ce>1</span> <span style=color:#1c01ce>2</span> <span style=color:#1c01ce>3</span> <span style=color:#1c01ce>4</span> <span style=color:#1c01ce>5</span> <span style=color:#1c01ce>6</span> <span style=color:#1c01ce>7</span> <span style=color:#1c01ce>8</span> <span style=color:#1c01ce>9</span> <span style=color:#1c01ce>10</span> ]
 </code></pre></div><p>The Google Guava API does not provide a way to create ranges of floats. And I will have to find some time to read about the asSet method and on discrete domains. I am much more comfortable putting Apache Commons Functor API in my code for creating ranges. Specially since it makes the code more readable and easy to understand, helping to receive contributions in nebular from newcomers.</p>
 <h3>fun4j</h3>
 fun4j contains classes to model functions, lambdas and bind LISP code to Java. However it has no objects for ranges.
@@ -89,133 +89,133 @@ Same as lambdaj, couldn't find a way to create ranges with op4j. Not sure if th
 So let's see how we could generate a similar array using other programming languages.
 <h3>Python</h3>
 Python is one of my favorite languages, and has some functional programming features [1]. However it has no built-in mechanism for ranges with floats, only with integers. The functions that I know in Python use low value as inclusive, and high value as exclusive. The built in range functions in 2.7 looks like the following.
-<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python>x = range(<span style=color:#00f>0</span>, <span style=color:#00f>11</span>, <span style=color:#00f>1</span>) <span style=color:#080;font-style:italic>#inclusive/exclusive</span>
-print x;
-</code></pre></div><div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python>[<span style=color:#00f>0</span>, <span style=color:#00f>1</span>, <span style=color:#00f>2</span>, <span style=color:#00f>3</span>, <span style=color:#00f>4</span>, <span style=color:#00f>5</span>, <span style=color:#00f>6</span>, <span style=color:#00f>7</span>, <span style=color:#00f>8</span>, <span style=color:#00f>9</span>, <span style=color:#00f>10</span>]
+<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=color:#000>x</span> <span style=color:#000>=</span> <span style=color:#a90d91>range</span>(<span style=color:#1c01ce>0</span>, <span style=color:#1c01ce>11</span>, <span style=color:#1c01ce>1</span>) <span style=color:#177500>#inclusive/exclusive</span>
+<span style=color:#a90d91>print</span> <span style=color:#000>x</span>;
+</code></pre></div><div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python>[<span style=color:#1c01ce>0</span>, <span style=color:#1c01ce>1</span>, <span style=color:#1c01ce>2</span>, <span style=color:#1c01ce>3</span>, <span style=color:#1c01ce>4</span>, <span style=color:#1c01ce>5</span>, <span style=color:#1c01ce>6</span>, <span style=color:#1c01ce>7</span>, <span style=color:#1c01ce>8</span>, <span style=color:#1c01ce>9</span>, <span style=color:#1c01ce>10</span>]
 </code></pre></div><p>Or you could write something like (remember Perl&rsquo;s motto, TIMTOWTDI [2])</p>
-<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python>x = [x * <span style=color:#00f>0.1</span> <span style=color:navy;font-weight:700>for</span> x <span style=font-weight:700>in</span> range(<span style=color:#00f>0</span>, <span style=color:#00f>101</span>)]; <span style=color:#080;font-style:italic>#inclusive/exclusive</span>
+<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=color:#000>x</span> <span style=color:#000>=</span> [<span style=color:#000>x</span> <span style=color:#000>*</span> <span style=color:#1c01ce>0.1</span> <span style=color:#a90d91>for</span> <span style=color:#000>x</span> <span style=color:#000>in</span> <span style=color:#a90d91>range</span>(<span style=color:#1c01ce>0</span>, <span style=color:#1c01ce>101</span>)]; <span style=color:#177500>#inclusive/exclusive</span>
 
-print len(x);
-print x;
-</code></pre></div><div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=color:#00f>101</span>
-[<span style=color:#00f>0.0</span>, <span style=color:#00f>0.1</span>, <span style=color:#00f>0.2</span>, <span style=color:#00f>0.30000000000000004</span>, <span style=color:#00f>0.4</span>, ..., <span style=color:#00f>10.0</span>]
+<span style=color:#a90d91>print</span> <span style=color:#a90d91>len</span>(<span style=color:#000>x</span>);
+<span style=color:#a90d91>print</span> <span style=color:#000>x</span>;
+</code></pre></div><div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=color:#1c01ce>101</span>
+[<span style=color:#1c01ce>0.0</span>, <span style=color:#1c01ce>0.1</span>, <span style=color:#1c01ce>0.2</span>, <span style=color:#1c01ce>0.30000000000000004</span>, <span style=color:#1c01ce>0.4</span>, <span style=color:#000>...</span>, <span style=color:#1c01ce>10.0</span>]
 </code></pre></div><p>There are API&rsquo;s in Python too, like numpy, that has arange. However it is complicated specify a range to give similar array as the one produced by Matlab.</p>
-<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=color:navy;font-weight:700>from</span> numpy <span style=color:navy;font-weight:700>import</span> arange;
-x = arange(<span style=color:#00f>0</span>, <span style=color:#00f>10.1</span>, <span style=color:#00f>.1</span>); <span style=color:#080;font-style:italic>#inclusive/exclusive</span>
-print len(x);
-print x;
-</code></pre></div><div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=color:#00f>101</span>
-[ <span style=color:#00f>0.</span> <span style=color:#00f>0.1</span> <span style=color:#00f>0.2</span> ... <span style=color:#00f>10.0</span>]
+<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=color:#a90d91>from</span> <span style=color:#000>numpy</span> <span style=color:#a90d91>import</span> <span style=color:#000>arange</span>;
+<span style=color:#000>x</span> <span style=color:#000>=</span> <span style=color:#000>arange</span>(<span style=color:#1c01ce>0</span>, <span style=color:#1c01ce>10.1</span>, <span style=color:#1c01ce>.1</span>); <span style=color:#177500>#inclusive/exclusive</span>
+<span style=color:#a90d91>print</span> <span style=color:#a90d91>len</span>(<span style=color:#000>x</span>);
+<span style=color:#a90d91>print</span> <span style=color:#000>x</span>;
+</code></pre></div><div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=color:#1c01ce>101</span>
+[ <span style=color:#1c01ce>0.</span> <span style=color:#1c01ce>0.1</span> <span style=color:#1c01ce>0.2</span> <span style=color:#000>...</span> <span style=color:#1c01ce>10.0</span>]
 </code></pre></div><h3>Perl</h3>
 As we mentioned Perl in last section, let's see how it works in Perl. First of all, I won't use many modules here. Probably Perl is the language with more modules, or at least with a plethora of modules in <a title=CPAN href=http://www.cpan.org>CPAN</a> (wait to see <a title=CJAN href=http://www.cjan.org>CJAN</a> ;). There are books on Perl and Functional programming [3], and Perl has a built in mechanism for ranges. I used Perl 5 built in range operator and List::Gen range function. Both use the low and high value inclusive. It's important to point out that Larry Wall and the programmers behind Perl are always keeping an eye on usability, ease of use, and Larry's laziness. So that's why Perl is a good language for comparisons of this type.
-<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-perl data-lang=perl><span style=color:#080;font-style:italic>#!/usr/bin/perl</span>
-<span style=color:navy;font-weight:700>use</span> strict;
-<span style=color:navy;font-weight:700>use</span> warnings;
-<span style=color:navy;font-weight:700>use</span> feature <span style=color:#00f>&#39;say&#39;</span>;
+<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-perl data-lang=perl><span style=color:#177500>#!/usr/bin/perl</span>
+<span style=color:#a90d91>use</span> <span style=color:#000>strict</span>;
+<span style=color:#a90d91>use</span> <span style=color:#000>warnings</span>;
+<span style=color:#a90d91>use</span> <span style=color:#000>feature</span> <span style=color:#c41a16>&#39;say&#39;</span>;
 
-<span style=color:navy;font-weight:700>print</span> <span style=color:#00f>&#34;[ &#34;</span>;
-<span style=color:navy;font-weight:700>for</span>(<span style=color:#00f>0</span>..<span style=color:#00f>10</span>) { <span style=color:#080;font-style:italic>#inclusive/inclusive</span>
-    <span style=color:navy;font-weight:700>print</span> $_, <span style=color:#00f>&#34; &#34;</span>;
+<span style=color:#a90d91>print</span> <span style=color:#c41a16>&#34;[ &#34;</span>;
+<span style=color:#a90d91>for</span>(<span style=color:#1c01ce>0</span><span style=color:#000>..</span><span style=color:#1c01ce>10</span>) { <span style=color:#177500>#inclusive/inclusive</span>
+    <span style=color:#a90d91>print</span> <span style=color:#000>$_</span>, <span style=color:#c41a16>&#34; &#34;</span>;
 }
-<span style=color:navy;font-weight:700>print</span> <span style=color:#00f>&#34; ]&#34;</span>
-</code></pre></div><div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python>[ <span style=color:#00f>0</span> <span style=color:#00f>1</span> <span style=color:#00f>2</span> <span style=color:#00f>3</span> <span style=color:#00f>4</span> <span style=color:#00f>5</span> <span style=color:#00f>6</span> <span style=color:#00f>7</span> <span style=color:#00f>8</span> <span style=color:#00f>9</span> <span style=color:#00f>10</span> ]
+<span style=color:#a90d91>print</span> <span style=color:#c41a16>&#34; ]&#34;</span>
+</code></pre></div><div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python>[ <span style=color:#1c01ce>0</span> <span style=color:#1c01ce>1</span> <span style=color:#1c01ce>2</span> <span style=color:#1c01ce>3</span> <span style=color:#1c01ce>4</span> <span style=color:#1c01ce>5</span> <span style=color:#1c01ce>6</span> <span style=color:#1c01ce>7</span> <span style=color:#1c01ce>8</span> <span style=color:#1c01ce>9</span> <span style=color:#1c01ce>10</span> ]
 </code></pre></div><p>Or to use floats, we could use <a title=List::Gen href=http://search.cpan.org/dist/List-Gen/>List::Gen</a> module.</p>
-<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-perl data-lang=perl><span style=color:#080;font-style:italic>#!/usr/bin/perl</span>
+<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-perl data-lang=perl><span style=color:#177500>#!/usr/bin/perl</span>
 
-<span style=color:navy;font-weight:700>use</span> strict;
-<span style=color:navy;font-weight:700>use</span> warnings;
-<span style=color:navy;font-weight:700>use</span> feature <span style=color:#00f>&#39;say&#39;</span>;
-<span style=color:navy;font-weight:700>use</span> List::Gen;
+<span style=color:#a90d91>use</span> <span style=color:#000>strict</span>;
+<span style=color:#a90d91>use</span> <span style=color:#000>warnings</span>;
+<span style=color:#a90d91>use</span> <span style=color:#000>feature</span> <span style=color:#c41a16>&#39;say&#39;</span>;
+<span style=color:#a90d91>use</span> <span style=color:#000>List::Gen</span>;
 
-<span style=color:navy;font-weight:700>my</span> $range = range <span style=color:#00f>0</span>, <span style=color:#00f>10</span>, <span style=color:#00f>0.1</span>; <span style=color:#080;font-style:italic>#inclusive/inclusive</span>
+<span style=color:#a90d91>my</span> <span style=color:#000>$range</span> <span style=color:#000>=</span> <span style=color:#000>range</span> <span style=color:#1c01ce>0</span>, <span style=color:#1c01ce>10</span>, <span style=color:#1c01ce>0.1</span>; <span style=color:#177500>#inclusive/inclusive</span>
 
-<span style=color:navy;font-weight:700>print</span> <span style=color:#00f>&#34;[ &#34;</span>;
-<span style=color:navy;font-weight:700>print</span> $_, <span style=color:#00f>&#34; &#34;</span> <span style=color:navy;font-weight:700>for</span> @$range;
-<span style=color:navy;font-weight:700>print</span> <span style=color:#00f>&#34; ]&#34;</span>
-</code></pre></div><div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python>[ <span style=color:#00f>0</span> <span style=color:#00f>0.1</span> <span style=color:#00f>0.2</span> <span style=color:#00f>0.3</span> <span style=color:#00f>0.4</span> ... <span style=color:#00f>10</span> ]
+<span style=color:#a90d91>print</span> <span style=color:#c41a16>&#34;[ &#34;</span>;
+<span style=color:#a90d91>print</span> <span style=color:#000>$_</span>, <span style=color:#c41a16>&#34; &#34;</span> <span style=color:#a90d91>for</span> <span style=color:#000>@$range</span>;
+<span style=color:#a90d91>print</span> <span style=color:#c41a16>&#34; ]&#34;</span>
+</code></pre></div><div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python>[ <span style=color:#1c01ce>0</span> <span style=color:#1c01ce>0.1</span> <span style=color:#1c01ce>0.2</span> <span style=color:#1c01ce>0.3</span> <span style=color:#1c01ce>0.4</span> <span style=color:#000>...</span> <span style=color:#1c01ce>10</span> ]
 </code></pre></div><p>Perl also has support to range of characters. Look at the examples from Perldoc.</p>
-<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-perl data-lang=perl>@alphabet = (<span style=color:#00f>&#34;A&#34;</span> .. <span style=color:#00f>&#34;Z&#34;</span>); <span style=color:#080;font-style:italic># inclusive/inclusive... how would it work if the last argument was not inclusive?</span>
+<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-perl data-lang=perl><span style=color:#000>@alphabet</span> <span style=color:#000>=</span> (<span style=color:#c41a16>&#34;A&#34;</span> <span style=color:#000>..</span> <span style=color:#c41a16>&#34;Z&#34;</span>); <span style=color:#177500># inclusive/inclusive... how would it work if the last argument was not inclusive?</span>
 </code></pre></div><p>That would be cool if Functor had this feature too ;-)</p>
 <h3>Scala</h3>
 Scala is a language that runs on the Java Virtual Machine, it has some functional programming features as anonymous functions, higher order functions, among others. It has a built in mechanism for ranges with integers or floats. It uses the low value as inclusive, and the high value as exclusive, however when using floats you may have trouble if you don't pay attention to float precision.
-<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java>object Test {
-    def main(args: Array[String]) {
-        var range = 0.<span style=color:red>0</span> until 10.<span style=color:red>0</span> by 0.<span style=color:red>1</span>;
-        println(range);
-    }
-}
-</code></pre></div><div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python>NumericRange(<span style=color:#00f>0.0</span>, <span style=color:#00f>0.1</span>, <span style=color:#00f>0.2</span>, ..., <span style=color:#00f>9.99999999999998</span>)
+<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=color:#000>object</span> <span style=color:#000>Test</span> <span style=color:#000>{</span>
+    <span style=color:#000>def</span> <span style=color:#000>main</span><span style=color:#000>(</span><span style=color:#000>args</span><span style=color:#000>:</span> <span style=color:#000>Array</span><span style=color:#000>[</span><span style=color:#000>String</span><span style=color:#000>])</span> <span style=color:#000>{</span>
+        <span style=color:#000>var</span> <span style=color:#000>range</span> <span style=color:#000>=</span> <span style=color:#000>0</span><span style=color:#000>.</span><span style=color:#836c28>0</span> <span style=color:#000>until</span> <span style=color:#000>10</span><span style=color:#000>.</span><span style=color:#836c28>0</span> <span style=color:#000>by</span> <span style=color:#000>0</span><span style=color:#000>.</span><span style=color:#836c28>1</span><span style=color:#000>;</span>
+        <span style=color:#000>println</span><span style=color:#000>(</span><span style=color:#000>range</span><span style=color:#000>);</span>
+    <span style=color:#000>}</span>
+<span style=color:#000>}</span>
+</code></pre></div><div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=color:#000>NumericRange</span>(<span style=color:#1c01ce>0.0</span>, <span style=color:#1c01ce>0.1</span>, <span style=color:#1c01ce>0.2</span>, <span style=color:#000>...</span>, <span style=color:#1c01ce>9.99999999999998</span>)
 </code></pre></div><h3>Matlab</h3>
 Why, yes sir, we will compare Matlab too. It has built in operator for ranges, and both values, low and high, are inclusive.
-<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-matlab data-lang=matlab>x=<span style=color:#00f>0</span>:<span style=color:#00f>0.1</span>:<span style=color:#00f>10</span>;
-display(x);
-x =
-Columns <span style=color:#00f>1</span> through <span style=color:#00f>9</span>
-<span style=color:#00f>0</span> <span style=color:#00f>0.1000</span> <span style=color:#080;font-style:italic>...</span>
-<span style=color:#080;font-style:italic>... 10.0000</span>
+<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-matlab data-lang=matlab><span style=color:#000>x</span>=<span style=color:#1c01ce>0</span>:<span style=color:#1c01ce>0.1</span>:<span style=color:#1c01ce>10</span>;
+<span style=color:#000>display</span>(<span style=color:#000>x</span>);
+<span style=color:#000>x</span> =
+<span style=color:#000>Columns</span> <span style=color:#1c01ce>1</span> <span style=color:#000>through</span> <span style=color:#1c01ce>9</span>
+<span style=color:#1c01ce>0</span> <span style=color:#1c01ce>0.1000</span> <span style=color:#177500>...</span>
+<span style=color:#177500>... 10.0000</span>
 </code></pre></div><h3>PHP</h3>
 <p>Although famous for its web applications, PHP can be an interesting language for scripting or creating handy utilities. I may be wrong, but I believe the scm_bot in Jenkins project, that posts messages to JIRA when someone commits to a SCM with a special string, is written in PHP. It has a built in function for ranges in 5.3, and both values are inclusive.</p>
-<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-php data-lang=php>$range = range(<span style=color:#00f>0</span>, <span style=color:#00f>10</span>, <span style=color:#00f>0.1</span>);
-<span style=color:navy;font-weight:700>echo</span> <span style=color:#00f>&#34;[ &#34;</span>;
-<span style=color:navy;font-weight:700>foreach</span>($range <span style=color:navy;font-weight:700>as</span> $number) {
-    <span style=color:navy;font-weight:700>echo</span> $number . <span style=color:#00f>&#34; &#34;</span>;
+<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-php data-lang=php><span style=color:#000>$range</span> <span style=color:#000>=</span> <span style=color:#000>range</span>(<span style=color:#1c01ce>0</span>, <span style=color:#1c01ce>10</span>, <span style=color:#1c01ce>0.1</span>);
+<span style=color:#a90d91>echo</span> <span style=color:#c41a16>&#34;[ &#34;</span>;
+<span style=color:#a90d91>foreach</span>(<span style=color:#000>$range</span> <span style=color:#a90d91>as</span> <span style=color:#000>$number</span>) {
+    <span style=color:#a90d91>echo</span> <span style=color:#000>$number</span> <span style=color:#000>.</span> <span style=color:#c41a16>&#34; &#34;</span>;
 }
-<span style=color:navy;font-weight:700>echo</span> <span style=color:#00f>&#34;]&#34;</span>;
-</code></pre></div><div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python>[ <span style=color:#00f>0</span> <span style=color:#00f>0.1</span> <span style=color:#00f>0.2</span> <span style=color:#00f>0.3</span> ... <span style=color:#00f>9.9</span> <span style=color:#00f>10</span> ]
+<span style=color:#a90d91>echo</span> <span style=color:#c41a16>&#34;]&#34;</span>;
+</code></pre></div><div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python>[ <span style=color:#1c01ce>0</span> <span style=color:#1c01ce>0.1</span> <span style=color:#1c01ce>0.2</span> <span style=color:#1c01ce>0.3</span> <span style=color:#000>...</span> <span style=color:#1c01ce>9.9</span> <span style=color:#1c01ce>10</span> ]
 </code></pre></div><h3>Haskell</h3>
 Haskell has gained more attention lately with web frameworks. It has features such as monads, functors and high order function. And also has a built-in range operator. Both, left and right values of the range are inclusive in Haskell's range operator.
-<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python>[<span style=color:#00f>0</span> .. <span style=color:#00f>10</span>]
-</code></pre></div><div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python>[<span style=color:#00f>0</span>,<span style=color:#00f>1</span>,<span style=color:#00f>2</span>,<span style=color:#00f>3</span>,<span style=color:#00f>4</span>,<span style=color:#00f>5</span>,<span style=color:#00f>6</span>,<span style=color:#00f>7</span>,<span style=color:#00f>8</span>,<span style=color:#00f>9</span>,<span style=color:#00f>10</span>]
+<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python>[<span style=color:#1c01ce>0</span> <span style=color:#000>..</span> <span style=color:#1c01ce>10</span>]
+</code></pre></div><div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python>[<span style=color:#1c01ce>0</span>,<span style=color:#1c01ce>1</span>,<span style=color:#1c01ce>2</span>,<span style=color:#1c01ce>3</span>,<span style=color:#1c01ce>4</span>,<span style=color:#1c01ce>5</span>,<span style=color:#1c01ce>6</span>,<span style=color:#1c01ce>7</span>,<span style=color:#1c01ce>8</span>,<span style=color:#1c01ce>9</span>,<span style=color:#1c01ce>10</span>]
 </code></pre></div><p>Unfortunately I don&rsquo;t know Haskell so well, and couldn&rsquo;t make it work with floats, nor find out whether it is possible or not :-(</p>
 <h3>lua</h3>
 While lua has no built-in support to ranges, if you search for lua and range functions or operators, probably you will find an entry in lua's Wiki with a range function, contributed by a user. The function implemented uses the low and high value inclusively and has support for both integer and floats.
-<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-lua data-lang=lua><span style=color:#080;font-style:italic>-- http://lua-users.org/wiki/RangeIterator</span>
-<span style=color:navy;font-weight:700>function</span> range(from, to, step)
-    step = step <span style=font-weight:700>or</span> <span style=color:#00f>1</span>
-    <span style=color:navy;font-weight:700>return</span> <span style=color:navy;font-weight:700>function</span>(_, lastvalue)
-    <span style=color:navy;font-weight:700>local</span> nextvalue = lastvalue + step
-    <span style=color:navy;font-weight:700>if</span> step &gt; <span style=color:#00f>0</span> <span style=font-weight:700>and</span> nextvalue &lt;= to <span style=font-weight:700>or</span> step &lt; <span style=color:#00f>0</span> <span style=font-weight:700>and</span> nextvalue &gt;= to <span style=font-weight:700>or</span>
-        step == <span style=color:#00f>0</span>
-    <span style=color:navy;font-weight:700>then</span>
-        <span style=color:navy;font-weight:700>return</span> nextvalue
-    <span style=color:navy;font-weight:700>end</span>
-    <span style=color:navy;font-weight:700>end</span>, <span style=color:navy;font-weight:700>nil</span>, from - step
-<span style=color:navy;font-weight:700>end</span>
+<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-lua data-lang=lua><span style=color:#177500>-- http://lua-users.org/wiki/RangeIterator</span>
+<span style=color:#a90d91>function</span> <span style=color:#000>range</span>(<span style=color:#000>from</span>, <span style=color:#000>to</span>, <span style=color:#000>step</span>)
+    <span style=color:#000>step</span> <span style=color:#000>=</span> <span style=color:#000>step</span> <span style=color:#000>or</span> <span style=color:#1c01ce>1</span>
+    <span style=color:#a90d91>return</span> <span style=color:#a90d91>function</span>(<span style=color:#000>_</span>, <span style=color:#000>lastvalue</span>)
+    <span style=color:#a90d91>local</span> <span style=color:#000>nextvalue</span> <span style=color:#000>=</span> <span style=color:#000>lastvalue</span> <span style=color:#000>+</span> <span style=color:#000>step</span>
+    <span style=color:#a90d91>if</span> <span style=color:#000>step</span> <span style=color:#000>&gt;</span> <span style=color:#1c01ce>0</span> <span style=color:#000>and</span> <span style=color:#000>nextvalue</span> <span style=color:#000>&lt;=</span> <span style=color:#000>to</span> <span style=color:#000>or</span> <span style=color:#000>step</span> <span style=color:#000>&lt;</span> <span style=color:#1c01ce>0</span> <span style=color:#000>and</span> <span style=color:#000>nextvalue</span> <span style=color:#000>&gt;=</span> <span style=color:#000>to</span> <span style=color:#000>or</span>
+        <span style=color:#000>step</span> <span style=color:#000>==</span> <span style=color:#1c01ce>0</span>
+    <span style=color:#a90d91>then</span>
+        <span style=color:#a90d91>return</span> <span style=color:#000>nextvalue</span>
+    <span style=color:#a90d91>end</span>
+    <span style=color:#a90d91>end</span>, <span style=color:#a90d91>nil</span>, <span style=color:#000>from</span> <span style=color:#000>-</span> <span style=color:#000>step</span>
+<span style=color:#a90d91>end</span>
 
-<span style=color:navy;font-weight:700>function</span> f() <span style=color:navy;font-weight:700>return</span> <span style=color:#00f>0</span>, <span style=color:#00f>10</span>, <span style=color:#00f>0.1</span> <span style=color:navy;font-weight:700>end</span>
+<span style=color:#a90d91>function</span> <span style=color:#000>f</span>() <span style=color:#a90d91>return</span> <span style=color:#1c01ce>0</span>, <span style=color:#1c01ce>10</span>, <span style=color:#1c01ce>0.1</span> <span style=color:#a90d91>end</span>
 
-io.write(<span style=color:#00f>&#34;[ &#34;</span>);
-<span style=color:navy;font-weight:700>for</span> i <span style=color:navy;font-weight:700>in</span> range(f()) <span style=color:navy;font-weight:700>do</span>
-    io.write(i, <span style=color:#00f>&#34; &#34;</span>)
-<span style=color:navy;font-weight:700>end</span>
-io.write(<span style=color:#00f>&#34;]&#34;</span>);
-</code></pre></div><div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python>[ <span style=color:#00f>0</span> <span style=color:#00f>0.1</span> <span style=color:#00f>0.2</span> <span style=color:#00f>0.3</span> ...  <span style=color:#00f>9.9</span> <span style=color:#00f>10</span> ]
+<span style=color:#000>io.write</span>(<span style=color:#c41a16>&#34;[ &#34;</span>);
+<span style=color:#a90d91>for</span> <span style=color:#000>i</span> <span style=color:#a90d91>in</span> <span style=color:#000>range</span>(<span style=color:#000>f</span>()) <span style=color:#a90d91>do</span>
+    <span style=color:#000>io.write</span>(<span style=color:#000>i</span>, <span style=color:#c41a16>&#34; &#34;</span>)
+<span style=color:#a90d91>end</span>
+<span style=color:#000>io.write</span>(<span style=color:#c41a16>&#34;]&#34;</span>);
+</code></pre></div><div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python>[ <span style=color:#1c01ce>0</span> <span style=color:#1c01ce>0.1</span> <span style=color:#1c01ce>0.2</span> <span style=color:#1c01ce>0.3</span> <span style=color:#000>...</span>  <span style=color:#1c01ce>9.9</span> <span style=color:#1c01ce>10</span> ]
 </code></pre></div><h3>LISP</h3>
 Lisp is probably one of the oldest programming languages with functional features. Every time I read something about functional programming and collections it reminds me of Lisp recursion with lists. In Lisp you can use loop to iterate over a range of integers or floats, and both values are included for integers, for float, there is some precision problem that I couldn't overcome. For integers the following code would do.
-<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-lisp data-lang=lisp>&gt;(loop for i from <span style=color:#00f>0</span> to <span style=color:#00f>10</span> do (print i))
-<span style=color:#00f>0</span>
-<span style=color:#00f>1</span>
-<span style=color:#00f>2</span>
-...
-<span style=color:#00f>10</span>
-NIL
+<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-lisp data-lang=lisp><span style=color:#000>&gt;</span>(<span style=color:#a90d91>loop</span> <span style=color:#000>for</span> <span style=color:#000>i</span> <span style=color:#000>from</span> <span style=color:#1c01ce>0</span> <span style=color:#000>to</span> <span style=color:#1c01ce>10</span> <span style=color:#a90d91>do</span> (<span style=color:#000>print</span> <span style=color:#000>i</span>))
+<span style=color:#1c01ce>0</span>
+<span style=color:#1c01ce>1</span>
+<span style=color:#1c01ce>2</span>
+<span style=color:#000>...</span>
+<span style=color:#1c01ce>10</span>
+<span style=color:#000>NIL</span>
 </code></pre></div><p>And for floats.</p>
-<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-lisp data-lang=lisp>&gt;(loop for i from <span style=color:#00f>0.0</span> to <span style=color:#00f>10.0</span> by <span style=color:#00f>0.1</span> do (print i))
-<span style=color:#00f>0.0</span>
-<span style=color:#00f>0.1</span>
-<span style=color:#00f>0.2</span>
-...
-<span style=color:#00f>9.900002</span>
-NIL
+<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-lisp data-lang=lisp><span style=color:#000>&gt;</span>(<span style=color:#a90d91>loop</span> <span style=color:#000>for</span> <span style=color:#000>i</span> <span style=color:#000>from</span> <span style=color:#1c01ce>0.0</span> <span style=color:#000>to</span> <span style=color:#1c01ce>10.0</span> <span style=color:#000>by</span> <span style=color:#1c01ce>0.1</span> <span style=color:#a90d91>do</span> (<span style=color:#000>print</span> <span style=color:#000>i</span>))
+<span style=color:#1c01ce>0.0</span>
+<span style=color:#1c01ce>0.1</span>
+<span style=color:#1c01ce>0.2</span>
+<span style=color:#000>...</span>
+<span style=color:#1c01ce>9.900002</span>
+<span style=color:#000>NIL</span>
 </code></pre></div><p>Again, issues with precision.</p>
 <h3>Clojure</h3>
 Although Clojure is quite similar to LISP, I had some trouble setting up an example for this. My first try was with loop, but as it didn't work, I used dorun. It uses the low value as inclusive, and the high value as exclusive. Strange, I thought it would have similar behavior to the loop in LISP. But I only know the very basics of each language, and the explanation is beyond my knowledge. Anyway, it's interesting I guess.
-<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python>(dorun (<span style=color:navy;font-weight:700>for</span> [i (range <span style=color:#00f>0</span> <span style=color:#00f>10</span> <span style=color:#00f>1</span>)] (println i)))
-<span style=color:#00f>0</span>
-<span style=color:#00f>1</span>
-...
-<span style=color:#00f>9</span>
-nil
+<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python>(<span style=color:#000>dorun</span> (<span style=color:#a90d91>for</span> [<span style=color:#000>i</span> (<span style=color:#a90d91>range</span> <span style=color:#1c01ce>0</span> <span style=color:#1c01ce>10</span> <span style=color:#1c01ce>1</span>)] (<span style=color:#000>println</span> <span style=color:#000>i</span>)))
+<span style=color:#1c01ce>0</span>
+<span style=color:#1c01ce>1</span>
+<span style=color:#000>...</span>
+<span style=color:#1c01ce>9</span>
+<span style=color:#000>nil</span>
 </code></pre></div><h2><a name=ctable>Comparison Table</a></h2>
 To simplify the understanding, here is a comparison table.
 <div style=overflow:scroll>
