@@ -77,17 +77,17 @@ jobs:
             # Uses tr to delete breaklines and squeeze-repeats blank spaces,
             # saving space - this is used for an HTTP REST request to GitHub API.
             COV_HEADER=$(cat htmlcov/index.html | htmlq --pretty 'header > div > h1:first-of-type' | tr -d '\n' | tr -s ' ')
-  
+          
             # Extract the table of the pytest HTML report.
             # Passes the HTML through htmlq, extracting the table element.
             # Uses tr to delete breaklines and squeeze-repeats blank spaces.
             # Then calls sed with an expression that replaces the HTML a
             # elements by only its text.
             COV_TABLE=$(cat htmlcov/index.html | htmlq --pretty 'table' | tr -d '\n' | tr -s ' ' | sed 's|<a[^>]*>\([^<]*\)</a>|\1|g')
-  
+          
             # Produce a simplified HTML report.
             echo "${COV_HEADER}${COV_TABLE}" > coverage.html
-  
+          
             # Now simply use pandoc to convert HTML to Markdown.
             pandoc --from html --to 'markdown_strict+pipe_tables' coverage.html -o coverage.md
           fi
@@ -115,12 +115,12 @@ jobs:
               repo: context.repo.repo,
               issue_number: context.payload.number,
             })
-        
+            
             // Find any comment already made by the bot.
             const botComment = comments.find(comment => comment.user.id === 41898282)
             const fs = require("fs").promises
             const commentBody = await fs.readFile("coverage.md", "utf8")
-        
+            
             if (botComment) {
               console.log(`Updating comment in ${context.repo.owner}/${context.repo.repo}, comment ID: ${botComment.id}`)
               await github.rest.issues.updateComment({

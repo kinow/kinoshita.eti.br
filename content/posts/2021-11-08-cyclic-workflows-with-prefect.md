@@ -35,8 +35,8 @@ resulted in `prep` present in every cycle. Their dependency and constraints algo
 probably re-executing the whole cycle, or there may be another way to have optional tasks
 that I couldn't find.
 
-```python
-#!/bin/bash
+{{<highlight python "lineNos=true,lineNumbersInTable=true,anchorLineNos=true">}}
+#!/bin/env python3
 # file: workflow.py
 import prefect
 from prefect import task, Flow
@@ -77,12 +77,12 @@ with Flow("hello-flow") as flow:
 
 flow.run()
 #flow.visualize() # need to pip install prefect['viz']
-```
+{{< / highlight >}}
 
 Running the workflow is really simple (simpler than both
 Cylc and StackStorm): `python workflow.py`
 
-```bash
+{{<highlight console "lineNos=true,lineNumbersInTable=true,anchorLineNos=true">}}
 (venv) kinow@ranma:/tmp$ python workflow.py 
 [2021-11-08 21:37:20+1300] INFO - prefect.FlowRunner | Beginning Flow run for 'hello-flow'
 [2021-11-08 21:37:20+1300] INFO - prefect.TaskRunner | Task 'foo': Starting task run...
@@ -96,7 +96,7 @@ Cylc and StackStorm): `python workflow.py`
 [2021-11-08 21:37:28+1300] INFO - prefect.foo | foo.4 says hi!
 [2021-11-08 21:37:29+1300] INFO - prefect.foo | bar.4 says hi!
 ...
-```
+{{< / highlight >}}
 
 I had seen the RNN graph unrolling algorithm mentioned in their documentation
 while working on [decyclify](https://github.com/kinow/decyclify). I believe more
