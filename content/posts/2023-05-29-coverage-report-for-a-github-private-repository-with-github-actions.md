@@ -32,7 +32,7 @@ use [`htmlq`](https://github.com/mgdm/htmlq) to extract the HTML coverage table,
 convert it to Markdown with [Pandoc](https://github.com/jgm/pandoc/), and
 then post the result as the new Markdown comment to the pull requests.
 
-```yaml
+{{<highlight yaml "lineNos=true,lineNumbersInTable=true,anchorLineNos=true">}}
 # File: .github/workflows/ci.yml
 name: project demo
 on:
@@ -138,7 +138,7 @@ jobs:
                 body: commentBody
               })
             }
-```
+{{< / highlight >}}
 
 Now the GitHub bot will write a comment to your current pull request with the
 Markdown you produced with `htmlq` and some Shell script. If you update the
