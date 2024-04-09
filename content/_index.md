@@ -64,6 +64,7 @@ Get in touch if you would like to discuss a project related to computer
 programming and, or, arts.
 
 - [Curriculum Vitae](cv.pdf) (PDF)
+- [ORCID](https://orcid.org/0000-0001-8250-4074)
 
 {{< search >}}
 
