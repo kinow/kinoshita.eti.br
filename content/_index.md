@@ -10,7 +10,7 @@ images:
 <div class="landing-page" style="margin: 0; padding: 0;">
   <img
     id="kinow-photo"
-    src="/assets/photos/about/2020-me-closeup.png"
+    src="/assets/photos/about/2023-me-closeup.png"
     alt="kinow"
   />
 
@@ -22,8 +22,7 @@ images:
   in Barcelona, Spain.</p>
 
   <p>Head on to the blog for posts about languages, writing, music, arts, and computer
-  programming. Or visit my portfolio where I upload drawings, illustrations, paintings,
-  and more.</p>
+  programming. Or visit my portfolio where I upload drawings, illustrations, and paintings.</p>
 </div>
 
 <figure class="feature">
