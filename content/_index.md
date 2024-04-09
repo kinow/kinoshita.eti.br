@@ -65,4 +65,6 @@ programming and, or, arts.
 
 - [Curriculum Vitae](cv.pdf) (PDF)
 
+{{< search >}}
+
 </main>
