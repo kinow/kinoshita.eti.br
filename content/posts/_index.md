@@ -13,6 +13,8 @@ I also keep some [technical notes][notes] and [gists] on GitHub.
 Main topics: [Open Source][opensource], [Workflows][workflows], [Arts][arts]
 <!-- [UIUX][uiux], [Accessibility][accessibility] -->
 
+{{< search >}}
+
 [notes]: https://github.com/kinow/kinoshita.eti.br/tree/master/notes
 [gists]: https://gist.github.com/kinow/
 [opensource]: /tags/opensource.html
