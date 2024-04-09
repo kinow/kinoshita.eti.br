@@ -56,6 +56,8 @@ portfolio:
       caption: Simone and Tāupo, birthday gift. H, 2B, 4B, 6B graphite.
 ---
 
+<h1 aria-hidden="true" class="hidden">Portfolio</h1>
+
 Each drawing and illustration below was drawn by hand using any combination of
 charcoal, coated graphite sticks, mechanical pencils, traditional pencils,
 ballpoint pens, brush pens, fountain pens, gouache, watercolors, colored

@@ -7,6 +7,8 @@ images:
 
 <main class="content">
 
+<h1 aria-hidden="true" class="hidden">About</h1>
+
 <div class="landing-page" style="margin: 0; padding: 0;">
   <img
     id="kinow-photo"
