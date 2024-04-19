@@ -1,14 +1,15 @@
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  {{ template "_internal/opengraph.html" . }}
-  {{- range .AlternativeOutputFormats }}
-  {{ printf `<link rel="%s" type="%s" href="%s" title="%s" />` .Rel .MediaType.Type .Permalink $.Site.Title | safeHTML }}
-  {{ end -}}
-  {{- $sass := resources.Get "sass/main.scss" -}}
-  {{- $style := $sass | resources.ToCSS | resources.Fingerprint -}}
-  <link rel="stylesheet" type="text/css" href="{{ $style.Permalink }}" integrity="{{ $style.Data.Integrity }}">
-  {{- $title := print .Site.Title " | " .Title }}
-  {{ if .IsHome }}{{ $title = .Site.Title }}{{ end -}}
-  <title>{{ $title }}</title>
-</head>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+{{ partial "opengraph.html" . -}}
+    {{- range .AlternativeOutputFormats -}}
+    {{ printf `    <link rel="%s" type="%s" href="%s" title="%s" />` .Rel .MediaType.Type .Permalink $.Site.Title | safeHTML }}
+    {{ end -}}
+    {{- $sass := resources.Get "sass/main.scss" -}}
+    {{- $style := $sass | resources.ToCSS | resources.Fingerprint -}}
+    <link rel="stylesheet" type="text/css" href="{{ $style.Permalink }}" integrity="{{ $style.Data.Integrity }}">
+    {{- $title := print .Site.Title " | " .Title }}
+    {{ if .IsHome }}{{ $title = .Site.Title }}{{ end -}}
+    <title>{{ $title }}</title>
+{{- partial "site_schema.html" . }}
+  </head>

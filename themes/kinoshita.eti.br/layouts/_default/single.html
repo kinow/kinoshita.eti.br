@@ -1,46 +1,42 @@
 {{ define "main" }}
-<main>
-  <article class="content">
-  {{ if ne .Params.noheading true }}
-  <h1>{{ .Title }}</h1>
-  {{- partial "metadata.html" . -}}
-  {{ end }}
-  <aside>
-    {{ .TableOfContents }}
-  </aside>
-
-  {{ .Content }}
-
-  {{ $taxonomy := "categories" }}
-  {{ with .GetTerms $taxonomy }}
-  <p>
-    {{ (site.GetPage $taxonomy).LinkTitle }}:
-    {{ range $k, $_ := . -}}
-    {{ if $k }}, {{ end }}
-    <a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a>
-    {{- end }}
-  </p>
-  {{ end }}
-  {{ $taxonomy := "tags" }}
-  {{ with .GetTerms $taxonomy }}
-  <p>
-    {{ (site.GetPage $taxonomy).LinkTitle }}:
-    {{ range $k, $_ := . -}}
-    {{ if $k }}, {{ end }}
-    <a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a>
-    {{- end }}
-  </p>
-  {{ end }}
-
-    <aside class="links">
-    {{ with .PrevInSection }}
-    <a class="previous" href="{{ .Permalink }}">&laquo; Previous</a>
-    {{ end }}
-    {{ with .NextInSection }}
-    <a class="next" href="{{ .Permalink }}">Next &raquo;</a>
-    {{ end }}
-  </aside>
-
-  </article>
-</main>
-{{ end }}
+    <main>
+      <article class="content">
+        {{- if ne .Params.noheading true }}
+        <h1>{{ .Title }}</h1>
+  {{ partial "metadata.html" . -}}
+        {{- end }}
+        <aside>
+          {{ .TableOfContents }}
+        </aside>
+        {{ .Content }}
+        {{- $taxonomy := "categories" -}}
+        {{- with .GetTerms $taxonomy }}
+        <p>
+          {{ (site.GetPage $taxonomy).LinkTitle }}:
+          {{- range $k, $_ := . -}}
+          {{ if $k }}, {{ end }}
+          <a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a>
+          {{- end }}
+        </p>
+        {{- end -}}
+        {{- $taxonomy := "tags" -}}
+        {{- with .GetTerms $taxonomy }}
+        <p>
+          {{ (site.GetPage $taxonomy).LinkTitle }}:
+          {{- range $k, $_ := . -}}
+          {{ if $k }}, {{ end }}
+          <a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a>
+          {{- end }}
+        </p>
+        {{- end }}
+        <aside class="links">
+          {{ with .PrevInSection -}}
+          <a class="previous" href="{{ .Permalink }}">&laquo; Previous</a>
+          {{- end }}
+          {{- with .NextInSection -}}
+          <a class="next" href="{{ .Permalink }}">Next &raquo;</a>
+          {{- end }}
+        </aside>
+      </article>
+    </main>
+{{- end -}}
