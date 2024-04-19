@@ -12,6 +12,8 @@ tags:
   - github
   - github actions
   - python
+images:
+  - '/assets/posts/2023-05-29-coverage-report-for-a-github-private-repository-with-github-actions/coverage.png'
 ---
 
 Normally when you add test coverage to a GitHub repository, the reporting part
