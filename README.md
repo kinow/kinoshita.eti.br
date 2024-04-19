@@ -4,6 +4,14 @@
 
 [**kinow**](https://kinoshita.eti.br/) website.
 
+The website is built using HTML and CSS only, without any JavaScript code,
+nor cookies.
+
+It is tested for accessibility, and contains Schema.org and Open Graph data
+for semantic web integration.
+
+Search provided by [DuckDockGo](https://duckduckgo.com/). No affiliated links.
+
 ## Building
 
 This website is built using [Hugo](https://github.com/gohugoio/). Hugo is a Go
