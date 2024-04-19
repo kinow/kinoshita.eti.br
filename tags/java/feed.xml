@@ -1,19 +1,24 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>java on kinow</title><link>https://kinoshita.eti.br/tags/java.html</link><description>Recent content in java on kinow</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><copyright>Bruno P. Kinoshita All rights reserved</copyright><lastBuildDate>Sat, 11 Apr 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://kinoshita.eti.br/tags/java/feed.xml" rel="self" type="application/rss+xml"/><item><title>Notes on Apache Jena StreamRDFWriter</title><link>https://kinoshita.eti.br/2020/04/11/notes-on-apache-jena-streamrdfwriter.html</link><pubDate>Sat, 11 Apr 2020 00:00:00 +0000</pubDate><guid>https://kinoshita.eti.br/2020/04/11/notes-on-apache-jena-streamrdfwriter.html</guid><description>&lt;p>&lt;a href="https://jena.apache.org/">Apache Jena&lt;/a> project is like a box full of interesting things—at least if you love programming. One of its many features, is &lt;strong>stream processing&lt;/strong>.&lt;/p>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Java on kinow</title><link>https://kinoshita.eti.br/tags/java.html</link><description>Recent content in Java on kinow</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><copyright>Bruno P. Kinoshita All rights reserved</copyright><lastBuildDate>Fri, 19 Apr 2024 16:51:32 +0200</lastBuildDate><atom:link href="https://kinoshita.eti.br/tags/java/feed.xml" rel="self" type="application/rss+xml"/><item><title>Notes on Apache Jena StreamRDFWriter</title><link>https://kinoshita.eti.br/2020/04/11/notes-on-apache-jena-streamrdfwriter.html</link><pubDate>Sat, 11 Apr 2020 00:00:00 +0000</pubDate><guid>https://kinoshita.eti.br/2020/04/11/notes-on-apache-jena-streamrdfwriter.html</guid><description>&lt;p>&lt;a href="https://jena.apache.org/">Apache Jena&lt;/a> project is like a box full of interesting things—at least if you love programming. One of its many features, is &lt;strong>stream processing&lt;/strong>.&lt;/p>
 &lt;p>The graphs in Jena may contain very large datasets, with giga- or terabytes. Some queries may be very large, and then sending the whole result would be simply impracticable.&lt;/p>
 &lt;p>Instead, the data will go through ARQ. ARQ is a query engine for Jena that supports SPARQL. There is one piece of code there that I found interesting while reviewing a small pull request: &lt;a href="https://github.com/apache/jena/blob/cbdba5edb47041a4181a00bd7660e5d4c212530a/jena-arq/src/main/java/org/apache/jena/riot/system/StreamRDFWriter.java">&lt;code>org.apache.jena.riot.system.StreamRDFWriter&lt;/code>&lt;/a>.&lt;/p>
 &lt;p>It is responsible for writing graph data in a streaming fashion. (See &lt;a href="https://en.wikipedia.org/wiki/Stream_processing">stream processing&lt;/a> for programming models and more.)&lt;/p>
 &lt;h2 id="stream-factories">Stream factories&lt;/h2>
 &lt;p>&lt;code>StreamRDFWriter&lt;/code> holds several implementations (as &lt;code>static&lt;/code> members) of &lt;code>StreamRDFWriterFactory&lt;/code>. The factory has one responsibility only, to create streams (&lt;code>StreamRDF&lt;/code>), for a certain format and context.&lt;/p>
+
+
+
 &lt;figure class="feature">
-&lt;img
-src='https://kinoshita.eti.br/assets/posts/2020-04-11-notes-on-apache-jena-streamrdfwriter/01.png'
-alt=''
-title=''
-style=''
-width=''
-height=''
-/>
-&lt;figcaption>&lt;/figcaption>
+
+ &lt;img
+ src='https://kinoshita.eti.br/assets/posts/2020-04-11-notes-on-apache-jena-streamrdfwriter/01.png'
+ alt=''
+ title=''
+ style=''
+ width=''
+ height=''
+ />
+ &lt;figcaption>&lt;/figcaption>
+
 &lt;/figure></description></item><item><title>Use of Logging in Java Image Processing libraries</title><link>https://kinoshita.eti.br/2018/08/12/use-of-logging-in-java-image-processing-libraries.html</link><pubDate>Sun, 12 Aug 2018 00:00:00 +0000</pubDate><guid>https://kinoshita.eti.br/2018/08/12/use-of-logging-in-java-image-processing-libraries.html</guid><description>&lt;p>For &lt;a href="https://issues.apache.org/jira/browse/IMAGING-154">IMAGING-154&lt;/a> I was trying to think in a solution
 for the &lt;a href="https://github.com/apache/commons-imaging/blob/d2ec76bd10f30c39ae5180ede1254908e76045f0/src/main/java/org/apache/commons/imaging/util/Debug.java">existing &lt;code>Debug&lt;/code>&lt;/a>
 class. This class was the issue of discussion during a
@@ -32,16 +37,21 @@ what happens when you create a new dataset in Apache Jena Fuseki.&lt;/p>
 It will be more based on what I find interesting.&lt;/p>
 &lt;p>Oh, the dataset created is &lt;strong>an in-memory dataset&lt;/strong>. Here&amp;rsquo;s a simplified sequence diagram. Again,
 these articles are more brain-dumps, used by myself for later reference.&lt;/p>
+
+
+
 &lt;figure class="feature">
-&lt;img
-src='https://kinoshita.eti.br/assets/posts/2018-05-29-what-happens-when-you-create-a-new-dataset-in-apache-jena-fuseki/sequence-diagram.png'
-alt=''
-title=''
-style='display: inline; width: 100%;'
-width=''
-height=''
-/>
-&lt;figcaption>&lt;/figcaption>
+
+ &lt;img
+ src='https://kinoshita.eti.br/assets/posts/2018-05-29-what-happens-when-you-create-a-new-dataset-in-apache-jena-fuseki/sequence-diagram.png'
+ alt=''
+ title=''
+ style='display: inline; width: 100%;'
+ width=''
+ height=''
+ />
+ &lt;figcaption>&lt;/figcaption>
+
 &lt;/figure></description></item><item><title>Learning more about SPARQL and Jena internals</title><link>https://kinoshita.eti.br/2018/04/28/learning-more-about-sparql-and-jena-internals.html</link><pubDate>Sat, 28 Apr 2018 00:00:00 +0000</pubDate><guid>https://kinoshita.eti.br/2018/04/28/learning-more-about-sparql-and-jena-internals.html</guid><description>O Corvo O Corvo Recently a pull request for Apache Jena that I started three years ago got merged. Even though it has been three years since that pull request, there are still many parts of the project code base that I am not familiar with.
 And not only the code, but there are also many concepts about SPARQL, other standards used in Jena, and internals about triple stores.</description></item><item><title>Exif Odd Offsets</title><link>https://kinoshita.eti.br/2017/12/25/exif-odd-offsets.html</link><pubDate>Mon, 25 Dec 2017 00:00:00 +0000</pubDate><guid>https://kinoshita.eti.br/2017/12/25/exif-odd-offsets.html</guid><description>A file format like JPEG may contain metadata in JFIF, Exif, or a vendor proprietary format. The Exif format is based - or uses parts of - on the TIFF format.
 Within an Exif metadata block, you should see directories, with several entries. The entries have fields like description, value, and also an offset. The offset indicates the offset to the next entry.
@@ -52,7 +62,7 @@ BigDecimal negative = new BigDecimal(&amp;#34;-1234.56&amp;#34;); DecimalFormat 
 Here&amp;rsquo;s some code before being formatted by Eclipse&amp;rsquo;s default formatter rules.
 Code adapted from: blog post Java d&amp;rsquo;eau ‐ Java 8: Streams in Hibernate and Beyond
 session.createQuery(&amp;#34;SELECT h FROM Hare h&amp;#34;, Hare.class) .stream() .filter(h -&amp;gt; h.getId() == 1) .map(Hare::getName) .forEach(System.out::println); Then after formatting.</description></item><item><title>Finding Base64 implementations in Apache Software Foundation projects</title><link>https://kinoshita.eti.br/2017/09/01/finding-base64-implementations-in-apache-software-foundation-projects.html</link><pubDate>Fri, 01 Sep 2017 00:00:00 +0000</pubDate><guid>https://kinoshita.eti.br/2017/09/01/finding-base64-implementations-in-apache-software-foundation-projects.html</guid><description>NZ Grey Warbler (riroriro) New Zealand Grey Warbler (riroriro) Some time ago while working in one of the many projects in the Apache Software Foundation (Apache Commons FileUpload if I remember well), I noticed that it had a Base64 implementation. What called my attention was that the project not using the Apache Commons Codec Base64 implementation.
-While Apache Commons' mission is to create components that can be re-used across ASF projects, and also by other projects not necessarily under the ASF, it is understandable that some projects prefer to keep its dependencies to a minimum.</description></item><item><title>Two other Maven Plug-ins: impsort and deptools</title><link>https://kinoshita.eti.br/2017/08/12/two-other-maven-plug-ins-impsort-and-deptools.html</link><pubDate>Sat, 12 Aug 2017 00:00:00 +0000</pubDate><guid>https://kinoshita.eti.br/2017/08/12/two-other-maven-plug-ins-impsort-and-deptools.html</guid><description>Last [week I wrote]({% post_url 2017-08-06-checking-for-transitive-dependencies-use-with-maven-enforcer-plugin %}) about the ImmobilienScout24/illegal-transitive-dependency-check rule for Maven Enforcer Plug-in. There are two other Maven Plug-ins that can be useful.
+While Apache Commons&amp;rsquo; mission is to create components that can be re-used across ASF projects, and also by other projects not necessarily under the ASF, it is understandable that some projects prefer to keep its dependencies to a minimum.</description></item><item><title>Two other Maven Plug-ins: impsort and deptools</title><link>https://kinoshita.eti.br/2017/08/12/two-other-maven-plug-ins-impsort-and-deptools.html</link><pubDate>Sat, 12 Aug 2017 00:00:00 +0000</pubDate><guid>https://kinoshita.eti.br/2017/08/12/two-other-maven-plug-ins-impsort-and-deptools.html</guid><description>Last [week I wrote]({% post_url 2017-08-06-checking-for-transitive-dependencies-use-with-maven-enforcer-plugin %}) about the ImmobilienScout24/illegal-transitive-dependency-check rule for Maven Enforcer Plug-in. There are two other Maven Plug-ins that can be useful.
 mbknor/deptools The mbknor/deptools is another rule for the Maven Enforcer Plug-in. It will scan your project dependency tree, looking for transitive dependencies. Whenever it finds a transitive dependency, it will keep track of the versions. And if, because of the way your dependencies and transitive dependencies are organised, you end up with a version that is not the newest, the build will fail.</description></item><item><title>Checking for transitive dependencies use with Maven Enforcer Plug-in</title><link>https://kinoshita.eti.br/2017/08/06/checking-for-transitive-dependencies-use-with-maven-enforcer-plug-in.html</link><pubDate>Sun, 06 Aug 2017 00:00:00 +0000</pubDate><guid>https://kinoshita.eti.br/2017/08/06/checking-for-transitive-dependencies-use-with-maven-enforcer-plug-in.html</guid><description>Maven Enforcer Plug-in “provides goals to control certain environmental constraints such as Maven version, JDK version and OS family along with many more built-in rules and user created rules”. There are several libraries that provide custom rules, or you can write your own.
 One of these libraries is ImmobilienScout24/illegal-transitive-dependency-check, “an additional rule for the maven-enforcer-plugin that checks for classes referenced via transitive Maven dependencies”.
 With the following example:

@@ -1,117 +1,36 @@
-<!doctype html><html lang=en>
-<head>
-<meta charset=utf-8>
-<meta name=viewport content="width=device-width,initial-scale=1">
-<meta property="og:title" content="When you don't realize you need a Comparable">
-<meta property="og:description" content="[In 2012, I wrote]({% post_url 2012-10-20-replacing-a-hashset-with-a-bitset %}) about how you always learn something
-new by following the Apache dev mailing lists.
-After about five years, I am still learning, and still getting impressed by the knowledge of other
-developers. Days ago I was massaging some code in a pull request
-and a developer suggested me to simplify my code.">
-<meta property="og:type" content="article">
-<meta property="og:url" content="https://kinoshita.eti.br/2017/05/15/when-you-dont-realize-you-need-a-comparable.html"><meta property="article:section" content="posts">
-<meta property="article:published_time" content="2017-05-15T00:00:00+00:00">
-<meta property="article:modified_time" content="2024-04-19T16:48:00+02:00">
-<link rel=alternate type=application/rss+xml href=https://kinoshita.eti.br/2017/05/15/when-you-dont-realize-you-need-a-comparable/feed.xml title=kinow>
-<link rel=stylesheet type=text/css href=https://kinoshita.eti.br/sass/main.1e768395a672116b3eff41b3123d9aafb8a9302476085be5fb658a4b93613f57.css integrity="sha256-HnaDlaZyEWs+/0GzEj2ar7ipMCR2CFvl+2WKS5NhP1c=">
-<title>kinow | When you don't realize you need a Comparable</title>
-</head>
-<body>
-<header role=banner class=content>
-<nav id=nav aria-label=Main role=navigation class=content>
-<ul><li>
-<a href=/><i data-feather=about></i> About</a>
-</li><li>
-<a href=/blog/><i data-feather=blog></i> Blog</a>
-</li><li>
-<a href=/portfolio/><i data-feather=portfolio></i> Portfolio</a>
-</li>
-</ul>
-</nav>
-</header>
-<main>
-<article class=content>
-<h1>When you don't realize you need a Comparable</h1><div class=metadata>
-<i data-feather=calendar></i>
-<time datetime=2017-05-15>May 15, 2017</time>
-</div>
-<aside>
-<nav id=TableOfContents></nav>
-</aside>
-<p>[In 2012, I wrote]({% post_url 2012-10-20-replacing-a-hashset-with-a-bitset %}) about how you always learn something
-new by following the <a href=http://www.apache.org/foundation/mailinglists.html>Apache dev mailing lists</a>.</p>
-<p>After about five years, I am still learning, and still getting impressed by the knowledge of other
+<!doctype html><html lang=en><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta property="og:url" content="https://kinoshita.eti.br/2017/05/15/when-you-dont-realize-you-need-a-comparable.html"><meta property="og:site_name" content="kinow"><meta property="og:title" content="When you don't realize you need a Comparable"><meta property="og:description" content="[In 2012, I wrote]({% post_url 2012-10-20-replacing-a-hashset-with-a-bitset %}) about how you always learn something new by following the Apache dev mailing lists.
+After about five years, I am still learning, and still getting impressed by the knowledge of other developers. Days ago I was massaging some code in a pull request and a developer suggested me to simplify my code.
+"><meta property="og:locale" content="en-us"><meta property="og:type" content="article"><meta property="article:section" content="posts"><meta property="article:published_time" content="2017-05-15T00:00:00+00:00"><meta property="article:modified_time" content="2024-04-19T16:51:32+02:00"><meta property="article:tag" content="Apache Software Foundation"><meta property="article:tag" content="Java"><meta property="article:tag" content="Opensource"><meta property="article:tag" content="Programming"><meta property="og:image" content="https://kinoshita.eti.br/assets/photos/about/2023-me-closeup.png"><meta property="fb:admins" content="bruno.kinoshita"><link rel=alternate type=application/rss+xml href=https://kinoshita.eti.br/2017/05/15/when-you-dont-realize-you-need-a-comparable/feed.xml title=kinow><link rel=stylesheet type=text/css href=https://kinoshita.eti.br/sass/main.1e768395a672116b3eff41b3123d9aafb8a9302476085be5fb658a4b93613f57.css integrity="sha256-HnaDlaZyEWs+/0GzEj2ar7ipMCR2CFvl+2WKS5NhP1c="><title>kinow | When you don't realize you need a Comparable</title><script type=application/ld+json>{"@context":"http://schema.org","@type":"BlogPosting","articleSection":"posts","name":"When you don\u0027t realize you need a Comparable","headline":"When you don\u0027t realize you need a Comparable","alternativeHeadline":"","description":"\u003cp\u003e[In 2012, I wrote]({% post_url 2012-10-20-replacing-a-hashset-with-a-bitset %}) about how you always learn something\nnew by following the \u003ca href=\u0022http:\/\/www.apache.org\/foundation\/mailinglists.html\u0022\u003eApache dev mailing lists\u003c\/a\u003e.\u003c\/p\u003e\n\u003cp\u003eAfter about five years, I am still learning, and still getting impressed by the knowledge of other\ndevelopers. Days ago I was massaging some code in \u003ca href=\u0022https:\/\/github.com\/apache\/jena\/pull\/237\u0022\u003ea pull request\u003c\/a\u003e\nand a developer suggested me to simplify my code.\u003c\/p\u003e","inLanguage":"en-us","isFamilyFriendly":"true","mainEntityOfPage":{"@type":"WebPage","@id":"https:\/\/kinoshita.eti.br\/2017\/05\/15\/when-you-dont-realize-you-need-a-comparable.html"},"author":{"@type":"Person","name":"Bruno P. Kinoshita"},"creator":{"@type":"Person","name":"Bruno P. Kinoshita"},"accountablePerson":{"@type":"Person","name":"Bruno P. Kinoshita"},"copyrightHolder":"kinow","copyrightYear":"2017","dateCreated":"2017-05-15T00:00:00.00Z","datePublished":"2017-05-15T00:00:00.00Z","dateModified":"2024-04-19T16:51:32.00Z","publisher":{"@type":"Organization","name":"kinow","url":"https://kinoshita.eti.br/","logo":{"@type":"ImageObject","url":"https:\/\/kinoshita.eti.br\/","width":"32","height":"32"}},"image":"https://kinoshita.eti.br/","url":"https:\/\/kinoshita.eti.br\/2017\/05\/15\/when-you-dont-realize-you-need-a-comparable.html","wordCount":"263","genre":["apache software foundation","java","opensource","programming"],"keywords":[]}</script></head><body><header role=banner class=content><nav id=nav aria-label=Main role=navigation class=content><ul><li><a href=/><i data-feather=about></i> About</a></li><li><a href=/blog/><i data-feather=blog></i> Blog</a></li><li><a href=/portfolio/><i data-feather=portfolio></i> Portfolio</a></li></ul></nav></header><main><article class=content><h1>When you don't realize you need a Comparable</h1><div class=metadata><i data-feather=calendar></i>
+<time datetime=2017-05-15>May 15, 2017</time></div><aside><nav id=TableOfContents></nav></aside><p>[In 2012, I wrote]({% post_url 2012-10-20-replacing-a-hashset-with-a-bitset %}) about how you always learn something
+new by following the <a href=http://www.apache.org/foundation/mailinglists.html>Apache dev mailing lists</a>.</p><p>After about five years, I am still learning, and still getting impressed by the knowledge of other
 developers. Days ago I was massaging some code in <a href=https://github.com/apache/jena/pull/237>a pull request</a>
-and a developer suggested me to simplify my code.</p>
-<p>The suggestion was to make a class a <a href=https://docs.oracle.com/javase/7/docs/api/java/lang/Comparable.html>Comparable type</a>
+and a developer suggested me to simplify my code.</p><p>The suggestion was to make a class a <a href=https://docs.oracle.com/javase/7/docs/api/java/lang/Comparable.html>Comparable type</a>
 to both simplify the code, and also have a better design. I immediately agreed, and looking back in hindsight,
-it was the most logical choice. Yet, I simply did not think about that.</p>
-<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=color:#177500>// What the code was
-</span><span style=color:#177500></span><span style=color:#a90d91>case</span> <span style=color:#000>VSPACE_SORTKEY</span> <span style=color:#000>:</span>
-    <span style=color:#a90d91>int</span> <span style=color:#000>cmp</span> <span style=color:#000>=</span> <span style=color:#000>0</span><span style=color:#000>;</span>
-    <span style=color:#000>String</span> <span style=color:#000>c1</span> <span style=color:#000>=</span> <span style=color:#000>nv1</span><span style=color:#000>.</span><span style=color:#836c28>getCollation</span><span style=color:#000>();</span>
-    <span style=color:#000>String</span> <span style=color:#000>c2</span> <span style=color:#000>=</span> <span style=color:#000>nv2</span><span style=color:#000>.</span><span style=color:#836c28>getCollation</span><span style=color:#000>();</span>
-    <span style=color:#a90d91>if</span> <span style=color:#000>(</span><span style=color:#000>c1</span> <span style=color:#000>!=</span> <span style=color:#a90d91>null</span> <span style=color:#000>&amp;&amp;</span> <span style=color:#000>c2</span> <span style=color:#000>!=</span> <span style=color:#a90d91>null</span> <span style=color:#000>&amp;&amp;</span> <span style=color:#000>c1</span><span style=color:#000>.</span><span style=color:#836c28>equals</span><span style=color:#000>(</span><span style=color:#000>c2</span><span style=color:#000>))</span> <span style=color:#000>{</span>
-        <span style=color:#177500>// locales are parsed. Here we could think about caching if necessary
-</span><span style=color:#177500></span>        <span style=color:#000>Locale</span> <span style=color:#000>desiredLocale</span> <span style=color:#000>=</span> <span style=color:#000>Locale</span><span style=color:#000>.</span><span style=color:#836c28>forLanguageTag</span><span style=color:#000>(</span><span style=color:#000>c1</span><span style=color:#000>);</span>
-        <span style=color:#000>Collator</span> <span style=color:#000>collator</span> <span style=color:#000>=</span> <span style=color:#000>Collator</span><span style=color:#000>.</span><span style=color:#836c28>getInstance</span><span style=color:#000>(</span><span style=color:#000>desiredLocale</span><span style=color:#000>);</span>
-        <span style=color:#000>cmp</span> <span style=color:#000>=</span> <span style=color:#000>collator</span><span style=color:#000>.</span><span style=color:#836c28>compare</span><span style=color:#000>(</span><span style=color:#000>nv1</span><span style=color:#000>.</span><span style=color:#836c28>getString</span><span style=color:#000>(),</span> <span style=color:#000>nv2</span><span style=color:#000>.</span><span style=color:#836c28>getString</span><span style=color:#000>());</span>
-    <span style=color:#000>}</span> <span style=color:#a90d91>else</span> <span style=color:#000>{</span>
-        <span style=color:#000>cmp</span> <span style=color:#000>=</span> <span style=color:#000>XSDFuncOp</span><span style=color:#000>.</span><span style=color:#836c28>compareString</span><span style=color:#000>(</span><span style=color:#000>nv1</span><span style=color:#000>,</span> <span style=color:#000>nv2</span><span style=color:#000>)</span> <span style=color:#000>;</span>
-    <span style=color:#000>}</span>
-    <span style=color:#a90d91>return</span> <span style=color:#000>cmp</span><span style=color:#000>;</span>
-<span style=color:#000>}</span>
-</code></pre></div><div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=color:#177500>// What the code is now
-</span><span style=color:#177500></span><span style=color:#a90d91>case</span> <span style=color:#000>VSPACE_SORTKEY</span> <span style=color:#000>:</span>
-    <span style=color:#a90d91>return</span> <span style=color:#000>((</span><span style=color:#000>NodeValueSortKey</span><span style=color:#000>)</span> <span style=color:#000>nv1</span><span style=color:#000>).</span><span style=color:#836c28>compareTo</span><span style=color:#000>((</span><span style=color:#000>NodeValueSortKey</span><span style=color:#000>)</span> <span style=color:#000>nv2</span><span style=color:#000>);</span>
-<span style=color:#000>}</span>
-</code></pre></div><p>This moved the logic to a method in the <code>NodeValueSortKey</code> class. This reduced the complexity
-of the class with the <code>switch</code> statement. And it also made it easier to write unit tests.</p>
-<p>If you are not involved in Open Source projects yet, I keep my suggestion from five years ago.
+it was the most logical choice. Yet, I simply did not think about that.</p><div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=display:flex><span><span style=color:#177500>// What the code was</span>
+</span></span><span style=display:flex><span><span style=color:#a90d91>case</span> <span style=color:#000>VSPACE_SORTKEY</span> :
+</span></span><span style=display:flex><span>    <span style=color:#a90d91>int</span> <span style=color:#000>cmp</span> <span style=color:#000>=</span> <span style=color:#000>0</span>;
+</span></span><span style=display:flex><span>    <span style=color:#000>String</span> <span style=color:#000>c1</span> <span style=color:#000>=</span> <span style=color:#000>nv1</span>.<span style=color:#836c28>getCollation</span>();
+</span></span><span style=display:flex><span>    <span style=color:#000>String</span> <span style=color:#000>c2</span> <span style=color:#000>=</span> <span style=color:#000>nv2</span>.<span style=color:#836c28>getCollation</span>();
+</span></span><span style=display:flex><span>    <span style=color:#a90d91>if</span> (<span style=color:#000>c1</span> <span style=color:#000>!=</span> <span style=color:#a90d91>null</span> <span style=color:#000>&amp;&amp;</span> <span style=color:#000>c2</span> <span style=color:#000>!=</span> <span style=color:#a90d91>null</span> <span style=color:#000>&amp;&amp;</span> <span style=color:#000>c1</span>.<span style=color:#836c28>equals</span>(<span style=color:#000>c2</span>)) {
+</span></span><span style=display:flex><span>        <span style=color:#177500>// locales are parsed. Here we could think about caching if necessary</span>
+</span></span><span style=display:flex><span>        <span style=color:#000>Locale</span> <span style=color:#000>desiredLocale</span> <span style=color:#000>=</span> <span style=color:#000>Locale</span>.<span style=color:#836c28>forLanguageTag</span>(<span style=color:#000>c1</span>);
+</span></span><span style=display:flex><span>        <span style=color:#000>Collator</span> <span style=color:#000>collator</span> <span style=color:#000>=</span> <span style=color:#000>Collator</span>.<span style=color:#836c28>getInstance</span>(<span style=color:#000>desiredLocale</span>);
+</span></span><span style=display:flex><span>        <span style=color:#000>cmp</span> <span style=color:#000>=</span> <span style=color:#000>collator</span>.<span style=color:#836c28>compare</span>(<span style=color:#000>nv1</span>.<span style=color:#836c28>getString</span>(), <span style=color:#000>nv2</span>.<span style=color:#836c28>getString</span>());
+</span></span><span style=display:flex><span>    } <span style=color:#a90d91>else</span> {
+</span></span><span style=display:flex><span>        <span style=color:#000>cmp</span> <span style=color:#000>=</span> <span style=color:#000>XSDFuncOp</span>.<span style=color:#836c28>compareString</span>(<span style=color:#000>nv1</span>, <span style=color:#000>nv2</span>) ;
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>    <span style=color:#a90d91>return</span> <span style=color:#000>cmp</span>;
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=display:flex><span><span style=color:#177500>// What the code is now</span>
+</span></span><span style=display:flex><span><span style=color:#a90d91>case</span> <span style=color:#000>VSPACE_SORTKEY</span> :
+</span></span><span style=display:flex><span>    <span style=color:#a90d91>return</span> ((<span style=color:#000>NodeValueSortKey</span>) <span style=color:#000>nv1</span>).<span style=color:#836c28>compareTo</span>((<span style=color:#000>NodeValueSortKey</span>) <span style=color:#000>nv2</span>);
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><p>This moved the logic to a method in the <code>NodeValueSortKey</code> class. This reduced the complexity
+of the class with the <code>switch</code> statement. And it also made it easier to write unit tests.</p><p>If you are not involved in Open Source projects yet, I keep my suggestion from five years ago.
 Find a project related to something you like, and start reading the code, lurk in the
-mailing list or watch GitHub repositories.</p>
-<p>You can always learn more!</p>
-<p>♥ Open Source</p>
-<p>
-Categories:
-<a href=/categories/blog.html>blog</a>
-</p>
-<p>
-Tags:
-<a href=/tags/apache-software-foundation.html>apache software foundation</a>,
-<a href=/tags/java.html>java</a>,
-<a href=/tags/opensource.html>opensource</a>,
-<a href=/tags/programming.html>programming</a>
-</p>
-<aside class=links>
-<a class=previous href=https://kinoshita.eti.br/2017/04/24/drawing-sketch-page-036.html>&#171; Previous</a>
-<a class=next href=https://kinoshita.eti.br/2017/05/28/some-links-related-to-apache-commons-text.html>Next &#187;</a>
-</aside>
-</article>
-</main>
-<footer role=contentinfo>
-<ul id=social-media-icons>
-<li>
-<a href=https://www.instagram.com/brunokinoshita/>
-<img src=/assets/icons/instagram.png alt="Instagram link">
-</a>
-</li>
-<li>
-<a href=https://twitter.com/kinow/>
-<img src=/assets/icons/twitter.png alt="Twitter link">
-</a>
-</li>
-<li>
-<a href=https://github.com/kinow/>
-<img src=/assets/icons/github.png alt="GitHub link">
-</a>
-</li>
-<li>
-<a href=/feed.xml>
-<img src=/assets/icons/news.png alt="RSS feed link">
-</a>
-</li>
-</ul>
-</footer>
-</body>
-</html>
+mailing list or watch GitHub repositories.</p><p>You can always learn more!</p><p>♥ Open Source</p><p>Categories:
+<a href=/categories/blog.html>Blog</a></p><p>Tags:
+<a href=/tags/apache-software-foundation.html>Apache Software Foundation</a>,
+<a href=/tags/java.html>Java</a>,
+<a href=/tags/opensource.html>Opensource</a>,
+<a href=/tags/programming.html>Programming</a></p><aside class=links><a class=previous href=https://kinoshita.eti.br/2017/04/24/drawing-sketch-page-036.html>&#171; Previous</a><a class=next href=https://kinoshita.eti.br/2017/05/28/some-links-related-to-apache-commons-text.html>Next &#187;</a></aside></article></main><footer role=contentinfo><ul id=social-media-icons><li><a href=https://www.instagram.com/brunokinoshita/><img src=/assets/icons/instagram.png alt="Instagram link"></a></li><li><a href=https://twitter.com/kinow/><img src=/assets/icons/twitter.png alt="Twitter link"></a></li><li><a href=https://github.com/kinow/><img src=/assets/icons/github.png alt="GitHub link"></a></li><li><a href=/feed.xml><img src=/assets/icons/news.png alt="RSS feed link"></a></li></ul></footer></body></html>

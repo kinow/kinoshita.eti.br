@@ -1,146 +1,20 @@
-<!doctype html><html lang=en>
-<head>
-<meta charset=utf-8>
-<meta name=viewport content="width=device-width,initial-scale=1">
-<meta property="og:title" content="Troubleshooting a Jenkins Plug-in compatibility issue">
-<meta property="og:description" content="This post is probably different from others. I will give a TL;DR, but will then give you a copy of a comment of a Jenkins JIRA issue. Hope you have fun reading it, specially if you maintain Jenkins servers or plug-ins.
-TL;DR: there was an issue in Jenkins Job DSL Plug-in, that caused jobs created to have an invalid script. The fix had not been released, but was already in the master branch in GitHub.">
-<meta property="og:type" content="article">
-<meta property="og:url" content="https://kinoshita.eti.br/2017/04/17/troubleshooting-a-jenkins-plug-in-compatibility-issue.html"><meta property="article:section" content="posts">
-<meta property="article:published_time" content="2017-04-17T00:00:00+00:00">
-<meta property="article:modified_time" content="2024-04-19T16:48:00+02:00">
-<link rel=alternate type=application/rss+xml href=https://kinoshita.eti.br/2017/04/17/troubleshooting-a-jenkins-plug-in-compatibility-issue/feed.xml title=kinow>
-<link rel=stylesheet type=text/css href=https://kinoshita.eti.br/sass/main.1e768395a672116b3eff41b3123d9aafb8a9302476085be5fb658a4b93613f57.css integrity="sha256-HnaDlaZyEWs+/0GzEj2ar7ipMCR2CFvl+2WKS5NhP1c=">
-<title>kinow | Troubleshooting a Jenkins Plug-in compatibility issue</title>
-</head>
-<body>
-<header role=banner class=content>
-<nav id=nav aria-label=Main role=navigation class=content>
-<ul><li>
-<a href=/><i data-feather=about></i> About</a>
-</li><li>
-<a href=/blog/><i data-feather=blog></i> Blog</a>
-</li><li>
-<a href=/portfolio/><i data-feather=portfolio></i> Portfolio</a>
-</li>
-</ul>
-</nav>
-</header>
-<main>
-<article class=content>
-<h1>Troubleshooting a Jenkins Plug-in compatibility issue</h1><div class=metadata>
-<i data-feather=calendar></i>
-<time datetime=2017-04-17>Apr 17, 2017</time>
-</div>
-<aside>
-<nav id=TableOfContents></nav>
-</aside>
-<p>This post is probably different from others. I will give a TL;DR, but will then
+<!doctype html><html lang=en><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta property="og:url" content="https://kinoshita.eti.br/2017/04/17/troubleshooting-a-jenkins-plug-in-compatibility-issue.html"><meta property="og:site_name" content="kinow"><meta property="og:title" content="Troubleshooting a Jenkins Plug-in compatibility issue"><meta property="og:description" content="This post is probably different from others. I will give a TL;DR, but will then give you a copy of a comment of a Jenkins JIRA issue. Hope you have fun reading it, specially if you maintain Jenkins servers or plug-ins.
+TL;DR: there was an issue in Jenkins Job DSL Plug-in, that caused jobs created to have an invalid script. The fix had not been released, but was already in the master branch in GitHub."><meta property="og:locale" content="en-us"><meta property="og:type" content="article"><meta property="article:section" content="posts"><meta property="article:published_time" content="2017-04-17T00:00:00+00:00"><meta property="article:modified_time" content="2024-04-19T16:51:32+02:00"><meta property="article:tag" content="Jenkins"><meta property="article:tag" content="Java"><meta property="article:tag" content="Programming"><meta property="article:tag" content="Opensource"><meta property="og:image" content="https://kinoshita.eti.br/assets/photos/about/2023-me-closeup.png"><meta property="fb:admins" content="bruno.kinoshita"><link rel=alternate type=application/rss+xml href=https://kinoshita.eti.br/2017/04/17/troubleshooting-a-jenkins-plug-in-compatibility-issue/feed.xml title=kinow><link rel=stylesheet type=text/css href=https://kinoshita.eti.br/sass/main.1e768395a672116b3eff41b3123d9aafb8a9302476085be5fb658a4b93613f57.css integrity="sha256-HnaDlaZyEWs+/0GzEj2ar7ipMCR2CFvl+2WKS5NhP1c="><title>kinow | Troubleshooting a Jenkins Plug-in compatibility issue</title><script type=application/ld+json>{"@context":"http://schema.org","@type":"BlogPosting","articleSection":"posts","name":"Troubleshooting a Jenkins Plug-in compatibility issue","headline":"Troubleshooting a Jenkins Plug-in compatibility issue","alternativeHeadline":"","description":"This post is probably different from others. I will give a TL;DR, but will then give you a copy of a comment of a Jenkins JIRA issue. Hope you have fun reading it, specially if you maintain Jenkins servers or plug-ins.\nTL;DR: there was an issue in Jenkins Job DSL Plug-in, that caused jobs created to have an invalid script. The fix had not been released, but was already in the master branch in GitHub.","inLanguage":"en-us","isFamilyFriendly":"true","mainEntityOfPage":{"@type":"WebPage","@id":"https:\/\/kinoshita.eti.br\/2017\/04\/17\/troubleshooting-a-jenkins-plug-in-compatibility-issue.html"},"author":{"@type":"Person","name":"Bruno P. Kinoshita"},"creator":{"@type":"Person","name":"Bruno P. Kinoshita"},"accountablePerson":{"@type":"Person","name":"Bruno P. Kinoshita"},"copyrightHolder":"kinow","copyrightYear":"2017","dateCreated":"2017-04-17T00:00:00.00Z","datePublished":"2017-04-17T00:00:00.00Z","dateModified":"2024-04-19T16:51:32.00Z","publisher":{"@type":"Organization","name":"kinow","url":"https://kinoshita.eti.br/","logo":{"@type":"ImageObject","url":"https:\/\/kinoshita.eti.br\/","width":"32","height":"32"}},"image":"https://kinoshita.eti.br/","url":"https:\/\/kinoshita.eti.br\/2017\/04\/17\/troubleshooting-a-jenkins-plug-in-compatibility-issue.html","wordCount":"384","genre":["jenkins","java","programming","opensource"],"keywords":[]}</script></head><body><header role=banner class=content><nav id=nav aria-label=Main role=navigation class=content><ul><li><a href=/><i data-feather=about></i> About</a></li><li><a href=/blog/><i data-feather=blog></i> Blog</a></li><li><a href=/portfolio/><i data-feather=portfolio></i> Portfolio</a></li></ul></nav></header><main><article class=content><h1>Troubleshooting a Jenkins Plug-in compatibility issue</h1><div class=metadata><i data-feather=calendar></i>
+<time datetime=2017-04-17>Apr 17, 2017</time></div><aside><nav id=TableOfContents></nav></aside><p>This post is probably different from others. I will give a TL;DR, but will then
 give you a copy of
-<a href="https://issues.jenkins-ci.org/browse/JENKINS-42655?focusedCommentId=291470&page=com.atlassian.jira.plugin.system.issuetabpanels%3Acomment-tabpanel#comment-291470">a comment of a Jenkins JIRA issue</a>.
+<a href="https://issues.jenkins-ci.org/browse/JENKINS-42655?focusedCommentId=291470&amp;page=com.atlassian.jira.plugin.system.issuetabpanels%3Acomment-tabpanel#comment-291470">a comment of a Jenkins JIRA issue</a>.
 Hope you have fun reading it,
-specially if you maintain Jenkins servers or plug-ins.</p>
-<p>TL;DR: there was an issue in Jenkins Job DSL Plug-in, that caused jobs created to
+specially if you maintain Jenkins servers or plug-ins.</p><p>TL;DR: there was an issue in Jenkins Job DSL Plug-in, that caused jobs created to
 have an invalid script. The fix had not been released, but was already in the
-master branch in GitHub.</p>
-<p style=text-align:center;color:#ddd>&diams;</p>
-<p><em>Well, that was fun bug reproduced, I believe I know why that&rsquo;s happening. Not so complicated to fix&mldr; but no fast way to fix it. Here&rsquo;s the issue analysis (grab a coffee to read it).</em></p>
-<ul>
-<li><em>Downloaded jenkins.war (2.32.3.war)</em></li>
-<li><em>mkdir /tmp/123</em></li>
-<li><em>JENKINS_HOME=/tmp/123 java -jar jenkins.war</em></li>
-<li><em>Entered secret into form and submitted</em></li>
-<li><em>Installed suggested plugins (boy that takes a while)</em></li>
-<li><em>Created temp user</em></li>
-<li><em>Installed (without restart) active-choices-plugin 1.5.3</em></li>
-<li><em>Installed (without restart) job-dsl-plugin</em></li>
-<li><em>Manually stopped Jenkins, and started it again with same command #3</em></li>
-<li><em>Log in with user, all looking good</em></li>
-<li><em>Created Freestyle job JENKINS-42655 (see attached config.xml)</em></li>
-<li><em>Executed job, and found new job JENKINS-42655-1</em></li>
-<li><em>Never opened the job configuration, clicked on the &ldquo;Generated Items link to JENKINS-42655-1&rdquo; to open in a new tab</em></li>
-<li><em>Clicked on Build with Parameters</em></li>
-<li><em>Looked at logs, and noticed the security-script-plugin exceptions</em></li>
-<li><em>Went to &ldquo;Manage Jenkins&rdquo; / &ldquo;In-process Script Approval&rdquo; and approved scripts</em></li>
-<li><em>Went back to the JENKINS-42655-1 build with parameters screen, and everything worked as expected</em></li>
-</ul>
-<p>*<em>Hummm. Issue more or less reproduced. Let&rsquo;s investigate more.</em></p>
-<ul>
-<li><em>Restarted Jenkins again</em></li>
-<li><em>Changed the JENKINS-42655 seed job configuration to use a different script</em></li>
-<li><em>Copied the config.xml file to another location</em></li>
-<li><em>Went to build with parameters, and now it was broken again</em></li>
-<li><em>Saved the job manually</em></li>
-<li><em>Copied the config.xml file to yet another location</em></li>
-<li><em>Went to build with parameters, and now it worked as reported in this issue</em></li>
-</ul>
-<p><em>Now comes the interesting part. Looking at the diff. Attaching a screen shot so that others can have fun looking at it too. I installed Kompare as it has some cool features such as disabling diff for white spaces, blank lines, etc. The whole file changes as you save it. But if you ignore the number of white spaces&mldr; Then you can see that the Job DSL Plug-in is creating a &lt;script> tag, as we used to do before 1.5 I think.</em></p>
-<div class=row>
-<div class="ui fluid container">
-<figure>
-<a href="/assets/posts{{page.path | remove:" .md" | remove: "_posts" }}/jenkins-42655-diff.png" rel=prettyphoto class=thumbnail title="Screen shot">
-<figure class=feature>
-<img src=/assets/posts/2017-04-17-troubleshooting-a-jenkins-plugin-compatibility-issue/JENKINS-42655-diff.png alt="Screen shot" title="Screen shot" style=height:400px width height>
-<figcaption>Screen shot</figcaption>
-</figure>
-<p><em>Now we use the script-security-plugin. So we need to wrap that around the script-security-plugin&rsquo;s tags. Will report an issue for job-dsl-plugin, and will probably submit a pull request in the next days too. There&rsquo;s not much left we can change in the plug-in code for that Piotr Tempes, so I&rsquo;m afraid you will have to:</em></p>
-<ul>
-<li><em>keep saving the job</em></li>
-<li><em>perhaps work on the fix for Job DSL if you feel like doing it (as you could probably be faster than me in submitting the PR)</em></li>
-<li><em>use an older version of the active-choices-plugin that doesn&rsquo;t use security-script-plugin, though you could be bitten by other old bugs</em></li>
-<li><em>write some script to replace the &lt;script> tag and wrap it by the secureScript (doing what the pull request will do automatically later)</em></li>
-</ul>
-<p><em>Sorry for not being able to quickly provide any workaround, nor to cut a quick bugfix release.</em></p>
-<p><em>Cheers</em>
-<em>Bruno</em></p>
-<p style=text-align:center;color:#ddd>&diams;</p>
-<p>ps: When I started getting involved in Open Source, I always felt extremely happy when
+master branch in GitHub.</p><p style=text-align:center;color:#ddd>&diams;</p><p><em>Well, that was fun bug reproduced, I believe I know why that&rsquo;s happening. Not so complicated to fix&mldr; but no fast way to fix it. Here&rsquo;s the issue analysis (grab a coffee to read it).</em></p><ul><li><em>Downloaded jenkins.war (2.32.3.war)</em></li><li><em>mkdir /tmp/123</em></li><li><em>JENKINS_HOME=/tmp/123 java -jar jenkins.war</em></li><li><em>Entered secret into form and submitted</em></li><li><em>Installed suggested plugins (boy that takes a while)</em></li><li><em>Created temp user</em></li><li><em>Installed (without restart) active-choices-plugin 1.5.3</em></li><li><em>Installed (without restart) job-dsl-plugin</em></li><li><em>Manually stopped Jenkins, and started it again with same command #3</em></li><li><em>Log in with user, all looking good</em></li><li><em>Created Freestyle job JENKINS-42655 (see attached config.xml)</em></li><li><em>Executed job, and found new job JENKINS-42655-1</em></li><li><em>Never opened the job configuration, clicked on the &ldquo;Generated Items link to JENKINS-42655-1&rdquo; to open in a new tab</em></li><li><em>Clicked on Build with Parameters</em></li><li><em>Looked at logs, and noticed the security-script-plugin exceptions</em></li><li><em>Went to &ldquo;Manage Jenkins&rdquo; / &ldquo;In-process Script Approval&rdquo; and approved scripts</em></li><li><em>Went back to the JENKINS-42655-1 build with parameters screen, and everything worked as expected</em></li></ul><p>*<em>Hummm. Issue more or less reproduced. Let&rsquo;s investigate more.</em></p><ul><li><em>Restarted Jenkins again</em></li><li><em>Changed the JENKINS-42655 seed job configuration to use a different script</em></li><li><em>Copied the config.xml file to another location</em></li><li><em>Went to build with parameters, and now it was broken again</em></li><li><em>Saved the job manually</em></li><li><em>Copied the config.xml file to yet another location</em></li><li><em>Went to build with parameters, and now it worked as reported in this issue</em></li></ul><p><em>Now comes the interesting part. Looking at the diff. Attaching a screen shot so that others can have fun looking at it too. I installed Kompare as it has some cool features such as disabling diff for white spaces, blank lines, etc. The whole file changes as you save it. But if you ignore the number of white spaces&mldr; Then you can see that the Job DSL Plug-in is creating a &lt;script> tag, as we used to do before 1.5 I think.</em></p><div class=row><div class="ui fluid container"><figure><a href="/assets/posts{{page.path | remove:" .md" | remove: "_posts" }}/jenkins-42655-diff.png" rel=prettyPhoto class=thumbnail title="Screen shot"><figure class=feature><img src=/assets/posts/2017-04-17-troubleshooting-a-jenkins-plugin-compatibility-issue/JENKINS-42655-diff.png alt='Screen shot' title='Screen shot' style=height:400px width height><figcaption>Screen shot</figcaption></figure><p><em>Now we use the script-security-plugin. So we need to wrap that around the script-security-plugin&rsquo;s tags. Will report an issue for job-dsl-plugin, and will probably submit a pull request in the next days too. There&rsquo;s not much left we can change in the plug-in code for that Piotr Tempes, so I&rsquo;m afraid you will have to:</em></p><ul><li><em>keep saving the job</em></li><li><em>perhaps work on the fix for Job DSL if you feel like doing it (as you could probably be faster than me in submitting the PR)</em></li><li><em>use an older version of the active-choices-plugin that doesn&rsquo;t use security-script-plugin, though you could be bitten by other old bugs</em></li><li><em>write some script to replace the &lt;script> tag and wrap it by the secureScript (doing what the pull request will do automatically later)</em></li></ul><p><em>Sorry for not being able to quickly provide any workaround, nor to cut a quick bugfix release.</em></p><p><em>Cheers</em>
+<em>Bruno</em></p><p style=text-align:center;color:#ddd>&diams;</p><p>ps: When I started getting involved in Open Source, I always felt extremely happy when
 people would spend their time troubleshooting my issues, or just educating me on how to
 behave in an Open Source community, or even how I should have troubleshooted initially
 the issue myself. So whenever I have time, I try to write detailed and polite replies. The
 person posting the comment is my past. The person posting the comment is my future :-)
-<a href=http://revistaepoca.globo.com/Revista/Epoca/0,,EMI96818-15230,00.html>Kindness begets kindness</a>.</p>
-<p>♥ Open Source</p>
-<p>
-Categories:
-<a href=/categories/blog.html>blog</a>
-</p>
-<p>
-Tags:
-<a href=/tags/jenkins.html>jenkins</a>,
-<a href=/tags/java.html>java</a>,
-<a href=/tags/programming.html>programming</a>,
-<a href=/tags/opensource.html>opensource</a>
-</p>
-<aside class=links>
-<a class=previous href=https://kinoshita.eti.br/2017/04/14/spring-cloud-encrypted-values-and-spring-propertysources.html>&#171; Previous</a>
-<a class=next href=https://kinoshita.eti.br/2017/04/21/apache-opennlp-logo.html>Next &#187;</a>
-</aside>
-</article>
-</main>
-<footer role=contentinfo>
-<ul id=social-media-icons>
-<li>
-<a href=https://www.instagram.com/brunokinoshita/>
-<img src=/assets/icons/instagram.png alt="Instagram link">
-</a>
-</li>
-<li>
-<a href=https://twitter.com/kinow/>
-<img src=/assets/icons/twitter.png alt="Twitter link">
-</a>
-</li>
-<li>
-<a href=https://github.com/kinow/>
-<img src=/assets/icons/github.png alt="GitHub link">
-</a>
-</li>
-<li>
-<a href=/feed.xml>
-<img src=/assets/icons/news.png alt="RSS feed link">
-</a>
-</li>
-</ul>
-</footer>
-</body>
-</html>
+<a href=http://revistaepoca.globo.com/Revista/Epoca/0,,EMI96818-15230,00.html>Kindness begets kindness</a>.</p><p>♥ Open Source</p><p>Categories:
+<a href=/categories/blog.html>Blog</a></p><p>Tags:
+<a href=/tags/jenkins.html>Jenkins</a>,
+<a href=/tags/java.html>Java</a>,
+<a href=/tags/programming.html>Programming</a>,
+<a href=/tags/opensource.html>Opensource</a></p><aside class=links><a class=previous href=https://kinoshita.eti.br/2017/04/14/spring-cloud-encrypted-values-and-spring-propertysources.html>&#171; Previous</a><a class=next href=https://kinoshita.eti.br/2017/04/21/apache-opennlp-logo.html>Next &#187;</a></aside></article></main><footer role=contentinfo><ul id=social-media-icons><li><a href=https://www.instagram.com/brunokinoshita/><img src=/assets/icons/instagram.png alt="Instagram link"></a></li><li><a href=https://twitter.com/kinow/><img src=/assets/icons/twitter.png alt="Twitter link"></a></li><li><a href=https://github.com/kinow/><img src=/assets/icons/github.png alt="GitHub link"></a></li><li><a href=/feed.xml><img src=/assets/icons/news.png alt="RSS feed link"></a></li></ul></footer></body></html>

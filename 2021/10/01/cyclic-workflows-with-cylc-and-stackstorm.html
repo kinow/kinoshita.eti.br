@@ -1,202 +1,90 @@
-<!doctype html><html lang=en>
-<head>
-<meta charset=utf-8>
-<meta name=viewport content="width=device-width,initial-scale=1">
-<meta property="og:title" content="Cyclic Workflows with Cylc and StackStorm">
-<meta property="og:description" content="I am aware of only two workflow managers that support cyclic workflows. Cylc and StackStorm. I won&rsquo;t enter into details about these two tools, but I must note that I worked on Cylc during my employment with NIWA, in New Zealand.
+<!doctype html><html lang=en><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta property="og:url" content="https://kinoshita.eti.br/2021/10/01/cyclic-workflows-with-cylc-and-stackstorm.html"><meta property="og:site_name" content="kinow"><meta property="og:title" content="Cyclic Workflows with Cylc and StackStorm"><meta property="og:description" content="I am aware of only two workflow managers that support cyclic workflows. Cylc and StackStorm. I won&amp;rsquo;t enter into details about these two tools, but I must note that I worked on Cylc during my employment with NIWA, in New Zealand.
 In this post I will only show a very simple workflow called five first using Cylc, and then the same workflow with StackStorm.
-Cylc First let&rsquo;s take a look at the source code of this workflow with Cylc 8 and plot it.">
-<meta property="og:type" content="article">
-<meta property="og:url" content="https://kinoshita.eti.br/2021/10/01/cyclic-workflows-with-cylc-and-stackstorm.html"><meta property="article:section" content="posts">
-<meta property="article:published_time" content="2021-10-01T00:00:00+00:00">
-<meta property="article:modified_time" content="2024-04-19T16:48:00+02:00">
-<link rel=alternate type=application/rss+xml href=https://kinoshita.eti.br/2021/10/01/cyclic-workflows-with-cylc-and-stackstorm/feed.xml title=kinow>
-<link rel=stylesheet type=text/css href=https://kinoshita.eti.br/sass/main.1e768395a672116b3eff41b3123d9aafb8a9302476085be5fb658a4b93613f57.css integrity="sha256-HnaDlaZyEWs+/0GzEj2ar7ipMCR2CFvl+2WKS5NhP1c=">
-<title>kinow | Cyclic Workflows with Cylc and StackStorm</title>
-</head>
-<body>
-<header role=banner class=content>
-<nav id=nav aria-label=Main role=navigation class=content>
-<ul><li>
-<a href=/><i data-feather=about></i> About</a>
-</li><li>
-<a href=/blog/><i data-feather=blog></i> Blog</a>
-</li><li>
-<a href=/portfolio/><i data-feather=portfolio></i> Portfolio</a>
-</li>
-</ul>
-</nav>
-</header>
-<main>
-<article class=content>
-<h1>Cyclic Workflows with Cylc and StackStorm</h1><div class=metadata>
-<i data-feather=calendar></i>
-<time datetime=2021-10-01>Oct 1, 2021</time>
-</div>
-<aside>
-<nav id=TableOfContents>
-<ul>
-<li><a href=#cylc>Cylc</a></li>
-<li><a href=#stackstorm>StackStorm</a></li>
-<li><a href=#final-notes>Final notes</a></li>
-</ul>
-</nav>
-</aside>
-<p>I am aware of only two workflow managers that support cyclic workflows.
+Cylc First let&amp;rsquo;s take a look at the source code of this workflow with Cylc 8 and plot it."><meta property="og:locale" content="en-us"><meta property="og:type" content="article"><meta property="article:section" content="posts"><meta property="article:published_time" content="2021-10-01T00:00:00+00:00"><meta property="article:modified_time" content="2024-04-19T16:51:32+02:00"><meta property="article:tag" content="Opensource"><meta property="article:tag" content="Cylc"><meta property="article:tag" content="Workflows"><meta property="article:tag" content="Python"><meta property="article:tag" content="Programming"><meta property="og:image" content="https://kinoshita.eti.br/assets/photos/about/2023-me-closeup.png"><meta property="fb:admins" content="bruno.kinoshita"><link rel=alternate type=application/rss+xml href=https://kinoshita.eti.br/2021/10/01/cyclic-workflows-with-cylc-and-stackstorm/feed.xml title=kinow><link rel=stylesheet type=text/css href=https://kinoshita.eti.br/sass/main.1e768395a672116b3eff41b3123d9aafb8a9302476085be5fb658a4b93613f57.css integrity="sha256-HnaDlaZyEWs+/0GzEj2ar7ipMCR2CFvl+2WKS5NhP1c="><title>kinow | Cyclic Workflows with Cylc and StackStorm</title><script type=application/ld+json>{"@context":"http://schema.org","@type":"BlogPosting","articleSection":"posts","name":"Cyclic Workflows with Cylc and StackStorm","headline":"Cyclic Workflows with Cylc and StackStorm","alternativeHeadline":"","description":"I am aware of only two workflow managers that support cyclic workflows. Cylc and StackStorm. I won\u0026rsquo;t enter into details about these two tools, but I must note that I worked on Cylc during my employment with NIWA, in New Zealand.\nIn this post I will only show a very simple workflow called five first using Cylc, and then the same workflow with StackStorm.\nCylc First let\u0026rsquo;s take a look at the source code of this workflow with Cylc 8 and plot it.","inLanguage":"en-us","isFamilyFriendly":"true","mainEntityOfPage":{"@type":"WebPage","@id":"https:\/\/kinoshita.eti.br\/2021\/10\/01\/cyclic-workflows-with-cylc-and-stackstorm.html"},"author":{"@type":"Person","name":"Bruno P. Kinoshita"},"creator":{"@type":"Person","name":"Bruno P. Kinoshita"},"accountablePerson":{"@type":"Person","name":"Bruno P. Kinoshita"},"copyrightHolder":"kinow","copyrightYear":"2021","dateCreated":"2021-10-01T00:00:00.00Z","datePublished":"2021-10-01T00:00:00.00Z","dateModified":"2024-04-19T16:51:32.00Z","publisher":{"@type":"Organization","name":"kinow","url":"https://kinoshita.eti.br/","logo":{"@type":"ImageObject","url":"https:\/\/kinoshita.eti.br\/","width":"32","height":"32"}},"image":"https://kinoshita.eti.br/","url":"https:\/\/kinoshita.eti.br\/2021\/10\/01\/cyclic-workflows-with-cylc-and-stackstorm.html","wordCount":"569","genre":["opensource","cylc","workflows","python","programming"],"keywords":[]}</script></head><body><header role=banner class=content><nav id=nav aria-label=Main role=navigation class=content><ul><li><a href=/><i data-feather=about></i> About</a></li><li><a href=/blog/><i data-feather=blog></i> Blog</a></li><li><a href=/portfolio/><i data-feather=portfolio></i> Portfolio</a></li></ul></nav></header><main><article class=content><h1>Cyclic Workflows with Cylc and StackStorm</h1><div class=metadata><i data-feather=calendar></i>
+<time datetime=2021-10-01>Oct 1, 2021</time></div><aside><nav id=TableOfContents><ul><li><a href=#cylc>Cylc</a></li><li><a href=#stackstorm>StackStorm</a></li><li><a href=#final-notes>Final notes</a></li></ul></nav></aside><p>I am aware of only two workflow managers that support cyclic workflows.
 <a href=https://cylc.github.io/>Cylc</a> and <a href=https://stackstorm.com/>StackStorm</a>. I won&rsquo;t
 enter into details about these two tools, but I must note that I worked on Cylc
-during my employment with NIWA, in New Zealand.</p>
-<p>In this post I will only show a very simple workflow called <code>five</code> first using
-Cylc, and then the same workflow with StackStorm.</p>
-<h2 id=cylc>Cylc</h2>
-<p>First let&rsquo;s take a look at the source code of this workflow with Cylc 8 and plot it.</p>
-<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-ini data-lang=ini><span style=color:#a90d91>[scheduling]</span>
-  <span style=color:#836c28>cycling mode</span> <span style=color:#000>=</span> <span style=color:#c41a16>integer
-</span><span style=color:#c41a16>  initial cycle point = 1
-</span><span style=color:#c41a16>  [[queues]]
-</span><span style=color:#c41a16>     [[[default]]]
-</span><span style=color:#c41a16>       limit = 1
-</span><span style=color:#c41a16>  [[graph]]
-</span><span style=color:#c41a16>    R1 = &#34;prep =&gt; foo&#34;
-</span><span style=color:#c41a16>    P1 = &#34;foo[-P1] =&gt; foo =&gt; bar&#34;</span>
-
-<span style=color:#a90d91>[runtime]</span>
-  <span style=color:#a90d91>[[root]]</span>
-      <span style=color:#836c28>script</span><span style=color:#000>=</span><span style=color:#c41a16>&#34;sleep 5&#34;
-</span><span style=color:#c41a16>  [[prep]]
-</span><span style=color:#c41a16>  [[foo]]
-</span><span style=color:#c41a16>  [[bar]]</span>
-</code></pre></div><p>The part <code>"foo[-P1] => foo => bar"</code> is where the recursion occurs, creating
-a cycle in the workflow.</p>
-<figure class=feature>
-<img src=/assets/posts/2021-10-01-cyclic-workflows-with-cylc-and-stackstorm/five-graph-cylc.png alt="workflow five plot - cylc" title="workflow five plot - cylc" width height>
-<figcaption>workflow five plot - cylc</figcaption>
-</figure>
-<p>Installing Cylc requires just <code>pip install cylc-flow</code>. After that, with the workflow
-installed, we are ready to run it.</p>
-<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>cylc install -c ~/cylc-src/five --flow-name five
-cylc play --no-detach five/run1
-</code></pre></div><p>The workflow will run forever, incrementing the cycle points, and triggering the tasks
+during my employment with NIWA, in New Zealand.</p><p>In this post I will only show a very simple workflow called <code>five</code> first using
+Cylc, and then the same workflow with StackStorm.</p><h2 id=cylc>Cylc</h2><p>First let&rsquo;s take a look at the source code of this workflow with Cylc 8 and plot it.</p><div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-ini data-lang=ini><span style=display:flex><span><span style=color:#a90d91>[scheduling]</span>
+</span></span><span style=display:flex><span>  <span style=color:#836c28>cycling mode</span> <span style=color:#000>=</span> <span style=color:#c41a16>integer
+</span></span></span><span style=display:flex><span><span style=color:#c41a16>  initial cycle point = 1
+</span></span></span><span style=display:flex><span><span style=color:#c41a16>  [[queues]]
+</span></span></span><span style=display:flex><span><span style=color:#c41a16>     [[[default]]]
+</span></span></span><span style=display:flex><span><span style=color:#c41a16>       limit = 1
+</span></span></span><span style=display:flex><span><span style=color:#c41a16>  [[graph]]
+</span></span></span><span style=display:flex><span><span style=color:#c41a16>    R1 = &#34;prep =&gt; foo&#34;
+</span></span></span><span style=display:flex><span><span style=color:#c41a16>    P1 = &#34;foo[-P1] =&gt; foo =&gt; bar&#34;</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#a90d91>[runtime]</span>
+</span></span><span style=display:flex><span>  <span style=color:#a90d91>[[root]]</span>
+</span></span><span style=display:flex><span>      <span style=color:#836c28>script</span><span style=color:#000>=</span><span style=color:#c41a16>&#34;sleep 5&#34;
+</span></span></span><span style=display:flex><span><span style=color:#c41a16>  [[prep]]
+</span></span></span><span style=display:flex><span><span style=color:#c41a16>  [[foo]]
+</span></span></span><span style=display:flex><span><span style=color:#c41a16>  [[bar]]</span>
+</span></span></code></pre></div><p>The part <code>"foo[-P1] => foo => bar"</code> is where the recursion occurs, creating
+a cycle in the workflow.</p><figure class=feature><img src=/assets/posts/2021-10-01-cyclic-workflows-with-cylc-and-stackstorm/five-graph-cylc.png alt='workflow five plot - cylc' title='workflow five plot - cylc' width height><figcaption>workflow five plot - cylc</figcaption></figure><p>Installing Cylc requires just <code>pip install cylc-flow</code>. After that, with the workflow
+installed, we are ready to run it.</p><div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>cylc install -c ~/cylc-src/five --flow-name five
+</span></span><span style=display:flex><span>cylc play --no-detach five/run1
+</span></span></code></pre></div><p>The workflow will run forever, incrementing the cycle points, and triggering the tasks
 in the <code>five</code> workflow source. So you will have <code>foo.1</code> (foo in the first cycle point),
 that triggers both <code>bar.1</code> and also <code>foo.2</code> (foo in the second cycle point) and so it
-goes.</p>
-<h2 id=stackstorm>StackStorm</h2>
-<p>StackStorm requires more work to get everything up and running. Luckily they provide
+goes.</p><h2 id=stackstorm>StackStorm</h2><p>StackStorm requires more work to get everything up and running. Luckily they provide
 a Docker Compose installation. So after the servers have been started with Docker
-we are ready to create a “pack” (a neat way to organize separate installation files).</p>
-<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>mkdir -p /opt/stackstorm/packs/kinow/
-touch /opt/stackstorm/packs/kinow/pack.yaml
-</code></pre></div><div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=color:#000>---</span>
-<span style=color:#000>name </span>: <span style=color:#1c01ce>kinow</span>
-<span style=color:#000>description</span>: <span style=color:#1c01ce>kinow</span>
-<span style=color:#000>version</span>: <span style=color:#1c01ce>1.0.0</span>
-<span style=color:#000>author</span>: <span style=color:#1c01ce>kinow</span>
-<span style=color:#000>email</span>: <span style=color:#1c01ce>kinow@localhost</span>
-</code></pre></div><p>And install the new pack.</p>
-<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>st2 pack install file:///opt/stackstorm/packs/kinow
-</code></pre></div><p>Now we create a new workflow and an action to run the workflow — I think
+we are ready to create a “pack” (a neat way to organize separate installation files).</p><div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>mkdir -p /opt/stackstorm/packs/kinow/
+</span></span><span style=display:flex><span>touch /opt/stackstorm/packs/kinow/pack.yaml
+</span></span></code></pre></div><div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:#000>---</span>
+</span></span><span style=display:flex><span><span style=color:#000>name </span>: <span style=color:#1c01ce>kinow</span>
+</span></span><span style=display:flex><span><span style=color:#000>description</span>: <span style=color:#1c01ce>kinow</span>
+</span></span><span style=display:flex><span><span style=color:#000>version</span>: <span style=color:#1c01ce>1.0.0</span>
+</span></span><span style=display:flex><span><span style=color:#000>author</span>: <span style=color:#1c01ce>kinow</span>
+</span></span><span style=display:flex><span><span style=color:#000>email</span>: <span style=color:#1c01ce>kinow@localhost</span>
+</span></span></code></pre></div><p>And install the new pack.</p><div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>st2 pack install file:///opt/stackstorm/packs/kinow
+</span></span></code></pre></div><p>Now we create a new workflow and an action to run the workflow — I think
 this step is optional, and you could have just an action but I was following
-one section of the docs that had it this way.</p>
-<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>mkdir -p /opt/stackstorm/packs/kinow/actions/workflows
-touch /opt/stackstorm/packs/kinow/actions/five.yaml
-touch /opt/stackstorm/packs/kinow/actions/workflows/five.yaml
-</code></pre></div><div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=color:#000>---</span>
-<span style=color:#000>name</span>: <span style=color:#1c01ce>five</span>
-<span style=color:#000>pack</span>: <span style=color:#1c01ce>kinow</span>
-<span style=color:#000>description</span>: <span style=color:#1c01ce>five</span>
-<span style=color:#000>runner_type</span>: <span style=color:#1c01ce>orquesta</span>
-<span style=color:#000>entry_point</span>: <span style=color:#1c01ce>workflows/five.yaml</span>
-<span style=color:#000>enabled</span>: <span style=color:#a90d91>true</span>
-</code></pre></div><p>And now create the action in StackStorm, so we can run it via command line
-or with the UI.</p>
-<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>st2 action create /opt/stackstorm/packs/kinow/actions/five.yaml 
-</code></pre></div><p>And here&rsquo;s the <code>five</code> workflow source for StackStorm, producing something very
-similar (if no identical) to the graph produced by Cylc 8.</p>
-<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=color:#000>version</span>: <span style=color:#1c01ce>1.0</span>
-<span style=color:#000>description</span>: <span style=color:#1c01ce>five</span>
-<span style=color:#000>tasks</span>:
-  <span style=color:#000>prep</span>:
-    <span style=color:#000>action</span>: <span style=color:#1c01ce>core.local cmd=&#34;sleep 5&#34;</span>
-    <span style=color:#000>next</span>:
-      - <span style=color:#000>when</span>: <span style=color:#1c01ce>&lt;% succeeded() %&gt;</span>
-        <span style=color:#000>do</span>:
-          - <span style=color:#1c01ce>foo</span>
-  <span style=color:#000>foo</span>:
-    <span style=color:#000>action</span>: <span style=color:#1c01ce>core.local cmd=&#34;sleep 5&#34;</span>
-    <span style=color:#000>next</span>:
-      - <span style=color:#000>when</span>: <span style=color:#1c01ce>&lt;% succeeded() %&gt;</span>
-        <span style=color:#000>do</span>:
-          - <span style=color:#1c01ce>foo</span>
-          - <span style=color:#1c01ce>bar</span>
-  <span style=color:#000>bar</span>:
-    <span style=color:#000>action</span>: <span style=color:#1c01ce>core.local cmd=&#34;sleep 5&#34;</span>
-</code></pre></div><p>Note that <code>foo</code> is calling itself, creating a cycle in the workflow. And to run the
-workflow:</p>
-<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>st2 run kinow.five
-</code></pre></div><p>The StackStorm UI does not appear to support showing the graph of the workflow
+one section of the docs that had it this way.</p><div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>mkdir -p /opt/stackstorm/packs/kinow/actions/workflows
+</span></span><span style=display:flex><span>touch /opt/stackstorm/packs/kinow/actions/five.yaml
+</span></span><span style=display:flex><span>touch /opt/stackstorm/packs/kinow/actions/workflows/five.yaml
+</span></span></code></pre></div><div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:#000>---</span>
+</span></span><span style=display:flex><span><span style=color:#000>name</span>: <span style=color:#1c01ce>five</span>
+</span></span><span style=display:flex><span><span style=color:#000>pack</span>: <span style=color:#1c01ce>kinow</span>
+</span></span><span style=display:flex><span><span style=color:#000>description</span>: <span style=color:#1c01ce>five</span>
+</span></span><span style=display:flex><span><span style=color:#000>runner_type</span>: <span style=color:#1c01ce>orquesta</span>
+</span></span><span style=display:flex><span><span style=color:#000>entry_point</span>: <span style=color:#1c01ce>workflows/five.yaml</span>
+</span></span><span style=display:flex><span><span style=color:#000>enabled</span>: <span style=color:#a90d91>true</span>
+</span></span></code></pre></div><p>And now create the action in StackStorm, so we can run it via command line
+or with the UI.</p><div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>st2 action create /opt/stackstorm/packs/kinow/actions/five.yaml 
+</span></span></code></pre></div><p>And here&rsquo;s the <code>five</code> workflow source for StackStorm, producing something very
+similar (if no identical) to the graph produced by Cylc 8.</p><div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:#000>version</span>: <span style=color:#1c01ce>1.0</span>
+</span></span><span style=display:flex><span><span style=color:#000>description</span>: <span style=color:#1c01ce>five</span>
+</span></span><span style=display:flex><span><span style=color:#000>tasks</span>:
+</span></span><span style=display:flex><span>  <span style=color:#000>prep</span>:
+</span></span><span style=display:flex><span>    <span style=color:#000>action</span>: <span style=color:#1c01ce>core.local cmd=&#34;sleep 5&#34;</span>
+</span></span><span style=display:flex><span>    <span style=color:#000>next</span>:
+</span></span><span style=display:flex><span>      - <span style=color:#000>when</span>: <span style=color:#1c01ce>&lt;% succeeded() %&gt;</span>
+</span></span><span style=display:flex><span>        <span style=color:#000>do</span>:
+</span></span><span style=display:flex><span>          - <span style=color:#1c01ce>foo</span>
+</span></span><span style=display:flex><span>  <span style=color:#000>foo</span>:
+</span></span><span style=display:flex><span>    <span style=color:#000>action</span>: <span style=color:#1c01ce>core.local cmd=&#34;sleep 5&#34;</span>
+</span></span><span style=display:flex><span>    <span style=color:#000>next</span>:
+</span></span><span style=display:flex><span>      - <span style=color:#000>when</span>: <span style=color:#1c01ce>&lt;% succeeded() %&gt;</span>
+</span></span><span style=display:flex><span>        <span style=color:#000>do</span>:
+</span></span><span style=display:flex><span>          - <span style=color:#1c01ce>foo</span>
+</span></span><span style=display:flex><span>          - <span style=color:#1c01ce>bar</span>
+</span></span><span style=display:flex><span>  <span style=color:#000>bar</span>:
+</span></span><span style=display:flex><span>    <span style=color:#000>action</span>: <span style=color:#1c01ce>core.local cmd=&#34;sleep 5&#34;</span>
+</span></span></code></pre></div><p>Note that <code>foo</code> is calling itself, creating a cycle in the workflow. And to run the
+workflow:</p><div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>st2 run kinow.five
+</span></span></code></pre></div><p>The StackStorm UI does not appear to support showing the graph of the workflow
 static or dynamically. But there is a community contributed UI called
 <a href=https://github.com/trstruth/rehearsal/>rehearsal</a> that plots an Orquesta
-workflow given its source.</p>
-<figure class=feature>
-<img src=/assets/posts/2021-10-01-cyclic-workflows-with-cylc-and-stackstorm/five-graph-stackstorm-rehearsal.png alt="workflow five plot - stackstorm" title="workflow five plot - stackstorm" width height>
-<figcaption>workflow five plot - stackstorm</figcaption>
-</figure>
-<h2 id=final-notes>Final notes</h2>
-<p>Both Cylc and StackStorm support Directed Cyclic Graphs in workflows, which is
+workflow given its source.</p><figure class=feature><img src=/assets/posts/2021-10-01-cyclic-workflows-with-cylc-and-stackstorm/five-graph-stackstorm-rehearsal.png alt='workflow five plot - stackstorm' title='workflow five plot - stackstorm' width height><figcaption>workflow five plot - stackstorm</figcaption></figure><h2 id=final-notes>Final notes</h2><p>Both Cylc and StackStorm support Directed Cyclic Graphs in workflows, which is
 really rare amongst workflow managers (or workflow standards, as I think WDL/CWL
-also do not support cyclic workflows yet.)</p>
-<p>There are many pros and cons for each tool but that will have to be for a future
+also do not support cyclic workflows yet.)</p><p>There are many pros and cons for each tool but that will have to be for a future
 post. To finish this post here&rsquo;s a screenshot of the StackStorm UI, followed by
-one of the Cylc 8 UI. Both showing the workflow <code>five</code>.</p>
-<figure class=feature>
-<img src=/assets/posts/2021-10-01-cyclic-workflows-with-cylc-and-stackstorm/stackstorm-ui.png alt="stackstorm ui" title="stackstorm ui" width height>
-<figcaption>stackstorm ui</figcaption>
-</figure>
-<figure class=feature>
-<img src=/assets/posts/2021-10-01-cyclic-workflows-with-cylc-and-stackstorm/cylc-ui.png alt="stackstorm ui" title="stackstorm ui" width height>
-<figcaption>stackstorm ui</figcaption>
-</figure>
-<p>
-Categories:
-<a href=/categories/blog.html>blog</a>
-</p>
-<p>
-Tags:
-<a href=/tags/opensource.html>opensource</a>,
-<a href=/tags/cylc.html>cylc</a>,
-<a href=/tags/workflows.html>workflows</a>,
-<a href=/tags/python.html>python</a>,
-<a href=/tags/programming.html>programming</a>
-</p>
-<aside class=links>
-<a class=previous href=https://kinoshita.eti.br/2021/04/06/random-traffic-light.html>&#171; Previous</a>
-<a class=next href=https://kinoshita.eti.br/2021/10/17/blender-rendering-on-nvidia-jetson-nano.html>Next &#187;</a>
-</aside>
-</article>
-</main>
-<footer role=contentinfo>
-<ul id=social-media-icons>
-<li>
-<a href=https://www.instagram.com/brunokinoshita/>
-<img src=/assets/icons/instagram.png alt="Instagram link">
-</a>
-</li>
-<li>
-<a href=https://twitter.com/kinow/>
-<img src=/assets/icons/twitter.png alt="Twitter link">
-</a>
-</li>
-<li>
-<a href=https://github.com/kinow/>
-<img src=/assets/icons/github.png alt="GitHub link">
-</a>
-</li>
-<li>
-<a href=/feed.xml>
-<img src=/assets/icons/news.png alt="RSS feed link">
-</a>
-</li>
-</ul>
-</footer>
-</body>
-</html>
+one of the Cylc 8 UI. Both showing the workflow <code>five</code>.</p><figure class=feature><img src=/assets/posts/2021-10-01-cyclic-workflows-with-cylc-and-stackstorm/stackstorm-ui.png alt='stackstorm ui' title='stackstorm ui' width height><figcaption>stackstorm ui</figcaption></figure><figure class=feature><img src=/assets/posts/2021-10-01-cyclic-workflows-with-cylc-and-stackstorm/cylc-ui.png alt='stackstorm ui' title='stackstorm ui' width height><figcaption>stackstorm ui</figcaption></figure><p>Categories:
+<a href=/categories/blog.html>Blog</a></p><p>Tags:
+<a href=/tags/opensource.html>Opensource</a>,
+<a href=/tags/cylc.html>Cylc</a>,
+<a href=/tags/workflows.html>Workflows</a>,
+<a href=/tags/python.html>Python</a>,
+<a href=/tags/programming.html>Programming</a></p><aside class=links><a class=previous href=https://kinoshita.eti.br/2021/04/06/random-traffic-light.html>&#171; Previous</a><a class=next href=https://kinoshita.eti.br/2021/10/17/blender-rendering-on-nvidia-jetson-nano.html>Next &#187;</a></aside></article></main><footer role=contentinfo><ul id=social-media-icons><li><a href=https://www.instagram.com/brunokinoshita/><img src=/assets/icons/instagram.png alt="Instagram link"></a></li><li><a href=https://twitter.com/kinow/><img src=/assets/icons/twitter.png alt="Twitter link"></a></li><li><a href=https://github.com/kinow/><img src=/assets/icons/github.png alt="GitHub link"></a></li><li><a href=/feed.xml><img src=/assets/icons/news.png alt="RSS feed link"></a></li></ul></footer></body></html>

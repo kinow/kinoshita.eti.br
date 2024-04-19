@@ -1,113 +1,36 @@
-<!doctype html><html lang=en>
-<head>
-<meta charset=utf-8>
-<meta name=viewport content="width=device-width,initial-scale=1">
-<meta property="og:title" content="Using Requests Session Objects for web scraping">
-<meta property="og:description" content="I had to write a Python script some months ago, that would retrieve Solar energy data from a web site. It was basically a handful of HTTP calls, parse the response that was mainly in JSON, and store the results as JSON and CSV for processing later.
-Since it was such a small task, I used the Requests module instead of a complete web scraper. The HTTP requests had to be made with a time out, and also pass certain headers.">
-<meta property="og:type" content="article">
-<meta property="og:url" content="https://kinoshita.eti.br/2016/11/25/using-requests-session-objects-for-web-scraping.html"><meta property="article:section" content="posts">
-<meta property="article:published_time" content="2016-11-25T00:00:00+00:00">
-<meta property="article:modified_time" content="2024-04-19T16:48:00+02:00">
-<link rel=alternate type=application/rss+xml href=https://kinoshita.eti.br/2016/11/25/using-requests-session-objects-for-web-scraping/feed.xml title=kinow>
-<link rel=stylesheet type=text/css href=https://kinoshita.eti.br/sass/main.1e768395a672116b3eff41b3123d9aafb8a9302476085be5fb658a4b93613f57.css integrity="sha256-HnaDlaZyEWs+/0GzEj2ar7ipMCR2CFvl+2WKS5NhP1c=">
-<title>kinow | Using Requests Session Objects for web scraping</title>
-</head>
-<body>
-<header role=banner class=content>
-<nav id=nav aria-label=Main role=navigation class=content>
-<ul><li>
-<a href=/><i data-feather=about></i> About</a>
-</li><li>
-<a href=/blog/><i data-feather=blog></i> Blog</a>
-</li><li>
-<a href=/portfolio/><i data-feather=portfolio></i> Portfolio</a>
-</li>
-</ul>
-</nav>
-</header>
-<main>
-<article class=content>
-<h1>Using Requests Session Objects for web scraping</h1><div class=metadata>
-<i data-feather=calendar></i>
-<time datetime=2016-11-25>Nov 25, 2016</time>
-</div>
-<aside>
-<nav id=TableOfContents></nav>
-</aside>
-<p>I had to write a Python script some months ago, that would retrieve Solar energy
+<!doctype html><html lang=en><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta property="og:url" content="https://kinoshita.eti.br/2016/11/25/using-requests-session-objects-for-web-scraping.html"><meta property="og:site_name" content="kinow"><meta property="og:title" content="Using Requests Session Objects for web scraping"><meta property="og:description" content="I had to write a Python script some months ago, that would retrieve Solar energy data from a web site. It was basically a handful of HTTP calls, parse the response that was mainly in JSON, and store the results as JSON and CSV for processing later.
+Since it was such a small task, I used the Requests module instead of a complete web scraper. The HTTP requests had to be made with a time out, and also pass certain headers."><meta property="og:locale" content="en-us"><meta property="og:type" content="article"><meta property="article:section" content="posts"><meta property="article:published_time" content="2016-11-25T00:00:00+00:00"><meta property="article:modified_time" content="2024-04-19T16:51:32+02:00"><meta property="article:tag" content="Python"><meta property="og:image" content="https://kinoshita.eti.br/assets/photos/about/2023-me-closeup.png"><meta property="fb:admins" content="bruno.kinoshita"><link rel=alternate type=application/rss+xml href=https://kinoshita.eti.br/2016/11/25/using-requests-session-objects-for-web-scraping/feed.xml title=kinow><link rel=stylesheet type=text/css href=https://kinoshita.eti.br/sass/main.1e768395a672116b3eff41b3123d9aafb8a9302476085be5fb658a4b93613f57.css integrity="sha256-HnaDlaZyEWs+/0GzEj2ar7ipMCR2CFvl+2WKS5NhP1c="><title>kinow | Using Requests Session Objects for web scraping</title><script type=application/ld+json>{"@context":"http://schema.org","@type":"BlogPosting","articleSection":"posts","name":"Using Requests Session Objects for web scraping","headline":"Using Requests Session Objects for web scraping","alternativeHeadline":"","description":"I had to write a Python script some months ago, that would retrieve Solar energy data from a web site. It was basically a handful of HTTP calls, parse the response that was mainly in JSON, and store the results as JSON and CSV for processing later.\nSince it was such a small task, I used the Requests module instead of a complete web scraper. The HTTP requests had to be made with a time out, and also pass certain headers.","inLanguage":"en-us","isFamilyFriendly":"true","mainEntityOfPage":{"@type":"WebPage","@id":"https:\/\/kinoshita.eti.br\/2016\/11\/25\/using-requests-session-objects-for-web-scraping.html"},"author":{"@type":"Person","name":"Bruno P. Kinoshita"},"creator":{"@type":"Person","name":"Bruno P. Kinoshita"},"accountablePerson":{"@type":"Person","name":"Bruno P. Kinoshita"},"copyrightHolder":"kinow","copyrightYear":"2016","dateCreated":"2016-11-25T00:00:00.00Z","datePublished":"2016-11-25T00:00:00.00Z","dateModified":"2024-04-19T16:51:32.00Z","publisher":{"@type":"Organization","name":"kinow","url":"https://kinoshita.eti.br/","logo":{"@type":"ImageObject","url":"https:\/\/kinoshita.eti.br\/","width":"32","height":"32"}},"image":"https://kinoshita.eti.br/","url":"https:\/\/kinoshita.eti.br\/2016\/11\/25\/using-requests-session-objects-for-web-scraping.html","wordCount":"230","genre":["python"],"keywords":[]}</script></head><body><header role=banner class=content><nav id=nav aria-label=Main role=navigation class=content><ul><li><a href=/><i data-feather=about></i> About</a></li><li><a href=/blog/><i data-feather=blog></i> Blog</a></li><li><a href=/portfolio/><i data-feather=portfolio></i> Portfolio</a></li></ul></nav></header><main><article class=content><h1>Using Requests Session Objects for web scraping</h1><div class=metadata><i data-feather=calendar></i>
+<time datetime=2016-11-25>Nov 25, 2016</time></div><aside><nav id=TableOfContents></nav></aside><p>I had to write a Python script some months ago, that would retrieve Solar energy
 data from a web site. It was basically a handful of HTTP calls, parse the response
-that was mainly in JSON, and store the results as JSON and CSV for processing later.</p>
-<p>Since it was such a small task, I used the <a href=http://docs.python-requests.org>Requests</a>
+that was mainly in JSON, and store the results as JSON and CSV for processing later.</p><p>Since it was such a small task, I used the <a href=http://docs.python-requests.org>Requests</a>
 module instead of a complete web scraper. The HTTP requests had to be made with a
 time out, and also pass certain headers. I started customizing each call, until
-I learned about the Requests <a href=http://docs.python-requests.org/en/master/user/advanced/>Session Objects</a>.</p>
-<p>You create a session, as in ORM/JPA, where you can define a context, with certain properties
-and control an orthogonal behavior.</p>
-<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=color:#a90d91>import</span> <span style=color:#000>requests</span>
-
-<span style=color:#a90d91>def</span> <span style=color:#000>get</span>(<span style=color:#000>session</span>, <span style=color:#000>url</span>):
-    <span style=color:#c41a16>&#34;&#34;&#34;Utility method to HTTP GET a URL&#34;&#34;&#34;</span>
-    <span style=color:#000>response</span> <span style=color:#000>=</span> <span style=color:#000>session</span><span style=color:#000>.</span><span style=color:#000>get</span>(<span style=color:#000>url</span>, <span style=color:#000>timeout</span><span style=color:#000>=</span><span style=color:#a90d91>None</span>)
-    <span style=color:#a90d91>return</span> <span style=color:#000>response</span>
-
-<span style=color:#a90d91>def</span> <span style=color:#000>post</span>(<span style=color:#000>session</span>, <span style=color:#000>url</span>, <span style=color:#000>data</span>):
-    <span style=color:#c41a16>&#34;&#34;&#34;Utility method to HTTP POST a URL with data parameters&#34;&#34;&#34;</span>
-    <span style=color:#000>response</span> <span style=color:#000>=</span> <span style=color:#000>session</span><span style=color:#000>.</span><span style=color:#000>post</span>(<span style=color:#000>url</span>, <span style=color:#000>data</span><span style=color:#000>=</span><span style=color:#000>data</span>, <span style=color:#000>timeout</span><span style=color:#000>=</span><span style=color:#a90d91>None</span>)
-    <span style=color:#a90d91>if</span> <span style=color:#000>response</span><span style=color:#000>.</span><span style=color:#000>status_code</span> <span style=color:#000>!=</span> <span style=color:#000>requests</span><span style=color:#000>.</span><span style=color:#000>codes</span><span style=color:#000>.</span><span style=color:#000>ok</span>:
-        <span style=color:#000>response</span><span style=color:#000>.</span><span style=color:#000>raise_for_status</span>()
-    <span style=color:#a90d91>return</span> <span style=color:#000>response</span>
-
-<span style=color:#a90d91>with</span> <span style=color:#000>requests</span><span style=color:#000>.</span><span style=color:#000>Session</span>() <span style=color:#a90d91>as</span> <span style=color:#000>s</span>:
-    <span style=color:#177500># x-test header will be sent with every request</span>
-    <span style=color:#000>s</span><span style=color:#000>.</span><span style=color:#000>headers</span><span style=color:#000>.</span><span style=color:#000>update</span>({<span style=color:#c41a16>&#39;x-test&#39;</span>: <span style=color:#c41a16>&#39;true&#39;</span>})
-
-    <span style=color:#000>data</span> <span style=color:#000>=</span> {<span style=color:#c41a16>&#39;user&#39;</span>: <span style=color:#000>user</span>, <span style=color:#c41a16>&#39;password&#39;</span>: <span style=color:#000>password</span>, <span style=color:#c41a16>&#39;rememberne&#39;</span>: <span style=color:#c41a16>&#39;false&#39;</span>}
-    <span style=color:#000>r</span> <span style=color:#000>=</span> <span style=color:#000>post</span>(<span style=color:#000>s</span>, <span style=color:#c41a16>&#39;https://portal.login.url&#39;</span>, <span style=color:#000>data</span>)
-
-    <span style=color:#000>r</span> <span style=color:#000>=</span> <span style=color:#000>get</span>(<span style=color:#000>s</span>, <span style=color:#c41a16>&#39;https://portal.home.url&#39;</span>)
-</code></pre></div><p>Besides the session object, that gives you ability to add headers to all requests,
+I learned about the Requests <a href=http://docs.python-requests.org/en/master/user/advanced/>Session Objects</a>.</p><p>You create a session, as in ORM/JPA, where you can define a context, with certain properties
+and control an orthogonal behavior.</p><div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=display:flex><span><span style=color:#a90d91>import</span> <span style=color:#000>requests</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#a90d91>def</span> <span style=color:#000>get</span>(<span style=color:#000>session</span>, <span style=color:#000>url</span>):
+</span></span><span style=display:flex><span>    <span style=color:#c41a16>&#34;&#34;&#34;Utility method to HTTP GET a URL&#34;&#34;&#34;</span>
+</span></span><span style=display:flex><span>    <span style=color:#000>response</span> <span style=color:#000>=</span> <span style=color:#000>session</span><span style=color:#000>.</span><span style=color:#000>get</span>(<span style=color:#000>url</span>, <span style=color:#000>timeout</span><span style=color:#000>=</span><span style=color:#a90d91>None</span>)
+</span></span><span style=display:flex><span>    <span style=color:#a90d91>return</span> <span style=color:#000>response</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#a90d91>def</span> <span style=color:#000>post</span>(<span style=color:#000>session</span>, <span style=color:#000>url</span>, <span style=color:#000>data</span>):
+</span></span><span style=display:flex><span>    <span style=color:#c41a16>&#34;&#34;&#34;Utility method to HTTP POST a URL with data parameters&#34;&#34;&#34;</span>
+</span></span><span style=display:flex><span>    <span style=color:#000>response</span> <span style=color:#000>=</span> <span style=color:#000>session</span><span style=color:#000>.</span><span style=color:#000>post</span>(<span style=color:#000>url</span>, <span style=color:#000>data</span><span style=color:#000>=</span><span style=color:#000>data</span>, <span style=color:#000>timeout</span><span style=color:#000>=</span><span style=color:#a90d91>None</span>)
+</span></span><span style=display:flex><span>    <span style=color:#a90d91>if</span> <span style=color:#000>response</span><span style=color:#000>.</span><span style=color:#000>status_code</span> <span style=color:#000>!=</span> <span style=color:#000>requests</span><span style=color:#000>.</span><span style=color:#000>codes</span><span style=color:#000>.</span><span style=color:#000>ok</span>:
+</span></span><span style=display:flex><span>        <span style=color:#000>response</span><span style=color:#000>.</span><span style=color:#000>raise_for_status</span>()
+</span></span><span style=display:flex><span>    <span style=color:#a90d91>return</span> <span style=color:#000>response</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#a90d91>with</span> <span style=color:#000>requests</span><span style=color:#000>.</span><span style=color:#000>Session</span>() <span style=color:#a90d91>as</span> <span style=color:#000>s</span>:
+</span></span><span style=display:flex><span>    <span style=color:#177500># x-test header will be sent with every request</span>
+</span></span><span style=display:flex><span>    <span style=color:#000>s</span><span style=color:#000>.</span><span style=color:#000>headers</span><span style=color:#000>.</span><span style=color:#000>update</span>({<span style=color:#c41a16>&#39;x-test&#39;</span>: <span style=color:#c41a16>&#39;true&#39;</span>})
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#000>data</span> <span style=color:#000>=</span> {<span style=color:#c41a16>&#39;user&#39;</span>: <span style=color:#000>user</span>, <span style=color:#c41a16>&#39;password&#39;</span>: <span style=color:#000>password</span>, <span style=color:#c41a16>&#39;rememberne&#39;</span>: <span style=color:#c41a16>&#39;false&#39;</span>}
+</span></span><span style=display:flex><span>    <span style=color:#000>r</span> <span style=color:#000>=</span> <span style=color:#000>post</span>(<span style=color:#000>s</span>, <span style=color:#c41a16>&#39;https://portal.login.url&#39;</span>, <span style=color:#000>data</span>)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#000>r</span> <span style=color:#000>=</span> <span style=color:#000>get</span>(<span style=color:#000>s</span>, <span style=color:#c41a16>&#39;https://portal.home.url&#39;</span>)
+</span></span></code></pre></div><p>Besides the session object, that gives you ability to add headers to all requests,
 you won&rsquo;t have to worry about redirects. The library by default takes care
 <a href=https://github.com/kennethreitz/requests/blob/dfad00a6e84bc75b12468ca29ccf4f971c813fc8/requests/sessions.py#L110>of that</a>
-with a <a href=https://github.com/kennethreitz/requests/blob/dfad00a6e84bc75b12468ca29ccf4f971c813fc8/requests/models.py#L54>default limit of up to 30</a>.</p>
-<p>Happy hacking!</p>
-<p>
-Categories:
-<a href=/categories/blog.html>blog</a>
-</p>
-<p>
-Tags:
-<a href=/tags/python.html>python</a>
-</p>
-<aside class=links>
-<a class=previous href=https://kinoshita.eti.br/2016/11/21/changing-spring-boot-environment-variables-in-the-command-line.html>&#171; Previous</a>
-<a class=next href=https://kinoshita.eti.br/2016/12/19/permgen-errors-and-java.lang.classcastexception-com.sun.crypto.provider.aescipher-cannot-be-cast-to-javax.crypto.cipherspi-running-jenkins-plug-in-tests-with-powermock.html>Next &#187;</a>
-</aside>
-</article>
-</main>
-<footer role=contentinfo>
-<ul id=social-media-icons>
-<li>
-<a href=https://www.instagram.com/brunokinoshita/>
-<img src=/assets/icons/instagram.png alt="Instagram link">
-</a>
-</li>
-<li>
-<a href=https://twitter.com/kinow/>
-<img src=/assets/icons/twitter.png alt="Twitter link">
-</a>
-</li>
-<li>
-<a href=https://github.com/kinow/>
-<img src=/assets/icons/github.png alt="GitHub link">
-</a>
-</li>
-<li>
-<a href=/feed.xml>
-<img src=/assets/icons/news.png alt="RSS feed link">
-</a>
-</li>
-</ul>
-</footer>
-</body>
-</html>
+with a <a href=https://github.com/kennethreitz/requests/blob/dfad00a6e84bc75b12468ca29ccf4f971c813fc8/requests/models.py#L54>default limit of up to 30</a>.</p><p>Happy hacking!</p><p>Categories:
+<a href=/categories/blog.html>Blog</a></p><p>Tags:
+<a href=/tags/python.html>Python</a></p><aside class=links><a class=previous href=https://kinoshita.eti.br/2016/11/21/changing-spring-boot-environment-variables-in-the-command-line.html>&#171; Previous</a><a class=next href=https://kinoshita.eti.br/2016/12/19/permgen-errors-and-java.lang.classcastexception-com.sun.crypto.provider.aescipher-cannot-be-cast-to-javax.crypto.cipherspi-running-jenkins-plug-in-tests-with-powermock.html>Next &#187;</a></aside></article></main><footer role=contentinfo><ul id=social-media-icons><li><a href=https://www.instagram.com/brunokinoshita/><img src=/assets/icons/instagram.png alt="Instagram link"></a></li><li><a href=https://twitter.com/kinow/><img src=/assets/icons/twitter.png alt="Twitter link"></a></li><li><a href=https://github.com/kinow/><img src=/assets/icons/github.png alt="GitHub link"></a></li><li><a href=/feed.xml><img src=/assets/icons/news.png alt="RSS feed link"></a></li></ul></footer></body></html>

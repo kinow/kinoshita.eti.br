@@ -1,167 +1,67 @@
-<!doctype html><html lang=en>
-<head>
-<meta charset=utf-8>
-<meta name=viewport content="width=device-width,initial-scale=1">
-<meta property="og:title" content="ImportError when debugging cylc in Eclipse">
-<meta property="og:description" content="Since I started reading cylc&rsquo;s source code in Eclipse to create some
+<!doctype html><html lang=en><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta property="og:url" content="https://kinoshita.eti.br/2018/07/10/importerror-when-debugging-cylc-in-eclipse.html"><meta property="og:site_name" content="kinow"><meta property="og:title" content="ImportError when debugging cylc in Eclipse"><meta property="og:description" content="Since I started reading cylc&amp;rsquo;s source code in Eclipse to create some sequence diagrams, I have not been able to debug it properly without hitting errors in some part of the program execution.
+The error message was _“ImportError: cannot import name remove_dead_weakref”, which was a bit enigmatic as I never heard about that function, but it seemed to be something internal, or at least not from the project code base. And searching the Internet did not help much.
+"><meta property="og:locale" content="en-us"><meta property="og:type" content="article"><meta property="article:section" content="posts"><meta property="article:published_time" content="2018-07-10T00:00:00+00:00"><meta property="article:modified_time" content="2024-04-19T16:51:32+02:00"><meta property="article:tag" content="Cylc"><meta property="article:tag" content="Python"><meta property="article:tag" content="Opensource"><meta property="og:image" content="https://kinoshita.eti.br/assets/photos/about/2023-me-closeup.png"><meta property="fb:admins" content="bruno.kinoshita"><link rel=alternate type=application/rss+xml href=https://kinoshita.eti.br/2018/07/10/importerror-when-debugging-cylc-in-eclipse/feed.xml title=kinow><link rel=stylesheet type=text/css href=https://kinoshita.eti.br/sass/main.1e768395a672116b3eff41b3123d9aafb8a9302476085be5fb658a4b93613f57.css integrity="sha256-HnaDlaZyEWs+/0GzEj2ar7ipMCR2CFvl+2WKS5NhP1c="><title>kinow | ImportError when debugging cylc in Eclipse</title><script type=application/ld+json>{"@context":"http://schema.org","@type":"BlogPosting","articleSection":"posts","name":"ImportError when debugging cylc in Eclipse","headline":"ImportError when debugging cylc in Eclipse","alternativeHeadline":"","description":"\u003cp\u003eSince I started reading cylc\u0026rsquo;s source code in Eclipse to create some\nsequence diagrams, I have not been able to debug it properly without\nhitting errors in some part of the program execution.\u003c\/p\u003e\n\u003cp\u003eThe error message was \u003cstrong\u003e_“ImportError: cannot import name \u003cem\u003eremove_dead_weakref”\u003c\/em\u003e\u003c\/strong\u003e,\nwhich was a bit enigmatic as I never heard about that function, but it seemed to be\nsomething internal, or at least not from the project code base. And searching the Internet\ndid not help much.\u003c\/p\u003e","inLanguage":"en-us","isFamilyFriendly":"true","mainEntityOfPage":{"@type":"WebPage","@id":"https:\/\/kinoshita.eti.br\/2018\/07\/10\/importerror-when-debugging-cylc-in-eclipse.html"},"author":{"@type":"Person","name":"Bruno P. Kinoshita"},"creator":{"@type":"Person","name":"Bruno P. Kinoshita"},"accountablePerson":{"@type":"Person","name":"Bruno P. Kinoshita"},"copyrightHolder":"kinow","copyrightYear":"2018","dateCreated":"2018-07-10T00:00:00.00Z","datePublished":"2018-07-10T00:00:00.00Z","dateModified":"2024-04-19T16:51:32.00Z","publisher":{"@type":"Organization","name":"kinow","url":"https://kinoshita.eti.br/","logo":{"@type":"ImageObject","url":"https:\/\/kinoshita.eti.br\/","width":"32","height":"32"}},"image":"https://kinoshita.eti.br/","url":"https:\/\/kinoshita.eti.br\/2018\/07\/10\/importerror-when-debugging-cylc-in-eclipse.html","wordCount":"558","genre":["cylc","python","opensource"],"keywords":[]}</script></head><body><header role=banner class=content><nav id=nav aria-label=Main role=navigation class=content><ul><li><a href=/><i data-feather=about></i> About</a></li><li><a href=/blog/><i data-feather=blog></i> Blog</a></li><li><a href=/portfolio/><i data-feather=portfolio></i> Portfolio</a></li></ul></nav></header><main><article class=content><h1>ImportError when debugging cylc in Eclipse</h1><div class=metadata><i data-feather=calendar></i>
+<time datetime=2018-07-10>Jul 10, 2018</time></div><aside><nav id=TableOfContents></nav></aside><p>Since I started reading cylc&rsquo;s source code in Eclipse to create some
 sequence diagrams, I have not been able to debug it properly without
-hitting errors in some part of the program execution.
-The error message was _“ImportError: cannot import name remove_dead_weakref”,
+hitting errors in some part of the program execution.</p><p>The error message was <strong>_“ImportError: cannot import name <em>remove_dead_weakref”</em></strong>,
 which was a bit enigmatic as I never heard about that function, but it seemed to be
 something internal, or at least not from the project code base. And searching the Internet
-did not help much.">
-<meta property="og:type" content="article">
-<meta property="og:url" content="https://kinoshita.eti.br/2018/07/10/importerror-when-debugging-cylc-in-eclipse.html"><meta property="article:section" content="posts">
-<meta property="article:published_time" content="2018-07-10T00:00:00+00:00">
-<meta property="article:modified_time" content="2024-04-19T16:48:00+02:00">
-<link rel=alternate type=application/rss+xml href=https://kinoshita.eti.br/2018/07/10/importerror-when-debugging-cylc-in-eclipse/feed.xml title=kinow>
-<link rel=stylesheet type=text/css href=https://kinoshita.eti.br/sass/main.1e768395a672116b3eff41b3123d9aafb8a9302476085be5fb658a4b93613f57.css integrity="sha256-HnaDlaZyEWs+/0GzEj2ar7ipMCR2CFvl+2WKS5NhP1c=">
-<title>kinow | ImportError when debugging cylc in Eclipse</title>
-</head>
-<body>
-<header role=banner class=content>
-<nav id=nav aria-label=Main role=navigation class=content>
-<ul><li>
-<a href=/><i data-feather=about></i> About</a>
-</li><li>
-<a href=/blog/><i data-feather=blog></i> Blog</a>
-</li><li>
-<a href=/portfolio/><i data-feather=portfolio></i> Portfolio</a>
-</li>
-</ul>
-</nav>
-</header>
-<main>
-<article class=content>
-<h1>ImportError when debugging cylc in Eclipse</h1><div class=metadata>
-<i data-feather=calendar></i>
-<time datetime=2018-07-10>Jul 10, 2018</time>
-</div>
-<aside>
-<nav id=TableOfContents></nav>
-</aside>
-<p>Since I started reading cylc&rsquo;s source code in Eclipse to create some
-sequence diagrams, I have not been able to debug it properly without
-hitting errors in some part of the program execution.</p>
-<p>The error message was <strong>_“ImportError: cannot import name <em>remove_dead_weakref”</em></strong>,
-which was a bit enigmatic as I never heard about that function, but it seemed to be
-something internal, or at least not from the project code base. And searching the Internet
-did not help much.</p>
-<p>Here is the complete console output in Eclipse.</p>
-<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>pydev debugger: starting <span style=color:#000>(</span>pid: 15124<span style=color:#000>)</span>
-timeout <span style=color:#1c01ce>10</span> ps -opid,args <span style=color:#1c01ce>13640</span>  <span style=color:#177500># return 1</span>
-
-            ._.                                                       
-            | |            The Cylc Suite Engine <span style=color:#000>[</span>7.7.1-37-g09c8a<span style=color:#000>]</span>    
-._____._. ._| |_____.           Copyright <span style=color:#000>(</span>C<span style=color:#000>)</span> 2008-2018 NIWA          
-| .___| | | | | .___|  _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
-| !___| !_! | | !___.  This program comes with ABSOLUTELY NO WARRANTY;
-!_____!___. |_!_____!  see <span style=color:#c41a16>`</span>cylc warranty<span style=color:#c41a16>`</span>.  It is free software, you 
-      .___! |           are welcome to redistribute it under certain  
-      !_____!                conditions; see <span style=color:#c41a16>`</span>cylc conditions<span style=color:#c41a16>`</span>.       
-2018-07-10T01:00:47+12 INFO - Suite starting: <span style=color:#000>server</span><span style=color:#000>=</span>localhost:44444 <span style=color:#000>pid</span><span style=color:#000>=</span><span style=color:#1c01ce>15124</span>
-2018-07-10T01:00:47+12 INFO - Cylc version: 7.7.1-37-g09c8a
-2018-07-10T01:00:47+12 INFO - Run mode: live
-2018-07-10T01:00:47+12 INFO - Initial point: <span style=color:#1c01ce>1</span>
-2018-07-10T01:00:47+12 INFO - Final point: None
-2018-07-10T01:00:47+12 INFO - Cold Start <span style=color:#1c01ce>1</span>
-2018-07-10T01:00:47+12 DEBUG - <span style=color:#000>[</span>hello.1<span style=color:#000>]</span> -released to the task pool
-2018-07-10T01:00:47+12 DEBUG - BEGIN TASK PROCESSING
-2018-07-10T01:00:47+12 DEBUG - <span style=color:#000>[</span>hello.1<span style=color:#000>]</span> -waiting <span style=color:#000>=</span>&gt; queued
-2018-07-10T01:00:47+12 DEBUG - <span style=color:#1c01ce>1</span> task<span style=color:#000>(</span>s<span style=color:#000>)</span> de-queued
-2018-07-10T01:00:47+12 INFO - <span style=color:#000>[</span>hello.1<span style=color:#000>]</span> -submit-num<span style=color:#000>=</span>1, owner@host<span style=color:#000>=</span>localhost
-2018-07-10T01:00:47+12 DEBUG - <span style=color:#000>[</span>hello.1<span style=color:#000>]</span> -queued <span style=color:#000>=</span>&gt; ready
-2018-07-10T01:00:47+12 DEBUG - END TASK PROCESSING <span style=color:#000>(</span>took 0.023609161377 seconds<span style=color:#000>)</span>
-2018-07-10T01:00:48+12 DEBUG - <span style=color:#000>[</span><span style=color:#c41a16>&#39;cylc&#39;</span>, <span style=color:#c41a16>&#39;jobs-submit&#39;</span>, <span style=color:#c41a16>&#39;--debug&#39;</span>, <span style=color:#c41a16>&#39;--&#39;</span>, <span style=color:#c41a16>&#39;/home/kinow/Development/python/workspace/example-suite/log/job&#39;</span>, <span style=color:#c41a16>&#39;1/hello/01&#39;</span><span style=color:#000>]</span>
-2018-07-10T01:00:48+12 ERROR - <span style=color:#000>[</span>jobs-submit cmd<span style=color:#000>]</span> cylc jobs-submit --debug -- /home/kinow/Development/python/workspace/example-suite/log/job 1/hello/01
-	<span style=color:#000>[</span>jobs-submit ret_code<span style=color:#000>]</span> <span style=color:#1c01ce>1</span>
-	<span style=color:#000>[</span>jobs-submit err<span style=color:#000>]</span>
-	Traceback <span style=color:#000>(</span>most recent call last<span style=color:#000>)</span>:
-	  File <span style=color:#c41a16>&#34;/home/kinow/Development/python/workspace/cylc/bin/cylc-jobs-submit&#34;</span>, line 52, in &lt;module&gt;
-	    from cylc.batch_sys_manager import BatchSysManager
-	  File <span style=color:#c41a16>&#34;/home/kinow/Development/python/workspace/cylc/lib/cylc/batch_sys_manager.py&#34;</span>, line 114, in &lt;module&gt;
-	    from cylc.task_message import <span style=color:#000>(</span>
-	  File <span style=color:#c41a16>&#34;/home/kinow/Development/python/workspace/cylc/lib/cylc/task_message.py&#34;</span>, line 26, in &lt;module&gt;
-	    from logging import getLevelName, WARNING, ERROR, CRITICAL
-	  File <span style=color:#c41a16>&#34;/home/kinow/Development/python/anaconda2/lib/python2.7/logging/__init__.py&#34;</span>, line 26, in &lt;module&gt;
-	    import sys, os, time, cStringIO, traceback, warnings, weakref, collections
-	  File <span style=color:#c41a16>&#34;/home/kinow/Development/python/anaconda2/lib/python2.7/weakref.py&#34;</span>, line 14, in &lt;module&gt;
-	    from _weakref import <span style=color:#000>(</span>
-	ImportError: cannot import name _remove_dead_weakref
-2018-07-10T01:00:48+12 ERROR - <span style=color:#000>[</span>jobs-submit cmd<span style=color:#000>]</span> cylc jobs-submit --debug -- /home/kinow/Development/python/workspace/example-suite/log/job 1/hello/01
-	<span style=color:#000>[</span>jobs-submit ret_code<span style=color:#000>]</span> <span style=color:#1c01ce>1</span>
-	<span style=color:#000>[</span>jobs-submit out<span style=color:#000>]</span> 2018-07-10T01:00:48+12|1/hello/01|<span style=color:#1c01ce>1</span>
-2018-07-10T01:00:48+12 INFO - <span style=color:#000>[</span>hello.1<span style=color:#000>]</span> -<span style=color:#000>(</span>current:ready<span style=color:#000>)</span> submission failed at 2018-07-10T01:00:48+12
-2018-07-10T01:00:48+12 ERROR - <span style=color:#000>[</span>hello.1<span style=color:#000>]</span> -submission failed
-2018-07-10T01:00:48+12 DEBUG - <span style=color:#000>[</span>hello.1<span style=color:#000>]</span> -ready <span style=color:#000>=</span>&gt; submit-failed
-2018-07-10T01:00:48+12 DEBUG - BEGIN TASK PROCESSING
-2018-07-10T01:00:48+12 DEBUG - <span style=color:#1c01ce>0</span> task<span style=color:#000>(</span>s<span style=color:#000>)</span> de-queued
-2018-07-10T01:00:48+12 DEBUG - END TASK PROCESSING <span style=color:#000>(</span>took 0.00175499916077 seconds<span style=color:#000>)</span>
-2018-07-10T01:00:49+12 WARNING - suite stalled
-</code></pre></div><p>As the current diagram I am working on has quite a few <code>if</code>&rsquo;s and <code>else</code>&rsquo;s, I decided
+did not help much.</p><p>Here is the complete console output in Eclipse.</p><div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>pydev debugger: starting <span style=color:#000>(</span>pid: 15124<span style=color:#000>)</span>
+</span></span><span style=display:flex><span>timeout <span style=color:#1c01ce>10</span> ps -opid,args <span style=color:#1c01ce>13640</span>  <span style=color:#177500># return 1</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>            ._.                                                       
+</span></span><span style=display:flex><span>            | |            The Cylc Suite Engine <span style=color:#000>[</span>7.7.1-37-g09c8a<span style=color:#000>]</span>    
+</span></span><span style=display:flex><span>._____._. ._| |_____.           Copyright <span style=color:#000>(</span>C<span style=color:#000>)</span> 2008-2018 NIWA          
+</span></span><span style=display:flex><span>| .___| | | | | .___|  _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+</span></span><span style=display:flex><span>| !___| !_! | | !___.  This program comes with ABSOLUTELY NO WARRANTY;
+</span></span><span style=display:flex><span>!_____!___. |_!_____!  see <span style=color:#c41a16>`</span>cylc warranty<span style=color:#c41a16>`</span>.  It is free software, you 
+</span></span><span style=display:flex><span>      .___! |           are welcome to redistribute it under certain  
+</span></span><span style=display:flex><span>      !_____!                conditions; see <span style=color:#c41a16>`</span>cylc conditions<span style=color:#c41a16>`</span>.       
+</span></span><span style=display:flex><span>2018-07-10T01:00:47+12 INFO - Suite starting: <span style=color:#000>server</span><span style=color:#000>=</span>localhost:44444 <span style=color:#000>pid</span><span style=color:#000>=</span><span style=color:#1c01ce>15124</span>
+</span></span><span style=display:flex><span>2018-07-10T01:00:47+12 INFO - Cylc version: 7.7.1-37-g09c8a
+</span></span><span style=display:flex><span>2018-07-10T01:00:47+12 INFO - Run mode: live
+</span></span><span style=display:flex><span>2018-07-10T01:00:47+12 INFO - Initial point: <span style=color:#1c01ce>1</span>
+</span></span><span style=display:flex><span>2018-07-10T01:00:47+12 INFO - Final point: None
+</span></span><span style=display:flex><span>2018-07-10T01:00:47+12 INFO - Cold Start <span style=color:#1c01ce>1</span>
+</span></span><span style=display:flex><span>2018-07-10T01:00:47+12 DEBUG - <span style=color:#000>[</span>hello.1<span style=color:#000>]</span> -released to the task pool
+</span></span><span style=display:flex><span>2018-07-10T01:00:47+12 DEBUG - BEGIN TASK PROCESSING
+</span></span><span style=display:flex><span>2018-07-10T01:00:47+12 DEBUG - <span style=color:#000>[</span>hello.1<span style=color:#000>]</span> -waiting <span style=color:#000>=</span>&gt; queued
+</span></span><span style=display:flex><span>2018-07-10T01:00:47+12 DEBUG - <span style=color:#1c01ce>1</span> task<span style=color:#000>(</span>s<span style=color:#000>)</span> de-queued
+</span></span><span style=display:flex><span>2018-07-10T01:00:47+12 INFO - <span style=color:#000>[</span>hello.1<span style=color:#000>]</span> -submit-num<span style=color:#000>=</span>1, owner@host<span style=color:#000>=</span>localhost
+</span></span><span style=display:flex><span>2018-07-10T01:00:47+12 DEBUG - <span style=color:#000>[</span>hello.1<span style=color:#000>]</span> -queued <span style=color:#000>=</span>&gt; ready
+</span></span><span style=display:flex><span>2018-07-10T01:00:47+12 DEBUG - END TASK PROCESSING <span style=color:#000>(</span>took 0.023609161377 seconds<span style=color:#000>)</span>
+</span></span><span style=display:flex><span>2018-07-10T01:00:48+12 DEBUG - <span style=color:#000>[</span><span style=color:#c41a16>&#39;cylc&#39;</span>, <span style=color:#c41a16>&#39;jobs-submit&#39;</span>, <span style=color:#c41a16>&#39;--debug&#39;</span>, <span style=color:#c41a16>&#39;--&#39;</span>, <span style=color:#c41a16>&#39;/home/kinow/Development/python/workspace/example-suite/log/job&#39;</span>, <span style=color:#c41a16>&#39;1/hello/01&#39;</span><span style=color:#000>]</span>
+</span></span><span style=display:flex><span>2018-07-10T01:00:48+12 ERROR - <span style=color:#000>[</span>jobs-submit cmd<span style=color:#000>]</span> cylc jobs-submit --debug -- /home/kinow/Development/python/workspace/example-suite/log/job 1/hello/01
+</span></span><span style=display:flex><span>	<span style=color:#000>[</span>jobs-submit ret_code<span style=color:#000>]</span> <span style=color:#1c01ce>1</span>
+</span></span><span style=display:flex><span>	<span style=color:#000>[</span>jobs-submit err<span style=color:#000>]</span>
+</span></span><span style=display:flex><span>	Traceback <span style=color:#000>(</span>most recent call last<span style=color:#000>)</span>:
+</span></span><span style=display:flex><span>	  File <span style=color:#c41a16>&#34;/home/kinow/Development/python/workspace/cylc/bin/cylc-jobs-submit&#34;</span>, line 52, in &lt;module&gt;
+</span></span><span style=display:flex><span>	    from cylc.batch_sys_manager import BatchSysManager
+</span></span><span style=display:flex><span>	  File <span style=color:#c41a16>&#34;/home/kinow/Development/python/workspace/cylc/lib/cylc/batch_sys_manager.py&#34;</span>, line 114, in &lt;module&gt;
+</span></span><span style=display:flex><span>	    from cylc.task_message import <span style=color:#000>(</span>
+</span></span><span style=display:flex><span>	  File <span style=color:#c41a16>&#34;/home/kinow/Development/python/workspace/cylc/lib/cylc/task_message.py&#34;</span>, line 26, in &lt;module&gt;
+</span></span><span style=display:flex><span>	    from logging import getLevelName, WARNING, ERROR, CRITICAL
+</span></span><span style=display:flex><span>	  File <span style=color:#c41a16>&#34;/home/kinow/Development/python/anaconda2/lib/python2.7/logging/__init__.py&#34;</span>, line 26, in &lt;module&gt;
+</span></span><span style=display:flex><span>	    import sys, os, time, cStringIO, traceback, warnings, weakref, collections
+</span></span><span style=display:flex><span>	  File <span style=color:#c41a16>&#34;/home/kinow/Development/python/anaconda2/lib/python2.7/weakref.py&#34;</span>, line 14, in &lt;module&gt;
+</span></span><span style=display:flex><span>	    from _weakref import <span style=color:#000>(</span>
+</span></span><span style=display:flex><span>	ImportError: cannot import name _remove_dead_weakref
+</span></span><span style=display:flex><span>2018-07-10T01:00:48+12 ERROR - <span style=color:#000>[</span>jobs-submit cmd<span style=color:#000>]</span> cylc jobs-submit --debug -- /home/kinow/Development/python/workspace/example-suite/log/job 1/hello/01
+</span></span><span style=display:flex><span>	<span style=color:#000>[</span>jobs-submit ret_code<span style=color:#000>]</span> <span style=color:#1c01ce>1</span>
+</span></span><span style=display:flex><span>	<span style=color:#000>[</span>jobs-submit out<span style=color:#000>]</span> 2018-07-10T01:00:48+12|1/hello/01|<span style=color:#1c01ce>1</span>
+</span></span><span style=display:flex><span>2018-07-10T01:00:48+12 INFO - <span style=color:#000>[</span>hello.1<span style=color:#000>]</span> -<span style=color:#000>(</span>current:ready<span style=color:#000>)</span> submission failed at 2018-07-10T01:00:48+12
+</span></span><span style=display:flex><span>2018-07-10T01:00:48+12 ERROR - <span style=color:#000>[</span>hello.1<span style=color:#000>]</span> -submission failed
+</span></span><span style=display:flex><span>2018-07-10T01:00:48+12 DEBUG - <span style=color:#000>[</span>hello.1<span style=color:#000>]</span> -ready <span style=color:#000>=</span>&gt; submit-failed
+</span></span><span style=display:flex><span>2018-07-10T01:00:48+12 DEBUG - BEGIN TASK PROCESSING
+</span></span><span style=display:flex><span>2018-07-10T01:00:48+12 DEBUG - <span style=color:#1c01ce>0</span> task<span style=color:#000>(</span>s<span style=color:#000>)</span> de-queued
+</span></span><span style=display:flex><span>2018-07-10T01:00:48+12 DEBUG - END TASK PROCESSING <span style=color:#000>(</span>took 0.00175499916077 seconds<span style=color:#000>)</span>
+</span></span><span style=display:flex><span>2018-07-10T01:00:49+12 WARNING - suite stalled
+</span></span></code></pre></div><p>As the current diagram I am working on has quite a few <code>if</code>&rsquo;s and <code>else</code>&rsquo;s, I decided
 to investigate why this error was occurring. Then, after some elimination I found that
-it was due to the missing Anaconda 2 entry in my <code>$PATH</code> environment variable.</p>
-<p>I had this variable configured in a custom script I load whenever I decide to use
-Anaconda 2. And reproducing the same behaviour in Eclipse was easy.</p>
-<p style=text-align:center>
-<figure class=feature>
-<img src=/assets/posts/2018-07-10-import-error-when-debugging-cylc-in-eclipse/screenshot1.png alt="A screen shot of Eclipse with source code" title="A screen shot of Eclipse with source code" style=display:inline width height>
-<figcaption>A screen shot of Eclipse with source code</figcaption>
-</figure>
-<br>
-<small>Locating the bug</small>
-</p>
-<p>Et voilà! Eclipse was happily debugging again!</p>
-<p style=text-align:center>
-<figure class=feature>
-<img src=/assets/posts/2018-07-10-import-error-when-debugging-cylc-in-eclipse/screenshot2.png alt="A screen shot of Eclipse with source code" title="A screen shot of Eclipse with source code" style=display:inline width height>
-<figcaption>A screen shot of Eclipse with source code</figcaption>
-</figure>
-<br>
-<small>Locating the bug</small>
-</p>
-<p>So if you have a similar problem, try comparing your environment variables and check if you
-have some entries missing, and try adding them in Eclipse Debug configuration.</p>
-<p>Happy cycling!</p>
-<p>
-Categories:
-<a href=/categories/blog.html>blog</a>
-</p>
-<p>
-Tags:
-<a href=/tags/cylc.html>cylc</a>,
-<a href=/tags/python.html>python</a>,
-<a href=/tags/opensource.html>opensource</a>
-</p>
-<aside class=links>
-<a class=previous href=https://kinoshita.eti.br/2018/07/08/a-simple-cylc-suite.html>&#171; Previous</a>
-<a class=next href=https://kinoshita.eti.br/2018/07/14/cylc-scheduler-internals-part-1.html>Next &#187;</a>
-</aside>
-</article>
-</main>
-<footer role=contentinfo>
-<ul id=social-media-icons>
-<li>
-<a href=https://www.instagram.com/brunokinoshita/>
-<img src=/assets/icons/instagram.png alt="Instagram link">
-</a>
-</li>
-<li>
-<a href=https://twitter.com/kinow/>
-<img src=/assets/icons/twitter.png alt="Twitter link">
-</a>
-</li>
-<li>
-<a href=https://github.com/kinow/>
-<img src=/assets/icons/github.png alt="GitHub link">
-</a>
-</li>
-<li>
-<a href=/feed.xml>
-<img src=/assets/icons/news.png alt="RSS feed link">
-</a>
-</li>
-</ul>
-</footer>
-</body>
-</html>
+it was due to the missing Anaconda 2 entry in my <code>$PATH</code> environment variable.</p><p>I had this variable configured in a custom script I load whenever I decide to use
+Anaconda 2. And reproducing the same behaviour in Eclipse was easy.</p><p style=text-align:center><figure class=feature><img src=/assets/posts/2018-07-10-import-error-when-debugging-cylc-in-eclipse/screenshot1.png alt='A screen shot of Eclipse with source code' title='A screen shot of Eclipse with source code' style=display:inline width height><figcaption>A screen shot of Eclipse with source code</figcaption></figure><br><small>Locating the bug</small></p><p>Et voilà! Eclipse was happily debugging again!</p><p style=text-align:center><figure class=feature><img src=/assets/posts/2018-07-10-import-error-when-debugging-cylc-in-eclipse/screenshot2.png alt='A screen shot of Eclipse with source code' title='A screen shot of Eclipse with source code' style=display:inline width height><figcaption>A screen shot of Eclipse with source code</figcaption></figure><br><small>Locating the bug</small></p><p>So if you have a similar problem, try comparing your environment variables and check if you
+have some entries missing, and try adding them in Eclipse Debug configuration.</p><p>Happy cycling!</p><p>Categories:
+<a href=/categories/blog.html>Blog</a></p><p>Tags:
+<a href=/tags/cylc.html>Cylc</a>,
+<a href=/tags/python.html>Python</a>,
+<a href=/tags/opensource.html>Opensource</a></p><aside class=links><a class=previous href=https://kinoshita.eti.br/2018/07/08/a-simple-cylc-suite.html>&#171; Previous</a><a class=next href=https://kinoshita.eti.br/2018/07/14/cylc-scheduler-internals-part-1.html>Next &#187;</a></aside></article></main><footer role=contentinfo><ul id=social-media-icons><li><a href=https://www.instagram.com/brunokinoshita/><img src=/assets/icons/instagram.png alt="Instagram link"></a></li><li><a href=https://twitter.com/kinow/><img src=/assets/icons/twitter.png alt="Twitter link"></a></li><li><a href=https://github.com/kinow/><img src=/assets/icons/github.png alt="GitHub link"></a></li><li><a href=/feed.xml><img src=/assets/icons/news.png alt="RSS feed link"></a></li></ul></footer></body></html>

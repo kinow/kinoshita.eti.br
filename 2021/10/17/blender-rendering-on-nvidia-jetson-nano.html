@@ -1,255 +1,137 @@
-<!doctype html><html lang=en>
-<head>
-<meta charset=utf-8>
-<meta name=viewport content="width=device-width,initial-scale=1">
-<meta property="og:title" content="Blender rendering on NVIDIA Jetson Nano">
-<meta property="og:description" content="NVIDIA Jetson Nano computer  I had used Blender during my graduation at the Mackenzie University and started learning Blender 2.8+ again a few weeks ago. Unfortunately rendering the basic tutorials like Andrew Price&rsquo;s donut takes several minutes on my old (but excellent for programming) Thinkpad T550 i7 16 GB with a simple Samsung SSD. The reason is that my GPU, a NVIDIA NVS 5400M with 2 GB memory and 96 cores cannot be used with Blender as it only supports CUDA 2.">
-<meta property="og:type" content="article">
-<meta property="og:url" content="https://kinoshita.eti.br/2021/10/17/blender-rendering-on-nvidia-jetson-nano.html"><meta property="article:section" content="posts">
-<meta property="article:published_time" content="2021-10-17T00:00:00+00:00">
-<meta property="article:modified_time" content="2024-04-19T16:48:00+02:00">
-<link rel=alternate type=application/rss+xml href=https://kinoshita.eti.br/2021/10/17/blender-rendering-on-nvidia-jetson-nano/feed.xml title=kinow>
-<link rel=stylesheet type=text/css href=https://kinoshita.eti.br/sass/main.1e768395a672116b3eff41b3123d9aafb8a9302476085be5fb658a4b93613f57.css integrity="sha256-HnaDlaZyEWs+/0GzEj2ar7ipMCR2CFvl+2WKS5NhP1c=">
-<title>kinow | Blender rendering on NVIDIA Jetson Nano</title>
-</head>
-<body>
-<header role=banner class=content>
-<nav id=nav aria-label=Main role=navigation class=content>
-<ul><li>
-<a href=/><i data-feather=about></i> About</a>
-</li><li>
-<a href=/blog/><i data-feather=blog></i> Blog</a>
-</li><li>
-<a href=/portfolio/><i data-feather=portfolio></i> Portfolio</a>
-</li>
-</ul>
-</nav>
-</header>
-<main>
-<article class=content>
-<h1>Blender rendering on NVIDIA Jetson Nano</h1><div class=metadata>
-<i data-feather=calendar></i>
-<time datetime=2021-10-17>Oct 17, 2021</time>
-</div>
-<aside>
-<nav id=TableOfContents></nav>
-</aside>
-<figure class=feature>
-<img src=/assets/posts/2021-10-17-blender-rendering-on-nvidia-jetson-nano/jetson.jpg alt="NVIDIA Jetson Nano computer" title="NVIDIA Jetson Nano computer" width height>
-<figcaption>NVIDIA Jetson Nano computer</figcaption>
-</figure>
-<p>I had used Blender during my graduation at the Mackenzie University and started learning
+<!doctype html><html lang=en><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta property="og:url" content="https://kinoshita.eti.br/2021/10/17/blender-rendering-on-nvidia-jetson-nano.html"><meta property="og:site_name" content="kinow"><meta property="og:title" content="Blender rendering on NVIDIA Jetson Nano"><meta property="og:description" content="NVIDIA Jetson Nano computer I had used Blender during my graduation at the Mackenzie University and started learning Blender 2.8+ again a few weeks ago. Unfortunately rendering the basic tutorials like Andrew Price&amp;rsquo;s donut takes several minutes on my old (but excellent for programming) Thinkpad T550 i7 16 GB with a simple Samsung SSD. The reason is that my GPU, a NVIDIA NVS 5400M with 2 GB memory and 96 cores cannot be used with Blender as it only supports CUDA 2."><meta property="og:locale" content="en-us"><meta property="og:type" content="article"><meta property="article:section" content="posts"><meta property="article:published_time" content="2021-10-17T00:00:00+00:00"><meta property="article:modified_time" content="2024-04-19T16:51:32+02:00"><meta property="article:tag" content="Opensource"><meta property="article:tag" content="Blender"><meta property="og:image" content="https://kinoshita.eti.br/assets/photos/about/2023-me-closeup.png"><meta property="fb:admins" content="bruno.kinoshita"><link rel=alternate type=application/rss+xml href=https://kinoshita.eti.br/2021/10/17/blender-rendering-on-nvidia-jetson-nano/feed.xml title=kinow><link rel=stylesheet type=text/css href=https://kinoshita.eti.br/sass/main.1e768395a672116b3eff41b3123d9aafb8a9302476085be5fb658a4b93613f57.css integrity="sha256-HnaDlaZyEWs+/0GzEj2ar7ipMCR2CFvl+2WKS5NhP1c="><title>kinow | Blender rendering on NVIDIA Jetson Nano</title><script type=application/ld+json>{"@context":"http://schema.org","@type":"BlogPosting","articleSection":"posts","name":"Blender rendering on NVIDIA Jetson Nano","headline":"Blender rendering on NVIDIA Jetson Nano","alternativeHeadline":"","description":"NVIDIA Jetson Nano computer I had used Blender during my graduation at the Mackenzie University and started learning Blender 2.8\u002b again a few weeks ago. Unfortunately rendering the basic tutorials like Andrew Price\u0026rsquo;s donut takes several minutes on my old (but excellent for programming) Thinkpad T550 i7 16 GB with a simple Samsung SSD. The reason is that my GPU, a NVIDIA NVS 5400M with 2 GB memory and 96 cores cannot be used with Blender as it only supports CUDA 2.","inLanguage":"en-us","isFamilyFriendly":"true","mainEntityOfPage":{"@type":"WebPage","@id":"https:\/\/kinoshita.eti.br\/2021\/10\/17\/blender-rendering-on-nvidia-jetson-nano.html"},"author":{"@type":"Person","name":"Bruno P. Kinoshita"},"creator":{"@type":"Person","name":"Bruno P. Kinoshita"},"accountablePerson":{"@type":"Person","name":"Bruno P. Kinoshita"},"copyrightHolder":"kinow","copyrightYear":"2021","dateCreated":"2021-10-17T00:00:00.00Z","datePublished":"2021-10-17T00:00:00.00Z","dateModified":"2024-04-19T16:51:32.00Z","publisher":{"@type":"Organization","name":"kinow","url":"https://kinoshita.eti.br/","logo":{"@type":"ImageObject","url":"https:\/\/kinoshita.eti.br\/","width":"32","height":"32"}},"image":"https://kinoshita.eti.br/","url":"https:\/\/kinoshita.eti.br\/2021\/10\/17\/blender-rendering-on-nvidia-jetson-nano.html","wordCount":"1380","genre":["opensource","blender"],"keywords":[]}</script></head><body><header role=banner class=content><nav id=nav aria-label=Main role=navigation class=content><ul><li><a href=/><i data-feather=about></i> About</a></li><li><a href=/blog/><i data-feather=blog></i> Blog</a></li><li><a href=/portfolio/><i data-feather=portfolio></i> Portfolio</a></li></ul></nav></header><main><article class=content><h1>Blender rendering on NVIDIA Jetson Nano</h1><div class=metadata><i data-feather=calendar></i>
+<time datetime=2021-10-17>Oct 17, 2021</time></div><aside><nav id=TableOfContents></nav></aside><figure class=feature><img src=/assets/posts/2021-10-17-blender-rendering-on-nvidia-jetson-nano/jetson.jpg alt='NVIDIA Jetson Nano computer' title='NVIDIA Jetson Nano computer' width height><figcaption>NVIDIA Jetson Nano computer</figcaption></figure><p>I had used Blender during my graduation at the Mackenzie University and started learning
 Blender 2.8+ again a few weeks ago. Unfortunately rendering the basic tutorials like Andrew
 Price&rsquo;s donut takes several minutes on my old (but excellent for programming) Thinkpad
 T550 i7 16 GB with a simple Samsung SSD. The reason is that my GPU, a
 <a href=https://www.techpowerup.com/gpu-specs/nvs-5400m.c1742>NVIDIA NVS 5400M</a>
 with 2 GB memory and 96 cores cannot be used with Blender as it only supports CUDA 2.1.
 Blender 2.8+ GPU rendering requires CUDA 3.0 and higher, which means Blender Cycles
-render is using my CPU, which is slower than using a decent GPU.</p>
-<p>Since I am really happy with my (refurbished) Thinkpad T550 and prefer to avoid buying
+render is using my CPU, which is slower than using a decent GPU.</p><p>Since I am really happy with my (refurbished) Thinkpad T550 and prefer to avoid buying
 a new computer unless I really need to, my first idea was a GPU (egpu). These are simple
 kits that allow you to connect a GPU to a notebook like mine using an adapter and some
 port like thunderbolt, m.2 (removing wi-fi card), etc. But all these options are expensive
-and the bandwidth is not near as good as using a GPU plugged in the motherboard.</p>
-<figure class=feature>
-<img src=/assets/posts/2021-10-17-blender-rendering-on-nvidia-jetson-nano/donut.png alt="Andrew Price (Blender Guru) donut" title="Andrew Price (Blender Guru) donut" width height>
-<figcaption>Andrew Price (Blender Guru) donut</figcaption>
-</figure>
-<p>A few months ago I heard about the <a href=https://developer.nvidia.com/embedded/jetson-nano>NVIDIA Jetson Nano</a>
+and the bandwidth is not near as good as using a GPU plugged in the motherboard.</p><figure class=feature><img src=/assets/posts/2021-10-17-blender-rendering-on-nvidia-jetson-nano/donut.png alt='Andrew Price (Blender Guru) donut' title='Andrew Price (Blender Guru) donut' width height><figcaption>Andrew Price (Blender Guru) donut</figcaption></figure><p>A few months ago I heard about the <a href=https://developer.nvidia.com/embedded/jetson-nano>NVIDIA Jetson Nano</a>
 board computer. They are small board computers for embedded applications. Using an
 ARM CPU and equipped with <a href=https://www.techpowerup.com/gpu-specs/jetson-nano-gpu.c3643>a GPU</a>
 with <strong>128 cores</strong>. The computer has <strong>4 GB memory that is shared between the operating
 system and the graphics processor</strong>. And the NVIDIA Jetson Nano GPU supports CUDA 5.3,
-which means it can be used by Blender to render scenes in the GPU.</p>
-<figure class=feature>
-<img src=/assets/posts/2021-10-17-blender-rendering-on-nvidia-jetson-nano/suzanne.png alt="A blender scene with Suzanne and modifiers" title="A blender scene with Suzanne and modifiers" width height>
-<figcaption>A blender scene with Suzanne and modifiers</figcaption>
-</figure>
-<p>After following the Jetson Nano documentation to install it using an SD disk,
+which means it can be used by Blender to render scenes in the GPU.</p><figure class=feature><img src=/assets/posts/2021-10-17-blender-rendering-on-nvidia-jetson-nano/suzanne.png alt='A blender scene with Suzanne and modifiers' title='A blender scene with Suzanne and modifiers' width height><figcaption>A blender scene with Suzanne and modifiers</figcaption></figure><p>After following the Jetson Nano documentation to install it using an SD disk,
 and enabling the performance overclock mode, I used <code>apt-get</code> to install Blender.
 The first thing I noticed is that it installed Blender 2.7. I tried downloading
 2.8 since I had a few files created with this version, but then I realized I had
 downloaded the x86_64 version. I couldn&rsquo;t find 2.8 build for arm, so instead I
-selected two files:</p>
-<ul>
-<li>One with Suzanne, the Blender monkey, configured with smaller tiles and added
-a modifier to smooth it (I assumed that way it would use more of the GPU.)</li>
-<li>The other one was the Blender 2.7 <a href=https://www.blender.org/download/demo-files/>splash screen</a></li>
-</ul>
-<p>I installed the same version of Blender, 2.7, on my Ubuntu Thinkpad, and configured the
+selected two files:</p><ul><li>One with Suzanne, the Blender monkey, configured with smaller tiles and added
+a modifier to smooth it (I assumed that way it would use more of the GPU.)</li><li>The other one was the Blender 2.7 <a href=https://www.blender.org/download/demo-files/>splash screen</a></li></ul><p>I installed the same version of Blender, 2.7, on my Ubuntu Thinkpad, and configured the
 tiles size on both files, and selected GPU rendering. Then I <code>scp</code>ed it to the NVIDIA
-Jetson Nano Ubuntu, and set the render engine back to CPU on my Ubuntu.</p>
-<figure class=feature>
-<img src=/assets/posts/2021-10-17-blender-rendering-on-nvidia-jetson-nano/splashscreen.png alt="Blender 2.7 splash demo image" title="Blender 2.7 splash demo image" width height>
-<figcaption>Blender 2.7 splash demo image</figcaption>
-</figure>
-<p>First I rendered Suzanne on my Thinkpad using the CPU. It took <strong>11 seconds to render</strong>
-the scene.</p>
-<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>kinow@ranma:~/Downloads/blender$ /opt/blender-2.79-linux-glibc219-x86_64/blender -b b-jetson.blend -o ./ -f <span style=color:#1c01ce>1</span>
-found bundled python: /opt/blender-2.79-linux-glibc219-x86_64/2.79/python
-Read blend: /home/kinow/Downloads/blender/b-jetson.blend
-Fra:1 Mem:260.65M <span style=color:#000>(</span>0.00M, Peak 525.85M<span style=color:#000>)</span> | Time:00:01.68 | Preparing Scene data
-Fra:1 Mem:260.67M <span style=color:#000>(</span>0.00M, Peak 525.85M<span style=color:#000>)</span> | Time:00:01.68 | Preparing Scene data
-Fra:1 Mem:260.67M <span style=color:#000>(</span>0.00M, Peak 525.85M<span style=color:#000>)</span> | Time:00:01.68 | Creating Shadowbuffers
-Fra:1 Mem:260.67M <span style=color:#000>(</span>0.00M, Peak 525.85M<span style=color:#000>)</span> | Time:00:01.68 | Raytree.. preparing
-Fra:1 Mem:560.45M <span style=color:#000>(</span>0.00M, Peak 560.45M<span style=color:#000>)</span> | Time:00:01.87 | Raytree.. building
-<span style=color:#000>(</span>...<span style=color:#000>)</span>
-Fra:1 Mem:545.16M <span style=color:#000>(</span>0.00M, Peak 1012.27M<span style=color:#000>)</span> | Time:00:11.36 | Scene, Part 82-135
-Fra:1 Mem:544.70M <span style=color:#000>(</span>0.00M, Peak 1012.27M<span style=color:#000>)</span> | Time:00:11.39 | Scene, Part 86-135
-Fra:1 Mem:16.93M <span style=color:#000>(</span>0.00M, Peak 1012.27M<span style=color:#000>)</span> | Time:00:11.43 | Sce: Scene Ve:2016578 Fa:2182948 La:1
-Saved: <span style=color:#c41a16>&#39;./0001.png&#39;</span>
- Time: 00:11.49 <span style=color:#000>(</span>Saving: 00:00.06<span style=color:#000>)</span>
-</code></pre></div><p>Tried the same command on my NVIDIA Jetson Nano now. It took <strong>48 seconds</strong>. Nearly 4 times
-longer than my old Thinkpad.</p>
-<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>root@kinow-jetson:/home/kinow# blender -b b-jetson.blend -o ./ -f <span style=color:#1c01ce>1</span>
-AL lib: <span style=color:#000>(</span>EE<span style=color:#000>)</span> UpdateDeviceParams: Failed to <span style=color:#a90d91>set</span> 44100hz, got 48000hz instead
-Read blend: /home/kinow/b-jetson.blend
-Fra:1 Mem:260.50M <span style=color:#000>(</span>0.00M, Peak 525.70M<span style=color:#000>)</span> | Time:00:05.27 | Preparing Scene data
-Fra:1 Mem:260.51M <span style=color:#000>(</span>0.00M, Peak 525.70M<span style=color:#000>)</span> | Time:00:05.27 | Preparing Scene data
-<span style=color:#000>(</span>...<span style=color:#000>)</span>
-Fra:1 Mem:594.15M <span style=color:#000>(</span>0.00M, Peak 727.22M<span style=color:#000>)</span> | Time:00:48.26 | Scene, Part 86-135
-Fra:1 Mem:16.78M <span style=color:#000>(</span>0.00M, Peak 727.22M<span style=color:#000>)</span> | Time:00:48.36 | Sce: Scene Ve:2016578 Fa:2183144 La:1
-Saved: <span style=color:#c41a16>&#39;./0001.png&#39;</span>
- Time: 00:48.53 <span style=color:#000>(</span>Saving: 00:00.17<span style=color:#000>)</span>
-</code></pre></div><p>I thought it could be because my scene was too simple for the CPU to render,
+Jetson Nano Ubuntu, and set the render engine back to CPU on my Ubuntu.</p><figure class=feature><img src=/assets/posts/2021-10-17-blender-rendering-on-nvidia-jetson-nano/splashscreen.png alt='Blender 2.7 splash demo image' title='Blender 2.7 splash demo image' width height><figcaption>Blender 2.7 splash demo image</figcaption></figure><p>First I rendered Suzanne on my Thinkpad using the CPU. It took <strong>11 seconds to render</strong>
+the scene.</p><div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>kinow@ranma:~/Downloads/blender$ /opt/blender-2.79-linux-glibc219-x86_64/blender -b b-jetson.blend -o ./ -f <span style=color:#1c01ce>1</span>
+</span></span><span style=display:flex><span>found bundled python: /opt/blender-2.79-linux-glibc219-x86_64/2.79/python
+</span></span><span style=display:flex><span>Read blend: /home/kinow/Downloads/blender/b-jetson.blend
+</span></span><span style=display:flex><span>Fra:1 Mem:260.65M <span style=color:#000>(</span>0.00M, Peak 525.85M<span style=color:#000>)</span> | Time:00:01.68 | Preparing Scene data
+</span></span><span style=display:flex><span>Fra:1 Mem:260.67M <span style=color:#000>(</span>0.00M, Peak 525.85M<span style=color:#000>)</span> | Time:00:01.68 | Preparing Scene data
+</span></span><span style=display:flex><span>Fra:1 Mem:260.67M <span style=color:#000>(</span>0.00M, Peak 525.85M<span style=color:#000>)</span> | Time:00:01.68 | Creating Shadowbuffers
+</span></span><span style=display:flex><span>Fra:1 Mem:260.67M <span style=color:#000>(</span>0.00M, Peak 525.85M<span style=color:#000>)</span> | Time:00:01.68 | Raytree.. preparing
+</span></span><span style=display:flex><span>Fra:1 Mem:560.45M <span style=color:#000>(</span>0.00M, Peak 560.45M<span style=color:#000>)</span> | Time:00:01.87 | Raytree.. building
+</span></span><span style=display:flex><span><span style=color:#000>(</span>...<span style=color:#000>)</span>
+</span></span><span style=display:flex><span>Fra:1 Mem:545.16M <span style=color:#000>(</span>0.00M, Peak 1012.27M<span style=color:#000>)</span> | Time:00:11.36 | Scene, Part 82-135
+</span></span><span style=display:flex><span>Fra:1 Mem:544.70M <span style=color:#000>(</span>0.00M, Peak 1012.27M<span style=color:#000>)</span> | Time:00:11.39 | Scene, Part 86-135
+</span></span><span style=display:flex><span>Fra:1 Mem:16.93M <span style=color:#000>(</span>0.00M, Peak 1012.27M<span style=color:#000>)</span> | Time:00:11.43 | Sce: Scene Ve:2016578 Fa:2182948 La:1
+</span></span><span style=display:flex><span>Saved: <span style=color:#c41a16>&#39;./0001.png&#39;</span>
+</span></span><span style=display:flex><span> Time: 00:11.49 <span style=color:#000>(</span>Saving: 00:00.06<span style=color:#000>)</span>
+</span></span></code></pre></div><p>Tried the same command on my NVIDIA Jetson Nano now. It took <strong>48 seconds</strong>. Nearly 4 times
+longer than my old Thinkpad.</p><div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>root@kinow-jetson:/home/kinow# blender -b b-jetson.blend -o ./ -f <span style=color:#1c01ce>1</span>
+</span></span><span style=display:flex><span>AL lib: <span style=color:#000>(</span>EE<span style=color:#000>)</span> UpdateDeviceParams: Failed to <span style=color:#a90d91>set</span> 44100hz, got 48000hz instead
+</span></span><span style=display:flex><span>Read blend: /home/kinow/b-jetson.blend
+</span></span><span style=display:flex><span>Fra:1 Mem:260.50M <span style=color:#000>(</span>0.00M, Peak 525.70M<span style=color:#000>)</span> | Time:00:05.27 | Preparing Scene data
+</span></span><span style=display:flex><span>Fra:1 Mem:260.51M <span style=color:#000>(</span>0.00M, Peak 525.70M<span style=color:#000>)</span> | Time:00:05.27 | Preparing Scene data
+</span></span><span style=display:flex><span><span style=color:#000>(</span>...<span style=color:#000>)</span>
+</span></span><span style=display:flex><span>Fra:1 Mem:594.15M <span style=color:#000>(</span>0.00M, Peak 727.22M<span style=color:#000>)</span> | Time:00:48.26 | Scene, Part 86-135
+</span></span><span style=display:flex><span>Fra:1 Mem:16.78M <span style=color:#000>(</span>0.00M, Peak 727.22M<span style=color:#000>)</span> | Time:00:48.36 | Sce: Scene Ve:2016578 Fa:2183144 La:1
+</span></span><span style=display:flex><span>Saved: <span style=color:#c41a16>&#39;./0001.png&#39;</span>
+</span></span><span style=display:flex><span> Time: 00:48.53 <span style=color:#000>(</span>Saving: 00:00.17<span style=color:#000>)</span>
+</span></span></code></pre></div><p>I thought it could be because my scene was too simple for the CPU to render,
 so the GPU was being slower maybe due to the tile sizes or CPU&lt;->memory context
-switching.</p>
-<p>So I tried the Splash screen now. <strong>01 hour and 53 minutes</strong> on my Thinkpad.</p>
-<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>Fra:1 Mem:2088.19M <span style=color:#000>(</span>0.00M, Peak 4612.16M<span style=color:#000>)</span> | Time:01:53:53.18 | Sce: Scene Ve:0 Fa:0 La:0
-Saved: <span style=color:#c41a16>&#39;./0001.png&#39;</span>
- Time: 01:53:54.08 <span style=color:#000>(</span>Saving: 00:00.90<span style=color:#000>)</span>
-</code></pre></div><p>And on the NVIDIA Jetson Nano, <strong>22 hours and 38 minutes</strong>.</p>
-<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>Fra:1 Mem:2088.40M <span style=color:#000>(</span>0.00M, Peak 4612.39M<span style=color:#000>)</span> | Time:22:38.00 | Sce: Scene Ve:0 Fa:0 La:0
-Saved: <span style=color:#c41a16>&#39;./0001.png&#39;</span>
- Time: 22:38.22 <span style=color:#000>(</span>Saving: 00:00.21<span style=color:#000>)</span>
-</code></pre></div><p>I did a few more experiments using the Suzanne file. Tried different command line
+switching.</p><p>So I tried the Splash screen now. <strong>01 hour and 53 minutes</strong> on my Thinkpad.</p><div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>Fra:1 Mem:2088.19M <span style=color:#000>(</span>0.00M, Peak 4612.16M<span style=color:#000>)</span> | Time:01:53:53.18 | Sce: Scene Ve:0 Fa:0 La:0
+</span></span><span style=display:flex><span>Saved: <span style=color:#c41a16>&#39;./0001.png&#39;</span>
+</span></span><span style=display:flex><span> Time: 01:53:54.08 <span style=color:#000>(</span>Saving: 00:00.90<span style=color:#000>)</span>
+</span></span></code></pre></div><p>And on the NVIDIA Jetson Nano, <strong>22 hours and 38 minutes</strong>.</p><div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>Fra:1 Mem:2088.40M <span style=color:#000>(</span>0.00M, Peak 4612.39M<span style=color:#000>)</span> | Time:22:38.00 | Sce: Scene Ve:0 Fa:0 La:0
+</span></span><span style=display:flex><span>Saved: <span style=color:#c41a16>&#39;./0001.png&#39;</span>
+</span></span><span style=display:flex><span> Time: 22:38.22 <span style=color:#000>(</span>Saving: 00:00.21<span style=color:#000>)</span>
+</span></span></code></pre></div><p>I did a few more experiments using the Suzanne file. Tried different command line
 arguments, specifying the engine, number of threads, debug GPU to see if I could
-see any warnings. But alas I could not find a setup that could speed up the process.</p>
-<p>Even tried a Python script I found in a forum to see this way the NVIDIA Jetson
-Nano board would perform better.</p>
-<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=color:#a90d91>import</span> <span style=color:#000>bpy</span>
-
-
-<span style=color:#a90d91>def</span> <span style=color:#000>enable_gpus</span>(<span style=color:#000>device_type</span>, <span style=color:#000>use_cpus</span><span style=color:#000>=</span><span style=color:#a90d91>False</span>):
-    <span style=color:#000>preferences</span> <span style=color:#000>=</span> <span style=color:#000>bpy</span><span style=color:#000>.</span><span style=color:#000>context</span><span style=color:#000>.</span><span style=color:#000>preferences</span>
-    <span style=color:#000>cycles_preferences</span> <span style=color:#000>=</span> <span style=color:#000>preferences</span><span style=color:#000>.</span><span style=color:#000>addons</span>[<span style=color:#c41a16>&#34;cycles&#34;</span>]<span style=color:#000>.</span><span style=color:#000>preferences</span>
-    <span style=color:#000>cuda_devices</span>, <span style=color:#000>opencl_devices</span> <span style=color:#000>=</span> <span style=color:#000>cycles_preferences</span><span style=color:#000>.</span><span style=color:#000>get_devices</span>()
-
-    <span style=color:#a90d91>if</span> <span style=color:#000>device_type</span> <span style=color:#000>==</span> <span style=color:#c41a16>&#34;CUDA&#34;</span>:
-        <span style=color:#000>devices</span> <span style=color:#000>=</span> <span style=color:#000>cuda_devices</span>
-    <span style=color:#a90d91>elif</span> <span style=color:#000>device_type</span> <span style=color:#000>==</span> <span style=color:#c41a16>&#34;OPENCL&#34;</span>:
-        <span style=color:#000>devices</span> <span style=color:#000>=</span> <span style=color:#000>opencl_devices</span>
-    <span style=color:#a90d91>else</span>:
-        <span style=color:#a90d91>raise</span> <span style=color:#000>RuntimeError</span>(<span style=color:#c41a16>&#34;Unsupported device type&#34;</span>)
-
-    <span style=color:#000>activated_gpus</span> <span style=color:#000>=</span> []
-
-    <span style=color:#a90d91>for</span> <span style=color:#000>device</span> <span style=color:#000>in</span> <span style=color:#000>devices</span>:
-        <span style=color:#a90d91>if</span> <span style=color:#000>device</span><span style=color:#000>.</span><span style=color:#000>type</span> <span style=color:#000>==</span> <span style=color:#c41a16>&#34;CPU&#34;</span>:
-            <span style=color:#000>device</span><span style=color:#000>.</span><span style=color:#000>use</span> <span style=color:#000>=</span> <span style=color:#000>use_cpus</span>
-        <span style=color:#a90d91>else</span>:
-            <span style=color:#000>device</span><span style=color:#000>.</span><span style=color:#000>use</span> <span style=color:#000>=</span> <span style=color:#a90d91>True</span>
-            <span style=color:#000>activated_gpus</span><span style=color:#000>.</span><span style=color:#000>append</span>(<span style=color:#000>device</span><span style=color:#000>.</span><span style=color:#000>name</span>)
-
-    <span style=color:#000>cycles_preferences</span><span style=color:#000>.</span><span style=color:#000>compute_device_type</span> <span style=color:#000>=</span> <span style=color:#000>device_type</span>
-    <span style=color:#000>bpy</span><span style=color:#000>.</span><span style=color:#000>context</span><span style=color:#000>.</span><span style=color:#000>scene</span><span style=color:#000>.</span><span style=color:#000>cycles</span><span style=color:#000>.</span><span style=color:#000>device</span> <span style=color:#000>=</span> <span style=color:#c41a16>&#34;GPU&#34;</span>
-
-    <span style=color:#a90d91>return</span> <span style=color:#000>activated_gpus</span>
-
-
-<span style=color:#000>enable_gpus</span>(<span style=color:#c41a16>&#34;CUDA&#34;</span>)
-</code></pre></div><p>The render was about the same time, a little slower, probably because Blender
+see any warnings. But alas I could not find a setup that could speed up the process.</p><p>Even tried a Python script I found in a forum to see this way the NVIDIA Jetson
+Nano board would perform better.</p><div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=display:flex><span><span style=color:#a90d91>import</span> <span style=color:#000>bpy</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#a90d91>def</span> <span style=color:#000>enable_gpus</span>(<span style=color:#000>device_type</span>, <span style=color:#000>use_cpus</span><span style=color:#000>=</span><span style=color:#a90d91>False</span>):
+</span></span><span style=display:flex><span>    <span style=color:#000>preferences</span> <span style=color:#000>=</span> <span style=color:#000>bpy</span><span style=color:#000>.</span><span style=color:#000>context</span><span style=color:#000>.</span><span style=color:#000>preferences</span>
+</span></span><span style=display:flex><span>    <span style=color:#000>cycles_preferences</span> <span style=color:#000>=</span> <span style=color:#000>preferences</span><span style=color:#000>.</span><span style=color:#000>addons</span>[<span style=color:#c41a16>&#34;cycles&#34;</span>]<span style=color:#000>.</span><span style=color:#000>preferences</span>
+</span></span><span style=display:flex><span>    <span style=color:#000>cuda_devices</span>, <span style=color:#000>opencl_devices</span> <span style=color:#000>=</span> <span style=color:#000>cycles_preferences</span><span style=color:#000>.</span><span style=color:#000>get_devices</span>()
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#a90d91>if</span> <span style=color:#000>device_type</span> <span style=color:#000>==</span> <span style=color:#c41a16>&#34;CUDA&#34;</span>:
+</span></span><span style=display:flex><span>        <span style=color:#000>devices</span> <span style=color:#000>=</span> <span style=color:#000>cuda_devices</span>
+</span></span><span style=display:flex><span>    <span style=color:#a90d91>elif</span> <span style=color:#000>device_type</span> <span style=color:#000>==</span> <span style=color:#c41a16>&#34;OPENCL&#34;</span>:
+</span></span><span style=display:flex><span>        <span style=color:#000>devices</span> <span style=color:#000>=</span> <span style=color:#000>opencl_devices</span>
+</span></span><span style=display:flex><span>    <span style=color:#a90d91>else</span>:
+</span></span><span style=display:flex><span>        <span style=color:#a90d91>raise</span> <span style=color:#000>RuntimeError</span>(<span style=color:#c41a16>&#34;Unsupported device type&#34;</span>)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#000>activated_gpus</span> <span style=color:#000>=</span> []
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#a90d91>for</span> <span style=color:#000>device</span> <span style=color:#000>in</span> <span style=color:#000>devices</span>:
+</span></span><span style=display:flex><span>        <span style=color:#a90d91>if</span> <span style=color:#000>device</span><span style=color:#000>.</span><span style=color:#000>type</span> <span style=color:#000>==</span> <span style=color:#c41a16>&#34;CPU&#34;</span>:
+</span></span><span style=display:flex><span>            <span style=color:#000>device</span><span style=color:#000>.</span><span style=color:#000>use</span> <span style=color:#000>=</span> <span style=color:#000>use_cpus</span>
+</span></span><span style=display:flex><span>        <span style=color:#a90d91>else</span>:
+</span></span><span style=display:flex><span>            <span style=color:#000>device</span><span style=color:#000>.</span><span style=color:#000>use</span> <span style=color:#000>=</span> <span style=color:#a90d91>True</span>
+</span></span><span style=display:flex><span>            <span style=color:#000>activated_gpus</span><span style=color:#000>.</span><span style=color:#000>append</span>(<span style=color:#000>device</span><span style=color:#000>.</span><span style=color:#000>name</span>)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#000>cycles_preferences</span><span style=color:#000>.</span><span style=color:#000>compute_device_type</span> <span style=color:#000>=</span> <span style=color:#000>device_type</span>
+</span></span><span style=display:flex><span>    <span style=color:#000>bpy</span><span style=color:#000>.</span><span style=color:#000>context</span><span style=color:#000>.</span><span style=color:#000>scene</span><span style=color:#000>.</span><span style=color:#000>cycles</span><span style=color:#000>.</span><span style=color:#000>device</span> <span style=color:#000>=</span> <span style=color:#c41a16>&#34;GPU&#34;</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#a90d91>return</span> <span style=color:#000>activated_gpus</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#000>enable_gpus</span>(<span style=color:#c41a16>&#34;CUDA&#34;</span>)
+</span></span></code></pre></div><p>The render was about the same time, a little slower, probably because Blender
 needs to load and execute the Python script. After reading about users with
 slow render times (not necessarily because of egpu or board computer GPU&rsquo;s),
-some users mentioned the kind of scene or file, and also the system memory.</p>
-<p>My old Thinkpad has 16 GB memory, where normally about 14 GB are free for Blender
+some users mentioned the kind of scene or file, and also the system memory.</p><p>My old Thinkpad has 16 GB memory, where normally about 14 GB are free for Blender
 to use while rendering. And even my old GPU, with its 2 GB dedicated memory would
 probably perform about the same I guess with Blender, if it supported newer CUDA
-versions (which means, if it also had a newer processor.)</p>
-<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>kinow@ranma:~$ nvidia-smi 
-Tue Sep <span style=color:#1c01ce>28</span> 23:44:54 <span style=color:#1c01ce>2021</span>       
-+-----------------------------------------------------------------------------+
-| NVIDIA-SMI 390.144                Driver Version: 390.144                   |
-|-------------------------------+----------------------+----------------------+
-| GPU  Name        Persistence-M| Bus-Id        Disp.A | Volatile Uncorr. ECC |
-| Fan  Temp  Perf  Pwr:Usage/Cap|         Memory-Usage | GPU-Util  Compute M. |
-|<span style=color:#000>===============================</span>+<span style=color:#000>======================</span>+<span style=color:#000>======================</span>|
-|   <span style=color:#1c01ce>0</span>  NVS 5400M           Off  | 00000000:01:00.0 N/A |                  N/A |
-| N/A   56C    P0    N/A /  N/A |    294MiB /   964MiB |     N/A      Default |
-+-------------------------------+----------------------+----------------------+
-                                                                               
-+-----------------------------------------------------------------------------+
-| Processes:                                                       GPU Memory |
-|  GPU       PID   Type   Process name                             Usage      |
-|<span style=color:#000>=============================================================================</span>|
-|    <span style=color:#1c01ce>0</span>                    Not Supported                                       |
-+-----------------------------------------------------------------------------+
-</code></pre></div><p>The NVIDIA Jetson Nano, with no GUI (I uninstalled <code>ubuntu-desktop</code>, <code>mousepad</code>,
+versions (which means, if it also had a newer processor.)</p><div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>kinow@ranma:~$ nvidia-smi 
+</span></span><span style=display:flex><span>Tue Sep <span style=color:#1c01ce>28</span> 23:44:54 <span style=color:#1c01ce>2021</span>       
+</span></span><span style=display:flex><span>+-----------------------------------------------------------------------------+
+</span></span><span style=display:flex><span>| NVIDIA-SMI 390.144                Driver Version: 390.144                   |
+</span></span><span style=display:flex><span>|-------------------------------+----------------------+----------------------+
+</span></span><span style=display:flex><span>| GPU  Name        Persistence-M| Bus-Id        Disp.A | Volatile Uncorr. ECC |
+</span></span><span style=display:flex><span>| Fan  Temp  Perf  Pwr:Usage/Cap|         Memory-Usage | GPU-Util  Compute M. |
+</span></span><span style=display:flex><span>|<span style=color:#000>===============================</span>+<span style=color:#000>======================</span>+<span style=color:#000>======================</span>|
+</span></span><span style=display:flex><span>|   <span style=color:#1c01ce>0</span>  NVS 5400M           Off  | 00000000:01:00.0 N/A |                  N/A |
+</span></span><span style=display:flex><span>| N/A   56C    P0    N/A /  N/A |    294MiB /   964MiB |     N/A      Default |
+</span></span><span style=display:flex><span>+-------------------------------+----------------------+----------------------+
+</span></span><span style=display:flex><span>                                                                               
+</span></span><span style=display:flex><span>+-----------------------------------------------------------------------------+
+</span></span><span style=display:flex><span>| Processes:                                                       GPU Memory |
+</span></span><span style=display:flex><span>|  GPU       PID   Type   Process name                             Usage      |
+</span></span><span style=display:flex><span>|<span style=color:#000>=============================================================================</span>|
+</span></span><span style=display:flex><span>|    <span style=color:#1c01ce>0</span>                    Not Supported                                       |
+</span></span><span style=display:flex><span>+-----------------------------------------------------------------------------+
+</span></span></code></pre></div><p>The NVIDIA Jetson Nano, with no GUI (I uninstalled <code>ubuntu-desktop</code>, <code>mousepad</code>,
 and disabled firewall and any other service that I considered unnecessary for Blender)
-starts with ~600 MB of used memory, leaving 3.2 GB for Blender and for the GPU.</p>
-<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>kinow@kinow-jetson:~$ ./mem
-  mem free 3295.226562 MB mem total 3964.101562 MB mem used 668.875000 MB
-</code></pre></div><p>My guess is that while the NVIDIA Jetson Nano board works well for AI and IoT
+starts with ~600 MB of used memory, leaving 3.2 GB for Blender and for the GPU.</p><div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>kinow@kinow-jetson:~$ ./mem
+</span></span><span style=display:flex><span>  mem free 3295.226562 MB mem total 3964.101562 MB mem used 668.875000 MB
+</span></span></code></pre></div><p>My guess is that while the NVIDIA Jetson Nano board works well for AI and IoT
 applications that need the GPU for calculations that are not affected by the
 shared memory, rendering 3D scenes in Blender would still perform better in
-an egpu or in an environment with a new GPU.</p>
-<p>But at least I confirmed that you can render files in these board computers, and
-it was a fun project. Things I am still thinking in trying someday:</p>
-<ul>
-<li>Compile and try Blender 3.x for arm</li>
-<li>Learn more about the Blender Python API and try to write some sort of debug function</li>
-<li>Investigate if AI/machine learning applications have the same kind of problems (e.g.
-<a href=https://github.com/tensorflow/tensorflow/issues/39486>see this tensorflow issue</a>)</li>
-</ul>
-<p>These boards are really fun, and support plugging cameras like the Raspberry Pi camera.
+an egpu or in an environment with a new GPU.</p><p>But at least I confirmed that you can render files in these board computers, and
+it was a fun project. Things I am still thinking in trying someday:</p><ul><li>Compile and try Blender 3.x for arm</li><li>Learn more about the Blender Python API and try to write some sort of debug function</li><li>Investigate if AI/machine learning applications have the same kind of problems (e.g.
+<a href=https://github.com/tensorflow/tensorflow/issues/39486>see this tensorflow issue</a>)</li></ul><p>These boards are really fun, and support plugging cameras like the Raspberry Pi camera.
 So it could be used for things like <a href=https://techcrunch.com/2018/06/01/count-your-bees-with-this-raspberry-pi-project/>counting number of bees</a>,
-or estimate the <a href="https://www.youtube.com/watch?v=nUjGLjOmF7o&list=WL&index=14">pose of a body</a>.</p>
-<p>With dedicated memory for the graphics processor, it could probably perform a lot
+or estimate the <a href="https://www.youtube.com/watch?v=nUjGLjOmF7o&amp;list=WL&amp;index=14">pose of a body</a>.</p><p>With dedicated memory for the graphics processor, it could probably perform a lot
 better, but the CPU would also have to be improved a little, as well as the power
 unit… and I suspect the cost would increase too. So not sure if at that point it
-would not make more sense to buy an egpu or a dedicated workstation for Blender.</p>
-<p>For now, I am keeping my Thinkpad and will keep thinking how to improve my rendering
-time.</p>
-<p>Special thanks to <strong>Luke Reid</strong> for donating his NVIDIA Jetson Nano, so I could test it
-with Blender</p>
-<p>
-Categories:
-<a href=/categories/blog.html>blog</a>
-</p>
-<p>
-Tags:
-<a href=/tags/opensource.html>opensource</a>,
-<a href=/tags/blender.html>blender</a>
-</p>
-<aside class=links>
-<a class=previous href=https://kinoshita.eti.br/2021/10/01/cyclic-workflows-with-cylc-and-stackstorm.html>&#171; Previous</a>
-<a class=next href=https://kinoshita.eti.br/2021/10/22/removing-invisible-unread-github-notifications.html>Next &#187;</a>
-</aside>
-</article>
-</main>
-<footer role=contentinfo>
-<ul id=social-media-icons>
-<li>
-<a href=https://www.instagram.com/brunokinoshita/>
-<img src=/assets/icons/instagram.png alt="Instagram link">
-</a>
-</li>
-<li>
-<a href=https://twitter.com/kinow/>
-<img src=/assets/icons/twitter.png alt="Twitter link">
-</a>
-</li>
-<li>
-<a href=https://github.com/kinow/>
-<img src=/assets/icons/github.png alt="GitHub link">
-</a>
-</li>
-<li>
-<a href=/feed.xml>
-<img src=/assets/icons/news.png alt="RSS feed link">
-</a>
-</li>
-</ul>
-</footer>
-</body>
-</html>
+would not make more sense to buy an egpu or a dedicated workstation for Blender.</p><p>For now, I am keeping my Thinkpad and will keep thinking how to improve my rendering
+time.</p><p>Special thanks to <strong>Luke Reid</strong> for donating his NVIDIA Jetson Nano, so I could test it
+with Blender</p><p>Categories:
+<a href=/categories/blog.html>Blog</a></p><p>Tags:
+<a href=/tags/opensource.html>Opensource</a>,
+<a href=/tags/blender.html>Blender</a></p><aside class=links><a class=previous href=https://kinoshita.eti.br/2021/10/01/cyclic-workflows-with-cylc-and-stackstorm.html>&#171; Previous</a><a class=next href=https://kinoshita.eti.br/2021/10/22/removing-invisible-unread-github-notifications.html>Next &#187;</a></aside></article></main><footer role=contentinfo><ul id=social-media-icons><li><a href=https://www.instagram.com/brunokinoshita/><img src=/assets/icons/instagram.png alt="Instagram link"></a></li><li><a href=https://twitter.com/kinow/><img src=/assets/icons/twitter.png alt="Twitter link"></a></li><li><a href=https://github.com/kinow/><img src=/assets/icons/github.png alt="GitHub link"></a></li><li><a href=/feed.xml><img src=/assets/icons/news.png alt="RSS feed link"></a></li></ul></footer></body></html>

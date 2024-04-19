@@ -1,109 +1,30 @@
-<!doctype html><html lang=en>
-<head>
-<meta charset=utf-8>
-<meta name=viewport content="width=device-width,initial-scale=1">
-<meta property="og:title" content="PermGen errors and java.lang.ClassCastException: com.sun.crypto.provider.AESCipher cannot be cast to javax.crypto.CipherSpi running Jenkins plug-in tests with PowerMock">
-<meta property="og:description" content="Recently while working on a Jenkins plugin some tests were failing with PermGen errors. Even though it worked in my notebook at home (with Java 8, thus no Permgen), it failed in a CloudBees hosted Jenkins job, and also on my Mac (with Java 7) at work.
-As I could not change the settings in the CloudBees hosted Jenkins, I decided to spent some time investigating why these tests would require so much memory.">
-<meta property="og:type" content="article">
-<meta property="og:url" content="https://kinoshita.eti.br/2016/12/19/permgen-errors-and-java.lang.classcastexception-com.sun.crypto.provider.aescipher-cannot-be-cast-to-javax.crypto.cipherspi-running-jenkins-plug-in-tests-with-powermock.html"><meta property="article:section" content="posts">
-<meta property="article:published_time" content="2016-12-19T00:00:00+00:00">
-<meta property="article:modified_time" content="2024-04-19T16:48:00+02:00">
-<link rel=alternate type=application/rss+xml href=https://kinoshita.eti.br/2016/12/19/permgen-errors-and-java.lang.classcastexception-com.sun.crypto.provider.aescipher-cannot-be-cast-to-javax.crypto.cipherspi-running-jenkins-plug-in-tests-with-powermock/feed.xml title=kinow>
-<link rel=stylesheet type=text/css href=https://kinoshita.eti.br/sass/main.1e768395a672116b3eff41b3123d9aafb8a9302476085be5fb658a4b93613f57.css integrity="sha256-HnaDlaZyEWs+/0GzEj2ar7ipMCR2CFvl+2WKS5NhP1c=">
-<title>kinow | PermGen errors and java.lang.ClassCastException: com.sun.crypto.provider.AESCipher cannot be cast to javax.crypto.CipherSpi running Jenkins plug-in tests with PowerMock</title>
-</head>
-<body>
-<header role=banner class=content>
-<nav id=nav aria-label=Main role=navigation class=content>
-<ul><li>
-<a href=/><i data-feather=about></i> About</a>
-</li><li>
-<a href=/blog/><i data-feather=blog></i> Blog</a>
-</li><li>
-<a href=/portfolio/><i data-feather=portfolio></i> Portfolio</a>
-</li>
-</ul>
-</nav>
-</header>
-<main>
-<article class=content>
-<h1>PermGen errors and java.lang.ClassCastException: com.sun.crypto.provider.AESCipher cannot be cast to javax.crypto.CipherSpi running Jenkins plug-in tests with PowerMock</h1><div class=metadata>
-<i data-feather=calendar></i>
-<time datetime=2016-12-19>Dec 19, 2016</time>
-</div>
-<aside>
-<nav id=TableOfContents></nav>
-</aside>
-<p>Recently while working on a Jenkins plugin some tests were failing with PermGen errors.
+<!doctype html><html lang=en><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta property="og:url" content="https://kinoshita.eti.br/2016/12/19/permgen-errors-and-java.lang.classcastexception-com.sun.crypto.provider.aescipher-cannot-be-cast-to-javax.crypto.cipherspi-running-jenkins-plug-in-tests-with-powermock.html"><meta property="og:site_name" content="kinow"><meta property="og:title" content="PermGen errors and java.lang.ClassCastException: com.sun.crypto.provider.AESCipher cannot be cast to javax.crypto.CipherSpi running Jenkins plug-in tests with PowerMock"><meta property="og:description" content="Recently while working on a Jenkins plugin some tests were failing with PermGen errors. Even though it worked in my notebook at home (with Java 8, thus no Permgen), it failed in a CloudBees hosted Jenkins job, and also on my Mac (with Java 7) at work.
+As I could not change the settings in the CloudBees hosted Jenkins, I decided to spent some time investigating why these tests would require so much memory."><meta property="og:locale" content="en-us"><meta property="og:type" content="article"><meta property="article:section" content="posts"><meta property="article:published_time" content="2016-12-19T00:00:00+00:00"><meta property="article:modified_time" content="2024-04-19T16:51:32+02:00"><meta property="article:tag" content="Jenkins"><meta property="article:tag" content="Software Quality"><meta property="og:image" content="https://kinoshita.eti.br/assets/photos/about/2023-me-closeup.png"><meta property="fb:admins" content="bruno.kinoshita"><link rel=alternate type=application/rss+xml href=https://kinoshita.eti.br/2016/12/19/permgen-errors-and-java.lang.classcastexception-com.sun.crypto.provider.aescipher-cannot-be-cast-to-javax.crypto.cipherspi-running-jenkins-plug-in-tests-with-powermock/feed.xml title=kinow><link rel=stylesheet type=text/css href=https://kinoshita.eti.br/sass/main.1e768395a672116b3eff41b3123d9aafb8a9302476085be5fb658a4b93613f57.css integrity="sha256-HnaDlaZyEWs+/0GzEj2ar7ipMCR2CFvl+2WKS5NhP1c="><title>kinow | PermGen errors and java.lang.ClassCastException: com.sun.crypto.provider.AESCipher cannot be cast to javax.crypto.CipherSpi running Jenkins plug-in tests with PowerMock</title><script type=application/ld+json>{"@context":"http://schema.org","@type":"BlogPosting","articleSection":"posts","name":"PermGen errors and java.lang.ClassCastException: com.sun.crypto.provider.AESCipher cannot be cast to javax.crypto.CipherSpi running Jenkins plug-in tests with PowerMock","headline":"PermGen errors and java.lang.ClassCastException: com.sun.crypto.provider.AESCipher cannot be cast to javax.crypto.CipherSpi running Jenkins plug-in tests with PowerMock","alternativeHeadline":"","description":"Recently while working on a Jenkins plugin some tests were failing with PermGen errors. Even though it worked in my notebook at home (with Java 8, thus no Permgen), it failed in a CloudBees hosted Jenkins job, and also on my Mac (with Java 7) at work.\nAs I could not change the settings in the CloudBees hosted Jenkins, I decided to spent some time investigating why these tests would require so much memory.","inLanguage":"en-us","isFamilyFriendly":"true","mainEntityOfPage":{"@type":"WebPage","@id":"https:\/\/kinoshita.eti.br\/2016\/12\/19\/permgen-errors-and-java.lang.classcastexception-com.sun.crypto.provider.aescipher-cannot-be-cast-to-javax.crypto.cipherspi-running-jenkins-plug-in-tests-with-powermock.html"},"author":{"@type":"Person","name":"Bruno P. Kinoshita"},"creator":{"@type":"Person","name":"Bruno P. Kinoshita"},"accountablePerson":{"@type":"Person","name":"Bruno P. Kinoshita"},"copyrightHolder":"kinow","copyrightYear":"2016","dateCreated":"2016-12-19T00:00:00.00Z","datePublished":"2016-12-19T00:00:00.00Z","dateModified":"2024-04-19T16:51:32.00Z","publisher":{"@type":"Organization","name":"kinow","url":"https://kinoshita.eti.br/","logo":{"@type":"ImageObject","url":"https:\/\/kinoshita.eti.br\/","width":"32","height":"32"}},"image":"https://kinoshita.eti.br/","url":"https:\/\/kinoshita.eti.br\/2016\/12\/19\/permgen-errors-and-java.lang.classcastexception-com.sun.crypto.provider.aescipher-cannot-be-cast-to-javax.crypto.cipherspi-running-jenkins-plug-in-tests-with-powermock.html","wordCount":"238","genre":["jenkins","software quality"],"keywords":[]}</script></head><body><header role=banner class=content><nav id=nav aria-label=Main role=navigation class=content><ul><li><a href=/><i data-feather=about></i> About</a></li><li><a href=/blog/><i data-feather=blog></i> Blog</a></li><li><a href=/portfolio/><i data-feather=portfolio></i> Portfolio</a></li></ul></nav></header><main><article class=content><h1>PermGen errors and java.lang.ClassCastException: com.sun.crypto.provider.AESCipher cannot be cast to javax.crypto.CipherSpi running Jenkins plug-in tests with PowerMock</h1><div class=metadata><i data-feather=calendar></i>
+<time datetime=2016-12-19>Dec 19, 2016</time></div><aside><nav id=TableOfContents></nav></aside><p>Recently while working on a Jenkins plugin some tests were failing with PermGen errors.
 Even though it worked in my notebook at home (with Java 8, thus no Permgen), it failed
-in a CloudBees hosted Jenkins job, and also on my Mac (with Java 7) at work.</p>
-<p>As I could not change the settings in the CloudBees hosted Jenkins, I decided to spent some
+in a CloudBees hosted Jenkins job, and also on my Mac (with Java 7) at work.</p><p>As I could not change the settings in the CloudBees hosted Jenkins, I decided to spent some
 time investigating why these tests would require so much memory. Then I found
-<a href=https://angus.nyc/2015/fixing-common-powermock-problems/>this blog post about PowerMock</a>.</p>
-<p>I was not using the <em>@PrepareForTest</em> annotation, but after adding it the issue was gone. So I
+<a href=https://angus.nyc/2015/fixing-common-powermock-problems/>this blog post about PowerMock</a>.</p><p>I was not using the <em>@PrepareForTest</em> annotation, but after adding it the issue was gone. So I
 assume it either prevents PowerMock from trying to dynamically load several classes, or instructs
-it to unload classes after the tests. But in anyway after adding it the issue was gone.</p>
-<p>Then I got the following exception.</p>
-<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>WARNING: Failed to instantiate Key<span style=color:#000>[</span><span style=color:#000>type</span><span style=color:#000>=</span>hudson.security.csrf.DefaultCrumbIssuer<span style=color:#000>$DescriptorImpl</span>, <span style=color:#000>annotation</span><span style=color:#000>=[</span>none<span style=color:#000>]]</span>; skipping this component
-com.google.inject.ProvisionException: Guice provision errors:
-
-1<span style=color:#000>)</span> Error injecting constructor, java.lang.ClassCastException: com.sun.crypto.provider.AESCipher cannot be cast to javax.crypto.CipherSpi
-  at hudson.security.csrf.DefaultCrumbIssuer<span style=color:#000>$DescriptorImpl</span>.&lt;init&gt;<span style=color:#000>(</span>DefaultCrumbIssuer.java:127<span style=color:#000>)</span>
-
-<span style=color:#1c01ce>1</span> error
-    at com.google.inject.internal.ProviderToInternalFactoryAdapter.get<span style=color:#000>(</span>ProviderToInternalFactoryAdapter.java:52<span style=color:#000>)</span>
-</code></pre></div><p>And then thanks to <a href=https://github.com/powermock/powermock/issues/294>this issue</a> I understood
+it to unload classes after the tests. But in anyway after adding it the issue was gone.</p><p>Then I got the following exception.</p><div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>WARNING: Failed to instantiate Key<span style=color:#000>[</span><span style=color:#000>type</span><span style=color:#000>=</span>hudson.security.csrf.DefaultCrumbIssuer<span style=color:#000>$DescriptorImpl</span>, <span style=color:#000>annotation</span><span style=color:#000>=[</span>none<span style=color:#000>]]</span>; skipping this component
+</span></span><span style=display:flex><span>com.google.inject.ProvisionException: Guice provision errors:
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>1<span style=color:#000>)</span> Error injecting constructor, java.lang.ClassCastException: com.sun.crypto.provider.AESCipher cannot be cast to javax.crypto.CipherSpi
+</span></span><span style=display:flex><span>  at hudson.security.csrf.DefaultCrumbIssuer<span style=color:#000>$DescriptorImpl</span>.&lt;init&gt;<span style=color:#000>(</span>DefaultCrumbIssuer.java:127<span style=color:#000>)</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#1c01ce>1</span> error
+</span></span><span style=display:flex><span>    at com.google.inject.internal.ProviderToInternalFactoryAdapter.get<span style=color:#000>(</span>ProviderToInternalFactoryAdapter.java:52<span style=color:#000>)</span>
+</span></span></code></pre></div><p>And then thanks to <a href=https://github.com/powermock/powermock/issues/294>this issue</a> I understood
 that PowerMock was mocking <em>javax.crypto</em> classes. Turns out it is quite easy to tell
-PowerMock to ignore certain classes from being mocked, with the <em>@PowerMockIgnore</em> annotation.</p>
-<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=color:#177500>// snip
-</span><span style=color:#177500></span><span style=color:#000>@RunWith</span><span style=color:#000>(</span><span style=color:#000>PowerMockRunner</span><span style=color:#000>.</span><span style=color:#836c28>class</span><span style=color:#000>)</span>
-<span style=color:#000>@PowerMockIgnore</span><span style=color:#000>({</span><span style=color:#c41a16>&#34;javax.crypto.*&#34;</span> <span style=color:#000>})</span>
-<span style=color:#a90d91>public</span> <span style=color:#a90d91>class</span> <span style=color:#3f6e75>TestAbstractUnoChoiceParameter</span> <span style=color:#000>{</span>
-<span style=color:#177500>//
-</span><span style=color:#177500></span><span style=color:#000>}</span>
-<span style=color:#177500>// snip
-</span></code></pre></div><p>Added a couple of notes to this <a href=https://wiki.jenkins-ci.org/display/JENKINS/Mocking+in+Unit+Tests>Jenkins Wiki page</a>
-so that users facing similar issues can try these possible workarounds.</p>
-<p>Hope that helps someone!</p>
-<p>
-Categories:
-<a href=/categories/blog.html>blog</a>
-</p>
-<p>
-Tags:
-<a href=/tags/jenkins.html>jenkins</a>,
-<a href=/tags/software-quality.html>software quality</a>
-</p>
-<aside class=links>
-<a class=previous href=https://kinoshita.eti.br/2016/11/25/using-requests-session-objects-for-web-scraping.html>&#171; Previous</a>
-<a class=next href=https://kinoshita.eti.br/2016/12/19/drawing-sketch-uh.html>Next &#187;</a>
-</aside>
-</article>
-</main>
-<footer role=contentinfo>
-<ul id=social-media-icons>
-<li>
-<a href=https://www.instagram.com/brunokinoshita/>
-<img src=/assets/icons/instagram.png alt="Instagram link">
-</a>
-</li>
-<li>
-<a href=https://twitter.com/kinow/>
-<img src=/assets/icons/twitter.png alt="Twitter link">
-</a>
-</li>
-<li>
-<a href=https://github.com/kinow/>
-<img src=/assets/icons/github.png alt="GitHub link">
-</a>
-</li>
-<li>
-<a href=/feed.xml>
-<img src=/assets/icons/news.png alt="RSS feed link">
-</a>
-</li>
-</ul>
-</footer>
-</body>
-</html>
+PowerMock to ignore certain classes from being mocked, with the <em>@PowerMockIgnore</em> annotation.</p><div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=display:flex><span><span style=color:#177500>// snip</span>
+</span></span><span style=display:flex><span><span style=color:#000>@RunWith</span>(<span style=color:#000>PowerMockRunner</span>.<span style=color:#836c28>class</span>)
+</span></span><span style=display:flex><span><span style=color:#000>@PowerMockIgnore</span>({<span style=color:#c41a16>&#34;javax.crypto.*&#34;</span> })
+</span></span><span style=display:flex><span><span style=color:#a90d91>public</span> <span style=color:#a90d91>class</span> <span style=color:#3f6e75>TestAbstractUnoChoiceParameter</span> {
+</span></span><span style=display:flex><span><span style=color:#177500>//</span>
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span><span style=color:#177500>// snip</span>
+</span></span></code></pre></div><p>Added a couple of notes to this <a href=https://wiki.jenkins-ci.org/display/JENKINS/Mocking+in+Unit+Tests>Jenkins Wiki page</a>
+so that users facing similar issues can try these possible workarounds.</p><p>Hope that helps someone!</p><p>Categories:
+<a href=/categories/blog.html>Blog</a></p><p>Tags:
+<a href=/tags/jenkins.html>Jenkins</a>,
+<a href=/tags/software-quality.html>Software Quality</a></p><aside class=links><a class=previous href=https://kinoshita.eti.br/2016/11/25/using-requests-session-objects-for-web-scraping.html>&#171; Previous</a><a class=next href=https://kinoshita.eti.br/2016/12/19/drawing-sketch-uh.html>Next &#187;</a></aside></article></main><footer role=contentinfo><ul id=social-media-icons><li><a href=https://www.instagram.com/brunokinoshita/><img src=/assets/icons/instagram.png alt="Instagram link"></a></li><li><a href=https://twitter.com/kinow/><img src=/assets/icons/twitter.png alt="Twitter link"></a></li><li><a href=https://github.com/kinow/><img src=/assets/icons/github.png alt="GitHub link"></a></li><li><a href=/feed.xml><img src=/assets/icons/news.png alt="RSS feed link"></a></li></ul></footer></body></html>

@@ -1,109 +1,22 @@
-<!doctype html><html lang=en>
-<head>
-<meta charset=utf-8>
-<meta name=viewport content="width=device-width,initial-scale=1">
-<meta property="og:title" content="Performance problems in Jenkins TAP Plug-in &amp;mdash; part 1">
-<meta property="og:description" content="JENKINS-17887 reports performance problems in the Jenkins TAP Plug-in. It also lists a series of suggestions on how to improve the Jenkins TAP Plug-in performance. On this initial post, we will get a general idea of how the plug-in performs for large projects.
+<!doctype html><html lang=en><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta property="og:url" content="https://kinoshita.eti.br/2016/09/03/performance-problems-in-jenkins-tap-plug-in-mdash-part-1.html"><meta property="og:site_name" content="kinow"><meta property="og:title" content="Performance problems in Jenkins TAP Plug-in &amp;mdash; part 1"><meta property="og:description" content="JENKINS-17887 reports performance problems in the Jenkins TAP Plug-in. It also lists a series of suggestions on how to improve the Jenkins TAP Plug-in performance. On this initial post, we will get a general idea of how the plug-in performs for large projects.
 BioPerl has over 21K tests. That should be enough for giving an initial idea of CPU, memory and disk usage for the plug-in.
-git clone https://github.com/bioperl/bioperl-live.git cd bioperl-live sudo cpanm -vv --installdeps --notest .">
-<meta property="og:type" content="article">
-<meta property="og:url" content="https://kinoshita.eti.br/2016/09/03/performance-problems-in-jenkins-tap-plug-in-mdash-part-1.html"><meta property="article:section" content="posts">
-<meta property="article:published_time" content="2016-09-03T00:00:00+00:00">
-<meta property="article:modified_time" content="2024-04-19T16:48:00+02:00">
-<link rel=alternate type=application/rss+xml href=https://kinoshita.eti.br/2016/09/03/performance-problems-in-jenkins-tap-plug-in-mdash-part-1/feed.xml title=kinow>
-<link rel=stylesheet type=text/css href=https://kinoshita.eti.br/sass/main.1e768395a672116b3eff41b3123d9aafb8a9302476085be5fb658a4b93613f57.css integrity="sha256-HnaDlaZyEWs+/0GzEj2ar7ipMCR2CFvl+2WKS5NhP1c=">
-<title>kinow | Performance problems in Jenkins TAP Plug-in &amp;mdash; part 1</title>
-</head>
-<body>
-<header role=banner class=content>
-<nav id=nav aria-label=Main role=navigation class=content>
-<ul><li>
-<a href=/><i data-feather=about></i> About</a>
-</li><li>
-<a href=/blog/><i data-feather=blog></i> Blog</a>
-</li><li>
-<a href=/portfolio/><i data-feather=portfolio></i> Portfolio</a>
-</li>
-</ul>
-</nav>
-</header>
-<main>
-<article class=content>
-<h1>Performance problems in Jenkins TAP Plug-in &amp;mdash; part 1</h1><div class=metadata>
-<i data-feather=calendar></i>
-<time datetime=2016-09-03>Sep 3, 2016</time>
-</div>
-<aside>
-<nav id=TableOfContents></nav>
-</aside>
-<p><a href=https://issues.jenkins-ci.org/browse/JENKINS-17887>JENKINS-17887</a> reports performance problems in the <a href=https://wiki.jenkins-ci.org/display/JENKINS/TAP+Plugin>Jenkins TAP Plug-in</a>. It also lists a series of suggestions on how to improve the Jenkins TAP Plug-in performance. On this initial post, we will get a general idea of how the plug-in performs for large projects.</p>
-<p><a href=http://bioperl.org/>BioPerl</a> has over 21K tests. That should be enough for giving an initial idea of CPU, memory and disk usage for the plug-in.</p>
-<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>git clone https://github.com/bioperl/bioperl-live.git
-<span style=color:#a90d91>cd</span> bioperl-live
-sudo cpanm  -vv --installdeps --notest .
-sudo cpanm Set::Scalar Graph::Directed XML::LibXML XML::SAX <span style=color:#c41a16>\
-</span><span style=color:#c41a16></span>    SVG XML::Parser::PerlSAX Convert::Binary::C XML::SAX::Writer <span style=color:#c41a16>\
-</span><span style=color:#c41a16></span>    XML::DOM::XPath Spreadsheet::ParseExcel XML::SAX::Writer <span style=color:#c41a16>\
-</span><span style=color:#c41a16></span>    XML::DOM HTML::TableExtract XML::Simple Test::Pod DBI
-prove -r t/ -a tests.tar.gz
-
-All tests successful.
-<span style=color:#000>Files</span><span style=color:#000>=</span>325, <span style=color:#000>Tests</span><span style=color:#000>=</span>21095, <span style=color:#1c01ce>94</span> wallclock secs <span style=color:#000>(</span> 2.47 usr  0.55 sys + 88.29 cusr  3.85 <span style=color:#000>csys</span> <span style=color:#000>=</span> 95.16 CPU<span style=color:#000>)</span>
-Result: PASS
-</code></pre></div><p>When the test results are parsed, the plug-in also copies TAP files over to the master, in a folder called <em>tap-master-files</em>.</p>
-<p>The BioPerl tests are not really big, just <strong>1.7M</strong>. It gets doubled as there will be the workspace copy, and the tap-master-files directory copy, so <strong>3.4M</strong>.</p>
-<p>But several objects get created in memory, and persisted into the build.xml job file. BioPerl generates a build.xml file with <strong>11M</strong>. So <strong>less than 15M</strong>. But the build.xml contains objects that are read via XStream by Jenkins and into the memory.</p>
-<p>The build page with the graph, and the other two test result pages are rendering in more than 10 seconds in my computer. But the CPU load is OK, so a closer look at the memory use would probably be more interesting.</p>
-<figure class=feature>
-<img src=/assets/posts/2016-09-03-performance-problems-in-jenkins-tap-plugin-part-1/JENKINS-17887-yourkit1.png alt="JENKINS-17887 YourKit profiler" title="JENKINS-17887 YourKit profiler" width height>
-<figcaption>JENKINS-17887 YourKit profiler</figcaption>
-</figure>
-<p>The image shows one of the screens in YourKit profiler, where it is possible to see that <strong>org.tap4j.plugin.model.TapTestResultResult</strong> has over 6 million objects.</p>
-<p>One build.xml for the BioPerl project gets over 80K entries for the TestResult object.</p>
-<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>grep <span style=color:#c41a16>&#34;org.tap4j.model.TestResult&#34;</span> builds/1/build.xml -o | wc -l
-<span style=color:#1c01ce>84522</span>
-</code></pre></div><p>This happens because each TAP file may contain multiple test results (lines with test results). Each of these test results gets turned into a Java object and loaded by the plug-in. So when loading the test result pages, Jenkins needs to wait until all these objects have been parsed, deserialized and read into the memory.</p>
-<p>The next post will continue on code improvements, and another benchmark.</p>
-<p>Happy profiling!</p>
-<p>
-Categories:
-<a href=/categories/blog.html>blog</a>
-</p>
-<p>
-Tags:
-<a href=/tags/programming.html>programming</a>,
-<a href=/tags/jenkins.html>jenkins</a>,
-<a href=/tags/software-quality.html>software quality</a>
-</p>
-<aside class=links>
-<a class=previous href=https://kinoshita.eti.br/2016/08/24/revamping-frege-logo-part-2.html>&#171; Previous</a>
-<a class=next href=https://kinoshita.eti.br/2016/10/02/best-place-to-find-science-fiction-books-in-new-zealand.html>Next &#187;</a>
-</aside>
-</article>
-</main>
-<footer role=contentinfo>
-<ul id=social-media-icons>
-<li>
-<a href=https://www.instagram.com/brunokinoshita/>
-<img src=/assets/icons/instagram.png alt="Instagram link">
-</a>
-</li>
-<li>
-<a href=https://twitter.com/kinow/>
-<img src=/assets/icons/twitter.png alt="Twitter link">
-</a>
-</li>
-<li>
-<a href=https://github.com/kinow/>
-<img src=/assets/icons/github.png alt="GitHub link">
-</a>
-</li>
-<li>
-<a href=/feed.xml>
-<img src=/assets/icons/news.png alt="RSS feed link">
-</a>
-</li>
-</ul>
-</footer>
-</body>
-</html>
+git clone https://github.com/bioperl/bioperl-live.git cd bioperl-live sudo cpanm -vv --installdeps --notest ."><meta property="og:locale" content="en-us"><meta property="og:type" content="article"><meta property="article:section" content="posts"><meta property="article:published_time" content="2016-09-03T00:00:00+00:00"><meta property="article:modified_time" content="2024-04-19T16:51:32+02:00"><meta property="article:tag" content="Programming"><meta property="article:tag" content="Jenkins"><meta property="article:tag" content="Software Quality"><meta property="og:image" content="https://kinoshita.eti.br/assets/photos/about/2023-me-closeup.png"><meta property="fb:admins" content="bruno.kinoshita"><link rel=alternate type=application/rss+xml href=https://kinoshita.eti.br/2016/09/03/performance-problems-in-jenkins-tap-plug-in-mdash-part-1/feed.xml title=kinow><link rel=stylesheet type=text/css href=https://kinoshita.eti.br/sass/main.1e768395a672116b3eff41b3123d9aafb8a9302476085be5fb658a4b93613f57.css integrity="sha256-HnaDlaZyEWs+/0GzEj2ar7ipMCR2CFvl+2WKS5NhP1c="><title>kinow | Performance problems in Jenkins TAP Plug-in &amp;mdash; part 1</title><script type=application/ld+json>{"@context":"http://schema.org","@type":"BlogPosting","articleSection":"posts","name":"Performance problems in Jenkins TAP Plug-in \u0026mdash; part 1","headline":"Performance problems in Jenkins TAP Plug-in \u0026mdash; part 1","alternativeHeadline":"","description":"JENKINS-17887 reports performance problems in the Jenkins TAP Plug-in. It also lists a series of suggestions on how to improve the Jenkins TAP Plug-in performance. On this initial post, we will get a general idea of how the plug-in performs for large projects.\nBioPerl has over 21K tests. That should be enough for giving an initial idea of CPU, memory and disk usage for the plug-in.\ngit clone https:\/\/github.com\/bioperl\/bioperl-live.git cd bioperl-live sudo cpanm -vv --installdeps --notest .","inLanguage":"en-us","isFamilyFriendly":"true","mainEntityOfPage":{"@type":"WebPage","@id":"https:\/\/kinoshita.eti.br\/2016\/09\/03\/performance-problems-in-jenkins-tap-plug-in-mdash-part-1.html"},"author":{"@type":"Person","name":"Bruno P. Kinoshita"},"creator":{"@type":"Person","name":"Bruno P. Kinoshita"},"accountablePerson":{"@type":"Person","name":"Bruno P. Kinoshita"},"copyrightHolder":"kinow","copyrightYear":"2016","dateCreated":"2016-09-03T00:00:00.00Z","datePublished":"2016-09-03T00:00:00.00Z","dateModified":"2024-04-19T16:51:32.00Z","publisher":{"@type":"Organization","name":"kinow","url":"https://kinoshita.eti.br/","logo":{"@type":"ImageObject","url":"https:\/\/kinoshita.eti.br\/","width":"32","height":"32"}},"image":"https://kinoshita.eti.br/","url":"https:\/\/kinoshita.eti.br\/2016\/09\/03\/performance-problems-in-jenkins-tap-plug-in-mdash-part-1.html","wordCount":"372","genre":["programming","jenkins","software quality"],"keywords":[]}</script></head><body><header role=banner class=content><nav id=nav aria-label=Main role=navigation class=content><ul><li><a href=/><i data-feather=about></i> About</a></li><li><a href=/blog/><i data-feather=blog></i> Blog</a></li><li><a href=/portfolio/><i data-feather=portfolio></i> Portfolio</a></li></ul></nav></header><main><article class=content><h1>Performance problems in Jenkins TAP Plug-in &amp;mdash; part 1</h1><div class=metadata><i data-feather=calendar></i>
+<time datetime=2016-09-03>Sep 3, 2016</time></div><aside><nav id=TableOfContents></nav></aside><p><a href=https://issues.jenkins-ci.org/browse/JENKINS-17887>JENKINS-17887</a> reports performance problems in the <a href=https://wiki.jenkins-ci.org/display/JENKINS/TAP+Plugin>Jenkins TAP Plug-in</a>. It also lists a series of suggestions on how to improve the Jenkins TAP Plug-in performance. On this initial post, we will get a general idea of how the plug-in performs for large projects.</p><p><a href=http://bioperl.org/>BioPerl</a> has over 21K tests. That should be enough for giving an initial idea of CPU, memory and disk usage for the plug-in.</p><div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>git clone https://github.com/bioperl/bioperl-live.git
+</span></span><span style=display:flex><span><span style=color:#a90d91>cd</span> bioperl-live
+</span></span><span style=display:flex><span>sudo cpanm  -vv --installdeps --notest .
+</span></span><span style=display:flex><span>sudo cpanm Set::Scalar Graph::Directed XML::LibXML XML::SAX <span style=color:#c41a16>\
+</span></span></span><span style=display:flex><span><span style=color:#c41a16></span>    SVG XML::Parser::PerlSAX Convert::Binary::C XML::SAX::Writer <span style=color:#c41a16>\
+</span></span></span><span style=display:flex><span><span style=color:#c41a16></span>    XML::DOM::XPath Spreadsheet::ParseExcel XML::SAX::Writer <span style=color:#c41a16>\
+</span></span></span><span style=display:flex><span><span style=color:#c41a16></span>    XML::DOM HTML::TableExtract XML::Simple Test::Pod DBI
+</span></span><span style=display:flex><span>prove -r t/ -a tests.tar.gz
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>All tests successful.
+</span></span><span style=display:flex><span><span style=color:#000>Files</span><span style=color:#000>=</span>325, <span style=color:#000>Tests</span><span style=color:#000>=</span>21095, <span style=color:#1c01ce>94</span> wallclock secs <span style=color:#000>(</span> 2.47 usr  0.55 sys + 88.29 cusr  3.85 <span style=color:#000>csys</span> <span style=color:#000>=</span> 95.16 CPU<span style=color:#000>)</span>
+</span></span><span style=display:flex><span>Result: PASS
+</span></span></code></pre></div><p>When the test results are parsed, the plug-in also copies TAP files over to the master, in a folder called <em>tap-master-files</em>.</p><p>The BioPerl tests are not really big, just <strong>1.7M</strong>. It gets doubled as there will be the workspace copy, and the tap-master-files directory copy, so <strong>3.4M</strong>.</p><p>But several objects get created in memory, and persisted into the build.xml job file. BioPerl generates a build.xml file with <strong>11M</strong>. So <strong>less than 15M</strong>. But the build.xml contains objects that are read via XStream by Jenkins and into the memory.</p><p>The build page with the graph, and the other two test result pages are rendering in more than 10 seconds in my computer. But the CPU load is OK, so a closer look at the memory use would probably be more interesting.</p><figure class=feature><img src=/assets/posts/2016-09-03-performance-problems-in-jenkins-tap-plugin-part-1/JENKINS-17887-yourkit1.png alt='JENKINS-17887 YourKit profiler' title='JENKINS-17887 YourKit profiler' width height><figcaption>JENKINS-17887 YourKit profiler</figcaption></figure><p>The image shows one of the screens in YourKit profiler, where it is possible to see that <strong>org.tap4j.plugin.model.TapTestResultResult</strong> has over 6 million objects.</p><p>One build.xml for the BioPerl project gets over 80K entries for the TestResult object.</p><div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>grep <span style=color:#c41a16>&#34;org.tap4j.model.TestResult&#34;</span> builds/1/build.xml -o | wc -l
+</span></span><span style=display:flex><span><span style=color:#1c01ce>84522</span>
+</span></span></code></pre></div><p>This happens because each TAP file may contain multiple test results (lines with test results). Each of these test results gets turned into a Java object and loaded by the plug-in. So when loading the test result pages, Jenkins needs to wait until all these objects have been parsed, deserialized and read into the memory.</p><p>The next post will continue on code improvements, and another benchmark.</p><p>Happy profiling!</p><p>Categories:
+<a href=/categories/blog.html>Blog</a></p><p>Tags:
+<a href=/tags/programming.html>Programming</a>,
+<a href=/tags/jenkins.html>Jenkins</a>,
+<a href=/tags/software-quality.html>Software Quality</a></p><aside class=links><a class=previous href=https://kinoshita.eti.br/2016/08/24/revamping-frege-logo-part-2.html>&#171; Previous</a><a class=next href=https://kinoshita.eti.br/2016/10/02/best-place-to-find-science-fiction-books-in-new-zealand.html>Next &#187;</a></aside></article></main><footer role=contentinfo><ul id=social-media-icons><li><a href=https://www.instagram.com/brunokinoshita/><img src=/assets/icons/instagram.png alt="Instagram link"></a></li><li><a href=https://twitter.com/kinow/><img src=/assets/icons/twitter.png alt="Twitter link"></a></li><li><a href=https://github.com/kinow/><img src=/assets/icons/github.png alt="GitHub link"></a></li><li><a href=/feed.xml><img src=/assets/icons/news.png alt="RSS feed link"></a></li></ul></footer></body></html>

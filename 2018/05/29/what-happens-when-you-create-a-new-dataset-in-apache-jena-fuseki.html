@@ -1,214 +1,79 @@
-<!doctype html><html lang=en>
-<head>
-<meta charset=utf-8>
-<meta name=viewport content="width=device-width,initial-scale=1">
-<meta property="og:title" content="What happens when you create a new dataset in Apache Jena Fuseki">
-<meta property="og:description" content="Last post
+<!doctype html><html lang=en><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta property="og:url" content="https://kinoshita.eti.br/2018/05/29/what-happens-when-you-create-a-new-dataset-in-apache-jena-fuseki.html"><meta property="og:site_name" content="kinow"><meta property="og:title" content="What happens when you create a new dataset in Apache Jena Fuseki"><meta property="og:description" content="Last post was about what happens when you upload a Turtle file to Apache Jena Fuseki. And now today&amp;rsquo;s post will be about what happens when you create a new dataset in Apache Jena Fuseki.
+In theory, that happens before you upload a Turtle file, but this post series won&amp;rsquo;t follow a logical order. It will be more based on what I find interesting.
+Oh, the dataset created is an in-memory dataset. Here&amp;rsquo;s a simplified sequence diagram. Again, these articles are more brain-dumps, used by myself for later reference.
+"><meta property="og:locale" content="en-us"><meta property="og:type" content="article"><meta property="article:section" content="posts"><meta property="article:published_time" content="2018-05-29T00:00:00+00:00"><meta property="article:modified_time" content="2024-04-19T16:51:32+02:00"><meta property="article:tag" content="Jena"><meta property="article:tag" content="Apache Software Foundation"><meta property="article:tag" content="Java"><meta property="article:tag" content="Sparql"><meta property="article:tag" content="Opensource"><meta property="og:image" content="https://kinoshita.eti.br/assets/photos/about/2023-me-closeup.png"><meta property="fb:admins" content="bruno.kinoshita"><link rel=alternate type=application/rss+xml href=https://kinoshita.eti.br/2018/05/29/what-happens-when-you-create-a-new-dataset-in-apache-jena-fuseki/feed.xml title=kinow><link rel=stylesheet type=text/css href=https://kinoshita.eti.br/sass/main.1e768395a672116b3eff41b3123d9aafb8a9302476085be5fb658a4b93613f57.css integrity="sha256-HnaDlaZyEWs+/0GzEj2ar7ipMCR2CFvl+2WKS5NhP1c="><title>kinow | What happens when you create a new dataset in Apache Jena Fuseki</title><script type=application/ld+json>{"@context":"http://schema.org","@type":"BlogPosting","articleSection":"posts","name":"What happens when you create a new dataset in Apache Jena Fuseki","headline":"What happens when you create a new dataset in Apache Jena Fuseki","alternativeHeadline":"","description":"\u003cp\u003e\u003ca href=\u0022{% post_url 2018-05-27-what-happens-when-you-upload-a-turtle-file-in-apache-jena-fuseki %}\u0022\u003eLast post\u003c\/a\u003e\nwas about what happens when you upload a Turtle file to Apache Jena Fuseki. And now today\u0026rsquo;s post will be about\nwhat happens when you create a new dataset in Apache Jena Fuseki.\u003c\/p\u003e\n\u003cp\u003eIn theory, that happens before you upload a Turtle file, but this post series won\u0026rsquo;t follow a logical order.\nIt will be more based on what I find interesting.\u003c\/p\u003e\n\u003cp\u003eOh, the dataset created is \u003cstrong\u003ean in-memory dataset\u003c\/strong\u003e. Here\u0026rsquo;s a simplified sequence diagram. Again,\nthese articles are more brain-dumps, used by myself for later reference.\u003c\/p\u003e\n\n\n\n\u003cfigure class=\u0022feature\u0022\u003e\n\n  \u003cimg\n    src=\u0027\/assets\/posts\/2018-05-29-what-happens-when-you-create-a-new-dataset-in-apache-jena-fuseki\/sequence-diagram.png\u0027\n    alt=\u0027\u0027\n    title=\u0027\u0027\n    style=\u0027display: inline; width: 100%;\u0027\n    width=\u0027\u0027\n    height=\u0027\u0027\n    \/\u003e\n  \u003cfigcaption\u003e\u003c\/figcaption\u003e\n\n\u003c\/figure\u003e","inLanguage":"en-us","isFamilyFriendly":"true","mainEntityOfPage":{"@type":"WebPage","@id":"https:\/\/kinoshita.eti.br\/2018\/05\/29\/what-happens-when-you-create-a-new-dataset-in-apache-jena-fuseki.html"},"author":{"@type":"Person","name":"Bruno P. Kinoshita"},"creator":{"@type":"Person","name":"Bruno P. Kinoshita"},"accountablePerson":{"@type":"Person","name":"Bruno P. Kinoshita"},"copyrightHolder":"kinow","copyrightYear":"2018","dateCreated":"2018-05-29T00:00:00.00Z","datePublished":"2018-05-29T00:00:00.00Z","dateModified":"2024-04-19T16:51:32.00Z","publisher":{"@type":"Organization","name":"kinow","url":"https://kinoshita.eti.br/","logo":{"@type":"ImageObject","url":"https:\/\/kinoshita.eti.br\/","width":"32","height":"32"}},"image":"https://kinoshita.eti.br/","url":"https:\/\/kinoshita.eti.br\/2018\/05\/29\/what-happens-when-you-create-a-new-dataset-in-apache-jena-fuseki.html","wordCount":"794","genre":["jena","apache software foundation","java","sparql","opensource"],"keywords":[]}</script></head><body><header role=banner class=content><nav id=nav aria-label=Main role=navigation class=content><ul><li><a href=/><i data-feather=about></i> About</a></li><li><a href=/blog/><i data-feather=blog></i> Blog</a></li><li><a href=/portfolio/><i data-feather=portfolio></i> Portfolio</a></li></ul></nav></header><main><article class=content><h1>What happens when you create a new dataset in Apache Jena Fuseki</h1><div class=metadata><i data-feather=calendar></i>
+<time datetime=2018-05-29>May 29, 2018</time></div><aside><nav id=TableOfContents><ul><li><ul><li><a href=#actiondatasetsexecpostcontainer-fuseki-core>ActionDatasets#execPostContainer() (Fuseki Core)</a></li><li><a href=#model--core>Model / (Core)</a></li><li><a href=#actiondatasetsassemblerfromform-fuseki>ActionDatasets#assemblerFromForm() (Fuseki)</a></li><li><a href=#persisting-the-dataset>Persisting the dataset</a></li><li><a href=#datasetaccesspoint-arq>DatasetAccessPoint (ARQ)</a></li></ul></li></ul></nav></aside><p><a href="{% post_url 2018-05-27-what-happens-when-you-upload-a-turtle-file-in-apache-jena-fuseki %}">Last post</a>
 was about what happens when you upload a Turtle file to Apache Jena Fuseki. And now today&rsquo;s post will be about
-what happens when you create a new dataset in Apache Jena Fuseki.
-In theory, that happens before you upload a Turtle file, but this post series won&rsquo;t follow a logical order.
-It will be more based on what I find interesting.
-Oh, the dataset created is an in-memory dataset. Here&rsquo;s a simplified sequence diagram. Again,
-these articles are more brain-dumps, used by myself for later reference.
-
-
-
-
-
-  
-  
-
-">
-<meta property="og:type" content="article">
-<meta property="og:url" content="https://kinoshita.eti.br/2018/05/29/what-happens-when-you-create-a-new-dataset-in-apache-jena-fuseki.html"><meta property="article:section" content="posts">
-<meta property="article:published_time" content="2018-05-29T00:00:00+00:00">
-<meta property="article:modified_time" content="2024-04-19T16:48:00+02:00">
-<link rel=alternate type=application/rss+xml href=https://kinoshita.eti.br/2018/05/29/what-happens-when-you-create-a-new-dataset-in-apache-jena-fuseki/feed.xml title=kinow>
-<link rel=stylesheet type=text/css href=https://kinoshita.eti.br/sass/main.1e768395a672116b3eff41b3123d9aafb8a9302476085be5fb658a4b93613f57.css integrity="sha256-HnaDlaZyEWs+/0GzEj2ar7ipMCR2CFvl+2WKS5NhP1c=">
-<title>kinow | What happens when you create a new dataset in Apache Jena Fuseki</title>
-</head>
-<body>
-<header role=banner class=content>
-<nav id=nav aria-label=Main role=navigation class=content>
-<ul><li>
-<a href=/><i data-feather=about></i> About</a>
-</li><li>
-<a href=/blog/><i data-feather=blog></i> Blog</a>
-</li><li>
-<a href=/portfolio/><i data-feather=portfolio></i> Portfolio</a>
-</li>
-</ul>
-</nav>
-</header>
-<main>
-<article class=content>
-<h1>What happens when you create a new dataset in Apache Jena Fuseki</h1><div class=metadata>
-<i data-feather=calendar></i>
-<time datetime=2018-05-29>May 29, 2018</time>
-</div>
-<aside>
-<nav id=TableOfContents>
-<ul>
-<li>
-<ul>
-<li><a href=#actiondatasetsexecpostcontainer-fuseki-core>ActionDatasets#execPostContainer() (Fuseki Core)</a></li>
-<li><a href=#model--core>Model / (Core)</a></li>
-<li><a href=#actiondatasetsassemblerfromform-fuseki>ActionDatasets#assemblerFromForm() (Fuseki)</a></li>
-<li><a href=#persisting-the-dataset>Persisting the dataset</a></li>
-<li><a href=#datasetaccesspoint-arq>DatasetAccessPoint (ARQ)</a></li>
-</ul>
-</li>
-</ul>
-</nav>
-</aside>
-<p><a href="{% post_url 2018-05-27-what-happens-when-you-upload-a-turtle-file-in-apache-jena-fuseki %}">Last post</a>
-was about what happens when you upload a Turtle file to Apache Jena Fuseki. And now today&rsquo;s post will be about
-what happens when you create a new dataset in Apache Jena Fuseki.</p>
-<p>In theory, that happens before you upload a Turtle file, but this post series won&rsquo;t follow a logical order.
-It will be more based on what I find interesting.</p>
-<p>Oh, the dataset created is <strong>an in-memory dataset</strong>. Here&rsquo;s a simplified sequence diagram. Again,
-these articles are more brain-dumps, used by myself for later reference.</p>
-<figure class=feature>
-<img src=/assets/posts/2018-05-29-what-happens-when-you-create-a-new-dataset-in-apache-jena-fuseki/sequence-diagram.png alt title style=display:inline;width:100% width height>
-<figcaption></figcaption>
-</figure>
-<h3 id=actiondatasetsexecpostcontainer-fuseki-core>ActionDatasets#execPostContainer() (Fuseki Core)</h3>
-<p><code>ActionDatasets</code>, as per the name, handles HTTP requests related to datasets. Such as when you
+what happens when you create a new dataset in Apache Jena Fuseki.</p><p>In theory, that happens before you upload a Turtle file, but this post series won&rsquo;t follow a logical order.
+It will be more based on what I find interesting.</p><p>Oh, the dataset created is <strong>an in-memory dataset</strong>. Here&rsquo;s a simplified sequence diagram. Again,
+these articles are more brain-dumps, used by myself for later reference.</p><figure class=feature><img src=/assets/posts/2018-05-29-what-happens-when-you-create-a-new-dataset-in-apache-jena-fuseki/sequence-diagram.png alt title style=display:inline;width:100% width height><figcaption></figcaption></figure><h3 id=actiondatasetsexecpostcontainer-fuseki-core>ActionDatasets#execPostContainer() (Fuseki Core)</h3><p><code>ActionDatasets</code>, as per the name, handles HTTP requests related to datasets. Such as when you
 create a new dataset. It is also an HTTP action. The concept in Jena, as far as I could tell,
-is similar to Jenkins' actions, but simpler, without the UI/Jelly/Groovy part.</p>
-<p>This class also has a few static fields, which hold system information. One variable is actually
+is similar to Jenkins&rsquo; actions, but simpler, without the UI/Jelly/Groovy part.</p><p>This class also has a few static fields, which hold system information. One variable is actually
 called <code>system</code>. (wonder how well it works if you try to deploy Jena Fuseki with multiple JVM&rsquo;s
-<a href=https://markmail.org/message/xpfcgccuwgycdopw><sup>1</sup></a> <a href=https://afs.github.io/rdf-delta/ha-fuseki.html><sup>2</sup></a>).</p>
-<p>Its first task is to create an <em>UUID</em>, using <code>JenaUUID</code> (from Jena Core). This class looks
-very interesting, [wonder how it works]({% post_url 2018-08-11-uuids-in-apache-jena %}).</p>
-<p>Then it creates a <code>DatasetDescriptionRegistry</code>, which is a registry to keep track
+<a href=https://markmail.org/message/xpfcgccuwgycdopw><sup>1</sup></a> <a href=https://afs.github.io/rdf-delta/ha-fuseki.html><sup>2</sup></a>).</p><p>Its first task is to create an <em>UUID</em>, using <code>JenaUUID</code> (from Jena Core). This class looks
+very interesting, [wonder how it works]({% post_url 2018-08-11-uuids-in-apache-jena %}).</p><p>Then it creates a <code>DatasetDescriptionRegistry</code>, which is a registry to keep track
 of the datasets created. There is also some validation of parameters and state check, and then
-the transaction is started (<code>system.begin()</code>).</p>
-<h3 id=model--core>Model / (Core)</h3>
-<p>I used <code>Model</code> and <code>ModelFactory</code> before when working with ontologies and Protégé.
-<code>ActionDatasets</code> will create a <code>Model</code>.</p>
-<blockquote> An RDF Model.
-<pre><code>An RDF model is a set of Statements.  Methods are provided for creating
+the transaction is started (<code>system.begin()</code>).</p><h3 id=model--core>Model / (Core)</h3><p>I used <code>Model</code> and <code>ModelFactory</code> before when working with ontologies and Protégé.
+<code>ActionDatasets</code> will create a <code>Model</code>.</p><blockquote>An RDF Model.<pre><code>An RDF model is a set of Statements.  Methods are provided for creating
 resources, properties and literals and the Statements which link them,
 for adding statements to and removing them from a model, for
 querying a model and set operations for combining models.
-</code></pre>
-</blockquote>
-<p>It also gets a <code>StreamRDF</code> from the model (i.e. <code>model.getGraph()</code>), which will be used
-later by the <code>RDFParser</code>.</p>
-<h3 id=actiondatasetsassemblerfromform-fuseki>ActionDatasets#assemblerFromForm() (Fuseki)</h3>
-<p>In <code>#assemblerFromForm()</code>, it will create a template, and then use
-<code>RDFParser</code> to parse the template and load into <code>SteamRFF</code>. The template looks like this:</p>
-<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sparql data-lang=sparql><span style=color:#177500># Licensed under the terms of http://www.apache.org/licenses/LICENSE-2.0</span>
-
-<span style=color:#000>@</span><span style=color:#a90d91>prefix</span> :        <span style=color:#000>&lt;#&gt;</span> .
-<span style=color:#000>@</span><span style=color:#a90d91>prefix</span> <span style=color:#000>fuseki</span>:  <span style=color:#000>&lt;http://jena.apache.org/fuseki#&gt;</span> .
-<span style=color:#000>@</span><span style=color:#a90d91>prefix</span> <span style=color:#000>rdf</span>:     <span style=color:#000>&lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt;</span> .
-
-<span style=color:#000>@</span><span style=color:#a90d91>prefix</span> <span style=color:#000>rdfs</span>:    <span style=color:#000>&lt;http://www.w3.org/2000/01/rdf-schema#&gt;</span> .
-<span style=color:#000>@</span><span style=color:#a90d91>prefix</span> <span style=color:#000>tdb</span>:     <span style=color:#000>&lt;http://jena.hpl.hp.com/2008/tdb#&gt;</span> .
-<span style=color:#000>@</span><span style=color:#a90d91>prefix</span> <span style=color:#000>ja</span>:      <span style=color:#000>&lt;http://jena.hpl.hp.com/2005/11/Assembler#&gt;</span> .
-
-<span style=color:#177500>## ---------------------------------------------------------------</span>
-<span style=color:#177500>## Updatable in-memory dataset.</span>
-
-<span style=color:#000>&lt;#service1&gt;</span> <span style=color:#000>rdf</span>:<span style=color:#000>type</span> <span style=color:#000>fuseki</span>:<span style=color:#000>Service</span> ;
-    <span style=color:#177500># URI of the dataset -- http://host:port/aaa</span>
-    <span style=color:#000>fuseki</span>:<span style=color:#000>name</span>                        <span style=color:#c41a16>&#34;aaa&#34;</span> ;
-    <span style=color:#000>fuseki</span>:<span style=color:#000>serviceQuery</span>                <span style=color:#c41a16>&#34;sparql&#34;</span> ;
-    <span style=color:#000>fuseki</span>:<span style=color:#000>serviceQuery</span>                <span style=color:#c41a16>&#34;query&#34;</span> ;
-    <span style=color:#000>fuseki</span>:<span style=color:#000>serviceUpdate</span>               <span style=color:#c41a16>&#34;update&#34;</span> ;
-    <span style=color:#000>fuseki</span>:<span style=color:#000>serviceUpload</span>               <span style=color:#c41a16>&#34;upload&#34;</span> ;
-    <span style=color:#000>fuseki</span>:<span style=color:#000>serviceReadWriteGraphStore</span>  <span style=color:#c41a16>&#34;data&#34;</span> ;     
-    <span style=color:#000>fuseki</span>:<span style=color:#000>serviceReadGraphStore</span>       <span style=color:#c41a16>&#34;get&#34;</span> ;
-    <span style=color:#000>fuseki</span>:<span style=color:#000>dataset</span>                     <span style=color:#000>&lt;#dataset&gt;</span> ;
-    .
-
-<span style=color:#177500># Transactional, in-memory dataset. Initially empty.</span>
-<span style=color:#000>&lt;#dataset&gt;</span> <span style=color:#000>rdf</span>:<span style=color:#000>type</span> <span style=color:#000>ja</span>:<span style=color:#000>DatasetTxnMem</span> .
-</code></pre></div><h3 id=persisting-the-dataset>Persisting the dataset</h3>
-<p>Jena Fuseki will create a local copy of the template, using RIOT&rsquo;s <code>RDFDataMgr</code>. For my environment, running from
-Eclipse, the file location was <em>/home/kinow/Development/java/jena/jena/jena-fuseki2/jena-fuseki-core/run/system_files/902154aa-2bb6-11b2-8053-024232e7b374</em>.</p>
-<p>Fuseki now will look for exactly one Service Name statement (<a href=http://jena.apache.org/fuseki#name)>http://jena.apache.org/fuseki#name)</a>. The
-name will be validated for things like blank space, empty, &lsquo;/&rsquo;, etc.</p>
-<p>Once the validation passes, then it will persist the file in somewhere like
+</code></pre></blockquote><p>It also gets a <code>StreamRDF</code> from the model (i.e. <code>model.getGraph()</code>), which will be used
+later by the <code>RDFParser</code>.</p><h3 id=actiondatasetsassemblerfromform-fuseki>ActionDatasets#assemblerFromForm() (Fuseki)</h3><p>In <code>#assemblerFromForm()</code>, it will create a template, and then use
+<code>RDFParser</code> to parse the template and load into <code>SteamRFF</code>. The template looks like this:</p><div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sparql data-lang=sparql><span style=display:flex><span><span style=color:#177500># Licensed under the terms of http://www.apache.org/licenses/LICENSE-2.0</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#000>@</span><span style=color:#a90d91>prefix</span> :        <span style=color:#000>&lt;#&gt;</span> .
+</span></span><span style=display:flex><span><span style=color:#000>@</span><span style=color:#a90d91>prefix</span> <span style=color:#000>fuseki</span>:  <span style=color:#000>&lt;http://jena.apache.org/fuseki#&gt;</span> .
+</span></span><span style=display:flex><span><span style=color:#000>@</span><span style=color:#a90d91>prefix</span> <span style=color:#000>rdf</span>:     <span style=color:#000>&lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt;</span> .
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#000>@</span><span style=color:#a90d91>prefix</span> <span style=color:#000>rdfs</span>:    <span style=color:#000>&lt;http://www.w3.org/2000/01/rdf-schema#&gt;</span> .
+</span></span><span style=display:flex><span><span style=color:#000>@</span><span style=color:#a90d91>prefix</span> <span style=color:#000>tdb</span>:     <span style=color:#000>&lt;http://jena.hpl.hp.com/2008/tdb#&gt;</span> .
+</span></span><span style=display:flex><span><span style=color:#000>@</span><span style=color:#a90d91>prefix</span> <span style=color:#000>ja</span>:      <span style=color:#000>&lt;http://jena.hpl.hp.com/2005/11/Assembler#&gt;</span> .
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#177500>## ---------------------------------------------------------------</span>
+</span></span><span style=display:flex><span><span style=color:#177500>## Updatable in-memory dataset.</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#000>&lt;#service1&gt;</span> <span style=color:#000>rdf</span>:<span style=color:#000>type</span> <span style=color:#000>fuseki</span>:<span style=color:#000>Service</span> ;
+</span></span><span style=display:flex><span>    <span style=color:#177500># URI of the dataset -- http://host:port/aaa</span>
+</span></span><span style=display:flex><span>    <span style=color:#000>fuseki</span>:<span style=color:#000>name</span>                        <span style=color:#c41a16>&#34;aaa&#34;</span> ;
+</span></span><span style=display:flex><span>    <span style=color:#000>fuseki</span>:<span style=color:#000>serviceQuery</span>                <span style=color:#c41a16>&#34;sparql&#34;</span> ;
+</span></span><span style=display:flex><span>    <span style=color:#000>fuseki</span>:<span style=color:#000>serviceQuery</span>                <span style=color:#c41a16>&#34;query&#34;</span> ;
+</span></span><span style=display:flex><span>    <span style=color:#000>fuseki</span>:<span style=color:#000>serviceUpdate</span>               <span style=color:#c41a16>&#34;update&#34;</span> ;
+</span></span><span style=display:flex><span>    <span style=color:#000>fuseki</span>:<span style=color:#000>serviceUpload</span>               <span style=color:#c41a16>&#34;upload&#34;</span> ;
+</span></span><span style=display:flex><span>    <span style=color:#000>fuseki</span>:<span style=color:#000>serviceReadWriteGraphStore</span>  <span style=color:#c41a16>&#34;data&#34;</span> ;     
+</span></span><span style=display:flex><span>    <span style=color:#000>fuseki</span>:<span style=color:#000>serviceReadGraphStore</span>       <span style=color:#c41a16>&#34;get&#34;</span> ;
+</span></span><span style=display:flex><span>    <span style=color:#000>fuseki</span>:<span style=color:#000>dataset</span>                     <span style=color:#000>&lt;#dataset&gt;</span> ;
+</span></span><span style=display:flex><span>    .
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#177500># Transactional, in-memory dataset. Initially empty.</span>
+</span></span><span style=display:flex><span><span style=color:#000>&lt;#dataset&gt;</span> <span style=color:#000>rdf</span>:<span style=color:#000>type</span> <span style=color:#000>ja</span>:<span style=color:#000>DatasetTxnMem</span> .
+</span></span></code></pre></div><h3 id=persisting-the-dataset>Persisting the dataset</h3><p>Jena Fuseki will create a local copy of the template, using RIOT&rsquo;s <code>RDFDataMgr</code>. For my environment, running from
+Eclipse, the file location was <em>/home/kinow/Development/java/jena/jena/jena-fuseki2/jena-fuseki-core/run/system_files/902154aa-2bb6-11b2-8053-024232e7b374</em>.</p><p>Fuseki now will look for exactly one Service Name statement (<a href=http://jena.apache.org/fuseki#name)>http://jena.apache.org/fuseki#name)</a>. The
+name will be validated for things like blank space, empty, &lsquo;/&rsquo;, etc.</p><p>Once the validation passes, then it will persist the file in somewhere like
 /home/kinow/Development/java/jena/jena/jena-fuseki2/jena-fuseki-core/run/configuration/aaa.ttl. But
-not without checking first it the file existed.</p>
-<p>As this is a brand new file, the <code>Model</code> instance will be written on the file now.</p>
-<h3 id=datasetaccesspoint-arq>DatasetAccessPoint (ARQ)</h3>
-<p>Funny, when I wrote it I immediately put this class under Fuseki Core, but it is actually
-in ARQ. <strong>Why not in Fuseki?</strong>. Looks like ARQ has a Web layer too.</p>
-<p>Fuseki&rsquo;s <code>FusekiBuilder#buildDataAccessPoint()</code> creates the <code>DataAccessPoint</code>. The <code>DataAccessPoint</code>&rsquo;s
-Javadocs say: “A name in the URL space of the server”.</p>
-<ul>
-<li><code>DataService</code> contains operations, and endpoints</li>
-<li>Services are added to endpoints, such as an endpoint for the <code>Quads_RW</code>, the <code>REST_Quads_RW</code> from previous post</li>
-<li>The name and the data service are used to create the <code>DataAccessPoint</code></li>
-</ul>
-<p>The current <code>HttpAction</code> in the request contains a reference to Fuseki&rsquo;s
-<code>DataAccessPointRegistry</code>. Fuseki&rsquo;s <code>DataAccessPointRegistry</code> extends Atlas'
-<code>Registry</code>, which uses a <code>ConcurrentHashMap</code> (again, how does it work with multiple JVM&rsquo;s?).</p>
-<p>The new <code>DataAccessPoint</code> is registered with Fuseki&rsquo;s registry (not the other registry).</p>
-<p>And then, finally, the transaction is committed, the response is prepared (a 200 OK in <code>text/plain</code>).
-And a <code>null</code> is returned, which means empty response.</p>
-<p>And here&rsquo;s some of the logs produced during this experiment.</p>
-<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=color:#000>[</span>2018-05-28 21:11:43<span style=color:#000>]</span> Config     INFO  Load configuration: file:///home/kinow/Development/java/jena/jena/jena-fuseki2/jena-fuseki-core/run/configuration/ds2.ttl
-<span style=color:#000>[</span>2018-05-28 21:11:43<span style=color:#000>]</span> Config     INFO  Load configuration: file:///home/kinow/Development/java/jena/jena/jena-fuseki2/jena-fuseki-core/run/configuration/p1.ttl
-<span style=color:#000>[</span>2018-05-28 21:11:43<span style=color:#000>]</span> Config     INFO  Register: /ds2
-<span style=color:#000>[</span>2018-05-28 21:11:43<span style=color:#000>]</span> Config     INFO  Register: /p1
-<span style=color:#000>[</span>2018-05-28 21:11:43<span style=color:#000>]</span> Server     INFO  Started 2018/05/28 21:11:43 NZST on port <span style=color:#1c01ce>3030</span>
-<span style=color:#000>[</span>2018-05-28 21:11:52<span style=color:#000>]</span> Admin      INFO  <span style=color:#000>[</span>1<span style=color:#000>]</span> GET http://localhost:3030/$/server
-<span style=color:#000>[</span>2018-05-28 21:11:52<span style=color:#000>]</span> Admin      INFO  <span style=color:#000>[</span>1<span style=color:#000>]</span> <span style=color:#1c01ce>200</span> OK <span style=color:#000>(</span><span style=color:#1c01ce>11</span> ms<span style=color:#000>)</span>
-<span style=color:#000>[</span>2018-05-28 21:12:41<span style=color:#000>]</span> Admin      INFO  <span style=color:#000>[</span>2<span style=color:#000>]</span> GET http://localhost:3030/$/server
-<span style=color:#000>[</span>2018-05-28 21:12:41<span style=color:#000>]</span> Admin      INFO  <span style=color:#000>[</span>2<span style=color:#000>]</span> <span style=color:#1c01ce>200</span> OK <span style=color:#000>(</span><span style=color:#1c01ce>3</span> ms<span style=color:#000>)</span>
-<span style=color:#000>[</span>2018-05-28 21:22:33<span style=color:#000>]</span> Admin      INFO  <span style=color:#000>[</span>3<span style=color:#000>]</span> POST http://localhost:3030/$/datasets
-<span style=color:#000>[</span>2018-05-28 21:46:25<span style=color:#000>]</span> Admin      INFO  <span style=color:#000>[</span>3<span style=color:#000>]</span> Create database : <span style=color:#000>name</span> <span style=color:#000>=</span> /aaa
-<span style=color:#000>[</span>2018-05-28 22:16:17<span style=color:#000>]</span> Admin      INFO  <span style=color:#000>[</span>3<span style=color:#000>]</span> <span style=color:#1c01ce>200</span> OK <span style=color:#000>(</span>3,224.390 s<span style=color:#000>)</span>
-<span style=color:#000>[</span>2018-05-28 22:16:18<span style=color:#000>]</span> Admin      INFO  <span style=color:#000>[</span>4<span style=color:#000>]</span> GET http://localhost:3030/$/server
-<span style=color:#000>[</span>2018-05-28 22:16:18<span style=color:#000>]</span> Admin      INFO  <span style=color:#000>[</span>4<span style=color:#000>]</span> <span style=color:#1c01ce>200</span> OK <span style=color:#000>(</span><span style=color:#1c01ce>8</span> ms<span style=color:#000>)</span>
-</code></pre></div><p>So that&rsquo;s that.</p>
-<p>Happy hacking !</p>
-<p>
-Categories:
-<a href=/categories/blog.html>blog</a>
-</p>
-<p>
-Tags:
-<a href=/tags/jena.html>jena</a>,
-<a href=/tags/apache-software-foundation.html>apache software foundation</a>,
-<a href=/tags/java.html>java</a>,
-<a href=/tags/sparql.html>sparql</a>,
-<a href=/tags/opensource.html>opensource</a>
-</p>
-<aside class=links>
-<a class=previous href=https://kinoshita.eti.br/2018/05/27/what-happens-when-you-upload-a-turtle-file-in-apache-jena-fuseki.html>&#171; Previous</a>
-<a class=next href=https://kinoshita.eti.br/2018/07/08/a-simple-cylc-suite.html>Next &#187;</a>
-</aside>
-</article>
-</main>
-<footer role=contentinfo>
-<ul id=social-media-icons>
-<li>
-<a href=https://www.instagram.com/brunokinoshita/>
-<img src=/assets/icons/instagram.png alt="Instagram link">
-</a>
-</li>
-<li>
-<a href=https://twitter.com/kinow/>
-<img src=/assets/icons/twitter.png alt="Twitter link">
-</a>
-</li>
-<li>
-<a href=https://github.com/kinow/>
-<img src=/assets/icons/github.png alt="GitHub link">
-</a>
-</li>
-<li>
-<a href=/feed.xml>
-<img src=/assets/icons/news.png alt="RSS feed link">
-</a>
-</li>
-</ul>
-</footer>
-</body>
-</html>
+not without checking first it the file existed.</p><p>As this is a brand new file, the <code>Model</code> instance will be written on the file now.</p><h3 id=datasetaccesspoint-arq>DatasetAccessPoint (ARQ)</h3><p>Funny, when I wrote it I immediately put this class under Fuseki Core, but it is actually
+in ARQ. <strong>Why not in Fuseki?</strong>. Looks like ARQ has a Web layer too.</p><p>Fuseki&rsquo;s <code>FusekiBuilder#buildDataAccessPoint()</code> creates the <code>DataAccessPoint</code>. The <code>DataAccessPoint</code>&rsquo;s
+Javadocs say: “A name in the URL space of the server”.</p><ul><li><code>DataService</code> contains operations, and endpoints</li><li>Services are added to endpoints, such as an endpoint for the <code>Quads_RW</code>, the <code>REST_Quads_RW</code> from previous post</li><li>The name and the data service are used to create the <code>DataAccessPoint</code></li></ul><p>The current <code>HttpAction</code> in the request contains a reference to Fuseki&rsquo;s
+<code>DataAccessPointRegistry</code>. Fuseki&rsquo;s <code>DataAccessPointRegistry</code> extends Atlas&rsquo;
+<code>Registry</code>, which uses a <code>ConcurrentHashMap</code> (again, how does it work with multiple JVM&rsquo;s?).</p><p>The new <code>DataAccessPoint</code> is registered with Fuseki&rsquo;s registry (not the other registry).</p><p>And then, finally, the transaction is committed, the response is prepared (a 200 OK in <code>text/plain</code>).
+And a <code>null</code> is returned, which means empty response.</p><p>And here&rsquo;s some of the logs produced during this experiment.</p><div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span><span style=color:#000>[</span>2018-05-28 21:11:43<span style=color:#000>]</span> Config     INFO  Load configuration: file:///home/kinow/Development/java/jena/jena/jena-fuseki2/jena-fuseki-core/run/configuration/ds2.ttl
+</span></span><span style=display:flex><span><span style=color:#000>[</span>2018-05-28 21:11:43<span style=color:#000>]</span> Config     INFO  Load configuration: file:///home/kinow/Development/java/jena/jena/jena-fuseki2/jena-fuseki-core/run/configuration/p1.ttl
+</span></span><span style=display:flex><span><span style=color:#000>[</span>2018-05-28 21:11:43<span style=color:#000>]</span> Config     INFO  Register: /ds2
+</span></span><span style=display:flex><span><span style=color:#000>[</span>2018-05-28 21:11:43<span style=color:#000>]</span> Config     INFO  Register: /p1
+</span></span><span style=display:flex><span><span style=color:#000>[</span>2018-05-28 21:11:43<span style=color:#000>]</span> Server     INFO  Started 2018/05/28 21:11:43 NZST on port <span style=color:#1c01ce>3030</span>
+</span></span><span style=display:flex><span><span style=color:#000>[</span>2018-05-28 21:11:52<span style=color:#000>]</span> Admin      INFO  <span style=color:#000>[</span>1<span style=color:#000>]</span> GET http://localhost:3030/$/server
+</span></span><span style=display:flex><span><span style=color:#000>[</span>2018-05-28 21:11:52<span style=color:#000>]</span> Admin      INFO  <span style=color:#000>[</span>1<span style=color:#000>]</span> <span style=color:#1c01ce>200</span> OK <span style=color:#000>(</span><span style=color:#1c01ce>11</span> ms<span style=color:#000>)</span>
+</span></span><span style=display:flex><span><span style=color:#000>[</span>2018-05-28 21:12:41<span style=color:#000>]</span> Admin      INFO  <span style=color:#000>[</span>2<span style=color:#000>]</span> GET http://localhost:3030/$/server
+</span></span><span style=display:flex><span><span style=color:#000>[</span>2018-05-28 21:12:41<span style=color:#000>]</span> Admin      INFO  <span style=color:#000>[</span>2<span style=color:#000>]</span> <span style=color:#1c01ce>200</span> OK <span style=color:#000>(</span><span style=color:#1c01ce>3</span> ms<span style=color:#000>)</span>
+</span></span><span style=display:flex><span><span style=color:#000>[</span>2018-05-28 21:22:33<span style=color:#000>]</span> Admin      INFO  <span style=color:#000>[</span>3<span style=color:#000>]</span> POST http://localhost:3030/$/datasets
+</span></span><span style=display:flex><span><span style=color:#000>[</span>2018-05-28 21:46:25<span style=color:#000>]</span> Admin      INFO  <span style=color:#000>[</span>3<span style=color:#000>]</span> Create database : <span style=color:#000>name</span> <span style=color:#000>=</span> /aaa
+</span></span><span style=display:flex><span><span style=color:#000>[</span>2018-05-28 22:16:17<span style=color:#000>]</span> Admin      INFO  <span style=color:#000>[</span>3<span style=color:#000>]</span> <span style=color:#1c01ce>200</span> OK <span style=color:#000>(</span>3,224.390 s<span style=color:#000>)</span>
+</span></span><span style=display:flex><span><span style=color:#000>[</span>2018-05-28 22:16:18<span style=color:#000>]</span> Admin      INFO  <span style=color:#000>[</span>4<span style=color:#000>]</span> GET http://localhost:3030/$/server
+</span></span><span style=display:flex><span><span style=color:#000>[</span>2018-05-28 22:16:18<span style=color:#000>]</span> Admin      INFO  <span style=color:#000>[</span>4<span style=color:#000>]</span> <span style=color:#1c01ce>200</span> OK <span style=color:#000>(</span><span style=color:#1c01ce>8</span> ms<span style=color:#000>)</span>
+</span></span></code></pre></div><p>So that&rsquo;s that.</p><p>Happy hacking !</p><p>Categories:
+<a href=/categories/blog.html>Blog</a></p><p>Tags:
+<a href=/tags/jena.html>Jena</a>,
+<a href=/tags/apache-software-foundation.html>Apache Software Foundation</a>,
+<a href=/tags/java.html>Java</a>,
+<a href=/tags/sparql.html>Sparql</a>,
+<a href=/tags/opensource.html>Opensource</a></p><aside class=links><a class=previous href=https://kinoshita.eti.br/2018/05/27/what-happens-when-you-upload-a-turtle-file-in-apache-jena-fuseki.html>&#171; Previous</a><a class=next href=https://kinoshita.eti.br/2018/07/08/a-simple-cylc-suite.html>Next &#187;</a></aside></article></main><footer role=contentinfo><ul id=social-media-icons><li><a href=https://www.instagram.com/brunokinoshita/><img src=/assets/icons/instagram.png alt="Instagram link"></a></li><li><a href=https://twitter.com/kinow/><img src=/assets/icons/twitter.png alt="Twitter link"></a></li><li><a href=https://github.com/kinow/><img src=/assets/icons/github.png alt="GitHub link"></a></li><li><a href=/feed.xml><img src=/assets/icons/news.png alt="RSS feed link"></a></li></ul></footer></body></html>

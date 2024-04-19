@@ -1,97 +1,18 @@
-<!doctype html><html lang=en>
-<head>
-<meta charset=utf-8>
-<meta name=viewport content="width=device-width,initial-scale=1">
-<meta property="og:title" content="Removing Javadoc SVN Id Tags with Shell Script">
-<meta property="og:description" content="Subversion supports Keyword Substitution, which performs substitution of some keywords such as Author, Date, and Id. The Id is the date, time, and user that last modified the file.
+<!doctype html><html lang=en><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta property="og:url" content="https://kinoshita.eti.br/2017/09/13/removing-javadoc-svn-id-tags-with-shell-script.html"><meta property="og:site_name" content="kinow"><meta property="og:title" content="Removing Javadoc SVN Id Tags with Shell Script"><meta property="og:description" content="Subversion supports Keyword Substitution, which performs substitution of some keywords such as Author, Date, and Id. The Id is the date, time, and user that last modified the file.
 It used to be common to all Apache Commons components to have a line as follows in the header of each Java class.
-/** * SomeClass class. * * @version $Id$ */ public class SomeClass { } Then the generated Javadoc would contain the date of when the class was altered.">
-<meta property="og:type" content="article">
-<meta property="og:url" content="https://kinoshita.eti.br/2017/09/13/removing-javadoc-svn-id-tags-with-shell-script.html"><meta property="article:section" content="posts">
-<meta property="article:published_time" content="2017-09-13T00:00:00+00:00">
-<meta property="article:modified_time" content="2024-04-19T16:48:00+02:00">
-<link rel=alternate type=application/rss+xml href=https://kinoshita.eti.br/2017/09/13/removing-javadoc-svn-id-tags-with-shell-script/feed.xml title=kinow>
-<link rel=stylesheet type=text/css href=https://kinoshita.eti.br/sass/main.1e768395a672116b3eff41b3123d9aafb8a9302476085be5fb658a4b93613f57.css integrity="sha256-HnaDlaZyEWs+/0GzEj2ar7ipMCR2CFvl+2WKS5NhP1c=">
-<title>kinow | Removing Javadoc SVN Id Tags with Shell Script</title>
-</head>
-<body>
-<header role=banner class=content>
-<nav id=nav aria-label=Main role=navigation class=content>
-<ul><li>
-<a href=/><i data-feather=about></i> About</a>
-</li><li>
-<a href=/blog/><i data-feather=blog></i> Blog</a>
-</li><li>
-<a href=/portfolio/><i data-feather=portfolio></i> Portfolio</a>
-</li>
-</ul>
-</nav>
-</header>
-<main>
-<article class=content>
-<h1>Removing Javadoc SVN Id Tags with Shell Script</h1><div class=metadata>
-<i data-feather=calendar></i>
-<time datetime=2017-09-13>Sep 13, 2017</time>
-</div>
-<aside>
-<nav id=TableOfContents></nav>
-</aside>
-<p>Subversion supports <a href=http://svnbook.red-bean.com/en/1.4/svn.advanced.props.special.keywords.html>Keyword Substitution</a>, which performs substitution of some keywords such as <em>Author</em>, <em>Date</em>, and <strong><em>Id</em></strong>. The <strong><em>Id</em></strong> is the date, time, and user that last modified the file.</p>
-<p>It used to be common to all Apache Commons components to have a line as follows in the header of each Java class.</p>
-<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=color:#177500>/**
-</span><span style=color:#177500> * SomeClass class.
-</span><span style=color:#177500> *
-</span><span style=color:#177500> * @version $Id$
-</span><span style=color:#177500> */</span>
-<span style=color:#a90d91>public</span> <span style=color:#a90d91>class</span> <span style=color:#3f6e75>SomeClass</span> <span style=color:#000>{</span>
-    
-<span style=color:#000>}</span>
-</code></pre></div><p>Then the generated Javadoc would contain the date of when the class was altered. Although useful, with proper versioning, it becomes obsolete. It is much more important to know what is the version of the software, not the last time it was modified or by whom. In case you have a problem with that specific file, you can always check the history of the file using <code>git log</code>, or <code>git bisect</code>, or …</p>
-<p>Apache Commons components that are migrated to git need to have these lines removed. git does not support these Subversion Keywords so it is never properly rendered. And as every time I have to remove these lines I come up with some shell script snippet, I decided to document the last one I wrote, so that it can save me some time ‐ and perhaps for somebody else too?</p>
-<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>find . -name <span style=color:#c41a16>&#34;*.java&#34;</span> -exec sed -i <span style=color:#c41a16>&#39;/^.*\*\s*@version\s*\$Id\$.*$/d&#39;</span> <span style=color:#000>{}</span> <span style=color:#c41a16>\;</span>
-</code></pre></div><p>And then <a href=https://github.com/apache/commons-collections/commit/29d2e93966e7fb99a888a58ab43480e485dcdfc6>push a commit</a> with the change :-) In case you know some regex, you can change it and use the same command syntax to remove comments, specific configuration lines, etc.</p>
-<p>That&rsquo;s all. Happy scripting!</p>
-<p>♥ Open Source</p>
-<p>
-Categories:
-<a href=/categories/blog.html>blog</a>
-</p>
-<p>
-Tags:
-<a href=/tags/programming.html>programming</a>,
-<a href=/tags/shell-script.html>shell script</a>,
-<a href=/tags/opensource.html>opensource</a>,
-<a href=/tags/apache-software-foundation.html>apache software foundation</a>
-</p>
-<aside class=links>
-<a class=previous href=https://kinoshita.eti.br/2017/09/09/enabling-markdown-extension-tables-for-piecrust.html>&#171; Previous</a>
-<a class=next href=https://kinoshita.eti.br/2017/10/14/quickly-verifying-jar-signatures-for-asf-releases.html>Next &#187;</a>
-</aside>
-</article>
-</main>
-<footer role=contentinfo>
-<ul id=social-media-icons>
-<li>
-<a href=https://www.instagram.com/brunokinoshita/>
-<img src=/assets/icons/instagram.png alt="Instagram link">
-</a>
-</li>
-<li>
-<a href=https://twitter.com/kinow/>
-<img src=/assets/icons/twitter.png alt="Twitter link">
-</a>
-</li>
-<li>
-<a href=https://github.com/kinow/>
-<img src=/assets/icons/github.png alt="GitHub link">
-</a>
-</li>
-<li>
-<a href=/feed.xml>
-<img src=/assets/icons/news.png alt="RSS feed link">
-</a>
-</li>
-</ul>
-</footer>
-</body>
-</html>
+/** * SomeClass class. * * @version $Id$ */ public class SomeClass { } Then the generated Javadoc would contain the date of when the class was altered."><meta property="og:locale" content="en-us"><meta property="og:type" content="article"><meta property="article:section" content="posts"><meta property="article:published_time" content="2017-09-13T00:00:00+00:00"><meta property="article:modified_time" content="2024-04-19T16:51:32+02:00"><meta property="article:tag" content="Programming"><meta property="article:tag" content="Shell Script"><meta property="article:tag" content="Opensource"><meta property="article:tag" content="Apache Software Foundation"><meta property="og:image" content="https://kinoshita.eti.br/assets/photos/about/2023-me-closeup.png"><meta property="fb:admins" content="bruno.kinoshita"><link rel=alternate type=application/rss+xml href=https://kinoshita.eti.br/2017/09/13/removing-javadoc-svn-id-tags-with-shell-script/feed.xml title=kinow><link rel=stylesheet type=text/css href=https://kinoshita.eti.br/sass/main.1e768395a672116b3eff41b3123d9aafb8a9302476085be5fb658a4b93613f57.css integrity="sha256-HnaDlaZyEWs+/0GzEj2ar7ipMCR2CFvl+2WKS5NhP1c="><title>kinow | Removing Javadoc SVN Id Tags with Shell Script</title><script type=application/ld+json>{"@context":"http://schema.org","@type":"BlogPosting","articleSection":"posts","name":"Removing Javadoc SVN Id Tags with Shell Script","headline":"Removing Javadoc SVN Id Tags with Shell Script","alternativeHeadline":"","description":"Subversion supports Keyword Substitution, which performs substitution of some keywords such as Author, Date, and Id. The Id is the date, time, and user that last modified the file.\nIt used to be common to all Apache Commons components to have a line as follows in the header of each Java class.\n\/** * SomeClass class. * * @version $Id$ *\/ public class SomeClass { } Then the generated Javadoc would contain the date of when the class was altered.","inLanguage":"en-us","isFamilyFriendly":"true","mainEntityOfPage":{"@type":"WebPage","@id":"https:\/\/kinoshita.eti.br\/2017\/09\/13\/removing-javadoc-svn-id-tags-with-shell-script.html"},"author":{"@type":"Person","name":"Bruno P. Kinoshita"},"creator":{"@type":"Person","name":"Bruno P. Kinoshita"},"accountablePerson":{"@type":"Person","name":"Bruno P. Kinoshita"},"copyrightHolder":"kinow","copyrightYear":"2017","dateCreated":"2017-09-13T00:00:00.00Z","datePublished":"2017-09-13T00:00:00.00Z","dateModified":"2024-04-19T16:51:32.00Z","publisher":{"@type":"Organization","name":"kinow","url":"https://kinoshita.eti.br/","logo":{"@type":"ImageObject","url":"https:\/\/kinoshita.eti.br\/","width":"32","height":"32"}},"image":"https://kinoshita.eti.br/","url":"https:\/\/kinoshita.eti.br\/2017\/09\/13\/removing-javadoc-svn-id-tags-with-shell-script.html","wordCount":"257","genre":["programming","shell script","opensource","apache software foundation"],"keywords":[]}</script></head><body><header role=banner class=content><nav id=nav aria-label=Main role=navigation class=content><ul><li><a href=/><i data-feather=about></i> About</a></li><li><a href=/blog/><i data-feather=blog></i> Blog</a></li><li><a href=/portfolio/><i data-feather=portfolio></i> Portfolio</a></li></ul></nav></header><main><article class=content><h1>Removing Javadoc SVN Id Tags with Shell Script</h1><div class=metadata><i data-feather=calendar></i>
+<time datetime=2017-09-13>Sep 13, 2017</time></div><aside><nav id=TableOfContents></nav></aside><p>Subversion supports <a href=http://svnbook.red-bean.com/en/1.4/svn.advanced.props.special.keywords.html>Keyword Substitution</a>, which performs substitution of some keywords such as <em>Author</em>, <em>Date</em>, and <strong><em>Id</em></strong>. The <strong><em>Id</em></strong> is the date, time, and user that last modified the file.</p><p>It used to be common to all Apache Commons components to have a line as follows in the header of each Java class.</p><div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=display:flex><span><span style=color:#177500>/**
+</span></span></span><span style=display:flex><span><span style=color:#177500> * SomeClass class.
+</span></span></span><span style=display:flex><span><span style=color:#177500> *
+</span></span></span><span style=display:flex><span><span style=color:#177500> * @version $Id$
+</span></span></span><span style=display:flex><span><span style=color:#177500> */</span>
+</span></span><span style=display:flex><span><span style=color:#a90d91>public</span> <span style=color:#a90d91>class</span> <span style=color:#3f6e75>SomeClass</span> {
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><p>Then the generated Javadoc would contain the date of when the class was altered. Although useful, with proper versioning, it becomes obsolete. It is much more important to know what is the version of the software, not the last time it was modified or by whom. In case you have a problem with that specific file, you can always check the history of the file using <code>git log</code>, or <code>git bisect</code>, or …</p><p>Apache Commons components that are migrated to git need to have these lines removed. git does not support these Subversion Keywords so it is never properly rendered. And as every time I have to remove these lines I come up with some shell script snippet, I decided to document the last one I wrote, so that it can save me some time ‐ and perhaps for somebody else too?</p><div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>find . -name <span style=color:#c41a16>&#34;*.java&#34;</span> -exec sed -i <span style=color:#c41a16>&#39;/^.*\*\s*@version\s*\$Id\$.*$/d&#39;</span> <span style=color:#000>{}</span> <span style=color:#c41a16>\;</span>
+</span></span></code></pre></div><p>And then <a href=https://github.com/apache/commons-collections/commit/29d2e93966e7fb99a888a58ab43480e485dcdfc6>push a commit</a> with the change :-) In case you know some regex, you can change it and use the same command syntax to remove comments, specific configuration lines, etc.</p><p>That&rsquo;s all. Happy scripting!</p><p>♥ Open Source</p><p>Categories:
+<a href=/categories/blog.html>Blog</a></p><p>Tags:
+<a href=/tags/programming.html>Programming</a>,
+<a href=/tags/shell-script.html>Shell Script</a>,
+<a href=/tags/opensource.html>Opensource</a>,
+<a href=/tags/apache-software-foundation.html>Apache Software Foundation</a></p><aside class=links><a class=previous href=https://kinoshita.eti.br/2017/09/09/enabling-markdown-extension-tables-for-piecrust.html>&#171; Previous</a><a class=next href=https://kinoshita.eti.br/2017/10/14/quickly-verifying-jar-signatures-for-asf-releases.html>Next &#187;</a></aside></article></main><footer role=contentinfo><ul id=social-media-icons><li><a href=https://www.instagram.com/brunokinoshita/><img src=/assets/icons/instagram.png alt="Instagram link"></a></li><li><a href=https://twitter.com/kinow/><img src=/assets/icons/twitter.png alt="Twitter link"></a></li><li><a href=https://github.com/kinow/><img src=/assets/icons/github.png alt="GitHub link"></a></li><li><a href=/feed.xml><img src=/assets/icons/news.png alt="RSS feed link"></a></li></ul></footer></body></html>

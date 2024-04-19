@@ -1,235 +1,96 @@
-<!doctype html><html lang=en>
-<head>
-<meta charset=utf-8>
-<meta name=viewport content="width=device-width,initial-scale=1">
-<meta property="og:title" content="PyZMQ Basics - Part 1">
-<meta property="og:description" content="
-
-
-
-
-
-  
-  
-
-
-
-
-I am working on a project that is adopting ZeroMQ.
+<!doctype html><html lang=en><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta property="og:url" content="https://kinoshita.eti.br/2019/03/30/pyzmq-basics-part-1.html"><meta property="og:site_name" content="kinow"><meta property="og:title" content="PyZMQ Basics - Part 1"><meta property="og:description" content=" I am working on a project that is adopting ZeroMQ. This post series is for self understanding of PyZMQ, a ZeroMQ libzmq binding for Python.
+What is ZeroMQ? ZeroMQ (or 0MQ, or ØMQ) is an Open Source library that provides building blocks for communication in distributed applications. The communication can be between the threads of a process, between process (inter-process), or via network protocols such as TCP and UDP.
+It is optimized for performance, and has been used in many applications, giving users a solid foundation to be used in their projects.
+"><meta property="og:locale" content="en-us"><meta property="og:type" content="article"><meta property="article:section" content="posts"><meta property="article:published_time" content="2019-03-30T00:00:00+00:00"><meta property="article:modified_time" content="2024-04-19T16:51:32+02:00"><meta property="article:tag" content="Zmq"><meta property="article:tag" content="Python"><meta property="article:tag" content="Opensource"><meta property="article:tag" content="Programming"><meta property="og:image" content="https://kinoshita.eti.br/assets/photos/about/2023-me-closeup.png"><meta property="fb:admins" content="bruno.kinoshita"><link rel=alternate type=application/rss+xml href=https://kinoshita.eti.br/2019/03/30/pyzmq-basics-part-1/feed.xml title=kinow><link rel=stylesheet type=text/css href=https://kinoshita.eti.br/sass/main.1e768395a672116b3eff41b3123d9aafb8a9302476085be5fb658a4b93613f57.css integrity="sha256-HnaDlaZyEWs+/0GzEj2ar7ipMCR2CFvl+2WKS5NhP1c="><title>kinow | PyZMQ Basics - Part 1</title><script type=application/ld+json>{"@context":"http://schema.org","@type":"BlogPosting","articleSection":"posts","name":"PyZMQ Basics - Part 1","headline":"PyZMQ Basics - Part 1","alternativeHeadline":"","description":"\u003ca href=\u0022https:\/\/www.deviantart.com\/kinow\/art\/Old-man-1-657521623\u0022 style=\u0022float: left;\u0022\u003e\n\n\n\n\u003cfigure class=\u0022feature\u0022\u003e\n\n  \u003cimg\n    src=\u0027\/assets\/posts\/2019-03-30-pyzmq-basics-part-1\/old-man-1.png\u0027\n    alt=\u0027\u0027\n    title=\u0027\u0027\n    style=\u0027\u0027\n    width=\u0027\u0027\n    height=\u0027\u0027\n    \/\u003e\n  \u003cfigcaption\u003e\u003c\/figcaption\u003e\n\n\u003c\/figure\u003e\n\n\n\u003cp\u003eI am working \u003ca href=\u0022https:\/\/cylc.github.io\u0022\u003eon a project\u003c\/a\u003e that is adopting \u003ca href=\u0022http:\/\/zeromq.org\/\u0022\u003eZeroMQ\u003c\/a\u003e.\nThis post series is for self understanding of PyZMQ, a ZeroMQ\n\u003ca href=\u0022https:\/\/github.com\/zeromq\/libzmq\u0022\u003e\u003ccode\u003elibzmq\u003c\/code\u003e\u003c\/a\u003e binding for Python.\u003c\/p\u003e\n\u003ch2 id=\u0022what-is-zeromq\u0022\u003eWhat is ZeroMQ?\u003c\/h2\u003e\n\u003cp\u003eZeroMQ (or 0MQ, or ØMQ) is an Open Source library that provides building blocks for\ncommunication in distributed applications. The communication can be between the threads\nof a process, between process (inter-process), or via network protocols such as\nTCP and UDP.\u003c\/p\u003e\n\u003cp\u003eIt is optimized for performance, and has been used in many applications, giving users\na solid foundation to be used in their projects.\u003c\/p\u003e","inLanguage":"en-us","isFamilyFriendly":"true","mainEntityOfPage":{"@type":"WebPage","@id":"https:\/\/kinoshita.eti.br\/2019\/03\/30\/pyzmq-basics-part-1.html"},"author":{"@type":"Person","name":"Bruno P. Kinoshita"},"creator":{"@type":"Person","name":"Bruno P. Kinoshita"},"accountablePerson":{"@type":"Person","name":"Bruno P. Kinoshita"},"copyrightHolder":"kinow","copyrightYear":"2019","dateCreated":"2019-03-30T00:00:00.00Z","datePublished":"2019-03-30T00:00:00.00Z","dateModified":"2024-04-19T16:51:32.00Z","publisher":{"@type":"Organization","name":"kinow","url":"https://kinoshita.eti.br/","logo":{"@type":"ImageObject","url":"https:\/\/kinoshita.eti.br\/","width":"32","height":"32"}},"image":"https://kinoshita.eti.br/","url":"https:\/\/kinoshita.eti.br\/2019\/03\/30\/pyzmq-basics-part-1.html","wordCount":"991","genre":["zmq","python","opensource","programming"],"keywords":[]}</script></head><body><header role=banner class=content><nav id=nav aria-label=Main role=navigation class=content><ul><li><a href=/><i data-feather=about></i> About</a></li><li><a href=/blog/><i data-feather=blog></i> Blog</a></li><li><a href=/portfolio/><i data-feather=portfolio></i> Portfolio</a></li></ul></nav></header><main><article class=content><h1>PyZMQ Basics - Part 1</h1><div class=metadata><i data-feather=calendar></i>
+<time datetime=2019-03-30>Mar 30, 2019</time></div><aside><nav id=TableOfContents><ul><li><a href=#what-is-zeromq>What is ZeroMQ?</a></li><li><a href=#more-than-just-sockets>More than just sockets</a></li><li><a href=#combining-socket-types>Combining Socket Types</a></li><li><a href=#conclusion>Conclusion</a></li></ul></nav></aside><a href=https://www.deviantart.com/kinow/art/Old-man-1-657521623 style=float:left><figure class=feature><img src=/assets/posts/2019-03-30-pyzmq-basics-part-1/old-man-1.png alt title width height><figcaption></figcaption></figure><p>I am working <a href=https://cylc.github.io>on a project</a> that is adopting <a href=http://zeromq.org/>ZeroMQ</a>.
 This post series is for self understanding of PyZMQ, a ZeroMQ
-libzmq binding for Python.
-What is ZeroMQ?
-ZeroMQ (or 0MQ, or ØMQ) is an Open Source library that provides building blocks for
+<a href=https://github.com/zeromq/libzmq><code>libzmq</code></a> binding for Python.</p><h2 id=what-is-zeromq>What is ZeroMQ?</h2><p>ZeroMQ (or 0MQ, or ØMQ) is an Open Source library that provides building blocks for
 communication in distributed applications. The communication can be between the threads
 of a process, between process (inter-process), or via network protocols such as
-TCP and UDP.
-It is optimized for performance, and has been used in many applications, giving users
-a solid foundation to be used in their projects.">
-<meta property="og:type" content="article">
-<meta property="og:url" content="https://kinoshita.eti.br/2019/03/30/pyzmq-basics-part-1.html"><meta property="article:section" content="posts">
-<meta property="article:published_time" content="2019-03-30T00:00:00+00:00">
-<meta property="article:modified_time" content="2024-04-19T16:48:00+02:00">
-<link rel=alternate type=application/rss+xml href=https://kinoshita.eti.br/2019/03/30/pyzmq-basics-part-1/feed.xml title=kinow>
-<link rel=stylesheet type=text/css href=https://kinoshita.eti.br/sass/main.1e768395a672116b3eff41b3123d9aafb8a9302476085be5fb658a4b93613f57.css integrity="sha256-HnaDlaZyEWs+/0GzEj2ar7ipMCR2CFvl+2WKS5NhP1c=">
-<title>kinow | PyZMQ Basics - Part 1</title>
-</head>
-<body>
-<header role=banner class=content>
-<nav id=nav aria-label=Main role=navigation class=content>
-<ul><li>
-<a href=/><i data-feather=about></i> About</a>
-</li><li>
-<a href=/blog/><i data-feather=blog></i> Blog</a>
-</li><li>
-<a href=/portfolio/><i data-feather=portfolio></i> Portfolio</a>
-</li>
-</ul>
-</nav>
-</header>
-<main>
-<article class=content>
-<h1>PyZMQ Basics - Part 1</h1><div class=metadata>
-<i data-feather=calendar></i>
-<time datetime=2019-03-30>Mar 30, 2019</time>
-</div>
-<aside>
-<nav id=TableOfContents>
-<ul>
-<li><a href=#what-is-zeromq>What is ZeroMQ?</a></li>
-<li><a href=#more-than-just-sockets>More than just sockets</a></li>
-<li><a href=#combining-socket-types>Combining Socket Types</a></li>
-<li><a href=#conclusion>Conclusion</a></li>
-</ul>
-</nav>
-</aside>
-<a href=https://www.deviantart.com/kinow/art/Old-man-1-657521623 style=float:left>
-<figure class=feature>
-<img src=/assets/posts/2019-03-30-pyzmq-basics-part-1/old-man-1.png alt title width height>
-<figcaption></figcaption>
-</figure>
-<p>I am working <a href=https://cylc.github.io>on a project</a> that is adopting <a href=http://zeromq.org/>ZeroMQ</a>.
-This post series is for self understanding of PyZMQ, a ZeroMQ
-<a href=https://github.com/zeromq/libzmq><code>libzmq</code></a> binding for Python.</p>
-<h2 id=what-is-zeromq>What is ZeroMQ?</h2>
-<p>ZeroMQ (or 0MQ, or ØMQ) is an Open Source library that provides building blocks for
-communication in distributed applications. The communication can be between the threads
-of a process, between process (inter-process), or via network protocols such as
-TCP and UDP.</p>
-<p>It is optimized for performance, and has been used in many applications, giving users
-a solid foundation to be used in their projects.</p>
-<p>The maintainers of the project provide low level C++ projects such as <code>libzmq</code> (GPL v3),
-<code>zyre</code>, <code>czmq</code>, etc. But the most important project to get started with is <code>libzmq</code>.</p>
-<p><code>libzmq</code> is the core of ZeroMQ, and the community maintains bindings to other languages.
+TCP and UDP.</p><p>It is optimized for performance, and has been used in many applications, giving users
+a solid foundation to be used in their projects.</p><p>The maintainers of the project provide low level C++ projects such as <code>libzmq</code> (GPL v3),
+<code>zyre</code>, <code>czmq</code>, etc. But the most important project to get started with is <code>libzmq</code>.</p><p><code>libzmq</code> is the core of ZeroMQ, and the community maintains bindings to other languages.
 There is a Python binding, <a href=https://pyzmq.readthedocs.io/en/latest/><code>pyzmq</code></a>,
-as well as a Java <code>jzmq</code>, a Node.JS, PHP, etc.</p>
-<h2 id=more-than-just-sockets>More than just sockets</h2>
-<p>At its core, ZeroMQ handles sockets for you, but what you get when you create
-“sockets” in ZeroMQ, are actually ZeroMQ abstractions of sockets.</p>
-<p>As example in this section, we will use two code snippets from the ZeroMQ documentation.</p>
-<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=color:#177500># helloworld_server.py</span>
-<span style=color:#a90d91>import</span> <span style=color:#000>time</span>
-<span style=color:#a90d91>import</span> <span style=color:#000>zmq</span>
-
-<span style=color:#000>context</span> <span style=color:#000>=</span> <span style=color:#000>zmq</span><span style=color:#000>.</span><span style=color:#000>Context</span>()
-<span style=color:#000>socket</span> <span style=color:#000>=</span> <span style=color:#000>context</span><span style=color:#000>.</span><span style=color:#000>socket</span>(<span style=color:#000>zmq</span><span style=color:#000>.</span><span style=color:#000>REP</span>)
-<span style=color:#000>socket</span><span style=color:#000>.</span><span style=color:#000>bind</span>(<span style=color:#c41a16>&#34;tcp://*:5555&#34;</span>)
-
-<span style=color:#a90d91>while</span> <span style=color:#a90d91>True</span>:
-    <span style=color:#177500>#  Wait for next request from client</span>
-    <span style=color:#000>message</span> <span style=color:#000>=</span> <span style=color:#000>socket</span><span style=color:#000>.</span><span style=color:#000>recv</span>()
-    <span style=color:#a90d91>print</span>(<span style=color:#c41a16>&#34;Received request: </span><span style=color:#c41a16>%s</span><span style=color:#c41a16>&#34;</span> <span style=color:#000>%</span> <span style=color:#000>message</span>)
-
-    <span style=color:#177500>#  Do some &#39;work&#39;</span>
-    <span style=color:#000>time</span><span style=color:#000>.</span><span style=color:#000>sleep</span>(<span style=color:#1c01ce>1</span>)
-
-    <span style=color:#177500>#  Send reply back to client</span>
-    <span style=color:#000>socket</span><span style=color:#000>.</span><span style=color:#000>send</span>(<span style=color:#c41a16>b</span><span style=color:#c41a16>&#34;World&#34;</span>)
-</code></pre></div><div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=color:#177500># helloworld_client.py</span>
-<span style=color:#177500>#</span>
-<span style=color:#177500>#   Hello World client in Python</span>
-<span style=color:#177500>#   Connects REQ socket to tcp://localhost:5555</span>
-<span style=color:#177500>#   Sends &#34;Hello&#34; to server, expects &#34;World&#34; back</span>
-<span style=color:#177500>#</span>
-
-<span style=color:#a90d91>import</span> <span style=color:#000>zmq</span>
-
-<span style=color:#000>context</span> <span style=color:#000>=</span> <span style=color:#000>zmq</span><span style=color:#000>.</span><span style=color:#000>Context</span>()
-
-<span style=color:#177500>#  Socket to talk to server</span>
-<span style=color:#a90d91>print</span>(<span style=color:#c41a16>&#34;Connecting to hello world server…&#34;</span>)
-<span style=color:#000>socket</span> <span style=color:#000>=</span> <span style=color:#000>context</span><span style=color:#000>.</span><span style=color:#000>socket</span>(<span style=color:#000>zmq</span><span style=color:#000>.</span><span style=color:#000>REQ</span>)
-<span style=color:#000>socket</span><span style=color:#000>.</span><span style=color:#000>connect</span>(<span style=color:#c41a16>&#34;tcp://localhost:5555&#34;</span>)
-
-<span style=color:#177500>#  Do 10 requests, waiting each time for a response</span>
-<span style=color:#a90d91>for</span> <span style=color:#000>request</span> <span style=color:#000>in</span> <span style=color:#a90d91>range</span>(<span style=color:#1c01ce>10</span>):
-    <span style=color:#a90d91>print</span>(<span style=color:#c41a16>&#34;Sending request </span><span style=color:#c41a16>%s</span><span style=color:#c41a16> …&#34;</span> <span style=color:#000>%</span> <span style=color:#000>request</span>)
-    <span style=color:#000>socket</span><span style=color:#000>.</span><span style=color:#000>send</span>(<span style=color:#c41a16>b</span><span style=color:#c41a16>&#34;Hello&#34;</span>)
-
-    <span style=color:#177500>#  Get the reply.</span>
-    <span style=color:#000>message</span> <span style=color:#000>=</span> <span style=color:#000>socket</span><span style=color:#000>.</span><span style=color:#000>recv</span>()
-    <span style=color:#a90d91>print</span>(<span style=color:#c41a16>&#34;Received reply </span><span style=color:#c41a16>%s</span><span style=color:#c41a16> [ </span><span style=color:#c41a16>%s</span><span style=color:#c41a16> ]&#34;</span> <span style=color:#000>%</span> (<span style=color:#000>request</span>, <span style=color:#000>message</span>))
-</code></pre></div><p>You can start the server, and then start the client, and you should see
+as well as a Java <code>jzmq</code>, a Node.JS, PHP, etc.</p><h2 id=more-than-just-sockets>More than just sockets</h2><p>At its core, ZeroMQ handles sockets for you, but what you get when you create
+“sockets” in ZeroMQ, are actually ZeroMQ abstractions of sockets.</p><p>As example in this section, we will use two code snippets from the ZeroMQ documentation.</p><div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=display:flex><span><span style=color:#177500># helloworld_server.py</span>
+</span></span><span style=display:flex><span><span style=color:#a90d91>import</span> <span style=color:#000>time</span>
+</span></span><span style=display:flex><span><span style=color:#a90d91>import</span> <span style=color:#000>zmq</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#000>context</span> <span style=color:#000>=</span> <span style=color:#000>zmq</span><span style=color:#000>.</span><span style=color:#000>Context</span>()
+</span></span><span style=display:flex><span><span style=color:#000>socket</span> <span style=color:#000>=</span> <span style=color:#000>context</span><span style=color:#000>.</span><span style=color:#000>socket</span>(<span style=color:#000>zmq</span><span style=color:#000>.</span><span style=color:#000>REP</span>)
+</span></span><span style=display:flex><span><span style=color:#000>socket</span><span style=color:#000>.</span><span style=color:#000>bind</span>(<span style=color:#c41a16>&#34;tcp://*:5555&#34;</span>)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#a90d91>while</span> <span style=color:#a90d91>True</span>:
+</span></span><span style=display:flex><span>    <span style=color:#177500>#  Wait for next request from client</span>
+</span></span><span style=display:flex><span>    <span style=color:#000>message</span> <span style=color:#000>=</span> <span style=color:#000>socket</span><span style=color:#000>.</span><span style=color:#000>recv</span>()
+</span></span><span style=display:flex><span>    <span style=color:#a90d91>print</span>(<span style=color:#c41a16>&#34;Received request: </span><span style=color:#c41a16>%s</span><span style=color:#c41a16>&#34;</span> <span style=color:#000>%</span> <span style=color:#000>message</span>)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#177500>#  Do some &#39;work&#39;</span>
+</span></span><span style=display:flex><span>    <span style=color:#000>time</span><span style=color:#000>.</span><span style=color:#000>sleep</span>(<span style=color:#1c01ce>1</span>)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#177500>#  Send reply back to client</span>
+</span></span><span style=display:flex><span>    <span style=color:#000>socket</span><span style=color:#000>.</span><span style=color:#000>send</span>(<span style=color:#c41a16>b</span><span style=color:#c41a16>&#34;World&#34;</span>)
+</span></span></code></pre></div><div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=display:flex><span><span style=color:#177500># helloworld_client.py</span>
+</span></span><span style=display:flex><span><span style=color:#177500>#</span>
+</span></span><span style=display:flex><span><span style=color:#177500>#   Hello World client in Python</span>
+</span></span><span style=display:flex><span><span style=color:#177500>#   Connects REQ socket to tcp://localhost:5555</span>
+</span></span><span style=display:flex><span><span style=color:#177500>#   Sends &#34;Hello&#34; to server, expects &#34;World&#34; back</span>
+</span></span><span style=display:flex><span><span style=color:#177500>#</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#a90d91>import</span> <span style=color:#000>zmq</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#000>context</span> <span style=color:#000>=</span> <span style=color:#000>zmq</span><span style=color:#000>.</span><span style=color:#000>Context</span>()
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#177500>#  Socket to talk to server</span>
+</span></span><span style=display:flex><span><span style=color:#a90d91>print</span>(<span style=color:#c41a16>&#34;Connecting to hello world server…&#34;</span>)
+</span></span><span style=display:flex><span><span style=color:#000>socket</span> <span style=color:#000>=</span> <span style=color:#000>context</span><span style=color:#000>.</span><span style=color:#000>socket</span>(<span style=color:#000>zmq</span><span style=color:#000>.</span><span style=color:#000>REQ</span>)
+</span></span><span style=display:flex><span><span style=color:#000>socket</span><span style=color:#000>.</span><span style=color:#000>connect</span>(<span style=color:#c41a16>&#34;tcp://localhost:5555&#34;</span>)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#177500>#  Do 10 requests, waiting each time for a response</span>
+</span></span><span style=display:flex><span><span style=color:#a90d91>for</span> <span style=color:#000>request</span> <span style=color:#000>in</span> <span style=color:#a90d91>range</span>(<span style=color:#1c01ce>10</span>):
+</span></span><span style=display:flex><span>    <span style=color:#a90d91>print</span>(<span style=color:#c41a16>&#34;Sending request </span><span style=color:#c41a16>%s</span><span style=color:#c41a16> …&#34;</span> <span style=color:#000>%</span> <span style=color:#000>request</span>)
+</span></span><span style=display:flex><span>    <span style=color:#000>socket</span><span style=color:#000>.</span><span style=color:#000>send</span>(<span style=color:#c41a16>b</span><span style=color:#c41a16>&#34;Hello&#34;</span>)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#177500>#  Get the reply.</span>
+</span></span><span style=display:flex><span>    <span style=color:#000>message</span> <span style=color:#000>=</span> <span style=color:#000>socket</span><span style=color:#000>.</span><span style=color:#000>recv</span>()
+</span></span><span style=display:flex><span>    <span style=color:#a90d91>print</span>(<span style=color:#c41a16>&#34;Received reply </span><span style=color:#c41a16>%s</span><span style=color:#c41a16> [ </span><span style=color:#c41a16>%s</span><span style=color:#c41a16> ]&#34;</span> <span style=color:#000>%</span> (<span style=color:#000>request</span>, <span style=color:#000>message</span>))
+</span></span></code></pre></div><p>You can start the server, and then start the client, and you should see
 the server printing the messages received, and in the client terminal you
-should see the loop iteration and the messages sent to the server as well.</p>
-<p>With a normal socket, you would expect starting the client before the server
+should see the loop iteration and the messages sent to the server as well.</p><p>With a normal socket, you would expect starting the client before the server
 to fail, but it works with ZeroMQ. Because ZeroMQ uses an abstraction to
-help developers, not exposing a bare socket.</p>
-<p>It is important to note that <strong>there are socket types in ZeroMQ</strong>. We have, for
+help developers, not exposing a bare socket.</p><p>It is important to note that <strong>there are socket types in ZeroMQ</strong>. We have, for
 example, the <em>REPLY</em> socket, and the <em>REQUEST</em> socket. Our example uses both,
 a <em>REPLY</em> socket in the server_, as it is replying to messages. And a <em>REQUEST</em>
-socket in the client, which is used to send requests to the server.</p>
-<p>When you run both scripts, the communication is happening through a socket, but at a higher
+socket in the client, which is used to send requests to the server.</p><p>When you run both scripts, the communication is happening through a socket, but at a higher
 level, there is a protocol used by ZeroMQ to serialize messages. You can send
-raw messages too, but that is not the vanilla way.</p>
-<p>So you cannot use ZeroMQ to replace a web server listening on port 80, and expect
+raw messages too, but that is not the vanilla way.</p><p>So you cannot use ZeroMQ to replace a web server listening on port 80, and expect
 browsers or other HTTP clients to be able to talk to this server. You would need
-to write a client for it.</p>
-<h2 id=combining-socket-types>Combining Socket Types</h2>
-<p>Another powerful feature in ZeroMQ, is the possibility to combine different
+to write a client for it.</p><h2 id=combining-socket-types>Combining Socket Types</h2><p>Another powerful feature in ZeroMQ, is the possibility to combine different
 socket types. The previous example uses the REQ-REP duo. With this combination,
 the <em>REQ</em> endpoint is expected to send a message to the other endpoint, the <em>REP</em>.
-The latter then produces a reply message, or none.</p>
-<p>But sending two <em>REQ</em> messages, the second would return an error. So if you modified
+The latter then produces a reply message, or none.</p><p>But sending two <em>REQ</em> messages, the second would return an error. So if you modified
 the example from the previous section to send two messages, first a &ldquo;Hello&rdquo;, and
-then &ldquo;World&rdquo;, you would get an error in your terminal.</p>
-<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>Connecting to hello world server…
-Sending request <span style=color:#1c01ce>0</span> ...
-Traceback <span style=color:#000>(</span>most recent call last<span style=color:#000>)</span>:
-  File <span style=color:#c41a16>&#34;helloworld_client.py&#34;</span>, line 22, in &lt;module&gt;
-    socket.send<span style=color:#000>(</span>b<span style=color:#c41a16>&#34;World&#34;</span><span style=color:#000>)</span>
-  File <span style=color:#c41a16>&#34;/home/kinow/Development/python/anaconda3/lib/python3.7/site-packages/zmq/sugar/socket.py&#34;</span>, line 392, in send
-    <span style=color:#a90d91>return</span> super<span style=color:#000>(</span>Socket, self<span style=color:#000>)</span>.send<span style=color:#000>(</span>data, <span style=color:#000>flags</span><span style=color:#000>=</span>flags, <span style=color:#000>copy</span><span style=color:#000>=</span>copy, <span style=color:#000>track</span><span style=color:#000>=</span>track<span style=color:#000>)</span>
-  File <span style=color:#c41a16>&#34;zmq/backend/cython/socket.pyx&#34;</span>, line 725, in zmq.backend.cython.socket.Socket.send
-  File <span style=color:#c41a16>&#34;zmq/backend/cython/socket.pyx&#34;</span>, line 772, in zmq.backend.cython.socket.Socket.send
-  File <span style=color:#c41a16>&#34;zmq/backend/cython/socket.pyx&#34;</span>, line 247, in zmq.backend.cython.socket._send_copy
-  File <span style=color:#c41a16>&#34;zmq/backend/cython/socket.pyx&#34;</span>, line 242, in zmq.backend.cython.socket._send_copy
-  File <span style=color:#c41a16>&#34;zmq/backend/cython/checkrc.pxd&#34;</span>, line 25, in zmq.backend.cython.checkrc._check_rc
-zmq.error.ZMQError: Operation cannot be accomplished in current state
-</code></pre></div><p>That is because each combination of socket types has its own way to send and
+then &ldquo;World&rdquo;, you would get an error in your terminal.</p><div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>Connecting to hello world server…
+</span></span><span style=display:flex><span>Sending request <span style=color:#1c01ce>0</span> ...
+</span></span><span style=display:flex><span>Traceback <span style=color:#000>(</span>most recent call last<span style=color:#000>)</span>:
+</span></span><span style=display:flex><span>  File <span style=color:#c41a16>&#34;helloworld_client.py&#34;</span>, line 22, in &lt;module&gt;
+</span></span><span style=display:flex><span>    socket.send<span style=color:#000>(</span>b<span style=color:#c41a16>&#34;World&#34;</span><span style=color:#000>)</span>
+</span></span><span style=display:flex><span>  File <span style=color:#c41a16>&#34;/home/kinow/Development/python/anaconda3/lib/python3.7/site-packages/zmq/sugar/socket.py&#34;</span>, line 392, in send
+</span></span><span style=display:flex><span>    <span style=color:#a90d91>return</span> super<span style=color:#000>(</span>Socket, self<span style=color:#000>)</span>.send<span style=color:#000>(</span>data, <span style=color:#000>flags</span><span style=color:#000>=</span>flags, <span style=color:#000>copy</span><span style=color:#000>=</span>copy, <span style=color:#000>track</span><span style=color:#000>=</span>track<span style=color:#000>)</span>
+</span></span><span style=display:flex><span>  File <span style=color:#c41a16>&#34;zmq/backend/cython/socket.pyx&#34;</span>, line 725, in zmq.backend.cython.socket.Socket.send
+</span></span><span style=display:flex><span>  File <span style=color:#c41a16>&#34;zmq/backend/cython/socket.pyx&#34;</span>, line 772, in zmq.backend.cython.socket.Socket.send
+</span></span><span style=display:flex><span>  File <span style=color:#c41a16>&#34;zmq/backend/cython/socket.pyx&#34;</span>, line 247, in zmq.backend.cython.socket._send_copy
+</span></span><span style=display:flex><span>  File <span style=color:#c41a16>&#34;zmq/backend/cython/socket.pyx&#34;</span>, line 242, in zmq.backend.cython.socket._send_copy
+</span></span><span style=display:flex><span>  File <span style=color:#c41a16>&#34;zmq/backend/cython/checkrc.pxd&#34;</span>, line 25, in zmq.backend.cython.checkrc._check_rc
+</span></span><span style=display:flex><span>zmq.error.ZMQError: Operation cannot be accomplished in current state
+</span></span></code></pre></div><p>That is because each combination of socket types has its own way to send and
 receive messages. These combinations are called <strong>Messaging Patterns</strong>, and they
-allow you to go beyond the basic TCP one-to-one communication model.</p>
-<p>These patterns are like recipes, that you can use in your project. <code>libzmq</code> comes
-with four patterns.</p>
-<ul>
-<li>Request-Reply: a set of clients connects to a set of servers, similar to Remote Procedure Call (RPC).</li>
-<li>Pub-Sub: a set of publishers connects to a set of subscribers, similar to messaging queues, and JMS.</li>
-<li>Pipeline: nodes are connected in fan-out/fan-in pattern, with multiple steps and loops, similar to parallel task distribution, map-reduce.</li>
-<li>Exclusive pair: two sockets are connected exclusively. This is used for connecting two threads in a process.</li>
-</ul>
-<h2 id=conclusion>Conclusion</h2>
-<p>For now I will continue reading about ZeroMQ and checking out the examples
+allow you to go beyond the basic TCP one-to-one communication model.</p><p>These patterns are like recipes, that you can use in your project. <code>libzmq</code> comes
+with four patterns.</p><ul><li>Request-Reply: a set of clients connects to a set of servers, similar to Remote Procedure Call (RPC).</li><li>Pub-Sub: a set of publishers connects to a set of subscribers, similar to messaging queues, and JMS.</li><li>Pipeline: nodes are connected in fan-out/fan-in pattern, with multiple steps and loops, similar to parallel task distribution, map-reduce.</li><li>Exclusive pair: two sockets are connected exclusively. This is used for connecting two threads in a process.</li></ul><h2 id=conclusion>Conclusion</h2><p>For now I will continue reading about ZeroMQ and checking out the examples
 to understand more about the messaging patterns. But the most important
-gotchas from this part, are:</p>
-<ul>
-<li>ZeroMQ gives us an abstraction of sockets</li>
-<li>Sockets have types in ZeroMQ</li>
-<li>It provides recipes that can be used in a software architecture by combining socket types</li>
-<li>Each combination will have its own operation mode, limitations, etc</li>
-</ul>
-<p>And finally, a useful quote from their documentation.</p>
-<blockquote>
-<p>Let&rsquo;s recap briefly what ZeroMQ does for you. It delivers blobs of data (messages) to nodes, quickly and efficiently. You can map nodes to threads, processes, or nodes. ZeroMQ gives your applications a single socket API to work with, no matter what the actual transport (like in-process, inter-process, TCP, or multicast). It automatically reconnects to peers as they come and go. It queues messages at both sender and receiver, as needed. It limits these queues to guard processes against running out of memory. It handles socket errors. It does all I/O in background threads. It uses lock-free techniques for talking between nodes, so there are never locks, waits, semaphores, or deadlocks.</p>
-</blockquote>
-<p>
-Categories:
-<a href=/categories/blog.html>blog</a>
-</p>
-<p>
-Tags:
-<a href=/tags/zmq.html>zmq</a>,
-<a href=/tags/python.html>python</a>,
-<a href=/tags/opensource.html>opensource</a>,
-<a href=/tags/programming.html>programming</a>
-</p>
-<aside class=links>
-<a class=previous href=https://kinoshita.eti.br/2019/02/16/creating-a-logo-in-inkscape-process.html>&#171; Previous</a>
-<a class=next href=https://kinoshita.eti.br/2019/04/07/running-fuzzers-to-find-bugs.html>Next &#187;</a>
-</aside>
-</article>
-</main>
-<footer role=contentinfo>
-<ul id=social-media-icons>
-<li>
-<a href=https://www.instagram.com/brunokinoshita/>
-<img src=/assets/icons/instagram.png alt="Instagram link">
-</a>
-</li>
-<li>
-<a href=https://twitter.com/kinow/>
-<img src=/assets/icons/twitter.png alt="Twitter link">
-</a>
-</li>
-<li>
-<a href=https://github.com/kinow/>
-<img src=/assets/icons/github.png alt="GitHub link">
-</a>
-</li>
-<li>
-<a href=/feed.xml>
-<img src=/assets/icons/news.png alt="RSS feed link">
-</a>
-</li>
-</ul>
-</footer>
-</body>
-</html>
+gotchas from this part, are:</p><ul><li>ZeroMQ gives us an abstraction of sockets</li><li>Sockets have types in ZeroMQ</li><li>It provides recipes that can be used in a software architecture by combining socket types</li><li>Each combination will have its own operation mode, limitations, etc</li></ul><p>And finally, a useful quote from their documentation.</p><blockquote><p>Let&rsquo;s recap briefly what ZeroMQ does for you. It delivers blobs of data (messages) to nodes, quickly and efficiently. You can map nodes to threads, processes, or nodes. ZeroMQ gives your applications a single socket API to work with, no matter what the actual transport (like in-process, inter-process, TCP, or multicast). It automatically reconnects to peers as they come and go. It queues messages at both sender and receiver, as needed. It limits these queues to guard processes against running out of memory. It handles socket errors. It does all I/O in background threads. It uses lock-free techniques for talking between nodes, so there are never locks, waits, semaphores, or deadlocks.</p></blockquote><p>Categories:
+<a href=/categories/blog.html>Blog</a></p><p>Tags:
+<a href=/tags/zmq.html>Zmq</a>,
+<a href=/tags/python.html>Python</a>,
+<a href=/tags/opensource.html>Opensource</a>,
+<a href=/tags/programming.html>Programming</a></p><aside class=links><a class=previous href=https://kinoshita.eti.br/2019/02/16/creating-a-logo-in-inkscape-process.html>&#171; Previous</a><a class=next href=https://kinoshita.eti.br/2019/04/07/running-fuzzers-to-find-bugs.html>Next &#187;</a></aside></article></main><footer role=contentinfo><ul id=social-media-icons><li><a href=https://www.instagram.com/brunokinoshita/><img src=/assets/icons/instagram.png alt="Instagram link"></a></li><li><a href=https://twitter.com/kinow/><img src=/assets/icons/twitter.png alt="Twitter link"></a></li><li><a href=https://github.com/kinow/><img src=/assets/icons/github.png alt="GitHub link"></a></li><li><a href=/feed.xml><img src=/assets/icons/news.png alt="RSS feed link"></a></li></ul></footer></body></html>
