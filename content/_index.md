@@ -12,7 +12,7 @@ images:
 <div class="landing-page" style="margin: 0; padding: 0;">
   <img
     id="kinow-photo"
-    src="/assets/photos/about/2023-me-closeup.png"
+    src="/assets/photos/about/2023-me-closeup.webp"
     alt="kinow"
   />
 
@@ -28,7 +28,7 @@ images:
 </div>
 
 <figure class="feature">
-  <img src="/assets/photos/about/255.png" alt="Drawing with studies of hands and feet" style="width: 100%; height: auto;" class="dark-enabled">
+  <img src="/assets/photos/about/255.webp" alt="Drawing with studies of hands and feet" style="width: 100%; height: auto;" class="dark-enabled">
   <figcaption>Studies of hands and feet.</figcaption>
 </figure>
 
@@ -52,7 +52,7 @@ Mainframe, HPC, and cloud. My father,
 had a career working with mainframes at IBM.
 
 <figure class="full">
-  <img src="/assets/photos/about/2015-sao-paulo-clipped.jpg" alt="Photo of Sao Paulo City" style="width: 100%; height: auto;">
+  <img src="/assets/photos/about/2015-sao-paulo-clipped.webp" alt="Photo of Sao Paulo City" style="width: 100%; height: auto;">
   <figcaption>São Paulo city.</figcaption>
 </figure>
 
