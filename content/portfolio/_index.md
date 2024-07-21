@@ -64,8 +64,6 @@ ballpoint pens, brush pens, fountain pens, gouache, watercolors, colored
 pencils, pastels, or markers. Some were created or altered digitally using
 GIMP, Krita, Blender, ClipStudio Paint, or Inkscape.
 
-Images are aligned horizontally, side-by-side. Use the scroll-bar or touch screen.
-
 {{< portfolio >}}
 
 Some images above were commissioned for commercial use. Get in touch if
