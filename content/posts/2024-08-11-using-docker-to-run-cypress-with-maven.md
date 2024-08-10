@@ -7,8 +7,6 @@ tags:
   - containers
   - opensource
   - programming
-images:
-  - '/assets/posts/2024-04-28-logo-java-ring/dev-multitask-100-videos-1.png'
 ---
 
 Apache Jena runs Cypress tests from Maven, which makes running everything
