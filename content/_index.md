@@ -10,11 +10,12 @@ images:
 <h1 aria-hidden="true" class="hidden">About</h1>
 
 <div class="landing-page" style="margin: 0; padding: 0;">
-  <img
-    id="kinow-photo"
-    src="/assets/photos/about/2023-me-closeup.webp"
-    alt="kinow"
-  />
+
+[//]: # (  <img)
+[//]: # (    id="kinow-photo")
+[//]: # (    src="/assets/photos/about/2023-me-closeup.webp")
+[//]: # (    alt="kinow")
+[//]: # (  />)
 
   <p>Hello! I am Bruno P. Kinoshita or <strong>“kinow”</strong>, born and raised in
   Casa Verde, São Paulo, Brazil. A typical <i title="São Paulo city demonym">Paulistano</i>.
@@ -28,8 +29,12 @@ images:
 </div>
 
 <figure class="feature">
-  <img src="/assets/photos/about/255.webp" alt="Drawing with studies of hands and feet" style="width: 100%; height: auto;" class="dark-enabled">
-  <figcaption>Studies of hands and feet.</figcaption>
+  <img
+    src="/assets/photos/about/homem_sentado_01.webp"
+    alt="Pastel drawing from life."
+    style="width: 100%; height: auto;"
+    class="dark-enabled" />
+  <figcaption>Pastel drawing from life.</figcaption>
 </figure>
 
 In arts, I enjoy life drawing, editorial illustration, gouache, watercolors, pastels,
