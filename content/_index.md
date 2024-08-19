@@ -32,8 +32,7 @@ images:
   <img
     src="/assets/photos/about/homem_sentado_01.webp"
     alt="Pastel drawing from life."
-    style="width: 100%; height: auto;"
-    class="dark-enabled" />
+    style="width: 100%; height: auto;" />
   <figcaption>Pastel drawing from life.</figcaption>
 </figure>
 
