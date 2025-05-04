@@ -8,6 +8,9 @@ tags:
 - c++
 - software quality
 title: Jenkins, TestLink and GTest in 5 minutes (or so)
+aliases:
+  - "/2012/10/11/jenkins-testlink-and-gtest-in-5-minutes-or-so/index.html"
+  - "/2012/10/11/jenkins-testlink-and-gtest-in-5-minutes-or-so.html"
 ---
 
 This is a 5 minutes guide on creating a job for a C++ project in <a href="http://www.jenkins-ci.org" title="Jenkins CI">Jenkins</a> with <a href="http://code.google.com/p/googletest" title="GoogleTest">GoogleTest</a> and reporting the test results back to <a href="http://www.teamst.org" title="TestLink">TestLink</a>, with <a href="https://wiki.jenkins-ci.org/display/JENKINS/TestLink+Plugin" title="Jenkins TestLink Plug-in">testlink-plugin</a>. 
