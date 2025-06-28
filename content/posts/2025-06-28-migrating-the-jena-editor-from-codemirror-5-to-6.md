@@ -8,7 +8,7 @@ tags:
   - javascript
   - programming
 images:
-  - '/assets/posts/2025-06-28-migrating-the-jena-editor-from-codemirror-5-to-6/01.png.png'
+  - '/assets/posts/2025-06-28-migrating-the-jena-editor-from-codemirror-5-to-6/01.png'
 ---
 
 On October last year, Dependabot's bot sent Apache Jena [a pull request](https://github.com/apache/jena/pull/2789)
