@@ -1,0 +1,50 @@
+[2025-07-26T16:26:40,984.000000Z] [cwltool] /home/kinow/Development/python/workspace/kinoshita.eti.br/workflows/cwl/subworkflows-rocrate/venv/bin/cwltool --no-match-user --provenance nestedworkflows --orcid https://orcid.org/0000-0001-8250-4074 --full-name Bruno P. Kinoshita --enable-user-provenance --enable-host-provenance nestedworkflows.cwl
+[2025-07-26T16:26:40,986.000000Z] Resolved 'nestedworkflows.cwl' to 'file:///home/kinow/Development/python/workspace/kinoshita.eti.br/workflows/cwl/subworkflows-rocrate/nestedworkflows.cwl'
+[2025-07-26T16:26:41,208.000000Z] [workflow ] start
+[2025-07-26T16:26:41,208.000000Z] [workflow ] starting step create-tar
+[2025-07-26T16:26:41,209.000000Z] [step create-tar] start
+[2025-07-26T16:26:41,209.000000Z] [job create-tar] /tmp/dbeooizf$ /bin/sh \
+    -c \
+    date
+tar cf hello.tar Hello.java
+date
+
+[2025-07-26T16:26:41,216.000000Z] [job create-tar] completed success
+[2025-07-26T16:26:41,216.000000Z] [step create-tar] completed success
+[2025-07-26T16:26:41,216.000000Z] [workflow ] starting step compile
+[2025-07-26T16:26:41,216.000000Z] [step compile] start
+[2025-07-26T16:26:41,216.000000Z] [workflow compile] start
+[2025-07-26T16:26:41,216.000000Z] [workflow compile] starting step untar
+[2025-07-26T16:26:41,217.000000Z] [step untar] start
+[2025-07-26T16:26:41,217.000000Z] [job untar] /tmp/56no_avj$ tar \
+    xf \
+    /tmp/1njorkx_/stgdd7acb54-3989-4b56-a975-856e48ca0064/hello.tar \
+    Hello.java
+[2025-07-26T16:26:41,220.000000Z] [job untar] completed success
+[2025-07-26T16:26:41,220.000000Z] [step untar] completed success
+[2025-07-26T16:26:41,221.000000Z] [workflow compile] starting step argument
+[2025-07-26T16:26:41,221.000000Z] [step argument] start
+[2025-07-26T16:26:41,289.000000Z] [job argument] /tmp/fxtj2cm_$ docker \
+    run \
+    -i \
+    --mount=type=bind,source=/tmp/fxtj2cm_,target=/QWwuBR \
+    --mount=type=bind,source=/tmp/3llvttxb,target=/tmp \
+    --mount=type=bind,source=/tmp/56no_avj/Hello.java,target=/var/lib/cwl/stg30fef968-ae48-4958-a382-df5b032f1df6/Hello.java,readonly \
+    --workdir=/QWwuBR \
+    --read-only=true \
+    --rm \
+    --cidfile=/tmp/42lxjrhn/20250726182641-289839.cid \
+    --env=TMPDIR=/tmp \
+    --env=HOME=/QWwuBR \
+    docker.io/openjdk:9.0.1-11-slim \
+    javac \
+    -d \
+    /QWwuBR \
+    /var/lib/cwl/stg30fef968-ae48-4958-a382-df5b032f1df6/Hello.java
+[2025-07-26T16:26:42,290.000000Z] Ignored error cleaning up docker cidfile: [Errno 2] No such file or directory: '/tmp/42lxjrhn/20250726182641-289839.cid'
+[2025-07-26T16:26:42,292.000000Z] [job argument] completed success
+[2025-07-26T16:26:42,292.000000Z] [step argument] completed success
+[2025-07-26T16:26:42,319.000000Z] [workflow compile] completed success
+[2025-07-26T16:26:42,319.000000Z] [step compile] completed success
+[2025-07-26T16:26:42,319.000000Z] [workflow ] completed success
+[2025-07-26T16:26:42,331.000000Z] Final process status is success

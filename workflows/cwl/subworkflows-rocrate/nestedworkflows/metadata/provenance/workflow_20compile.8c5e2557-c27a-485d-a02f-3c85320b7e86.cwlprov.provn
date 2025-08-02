@@ -1,0 +1,60 @@
+document
+  prefix wfprov <http://purl.org/wf4ever/wfprov#>
+  prefix wfdesc <http://purl.org/wf4ever/wfdesc#>
+  prefix cwlprov <https://w3id.org/cwl/prov#>
+  prefix foaf <http://xmlns.com/foaf/0.1/>
+  prefix schema <http://schema.org/>
+  prefix orcid <https://orcid.org/>
+  prefix id <urn:uuid:>
+  prefix data <urn:hash::sha1:>
+  prefix sha256 <nih:sha-256;>
+  prefix researchobject <arcp://uuid,2ea236af-09bc-4a66-8528-f15c2fdafaef/>
+  prefix metadata <arcp://uuid,2ea236af-09bc-4a66-8528-f15c2fdafaef/metadata/>
+  prefix provenance <arcp://uuid,2ea236af-09bc-4a66-8528-f15c2fdafaef/metadata/provenance/>
+  prefix wf <arcp://uuid,2ea236af-09bc-4a66-8528-f15c2fdafaef/workflow/packed.cwl#>
+  prefix input <arcp://uuid,2ea236af-09bc-4a66-8528-f15c2fdafaef/workflow/primary-job.json#>
+  prefix wf4ever <http://purl.org/wf4ever/wf4ever#>
+  
+  agent(id:ad6ffef2-b1c0-4c7b-9f7f-47601d4cb600)
+  agent(id:ad6ffef2-b1c0-4c7b-9f7f-47601d4cb600, [prov:type='foaf:OnlineAccount', prov:location="ranma", cwlprov:hostname="ranma"])
+  agent(id:ad6ffef2-b1c0-4c7b-9f7f-47601d4cb600, [prov:type='foaf:OnlineAccount', prov:label="kinow", foaf:accountName="kinow"])
+  agent(orcid:0000-0001-8250-4074, [prov:type='prov:Person', prov:type='schema:Person', prov:label="Bruno P. Kinoshita", foaf:name="Bruno P. Kinoshita", foaf:account='id:ad6ffef2-b1c0-4c7b-9f7f-47601d4cb600', schema:name="Bruno P. Kinoshita"])
+  actedOnBehalfOf(id:ad6ffef2-b1c0-4c7b-9f7f-47601d4cb600, orcid:0000-0001-8250-4074, -)
+  agent(id:5598d147-5def-4f8b-a7f9-207010890294, [prov:type='prov:SoftwareAgent', prov:type='wfprov:WorkflowEngine', prov:label="cwltool 3.1.20250715140722"])
+  wasStartedBy(id:5598d147-5def-4f8b-a7f9-207010890294, -, id:ad6ffef2-b1c0-4c7b-9f7f-47601d4cb600, 2025-07-26T18:26:41.194982)
+  activity(id:8c5e2557-c27a-485d-a02f-3c85320b7e86, 2025-07-26T18:26:41.194991, -, [prov:type='wfprov:WorkflowRun', prov:label="Run of workflow/packed.cwl#main"])
+  wasAssociatedWith(id:8c5e2557-c27a-485d-a02f-3c85320b7e86, id:5598d147-5def-4f8b-a7f9-207010890294, wf:main)
+  wasStartedBy(id:8c5e2557-c27a-485d-a02f-3c85320b7e86, -, id:5598d147-5def-4f8b-a7f9-207010890294, 2025-07-26T18:26:41.195015)
+  entity(wf:main, [prov:type='prov:Plan', prov:type='wfdesc:Workflow', prov:label="Prospective provenance"])
+  entity(wf:main/argument, [prov:type='wfdesc:Process', prov:type='prov:Plan'])
+  entity(wf:main, [wfdesc:hasSubProcess='wf:main/argument', prov:label="Prospective provenance"])
+  entity(wf:main/untar, [prov:type='wfdesc:Process', prov:type='prov:Plan'])
+  entity(wf:main, [wfdesc:hasSubProcess='wf:main/untar', prov:label="Prospective provenance"])
+  activity(id:ef51cfb1-4d1e-4b5d-b100-561cf4eb13b5, -, -, [prov:type='wfprov:ProcessRun', prov:label="Run of workflow/packed.cwl#main/untar"])
+  wasAssociatedWith(id:ef51cfb1-4d1e-4b5d-b100-561cf4eb13b5, id:5598d147-5def-4f8b-a7f9-207010890294, wf:main/untar)
+  wasStartedBy(id:ef51cfb1-4d1e-4b5d-b100-561cf4eb13b5, -, id:8c5e2557-c27a-485d-a02f-3c85320b7e86, 2025-07-26T18:26:41.217486)
+  entity(data:eb07afb8bc2f3dceff34c8a8e82e5fe716819d6f, [prov:type='wfprov:Artifact', prov:value="Hello.java"])
+  used(id:ef51cfb1-4d1e-4b5d-b100-561cf4eb13b5, data:eb07afb8bc2f3dceff34c8a8e82e5fe716819d6f, 2025-07-26T18:26:41.217836, [prov:role='wf:main/untar/extractfile'])
+  entity(data:0b1113af8b5da41027fa2b08fc2c0407d4e5b460)
+  entity(id:1546210e-c86f-49e9-ba51-8ad7f55bb772, [prov:type='wfprov:Artifact', prov:type='wf4ever:File', cwlprov:basename="hello.tar", cwlprov:nameroot="hello", cwlprov:nameext=".tar"])
+  specializationOf(id:1546210e-c86f-49e9-ba51-8ad7f55bb772, data:0b1113af8b5da41027fa2b08fc2c0407d4e5b460)
+  used(id:ef51cfb1-4d1e-4b5d-b100-561cf4eb13b5, id:1546210e-c86f-49e9-ba51-8ad7f55bb772, 2025-07-26T18:26:41.217923, [prov:role='wf:main/untar/tarfile'])
+  entity(data:93035905e94e150874f5a881d39f3c5c6378dd38, [prov:type='wfprov:Artifact'])
+  entity(id:e01ad6b1-deb5-44ba-98f8-290248b140b3, [prov:type='wfprov:Artifact', prov:type='wf4ever:File', cwlprov:basename="Hello.java", cwlprov:nameroot="Hello", cwlprov:nameext=".java"])
+  specializationOf(id:e01ad6b1-deb5-44ba-98f8-290248b140b3, data:93035905e94e150874f5a881d39f3c5c6378dd38)
+  wasGeneratedBy(id:e01ad6b1-deb5-44ba-98f8-290248b140b3, id:ef51cfb1-4d1e-4b5d-b100-561cf4eb13b5, 2025-07-26T18:26:41.220166, [prov:role='wf:main/untar/example_out'])
+  wasEndedBy(id:ef51cfb1-4d1e-4b5d-b100-561cf4eb13b5, -, id:8c5e2557-c27a-485d-a02f-3c85320b7e86, 2025-07-26T18:26:41.220163)
+  activity(id:792dd1db-ea21-4ca4-b296-2cf158a9d04c, -, -, [prov:type='wfprov:ProcessRun', prov:label="Run of workflow/packed.cwl#main/argument"])
+  wasAssociatedWith(id:792dd1db-ea21-4ca4-b296-2cf158a9d04c, id:5598d147-5def-4f8b-a7f9-207010890294, wf:main/argument)
+  wasStartedBy(id:792dd1db-ea21-4ca4-b296-2cf158a9d04c, -, id:8c5e2557-c27a-485d-a02f-3c85320b7e86, 2025-07-26T18:26:41.221681)
+  agent(id:7cc22820-4843-4540-8e78-d65db2126195, [prov:type='prov:SoftwareAgent', cwlprov:image="docker.io/openjdk:9.0.1-11-slim", prov:label="Container execution of image docker.io/openjdk:9.0.1-11-slim"])
+  wasAssociatedWith(id:792dd1db-ea21-4ca4-b296-2cf158a9d04c, id:7cc22820-4843-4540-8e78-d65db2126195, -)
+  used(id:792dd1db-ea21-4ca4-b296-2cf158a9d04c, id:e01ad6b1-deb5-44ba-98f8-290248b140b3, 2025-07-26T18:26:41.290062, [prov:role='wf:main/argument/src'])
+  entity(data:39e3219327347c05aa3e82236f83aa6d77fe6bfd, [prov:type='wfprov:Artifact'])
+  entity(id:9eaaca5a-4891-416b-b32d-ade97ec720c3, [prov:type='wfprov:Artifact', prov:type='wf4ever:File', cwlprov:basename="Hello.class", cwlprov:nameroot="Hello", cwlprov:nameext=".class"])
+  specializationOf(id:9eaaca5a-4891-416b-b32d-ade97ec720c3, data:39e3219327347c05aa3e82236f83aa6d77fe6bfd)
+  wasGeneratedBy(id:9eaaca5a-4891-416b-b32d-ade97ec720c3, id:792dd1db-ea21-4ca4-b296-2cf158a9d04c, 2025-07-26T18:26:42.291981, [prov:role='wf:main/argument/classfile'])
+  wasEndedBy(id:792dd1db-ea21-4ca4-b296-2cf158a9d04c, -, id:8c5e2557-c27a-485d-a02f-3c85320b7e86, 2025-07-26T18:26:42.291977)
+  wasGeneratedBy(id:9eaaca5a-4891-416b-b32d-ade97ec720c3, id:8c5e2557-c27a-485d-a02f-3c85320b7e86, 2025-07-26T18:26:42.292724, [prov:role='wf:main/workflow%20compile/classout'])
+  wasEndedBy(id:8c5e2557-c27a-485d-a02f-3c85320b7e86, -, id:5598d147-5def-4f8b-a7f9-207010890294, 2025-07-26T18:26:42.292807)
+endDocument
