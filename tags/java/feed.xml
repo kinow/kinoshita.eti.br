@@ -1,4 +1,16 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Java on kinow</title><link>https://kinoshita.eti.br/tags/java.html</link><description>Recent content in Java on kinow</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><copyright>Bruno P. Kinoshita All rights reserved</copyright><lastBuildDate>Thu, 31 Jul 2025 19:17:53 +0200</lastBuildDate><atom:link href="https://kinoshita.eti.br/tags/java/feed.xml" rel="self" type="application/rss+xml"/><item><title>Notes on Apache Jena StreamRDFWriter</title><link>https://kinoshita.eti.br/2020/04/11/notes-on-apache-jena-streamrdfwriter.html</link><pubDate>Sat, 11 Apr 2020 00:00:00 +0000</pubDate><guid>https://kinoshita.eti.br/2020/04/11/notes-on-apache-jena-streamrdfwriter.html</guid><description>&lt;p>&lt;a href="https://jena.apache.org/">Apache Jena&lt;/a> project is like a box full of interesting things—at least if you love programming. One of its many features, is &lt;strong>stream processing&lt;/strong>.&lt;/p>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Java on kinow</title><link>https://kinoshita.eti.br/tags/java.html</link><description>Recent content in Java on kinow</description><generator>Hugo</generator><language>en-us</language><copyright>Bruno P. Kinoshita All rights reserved</copyright><lastBuildDate>Sat, 02 Aug 2025 23:21:27 +0200</lastBuildDate><atom:link href="https://kinoshita.eti.br/tags/java/feed.xml" rel="self" type="application/rss+xml"/><item><title>Loading JavaScript in Jenkins Active Choices parameters</title><link>https://kinoshita.eti.br/2025/08/02/loading-javascript-in-jenkins-active-choices-parameters.html</link><pubDate>Sat, 02 Aug 2025 21:59:52 +0300</pubDate><guid>https://kinoshita.eti.br/2025/08/02/loading-javascript-in-jenkins-active-choices-parameters.html</guid><description>&lt;p>&lt;strong>Be aware that what&amp;rsquo;s described here may introduce a security risk to your
+environment, and you must only do it if you really know what you are doing.
+You will be breaking a few security fixes of Jenkins, such as&lt;/strong>:&lt;/p>
+&lt;ul>
+&lt;li>SECURITY-440 &lt;a href="https://github.com/jenkinsci/active-choices-plugin/commit/720af532b0a2c69465824af5735be2859d7c3492">https://github.com/jenkinsci/active-choices-plugin/commit/720af532b0a2c69465824af5735be2859d7c3492&lt;/a>&lt;/li>
+&lt;li>Jenkins XSS prevention &lt;a href="https://wiki.jenkins-ci.org/JENKINS/Jelly-and-XSS-prevention.html">https://wiki.jenkins-ci.org/JENKINS/Jelly-and-XSS-prevention.html&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;p>Some years ago, the Jenkins Active Choices plug-in had a security bug
+reported as a Groovy script could have malicious code that would trigger
+an XSS attack in Jenkins (i.e. run some arbitrary JS code in Jenkins).
+The plug-in got removed from the update site until we fixed it, and the
+solution was to sanitize the output of the Groovy script used to render
+the Jenkins parameters.&lt;/p></description></item><item><title>Notes on Apache Jena StreamRDFWriter</title><link>https://kinoshita.eti.br/2020/04/11/notes-on-apache-jena-streamrdfwriter.html</link><pubDate>Sat, 11 Apr 2020 00:00:00 +0000</pubDate><guid>https://kinoshita.eti.br/2020/04/11/notes-on-apache-jena-streamrdfwriter.html</guid><description>&lt;p>&lt;a href="https://jena.apache.org/">Apache Jena&lt;/a> project is like a box full of interesting things—at least if you love programming. One of its many features, is &lt;strong>stream processing&lt;/strong>.&lt;/p>
 &lt;p>The graphs in Jena may contain very large datasets, with giga- or terabytes. Some queries may be very large, and then sending the whole result would be simply impracticable.&lt;/p>
 &lt;p>Instead, the data will go through ARQ. ARQ is a query engine for Jena that supports SPARQL. There is one piece of code there that I found interesting while reviewing a small pull request: &lt;a href="https://github.com/apache/jena/blob/cbdba5edb47041a4181a00bd7660e5d4c212530a/jena-arq/src/main/java/org/apache/jena/riot/system/StreamRDFWriter.java">&lt;code>org.apache.jena.riot.system.StreamRDFWriter&lt;/code>&lt;/a>.&lt;/p>
 &lt;p>It is responsible for writing graph data in a streaming fashion. (See &lt;a href="https://en.wikipedia.org/wiki/Stream_processing">stream processing&lt;/a> for programming models and more.)&lt;/p>
@@ -52,32 +64,225 @@ these articles are more brain-dumps, used by myself for later reference.&lt;/p>
  />
  &lt;figcaption>&lt;/figcaption>
 
-&lt;/figure></description></item><item><title>Learning more about SPARQL and Jena internals</title><link>https://kinoshita.eti.br/2018/04/28/learning-more-about-sparql-and-jena-internals.html</link><pubDate>Sat, 28 Apr 2018 00:00:00 +0000</pubDate><guid>https://kinoshita.eti.br/2018/04/28/learning-more-about-sparql-and-jena-internals.html</guid><description>O Corvo O Corvo Recently a pull request for Apache Jena that I started three years ago got merged. Even though it has been three years since that pull request, there are still many parts of the project code base that I am not familiar with.
-And not only the code, but there are also many concepts about SPARQL, other standards used in Jena, and internals about triple stores.</description></item><item><title>Exif Odd Offsets</title><link>https://kinoshita.eti.br/2017/12/25/exif-odd-offsets.html</link><pubDate>Mon, 25 Dec 2017 00:00:00 +0000</pubDate><guid>https://kinoshita.eti.br/2017/12/25/exif-odd-offsets.html</guid><description>A file format like JPEG may contain metadata in JFIF, Exif, or a vendor proprietary format. The Exif format is based - or uses parts of - on the TIFF format.
-Within an Exif metadata block, you should see directories, with several entries. The entries have fields like description, value, and also an offset. The offset indicates the offset to the next entry.
-The Exif specification defines that implementers must make sure to keep the offset an even number, within 4 bytes.</description></item><item><title>Remember to synchronize when iterating streams from a synchronized Collection</title><link>https://kinoshita.eti.br/2017/12/03/remember-to-synchronize-when-iterating-streams-from-a-synchronized-collection.html</link><pubDate>Sun, 03 Dec 2017 00:00:00 +0000</pubDate><guid>https://kinoshita.eti.br/2017/12/03/remember-to-synchronize-when-iterating-streams-from-a-synchronized-collection.html</guid><description>When iterating collections created via Collections.synchronizedList for instance, you are required to obtain a lock on the actual list before doing so. So you normally end up with code similar to:
-List list = Collections.synchronizedList(new ArrayList()); synchronized (list) { Iterator i = list.iterator(); // Must be in synchronized block while (i.hasNext()) foo(i.next()); } This requirement is documented in the javadocs.
-Since lambdas and streams are being more widely used, it is important to remind that when iterating via a stream we also need to obtain a lock on the synchronized collection created.</description></item><item><title>Watch out for Locales when using NumberFormat with currencies</title><link>https://kinoshita.eti.br/2017/12/02/watch-out-for-locales-when-using-numberformat-with-currencies.html</link><pubDate>Sat, 02 Dec 2017 00:00:00 +0000</pubDate><guid>https://kinoshita.eti.br/2017/12/02/watch-out-for-locales-when-using-numberformat-with-currencies.html</guid><description>In Java you have the NumberFormatException to help you formatting and parsing numbers for any locale. Said that, here&amp;rsquo;s some code.
-BigDecimal negative = new BigDecimal(&amp;#34;-1234.56&amp;#34;); DecimalFormat nf = (DecimalFormat) NumberFormat.getCurrencyInstance(Locale.UK); String formattedNegative = nf.format(negative); System.out.println(formattedNegative); The output for this code is -£1,234.56. That&amp;rsquo;s expected, as the locale is set to UK, so the currency symbol used is for British Pounds. And as the number is negative, you get that minus sign as a prefix.</description></item><item><title>Using formatter exclusions with Eclipse</title><link>https://kinoshita.eti.br/2017/11/06/using-formatter-exclusions-with-eclipse.html</link><pubDate>Mon, 06 Nov 2017 00:00:00 +0000</pubDate><guid>https://kinoshita.eti.br/2017/11/06/using-formatter-exclusions-with-eclipse.html</guid><description>Sometimes when you are formatting your code in Eclipse, you may want to prevent some parts of the code from being formatted. Especially when using Java 8 lambdas and optionals.
-Here&amp;rsquo;s some code before being formatted by Eclipse&amp;rsquo;s default formatter rules.
-Code adapted from: blog post Java d&amp;rsquo;eau ‐ Java 8: Streams in Hibernate and Beyond
-session.createQuery(&amp;#34;SELECT h FROM Hare h&amp;#34;, Hare.class) .stream() .filter(h -&amp;gt; h.getId() == 1) .map(Hare::getName) .forEach(System.out::println); Then after formatting.</description></item><item><title>Finding Base64 implementations in Apache Software Foundation projects</title><link>https://kinoshita.eti.br/2017/09/01/finding-base64-implementations-in-apache-software-foundation-projects.html</link><pubDate>Fri, 01 Sep 2017 00:00:00 +0000</pubDate><guid>https://kinoshita.eti.br/2017/09/01/finding-base64-implementations-in-apache-software-foundation-projects.html</guid><description>NZ Grey Warbler (riroriro) New Zealand Grey Warbler (riroriro) Some time ago while working in one of the many projects in the Apache Software Foundation (Apache Commons FileUpload if I remember well), I noticed that it had a Base64 implementation. What called my attention was that the project not using the Apache Commons Codec Base64 implementation.
-While Apache Commons&amp;rsquo; mission is to create components that can be re-used across ASF projects, and also by other projects not necessarily under the ASF, it is understandable that some projects prefer to keep its dependencies to a minimum.</description></item><item><title>Two other Maven Plug-ins: impsort and deptools</title><link>https://kinoshita.eti.br/2017/08/12/two-other-maven-plug-ins-impsort-and-deptools.html</link><pubDate>Sat, 12 Aug 2017 00:00:00 +0000</pubDate><guid>https://kinoshita.eti.br/2017/08/12/two-other-maven-plug-ins-impsort-and-deptools.html</guid><description>Last [week I wrote]({% post_url 2017-08-06-checking-for-transitive-dependencies-use-with-maven-enforcer-plugin %}) about the ImmobilienScout24/illegal-transitive-dependency-check rule for Maven Enforcer Plug-in. There are two other Maven Plug-ins that can be useful.
-mbknor/deptools The mbknor/deptools is another rule for the Maven Enforcer Plug-in. It will scan your project dependency tree, looking for transitive dependencies. Whenever it finds a transitive dependency, it will keep track of the versions. And if, because of the way your dependencies and transitive dependencies are organised, you end up with a version that is not the newest, the build will fail.</description></item><item><title>Checking for transitive dependencies use with Maven Enforcer Plug-in</title><link>https://kinoshita.eti.br/2017/08/06/checking-for-transitive-dependencies-use-with-maven-enforcer-plug-in.html</link><pubDate>Sun, 06 Aug 2017 00:00:00 +0000</pubDate><guid>https://kinoshita.eti.br/2017/08/06/checking-for-transitive-dependencies-use-with-maven-enforcer-plug-in.html</guid><description>Maven Enforcer Plug-in “provides goals to control certain environmental constraints such as Maven version, JDK version and OS family along with many more built-in rules and user created rules”. There are several libraries that provide custom rules, or you can write your own.
-One of these libraries is ImmobilienScout24/illegal-transitive-dependency-check, “an additional rule for the maven-enforcer-plugin that checks for classes referenced via transitive Maven dependencies”.
-With the following example:
-&amp;lt;project&amp;gt; ... &amp;lt;build&amp;gt; &amp;lt;plugins&amp;gt; &amp;lt;plugin&amp;gt; &amp;lt;groupId&amp;gt;org.</description></item><item><title>Backward compatibility and switch statement with constant expressions</title><link>https://kinoshita.eti.br/2017/06/10/backward-compatibility-and-switch-statement-with-constant-expressions.html</link><pubDate>Sat, 10 Jun 2017 00:00:00 +0000</pubDate><guid>https://kinoshita.eti.br/2017/06/10/backward-compatibility-and-switch-statement-with-constant-expressions.html</guid><description>Maintaining Open Source software can be challenging. Making sure you keep backward compatibility (not only binary) can be even more challenging. Apache Commons Lang 3.6 release is happening right now thanks to Benedikt Ritter, and it is on its fourth Release Candidate (i.e. RC4).
-A previous RC2 was cancelled due to IBM JDK 8 compatibility, more specifically the lazy initialization of ArrayList&amp;rsquo;s seems to be different in Oracle JDK and IBM JDK.</description></item><item><title>Apache Commons Text LookupTranslator</title><link>https://kinoshita.eti.br/2017/06/02/apache-commons-text-lookuptranslator.html</link><pubDate>Fri, 02 Jun 2017 00:00:00 +0000</pubDate><guid>https://kinoshita.eti.br/2017/06/02/apache-commons-text-lookuptranslator.html</guid><description>Apache Commons Text includes several algorithms for text processing. Today&amp;rsquo;s post is about one of the classes available since the 1.0 release, the LookupTranslator.
-It is used to translate text using a lookup table. Most users won&amp;rsquo;t necessarily be - knowingly - using this class. Most likely, they will use the StringEscapeUtils, which contains methods to escape and unescape CSV, JSON, XML, Java, and EcmaScript.
-String original = &amp;#34;He didn&amp;#39;t say, \&amp;#34;stop!</description></item><item><title>Some links related to Apache Commons Text</title><link>https://kinoshita.eti.br/2017/05/28/some-links-related-to-apache-commons-text.html</link><pubDate>Sun, 28 May 2017 00:00:00 +0000</pubDate><guid>https://kinoshita.eti.br/2017/05/28/some-links-related-to-apache-commons-text.html</guid><description>Apache Commons Text is one of the most recent new components in Apache Commons. It &amp;ldquo;is a library focused on algorithms working on strings&amp;rdquo;. I recently collected some links under a bookmark folder that are in some way related to the project. In case you are interested, check some of the links below.
-Morgan Wahl Text is More Complicated Than You Think Comparing and Sorting Unicode PyCon 2017 Q: test [text] to check if our methods are OK with some examples in this talk) Q: Canonical Decomposition, and code points comparisons; are we doing it?</description></item><item><title>When you don't realize you need a Comparable</title><link>https://kinoshita.eti.br/2017/05/15/when-you-dont-realize-you-need-a-comparable.html</link><pubDate>Mon, 15 May 2017 00:00:00 +0000</pubDate><guid>https://kinoshita.eti.br/2017/05/15/when-you-dont-realize-you-need-a-comparable.html</guid><description>&lt;p>[In 2012, I wrote]({% post_url 2012-10-20-replacing-a-hashset-with-a-bitset %}) about how you always learn something
+&lt;/figure></description></item><item><title>Learning more about SPARQL and Jena internals</title><link>https://kinoshita.eti.br/2018/04/28/learning-more-about-sparql-and-jena-internals.html</link><pubDate>Sat, 28 Apr 2018 00:00:00 +0000</pubDate><guid>https://kinoshita.eti.br/2018/04/28/learning-more-about-sparql-and-jena-internals.html</guid><description>&lt;p style='text-align: center;'>
+
+
+
+&lt;figure class="feature">
+
+ &lt;img
+ src='https://kinoshita.eti.br/assets/posts/2018-04-28-learning-more-about-sparql-and-jena-internals/ocorvo.jpg'
+ alt='O Corvo'
+ title='O Corvo'
+ style='display: inline; width: 600px;'
+ width=''
+ height=''
+ />
+ &lt;figcaption>O Corvo&lt;/figcaption>
+
+&lt;/figure>
+
+
+&lt;br/>
+&lt;small>&lt;a href="https://kinow.deviantart.com/art/O-Corvo-742473382">O Corvo&lt;/a>&lt;/small>
+&lt;/p>
+&lt;p>Recently a &lt;a href="https://github.com/apache/jena/pull/114/">pull request&lt;/a> for Apache Jena
+that I started three years ago got merged. Even though it has been three years since
+that pull request, there are still many parts of the project code base that I am
+not familiar with.&lt;/p>
+&lt;p>And not only the code, but there are also many concepts about SPARQL, other standards
+used in Jena, and internals about triple stores.&lt;/p></description></item><item><title>Exif Odd Offsets</title><link>https://kinoshita.eti.br/2017/12/25/exif-odd-offsets.html</link><pubDate>Mon, 25 Dec 2017 00:00:00 +0000</pubDate><guid>https://kinoshita.eti.br/2017/12/25/exif-odd-offsets.html</guid><description>&lt;p>A file format like JPEG may contain metadata in JFIF, &lt;a href="https://en.wikipedia.org/wiki/Exif">Exif&lt;/a>,
+or a vendor proprietary format. The Exif format is based - or uses parts of - on the TIFF format.&lt;/p>
+&lt;p>Within an Exif metadata block, you should see directories, with several entries. The entries have fields
+like description, value, and also an offset. The offset indicates the offset to the next entry.&lt;/p>
+&lt;p>The Exif specification defines that &lt;strong>implementers must make sure to keep the offset an even number,
+within 4 bytes&lt;/strong>.&lt;/p></description></item><item><title>Remember to synchronize when iterating streams from a synchronized Collection</title><link>https://kinoshita.eti.br/2017/12/03/remember-to-synchronize-when-iterating-streams-from-a-synchronized-collection.html</link><pubDate>Sun, 03 Dec 2017 00:00:00 +0000</pubDate><guid>https://kinoshita.eti.br/2017/12/03/remember-to-synchronize-when-iterating-streams-from-a-synchronized-collection.html</guid><description>&lt;p>When iterating collections created via &lt;code>Collections.synchronizedList&lt;/code> for instance, you are required
+to obtain a lock on the actual list before doing so. So you normally end up with code similar to:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-java" data-lang="java">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#000">List&lt;/span> &lt;span style="color:#000">list&lt;/span> &lt;span style="color:#000">=&lt;/span> &lt;span style="color:#000">Collections&lt;/span>.&lt;span style="color:#836c28">synchronizedList&lt;/span>(&lt;span style="color:#a90d91">new&lt;/span> &lt;span style="color:#000">ArrayList&lt;/span>());
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a90d91">synchronized&lt;/span> (&lt;span style="color:#000">list&lt;/span>) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#000">Iterator&lt;/span> &lt;span style="color:#000">i&lt;/span> &lt;span style="color:#000">=&lt;/span> &lt;span style="color:#000">list&lt;/span>.&lt;span style="color:#836c28">iterator&lt;/span>(); &lt;span style="color:#177500">// Must be in synchronized block&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a90d91">while&lt;/span> (&lt;span style="color:#000">i&lt;/span>.&lt;span style="color:#836c28">hasNext&lt;/span>())
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#000">foo&lt;/span>(&lt;span style="color:#000">i&lt;/span>.&lt;span style="color:#836c28">next&lt;/span>());
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>This requirement is &lt;a href="https://docs.oracle.com/javase/9/docs/api/java/util/Collections.html#synchronizedList-java.util.List-">documented in the javadocs&lt;/a>.&lt;/p>
+&lt;p>Since lambdas and streams are being more widely used, it is important to remind
+that when iterating via a stream we also need to obtain a lock on the synchronized
+collection created.&lt;/p></description></item><item><title>Watch out for Locales when using NumberFormat with currencies</title><link>https://kinoshita.eti.br/2017/12/02/watch-out-for-locales-when-using-numberformat-with-currencies.html</link><pubDate>Sat, 02 Dec 2017 00:00:00 +0000</pubDate><guid>https://kinoshita.eti.br/2017/12/02/watch-out-for-locales-when-using-numberformat-with-currencies.html</guid><description>&lt;p>In Java you have the &lt;a href="https://docs.oracle.com/javase/9/docs/api/java/text/NumberFormat.html">NumberFormatException&lt;/a>
+to help you formatting and parsing numbers for any locale. Said that, here&amp;rsquo;s some code.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-shell" data-lang="shell">&lt;span style="display:flex;">&lt;span>BigDecimal &lt;span style="color:#000">negative&lt;/span> &lt;span style="color:#000">=&lt;/span> new BigDecimal&lt;span style="color:#000">(&lt;/span>&lt;span style="color:#c41a16">&amp;#34;-1234.56&amp;#34;&lt;/span>&lt;span style="color:#000">)&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>DecimalFormat &lt;span style="color:#000">nf&lt;/span> &lt;span style="color:#000">=&lt;/span> &lt;span style="color:#000">(&lt;/span>DecimalFormat&lt;span style="color:#000">)&lt;/span> NumberFormat.getCurrencyInstance&lt;span style="color:#000">(&lt;/span>Locale.UK&lt;span style="color:#000">)&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>String &lt;span style="color:#000">formattedNegative&lt;/span> &lt;span style="color:#000">=&lt;/span> nf.format&lt;span style="color:#000">(&lt;/span>negative&lt;span style="color:#000">)&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>System.out.println&lt;span style="color:#000">(&lt;/span>formattedNegative&lt;span style="color:#000">)&lt;/span>;
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>The output for this code is &lt;strong>-£1,234.56&lt;/strong>. That&amp;rsquo;s expected, as the locale is set to
+UK, so the currency symbol used is for British Pounds. And as the number is negative, you
+get that minus sign as a prefix. For Japanese locale you&amp;rsquo;d get &lt;strong>-￥1,235&lt;/strong>, and for Brazilian
+locale you&amp;rsquo;d get &lt;strong>-R$ 1.234,56&lt;/strong>.&lt;/p></description></item><item><title>Using formatter exclusions with Eclipse</title><link>https://kinoshita.eti.br/2017/11/06/using-formatter-exclusions-with-eclipse.html</link><pubDate>Mon, 06 Nov 2017 00:00:00 +0000</pubDate><guid>https://kinoshita.eti.br/2017/11/06/using-formatter-exclusions-with-eclipse.html</guid><description>&lt;p>Sometimes when you are formatting your code in Eclipse, you may want to prevent
+some parts of the code from being formatted. Especially when using Java 8 lambdas
+and optionals.&lt;/p>
+&lt;p>Here&amp;rsquo;s some code before being formatted by Eclipse&amp;rsquo;s default formatter rules.&lt;/p>
+&lt;p>&lt;small>Code adapted from: blog post &lt;a href="http://javadeau.lawesson.se/2016/10/java-8-streams-in-hibernate-and-beyond.html">&lt;i>Java d&amp;rsquo;eau ‐ Java 8: Streams in Hibernate and Beyond&lt;/i>&lt;/a>&lt;/small>&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-java" data-lang="java">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#000">session&lt;/span>.&lt;span style="color:#836c28">createQuery&lt;/span>(&lt;span style="color:#c41a16">&amp;#34;SELECT h FROM Hare h&amp;#34;&lt;/span>, &lt;span style="color:#000">Hare&lt;/span>.&lt;span style="color:#836c28">class&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> .&lt;span style="color:#836c28">stream&lt;/span>()
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> .&lt;span style="color:#836c28">filter&lt;/span>(&lt;span style="color:#000">h&lt;/span> &lt;span style="color:#000">-&amp;gt;&lt;/span> &lt;span style="color:#000">h&lt;/span>.&lt;span style="color:#836c28">getId&lt;/span>() &lt;span style="color:#000">==&lt;/span> &lt;span style="color:#000">1&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> .&lt;span style="color:#836c28">map&lt;/span>(&lt;span style="color:#000">Hare&lt;/span>::&lt;span style="color:#000">getName&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> .&lt;span style="color:#836c28">forEach&lt;/span>(&lt;span style="color:#000">System&lt;/span>.&lt;span style="color:#836c28">out&lt;/span>::&lt;span style="color:#000">println&lt;/span>);
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Then after formatting.&lt;/p></description></item><item><title>Finding Base64 implementations in Apache Software Foundation projects</title><link>https://kinoshita.eti.br/2017/09/01/finding-base64-implementations-in-apache-software-foundation-projects.html</link><pubDate>Fri, 01 Sep 2017 00:00:00 +0000</pubDate><guid>https://kinoshita.eti.br/2017/09/01/finding-base64-implementations-in-apache-software-foundation-projects.html</guid><description>&lt;p style='text-align: center;'>
+&lt;a href="https://kinow.deviantart.com/art/Grey-Warbler-702099183?ga_submit_new=10%3A1504263729">
+
+
+
+&lt;figure class="feature">
+
+ &lt;img
+ src='https://kinoshita.eti.br/assets/posts/2017-09-01-finding-base64-implementations-in-apache-software-foundation-projects/GreyWarbler.png'
+ alt='NZ Grey Warbler (riroriro)'
+ title='NZ Grey Warbler (riroriro)'
+ style='display: inline'
+ width=''
+ height=''
+ />
+ &lt;figcaption>NZ Grey Warbler (riroriro)&lt;/figcaption>
+
+&lt;/figure>
+
+
+&lt;/a>
+&lt;br/>
+&lt;small>&lt;a href="http://nzbirdsonline.org.nz/species/grey-warbler">New Zealand Grey Warbler (riroriro)&lt;/a>&lt;/small>
+&lt;/p>
+&lt;p>Some time ago while working in one of the many projects in the Apache Software Foundation (Apache Commons FileUpload if I remember well), I noticed that it had a Base64 implementation. What called my attention was that the project not using the &lt;a href="https://github.com/apache/commons-codec/blob/c18b1923b3c1f897c7935d94fb9e443eabfff897/src/main/java/org/apache/commons/codec/binary/Base64.java">Apache Commons Codec&lt;/a> Base64 implementation.&lt;/p>
+&lt;p>While Apache Commons&amp;rsquo; mission is to create components that can be re-used across ASF projects, and also by other projects not necessarily under the ASF, it is understandable that some projects prefer to keep its dependencies to a minimum. It is normally a good software engineering practice to carefully manage your dependencies.&lt;/p></description></item><item><title>Two other Maven Plug-ins: impsort and deptools</title><link>https://kinoshita.eti.br/2017/08/12/two-other-maven-plug-ins-impsort-and-deptools.html</link><pubDate>Sat, 12 Aug 2017 00:00:00 +0000</pubDate><guid>https://kinoshita.eti.br/2017/08/12/two-other-maven-plug-ins-impsort-and-deptools.html</guid><description>&lt;p>Last [week I wrote]({% post_url 2017-08-06-checking-for-transitive-dependencies-use-with-maven-enforcer-plugin %})
+about the &lt;a href="https://github.com/ImmobilienScout24/illegal-transitive-dependency-check">ImmobilienScout24/illegal-transitive-dependency-check&lt;/a>
+rule for Maven Enforcer Plug-in. There are two other Maven Plug-ins that can be useful.&lt;/p>
+&lt;h3 id="mbknordeptools">mbknor/deptools&lt;/h3>
+&lt;p>The &lt;a href="https://github.com/mbknor/deptools">mbknor/deptools&lt;/a> is another rule for the Maven Enforcer Plug-in. It will scan your project dependency tree, looking for transitive dependencies. Whenever it finds a transitive dependency, it will keep track of the versions. And if, because of the way your dependencies and transitive dependencies are organised, you end up with a version that is not the newest, the build will fail.&lt;/p></description></item><item><title>Checking for transitive dependencies use with Maven Enforcer Plug-in</title><link>https://kinoshita.eti.br/2017/08/06/checking-for-transitive-dependencies-use-with-maven-enforcer-plug-in.html</link><pubDate>Sun, 06 Aug 2017 00:00:00 +0000</pubDate><guid>https://kinoshita.eti.br/2017/08/06/checking-for-transitive-dependencies-use-with-maven-enforcer-plug-in.html</guid><description>&lt;p>&lt;a href="http://maven.apache.org/enforcer/maven-enforcer-plugin/">Maven Enforcer Plug-in&lt;/a> “provides goals to control certain environmental constraints such as Maven version, JDK version and OS family along with many more built-in rules and user created rules”. There are several libraries that provide custom rules, or you can write your own.&lt;/p>
+&lt;p>One of these libraries is &lt;a href="https://github.com/ImmobilienScout24/illegal-transitive-dependency-check">ImmobilienScout24/illegal-transitive-dependency-check&lt;/a>, “an additional rule for the maven-enforcer-plugin that checks for classes referenced via transitive Maven dependencies”.&lt;/p>
+&lt;p>With the following example:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-xml" data-lang="xml">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#000">&amp;lt;project&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ...
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#000">&amp;lt;build&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#000">&amp;lt;plugins&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#000">&amp;lt;plugin&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#000">&amp;lt;groupId&amp;gt;&lt;/span>org.apache.maven.plugins&lt;span style="color:#000">&amp;lt;/groupId&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#000">&amp;lt;artifactId&amp;gt;&lt;/span>maven-enforcer-plugin&lt;span style="color:#000">&amp;lt;/artifactId&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#000">&amp;lt;version&amp;gt;&lt;/span>1.3.1&lt;span style="color:#000">&amp;lt;/version&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#000">&amp;lt;dependencies&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#000">&amp;lt;dependency&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#000">&amp;lt;groupId&amp;gt;&lt;/span>de.is24.maven.enforcer.rules&lt;span style="color:#000">&amp;lt;/groupId&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#000">&amp;lt;artifactId&amp;gt;&lt;/span>illegal-transitive-dependency-check&lt;span style="color:#000">&amp;lt;/artifactId&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#000">&amp;lt;version&amp;gt;&lt;/span>1.7.4&lt;span style="color:#000">&amp;lt;/version&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#000">&amp;lt;/dependency&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#000">&amp;lt;/dependencies&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#000">&amp;lt;executions&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#000">&amp;lt;execution&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#000">&amp;lt;id&amp;gt;&lt;/span>enforce&lt;span style="color:#000">&amp;lt;/id&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#000">&amp;lt;phase&amp;gt;&lt;/span>verify&lt;span style="color:#000">&amp;lt;/phase&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#000">&amp;lt;goals&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#000">&amp;lt;goal&amp;gt;&lt;/span>enforce&lt;span style="color:#000">&amp;lt;/goal&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#000">&amp;lt;/goals&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#000">&amp;lt;configuration&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#000">&amp;lt;rules&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#000">&amp;lt;illegalTransitiveDependencyCheck&lt;/span> &lt;span style="color:#836c28">implementation=&lt;/span>&lt;span style="color:#c41a16">&amp;#34;de.is24.maven.enforcer.rules.IllegalTransitiveDependencyCheck&amp;#34;&lt;/span>&lt;span style="color:#000">&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#000">&amp;lt;reportOnly&amp;gt;&lt;/span>false&lt;span style="color:#000">&amp;lt;/reportOnly&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#000">&amp;lt;useClassesFromLastBuild&amp;gt;&lt;/span>true&lt;span style="color:#000">&amp;lt;/useClassesFromLastBuild&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#000">&amp;lt;suppressTypesFromJavaRuntime&amp;gt;&lt;/span>true&lt;span style="color:#000">&amp;lt;/suppressTypesFromJavaRuntime&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#000">&amp;lt;listMissingArtifacts&amp;gt;&lt;/span>false&lt;span style="color:#000">&amp;lt;/listMissingArtifacts&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#000">&amp;lt;/illegalTransitiveDependencyCheck&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#000">&amp;lt;/rules&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#000">&amp;lt;/configuration&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#000">&amp;lt;/execution&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#000">&amp;lt;/executions&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#000">&amp;lt;/plugin&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#000">&amp;lt;/plugins&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#000">&amp;lt;/build&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ...
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#000">&amp;lt;/project&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Running &lt;code>mvn clean verify&lt;/code> will execute the Maven Enforcer Plug-in &lt;code>enforce&lt;/code> goal, which will call the illegal transitive dependency check.&lt;/p></description></item><item><title>Backward compatibility and switch statement with constant expressions</title><link>https://kinoshita.eti.br/2017/06/10/backward-compatibility-and-switch-statement-with-constant-expressions.html</link><pubDate>Sat, 10 Jun 2017 00:00:00 +0000</pubDate><guid>https://kinoshita.eti.br/2017/06/10/backward-compatibility-and-switch-statement-with-constant-expressions.html</guid><description>&lt;p>Maintaining Open Source software can be challenging. Making sure you keep backward compatibility (not only binary) can be even more challenging. &lt;a href="https://commons.apache.org/proper/commons-lang/">Apache Commons Lang&lt;/a> 3.6 release is happening right now thanks to &lt;a href="http://www.benediktritter.de/">Benedikt Ritter&lt;/a>, and it is on its fourth Release Candidate (i.e. RC4).&lt;/p>
+&lt;p>A previous RC2 was cancelled due to &lt;a href="http://commons.markmail.org/thread/57sqt2hkusegda73#query:+page:1+mid:dnwo5tjqo2e5bwuo+state:results">IBM JDK 8 compatibility&lt;/a>, more specifically the lazy initialization of ArrayList&amp;rsquo;s seems to be different in Oracle JDK and IBM JDK.&lt;/p>
+&lt;p>The RC3 was cancelled due to a &lt;a href="https://github.com/apache/commons-lang/commit/18e692478dcf91fdceb9b9fdca7c61a1111d63aa">change&lt;/a> that could affect users using a switch statement.&lt;/p></description></item><item><title>Apache Commons Text LookupTranslator</title><link>https://kinoshita.eti.br/2017/06/02/apache-commons-text-lookuptranslator.html</link><pubDate>Fri, 02 Jun 2017 00:00:00 +0000</pubDate><guid>https://kinoshita.eti.br/2017/06/02/apache-commons-text-lookuptranslator.html</guid><description>&lt;p>&lt;a href="http://commons.apache.org/proper/commons-text/">Apache Commons Text&lt;/a> includes several algorithms for text processing. Today&amp;rsquo;s post is about one of the classes available since the 1.0 release, the &lt;a href="http://commons.apache.org/proper/commons-text/apidocs/org/apache/commons/text/translate/LookupTranslator.html">LookupTranslator&lt;/a>.&lt;/p>
+&lt;p>It is used to translate text using a lookup table. Most users won&amp;rsquo;t necessarily be - knowingly - using this class. Most likely, they will use the &lt;a href="http://commons.apache.org/proper/commons-text/apidocs/org/apache/commons/text/StringEscapeUtils.html">StringEscapeUtils&lt;/a>, which contains methods to escape and unescape CSV, JSON, XML, Java, and EcmaScript.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-java" data-lang="java">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#000">String&lt;/span> &lt;span style="color:#000">original&lt;/span> &lt;span style="color:#000">=&lt;/span> &lt;span style="color:#c41a16">&amp;#34;He didn&amp;#39;t say, \&amp;#34;stop!\&amp;#34;&amp;#34;&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#000">String&lt;/span> &lt;span style="color:#000">expected&lt;/span> &lt;span style="color:#000">=&lt;/span> &lt;span style="color:#c41a16">&amp;#34;He didn&amp;#39;t say, \\\&amp;#34;stop!\\\&amp;#34;&amp;#34;&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#000">String&lt;/span> &lt;span style="color:#000">result&lt;/span> &lt;span style="color:#000">=&lt;/span> &lt;span style="color:#000">StringEscapeUtils&lt;/span>.&lt;span style="color:#836c28">escapeJava&lt;/span>(&lt;span style="color:#000">original&lt;/span>);
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>StringEscapeUtils uses CharSequenceTranslator&amp;rsquo;s, including LookupTranslator. You can use it directly too, to escape other data your text may contain, special characters not supported by some third party library or system, or even a simpler case.&lt;/p></description></item><item><title>Some links related to Apache Commons Text</title><link>https://kinoshita.eti.br/2017/05/28/some-links-related-to-apache-commons-text.html</link><pubDate>Sun, 28 May 2017 00:00:00 +0000</pubDate><guid>https://kinoshita.eti.br/2017/05/28/some-links-related-to-apache-commons-text.html</guid><description>&lt;p>&lt;a href="http://commons.apache.org/proper/commons-text/">Apache Commons Text&lt;/a> is one of the most recent new components in Apache Commons. It &amp;ldquo;is a library focused on algorithms working on strings&amp;rdquo;. I recently collected some links
+under a bookmark folder that are in some way related to the project. In case you are interested,
+check some of the links below.&lt;/p>
+&lt;ul>
+&lt;li>&lt;a href="https://www.youtube.com/watch?v=bx3NOoroV-M">Morgan Wahl Text is More Complicated Than You Think Comparing and Sorting Unicode PyCon 2017&lt;/a> &lt;iframe width="560" height="315" src="https://www.youtube.com/embed/bx3NOoroV-M?rel=0" frameborder="0" allowfullscreen>&lt;/iframe>
+&lt;ul>
+&lt;li>Q: test [text] to check if our methods are OK with some examples in this talk)&lt;/li>
+&lt;li>Q: Canonical Decomposition, and code points comparisons; are we doing it? Are we doing it right?&lt;/li>
+&lt;li>Q: Do we have casefolding?&lt;/li>
+&lt;li>Q: Do we have multi-level sort?&lt;/li>
+&lt;li>Q: CLDR&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a href="https://www.youtube.com/watch?v=7m5JA3XaZ4k">Łukasz Langa Unicode what is the big deal PyCon 2017&lt;/a> &lt;iframe width="560" height="315" src="https://www.youtube.com/embed/7m5JA3XaZ4k?rel=0" frameborder="0" allowfullscreen>&lt;/iframe>
+&lt;ul>
+&lt;li>Q: Quite sure we have an issue to guess the encoding for a text&amp;hellip;. there is a GPL library for that? Under Mozilla perhaps?&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a href="https://www.youtube.com/watch?v=kTS2b6pGElE">Jiaqi Liu Fuzzy Search Algorithms How and When to Use Them PyCon 2017&lt;/a> &lt;iframe width="560" height="315" src="https://www.youtube.com/embed/kTS2b6pGElE?rel=0" frameborder="0" allowfullscreen>&lt;/iframe>
+&lt;ul>
+&lt;li>Q: Does OpenNLP have N-GRAM&amp;rsquo;s? Would it make sense to have that in [text]?&lt;/li>
+&lt;li>Q: Where can we find some tokenizers? OpenNLP?&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a href="http://www-igm.univ-mlv.fr/~berstel/Lothaire/">Lothaire&amp;rsquo;s Books&lt;/a> like &amp;ldquo;Combinatorics on Words&amp;rdquo; and &amp;ldquo;Algebraic Combinatorics&amp;rdquo;.&lt;/li>
+&lt;li>Java tutorial lesson &lt;a href="https://docs.oracle.com/javase/tutorial/i18n/text/">&amp;ldquo;Working with Text&amp;rdquo;&lt;/a>&lt;/li>
+&lt;li>Mitzi Morris&amp;rsquo; &lt;a href="https://www.amazon.com/Text-Processing-Java-Mitzi-Morris/dp/0988208725">Text Processing in Java book&lt;/a>&lt;/li>
+&lt;li>&lt;a href="http://johannburkard.de/software/stringsearch/">StringSearch&lt;/a> java library.
+&lt;ul>
+&lt;li>
+&lt;blockquote>"The Java language lacks fast string searching algorithms. StringSearch provides implementations of the Boyer-Moore and the Shift-Or (bit-parallel) algorithms. These algorithms are easily five to ten times faster than the na&amp;iuml;ve implementation found in java.lang.String".&lt;/blockquote>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a href="https://jakarta.apache.org/oro/">Jakarta Oro&lt;/a> (attic)
+&lt;ul>
+&lt;li>
+&lt;blockquote>The Jakarta-ORO Java classes are a set of text-processing Java classes that provide Perl5 compatible regular expressions, AWK-like regular expressions, glob expressions, and utility classes for performing substitutions, splits, filtering filenames, etc. This library is the successor to the OROMatcher, AwkTools, PerlTools, and TextTools libraries originally from ORO, Inc. Despite little activity in the form of new development initiatives, issue reports, questions, and suggestions are responded to quickly.&lt;/blockquote>
+&lt;/li>
+&lt;li>Discontinued, but is there anything useful in there? The attic has always interesting things after all&amp;hellip;&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a href="http://textprocessing.org/">TextProcessing blog&lt;/a> - A Text Processing Portal for Humans&lt;/li>
+&lt;li>&lt;a href="https://github.com/twitter/twitter-text">twitter-text&lt;/a>, the Twitter Java (multi-language actually&amp;hellip;) text processing library.&lt;/li>
+&lt;li>Python&amp;rsquo;s &lt;a href="https://docs.python.org/3/library/text.html">text modules&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;p>♥ Open Source&lt;/p></description></item><item><title>When you don't realize you need a Comparable</title><link>https://kinoshita.eti.br/2017/05/15/when-you-dont-realize-you-need-a-comparable.html</link><pubDate>Mon, 15 May 2017 00:00:00 +0000</pubDate><guid>https://kinoshita.eti.br/2017/05/15/when-you-dont-realize-you-need-a-comparable.html</guid><description>&lt;p>[In 2012, I wrote]({% post_url 2012-10-20-replacing-a-hashset-with-a-bitset %}) about how you always learn something
 new by following the &lt;a href="http://www.apache.org/foundation/mailinglists.html">Apache dev mailing lists&lt;/a>.&lt;/p>
 &lt;p>After about five years, I am still learning, and still getting impressed by the knowledge of other
 developers. Days ago I was massaging some code in &lt;a href="https://github.com/apache/jena/pull/237">a pull request&lt;/a>
-and a developer suggested me to simplify my code.&lt;/p></description></item><item><title>Troubleshooting a Jenkins Plug-in compatibility issue</title><link>https://kinoshita.eti.br/2017/04/17/troubleshooting-a-jenkins-plug-in-compatibility-issue.html</link><pubDate>Mon, 17 Apr 2017 00:00:00 +0000</pubDate><guid>https://kinoshita.eti.br/2017/04/17/troubleshooting-a-jenkins-plug-in-compatibility-issue.html</guid><description>This post is probably different from others. I will give a TL;DR, but will then give you a copy of a comment of a Jenkins JIRA issue. Hope you have fun reading it, specially if you maintain Jenkins servers or plug-ins.
-TL;DR: there was an issue in Jenkins Job DSL Plug-in, that caused jobs created to have an invalid script. The fix had not been released, but was already in the master branch in GitHub.</description></item><item><title>Spring Cloud encrypted values and Spring PropertySources</title><link>https://kinoshita.eti.br/2017/04/14/spring-cloud-encrypted-values-and-spring-propertysources.html</link><pubDate>Fri, 14 Apr 2017 00:00:00 +0000</pubDate><guid>https://kinoshita.eti.br/2017/04/14/spring-cloud-encrypted-values-and-spring-propertysources.html</guid><description>As I could not find any documentation for that, I decided to write it as a note to myself in case I use the encryption and decryption with Spring Cloud again.
-In Spring and Spring Boot, you normally have multiple sources of properties, like multiple properties files, environment properties and variables, and so it goes. In the Spring API, these are represented as PropertySource&amp;rsquo;s.
-In a Spring Boot application, you would be used to overriding certain properties by defining environments and using an application-production.</description></item><item><title>Apache Commons Lang: Memoizer</title><link>https://kinoshita.eti.br/2017/01/08/apache-commons-lang-memoizer.html</link><pubDate>Sun, 08 Jan 2017 00:00:00 +0000</pubDate><guid>https://kinoshita.eti.br/2017/01/08/apache-commons-lang-memoizer.html</guid><description>The current release of Apache Commons Lang is 3.5. The upcoming release, probably 3.6, will include a new feature, added in a pull request: a Memoizer implementation. Check out the ticket LANG-740 for more about the implementation being added to [lang].
-The book Java Concurrency in Practice introduces readers to the Memoizer, and has also a public domain implementation available for download (besides that, the book has also lots of other interesting topics!</description></item><item><title>Apache Commons Text</title><link>https://kinoshita.eti.br/2017/01/07/apache-commons-text.html</link><pubDate>Sat, 07 Jan 2017 00:00:00 +0000</pubDate><guid>https://kinoshita.eti.br/2017/01/07/apache-commons-text.html</guid><description>There is a new component in Apache Commons: Apache Commons Text. The 1.0 release might be announced in the next weeks. The current site is still in the Commons Sandbox, but it will change with the 1.0 release. The promotion from the sandbox happened a few days ago in the project mailing list.
-Here&amp;rsquo;s the project description: Apache Commons Text is a library focused on algorithms working on strings.
-There was a thread on the mailing list some time ago (Oct/2014) when we first discussed the component idea.</description></item></channel></rss>
+and a developer suggested me to simplify my code.&lt;/p></description></item><item><title>Troubleshooting a Jenkins Plug-in compatibility issue</title><link>https://kinoshita.eti.br/2017/04/17/troubleshooting-a-jenkins-plug-in-compatibility-issue.html</link><pubDate>Mon, 17 Apr 2017 00:00:00 +0000</pubDate><guid>https://kinoshita.eti.br/2017/04/17/troubleshooting-a-jenkins-plug-in-compatibility-issue.html</guid><description>&lt;p>This post is probably different from others. I will give a TL;DR, but will then
+give you a copy of
+&lt;a href="https://issues.jenkins-ci.org/browse/JENKINS-42655?focusedCommentId=291470&amp;amp;page=com.atlassian.jira.plugin.system.issuetabpanels%3Acomment-tabpanel#comment-291470">a comment of a Jenkins JIRA issue&lt;/a>.
+Hope you have fun reading it,
+specially if you maintain Jenkins servers or plug-ins.&lt;/p>
+&lt;p>TL;DR: there was an issue in Jenkins Job DSL Plug-in, that caused jobs created to
+have an invalid script. The fix had not been released, but was already in the
+master branch in GitHub.&lt;/p></description></item><item><title>Spring Cloud encrypted values and Spring PropertySources</title><link>https://kinoshita.eti.br/2017/04/14/spring-cloud-encrypted-values-and-spring-propertysources.html</link><pubDate>Fri, 14 Apr 2017 00:00:00 +0000</pubDate><guid>https://kinoshita.eti.br/2017/04/14/spring-cloud-encrypted-values-and-spring-propertysources.html</guid><description>&lt;p>As I could not find any documentation for that, I decided to write it as a note to myself
+in case I use the
+&lt;a href="https://cloud.spring.io/spring-cloud-config/spring-cloud-config.html#_encryption_and_decryption">encryption and decryption&lt;/a>
+with Spring Cloud again.&lt;/p>
+&lt;p>In Spring and Spring Boot, you normally have multiple sources of properties, like multiple
+properties files, environment properties and variables, and so it goes. In the Spring API,
+these are represented as
+&lt;a href="http://docs.spring.io/spring/docs/current/javadoc-api/org/springframework/context/annotation/PropertySource.html">PropertySource&lt;/a>&amp;rsquo;s.&lt;/p>
+&lt;p>In a Spring Boot application, you would be used to overriding certain properties
+by defining environments and using an application-production.properties file, or
+overriding values with environment properties.&lt;/p></description></item><item><title>Apache Commons Lang: Memoizer</title><link>https://kinoshita.eti.br/2017/01/08/apache-commons-lang-memoizer.html</link><pubDate>Sun, 08 Jan 2017 00:00:00 +0000</pubDate><guid>https://kinoshita.eti.br/2017/01/08/apache-commons-lang-memoizer.html</guid><description>&lt;p>The current release of &lt;a href="https://commons.apache.org/proper/commons-lang/">Apache Commons Lang&lt;/a>
+is &lt;strong>3.5&lt;/strong>. The upcoming release, probably 3.6,
+will include a new feature, added in a
+&lt;a href="https://github.com/apache/commons-lang/pull/203">pull request&lt;/a>:
+&lt;strong>a Memoizer implementation&lt;/strong>. Check out the ticket &lt;a href="https://issues.apache.org/jira/browse/LANG-740">LANG-740&lt;/a>
+for more about the implementation being added to [lang].&lt;/p>
+&lt;p>The book &lt;a href="http://jcip.net/">Java Concurrency in Practice&lt;/a> introduces readers to the Memoizer,
+and has also a &lt;a href="http://jcip.net/listings/Memoizer.java">public domain implementation available for download&lt;/a>
+(besides that, the book has also lots of other interesting topics!).&lt;/p>
+&lt;p>In summary, Memoizer is a simple cache, that will store the result of
+a computation. It receives a Computable object, responsible for doing something
+that will be stored by the Memoizer. Here&amp;rsquo;s a simple code to illustrate how that
+will work in your Java code.&lt;/p></description></item></channel></rss>

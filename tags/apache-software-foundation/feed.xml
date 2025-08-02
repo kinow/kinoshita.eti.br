@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Apache Software Foundation on kinow</title><link>https://kinoshita.eti.br/tags/apache-software-foundation.html</link><description>Recent content in Apache Software Foundation on kinow</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><copyright>Bruno P. Kinoshita All rights reserved</copyright><lastBuildDate>Thu, 31 Jul 2025 19:17:53 +0200</lastBuildDate><atom:link href="https://kinoshita.eti.br/tags/apache-software-foundation/feed.xml" rel="self" type="application/rss+xml"/><item><title>Notes on Apache Jena StreamRDFWriter</title><link>https://kinoshita.eti.br/2020/04/11/notes-on-apache-jena-streamrdfwriter.html</link><pubDate>Sat, 11 Apr 2020 00:00:00 +0000</pubDate><guid>https://kinoshita.eti.br/2020/04/11/notes-on-apache-jena-streamrdfwriter.html</guid><description>&lt;p>&lt;a href="https://jena.apache.org/">Apache Jena&lt;/a> project is like a box full of interesting things—at least if you love programming. One of its many features, is &lt;strong>stream processing&lt;/strong>.&lt;/p>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Apache Software Foundation on kinow</title><link>https://kinoshita.eti.br/tags/apache-software-foundation.html</link><description>Recent content in Apache Software Foundation on kinow</description><generator>Hugo</generator><language>en-us</language><copyright>Bruno P. Kinoshita All rights reserved</copyright><lastBuildDate>Sat, 02 Aug 2025 23:21:27 +0200</lastBuildDate><atom:link href="https://kinoshita.eti.br/tags/apache-software-foundation/feed.xml" rel="self" type="application/rss+xml"/><item><title>Notes on Apache Jena StreamRDFWriter</title><link>https://kinoshita.eti.br/2020/04/11/notes-on-apache-jena-streamrdfwriter.html</link><pubDate>Sat, 11 Apr 2020 00:00:00 +0000</pubDate><guid>https://kinoshita.eti.br/2020/04/11/notes-on-apache-jena-streamrdfwriter.html</guid><description>&lt;p>&lt;a href="https://jena.apache.org/">Apache Jena&lt;/a> project is like a box full of interesting things—at least if you love programming. One of its many features, is &lt;strong>stream processing&lt;/strong>.&lt;/p>
 &lt;p>The graphs in Jena may contain very large datasets, with giga- or terabytes. Some queries may be very large, and then sending the whole result would be simply impracticable.&lt;/p>
 &lt;p>Instead, the data will go through ARQ. ARQ is a query engine for Jena that supports SPARQL. There is one piece of code there that I found interesting while reviewing a small pull request: &lt;a href="https://github.com/apache/jena/blob/cbdba5edb47041a4181a00bd7660e5d4c212530a/jena-arq/src/main/java/org/apache/jena/riot/system/StreamRDFWriter.java">&lt;code>org.apache.jena.riot.system.StreamRDFWriter&lt;/code>&lt;/a>.&lt;/p>
 &lt;p>It is responsible for writing graph data in a streaming fashion. (See &lt;a href="https://en.wikipedia.org/wiki/Stream_processing">stream processing&lt;/a> for programming models and more.)&lt;/p>
@@ -75,28 +75,197 @@ these articles are more brain-dumps, used by myself for later reference.&lt;/p>
  />
  &lt;figcaption>&lt;/figcaption>
 
-&lt;/figure></description></item><item><title>What happens when you upload a Turtle file in Apache Jena Fuseki</title><link>https://kinoshita.eti.br/2018/05/27/what-happens-when-you-upload-a-turtle-file-in-apache-jena-fuseki.html</link><pubDate>Sun, 27 May 2018 00:00:00 +0000</pubDate><guid>https://kinoshita.eti.br/2018/05/27/what-happens-when-you-upload-a-turtle-file-in-apache-jena-fuseki.html</guid><description>I am working on an issue for Skosmos that involves preparing some Turtle files and uploading them using Apache Jena Fuseki&amp;rsquo;s web interface.
-The issue is now pending feedback, which gives me a moment to have fun with something else. So I decided to dig down the rabbit hole and start learning more about certain parts of the Apache Jena code base.
-This post will be useful to myself in the future, as a note-taking in a series, so that I remember how things work - you never know right?</description></item><item><title>Learning more about SPARQL and Jena internals</title><link>https://kinoshita.eti.br/2018/04/28/learning-more-about-sparql-and-jena-internals.html</link><pubDate>Sat, 28 Apr 2018 00:00:00 +0000</pubDate><guid>https://kinoshita.eti.br/2018/04/28/learning-more-about-sparql-and-jena-internals.html</guid><description>O Corvo O Corvo Recently a pull request for Apache Jena that I started three years ago got merged. Even though it has been three years since that pull request, there are still many parts of the project code base that I am not familiar with.
-And not only the code, but there are also many concepts about SPARQL, other standards used in Jena, and internals about triple stores.</description></item><item><title>Exif Odd Offsets</title><link>https://kinoshita.eti.br/2017/12/25/exif-odd-offsets.html</link><pubDate>Mon, 25 Dec 2017 00:00:00 +0000</pubDate><guid>https://kinoshita.eti.br/2017/12/25/exif-odd-offsets.html</guid><description>A file format like JPEG may contain metadata in JFIF, Exif, or a vendor proprietary format. The Exif format is based - or uses parts of - on the TIFF format.
-Within an Exif metadata block, you should see directories, with several entries. The entries have fields like description, value, and also an offset. The offset indicates the offset to the next entry.
-The Exif specification defines that implementers must make sure to keep the offset an even number, within 4 bytes.</description></item><item><title>Watch out for Locales when using NumberFormat with currencies</title><link>https://kinoshita.eti.br/2017/12/02/watch-out-for-locales-when-using-numberformat-with-currencies.html</link><pubDate>Sat, 02 Dec 2017 00:00:00 +0000</pubDate><guid>https://kinoshita.eti.br/2017/12/02/watch-out-for-locales-when-using-numberformat-with-currencies.html</guid><description>In Java you have the NumberFormatException to help you formatting and parsing numbers for any locale. Said that, here&amp;rsquo;s some code.
-BigDecimal negative = new BigDecimal(&amp;#34;-1234.56&amp;#34;); DecimalFormat nf = (DecimalFormat) NumberFormat.getCurrencyInstance(Locale.UK); String formattedNegative = nf.format(negative); System.out.println(formattedNegative); The output for this code is -£1,234.56. That&amp;rsquo;s expected, as the locale is set to UK, so the currency symbol used is for British Pounds. And as the number is negative, you get that minus sign as a prefix.</description></item><item><title>Quickly Verifying jar Signatures For ASF Releases</title><link>https://kinoshita.eti.br/2017/10/14/quickly-verifying-jar-signatures-for-asf-releases.html</link><pubDate>Sat, 14 Oct 2017 00:00:00 +0000</pubDate><guid>https://kinoshita.eti.br/2017/10/14/quickly-verifying-jar-signatures-for-asf-releases.html</guid><description>The release process within the Apache Software Foundation includes a series of steps. Amongst these steps is the voting process. In Apache Commons, the release instructions includes a note on artefact signatures.
-During the course of the VOTE, make sure that one or more of the reviewers have verified the signatures and hash files included with the release artifacts. If no one specifically mentions having done that during the VOTE, ask on the dev list and make sure someone does this before you proceed with the release.</description></item><item><title>Removing Javadoc SVN Id Tags with Shell Script</title><link>https://kinoshita.eti.br/2017/09/13/removing-javadoc-svn-id-tags-with-shell-script.html</link><pubDate>Wed, 13 Sep 2017 00:00:00 +0000</pubDate><guid>https://kinoshita.eti.br/2017/09/13/removing-javadoc-svn-id-tags-with-shell-script.html</guid><description>Subversion supports Keyword Substitution, which performs substitution of some keywords such as Author, Date, and Id. The Id is the date, time, and user that last modified the file.
-It used to be common to all Apache Commons components to have a line as follows in the header of each Java class.
-/** * SomeClass class. * * @version $Id$ */ public class SomeClass { } Then the generated Javadoc would contain the date of when the class was altered.</description></item><item><title>Finding Base64 implementations in Apache Software Foundation projects</title><link>https://kinoshita.eti.br/2017/09/01/finding-base64-implementations-in-apache-software-foundation-projects.html</link><pubDate>Fri, 01 Sep 2017 00:00:00 +0000</pubDate><guid>https://kinoshita.eti.br/2017/09/01/finding-base64-implementations-in-apache-software-foundation-projects.html</guid><description>NZ Grey Warbler (riroriro) New Zealand Grey Warbler (riroriro) Some time ago while working in one of the many projects in the Apache Software Foundation (Apache Commons FileUpload if I remember well), I noticed that it had a Base64 implementation. What called my attention was that the project not using the Apache Commons Codec Base64 implementation.
-While Apache Commons&amp;rsquo; mission is to create components that can be re-used across ASF projects, and also by other projects not necessarily under the ASF, it is understandable that some projects prefer to keep its dependencies to a minimum.</description></item><item><title>Backward compatibility and switch statement with constant expressions</title><link>https://kinoshita.eti.br/2017/06/10/backward-compatibility-and-switch-statement-with-constant-expressions.html</link><pubDate>Sat, 10 Jun 2017 00:00:00 +0000</pubDate><guid>https://kinoshita.eti.br/2017/06/10/backward-compatibility-and-switch-statement-with-constant-expressions.html</guid><description>Maintaining Open Source software can be challenging. Making sure you keep backward compatibility (not only binary) can be even more challenging. Apache Commons Lang 3.6 release is happening right now thanks to Benedikt Ritter, and it is on its fourth Release Candidate (i.e. RC4).
-A previous RC2 was cancelled due to IBM JDK 8 compatibility, more specifically the lazy initialization of ArrayList&amp;rsquo;s seems to be different in Oracle JDK and IBM JDK.</description></item><item><title>Apache Commons Text LookupTranslator</title><link>https://kinoshita.eti.br/2017/06/02/apache-commons-text-lookuptranslator.html</link><pubDate>Fri, 02 Jun 2017 00:00:00 +0000</pubDate><guid>https://kinoshita.eti.br/2017/06/02/apache-commons-text-lookuptranslator.html</guid><description>Apache Commons Text includes several algorithms for text processing. Today&amp;rsquo;s post is about one of the classes available since the 1.0 release, the LookupTranslator.
-It is used to translate text using a lookup table. Most users won&amp;rsquo;t necessarily be - knowingly - using this class. Most likely, they will use the StringEscapeUtils, which contains methods to escape and unescape CSV, JSON, XML, Java, and EcmaScript.
-String original = &amp;#34;He didn&amp;#39;t say, \&amp;#34;stop!</description></item><item><title>Some links related to Apache Commons Text</title><link>https://kinoshita.eti.br/2017/05/28/some-links-related-to-apache-commons-text.html</link><pubDate>Sun, 28 May 2017 00:00:00 +0000</pubDate><guid>https://kinoshita.eti.br/2017/05/28/some-links-related-to-apache-commons-text.html</guid><description>Apache Commons Text is one of the most recent new components in Apache Commons. It &amp;ldquo;is a library focused on algorithms working on strings&amp;rdquo;. I recently collected some links under a bookmark folder that are in some way related to the project. In case you are interested, check some of the links below.
-Morgan Wahl Text is More Complicated Than You Think Comparing and Sorting Unicode PyCon 2017 Q: test [text] to check if our methods are OK with some examples in this talk) Q: Canonical Decomposition, and code points comparisons; are we doing it?</description></item><item><title>When you don't realize you need a Comparable</title><link>https://kinoshita.eti.br/2017/05/15/when-you-dont-realize-you-need-a-comparable.html</link><pubDate>Mon, 15 May 2017 00:00:00 +0000</pubDate><guid>https://kinoshita.eti.br/2017/05/15/when-you-dont-realize-you-need-a-comparable.html</guid><description>&lt;p>[In 2012, I wrote]({% post_url 2012-10-20-replacing-a-hashset-with-a-bitset %}) about how you always learn something
+&lt;/figure></description></item><item><title>What happens when you upload a Turtle file in Apache Jena Fuseki</title><link>https://kinoshita.eti.br/2018/05/27/what-happens-when-you-upload-a-turtle-file-in-apache-jena-fuseki.html</link><pubDate>Sun, 27 May 2018 00:00:00 +0000</pubDate><guid>https://kinoshita.eti.br/2018/05/27/what-happens-when-you-upload-a-turtle-file-in-apache-jena-fuseki.html</guid><description>&lt;p>I am working on &lt;a href="https://github.com/NatLibFi/Skosmos/issues/738">an issue for Skosmos&lt;/a>
+that involves preparing some &lt;a href="https://www.w3.org/TR/turtle/">Turtle&lt;/a> files and uploading
+them using Apache Jena Fuseki&amp;rsquo;s web interface.&lt;/p>
+&lt;p>The issue is now pending feedback, which gives me a moment to have fun with
+something else. So I decided to dig down the rabbit hole and start learning more
+about certain parts of the Apache Jena code base.&lt;/p>
+&lt;p style='text-align: center;'>
+
+
+
+&lt;figure class="feature">
+
+ &lt;img
+ src='https://kinoshita.eti.br/assets/posts/2018-05-27-what-happens-when-you-upload-a-turtle-file-in-apache-jena-fuseki/browser.png'
+ alt=''
+ title=''
+ style='display: inline; width: 600px;'
+ width=''
+ height=''
+ />
+ &lt;figcaption>&lt;/figcaption>
+
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>This post will be useful to myself in the future, as a note-taking in a series, so that I
+remember how things work - you never know right? But hopefully this will be useful
+to other wanting to understand more about the code of Apache Jena.&lt;/p></description></item><item><title>Learning more about SPARQL and Jena internals</title><link>https://kinoshita.eti.br/2018/04/28/learning-more-about-sparql-and-jena-internals.html</link><pubDate>Sat, 28 Apr 2018 00:00:00 +0000</pubDate><guid>https://kinoshita.eti.br/2018/04/28/learning-more-about-sparql-and-jena-internals.html</guid><description>&lt;p style='text-align: center;'>
+
+
+
+&lt;figure class="feature">
+
+ &lt;img
+ src='https://kinoshita.eti.br/assets/posts/2018-04-28-learning-more-about-sparql-and-jena-internals/ocorvo.jpg'
+ alt='O Corvo'
+ title='O Corvo'
+ style='display: inline; width: 600px;'
+ width=''
+ height=''
+ />
+ &lt;figcaption>O Corvo&lt;/figcaption>
+
+&lt;/figure>
+
+
+&lt;br/>
+&lt;small>&lt;a href="https://kinow.deviantart.com/art/O-Corvo-742473382">O Corvo&lt;/a>&lt;/small>
+&lt;/p>
+&lt;p>Recently a &lt;a href="https://github.com/apache/jena/pull/114/">pull request&lt;/a> for Apache Jena
+that I started three years ago got merged. Even though it has been three years since
+that pull request, there are still many parts of the project code base that I am
+not familiar with.&lt;/p>
+&lt;p>And not only the code, but there are also many concepts about SPARQL, other standards
+used in Jena, and internals about triple stores.&lt;/p></description></item><item><title>Exif Odd Offsets</title><link>https://kinoshita.eti.br/2017/12/25/exif-odd-offsets.html</link><pubDate>Mon, 25 Dec 2017 00:00:00 +0000</pubDate><guid>https://kinoshita.eti.br/2017/12/25/exif-odd-offsets.html</guid><description>&lt;p>A file format like JPEG may contain metadata in JFIF, &lt;a href="https://en.wikipedia.org/wiki/Exif">Exif&lt;/a>,
+or a vendor proprietary format. The Exif format is based - or uses parts of - on the TIFF format.&lt;/p>
+&lt;p>Within an Exif metadata block, you should see directories, with several entries. The entries have fields
+like description, value, and also an offset. The offset indicates the offset to the next entry.&lt;/p>
+&lt;p>The Exif specification defines that &lt;strong>implementers must make sure to keep the offset an even number,
+within 4 bytes&lt;/strong>.&lt;/p></description></item><item><title>Watch out for Locales when using NumberFormat with currencies</title><link>https://kinoshita.eti.br/2017/12/02/watch-out-for-locales-when-using-numberformat-with-currencies.html</link><pubDate>Sat, 02 Dec 2017 00:00:00 +0000</pubDate><guid>https://kinoshita.eti.br/2017/12/02/watch-out-for-locales-when-using-numberformat-with-currencies.html</guid><description>&lt;p>In Java you have the &lt;a href="https://docs.oracle.com/javase/9/docs/api/java/text/NumberFormat.html">NumberFormatException&lt;/a>
+to help you formatting and parsing numbers for any locale. Said that, here&amp;rsquo;s some code.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-shell" data-lang="shell">&lt;span style="display:flex;">&lt;span>BigDecimal &lt;span style="color:#000">negative&lt;/span> &lt;span style="color:#000">=&lt;/span> new BigDecimal&lt;span style="color:#000">(&lt;/span>&lt;span style="color:#c41a16">&amp;#34;-1234.56&amp;#34;&lt;/span>&lt;span style="color:#000">)&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>DecimalFormat &lt;span style="color:#000">nf&lt;/span> &lt;span style="color:#000">=&lt;/span> &lt;span style="color:#000">(&lt;/span>DecimalFormat&lt;span style="color:#000">)&lt;/span> NumberFormat.getCurrencyInstance&lt;span style="color:#000">(&lt;/span>Locale.UK&lt;span style="color:#000">)&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>String &lt;span style="color:#000">formattedNegative&lt;/span> &lt;span style="color:#000">=&lt;/span> nf.format&lt;span style="color:#000">(&lt;/span>negative&lt;span style="color:#000">)&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>System.out.println&lt;span style="color:#000">(&lt;/span>formattedNegative&lt;span style="color:#000">)&lt;/span>;
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>The output for this code is &lt;strong>-£1,234.56&lt;/strong>. That&amp;rsquo;s expected, as the locale is set to
+UK, so the currency symbol used is for British Pounds. And as the number is negative, you
+get that minus sign as a prefix. For Japanese locale you&amp;rsquo;d get &lt;strong>-￥1,235&lt;/strong>, and for Brazilian
+locale you&amp;rsquo;d get &lt;strong>-R$ 1.234,56&lt;/strong>.&lt;/p></description></item><item><title>Quickly Verifying jar Signatures For ASF Releases</title><link>https://kinoshita.eti.br/2017/10/14/quickly-verifying-jar-signatures-for-asf-releases.html</link><pubDate>Sat, 14 Oct 2017 00:00:00 +0000</pubDate><guid>https://kinoshita.eti.br/2017/10/14/quickly-verifying-jar-signatures-for-asf-releases.html</guid><description>&lt;p>The release process within the Apache Software Foundation includes a series of steps. Amongst these
+steps is the &lt;a href="https://www.apache.org/foundation/voting.html">voting process&lt;/a>. In Apache Commons, the
+&lt;a href="https://commons.apache.org/releases/prepare.html">release instructions&lt;/a> includes a note on artefact
+signatures.&lt;/p>
+&lt;blockquote>
+&lt;p>During the course of the VOTE, make sure that one or more of the reviewers have verified the signatures and hash files included with the release artifacts. If no one specifically mentions having done that during the VOTE, ask on the dev list and make sure someone does this before you proceed with the release.&lt;/p></description></item><item><title>Removing Javadoc SVN Id Tags with Shell Script</title><link>https://kinoshita.eti.br/2017/09/13/removing-javadoc-svn-id-tags-with-shell-script.html</link><pubDate>Wed, 13 Sep 2017 00:00:00 +0000</pubDate><guid>https://kinoshita.eti.br/2017/09/13/removing-javadoc-svn-id-tags-with-shell-script.html</guid><description>&lt;p>Subversion supports &lt;a href="http://svnbook.red-bean.com/en/1.4/svn.advanced.props.special.keywords.html">Keyword Substitution&lt;/a>, which performs substitution of some keywords such as &lt;em>Author&lt;/em>, &lt;em>Date&lt;/em>, and &lt;strong>&lt;em>Id&lt;/em>&lt;/strong>. The &lt;strong>&lt;em>Id&lt;/em>&lt;/strong> is the date, time, and user that last modified the file.&lt;/p>
+&lt;p>It used to be common to all Apache Commons components to have a line as follows in the header of each Java class.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-java" data-lang="java">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#177500">/**
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#177500"> * SomeClass class.
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#177500"> *
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#177500"> * @version $Id$
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#177500"> */&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a90d91">public&lt;/span> &lt;span style="color:#a90d91">class&lt;/span> &lt;span style="color:#3f6e75">SomeClass&lt;/span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> 
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Then the generated Javadoc would contain the date of when the class was altered. Although useful, with proper versioning, it becomes obsolete. It is much more important to know what is the version of the software, not the last time it was modified or by whom. In case you have a problem with that specific file, you can always check the history of the file using &lt;code>git log&lt;/code>, or &lt;code>git bisect&lt;/code>, or …&lt;/p></description></item><item><title>Finding Base64 implementations in Apache Software Foundation projects</title><link>https://kinoshita.eti.br/2017/09/01/finding-base64-implementations-in-apache-software-foundation-projects.html</link><pubDate>Fri, 01 Sep 2017 00:00:00 +0000</pubDate><guid>https://kinoshita.eti.br/2017/09/01/finding-base64-implementations-in-apache-software-foundation-projects.html</guid><description>&lt;p style='text-align: center;'>
+&lt;a href="https://kinow.deviantart.com/art/Grey-Warbler-702099183?ga_submit_new=10%3A1504263729">
+
+
+
+&lt;figure class="feature">
+
+ &lt;img
+ src='https://kinoshita.eti.br/assets/posts/2017-09-01-finding-base64-implementations-in-apache-software-foundation-projects/GreyWarbler.png'
+ alt='NZ Grey Warbler (riroriro)'
+ title='NZ Grey Warbler (riroriro)'
+ style='display: inline'
+ width=''
+ height=''
+ />
+ &lt;figcaption>NZ Grey Warbler (riroriro)&lt;/figcaption>
+
+&lt;/figure>
+
+
+&lt;/a>
+&lt;br/>
+&lt;small>&lt;a href="http://nzbirdsonline.org.nz/species/grey-warbler">New Zealand Grey Warbler (riroriro)&lt;/a>&lt;/small>
+&lt;/p>
+&lt;p>Some time ago while working in one of the many projects in the Apache Software Foundation (Apache Commons FileUpload if I remember well), I noticed that it had a Base64 implementation. What called my attention was that the project not using the &lt;a href="https://github.com/apache/commons-codec/blob/c18b1923b3c1f897c7935d94fb9e443eabfff897/src/main/java/org/apache/commons/codec/binary/Base64.java">Apache Commons Codec&lt;/a> Base64 implementation.&lt;/p>
+&lt;p>While Apache Commons&amp;rsquo; mission is to create components that can be re-used across ASF projects, and also by other projects not necessarily under the ASF, it is understandable that some projects prefer to keep its dependencies to a minimum. It is normally a good software engineering practice to carefully manage your dependencies.&lt;/p></description></item><item><title>Backward compatibility and switch statement with constant expressions</title><link>https://kinoshita.eti.br/2017/06/10/backward-compatibility-and-switch-statement-with-constant-expressions.html</link><pubDate>Sat, 10 Jun 2017 00:00:00 +0000</pubDate><guid>https://kinoshita.eti.br/2017/06/10/backward-compatibility-and-switch-statement-with-constant-expressions.html</guid><description>&lt;p>Maintaining Open Source software can be challenging. Making sure you keep backward compatibility (not only binary) can be even more challenging. &lt;a href="https://commons.apache.org/proper/commons-lang/">Apache Commons Lang&lt;/a> 3.6 release is happening right now thanks to &lt;a href="http://www.benediktritter.de/">Benedikt Ritter&lt;/a>, and it is on its fourth Release Candidate (i.e. RC4).&lt;/p>
+&lt;p>A previous RC2 was cancelled due to &lt;a href="http://commons.markmail.org/thread/57sqt2hkusegda73#query:+page:1+mid:dnwo5tjqo2e5bwuo+state:results">IBM JDK 8 compatibility&lt;/a>, more specifically the lazy initialization of ArrayList&amp;rsquo;s seems to be different in Oracle JDK and IBM JDK.&lt;/p>
+&lt;p>The RC3 was cancelled due to a &lt;a href="https://github.com/apache/commons-lang/commit/18e692478dcf91fdceb9b9fdca7c61a1111d63aa">change&lt;/a> that could affect users using a switch statement.&lt;/p></description></item><item><title>Apache Commons Text LookupTranslator</title><link>https://kinoshita.eti.br/2017/06/02/apache-commons-text-lookuptranslator.html</link><pubDate>Fri, 02 Jun 2017 00:00:00 +0000</pubDate><guid>https://kinoshita.eti.br/2017/06/02/apache-commons-text-lookuptranslator.html</guid><description>&lt;p>&lt;a href="http://commons.apache.org/proper/commons-text/">Apache Commons Text&lt;/a> includes several algorithms for text processing. Today&amp;rsquo;s post is about one of the classes available since the 1.0 release, the &lt;a href="http://commons.apache.org/proper/commons-text/apidocs/org/apache/commons/text/translate/LookupTranslator.html">LookupTranslator&lt;/a>.&lt;/p>
+&lt;p>It is used to translate text using a lookup table. Most users won&amp;rsquo;t necessarily be - knowingly - using this class. Most likely, they will use the &lt;a href="http://commons.apache.org/proper/commons-text/apidocs/org/apache/commons/text/StringEscapeUtils.html">StringEscapeUtils&lt;/a>, which contains methods to escape and unescape CSV, JSON, XML, Java, and EcmaScript.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-java" data-lang="java">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#000">String&lt;/span> &lt;span style="color:#000">original&lt;/span> &lt;span style="color:#000">=&lt;/span> &lt;span style="color:#c41a16">&amp;#34;He didn&amp;#39;t say, \&amp;#34;stop!\&amp;#34;&amp;#34;&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#000">String&lt;/span> &lt;span style="color:#000">expected&lt;/span> &lt;span style="color:#000">=&lt;/span> &lt;span style="color:#c41a16">&amp;#34;He didn&amp;#39;t say, \\\&amp;#34;stop!\\\&amp;#34;&amp;#34;&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#000">String&lt;/span> &lt;span style="color:#000">result&lt;/span> &lt;span style="color:#000">=&lt;/span> &lt;span style="color:#000">StringEscapeUtils&lt;/span>.&lt;span style="color:#836c28">escapeJava&lt;/span>(&lt;span style="color:#000">original&lt;/span>);
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>StringEscapeUtils uses CharSequenceTranslator&amp;rsquo;s, including LookupTranslator. You can use it directly too, to escape other data your text may contain, special characters not supported by some third party library or system, or even a simpler case.&lt;/p></description></item><item><title>Some links related to Apache Commons Text</title><link>https://kinoshita.eti.br/2017/05/28/some-links-related-to-apache-commons-text.html</link><pubDate>Sun, 28 May 2017 00:00:00 +0000</pubDate><guid>https://kinoshita.eti.br/2017/05/28/some-links-related-to-apache-commons-text.html</guid><description>&lt;p>&lt;a href="http://commons.apache.org/proper/commons-text/">Apache Commons Text&lt;/a> is one of the most recent new components in Apache Commons. It &amp;ldquo;is a library focused on algorithms working on strings&amp;rdquo;. I recently collected some links
+under a bookmark folder that are in some way related to the project. In case you are interested,
+check some of the links below.&lt;/p>
+&lt;ul>
+&lt;li>&lt;a href="https://www.youtube.com/watch?v=bx3NOoroV-M">Morgan Wahl Text is More Complicated Than You Think Comparing and Sorting Unicode PyCon 2017&lt;/a> &lt;iframe width="560" height="315" src="https://www.youtube.com/embed/bx3NOoroV-M?rel=0" frameborder="0" allowfullscreen>&lt;/iframe>
+&lt;ul>
+&lt;li>Q: test [text] to check if our methods are OK with some examples in this talk)&lt;/li>
+&lt;li>Q: Canonical Decomposition, and code points comparisons; are we doing it? Are we doing it right?&lt;/li>
+&lt;li>Q: Do we have casefolding?&lt;/li>
+&lt;li>Q: Do we have multi-level sort?&lt;/li>
+&lt;li>Q: CLDR&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a href="https://www.youtube.com/watch?v=7m5JA3XaZ4k">Łukasz Langa Unicode what is the big deal PyCon 2017&lt;/a> &lt;iframe width="560" height="315" src="https://www.youtube.com/embed/7m5JA3XaZ4k?rel=0" frameborder="0" allowfullscreen>&lt;/iframe>
+&lt;ul>
+&lt;li>Q: Quite sure we have an issue to guess the encoding for a text&amp;hellip;. there is a GPL library for that? Under Mozilla perhaps?&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a href="https://www.youtube.com/watch?v=kTS2b6pGElE">Jiaqi Liu Fuzzy Search Algorithms How and When to Use Them PyCon 2017&lt;/a> &lt;iframe width="560" height="315" src="https://www.youtube.com/embed/kTS2b6pGElE?rel=0" frameborder="0" allowfullscreen>&lt;/iframe>
+&lt;ul>
+&lt;li>Q: Does OpenNLP have N-GRAM&amp;rsquo;s? Would it make sense to have that in [text]?&lt;/li>
+&lt;li>Q: Where can we find some tokenizers? OpenNLP?&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a href="http://www-igm.univ-mlv.fr/~berstel/Lothaire/">Lothaire&amp;rsquo;s Books&lt;/a> like &amp;ldquo;Combinatorics on Words&amp;rdquo; and &amp;ldquo;Algebraic Combinatorics&amp;rdquo;.&lt;/li>
+&lt;li>Java tutorial lesson &lt;a href="https://docs.oracle.com/javase/tutorial/i18n/text/">&amp;ldquo;Working with Text&amp;rdquo;&lt;/a>&lt;/li>
+&lt;li>Mitzi Morris&amp;rsquo; &lt;a href="https://www.amazon.com/Text-Processing-Java-Mitzi-Morris/dp/0988208725">Text Processing in Java book&lt;/a>&lt;/li>
+&lt;li>&lt;a href="http://johannburkard.de/software/stringsearch/">StringSearch&lt;/a> java library.
+&lt;ul>
+&lt;li>
+&lt;blockquote>"The Java language lacks fast string searching algorithms. StringSearch provides implementations of the Boyer-Moore and the Shift-Or (bit-parallel) algorithms. These algorithms are easily five to ten times faster than the na&amp;iuml;ve implementation found in java.lang.String".&lt;/blockquote>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a href="https://jakarta.apache.org/oro/">Jakarta Oro&lt;/a> (attic)
+&lt;ul>
+&lt;li>
+&lt;blockquote>The Jakarta-ORO Java classes are a set of text-processing Java classes that provide Perl5 compatible regular expressions, AWK-like regular expressions, glob expressions, and utility classes for performing substitutions, splits, filtering filenames, etc. This library is the successor to the OROMatcher, AwkTools, PerlTools, and TextTools libraries originally from ORO, Inc. Despite little activity in the form of new development initiatives, issue reports, questions, and suggestions are responded to quickly.&lt;/blockquote>
+&lt;/li>
+&lt;li>Discontinued, but is there anything useful in there? The attic has always interesting things after all&amp;hellip;&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a href="http://textprocessing.org/">TextProcessing blog&lt;/a> - A Text Processing Portal for Humans&lt;/li>
+&lt;li>&lt;a href="https://github.com/twitter/twitter-text">twitter-text&lt;/a>, the Twitter Java (multi-language actually&amp;hellip;) text processing library.&lt;/li>
+&lt;li>Python&amp;rsquo;s &lt;a href="https://docs.python.org/3/library/text.html">text modules&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;p>♥ Open Source&lt;/p></description></item><item><title>When you don't realize you need a Comparable</title><link>https://kinoshita.eti.br/2017/05/15/when-you-dont-realize-you-need-a-comparable.html</link><pubDate>Mon, 15 May 2017 00:00:00 +0000</pubDate><guid>https://kinoshita.eti.br/2017/05/15/when-you-dont-realize-you-need-a-comparable.html</guid><description>&lt;p>[In 2012, I wrote]({% post_url 2012-10-20-replacing-a-hashset-with-a-bitset %}) about how you always learn something
 new by following the &lt;a href="http://www.apache.org/foundation/mailinglists.html">Apache dev mailing lists&lt;/a>.&lt;/p>
 &lt;p>After about five years, I am still learning, and still getting impressed by the knowledge of other
 developers. Days ago I was massaging some code in &lt;a href="https://github.com/apache/jena/pull/237">a pull request&lt;/a>
-and a developer suggested me to simplify my code.&lt;/p></description></item><item><title>Apache Commons Lang: Memoizer</title><link>https://kinoshita.eti.br/2017/01/08/apache-commons-lang-memoizer.html</link><pubDate>Sun, 08 Jan 2017 00:00:00 +0000</pubDate><guid>https://kinoshita.eti.br/2017/01/08/apache-commons-lang-memoizer.html</guid><description>The current release of Apache Commons Lang is 3.5. The upcoming release, probably 3.6, will include a new feature, added in a pull request: a Memoizer implementation. Check out the ticket LANG-740 for more about the implementation being added to [lang].
-The book Java Concurrency in Practice introduces readers to the Memoizer, and has also a public domain implementation available for download (besides that, the book has also lots of other interesting topics!</description></item><item><title>Apache Commons Text</title><link>https://kinoshita.eti.br/2017/01/07/apache-commons-text.html</link><pubDate>Sat, 07 Jan 2017 00:00:00 +0000</pubDate><guid>https://kinoshita.eti.br/2017/01/07/apache-commons-text.html</guid><description>There is a new component in Apache Commons: Apache Commons Text. The 1.0 release might be announced in the next weeks. The current site is still in the Commons Sandbox, but it will change with the 1.0 release. The promotion from the sandbox happened a few days ago in the project mailing list.
-Here&amp;rsquo;s the project description: Apache Commons Text is a library focused on algorithms working on strings.
-There was a thread on the mailing list some time ago (Oct/2014) when we first discussed the component idea.</description></item><item><title>Contributing to Apache Jena</title><link>https://kinoshita.eti.br/2015/01/01/contributing-to-apache-jena.html</link><pubDate>Thu, 01 Jan 2015 00:00:00 +0000</pubDate><guid>https://kinoshita.eti.br/2015/01/01/contributing-to-apache-jena.html</guid><description>&lt;p>As I mentioned in my [previous post]({% post_url 2014-10-11-basic-workflow-of-a-sparql-query-in-fuseki %}),
+and a developer suggested me to simplify my code.&lt;/p></description></item><item><title>Apache Commons Lang: Memoizer</title><link>https://kinoshita.eti.br/2017/01/08/apache-commons-lang-memoizer.html</link><pubDate>Sun, 08 Jan 2017 00:00:00 +0000</pubDate><guid>https://kinoshita.eti.br/2017/01/08/apache-commons-lang-memoizer.html</guid><description>&lt;p>The current release of &lt;a href="https://commons.apache.org/proper/commons-lang/">Apache Commons Lang&lt;/a>
+is &lt;strong>3.5&lt;/strong>. The upcoming release, probably 3.6,
+will include a new feature, added in a
+&lt;a href="https://github.com/apache/commons-lang/pull/203">pull request&lt;/a>:
+&lt;strong>a Memoizer implementation&lt;/strong>. Check out the ticket &lt;a href="https://issues.apache.org/jira/browse/LANG-740">LANG-740&lt;/a>
+for more about the implementation being added to [lang].&lt;/p>
+&lt;p>The book &lt;a href="http://jcip.net/">Java Concurrency in Practice&lt;/a> introduces readers to the Memoizer,
+and has also a &lt;a href="http://jcip.net/listings/Memoizer.java">public domain implementation available for download&lt;/a>
+(besides that, the book has also lots of other interesting topics!).&lt;/p>
+&lt;p>In summary, Memoizer is a simple cache, that will store the result of
+a computation. It receives a Computable object, responsible for doing something
+that will be stored by the Memoizer. Here&amp;rsquo;s a simple code to illustrate how that
+will work in your Java code.&lt;/p></description></item><item><title>Apache Commons Text</title><link>https://kinoshita.eti.br/2017/01/07/apache-commons-text.html</link><pubDate>Sat, 07 Jan 2017 00:00:00 +0000</pubDate><guid>https://kinoshita.eti.br/2017/01/07/apache-commons-text.html</guid><description>&lt;p>There is a new component in Apache Commons: Apache Commons Text. The 1.0 release might be announced
+in the next weeks. The current site is still in the &lt;a href="http://commons.apache.org/sandbox/commons-text/">Commons Sandbox&lt;/a>,
+but it will change with the 1.0 release. The promotion from the sandbox
+&lt;a href="http://markmail.org/message/dm7xwv5wc6z7wme3">happened a few days ago&lt;/a> in
+the project mailing list.&lt;/p>
+&lt;p>Here&amp;rsquo;s the project description: &lt;strong>Apache Commons Text is a library focused on algorithms working on strings&lt;/strong>.&lt;/p>
+&lt;p>There was &lt;a href="http://markmail.org/message/3k7m2zrzboji333r">a thread on the mailing list&lt;/a>
+some time ago (Oct/2014) when we first discussed the component idea. Since then
+many people contributed porting code from
+&lt;a href="http://commons.apache.org/proper/commons-lang/">Apache Commons Lang&lt;/a>,
+&lt;a href="http://lucene.apache.org/">Apache Lucene&lt;/a>, donating code from existing projects, and with new ideas.&lt;/p></description></item><item><title>Contributing to Apache Jena</title><link>https://kinoshita.eti.br/2015/01/01/contributing-to-apache-jena.html</link><pubDate>Thu, 01 Jan 2015 00:00:00 +0000</pubDate><guid>https://kinoshita.eti.br/2015/01/01/contributing-to-apache-jena.html</guid><description>&lt;p>As I mentioned in my [previous post]({% post_url 2014-10-11-basic-workflow-of-a-sparql-query-in-fuseki %}),
 I am using &lt;a href="http://jena.apache.org">Apache Jena&lt;/a> for a project of a customer. I had never used
 any triple store, nor a SPARQL Endpoint server before. But for being involved with the Apache
 Software Foundation, and since the company itself is using several Apache components, it was only
@@ -104,6 +273,9 @@ natural Jena to be our first choice.&lt;/p>
 &lt;p>It has served us very well so far. At the moment we have less than 100 queries per day, but the
 project is still under development and we expect 1000 queries per day by the first quarter of
 2015 and 1000000 near the end of 2015. We also have few entries in TDB, but expect to grow this
-number to a few million before 2016.&lt;/p></description></item><item><title>Strings transliteration in Java with Apache Commons Lang</title><link>https://kinoshita.eti.br/2014/08/09/strings-transliteration-in-java-with-apache-commons-lang.html</link><pubDate>Sat, 09 Aug 2014 00:00:00 +0000</pubDate><guid>https://kinoshita.eti.br/2014/08/09/strings-transliteration-in-java-with-apache-commons-lang.html</guid><description>Rosalind is a website with a curated set of exercices for bioinformatics, organized hierarchily. In some of these examples you are required to replace characters (nucleotides) by other characters. It is a rather common task for developers, like when you need to replace special characters in user&amp;rsquo;s names.
-There are different ways of describing it, such as translate, replace, or transliterate. The latter being my favorite definition.
-In Python I know that there are several different ways of transliterating strings [1][2].</description></item></channel></rss>
+number to a few million before 2016.&lt;/p></description></item><item><title>Strings transliteration in Java with Apache Commons Lang</title><link>https://kinoshita.eti.br/2014/08/09/strings-transliteration-in-java-with-apache-commons-lang.html</link><pubDate>Sat, 09 Aug 2014 00:00:00 +0000</pubDate><guid>https://kinoshita.eti.br/2014/08/09/strings-transliteration-in-java-with-apache-commons-lang.html</guid><description>&lt;p>&lt;a href="http://rosalind.info">Rosalind&lt;/a> is a website with a curated set of exercices for bioinformatics, organized hierarchily.
+In some of these examples you are required to replace characters (nucleotides) by other characters. It is a rather common
+task for developers, like when you need to replace special characters in user&amp;rsquo;s names.&lt;/p>
+&lt;p>There are different ways of describing it, such as translate, replace, or &lt;strong>&lt;a href="http://en.wikipedia.org/wiki/Transliteration">transliterate&lt;/a>&lt;/strong>. The latter being my favorite definition.&lt;/p>
+&lt;p>In Python I know that there are several different ways of transliterating strings
+[&lt;a href="https://pypi.python.org/pypi/transliterate">1&lt;/a>][&lt;a href="http://blog.lebowtech.com/blog/programming/python/transliterate-with-python.html">2&lt;/a>]. But in Java I always ended up using a Map or a Enum and writing my own method in some &lt;em>Util&lt;/em> class for that.&lt;/p></description></item></channel></rss>

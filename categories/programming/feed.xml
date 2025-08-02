@@ -1,6 +1,108 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Programming on kinow</title><link>https://kinoshita.eti.br/categories/programming.html</link><description>Recent content in Programming on kinow</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><copyright>Bruno P. Kinoshita All rights reserved</copyright><lastBuildDate>Thu, 31 Jul 2025 19:17:53 +0200</lastBuildDate><atom:link href="https://kinoshita.eti.br/categories/programming/feed.xml" rel="self" type="application/rss+xml"/><item><title>Using Docker to run Cypress with Maven</title><link>https://kinoshita.eti.br/2024/08/11/using-docker-to-run-cypress-with-maven.html</link><pubDate>Sun, 11 Aug 2024 00:02:52 +0300</pubDate><guid>https://kinoshita.eti.br/2024/08/11/using-docker-to-run-cypress-with-maven.html</guid><description>Apache Jena runs Cypress tests from Maven, which makes running everything containerized a bit more difficult. To make it more complicated, we also used wait-on and concurrently to orchestrate how the tests and API test process are launched.
-The solution found was to combine the official Maven docker image, with the cypress/included image, in a multi-stage build.
-# A multi-stage image with Cypress and Java+Maven for Jena... ALv2... # To build it: # `docker build -t jena/build:latest .</description></item><item><title>Logo: Dev Multitask 100 videos</title><link>https://kinoshita.eti.br/2024/05/11/logo-dev-multitask-100-videos.html</link><pubDate>Sat, 11 May 2024 01:33:52 +0300</pubDate><guid>https://kinoshita.eti.br/2024/05/11/logo-dev-multitask-100-videos.html</guid><description>I modified the DevMultitask channel logo for their 100th video: https://twitter.com/DevMultitask
-Dev Multitask 100 videos The party effects are from another logo I designed for the Apache Software Foundation 20th anniversary.</description></item><item><title>Logo: Java Ring</title><link>https://kinoshita.eti.br/2024/04/28/logo-java-ring.html</link><pubDate>Sun, 28 Apr 2024 22:36:52 +0300</pubDate><guid>https://kinoshita.eti.br/2024/04/28/logo-java-ring.html</guid><description>I created this logo sometime ago for the Java community of a friend: https://twitter.com/java_ring
-Java Ring logo Acquired a license for the logo, got a copy of Duke in SVG, and some quick Inkscape-ing to slice paths and re-order them.</description></item><item><title>Coverage report for a GitHub private repository with GitHub Actions</title><link>https://kinoshita.eti.br/2023/05/29/coverage-report-for-a-github-private-repository-with-github-actions.html</link><pubDate>Mon, 29 May 2023 20:36:52 +0300</pubDate><guid>https://kinoshita.eti.br/2023/05/29/coverage-report-for-a-github-private-repository-with-github-actions.html</guid><description>Normally when you add test coverage to a GitHub repository, the reporting part boils down to a simple call to some API that will post to a third-party external service like Coveralls or Codecov. Many are already on the GitHub Actions Market Place and a few lines of YAML are enough.
-A Codecov coverage report We had to report the test coverage of a private GitHub repository of a project I am working on at the moment, that could not have integration with other services besides GitHub.</description></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Programming on kinow</title><link>https://kinoshita.eti.br/categories/programming.html</link><description>Recent content in Programming on kinow</description><generator>Hugo</generator><language>en-us</language><copyright>Bruno P. Kinoshita All rights reserved</copyright><lastBuildDate>Sat, 02 Aug 2025 23:21:27 +0200</lastBuildDate><atom:link href="https://kinoshita.eti.br/categories/programming/feed.xml" rel="self" type="application/rss+xml"/><item><title>Using Docker to run Cypress with Maven</title><link>https://kinoshita.eti.br/2024/08/11/using-docker-to-run-cypress-with-maven.html</link><pubDate>Sun, 11 Aug 2024 00:02:52 +0300</pubDate><guid>https://kinoshita.eti.br/2024/08/11/using-docker-to-run-cypress-with-maven.html</guid><description>&lt;p>Apache Jena runs Cypress tests from Maven, which makes running everything
+containerized a bit more difficult. To make it more complicated, we also
+used &lt;code>wait-on&lt;/code> and &lt;code>concurrently&lt;/code> to orchestrate how the tests and API
+test process are launched.&lt;/p>
+&lt;p>The solution found was to combine the &lt;a href="https://hub.docker.com/_/maven">official Maven docker image&lt;/a>,
+with the &lt;a href="https://hub.docker.com/r/cypress/included">&lt;code>cypress/included&lt;/code> image&lt;/a>,
+in a multi-stage build.&lt;/p>
+&lt;div class="popout">
+&lt;div class="highlight">&lt;pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-dockerfile" data-lang="dockerfile">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#177500"># A multi-stage image with Cypress and Java+Maven for Jena... ALv2...&lt;/span>&lt;span style="color:#000">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#000">&lt;/span>&lt;span style="color:#177500"># To build it:&lt;/span>&lt;span style="color:#000">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#000">&lt;/span>&lt;span style="color:#177500"># `docker build -t jena/build:latest .`&lt;/span>&lt;span style="color:#000">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#000">&lt;/span>&lt;span style="color:#177500">#&lt;/span>&lt;span style="color:#000">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#000">&lt;/span>&lt;span style="color:#177500"># To run it:&lt;/span>&lt;span style="color:#000">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#000">&lt;/span>&lt;span style="color:#177500"># `docker run --entrypoint &amp;#34;&amp;#34; --rm -ti jena/build:latest /bin/bash`&lt;/span>&lt;span style="color:#000">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#000">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#000">&lt;/span>&lt;span style="color:#a90d91">FROM&lt;/span>&lt;span style="color:#c41a16"> maven:3.9.8-eclipse-temurin-21-jammy AS maven&lt;/span>&lt;span style="color:#000">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#000">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#000">&lt;/span>&lt;span style="color:#177500"># The Maven stage. Nothing to see here, we simply copy artefacts&lt;/span>&lt;span style="color:#000">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#000">&lt;/span>&lt;span style="color:#177500"># from this stage onto the next one.&lt;/span>&lt;span style="color:#000">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#000">&lt;/span>&lt;span style="color:#177500"># Docs: https://hub.docker.com/_/maven&lt;/span>&lt;span style="color:#000">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#000">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#000">&lt;/span>&lt;span style="color:#a90d91">FROM&lt;/span>&lt;span style="color:#c41a16"> cypress/included:13.13.1&lt;/span>&lt;span style="color:#000">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#000">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#000">&lt;/span>&lt;span style="color:#177500"># The image with Cypress and everything else included. Compatible&lt;/span>&lt;span style="color:#000">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#000">&lt;/span>&lt;span style="color:#177500"># with temurin jammy, so we can just copy Maven and Java, and set&lt;/span>&lt;span style="color:#000">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#000">&lt;/span>&lt;span style="color:#177500"># the $PATH.&lt;/span>&lt;span style="color:#000">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#000">&lt;/span>&lt;span style="color:#177500"># Docs: https://hub.docker.com/r/cypress/included&lt;/span>&lt;span style="color:#000">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#000">&lt;/span>&lt;span style="color:#177500">#&lt;/span>&lt;span style="color:#000">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#000">&lt;/span>&lt;span style="color:#177500"># NOTE: The Cypress image must match our Cypress version in package.json.&lt;/span>&lt;span style="color:#000">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#000">&lt;/span>&lt;span style="color:#177500"># This is due to how Cypress loads the binary from the cache. It&amp;#39;ll&lt;/span>&lt;span style="color:#000">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#000">&lt;/span>&lt;span style="color:#177500"># expect a binary at `/root/.cache/Cypress/$version/Cypress/`. With&lt;/span>&lt;span style="color:#000">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#000">&lt;/span>&lt;span style="color:#177500"># the `$version` coming from the version from the package.json file.&lt;/span>&lt;span style="color:#000">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#000">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#000">&lt;/span>&lt;span style="color:#a90d91">COPY&lt;/span> --from&lt;span style="color:#000">=&lt;/span>maven /usr/share/maven/ /usr/share/maven/ &lt;span style="color:#000">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#000">&lt;/span>&lt;span style="color:#a90d91">COPY&lt;/span> --from&lt;span style="color:#000">=&lt;/span>maven /opt/java/ /opt/java&lt;span style="color:#000">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#000">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#000">&lt;/span>&lt;span style="color:#a90d91">ENV&lt;/span> &lt;span style="color:#000">PATH&lt;/span>&lt;span style="color:#000">=&lt;/span>&lt;span style="color:#c41a16">&amp;#34;/usr/share/maven/bin:/opt/java/openjdk/bin:&lt;/span>&lt;span style="color:#000">$PATH&lt;/span>&lt;span style="color:#c41a16">&amp;#34;&lt;/span>&lt;span style="color:#000">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#000">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#000">&lt;/span>&lt;span style="color:#a90d91">ENTRYPOINT&lt;/span> [&lt;span style="color:#c41a16">&amp;#34;&amp;#34;&lt;/span>]&lt;span style="color:#000">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#000">&lt;/span>&lt;span style="color:#a90d91">CMD&lt;/span> [&lt;span style="color:#c41a16">&amp;#34;mvn&amp;#34;&lt;/span>]&lt;span style="color:#000">
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>
+&lt;p>Using the image created with the &lt;code>Dockerfile&lt;/code> above, one can test Jena
+Fuseki UI with containers with:&lt;/p></description></item><item><title>Logo: Dev Multitask 100 videos</title><link>https://kinoshita.eti.br/2024/05/11/logo-dev-multitask-100-videos.html</link><pubDate>Sat, 11 May 2024 01:33:52 +0300</pubDate><guid>https://kinoshita.eti.br/2024/05/11/logo-dev-multitask-100-videos.html</guid><description>&lt;p>I modified the DevMultitask channel logo for their 100th video: &lt;a href="https://twitter.com/DevMultitask">https://twitter.com/DevMultitask&lt;/a>&lt;/p>
+
+
+
+&lt;figure class="normal">
+
+ &lt;img
+ src='https://kinoshita.eti.br/assets/posts/2024-05-11-logo-dev-multitask-100-videos/dev-multitask-100-videos-1.png'
+ alt=''
+ title=''
+ style=''
+ width=''
+ height=''
+ />
+ &lt;figcaption>Dev Multitask 100 videos&lt;/figcaption>
+
+&lt;/figure>
+
+
+&lt;p>The party effects are from another logo I designed for the Apache Software
+Foundation 20th anniversary.&lt;/p></description></item><item><title>Logo: Java Ring</title><link>https://kinoshita.eti.br/2024/04/28/logo-java-ring.html</link><pubDate>Sun, 28 Apr 2024 22:36:52 +0300</pubDate><guid>https://kinoshita.eti.br/2024/04/28/logo-java-ring.html</guid><description>&lt;p>I created this logo sometime ago for the Java community
+of a friend: &lt;a href="https://twitter.com/java_ring">https://twitter.com/java_ring&lt;/a>&lt;/p>
+
+
+
+&lt;figure class="feature">
+
+ &lt;img
+ src='https://kinoshita.eti.br/assets/posts/2024-04-28-logo-java-ring/java-ring-logo.png'
+ alt=''
+ title=''
+ style=''
+ width=''
+ height=''
+ />
+ &lt;figcaption>Java Ring logo&lt;/figcaption>
+
+&lt;/figure>
+
+
+&lt;p>Acquired a license for the logo, got a copy of Duke in SVG, and
+some quick Inkscape-ing to slice paths and re-order them.&lt;/p></description></item><item><title>Coverage report for a GitHub private repository with GitHub Actions</title><link>https://kinoshita.eti.br/2023/05/29/coverage-report-for-a-github-private-repository-with-github-actions.html</link><pubDate>Mon, 29 May 2023 20:36:52 +0300</pubDate><guid>https://kinoshita.eti.br/2023/05/29/coverage-report-for-a-github-private-repository-with-github-actions.html</guid><description>&lt;p>Normally when you add test coverage to a GitHub repository, the reporting part
+boils down to a simple call to some API that will post to a third-party external
+service like Coveralls or Codecov. Many are already on the GitHub Actions
+Market Place and a few lines of YAML are enough.&lt;/p>
+
+
+
+&lt;figure class="feature">
+
+ &lt;img
+ src='https://kinoshita.eti.br/assets/posts/2023-05-29-coverage-report-for-a-github-private-repository-with-github-actions/coverage.png'
+ alt=''
+ title=''
+ style=''
+ width=''
+ height=''
+ />
+ &lt;figcaption>A Codecov coverage report&lt;/figcaption>
+
+&lt;/figure>
+
+
+&lt;p>We had to report the test coverage of a private GitHub repository of a project
+I am working on at the moment, that could not have integration with other services
+besides GitHub. So no Coveralls and no Codecov.&lt;/p></description></item></channel></rss>
