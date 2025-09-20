@@ -70,6 +70,7 @@ programming and, or, arts.
 
 - [Curriculum Vitae](cv.pdf) (PDF)
 - [ORCID](https://orcid.org/0000-0001-8250-4074)
+- [iNaturalist](https://www.inaturalist.org/people/201141)
 
 {{< search >}}
 
