@@ -12,33 +12,6 @@ COUNTRIES_GEOJSON = "ne_110m_admin_0_countries.geojson"
 MAP_UNITS_GEOJSON = "ne_10m_admin_0_map_units.geojson"
 DESTINATION_DIR = "../../static/maps/"
 
-# -------------------------------
-# Visited regions
-# -------------------------------
-# Use (admin, name) tuples for precision
-visited_map_units = {"England", "Northern Ireland"}
-
-# ISO A3 country codes (rock-solid, no naming issues)
-# https://en.wikipedia.org/wiki/ISO_3166-1_alpha-3
-visited_countries = {
-    "ARG",  # Argentina
-    "AUS",  # Australia
-    "BEL",  # Belgium
-    "BRA",  # Brazil
-    "DEU",  # Germany
-    "ESP",  # Spain
-    "FJI",  # Fiji
-    "FRA",  # France
-    "IRL",  # Ireland
-    "ITA",  # Italy
-    "JPN",  # Japan
-    "NLD",  # The Netherlands
-    "NZL",  # New Zealand
-    "PRT",  # Portugal
-    "USA",  # United States of America
-    "ZAF",  # South Africa
-}
-
 # Colors
 COLOR_COUNTRY_VISITED = "#2ecc71"
 COLOR_REGION_VISITED = "#2ecc71"
