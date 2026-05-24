@@ -1,0 +1,39 @@
+From Gist created 4 hours ago, https://gist.github.com/kinow/9a7a37e426b650bf3ba62802cbfc5131
+
+Some years ago I used DRMAA in Jenkins, to submit jobs to batch schedulers.
+I had to write an DRMAA Java API at that time, as I couldn't find anything
+similar.
+
+It interfaced with the C code, and was quite fragile. Definitely not safe
+for production, but it worked for my case (submitting bioinformatics jobs
+to a cluster from USP, Brazil).
+
+Some years later, while working on Cylc someone mentioned DRMAA. I remember
+looking at issues, and I found about Payu, that had an issue about creating
+a Scheduler class to interact with batch schedulers.
+
+I commented on that issue on May 26, 2022. It was closed todayin May this year,
+2026: https://github.com/payu-org/payu/issues/182#issuecomment-4484673525
+
+But instead of DRMAA, they selected HPCpy: https://github.com/ACCESS-NRI/hpcpy
+
+I was excited as I am currently working on Autosubmit, and indeed, reducing the
+amount of code to support batch schedulers could be a good thing for our
+code base. 
+
+However, reading the code, it seems to have few adopters, and only PBS with good
+support, while Slurm is still a work-in-progress (although I believe it works):
+https://github.com/payu-org/payu/issues/568
+
+The main issue I see in adopting it right now is that with every update of Slurm,
+something always break in Autosubmit. And if we have to wait until HPCpy is updated
+and released, and without a large number of committers & active contributors who
+can push the code and release it, I think we would end up having to fork it or
+hack the code, monkey-patch it, etc.
+
+Still interesting to see some progress in libraries like this. I hope more workflow
+managers will reuse the same code for submitting jobs to batch schedulers. After all,
+most of the workflow managers used in HPC are in some way a meta-scheduler, and interact
+with PJM, PBS, LSF, Flux, Slurm, etc. (the need to support more batch schedulers is
+another thing against adopting HPCpy now, in Europe & Asia there's a certain diversity
+of flavours in batch schedulers on HPC).
