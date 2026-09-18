@@ -1,0 +1,85 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "kinow"
+version = "0.0.1"
+description = "Scripts used for my website"
+requires-python = ">=3.11"
+
+dependencies = []
+
+[tool.setuptools]
+py-modules = []
+
+[project.optional-dependencies]
+# Curriculum vitae
+cv = [
+    "bibtexparser==1.*",
+    "Jinja2==3.*",
+    "PyYaml==6.*",
+    "beautifulsoup4==4.*",
+]
+
+# Maps
+maps = [
+    "folium",
+]
+
+# Movies
+movies = [
+    "requests",
+    "python-dotenv",
+    "keyring",
+]
+
+# Data processing
+data = [
+    "pandas==3.0.*",
+    "rdflib==7.6.*",
+    "ruamel.yaml==0.19.*",
+    "schema_salad==8.10.*",
+]
+
+# Stained-glass
+stained-glass = [
+    "inkex",
+]
+
+# Development tools
+dev = [
+    "pytest>=8",
+    "ruff>=0.8",
+]
+
+all = [
+    "kinow[cv]",
+    "kinow[maps]",
+    "kinow[movies]",
+    "kinow[data]",
+    "kinow[stained-glass]",
+    "kinow[dev]",
+]
+
+# TODO: PEP-725 is still pending https://peps.python.org/pep-0725/
+[external.optional-build-requires]
+cv = [
+    "dep:generic/latexmk",
+    "dep:generic/biber",
+    "dep:generic/unzip",
+    "dep:generic/texlive-binaries",
+    "dep:generic/texlive-latex-extra",
+    "dep:generic/texlive-fonts-extra",
+]
+
+[external.optional-host-requires]
+stained-glass = [
+    "dep:generic/gobject-introspection",
+    "dep:generic/glib",
+    "dep:generic/pkg-config",
+    "dep:generic/python",
+    "dep:generic/cairo",
+    "dep:generic/libxml2",
+    "dep:generic/libxslt",
+]
